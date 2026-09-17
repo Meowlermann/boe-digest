@@ -140,8 +140,15 @@ repositorio) y su ubicación delimita lo que se puede enviar, que aquí es todo
 `/boe-digest/`. Si un buscador no responde, el paso no tumba la edición.
 
 Google no participa en IndexNow y retiró el ping de sitemaps en 2023, así que
-ahí sigue haciendo falta dar de alta el sitio una vez en Search Console y enviar
-`sitemap.xml`.
+ahí hace falta Search Console. El sitio está dado de alta como propiedad de tipo
+*prefijo de URL* (`https://meowlermann.github.io/boe-digest/`) y verificado por
+dos vías a la vez, a propósito:
+
+- la etiqueta `<meta name="google-site-verification">` en `template.html`, y
+- el fichero `googlec4619d97b763e0b5.html` en la raíz.
+
+**Ninguna de las dos se puede borrar.** Si se cae la que esté activa, Google
+desverifica la propiedad y deja de reportar; con dos, hace falta perder ambas.
 
 ## Diagnóstico: `debug/last-run.json`
 
