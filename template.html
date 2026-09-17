@@ -24,6 +24,9 @@
 <link rel="alternate" type="application/rss+xml" title="BOE Digest &amp; Cortes en Directo" href="feed.xml">
 <link rel="sitemap" type="application/xml" href="sitemap.xml">
 __SSR_JSONLD__
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 <style>
   :root{ padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
@@ -34,42 +37,56 @@ __SSR_JSONLD__
 </style>
 </head>
 <body>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
 <div class="wrap">
   <header class="masthead">
     <div class="masthead-row">
       <div class="brand"><h1 class="title1">BOE<span>DIGEST</span> &amp; CORTES EN DIRECTO</h1></div>
-      <div class="edition-date" id="editionDate">__SSR_EDITION_DATE__</div>
+      <div class="edition-date">__SSR_EDITION_DATE__</div>
     </div>
     <div class="tagline">El día a día del Estado, sin el somnífero — para todo el mundo, de cualquier color</div>
-    <div class="tabs" role="tablist" aria-label="Secciones">
-      <button class="tab" id="tabBoe" role="tab" aria-selected="true" aria-controls="viewBoe">📰 BOE Digest</button>
-      <button class="tab" id="tabCortes" role="tab" aria-selected="false" aria-controls="viewCortes">🏛️ Cortes en Directo</button>
-    </div>
   </header>
 
-  <div class="ticker" aria-label="Titulares destacados"><div class="ticker-inner" id="tickerInner">__SSR_TICKER__</div></div>
-  <div class="daystrip" id="daystrip" aria-label="Elegir edición por día">__SSR_DAYSTRIP__</div>
-  <p class="aside-note" style="margin-top:10px">Enlace permanente a la edición de hoy: <a class="srclink" href="__SSR_PERMALINK_HOY__">__SSR_FECHA_HOY__ ↗</a> · Todas las anteriores, en el <a class="srclink" href="ediciones/">archivo de ediciones ↗</a></p>
+  <div class="ticker" aria-label="Titulares destacados"><div class="ticker-inner">__SSR_TICKER__</div></div>
 
-  <section class="view" id="viewBoe" role="tabpanel" aria-labelledby="tabBoe">
-    <h2 class="sr-only">Disposiciones del BOE de hoy</h2>
-    <div class="stats" id="boeStats">__SSR_BOE_STATS__</div>
-    <div class="frontpage" id="boeGrid">__SSR_BOE_GRID__</div>
-    <div class="aside-note" id="boeNote">__SSR_BOE_NOTE__</div>
+  <nav class="daystrip" aria-label="Ediciones recientes">__SSR_DAYSTRIP__</nav>
+
+  <div class="kpis">__SSR_KPIS__</div>
+
+  <section class="view" aria-labelledby="h-boe">
+    <div class="rotulo">
+      <h2 id="h-boe">El BOE de hoy</h2>
+      <a class="srclink" href="__SSR_PERMALINK_HOY__">Edición completa del __SSR_FECHA_HOY__ →</a>
+    </div>
+
+    __SSR_BOE_LEAD__
+
+    <div class="rejilla">__SSR_BOE_DESTACADOS__</div>
+
+    __SSR_BOE_INDICE__
+
+    <p class="aside-note">__SSR_BOE_NOTE__</p>
   </section>
 
-  <section class="view" id="viewCortes" role="tabpanel" aria-labelledby="tabCortes" hidden>
-    <h2 class="sr-only">Actividad del Congreso y del Senado</h2>
-    <div class="manifesto">
-      <h2>Auditoría pública a los cortesanos</h2>
-      <p>Cada día miramos qué registran, qué preguntan, qué contestan y qué se callan sus señorías — en el Congreso y en el Senado. Mismo rasero para todos los colores: gobierno, oposición, nacionalistas e independientes. Cada pieza lleva enlace al documento oficial del que sale, y ninguna cita aparece aquí si no está literalmente en el Diario de Sesiones o en el boletín. Se afila el titular, nunca el hecho.</p>
+  <section class="view" aria-labelledby="h-cortes">
+    <div class="rotulo cortes">
+      <h2 id="h-cortes">Las Cortes hoy</h2>
+      <a class="srclink" href="__SSR_PERMALINK_HOY__#cortes-1">Auditoría completa →</a>
     </div>
-    <div class="aside-note" id="coverageNote" style="margin-top:0" __SSR_COVERAGE_HIDDEN__>__SSR_COVERAGE_NOTE__</div>
-    <div class="chambers" id="chamberCards">__SSR_CHAMBER_CARDS__</div>
-    <div class="scoreboard" id="scoreboard" __SSR_SCOREBOARD_HIDDEN__>__SSR_SCOREBOARD__</div>
-    <div class="feed" id="cortesFeed">__SSR_CORTES_FEED__</div>
+
+    <div class="manifesto">
+      <p>Cada día miramos qué registran, qué preguntan, qué contestan y qué se callan sus señorías — en el Congreso y en el Senado. Mismo rasero para todos los colores. Ninguna cita aparece aquí si no está literalmente en el Diario de Sesiones o en el boletín. Se afila el titular, nunca el hecho.</p>
+    </div>
+
+    <p class="aside-note" style="margin-top:0" __SSR_COVERAGE_HIDDEN__>__SSR_COVERAGE_NOTE__</p>
+
+    <div class="chambers">__SSR_CHAMBER_CARDS__</div>
+
+    __SSR_CORTES_LEAD__
+
+    __SSR_CORTES_INDICE__
+
+    <div class="scoreboard" __SSR_SCOREBOARD_HIDDEN__>__SSR_SCOREBOARD__</div>
   </section>
 
   <footer>
@@ -78,157 +95,6 @@ __SSR_JSONLD__
     <a class="srclink" href="ediciones/">Archivo de ediciones</a> · <a class="srclink" href="feed.xml">RSS</a> · <a class="srclink" href="sitemap.xml">Mapa del sitio</a>
   </footer>
 </div>
-
-<script>
-(function(){
-  "use strict";
-
-  // ==========================================================================
-  // DATA — una entrada por edición diaria, la más reciente PRIMERO.
-  // ==========================================================================
-  var DATA = { days: __DIGEST_DATA__ };
-  var CAT_LABEL = { fiscal:"Fiscal / Hacienda", laboral:"Laboral", mercantil:"Mercantil / Contable", otros:"Sociedad / Varios" };
-  var CHAMBER_LABEL = { congreso:"Congreso", senado:"Senado" };
-  var currentDayId = DATA.days[0].id;
-
-  function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
-  function fmtDate(iso){
-    try{ return new Date(iso+"T00:00:00").toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }
-    catch(e){ return iso; }
-  }
-  function getDay(id){ for(var i=0;i<DATA.days.length;i++){ if(DATA.days[i].id===id) return DATA.days[i]; } return DATA.days[0]; }
-
-  function renderDaystrip(){
-    var el=document.getElementById('daystrip'); el.innerHTML="";
-    DATA.days.forEach(function(d){
-      var b=document.createElement('button');
-      b.className='daypill'; b.setAttribute('aria-selected',String(d.id===currentDayId)); b.textContent=d.label;
-      b.addEventListener('click',function(){ currentDayId=d.id; renderAll(); });
-      el.appendChild(b);
-    });
-  }
-
-  function renderTicker(day){
-    var items=[];
-    day.boe.stories.slice(0,5).forEach(function(s){ items.push('<span><b>BOE</b>'+esc(s.headline)+'</span>'); });
-    (day.cortes.feed||[]).slice(0,4).forEach(function(f){
-      items.push('<span><b>'+esc(CHAMBER_LABEL[f.chamber]||'CORTES')+'</b>'+esc(f.headline)+'</span>');
-    });
-    if(!items.length) items.push('<span><b>AVISO</b>Sin titulares en esta edición.</span>');
-    var html=items.join('');
-    document.getElementById('tickerInner').innerHTML=html+html;
-  }
-
-  function renderStats(day){
-    var c=day.boe.counts||{}, order=['fiscal','laboral','mercantil','otros'];
-    var max=Math.max(1,c.fiscal||0,c.laboral||0,c.mercantil||0,c.otros||0);
-    document.getElementById('boeStats').innerHTML=order.map(function(k){
-      var n=c[k]||0, pct=Math.round((n/max)*100);
-      return '<div class="stat"><div class="label">'+esc(CAT_LABEL[k])+'</div><div class="n">'+n+'</div>'+
-             '<div class="meter"><i style="width:'+pct+'%;background:var(--'+k+')"></i></div></div>';
-    }).join('');
-  }
-
-  function bodyHtml(paras){
-    return '<div class="articlebody">'+(paras||[]).map(function(p){ return '<p>'+esc(p)+'</p>'; }).join('')+'</div>';
-  }
-
-  function renderBoeGrid(day){
-    document.getElementById('boeGrid').innerHTML = day.boe.stories.map(function(s){
-      var isLead = s.size==='lead';
-      var article = isLead
-        ? bodyHtml(s.body)
-        : '<details class="reader"><summary>Leer el artículo</summary>'+bodyHtml(s.body)+'</details>';
-      return '<article class="story '+esc(s.size)+'" style="--cat:var(--'+s.cat+');--catsoft:var(--'+s.cat+'-soft)">'+
-        '<div class="kicker"><span class="pill">'+esc(CAT_LABEL[s.cat]||'Varios')+'</span></div>'+
-        '<h3>'+esc(s.headline)+'</h3>'+
-        '<p class="standfirst">'+esc(s.standfirst)+'</p>'+
-        article+
-        '<div class="foot"><span>'+esc(s.dept)+'</span><span class="ref">'+esc(s.ref||'')+'</span></div>'+
-      '</article>';
-    }).join('');
-
-    var b=day.boe;
-    document.getElementById('boeNote').innerHTML =
-      '<b>BOE núm. '+esc(b.numero)+'</b> · '+esc(b.fecha)+'. '+esc(b.extra||'')+
-      (b.sourceUrl ? ' <a class="srclink" href="'+esc(b.sourceUrl)+'" target="_blank" rel="noopener">Ver el sumario oficial ↗</a>' : '');
-  }
-
-  function renderCortes(day){
-    var c=day.cortes||{}, cong=c.congreso||{}, sen=c.senado||{};
-
-    var cov=document.getElementById('coverageNote');
-    if (c.coverage && c.coverage.nota){
-      cov.hidden=false;
-      cov.innerHTML='<b>Cobertura de hoy:</b> '+esc(c.coverage.nota);
-    } else { cov.hidden=true; }
-    document.getElementById('chamberCards').innerHTML =
-      '<div class="chamber-card" style="--cc:var(--congreso)"><div class="h">CONGRESO DE LOS DIPUTADOS</div>'+
-        '<div class="who">'+esc(cong.presidenta||'—')+'</div>'+
-        '<div class="meta">Presidenta · '+esc(cong.legislatura||'')+'<br>'+esc(cong.sede||'')+'</div></div>'+
-      '<div class="chamber-card" style="--cc:var(--senado)"><div class="h">SENADO</div>'+
-        '<div class="who">'+esc(sen.presidente||'—')+'</div>'+
-        '<div class="meta">Presidente · '+esc(sen.legislatura||'')+'<br>'+esc(sen.sede||'')+'</div></div>';
-
-    var sb=c.scoreboard, sbEl=document.getElementById('scoreboard');
-    if(sb && sb.rows && sb.rows.length){
-      var max=sb.rows.reduce(function(m,r){ return Math.max(m,r.n||0); },1);
-      sbEl.hidden=false;
-      sbEl.innerHTML='<h3>Marcador del día</h3><p class="sub">'+esc(sb.note||'')+'</p>'+
-        sb.rows.map(function(r){
-          return '<div class="scorerow"><span class="g">'+esc(r.g)+'</span>'+
-                 '<span class="bar"><i style="width:'+Math.round((r.n/max)*100)+'%"></i></span>'+
-                 '<span class="v">'+esc(r.n)+'</span></div>';
-        }).join('');
-    } else { sbEl.hidden=true; }
-
-    var feed=c.feed||[], el=document.getElementById('cortesFeed');
-    if(!feed.length){
-      el.innerHTML='<div class="acard" style="--cc:var(--otros);--ccsoft:var(--otros-soft)">'+
-        '<div class="row1"><span class="tag-cc">Sin datos verificados</span></div>'+
-        '<h3>Hoy no se ha podido verificar actividad en las fuentes oficiales</h3>'+
-        '<p class="standfirst">'+esc(c.constructionNote||'La extracción del día no obtuvo publicaciones oficiales legibles. Antes que rellenar con ruido, lo decimos.')+'</p></div>';
-      return;
-    }
-    el.innerHTML=feed.map(function(f){
-      var cc=f.chamber==='senado'?'senado':'congreso';
-      var q=f.quote ? '<blockquote class="pull"><p>«'+esc(f.quote.text)+'»</p><cite>'+esc(f.quote.author)+'</cite></blockquote>' : '';
-      var src=f.source ? '<a class="srclink" href="'+esc(f.source.url)+'" target="_blank" rel="noopener">'+esc(f.source.label)+' ↗</a>' : '';
-      return '<article class="acard" style="--cc:var(--'+cc+');--ccsoft:var(--'+cc+'-soft)">'+
-        '<div class="row1"><span class="tag-cc">'+esc(CHAMBER_LABEL[cc])+'</span>'+
-          '<span class="tag-cc">'+esc(f.type||'')+'</span><span class="tstamp">'+esc(f.date||'')+'</span></div>'+
-        '<h3>'+esc(f.headline)+'</h3>'+
-        '<p class="standfirst">'+esc(f.standfirst||'')+'</p>'+ q +
-        '<details class="reader"><summary>Leer la auditoría completa</summary>'+bodyHtml(f.body)+'</details>'+
-        '<div class="foot"><span>Verificado en fuente oficial</span>'+src+'</div>'+
-      '</article>';
-    }).join('');
-  }
-
-  function renderAll(){
-    var day=getDay(currentDayId);
-    document.getElementById('editionDate').textContent=fmtDate(day.id).toUpperCase();
-    renderDaystrip(); renderTicker(day); renderStats(day); renderBoeGrid(day); renderCortes(day);
-  }
-
-  function initTabs(){
-    var tb=document.getElementById('tabBoe'), tc=document.getElementById('tabCortes');
-    var vb=document.getElementById('viewBoe'), vc=document.getElementById('viewCortes');
-    function show(w){
-      var on=w==='boe';
-      tb.setAttribute('aria-selected',String(on)); tc.setAttribute('aria-selected',String(!on));
-      vb.hidden=!on; vc.hidden=on;
-      try{ localStorage.setItem('boeDigestTab',w); }catch(e){}
-    }
-    tb.addEventListener('click',function(){ show('boe'); });
-    tc.addEventListener('click',function(){ show('cortes'); });
-    var saved='boe'; try{ saved=localStorage.getItem('boeDigestTab')||'boe'; }catch(e){}
-    show(saved);
-  }
-
-  initTabs(); renderAll();
-})();
-</script>
 
 </body>
 </html>

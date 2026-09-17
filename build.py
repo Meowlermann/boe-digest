@@ -903,10 +903,15 @@ def render_ticker_ssr(day: dict) -> str:
 
 
 def render_daystrip_ssr(dias: list[dict], current_id: str) -> str:
+    """Enlaces de verdad a cada edición, no pestañas de JavaScript: así el
+    rastreador los sigue y cada día se alcanza con una URL propia."""
     out = []
-    for d in dias:
-        sel = "true" if d["id"] == current_id else "false"
-        out.append(f'<button class="daypill" aria-selected="{sel}">{esc_html(d.get("label"))}</button>')
+    for d in dias[:14]:
+        actual = d["id"] == current_id
+        destino = "./" if actual else f'ediciones/{d["id"]}.html'
+        aria = ' aria-current="page"' if actual else ""
+        out.append(f'<a class="daypill" href="{destino}"{aria}>{esc_html(d.get("label"))}</a>')
+    out.append('<a class="daypill archivo" href="ediciones/">ARCHIVO →</a>')
     return "".join(out)
 
 
@@ -936,16 +941,16 @@ def render_boe_stats_ssr(day: dict) -> str:
 
 def render_boe_grid_ssr(day: dict) -> str:
     out = []
-    for s in day.get("boe", {}).get("stories") or []:
+    for i, s in enumerate(day.get("boe", {}).get("stories") or []):
         is_lead = s.get("size") == "lead"
         cuerpo = body_html_ssr(s.get("body"))
         articulo = cuerpo if is_lead else (
             f'<details class="reader"><summary>Leer el artículo</summary>{cuerpo}</details>')
         cat = s.get("cat") or "otros"
         out.append(
-            f'<article class="story {esc_attr(s.get("size",""))}" '
+            f'<article id="{esc_attr(ancla_de(s, i))}" class="story {esc_attr(s.get("size",""))}" '
             f'style="--cat:var(--{cat});--catsoft:var(--{cat}-soft)">'
-            f'<div class="kicker"><span class="pill">{esc_html(CAT_LABEL.get(cat, "Varios"))}</span></div>'
+            f'<div class="kicker"><span class="pill">{icono(cat)}{esc_html(CAT_LABEL.get(cat, "Varios"))}</span></div>'
             f'<h3>{esc_html(s.get("headline"))}</h3>'
             f'<p class="standfirst">{esc_html(s.get("standfirst"))}</p>'
             f'{articulo}'
@@ -1015,7 +1020,7 @@ def render_cortes_feed_ssr(day: dict) -> str:
             '<h3>Hoy no se ha podido verificar actividad en las fuentes oficiales</h3>'
             f'<p class="standfirst">{esc_html(nota)}</p></div>')
     out = []
-    for f in feed:
+    for n, f in enumerate(feed, start=1):
         cc = "senado" if f.get("chamber") == "senado" else "congreso"
         cita = ""
         if f.get("quote"):
@@ -1026,8 +1031,8 @@ def render_cortes_feed_ssr(day: dict) -> str:
             fuente = (f'<a class="srclink" href="{esc_attr(f["source"].get("url"))}" '
                       f'target="_blank" rel="noopener">{esc_html(f["source"].get("label"))} ↗</a>')
         out.append(
-            f'<article class="acard" style="--cc:var(--{cc});--ccsoft:var(--{cc}-soft)">'
-            f'<div class="row1"><span class="tag-cc">{esc_html(CHAMBER_LABEL[cc])}</span>'
+            f'<article id="cortes-{n}" class="acard" style="--cc:var(--{cc});--ccsoft:var(--{cc}-soft)">'
+            f'<div class="row1"><span class="tag-cc">{icono(cc)}{esc_html(CHAMBER_LABEL[cc])}</span>'
             f'<span class="tag-cc">{esc_html(f.get("type",""))}</span>'
             f'<span class="tstamp">{esc_html(f.get("date",""))}</span></div>'
             f'<h3>{esc_html(f.get("headline"))}</h3>'
@@ -1037,6 +1042,201 @@ def render_cortes_feed_ssr(day: dict) -> str:
             f'<div class="foot"><span>Verificado en fuente oficial</span>{fuente}</div>'
             f'</article>')
     return "".join(out)
+
+
+# --- Iconografía ------------------------------------------------------------
+# SVG en línea, trazo en currentColor: heredan el color de la categoría y
+# funcionan igual en claro y en oscuro sin duplicar nada.
+
+_SVG = ('<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
+        'aria-hidden="true" focusable="false">{}</svg>')
+
+ICONOS = {
+    # Fiscal / Hacienda: moneda
+    "fiscal": _SVG.format('<circle cx="12" cy="12" r="8"/><path d="M14.5 9.5a3.5 3.5 0 1 0 0 5"/>'
+                          '<path d="M8.5 11.2h4.2M8.5 13.2h4.2"/>'),
+    # Laboral: casco de trabajo
+    "laboral": _SVG.format('<path d="M3 16h18"/><path d="M5 16a7 7 0 0 1 14 0"/>'
+                           '<path d="M10 9.4V5.6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3.8"/>'
+                           '<path d="M3 16v1.5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V16"/>'),
+    # Mercantil / Contable: edificio de oficinas
+    "mercantil": _SVG.format('<path d="M4 20V5.6a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1V20"/>'
+                             '<path d="M15 10h4a1 1 0 0 1 1 1v9"/><path d="M2.5 20h19"/>'
+                             '<path d="M7 8h1.5M11 8h1.5M7 11.5h1.5M11 11.5h1.5M7 15h1.5M11 15h1.5"/>'),
+    # Sociedad / Varios: documento con sello
+    "otros": _SVG.format('<path d="M14 3.5H7a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7.5z"/>'
+                         '<path d="M14 3.5v4h4"/><circle cx="12" cy="14.5" r="2.2"/>'),
+    # Congreso: hemiciclo
+    "congreso": _SVG.format('<path d="M3 19h18"/><path d="M4.5 19v-6M9 19v-6M15 19v-6M19.5 19v-6"/>'
+                            '<path d="M3 13h18"/><path d="M12 4.5 21 10H3z"/>'),
+    # Senado: fachada con frontón
+    "senado": _SVG.format('<path d="M3 19.5h18"/><path d="M5.5 16.5v-6M12 16.5v-6M18.5 16.5v-6"/>'
+                          '<path d="M3.5 16.5h17"/><path d="M12 3.5l8 5H4z"/>'),
+}
+
+
+def icono(clave: str) -> str:
+    return ICONOS.get(clave, ICONOS["otros"])
+
+
+def ancla_de(story: dict, i: int) -> str:
+    ref = (story.get("ref") or "").strip()
+    return ref if ref.startswith("BOE-") else f"pieza-{i+1}"
+
+
+def _normalizar(t: str) -> str:
+    import unicodedata
+    t = unicodedata.normalize("NFD", (t or "").lower())
+    t = "".join(ch for ch in t if unicodedata.category(ch) != "Mn")
+    return re.sub(r"[^a-z0-9 ]", " ", t)
+
+
+def _parrafo(clase: str, texto: str) -> str:
+    """Un <p> vacío deja un hueco raro en la maqueta; si no hay texto, no hay <p>."""
+    return f'<p class="{clase}">{esc_html(texto)}</p>' if texto else ""
+
+
+def una_linea(story: dict, limite: int = 150) -> str:
+    """Qué hace la norma, en una línea y bien escrita. Sale del título oficial,
+    que ya viene en mayúscula/minúscula correcta, no del titular en mayúsculas.
+
+    Si acaba diciendo lo mismo que el titular —pasa con las leyes, cuyo título
+    ya ES su objeto— se devuelve vacío: repetir la misma frase dos veces
+    seguidas es justo el ruido que esta portada quiere quitarse."""
+    texto = objeto_de(titulo_oficial_de(story)) or story.get("standfirst", "")
+    corto = primera_mayuscula(recortar(texto, limite))
+    a = " ".join(_normalizar(corto).split())
+    b = " ".join(_normalizar(story.get("headline", "")).split())
+    if a and b and (a[:60] in b or b[:60] in a):
+        return ""
+    return corto
+
+
+# --- Portada: jerarquía de periódico ----------------------------------------
+
+def render_kpis_ssr(day: dict) -> str:
+    boe = day.get("boe", {}) or {}
+    c = boe.get("counts") or {}
+    piezas = len(boe.get("stories") or [])
+    cortes = len((day.get("cortes", {}) or {}).get("feed") or [])
+    total = ""
+    m = re.search(r"(\d+)\s+disposiciones", boe.get("extra", "") or "")
+    if m:
+        total = m.group(1)
+    datos = [(total or str(piezas), "en el sumario"), (str(piezas), "desarrolladas hoy"),
+             (str(cortes), "piezas de las Cortes"),
+             (str(sum(_entero(v) for v in c.values()) or piezas), "clasificadas")]
+    return "".join(
+        f'<div class="kpi"><span class="kpi-n">{esc_html(n)}</span>'
+        f'<span class="kpi-l">{esc_html(l)}</span></div>' for n, l in datos[:3])
+
+
+def render_boe_lead_ssr(day: dict, permalink: str) -> str:
+    stories = (day.get("boe", {}) or {}).get("stories") or []
+    if not stories:
+        return ('<p class="aside-note">Hoy no se pudo leer el sumario del BOE.</p>')
+    s = next((x for x in stories if x.get("size") == "lead"), stories[0])
+    i = stories.index(s)
+    cat = s.get("cat") or "otros"
+    return (
+        f'<article class="lead" style="--cat:var(--{cat});--catsoft:var(--{cat}-soft)">'
+        f'<div class="lead-marca">{icono(cat)}</div>'
+        f'<div class="kicker"><span class="pill">{icono(cat)}{esc_html(CAT_LABEL.get(cat,"Varios"))}</span>'
+        f'<span class="ref mono">{esc_html(s.get("ref",""))}</span></div>'
+        f'<h3 class="lead-h">{esc_html(s.get("headline"))}</h3>'
+        f'{_parrafo("lead-sub", una_linea(s, 190))}'
+        f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
+        f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer la pieza completa →</a></div>'
+        f'</article>')
+
+
+def render_boe_destacados_ssr(day: dict, permalink: str) -> str:
+    stories = (day.get("boe", {}) or {}).get("stories") or []
+    lead = next((x for x in stories if x.get("size") == "lead"), stories[0] if stories else None)
+    resto = [(i, x) for i, x in enumerate(stories) if x is not lead]
+    destacados = [(i, x) for i, x in resto if x.get("size") == "md"][:3]
+    if not destacados:
+        destacados = resto[:3]
+    out = []
+    for i, s in destacados:
+        cat = s.get("cat") or "otros"
+        out.append(
+            f'<article class="tarjeta" style="--cat:var(--{cat});--catsoft:var(--{cat}-soft)">'
+            f'<div class="kicker"><span class="pill">{icono(cat)}{esc_html(CAT_LABEL.get(cat,"Varios"))}</span></div>'
+            f'<h3>{esc_html(s.get("headline"))}</h3>'
+            f'{_parrafo("linea", una_linea(s, 120))}'
+            f'<div class="foot"><span>{esc_html(recortar(s.get("dept",""), 44))}</span>'
+            f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer →</a></div>'
+            f'</article>')
+    return "".join(out)
+
+
+def render_boe_indice_ssr(day: dict, permalink: str) -> str:
+    """El resto del día, en índice de una línea. Es lo que quita el muro de texto."""
+    stories = (day.get("boe", {}) or {}).get("stories") or []
+    lead = next((x for x in stories if x.get("size") == "lead"), stories[0] if stories else None)
+    resto = [(i, x) for i, x in enumerate(stories) if x is not lead]
+    destacados = {id(x) for _, x in ([(i, x) for i, x in resto if x.get("size") == "md"][:3]
+                                      or resto[:3])}
+    filas, n = [], 0
+    for i, s in resto:
+        if id(s) in destacados:
+            continue
+        n += 1
+        cat = s.get("cat") or "otros"
+        filas.append(
+            f'<li style="--cat:var(--{cat});--catsoft:var(--{cat}-soft)">'
+            f'<a href="{permalink}#{esc_attr(ancla_de(s,i))}">'
+            f'<span class="idx mono">{n:02d}</span>'
+            f'<span class="idx-t">{esc_html(s.get("headline"))}</span>'
+            f'<span class="idx-d mono">{esc_html(recortar(s.get("dept",""), 40))}</span>'
+            f'<span class="idx-c">{icono(cat)}</span></a></li>')
+    if not filas:
+        return ""
+    return f'<ol class="indice">{"".join(filas)}</ol>'
+
+
+def render_cortes_lead_ssr(day: dict, permalink: str) -> str:
+    feed = (day.get("cortes", {}) or {}).get("feed") or []
+    if not feed:
+        nota = (day.get("cortes", {}) or {}).get("constructionNote") or (
+            "La extracción del día no obtuvo publicaciones oficiales legibles.")
+        return (f'<article class="tarjeta" style="--cat:var(--otros);--catsoft:var(--otros-soft)">'
+                f'<h3>Hoy no se ha podido verificar actividad</h3>'
+                f'<p class="linea">{esc_html(nota)}</p></article>')
+    f = feed[0]
+    cc = "senado" if f.get("chamber") == "senado" else "congreso"
+    cita = ""
+    if f.get("quote"):
+        cita = (f'<blockquote class="pull"><p>«{esc_html(recortar(f["quote"].get("text",""), 240))}»</p>'
+                f'<cite>{esc_html(f["quote"].get("author"))}</cite></blockquote>')
+    return (
+        f'<article class="lead cortes" style="--cat:var(--{cc});--catsoft:var(--{cc}-soft)">'
+        f'<div class="lead-marca">{icono(cc)}</div>'
+        f'<div class="kicker"><span class="pill">{icono(cc)}{esc_html(CHAMBER_LABEL[cc])}</span>'
+        f'<span class="pill ghost">{esc_html(f.get("type",""))}</span>'
+        f'<span class="ref mono">{esc_html(f.get("date",""))}</span></div>'
+        f'<h3 class="lead-h">{esc_html(f.get("headline"))}</h3>'
+        f'<p class="lead-sub">{esc_html(recortar(f.get("standfirst",""), 200))}</p>{cita}'
+        f'<div class="foot"><span>Verificado en fuente oficial</span>'
+        f'<a class="srclink" href="{permalink}#cortes-1">Leer la auditoría completa →</a></div>'
+        f'</article>')
+
+
+def render_cortes_indice_ssr(day: dict, permalink: str) -> str:
+    feed = (day.get("cortes", {}) or {}).get("feed") or []
+    filas = []
+    for i, f in enumerate(feed[1:], start=2):
+        cc = "senado" if f.get("chamber") == "senado" else "congreso"
+        filas.append(
+            f'<li style="--cat:var(--{cc});--catsoft:var(--{cc}-soft)">'
+            f'<a href="{permalink}#cortes-{i}">'
+            f'<span class="idx mono">{i-1:02d}</span>'
+            f'<span class="idx-t">{esc_html(f.get("headline"))}</span>'
+            f'<span class="idx-d mono">{esc_html(CHAMBER_LABEL[cc])} · {esc_html(recortar(f.get("type",""), 28))}</span>'
+            f'<span class="idx-c">{icono(cc)}</span></a></li>')
+    return f'<ol class="indice">{"".join(filas)}</ol>' if filas else ""
 
 
 def lead_story(day: dict) -> dict | None:
@@ -1101,6 +1301,37 @@ def jsonld_script(objetos: list[dict]) -> str:
     payload = json.dumps(grafo, ensure_ascii=False, separators=(",", ":"))
     payload = payload.replace("</", "<\\/")           # nunca cerrar el <script> por accidente
     return f'<script type="application/ld+json">{payload}</script>'
+
+
+def jsonld_portada(day: dict, permalink_abs: str) -> str:
+    """Portada: describe lo que la portada enseña de verdad, que son titulares
+    y enlaces, no los títulos oficiales completos. Esos se declaran en la página
+    de la edición, que es donde están escritos. Los datos estructurados tienen
+    que coincidir con el contenido visible."""
+    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
+    elementos = []
+    stories = (day.get("boe", {}) or {}).get("stories") or []
+    for i, s in enumerate(stories):
+        elementos.append({
+            "@type": "ListItem", "position": len(elementos) + 1,
+            "name": s.get("headline", ""),
+            "url": f"{permalink_abs}#{ancla_de(s, i)}",
+        })
+    for n, f in enumerate((day.get("cortes", {}) or {}).get("feed") or [], start=1):
+        elementos.append({
+            "@type": "ListItem", "position": len(elementos) + 1,
+            "name": f.get("headline", ""),
+            "url": f"{permalink_abs}#cortes-{n}",
+        })
+    return jsonld_script([
+        {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL,
+         "description": build_meta_description(day), "inLanguage": "es-ES",
+         "publisher": editor, "dateModified": day["id"]},
+        {"@type": "CollectionPage", "url": SITE_URL,
+         "name": build_title(day), "inLanguage": "es-ES",
+         "mainEntity": {"@type": "ItemList", "numberOfItems": len(elementos),
+                        "itemListElement": elementos}},
+    ])
 
 
 def jsonld_for_day(day: dict, page_url: str) -> str:
@@ -1278,22 +1509,45 @@ def ids_de_ediciones() -> list[str]:
 
 
 def renderizar_index(dias: list[dict]) -> None:
-    """Portada: SPA interactiva, con el día de hoy ya pintado en el HTML servido
-    (para que un rastreador sin JS reciba contenido completo, no un <script> vacío)."""
-    day0 = dias[0]
-    frag = render_ssr_fragments(day0, dias=dias)
-    frag["TITLE"] = esc_html(build_title(day0))
-    frag["META_DESC"] = esc_attr(build_meta_description(day0))
-    frag["JSONLD"] = jsonld_for_day(day0, SITE_URL)
-    frag["PERMALINK_HOY"] = f"ediciones/{day0['id']}.html"
-    frag["FECHA_HOY"] = esc_html(fmt_date_es(day0["id"]))
+    """Portada: escaparate, no archivo.
 
-    html = TEMPLATE.read_text(encoding="utf-8")
-    html = html.replace(
-        "__DIGEST_DATA__", json.dumps(dias, ensure_ascii=False, separators=(",", ":")))
-    html = _replace_placeholders(html, frag)
+    Cada pieza aparece con titular y una línea de qué hace; el texto completo
+    vive en la página de la edición, que es la que se indexa para ese día. Eso
+    quita el muro de texto y, de paso, deja de competir consigo misma en el
+    buscador con contenido duplicado.
+
+    No lleva JavaScript: todo el contenido está en el HTML servido y cada día
+    se alcanza por un enlace real, no por estado de una SPA."""
+    day0 = dias[0]
+    permalink = f"ediciones/{day0['id']}.html"
+    cov_hidden, cov_html = render_coverage_note_ssr(day0)
+    sb_hidden, sb_html = render_scoreboard_ssr(day0)
+
+    frag = {
+        "TITLE": esc_html(build_title(day0)),
+        "META_DESC": esc_attr(build_meta_description(day0)),
+        "JSONLD": jsonld_portada(day0, f"{SITE_URL}{permalink}"),
+        "EDITION_DATE": fmt_date_es(day0["id"]).upper(),
+        "TICKER": render_ticker_ssr(day0),
+        "DAYSTRIP": render_daystrip_ssr(dias, day0["id"]),
+        "KPIS": render_kpis_ssr(day0),
+        "BOE_LEAD": render_boe_lead_ssr(day0, permalink),
+        "BOE_DESTACADOS": render_boe_destacados_ssr(day0, permalink),
+        "BOE_INDICE": render_boe_indice_ssr(day0, permalink),
+        "BOE_NOTE": render_boe_note_ssr(day0),
+        "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
+        "COVERAGE_NOTE": cov_html,
+        "CHAMBER_CARDS": render_chamber_cards_ssr(day0),
+        "SCOREBOARD_HIDDEN": "hidden" if sb_hidden else "",
+        "SCOREBOARD": sb_html,
+        "CORTES_LEAD": render_cortes_lead_ssr(day0, permalink),
+        "CORTES_INDICE": render_cortes_indice_ssr(day0, permalink),
+        "PERMALINK_HOY": permalink,
+        "FECHA_HOY": esc_html(fmt_date_es(day0["id"])),
+    }
+    html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     OUTPUT.write_text(html, encoding="utf-8")
-    log(f"index.html generado con {len(dias)} ediciones ({len(html)} bytes)")
+    log(f"index.html generado ({len(html)} bytes, sin JavaScript)")
 
 
 def renderizar_ediciones(dias: list[dict]) -> list[dict]:
