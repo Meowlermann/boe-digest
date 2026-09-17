@@ -36,7 +36,7 @@ __SSR_JSONLD__
 <div class="wrap">
   <header class="masthead">
     <div class="masthead-row">
-      <div class="brand"><div class="title1">BOE<span>DIGEST</span> &amp; CORTES EN DIRECTO</div></div>
+      <div class="brand"><h1 class="title1">BOE<span>DIGEST</span> &amp; CORTES EN DIRECTO</h1></div>
       <div class="edition-date" id="editionDate">__SSR_EDITION_DATE__</div>
     </div>
     <div class="tagline">El día a día del Estado, sin el somnífero — para todo el mundo, de cualquier color</div>
@@ -48,15 +48,17 @@ __SSR_JSONLD__
 
   <div class="ticker" aria-label="Titulares destacados"><div class="ticker-inner" id="tickerInner">__SSR_TICKER__</div></div>
   <div class="daystrip" id="daystrip" aria-label="Elegir edición por día">__SSR_DAYSTRIP__</div>
-  <p class="aside-note" style="margin-top:10px">Consulta las ediciones anteriores, cada una con su propia página: <a class="srclink" href="ediciones/">ver el archivo completo ↗</a></p>
+  <p class="aside-note" style="margin-top:10px">Enlace permanente a la edición de hoy: <a class="srclink" href="__SSR_PERMALINK_HOY__">__SSR_FECHA_HOY__ ↗</a> · Todas las anteriores, en el <a class="srclink" href="ediciones/">archivo de ediciones ↗</a></p>
 
   <section class="view" id="viewBoe" role="tabpanel" aria-labelledby="tabBoe">
+    <h2 class="sr-only">Disposiciones del BOE de hoy</h2>
     <div class="stats" id="boeStats">__SSR_BOE_STATS__</div>
     <div class="frontpage" id="boeGrid">__SSR_BOE_GRID__</div>
     <div class="aside-note" id="boeNote">__SSR_BOE_NOTE__</div>
   </section>
 
   <section class="view" id="viewCortes" role="tabpanel" aria-labelledby="tabCortes" hidden>
+    <h2 class="sr-only">Actividad del Congreso y del Senado</h2>
     <div class="manifesto">
       <h2>Auditoría pública a los cortesanos</h2>
       <p>Cada día miramos qué registran, qué preguntan, qué contestan y qué se callan sus señorías — en el Congreso y en el Senado. Mismo rasero para todos los colores: gobierno, oposición, nacionalistas e independientes. Cada pieza lleva enlace al documento oficial del que sale, y ninguna cita aparece aquí si no está literalmente en el Diario de Sesiones o en el boletín. Se afila el titular, nunca el hecho.</p>

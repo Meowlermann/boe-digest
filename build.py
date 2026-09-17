@@ -45,6 +45,7 @@ CURATED_DIR = ROOT / "curated"
 DEBUG_DIR = ROOT / "debug"
 TEMPLATE = ROOT / "template.html"
 TEMPLATE_EDICION = ROOT / "template_edicion.html"
+TEMPLATE_ARCHIVO = ROOT / "template_archivo.html"
 OUTPUT = ROOT / "index.html"
 EDICIONES_DIR = ROOT / "ediciones"
 FEED_FILE = ROOT / "feed.xml"
@@ -52,6 +53,15 @@ FEED_FILE = ROOT / "feed.xml"
 SITE_URL = "https://meowlermann.github.io/boe-digest/"
 MAX_DAYS = 30
 MAX_FEED_ITEMS = 20
+
+# IndexNow: avisa a Bing, Yandex, Seznam, Naver, Yep e Internet Archive de las
+# URLs que han cambiado, sin cuenta ni verificación. El fichero de clave vive en
+# /boe-digest/ y eso delimita lo que se puede enviar: cualquier URL bajo esa
+# ruta, que son todas las nuestras. (Google no participa: ahí hace falta Search
+# Console, porque retiró el ping de sitemaps en 2023.)
+INDEXNOW_KEY = "d29eac49b00fed8432cc6c405d618f35"
+INDEXNOW_HOST = "meowlermann.github.io"
+INDEXNOW_JSON = ROOT / "indexnow.json"      # sin versionar: lo publica el workflow con curl
 REQUEST_TIMEOUT = 45
 
 # Cabeceras de navegador real: las webs del Congreso y del Senado rechazan
@@ -568,6 +578,10 @@ def articulo_deterministico(e: dict) -> dict:
         "size": "sm",
         "headline": headline,
         "standfirst": recortar(titulo, 260),
+        # El título oficial íntegro, sin recortar y sin tocar. El titular de la
+        # casa es nuestro; esto es de la norma, y es lo que se declara como
+        # nombre en los datos estructurados.
+        "titulo_oficial": titulo,
         "body": body,
         "dept": quien,
         "ref": e.get("ident") or e.get("seccion") or "",
@@ -667,6 +681,9 @@ qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que
             articulos = [a for a in resp["articulos"] if a.get("headline")]
             for a, e in zip(articulos, sustantivas):
                 a.setdefault("url", e.get("url", ""))
+                # El modelo escribe la entradilla; el título oficial no lo escribe
+                # nadie, se copia del sumario. Nunca se deja que lo redacte.
+                a["titulo_oficial"] = e["titulo"]
             log(f"BOE: {len(articulos)} artículos redactados con modelo")
 
     if not articulos:
@@ -694,6 +711,10 @@ qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que
     return {
         "numero": boe.get("numero", ""),
         "fecha": f"{d.day} de {MESES[d.month-1]} de {d.year}",
+        # Fecha REAL del sumario leído. fetch_boe retrocede hasta 3 días si el
+        # del día no está publicado todavía, así que no tiene por qué coincidir
+        # con el id de la edición: los datos estructurados usan esta.
+        "fechaISO": d.isoformat(),
         "sourceUrl": boe["sourceUrl"],
         "counts": counts,
         "extra": extra,
@@ -889,13 +910,22 @@ def render_daystrip_ssr(dias: list[dict], current_id: str) -> str:
     return "".join(out)
 
 
+def _entero(v) -> int:
+    """curated/ lo escribe una persona a mano: un "3" con comillas no puede
+    tumbar la publicación del día."""
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return 0
+
+
 def render_boe_stats_ssr(day: dict) -> str:
     c = day.get("boe", {}).get("counts") or {}
     orden = ["fiscal", "laboral", "mercantil", "otros"]
-    maximo = max(1, *(c.get(k, 0) for k in orden))
+    maximo = max(1, *(_entero(c.get(k)) for k in orden))
     out = []
     for k in orden:
-        n = c.get(k, 0)
+        n = _entero(c.get(k))
         pct = round((n / maximo) * 100)
         out.append(
             f'<div class="stat"><div class="label">{esc_html(CAT_LABEL[k])}</div>'
@@ -952,14 +982,15 @@ def render_scoreboard_ssr(day: dict) -> tuple[bool, str]:
     sb = (day.get("cortes", {}) or {}).get("scoreboard")
     if not sb or not sb.get("rows"):
         return True, ""
-    maximo = max(1, *(r.get("n", 0) for r in sb["rows"]))
+    maximo = max(1, *(_entero(r.get("n")) for r in sb["rows"]))
     filas = []
     for r in sb["rows"]:
-        pct = round((r.get("n", 0) / maximo) * 100)
+        n = _entero(r.get("n"))
+        pct = round((n / maximo) * 100)
         filas.append(
             f'<div class="scorerow"><span class="g">{esc_html(r.get("g"))}</span>'
             f'<span class="bar"><i style="width:{pct}%"></i></span>'
-            f'<span class="v">{esc_html(r.get("n"))}</span></div>')
+            f'<span class="v">{esc_html(n)}</span></div>')
     html = (f'<h3>Marcador del día</h3><p class="sub">{esc_html(sb.get("note",""))}</p>'
             + "".join(filas))
     return False, html
@@ -1013,6 +1044,25 @@ def lead_story(day: dict) -> dict | None:
     return next((s for s in stories if s.get("size") == "lead"), stories[0] if stories else None)
 
 
+def titulo_oficial_de(story: dict) -> str:
+    """El título literal de la norma. En las ediciones antiguas no existe el
+    campo, pero en modo determinista la entradilla ES el título oficial."""
+    return (story.get("titulo_oficial") or story.get("standfirst") or "").strip()
+
+
+def primera_mayuscula(texto: str) -> str:
+    """Mayúscula inicial SIN tocar el resto. str.capitalize() pasa a minúscula
+    todo lo demás y se lleva por delante los nombres propios: «PRESUPUESTOS DE
+    LA GENERALITAT» acabaría como «Presupuestos de la generalitat»."""
+    texto = texto.strip()
+    return texto[:1].upper() + texto[1:] if texto else ""
+
+
+def fecha_boe_iso(day: dict) -> str:
+    """Fecha del sumario realmente leído; si no consta, la de la edición."""
+    return (day.get("boe", {}) or {}).get("fechaISO") or day["id"]
+
+
 def build_title(day: dict, edicion: bool = False) -> str:
     fecha = fmt_date_es(day["id"])
     if edicion:
@@ -1021,22 +1071,29 @@ def build_title(day: dict, edicion: bool = False) -> str:
 
 
 def build_meta_description(day: dict) -> str:
+    """Máximo ~155 caracteres: es lo que muestra Google. Lo concreto va primero.
+
+    El gancho sale del título oficial (que viene en mayúscula/minúscula correcta),
+    no del titular de la casa (que va en mayúsculas y es editorial)."""
     boe = day.get("boe", {}) or {}
     n = len(boe.get("stories") or [])
-    fecha = fmt_date_es(day["id"])
+    m = len((day.get("cortes", {}) or {}).get("feed") or [])
+    d = dt.date.fromisoformat(day["id"])
+    fecha_corta = f"{d.day} de {MESES[d.month-1]}"
+
     lead = lead_story(day)
-    base = f"BOE del {fecha}: {n} disposiciones oficiales explicadas en lenguaje llano"
-    lead_bit = f", desde «{lead['headline'].capitalize()}»" if lead and lead.get("headline") else ""
-    cov = (day.get("cortes", {}) or {}).get("coverage") or {}
-    if cov.get("congreso") and cov.get("senado"):
-        cortes_bit = " Cobertura completa del Congreso y el Senado, con enlace a la fuente oficial."
-    elif cov.get("congreso"):
-        cortes_bit = " Cobertura del Congreso; el Senado bloqueó el acceso automatizado hoy."
-    elif cov.get("senado"):
-        cortes_bit = " Cobertura del Senado; el Congreso no publicó hoy."
-    else:
-        cortes_bit = " Auditoría diaria del Congreso y el Senado, con enlace a la fuente oficial."
-    return recortar(f"{base}{lead_bit}.{cortes_bit}", 300)
+    gancho = ""
+    if lead:
+        gancho = primera_mayuscula(recortar(objeto_de(titulo_oficial_de(lead)), 72))
+    if not gancho:
+        gancho = f"El BOE del {fecha_corta}, explicado en lenguaje llano"
+    # recortar() ya cierra con «…»; añadir un punto detrás deja «los….»
+    if not gancho.endswith("…"):
+        gancho += "."
+
+    cola = f" {n} disposiciones del BOE del {fecha_corta}" if n else f" Edición del {fecha_corta}"
+    cola += f" y {m} piezas de las Cortes." if m else "."
+    return recortar(f"{gancho}{cola}", 155)
 
 
 def jsonld_script(objetos: list[dict]) -> str:
@@ -1047,44 +1104,57 @@ def jsonld_script(objetos: list[dict]) -> str:
 
 
 def jsonld_for_day(day: dict, page_url: str) -> str:
-    fecha_iso = day["id"]
+    """Datos estructurados de la edición.
+
+    Regla: en `name` de una norma va SIEMPRE su título oficial. El titular de la
+    casa es editorial y va en `alternativeHeadline`. Publicar el titular como
+    nombre de la norma, junto a su identificador BOE-A-…, sería afirmar a una
+    máquina que la norma se llama así — exactamente lo que este proyecto se
+    prohíbe a sí mismo.
+    """
+    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
     objetos: list[dict] = [{
         "@type": "WebSite",
         "name": "BOE Digest & Cortes en Directo",
         "url": SITE_URL,
         "description": build_meta_description(day),
         "inLanguage": "es-ES",
-        "dateModified": fecha_iso,
+        "publisher": editor,
+        "dateModified": day["id"],
     }]
-    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
 
+    fecha_norma = fecha_boe_iso(day)          # la del sumario leído, no la de hoy
     for s in (day.get("boe", {}) or {}).get("stories") or []:
+        oficial = titulo_oficial_de(s)
         item = {
             "@type": "Legislation",
-            "name": s.get("headline", ""),
-            "description": s.get("standfirst", ""),
-            "legislationIdentifier": s.get("ref", ""),
-            "datePublished": fecha_iso,
+            "name": oficial or s.get("headline", ""),
+            "datePublished": fecha_norma,
             "inLanguage": "es-ES",
-            "isPartOf": {"@type": "WebSite", "url": SITE_URL},
+            "legislationJurisdiction": "ES",
+            "isBasedOn": s.get("url") or page_url,
+            "subjectOf": {"@type": "WebPage", "url": page_url},
         }
+        if oficial and s.get("headline"):
+            item["alternativeHeadline"] = s["headline"]
+        if s.get("ref", "").startswith("BOE-"):
+            item["legislationIdentifier"] = s["ref"]
         if s.get("url"):
             item["url"] = s["url"]
-            item["subjectOf"] = page_url
-        else:
-            item["url"] = page_url
+        if s.get("dept"):
+            item["legislationPassedBy"] = {"@type": "GovernmentOrganization", "name": s["dept"]}
         objetos.append(item)
 
     for f in (day.get("cortes", {}) or {}).get("feed") or []:
         item = {
             "@type": "NewsArticle",
-            "headline": f.get("headline", ""),
+            "headline": recortar(f.get("headline", ""), 110),
             "description": f.get("standfirst", ""),
-            "datePublished": fecha_iso,
+            "datePublished": day["id"],
             "inLanguage": "es-ES",
             "author": editor,
             "publisher": editor,
-            "mainEntityOfPage": page_url,
+            "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
         }
         if f.get("source", {}).get("url"):
             item["isBasedOn"] = f["source"]["url"]
@@ -1158,7 +1228,53 @@ def construir_dia(fecha: dt.date) -> dict | None:
 def _replace_placeholders(html: str, frag: dict) -> str:
     for clave, valor in frag.items():
         html = html.replace(f"__SSR_{clave}__", valor)
+    # Red de seguridad: un marcador sin sustituir (una plantilla editada, una
+    # clave que se renombra) no puede llegar al lector. Se avisa y se borra.
+    sueltos = sorted(set(re.findall(r"__SSR_[A-Z_]+__", html)))
+    if sueltos:
+        log(f"  AVISO: marcadores sin sustituir, se eliminan: {', '.join(sueltos)}")
+        for m in sueltos:
+            html = html.replace(m, "")
     return html
+
+
+# --- Fechas de última modificación reales -----------------------------------
+#
+# No sirve el mtime del fichero: actions/checkout deja todo con la hora del
+# checkout, así que cada día parecería que han cambiado las 300 ediciones. Y no
+# sirve la fecha de la edición: cuando senado_local.py añade el Senado a un día
+# ya publicado vía curated/, esa página CAMBIA y hay que decírselo al buscador.
+# Se lleva un registro propio: si el HTML generado difiere del que hay en disco,
+# esa edición se modificó hoy; si no, conserva su fecha anterior.
+
+MANIFIESTO = ESTADO / "ediciones.json"
+
+
+def _cargar_manifiesto() -> dict:
+    if MANIFIESTO.exists():
+        try:
+            return json.loads(MANIFIESTO.read_text(encoding="utf-8"))
+        except Exception as exc:                              # noqa: BLE001
+            log(f"  state/ediciones.json ilegible ({exc}); se reconstruye")
+    return {}
+
+
+def _guardar_manifiesto(m: dict) -> None:
+    ESTADO.mkdir(exist_ok=True)
+    MANIFIESTO.write_text(json.dumps(m, ensure_ascii=False, indent=2, sort_keys=True),
+                          encoding="utf-8")
+
+
+def ids_de_ediciones() -> list[str]:
+    """Todas las ediciones publicadas alguna vez, no solo la ventana de render."""
+    ids = set()
+    for p in EDICIONES_DIR.glob("*.html"):
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem):
+            ids.add(p.stem)
+    for p in DATA_DIR.glob("*.json"):
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem):
+            ids.add(p.stem)
+    return sorted(ids)
 
 
 def renderizar_index(dias: list[dict]) -> None:
@@ -1169,6 +1285,8 @@ def renderizar_index(dias: list[dict]) -> None:
     frag["TITLE"] = esc_html(build_title(day0))
     frag["META_DESC"] = esc_attr(build_meta_description(day0))
     frag["JSONLD"] = jsonld_for_day(day0, SITE_URL)
+    frag["PERMALINK_HOY"] = f"ediciones/{day0['id']}.html"
+    frag["FECHA_HOY"] = esc_html(fmt_date_es(day0["id"]))
 
     html = TEMPLATE.read_text(encoding="utf-8")
     html = html.replace(
@@ -1181,99 +1299,170 @@ def renderizar_index(dias: list[dict]) -> None:
 def renderizar_ediciones(dias: list[dict]) -> list[dict]:
     """Una página estática por edición (ediciones/AAAA-MM-DD.html): URL propia,
     indexable y enlazable por separado — la palanca principal para que cada día
-    de contenido pueda encontrarse en buscadores y agentes de IA, no solo hoy."""
+    de contenido pueda encontrarse en buscadores y agentes de IA, no solo hoy.
+
+    La cadena anterior/siguiente se teje sobre TODAS las ediciones publicadas,
+    no sobre la ventana de render: si no, la más antigua de la ventana se queda
+    sin enlace hacia atrás y todo el archivo anterior queda inalcanzable."""
     EDICIONES_DIR.mkdir(exist_ok=True)
     plantilla = TEMPLATE_EDICION.read_text(encoding="utf-8")
-    manifiesto = []          # para el sitemap y el feed
-    existentes_antes = {p.name for p in EDICIONES_DIR.glob("*.html")}
-    escritos = set()
+    manifiesto_prev = _cargar_manifiesto()
+    manifiesto_nuevo = dict(manifiesto_prev)
+    hoy = dt.date.today().isoformat()
 
-    ordenados = sorted(dias, key=lambda d: d["id"])       # más antigua primero, para prev/next
-    por_id = {d["id"]: d for d in ordenados}
-    ids = [d["id"] for d in ordenados]
+    ids_todas = ids_de_ediciones()
+    pos = {ident: i for i, ident in enumerate(ids_todas)}
+    cambiadas = []
 
-    for i, day in enumerate(ordenados):
-        page_url = f"{SITE_URL}ediciones/{day['id']}.html"
-        frag = render_ssr_fragments(day)
-        frag["TITLE"] = esc_html(build_title(day, edicion=True))
-        frag["META_DESC"] = esc_attr(build_meta_description(day))
-        frag["CANONICAL"] = page_url
-        frag["JSONLD"] = jsonld_for_day(day, page_url)
-        frag["LABEL_LARGO"] = fmt_date_es(day["id"])
+    for day in sorted(dias, key=lambda d: d["id"]):
+        ident = day["id"]
+        page_url = f"{SITE_URL}ediciones/{ident}.html"
+        try:
+            frag = render_ssr_fragments(day)
+            frag["TITLE"] = esc_html(build_title(day, edicion=True))
+            frag["META_DESC"] = esc_attr(build_meta_description(day))
+            frag["CANONICAL"] = page_url
+            frag["JSONLD"] = jsonld_for_day(day, page_url)
+            frag["LABEL_LARGO"] = esc_html(fmt_date_es(ident))
 
-        anterior = ids[i - 1] if i > 0 else None
-        siguiente = ids[i + 1] if i + 1 < len(ids) else None
-        frag["PREV_LINK"] = (f'<a class="srclink" href="{anterior}.html">← '
-                              f'{esc_html(fmt_date_es(anterior))}</a>') if anterior else ""
-        frag["NEXT_LINK"] = (f'<a class="srclink" href="{siguiente}.html">'
-                              f'{esc_html(fmt_date_es(siguiente))} →</a>') if siguiente else ""
+            i = pos.get(ident, 0)
+            anterior = ids_todas[i - 1] if i > 0 else None
+            siguiente = ids_todas[i + 1] if i + 1 < len(ids_todas) else None
+            frag["PREV_LINK"] = (f'<a class="srclink" rel="prev" href="{anterior}.html">← '
+                                  f'{esc_html(fmt_date_es(anterior))}</a>') if anterior else ""
+            frag["NEXT_LINK"] = (f'<a class="srclink" rel="next" href="{siguiente}.html">'
+                                  f'{esc_html(fmt_date_es(siguiente))} →</a>') if siguiente else ""
 
-        html = _replace_placeholders(plantilla, frag)
-        nombre = f"{day['id']}.html"
-        (EDICIONES_DIR / nombre).write_text(html, encoding="utf-8")
-        escritos.add(nombre)
-        manifiesto.append({"id": day["id"], "url": page_url})
+            html = _replace_placeholders(plantilla, frag)
+        except Exception as exc:                              # noqa: BLE001
+            # Una edición con datos curados raros no puede tumbar la publicación
+            # entera: se salta, se deja constancia y el resto sale.
+            log(f"  ediciones/{ident}.html NO regenerada: {exc}")
+            DIAG.setdefault("ediciones_fallidas", []).append({"id": ident, "error": str(exc)[:200]})
+            continue
 
-    huerfanas = existentes_antes - escritos
-    if huerfanas:
-        log(f"ediciones/: {len(huerfanas)} páginas antiguas fuera de la ventana de {MAX_DAYS} días "
-            f"(se conservan; no se listan en el sitemap ni en el feed)")
+        destino = EDICIONES_DIR / f"{ident}.html"
+        anterior_html = destino.read_text(encoding="utf-8") if destino.exists() else None
+        if anterior_html != html:
+            destino.write_text(html, encoding="utf-8")
+            manifiesto_nuevo[ident] = hoy
+            cambiadas.append(page_url)
+        else:
+            manifiesto_nuevo.setdefault(ident, ident)
 
-    log(f"ediciones/: {len(manifiesto)} páginas de archivo generadas")
-    return manifiesto
+    for ident in ids_todas:
+        manifiesto_nuevo.setdefault(ident, ident)
+    _guardar_manifiesto(manifiesto_nuevo)
+
+    entradas = [{"id": i, "url": f"{SITE_URL}ediciones/{i}.html",
+                 "lastmod": manifiesto_nuevo.get(i, i)} for i in ids_todas]
+    log(f"ediciones/: {len(entradas)} en el archivo, {len(cambiadas)} regeneradas hoy")
+    DIAG["urls_cambiadas"] = cambiadas
+    return entradas
 
 
-def renderizar_sitemap(manifiesto: list[dict]) -> None:
+def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> None:
+    """ediciones/index.html — el índice del archivo.
+
+    GitHub Pages no sirve listados de directorio: sin esta página, /ediciones/
+    devuelve un 404 y las ediciones que salen de la ventana de render se quedan
+    sin ningún enlace que las alcance."""
+    titulares = {}
+    for d in dias:
+        lead = lead_story(d)
+        if lead and lead.get("headline"):
+            titulares[d["id"]] = lead["headline"]
+
+    filas, mes_actual = [], None
+    for e in sorted(entradas, key=lambda x: x["id"], reverse=True):
+        f = dt.date.fromisoformat(e["id"])
+        mes = f"{MESES[f.month-1]} de {f.year}"
+        if mes != mes_actual:
+            if mes_actual is not None:
+                filas.append("</ul>")
+            filas.append(f"<h2>{esc_html(mes[:1].upper() + mes[1:])}</h2><ul class=\"archivo\">")
+            mes_actual = mes
+        titular = titulares.get(e["id"], "")
+        extra = f' — <span class="arch-tit">{esc_html(recortar(titular, 90))}</span>' if titular else ""
+        filas.append(f'<li><a href="{e["id"]}.html">{esc_html(fmt_date_es(e["id"]))}</a>{extra}</li>')
+    if mes_actual is not None:
+        filas.append("</ul>")
+
+    desc = (f"Archivo completo de BOE Digest & Cortes en Directo: {len(entradas)} ediciones "
+            f"diarias del BOE, el Congreso y el Senado, cada una con su enlace permanente.")
+    frag = {
+        "TITLE": esc_html("Archivo de ediciones — BOE Digest & Cortes en Directo"),
+        "META_DESC": esc_attr(recortar(desc, 155)),
+        "CANONICAL": f"{SITE_URL}ediciones/",
+        "TOTAL": str(len(entradas)),
+        "LISTA": "\n".join(filas),
+        "JSONLD": jsonld_script([{
+            "@type": "CollectionPage",
+            "name": "Archivo de ediciones — BOE Digest & Cortes en Directo",
+            "url": f"{SITE_URL}ediciones/",
+            "inLanguage": "es-ES",
+            "isPartOf": {"@type": "WebSite", "url": SITE_URL},
+            "hasPart": [{"@type": "WebPage", "url": e["url"],
+                         "name": f"Edición del {fmt_date_es(e['id'])}"}
+                        for e in sorted(entradas, key=lambda x: x["id"], reverse=True)[:50]],
+        }]),
+    }
+    html = _replace_placeholders(TEMPLATE_ARCHIVO.read_text(encoding="utf-8"), frag)
+    (EDICIONES_DIR / "index.html").write_text(html, encoding="utf-8")
+    log(f"ediciones/index.html generado con {len(entradas)} entradas")
+
+
+def renderizar_sitemap(entradas: list[dict]) -> None:
+    """Todas las ediciones, no solo la ventana de render, y con la fecha de
+    modificación real de cada una."""
     hoy = dt.date.today().isoformat()
     urls = [f"  <url>\n    <loc>{SITE_URL}</loc>\n    <lastmod>{hoy}</lastmod>\n"
-            "    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>"]
-    for item in sorted(manifiesto, key=lambda m: m["id"], reverse=True):
-        urls.append(f"  <url>\n    <loc>{item['url']}</loc>\n    <lastmod>{item['id']}</lastmod>\n"
-                    "    <changefreq>never</changefreq>\n    <priority>0.6</priority>\n  </url>")
+            "    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>",
+            f"  <url>\n    <loc>{SITE_URL}ediciones/</loc>\n    <lastmod>{hoy}</lastmod>\n"
+            "    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>"]
+    limite = (dt.date.today() - dt.timedelta(days=MAX_DAYS)).isoformat()
+    for e in sorted(entradas, key=lambda x: x["id"], reverse=True):
+        # Dentro de la ventana todavía puede cambiar (curated/, senado_local.py);
+        # fuera de ella ya está cerrada, pero nunca "never": se corrigen erratas.
+        freq = "weekly" if e["id"] >= limite else "monthly"
+        urls.append(f"  <url>\n    <loc>{e['url']}</loc>\n    <lastmod>{e['lastmod']}</lastmod>\n"
+                    f"    <changefreq>{freq}</changefreq>\n    <priority>0.7</priority>\n  </url>")
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "\n".join(urls) + "\n</urlset>\n", encoding="utf-8")
-    log(f"sitemap.xml generado con {len(manifiesto) + 1} URLs")
+    log(f"sitemap.xml generado con {len(urls)} URLs")
 
 
-def renderizar_feed(dias: list[dict], manifiesto: list[dict]) -> None:
+def renderizar_feed(dias: list[dict]) -> None:
     """RSS 2.0: descubrible por agregadores, lectores de feeds y bastantes
     pipelines de ingesta de IA que sí saben seguir un <link rel=alternate>."""
     from email.utils import format_datetime
     from xml.sax.saxutils import escape as xml_esc
 
-    urls_por_id = {m["id"]: m["url"] for m in manifiesto}
     items = []
     for day in dias[:MAX_FEED_ITEMS]:
-        link = urls_por_id.get(day["id"], SITE_URL)
-        titulo = build_title(day, edicion=True)
-        cortes_n = len((day.get("cortes", {}) or {}).get("feed") or [])
-        desc_bits = [build_meta_description(day)]
-        if cortes_n:
-            desc_bits.append(f"{cortes_n} piezas de auditoría parlamentaria hoy.")
-        descripcion = " ".join(desc_bits)
+        link = f"{SITE_URL}ediciones/{day['id']}.html"
         pub_dt = dt.datetime.combine(dt.date.fromisoformat(day["id"]), dt.time(7, 0),
                                       tzinfo=dt.timezone.utc)
         items.append(
             "  <item>\n"
-            f"    <title>{xml_esc(titulo)}</title>\n"
+            f"    <title>{xml_esc(build_title(day, edicion=True))}</title>\n"
             f"    <link>{xml_esc(link)}</link>\n"
-            f"    <guid isPermaLink=\"true\">{xml_esc(link)}</guid>\n"
+            f'    <guid isPermaLink="true">{xml_esc(link)}</guid>\n'
             f"    <pubDate>{format_datetime(pub_dt)}</pubDate>\n"
-            f"    <description>{xml_esc(descripcion)}</description>\n"
+            f"    <description>{xml_esc(build_meta_description(day))}</description>\n"
             "  </item>")
 
     canal = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<rss version="2.0"><channel>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>\n'
         "  <title>BOE Digest &amp; Cortes en Directo</title>\n"
         f"  <link>{SITE_URL}</link>\n"
         "  <description>Auditoría pública diaria del BOE, el Congreso y el Senado, "
         "con enlace a la fuente oficial.</description>\n"
         "  <language>es-es</language>\n"
-        f"  <atom:link href=\"{SITE_URL}feed.xml\" rel=\"self\" type=\"application/rss+xml\" "
-        "xmlns:atom=\"http://www.w3.org/2005/Atom\"/>\n"
+        f'  <atom:link href="{SITE_URL}feed.xml" rel="self" type="application/rss+xml"/>\n'
         + "\n".join(items) + "\n</channel></rss>\n")
     FEED_FILE.write_text(canal, encoding="utf-8")
     log(f"feed.xml generado con {len(items)} ediciones")
@@ -1291,9 +1480,24 @@ def renderizar() -> None:
         sys.exit(1)
 
     renderizar_index(dias)
-    manifiesto = renderizar_ediciones(dias)
-    renderizar_sitemap(manifiesto)
-    renderizar_feed(dias, manifiesto)
+    entradas = renderizar_ediciones(dias)
+    renderizar_archivo(entradas, dias)
+    renderizar_sitemap(entradas)
+    renderizar_feed(dias)
+
+    # Portada y archivo cambian cada día; las ediciones, solo las que se han
+    # regenerado de verdad. Se avisa de esas, no de las 300 del archivo.
+    # El JSON se deja montado aquí para que el workflow solo tenga que hacer
+    # un curl: así no hay que escribir Python dentro del YAML.
+    urls = list(dict.fromkeys([SITE_URL, f"{SITE_URL}ediciones/"]
+                              + DIAG.get("urls_cambiadas", [])))[:1000]
+    INDEXNOW_JSON.write_text(json.dumps({
+        "host": INDEXNOW_HOST,
+        "key": INDEXNOW_KEY,
+        "keyLocation": f"{SITE_URL}{INDEXNOW_KEY}.txt",
+        "urlList": urls,
+    }, ensure_ascii=False), encoding="utf-8")
+    log(f"indexnow.json: {len(urls)} URLs para notificar")
 
 
 def main() -> None:

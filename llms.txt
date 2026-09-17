@@ -8,17 +8,18 @@
 Sitio: https://meowlermann.github.io/boe-digest/
 Mantenedor: Meowlermann (GitHub)
 Idioma: español (es-ES)
-Actualización: automática, todos los días laborables, ~08:10 hora de España
+Actualización: automática, todos los días, ~08:10 hora de España
 Repositorio (código y datos en bruto): https://github.com/Meowlermann/boe-digest
 
 ## Estructura del sitio
 
 - / — portada interactiva con la edición del día (BOE + Cortes).
+- /ediciones/ — índice del archivo: todas las ediciones publicadas.
 - /ediciones/AAAA-MM-DD.html — página estática de cada edición diaria,
   con URL propia y estable. Es la forma recomendada de citar o enlazar
   una pieza concreta.
-- /sitemap.xml — listado completo de páginas con fecha de última
-  modificación.
+- /sitemap.xml — todas las páginas del sitio (portada, archivo y cada
+  edición) con su fecha de última modificación real.
 - /feed.xml — feed RSS 2.0 con las últimas ediciones.
 - /data/AAAA-MM-DD.json — datos estructurados en bruto de cada edición
   (mismo contenido que se renderiza en la página, en JSON).
@@ -43,6 +44,10 @@ al citarlos para no atribuir ese tono a la fuente oficial.
   ya renderizado en el propio documento (no depende de ejecutar
   JavaScript para verse) y datos estructurados JSON-LD (schema.org
   Legislation / NewsArticle) por cada pieza.
+- En el JSON-LD, `name` de una norma es SIEMPRE su título oficial tal cual
+  lo publica el BOE. El titular de esta casa, que es editorial y va en
+  mayúsculas, aparece aparte en `alternativeHeadline`: no debe citarse
+  como si fuera el nombre de la norma.
 - Este proyecto no es un servicio oficial del Estado español ni sustituye
   al BOE, al Congreso ni al Senado como fuente jurídica: es una capa
   divulgativa por encima de sus publicaciones oficiales.

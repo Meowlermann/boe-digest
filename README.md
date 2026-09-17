@@ -87,24 +87,61 @@ código en la máquina que lo aloja.
 Cada ejecución, además de `index.html`, genera:
 
 - `ediciones/AAAA-MM-DD.html`: una página estática por edición, con URL propia,
-  enlace a la anterior/siguiente y su propio `<title>`, descripción y JSON-LD
-  (`schema.org` `Legislation` por cada norma del BOE y `NewsArticle` por cada
-  pieza de Cortes). Es lo que hace que cada día pueda encontrarse por separado
-  en un buscador, no solo "la portada de hoy".
-- `sitemap.xml`: la portada más todas las ediciones, con `lastmod`.
-- `feed.xml`: RSS 2.0 con las últimas ediciones, para agregadores y lectores
-  de feeds.
+  enlace a la anterior/siguiente y su propio `<title>`, descripción y JSON-LD.
+  Es lo que hace que cada día pueda encontrarse por separado en un buscador, no
+  solo "la portada de hoy".
+- `ediciones/index.html`: el índice del archivo. GitHub Pages **no sirve
+  listados de directorio**, así que sin esta página `/ediciones/` sería un 404 y
+  las ediciones que salen de la ventana de render se quedarían sin ningún enlace
+  que las alcance.
+- `sitemap.xml`: portada, archivo y **todas** las ediciones publicadas —no solo
+  las de la ventana de `MAX_DAYS`— cada una con su fecha de modificación real.
+- `feed.xml`: RSS 2.0 con las últimas ediciones.
 
-La portada (`index.html`) lleva además el contenido de la edición de hoy ya
-escrito en el HTML que se sirve — el JS lo vuelve a pintar igual al cargar,
-así que para un humano no cambia nada — porque los rastreadores de los
-modelos de lenguaje (GPTBot, ClaudeBot, CCBot, PerplexityBot…) normalmente
-no ejecutan JavaScript: si el contenido solo viviera dentro del `<script>`
-con los datos, esos rastreadores verían una página casi vacía.
+La portada lleva además el contenido de la edición de hoy ya escrito en el HTML
+que se sirve —el JS lo vuelve a pintar igual al cargar, así que para un humano no
+cambia nada— porque los rastreadores de los modelos de lenguaje (GPTBot,
+ClaudeBot, CCBot, PerplexityBot…) normalmente no ejecutan JavaScript: si el
+contenido solo viviera dentro del `<script>` con los datos, verían una página
+casi vacía.
 
-`robots.txt` no restringe ningún rastreador (buscadores ni IA) y `llms.txt`
-explica en texto plano, para agentes automatizados, qué es el sitio, cómo
-está organizado y cómo citarlo.
+`robots.txt` no restringe ningún rastreador y `llms.txt` explica en texto plano,
+para agentes automatizados, qué es el sitio, cómo está organizado y cómo citarlo.
+
+### La regla del titular en los datos estructurados
+
+En el JSON-LD de cada norma, `name` es **siempre el título oficial** tal cual lo
+publica el BOE, y el titular de la casa va aparte en `alternativeHeadline`.
+Publicar el titular —que es editorial, va en mayúsculas y está afilado a
+propósito— como nombre de la norma, junto a su identificador `BOE-A-…`, sería
+afirmarle a una máquina que la norma se llama así. Es exactamente lo que las
+reglas editoriales de más abajo prohíben, y el formato pensado para que las
+máquinas ingieran hechos es el peor sitio para saltárselas.
+
+Por lo mismo, `datePublished` usa la fecha del sumario que se leyó de verdad
+(`boe.fechaISO`), no la de la edición: `fetch_boe` retrocede hasta tres días si
+el BOE del día todavía no está publicado.
+
+### Fechas de modificación
+
+No se usa el mtime del fichero —`actions/checkout` deja todo con la hora del
+checkout— ni la fecha de la edición, porque cuando `senado_local.py` añade el
+Senado a un día ya publicado vía `curated/`, esa página cambia y hay que
+decírselo al buscador. `build.py` compara el HTML recién generado con el que hay
+en disco y lleva el registro en `state/ediciones.json`.
+
+### IndexNow
+
+Tras cada publicación con cambios, el workflow avisa por
+[IndexNow](https://www.indexnow.org/) a Bing, Yandex, Seznam, Naver, Yep e
+Internet Archive de las URLs que han cambiado. No hace falta cuenta en ninguno:
+la clave se sirve desde el propio sitio (`<clave>.txt` en la raíz del
+repositorio) y su ubicación delimita lo que se puede enviar, que aquí es todo
+`/boe-digest/`. Si un buscador no responde, el paso no tumba la edición.
+
+Google no participa en IndexNow y retiró el ping de sitemaps en 2023, así que
+ahí sigue haciendo falta dar de alta el sitio una vez en Search Console y enviar
+`sitemap.xml`.
 
 ## Diagnóstico: `debug/last-run.json`
 
@@ -146,17 +183,21 @@ build.py                    pipeline: recolección, redacción, renderizado y SE
 senado_local.py             recolector del Senado para ejecutar en tu equipo
 template.html               plantilla de la portada (marcadores __DIGEST_DATA__, __SSR_*__)
 template_edicion.html       plantilla de cada página de archivo (ediciones/AAAA-MM-DD.html)
+template_archivo.html       plantilla del índice del archivo (ediciones/index.html)
 assets/style.css            hoja de estilos compartida por portada y ediciones
 data/AAAA-MM-DD.json        una edición por día (regenerable)
 curated/AAAA-MM-DD.json     contenido escrito a mano, se fusiona por encima
 debug/last-run.json         diagnóstico de la última ejecución
 state/senado.json           último boletín del Senado leído, para estimar el siguiente
+state/ediciones.json        fecha de última modificación real de cada edición
 docs/                       notas del proyecto
 index.html                  generado por build.py — no editar a mano
 ediciones/AAAA-MM-DD.html   generado por build.py — página propia por edición
+ediciones/index.html        generado por build.py — índice del archivo
 sitemap.xml                 generado por build.py
 feed.xml                    generado por build.py — RSS de las últimas ediciones
 llms.txt                    descripción del sitio para agentes/IA (estático, no se regenera)
+<clave>.txt                 clave de IndexNow (estático, no tocar ni renombrar)
 robots.txt                  sin restricciones para ningún rastreador (estático)
 .github/workflows/daily.yml automatización diaria
 ```
