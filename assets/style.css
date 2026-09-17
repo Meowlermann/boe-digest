@@ -221,3 +221,136 @@
   ul.archivo li a{ font-weight:600; text-decoration:underline; text-underline-offset:2px; white-space:nowrap; }
   ul.archivo .arch-tit{ color:var(--ink-soft); font-size:13px; }
   .view > h2{ font-size:15px; margin:22px 0 6px; color:var(--ink-soft); letter-spacing:.04em; }
+
+
+/* ==========================================================================
+   PORTADA — jerarquía de periódico
+   ========================================================================== */
+
+/* Iconografía: hereda el color de la categoría vía currentColor */
+.ico{ width:1em; height:1em; flex:0 0 auto; vertical-align:-0.13em; }
+
+/* --- Cabecera y rótulos --- */
+.masthead{ border-bottom-width:5px; }
+.brand .title1{ font-size:clamp(28px,6.2vw,58px); letter-spacing:-0.005em; }
+
+.daystrip{ gap:6px; padding:16px 0 6px; }
+a.daypill{
+  text-decoration:none; font-weight:600; letter-spacing:.04em;
+  transition:background .12s ease, color .12s ease, border-color .12s ease;
+}
+a.daypill:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+a.daypill[aria-current="page"]{ background:var(--gold-soft); color:var(--ink); border-color:var(--gold); font-weight:700; }
+a.daypill.archivo{ border-style:dashed; color:var(--red); font-weight:700; }
+
+/* --- Cifras del día: el primer golpe visual --- */
+.kpis{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background:var(--border); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden; margin:18px 0 6px;
+}
+.kpi{ background:var(--surface); padding:16px 14px; display:flex; flex-direction:column; gap:2px; }
+.kpi-n{
+  font-family:'Anton',sans-serif; font-size:clamp(34px,7vw,56px); line-height:.92;
+  color:var(--red); font-variant-numeric:tabular-nums;
+}
+.kpi-l{ font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--ink-soft); }
+
+/* --- Rótulo de sección --- */
+.rotulo{
+  display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+  flex-wrap:wrap; margin:38px 0 16px; padding-bottom:8px;
+  border-bottom:3px solid var(--ink);
+}
+.rotulo h2{
+  font-size:clamp(24px,5vw,40px); margin:0; line-height:1;
+  text-transform:uppercase;
+}
+.rotulo.cortes h2{ color:var(--congreso); }
+
+/* --- Pieza principal --- */
+.lead{
+  position:relative; overflow:hidden; isolation:isolate;
+  background:var(--surface); border:1px solid var(--border);
+  border-top:7px solid var(--cat,var(--otros));
+  border-radius:12px; padding:26px 26px 20px; box-shadow:var(--shadow);
+  display:flex; flex-direction:column; gap:12px;
+}
+.lead-marca{
+  position:absolute; z-index:-1; right:-44px; top:-38px;
+  color:var(--cat,var(--otros)); opacity:.09; pointer-events:none;
+}
+.lead-marca .ico{ width:230px; height:230px; stroke-width:1.1; }
+.lead-h{
+  font-size:clamp(28px,6.4vw,62px); margin:0; line-height:.96; letter-spacing:-0.01em;
+}
+.lead-sub{
+  margin:0; font-size:clamp(15px,2.2vw,19px); line-height:1.5;
+  color:var(--ink); max-width:60ch; font-weight:500;
+}
+.lead.cortes{ border-top-color:var(--cat); }
+.lead .pull{ margin:2px 0 0; }
+
+/* --- Destacados --- */
+.rejilla{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:14px; }
+@media (min-width:760px){ .rejilla{ grid-template-columns:repeat(3,1fr); } }
+.tarjeta{
+  background:var(--surface); border:1px solid var(--border);
+  border-top:5px solid var(--cat,var(--otros));
+  border-radius:10px; padding:16px 18px; box-shadow:var(--shadow);
+  display:flex; flex-direction:column; gap:8px;
+  transition:transform .13s ease, box-shadow .13s ease;
+}
+.tarjeta:hover{ transform:translateY(-3px); box-shadow:0 10px 26px -14px rgba(20,23,28,.5); }
+.tarjeta h3{ font-size:clamp(17px,2.4vw,22px); margin:0; line-height:1.03; }
+.linea{ margin:0; font-size:14px; line-height:1.55; color:var(--ink-soft); }
+
+.pill{ display:inline-flex; align-items:center; gap:5px; }
+.pill.ghost{ background:transparent; border:1px solid var(--border); color:var(--ink-soft); }
+
+/* --- Índice compacto: el resto del día en una línea --- */
+ol.indice{ list-style:none; margin:18px 0 0; padding:0; border-top:1px solid var(--border); }
+ol.indice li{ border-bottom:1px solid var(--border); }
+ol.indice a{
+  display:grid; grid-template-columns:auto 1fr auto auto; align-items:center; gap:12px;
+  padding:11px 10px; text-decoration:none; color:inherit;
+  transition:background .12s ease, padding-left .12s ease;
+}
+ol.indice a:hover{ background:var(--catsoft,var(--otros-soft)); padding-left:16px; }
+ol.indice a:focus-visible{ outline:3px solid var(--gold); outline-offset:-3px; }
+.idx{
+  font-size:15px; font-weight:600; color:var(--cat,var(--otros));
+  font-variant-numeric:tabular-nums; min-width:2.2ch;
+}
+.idx-t{
+  font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:.005em;
+  font-size:clamp(14px,2vw,17px); line-height:1.12;
+}
+.idx-d{ font-size:10.5px; color:var(--ink-soft); text-align:right; display:none; }
+@media (min-width:860px){ .idx-d{ display:block; max-width:24ch; } }
+.idx-c{ color:var(--cat,var(--otros)); display:flex; font-size:19px; }
+
+/* --- Cortes: cámaras --- */
+.chamber-card{ padding:12px 14px; }
+.chamber-card .h{ display:flex; align-items:center; gap:6px; }
+.chamber-card .who{ font-size:16px; }
+
+.manifesto{ padding:14px 18px; }
+.manifesto p{ font-size:13px; }
+
+/* Los rótulos de sección del archivo no deben heredar el tamaño del rótulo */
+.view > h2:not(#h-boe):not(#h-cortes){ font-size:15px; }
+
+@media (prefers-reduced-motion: reduce){
+  .tarjeta, ol.indice a{ transition:none; }
+  .tarjeta:hover{ transform:none; }
+}
+
+/* En móvil la marca de agua caía detrás del titular: se reduce y se aparta. */
+@media (max-width:640px){
+  .lead{ padding:20px 18px 16px; }
+  .lead-marca{ right:-30px; top:-26px; }
+  .lead-marca .ico{ width:130px; height:130px; }
+  .kpi{ padding:12px 10px; }
+  .rotulo{ margin-top:28px; }
+}
