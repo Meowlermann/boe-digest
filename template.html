@@ -267,6 +267,7 @@
       <h2>Auditoría pública a los cortesanos</h2>
       <p>Cada día miramos qué registran, qué preguntan, qué contestan y qué se callan sus señorías — en el Congreso y en el Senado. Mismo rasero para todos los colores: gobierno, oposición, nacionalistas e independientes. Cada pieza lleva enlace al documento oficial del que sale, y ninguna cita aparece aquí si no está literalmente en el Diario de Sesiones o en el boletín. Se afila el titular, nunca el hecho.</p>
     </div>
+    <div class="aside-note" id="coverageNote" style="margin-top:0" hidden></div>
     <div class="chambers" id="chamberCards"></div>
     <div class="scoreboard" id="scoreboard"></div>
     <div class="feed" id="cortesFeed"></div>
@@ -355,6 +356,12 @@
 
   function renderCortes(day){
     var c=day.cortes||{}, cong=c.congreso||{}, sen=c.senado||{};
+
+    var cov=document.getElementById('coverageNote');
+    if (c.coverage && c.coverage.nota){
+      cov.hidden=false;
+      cov.innerHTML='<b>Cobertura de hoy:</b> '+esc(c.coverage.nota);
+    } else { cov.hidden=true; }
     document.getElementById('chamberCards').innerHTML =
       '<div class="chamber-card" style="--cc:var(--congreso)"><div class="h">CONGRESO DE LOS DIPUTADOS</div>'+
         '<div class="who">'+esc(cong.presidenta||'—')+'</div>'+

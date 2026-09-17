@@ -116,6 +116,15 @@ def get(url: str, tries: int = 3, referer: str | None = None) -> requests.Respon
                 DIAG["peticiones"].append({"url": url, "status": 200, "bytes": len(r.content)})
                 return r
             log(f"  {r.status_code} en {url}")
+            if r.status_code == 403 and "403" not in DIAG:
+                # Guardamos una muestra del bloqueo: sirve para saber qué WAF responde
+                DIAG["403"] = {
+                    "url": url,
+                    "server": r.headers.get("Server", ""),
+                    "via": r.headers.get("Via", ""),
+                    "set_cookie": r.headers.get("Set-Cookie", "")[:200],
+                    "cuerpo": re.sub(r"\s+", " ", r.text[:400]),
+                }
             if r.status_code in (404, 410):
                 break
         except Exception as exc:                              # noqa: BLE001
@@ -279,7 +288,8 @@ def fetch_congreso() -> list[dict]:
             tipo = "BOCG"
         else:
             continue
-        candidatos.append({"tipo": tipo, "url": full, "nombre": nombre})
+        candidatos.append({"tipo": tipo, "url": full, "nombre": nombre,
+                           "chamber_hint": "congreso"})
 
     log(f"Congreso: {len(candidatos)} publicaciones detectadas")
     ds = [d for d in candidatos if d["tipo"] == "Diario de Sesiones"][:2]
@@ -292,28 +302,72 @@ def fetch_congreso() -> list[dict]:
     return docs
 
 
+SENADO_IDX = ("https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/"
+              "senado/boletinesoficiales/index.html")
+SENADO_PDF = "https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/BOCG_T_15_{n}.PDF"
+ESTADO = ROOT / "state"
+
+
+def _ancla_senado() -> tuple[int, dt.date]:
+    """Último boletín del Senado que se pudo leer, para estimar el siguiente."""
+    f = ESTADO / "senado.json"
+    if f.exists():
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+            return int(d["numero"]), dt.date.fromisoformat(d["fecha"])
+        except Exception:                                     # noqa: BLE001
+            pass
+    return 459, dt.date(2026, 9, 17)      # comprobado a mano
+
+
+def _guardar_ancla(numero: int, fecha: dt.date) -> None:
+    ESTADO.mkdir(exist_ok=True)
+    (ESTADO / "senado.json").write_text(
+        json.dumps({"numero": numero, "fecha": fecha.isoformat()}, indent=2),
+        encoding="utf-8")
+
+
+def _numeros_probables(hoy: dt.date) -> list[int]:
+    """El Senado publica ~1 boletín por día hábil. Estimamos desde el último conocido."""
+    base_n, base_f = _ancla_senado()
+    habiles = sum(1 for i in range((hoy - base_f).days)
+                  if (base_f + dt.timedelta(days=i + 1)).weekday() < 5)
+    estimado = base_n + habiles
+    # Probamos alrededor de la estimación, de mayor a menor: el más alto que exista es el actual
+    candidatos = list(range(estimado + 2, max(base_n - 1, 0), -1))[:8]
+    return candidatos
+
+
 def fetch_senado() -> list[dict]:
+    """Primero el índice; si el WAF lo bloquea, vamos directos al PDF por numeración."""
     docs: list[dict] = []
-    idx = ("https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/"
-           "senado/boletinesoficiales/index.html")
-    r = get(idx)
-    if not r:
-        log("Senado: no se pudo abrir el índice de boletines")
-        return docs
+    hoy = dt.date.today()
 
-    nums = {int(m.group(1)) for m in re.finditer(r"BOCG_T_15_(\d+)", r.text, re.I)}
-    if not nums:
-        log("Senado: no se encontró ningún número de boletín en el índice")
-        return docs
+    numeros: list[int] = []
+    r = get(SENADO_IDX, tries=2)
+    if r:
+        vistos = {int(m.group(1)) for m in re.finditer(r"BOCG_T_15_(\d+)", r.text, re.I)}
+        numeros = sorted(vistos, reverse=True)[:2]
+        log(f"Senado: índice legible, boletines {numeros}")
+    else:
+        numeros = _numeros_probables(hoy)
+        log(f"Senado: índice bloqueado; probando por numeración {numeros[:4]}…")
+        DIAG["senado_fallback"] = numeros
 
-    for n in sorted(nums, reverse=True)[:1]:
-        url = (f"https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/"
-               f"BOCG_T_15_{n}.PDF")
-        texto = pdf_text(url, referer=idx)
-        log(f"Senado: boletín {n}, {len(texto)} caracteres")
+    for n in numeros:
+        url = SENADO_PDF.format(n=n)
+        texto = pdf_text(url, referer=SENADO_IDX)
         if texto:
+            log(f"Senado: boletín {n} leído ({len(texto)} caracteres)")
+            _guardar_ancla(n, hoy)
             docs.append({"tipo": "BOCG Senado", "numero": n, "url": url,
-                         "nombre": f"BOCG Senado núm. {n}", "texto": texto})
+                         "nombre": f"BOCG Senado núm. {n}", "texto": texto,
+                         "chamber_hint": "senado"})
+            break
+        time.sleep(1)
+
+    if not docs:
+        log("Senado: no se pudo obtener ningún boletín")
     return docs
 
 
@@ -647,6 +701,23 @@ def redactar_cortes(docs: list[dict], anterior: dict | None) -> dict:
         "feed": [],
     }
 
+    # Transparencia de cobertura: en una auditoría, saber qué fuente no respondió
+    # forma parte de la información.
+    hay_congreso = any(d["chamber_hint"] == "congreso" for d in docs) if docs else False
+    hay_senado = any(d["chamber_hint"] == "senado" for d in docs) if docs else False
+    if hay_congreso and hay_senado:
+        nota = "Congreso y Senado han respondido; la edición cubre las dos cámaras."
+    elif hay_congreso:
+        nota = ("El Congreso ha respondido con normalidad. El Senado ha rechazado las "
+                "peticiones automatizadas, así que hoy su actividad no está cubierta. "
+                "Lo decimos en vez de disimularlo.")
+    elif hay_senado:
+        nota = ("El Senado ha respondido. El Congreso no ha devuelto publicaciones hoy, "
+                "así que su actividad no está cubierta en esta edición.")
+    else:
+        nota = ("Ninguna de las dos cámaras ha devuelto publicaciones legibles hoy.")
+    base["coverage"] = {"congreso": hay_congreso, "senado": hay_senado, "nota": nota}
+
     if not docs:
         base["constructionNote"] = (
             "Hoy no se pudo descargar ninguna publicación oficial legible del Congreso ni "
@@ -683,7 +754,7 @@ es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre
     hoy = dt.date.today()
     fecha_txt = f"{hoy.day} {MES_ABBR[hoy.month-1].lower()} {hoy.year}"
     for d in docs:
-        camara = "senado" if "Senado" in f"{d['nombre']} {d['tipo']}" else "congreso"
+        camara = d.get("chamber_hint", "congreso")
         texto = d.get("texto", "")
         lineas = [ln.strip() for ln in texto.splitlines() if len(ln.strip()) > 70][:4]
         base["feed"].append({
