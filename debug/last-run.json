@@ -1,0 +1,40 @@
+{
+  "inicio": "2026-09-17T15:13:25.033204+00:00",
+  "peticiones": [
+    {
+      "url": "https://www.boe.es/boe/dias/2026/09/17/index.php",
+      "status": 200,
+      "bytes": 161700
+    },
+    {
+      "url": "https://www.congreso.es/ultimas-publicaciones-oficiales",
+      "status": 200,
+      "bytes": 91234
+    },
+    {
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/CI/DSCD-15-CI-68.PDF",
+      "status": 200,
+      "bytes": 436932
+    },
+    {
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/A/BOCG-15-A-64-10.PDF",
+      "status": 200,
+      "bytes": 119243
+    },
+    {
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/B/BOCG-15-B-84-9.PDF",
+      "status": 200,
+      "bytes": 164926
+    },
+    {
+      "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
+      "status": 403
+    }
+  ],
+  "resumen": {
+    "boe_entradas": 76,
+    "congreso_docs": 3,
+    "senado_docs": 0
+  },
+  "fin": "2026-09-17T15:13:37.143925+00:00"
+}
