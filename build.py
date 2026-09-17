@@ -493,6 +493,60 @@ INSTRUMENTOS = [
 ]
 
 
+_BILATERAL = re.compile(
+    r"Comisi[óo]n Bilateral de Cooperaci[óo]n.*?Comunidad Aut[óo]noma de\s+"
+    r"(?:las?\s+|los?\s+)?([^,]+?)\s*,\s*en relaci[óo]n con\s+(.+)$", re.I | re.S)
+
+_FECHA_EN_TITULO = re.compile(r"de\s+\d{1,2}\s+de\s+[a-záéíóú]+(?:\s+de\s+\d{4})?\s*,\s*", re.I)
+
+
+def materia_de(texto: str) -> str:
+    """Lo que una norma regula de verdad, que en los títulos oficiales va
+    detrás de la última fecha: «Ley 8/2026, de 23 de junio, de Ordenación del
+    Transporte Marítimo» -> «Ordenación del Transporte Marítimo»."""
+    cola = _FECHA_EN_TITULO.split(texto)[-1].strip()
+    cola = re.sub(r"^por\s+(?:la|el|los|las)\s+que\s+se\s+\w+\s+", "", cola, flags=re.I)
+    cola = re.sub(r"^(?:de|del|sobre|por)\s+", "", cola, flags=re.I)
+    return cola.strip(" .;,")
+
+
+def titular_bilateral(titulo: str) -> str:
+    """Los acuerdos de las comisiones bilaterales Estado-comunidad llegan cuatro
+    y cinco el mismo día, y su título solo se diferencia al final: la comunidad
+    y la ley de la que tratan. Un titular cortado por los primeros 95 caracteres
+    los deja idénticos en pantalla, así que a esta familia se le da la vuelta y
+    se pone delante lo que los distingue."""
+    m = _BILATERAL.search(titulo)
+    if not m:
+        return ""
+    comunidad = " ".join(m.group(1).split()).strip(" .")
+    materia = materia_de(m.group(2))
+    # «Coordinación de Policías Locales de Cantabria» ya dice Cantabria arriba
+    materia = re.sub(rf",?\s+de\s+(?:las?\s+|los?\s+)?{re.escape(comunidad)}\s*$", "",
+                     materia, flags=re.I).strip(" .;,")
+    if not comunidad or not materia:
+        return ""
+    return f"EL ESTADO Y {comunidad.upper()}, SOBRE {recortar(materia, 62).upper()}"
+
+
+def desambiguar_titulares(articulos: list[dict]) -> None:
+    """Red de seguridad: si dos titulares del día se ven iguales una vez
+    recortados, se les añade lo que los diferencia. Dos piezas distintas nunca
+    pueden aparecer como la misma noticia repetida."""
+    vistos: dict[str, list[dict]] = {}
+    for a in articulos:
+        clave = re.sub(r"[^A-ZÁÉÍÓÚÑ0-9]", "", (a.get("headline") or "").upper())[:60]
+        vistos.setdefault(clave, []).append(a)
+    for grupo in vistos.values():
+        if len(grupo) < 2:
+            continue
+        for a in grupo:
+            materia = materia_de(a.get("titulo_oficial") or a.get("standfirst") or "")
+            if materia:
+                base = recortar(a.get("headline", ""), 58).rstrip("…").rstrip(" ,;")
+                a["headline"] = f"{base}: {recortar(materia, 58).upper()}"
+
+
 def instrumento(titulo: str) -> tuple[str, str]:
     for patron, nombre, explicacion in INSTRUMENTOS:
         if re.match(patron, titulo, re.I):
@@ -553,7 +607,7 @@ def articulo_deterministico(e: dict) -> dict:
     quien = (e.get("dept") or "").strip()
     epi = (e.get("epigrafe") or "").strip()
 
-    headline = titular_de(obj, titulo)
+    headline = titular_bilateral(titulo) or titular_de(obj, titulo)
 
     participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
     if quien and epi:
@@ -698,6 +752,8 @@ qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que
             if i != idx_lead and puestos < 3:
                 a["size"] = "md"
                 puestos += 1
+
+    desambiguar_titulares(articulos)
 
     counts = {"fiscal": 0, "laboral": 0, "mercantil": 0, "otros": 0}
     for a in articulos:
@@ -1106,30 +1162,37 @@ def una_linea(story: dict, limite: int = 150) -> str:
     seguidas es justo el ruido que esta portada quiere quitarse."""
     texto = objeto_de(titulo_oficial_de(story)) or story.get("standfirst", "")
     corto = primera_mayuscula(recortar(texto, limite))
-    a = " ".join(_normalizar(corto).split())
-    b = " ".join(_normalizar(story.get("headline", "")).split())
-    if a and b and (a[:60] in b or b[:60] in a):
+
+    # Comparar por el principio no sirve: el titular arranca con su gancho
+    # («NUEVAS REGLAS PARA…») y la línea con el verbo («Regula…»), así que
+    # empiezan distintos y siguen diciendo lo mismo. Se mide el solape de
+    # palabras con carga, ignorando las vacías.
+    vacias = {"de", "del", "la", "el", "los", "las", "y", "en", "para", "por",
+              "que", "se", "al", "con", "un", "una", "lo", "su", "sus"}
+    def cargadas(t: str) -> set:
+        return {w for w in _normalizar(t).split() if len(w) > 2 and w not in vacias}
+    a, b = cargadas(corto), cargadas(story.get("headline", ""))
+    if a and b and len(a & b) / len(a) >= 0.7:
         return ""
     return corto
 
 
 # --- Portada: jerarquía de periódico ----------------------------------------
 
-def render_kpis_ssr(day: dict) -> str:
+def render_dateline_ssr(day: dict, permalink: str) -> str:
+    """Cintillo de cabecera: número de boletín y fecha, como el de un periódico.
+    Sin contadores: un número grande que nadie va a comparar con nada no informa,
+    solo ocupa la primera pantalla."""
     boe = day.get("boe", {}) or {}
-    c = boe.get("counts") or {}
-    piezas = len(boe.get("stories") or [])
-    cortes = len((day.get("cortes", {}) or {}).get("feed") or [])
-    total = ""
-    m = re.search(r"(\d+)\s+disposiciones", boe.get("extra", "") or "")
-    if m:
-        total = m.group(1)
-    datos = [(total or str(piezas), "en el sumario"), (str(piezas), "desarrolladas hoy"),
-             (str(cortes), "piezas de las Cortes"),
-             (str(sum(_entero(v) for v in c.values()) or piezas), "clasificadas")]
-    return "".join(
-        f'<div class="kpi"><span class="kpi-n">{esc_html(n)}</span>'
-        f'<span class="kpi-l">{esc_html(l)}</span></div>' for n, l in datos[:3])
+    piezas = []
+    if boe.get("numero"):
+        piezas.append(f'<b>BOE núm. {esc_html(boe["numero"])}</b>')
+    piezas.append(esc_html(fmt_date_es(day["id"]).capitalize()))
+    if boe.get("sourceUrl"):
+        piezas.append(f'<a href="{esc_attr(boe["sourceUrl"])}" target="_blank" '
+                      f'rel="noopener">Sumario oficial ↗</a>')
+    piezas.append(f'<a href="{permalink}">Edición completa →</a>')
+    return " <span class=\"sep\">·</span> ".join(piezas)
 
 
 def render_boe_lead_ssr(day: dict, permalink: str) -> str:
@@ -1172,29 +1235,17 @@ def render_boe_destacados_ssr(day: dict, permalink: str) -> str:
     return "".join(out)
 
 
-def render_boe_indice_ssr(day: dict, permalink: str) -> str:
-    """El resto del día, en índice de una línea. Es lo que quita el muro de texto."""
+def render_boe_resto_ssr(day: dict, permalink: str) -> str:
+    """El resto del día no se vuelca como lista de titulares en el pie: se
+    anuncia y se enlaza. La portada enseña, la edición contiene."""
     stories = (day.get("boe", {}) or {}).get("stories") or []
-    lead = next((x for x in stories if x.get("size") == "lead"), stories[0] if stories else None)
-    resto = [(i, x) for i, x in enumerate(stories) if x is not lead]
-    destacados = {id(x) for _, x in ([(i, x) for i, x in resto if x.get("size") == "md"][:3]
-                                      or resto[:3])}
-    filas, n = [], 0
-    for i, s in resto:
-        if id(s) in destacados:
-            continue
-        n += 1
-        cat = s.get("cat") or "otros"
-        filas.append(
-            f'<li style="--cat:var(--{cat});--catsoft:var(--{cat}-soft)">'
-            f'<a href="{permalink}#{esc_attr(ancla_de(s,i))}">'
-            f'<span class="idx mono">{n:02d}</span>'
-            f'<span class="idx-t">{esc_html(s.get("headline"))}</span>'
-            f'<span class="idx-d mono">{esc_html(recortar(s.get("dept",""), 40))}</span>'
-            f'<span class="idx-c">{icono(cat)}</span></a></li>')
-    if not filas:
+    n = max(len(stories) - 4, 0)
+    if not n:
         return ""
-    return f'<ol class="indice">{"".join(filas)}</ol>'
+    return (f'<p class="sigue"><a href="{permalink}">'
+            f'<span class="sigue-n">+{n}</span>'
+            f'<span>disposiciones más del BOE de hoy, desarrolladas una a una '
+            f'en la edición completa</span><span class="sigue-f">→</span></a></p>')
 
 
 def render_cortes_lead_ssr(day: dict, permalink: str) -> str:
@@ -1224,19 +1275,15 @@ def render_cortes_lead_ssr(day: dict, permalink: str) -> str:
         f'</article>')
 
 
-def render_cortes_indice_ssr(day: dict, permalink: str) -> str:
+def render_cortes_resto_ssr(day: dict, permalink: str) -> str:
     feed = (day.get("cortes", {}) or {}).get("feed") or []
-    filas = []
-    for i, f in enumerate(feed[1:], start=2):
-        cc = "senado" if f.get("chamber") == "senado" else "congreso"
-        filas.append(
-            f'<li style="--cat:var(--{cc});--catsoft:var(--{cc}-soft)">'
-            f'<a href="{permalink}#cortes-{i}">'
-            f'<span class="idx mono">{i-1:02d}</span>'
-            f'<span class="idx-t">{esc_html(f.get("headline"))}</span>'
-            f'<span class="idx-d mono">{esc_html(CHAMBER_LABEL[cc])} · {esc_html(recortar(f.get("type",""), 28))}</span>'
-            f'<span class="idx-c">{icono(cc)}</span></a></li>')
-    return f'<ol class="indice">{"".join(filas)}</ol>' if filas else ""
+    n = max(len(feed) - 1, 0)
+    if not n:
+        return ""
+    return (f'<p class="sigue cortes"><a href="{permalink}#cortes-2">'
+            f'<span class="sigue-n">+{n}</span>'
+            f'<span>piezas más de auditoría parlamentaria en la edición de hoy</span>'
+            f'<span class="sigue-f">→</span></a></p>')
 
 
 def lead_story(day: dict) -> dict | None:
@@ -1530,10 +1577,10 @@ def renderizar_index(dias: list[dict]) -> None:
         "EDITION_DATE": fmt_date_es(day0["id"]).upper(),
         "TICKER": render_ticker_ssr(day0),
         "DAYSTRIP": render_daystrip_ssr(dias, day0["id"]),
-        "KPIS": render_kpis_ssr(day0),
+        "DATELINE": render_dateline_ssr(day0, permalink),
         "BOE_LEAD": render_boe_lead_ssr(day0, permalink),
         "BOE_DESTACADOS": render_boe_destacados_ssr(day0, permalink),
-        "BOE_INDICE": render_boe_indice_ssr(day0, permalink),
+        "BOE_RESTO": render_boe_resto_ssr(day0, permalink),
         "BOE_NOTE": render_boe_note_ssr(day0),
         "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
         "COVERAGE_NOTE": cov_html,
@@ -1541,7 +1588,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "SCOREBOARD_HIDDEN": "hidden" if sb_hidden else "",
         "SCOREBOARD": sb_html,
         "CORTES_LEAD": render_cortes_lead_ssr(day0, permalink),
-        "CORTES_INDICE": render_cortes_indice_ssr(day0, permalink),
+        "CORTES_RESTO": render_cortes_resto_ssr(day0, permalink),
         "PERMALINK_HOY": permalink,
         "FECHA_HOY": esc_html(fmt_date_es(day0["id"])),
     }
