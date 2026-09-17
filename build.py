@@ -103,8 +103,16 @@ def sesion_para(url: str) -> requests.Session:
     return s
 
 
+_BLOQUEADOS: set[str] = set()
+
+
 def get(url: str, tries: int = 3, referer: str | None = None) -> requests.Response | None:
     """GET tolerante. Devuelve None en vez de reventar, y anota el diagnóstico."""
+    host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
+    if host in _BLOQUEADOS:
+        # Ya nos ha denegado el acceso en esta ejecución: no insistimos.
+        log(f"  {host} ya denegó el acceso; no se reintenta")
+        return None
     s = sesion_para(url)
     ultimo = None
     for intento in range(1, tries + 1):
@@ -116,6 +124,8 @@ def get(url: str, tries: int = 3, referer: str | None = None) -> requests.Respon
                 DIAG["peticiones"].append({"url": url, "status": 200, "bytes": len(r.content)})
                 return r
             log(f"  {r.status_code} en {url}")
+            if r.status_code == 403:
+                _BLOQUEADOS.add(re.sub(r"^https?://([^/]+).*$", r"\1", url))
             if r.status_code == 403 and "403" not in DIAG:
                 # Guardamos una muestra del bloqueo: sirve para saber qué WAF responde
                 DIAG["403"] = {
@@ -787,7 +797,14 @@ def fusionar_curado(dia: dict) -> dict:
         if seccion in cur:
             dia.setdefault(seccion, {})
             for k, v in cur[seccion].items():
-                dia[seccion][k] = v
+                if k in ("feed_append", "stories_append"):
+                    destino = "feed" if k == "feed_append" else "stories"
+                    dia[seccion].setdefault(destino, [])
+                    existentes = {a.get("headline") for a in dia[seccion][destino]}
+                    dia[seccion][destino] += [a for a in v
+                                              if a.get("headline") not in existentes]
+                else:
+                    dia[seccion][k] = v
     for k, v in cur.items():
         if k not in ("boe", "cortes"):
             dia[k] = v

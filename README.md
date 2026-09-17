@@ -50,7 +50,37 @@ sección de Cortes escrita a mano y dejar que el BOE se regenere solo:
 { "cortes": { "feed": [ ... ], "scoreboard": { ... } } }
 ```
 
+Para **añadir** artículos sin reemplazar los que se hayan recolectado solos, se usa
+`feed_append` (o `stories_append` en la sección del BOE):
+
+```json
+{ "cortes": { "feed_append": [ { "headline": "…" } ] } }
+```
+
 La edición fusionada queda marcada con `"curated": true`.
+
+## El Senado y el bloqueo de Akamai
+
+El Senado sirve su web detrás de Akamai y deniega en el borde las peticiones que llegan
+desde rangos de centro de datos. GitHub Actions recibe siempre un `403 Access Denied`,
+tanto en el índice como en los PDF, sin cookie ni challenge que se pueda satisfacer.
+No es un problema de cabeceras: desde una conexión doméstica los mismos documentos se
+descargan sin más.
+
+Consecuencias prácticas:
+
+- El pipeline detecta el bloqueo, deja de insistir durante esa ejecución (no tiene
+  sentido martillear un servidor que ya ha dicho que no) y lo declara en la web, en la
+  nota de cobertura del día.
+- Para incorporar el Senado hay un recolector que se ejecuta en tu equipo:
+  `senado_local.py`. Escribe `curated/AAAA-MM-DD.json` con la clave `feed_append`, que
+  se **añade** a los artículos del Congreso en lugar de reemplazarlos.
+- En `docs/solicitud-acceso-senado.md` hay un borrador de consulta al Senado por si se
+  prefiere resolverlo por la vía formal.
+
+Deliberadamente **no** se usa un runner self-hosted de GitHub Actions: en un
+repositorio público, cualquiera que abra un pull request podría lograr ejecución de
+código en la máquina que lo aloja.
 
 ## Diagnóstico: `debug/last-run.json`
 
@@ -89,10 +119,13 @@ python build.py --date 2026-09-17
 
 ```
 build.py                    pipeline: recolección, redacción y renderizado
+senado_local.py             recolector del Senado para ejecutar en tu equipo
 template.html               plantilla del sitio (marcador __DIGEST_DATA__)
 data/AAAA-MM-DD.json        una edición por día (regenerable)
 curated/AAAA-MM-DD.json     contenido escrito a mano, se fusiona por encima
 debug/last-run.json         diagnóstico de la última ejecución
+state/senado.json           último boletín del Senado leído, para estimar el siguiente
+docs/                       notas del proyecto
 index.html                  generado por build.py — no editar a mano
 .github/workflows/daily.yml automatización diaria
 ```
