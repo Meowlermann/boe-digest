@@ -201,3 +201,23 @@
   blockquote.pull cite{ display:block; margin-top:6px; font-size:11.5px; font-style:normal; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
 
   footer{ text-align:center; font-size:11.5px; color:var(--ink-soft); padding:20px 0 40px; font-family:'IBM Plex Mono',monospace; line-height:1.7; }
+
+  /* ---------- Accesibilidad y jerarquía de encabezados ---------- */
+  /* Secciones que el diseño identifica con pestañas necesitan igualmente un
+     encabezado real: sin él, la página salta de h1 a h3 y ni un lector de
+     pantalla ni un rastreador saben dónde empieza cada bloque. */
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+  }
+  h1.title1{ margin:0; }
+
+  /* ---------- Archivo de ediciones ---------- */
+  ul.archivo{ list-style:none; padding:0; margin:0 0 22px; }
+  ul.archivo li{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:baseline;
+    padding:9px 2px; border-bottom:1px dashed var(--border); font-size:14px;
+  }
+  ul.archivo li a{ font-weight:600; text-decoration:underline; text-underline-offset:2px; white-space:nowrap; }
+  ul.archivo .arch-tit{ color:var(--ink-soft); font-size:13px; }
+  .view > h2{ font-size:15px; margin:22px 0 6px; color:var(--ink-soft); letter-spacing:.04em; }
