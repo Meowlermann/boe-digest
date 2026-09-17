@@ -889,8 +889,10 @@ def main() -> None:
     ap.add_argument("--date")
     args = ap.parse_args()
 
-    DATA_DIR.mkdir(exist_ok=True)
-    DEBUG_DIR.mkdir(exist_ok=True)
+    # Todas las carpetas del repositorio existen siempre: el paso de publicación del
+    # workflow hace `git add` sobre ellas y falla si alguna no está creada.
+    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO):
+        carpeta.mkdir(exist_ok=True)
 
     if not args.render:
         fecha = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
