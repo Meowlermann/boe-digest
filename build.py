@@ -6,13 +6,17 @@ Se ejecuta en GitHub Actions. Hace tres cosas:
 
   1. RECOLECTA   el sumario del BOE del día y las publicaciones oficiales
                  del Congreso y del Senado (BOCG y Diarios de Sesiones).
-  2. REDACTA     titulares y artículos. Si hay un modelo disponible via
-                 GitHub Models lo usa; si no, cae a plantillas deterministas
-                 que nunca inventan hechos.
+  2. REDACTA     titulares y artículos. Si hay un modelo configurado (cualquier
+                 proveedor compatible con la API de OpenAI) lo usa; si no, cae a
+                 una redacción determinista que nunca inventa hechos.
   3. RENDERIZA   data/*.json -> index.html con la plantilla template.html.
 
-Principio de diseño: el sitio NUNCA debe romperse. Si la recolección falla,
-se conserva lo que ya había publicado y se deja constancia en la edición.
+Principios de diseño:
+  - El sitio NUNCA debe romperse. Si la recolección falla, se conserva lo
+    publicado y se deja constancia.
+  - El trabajo curado a mano NUNCA se pierde: lo que haya en curated/ se
+    fusiona por encima de lo generado automáticamente.
+  - Cada ejecución deja un diagnóstico en debug/last-run.json.
 
 Uso:
     python build.py              # recolecta el día de hoy y renderiza
@@ -24,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import io
 import json
 import os
 import pathlib
@@ -36,66 +41,117 @@ from bs4 import BeautifulSoup
 
 ROOT = pathlib.Path(__file__).parent
 DATA_DIR = ROOT / "data"
+CURATED_DIR = ROOT / "curated"
+DEBUG_DIR = ROOT / "debug"
 TEMPLATE = ROOT / "template.html"
 OUTPUT = ROOT / "index.html"
 
 SITE_URL = "https://meowlermann.github.io/boe-digest/"
-SITE_TITLE = "BOE Digest & Cortes en Directo"
-SITE_DESC = (
-    "El BOE y las Cortes, contados sin somnífero. Auditoría pública diaria de lo que "
-    "publica el Estado y de lo que hacen diputados y senadores, con enlace a la fuente oficial."
-)
-MAX_DAYS = 30           # ediciones que se conservan en la página
+MAX_DAYS = 30
 REQUEST_TIMEOUT = 45
-UA = {"User-Agent": "boe-digest/1.0 (+https://meowlermann.github.io/boe-digest/)"}
+
+# Cabeceras de navegador real: las webs del Congreso y del Senado rechazan
+# con 403 a los clientes que se identifican como script.
+HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"),
+    "Accept": ("text/html,application/xhtml+xml,application/xml;q=0.9,"
+               "application/pdf;q=0.9,image/avif,image/webp,*/*;q=0.8"),
+    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Cache-Control": "max-age=0",
+}
 
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
          "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
 MES_ABBR = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
             "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
 
+DIAG: dict = {"inicio": dt.datetime.now(dt.timezone.utc).isoformat(), "peticiones": []}
+
 
 def log(msg: str) -> None:
     print(f"[build] {msg}", flush=True)
 
 
-def get(url: str, tries: int = 3) -> requests.Response | None:
-    """GET tolerante: reintenta, y devuelve None en vez de reventar."""
-    for attempt in range(1, tries + 1):
+# ---------------------------------------------------------------------------
+# Capa de red — con calentamiento de sesión y cookies
+# ---------------------------------------------------------------------------
+
+_sesiones: dict[str, requests.Session] = {}
+
+
+def sesion_para(url: str) -> requests.Session:
+    """Una sesión por dominio. La primera vez visita la home para coger cookies."""
+    host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
+    if host in _sesiones:
+        return _sesiones[host]
+    s = requests.Session()
+    s.headers.update(HEADERS)
+    try:
+        s.get(f"https://{host}/", timeout=REQUEST_TIMEOUT)
+        log(f"  sesión iniciada en {host}")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudo calentar la sesión de {host}: {exc}")
+    _sesiones[host] = s
+    return s
+
+
+def get(url: str, tries: int = 3, referer: str | None = None) -> requests.Response | None:
+    """GET tolerante. Devuelve None en vez de reventar, y anota el diagnóstico."""
+    s = sesion_para(url)
+    ultimo = None
+    for intento in range(1, tries + 1):
         try:
-            r = requests.get(url, headers=UA, timeout=REQUEST_TIMEOUT)
+            headers = {"Referer": referer} if referer else {}
+            r = s.get(url, timeout=REQUEST_TIMEOUT, headers=headers, allow_redirects=True)
+            ultimo = r.status_code
             if r.status_code == 200:
+                DIAG["peticiones"].append({"url": url, "status": 200, "bytes": len(r.content)})
                 return r
             log(f"  {r.status_code} en {url}")
-            if r.status_code == 404:
-                return None
-        except Exception as exc:                      # noqa: BLE001
+            if r.status_code in (404, 410):
+                break
+        except Exception as exc:                              # noqa: BLE001
+            ultimo = str(exc)[:120]
             log(f"  error en {url}: {exc}")
-        if attempt < tries:
-            time.sleep(3 * attempt)
+        if intento < tries:
+            time.sleep(2 * intento)
+    DIAG["peticiones"].append({"url": url, "status": ultimo})
     return None
 
 
 # ---------------------------------------------------------------------------
-# 1. RECOLECCIÓN — BOE
+# BOE — recolección y limpieza
 # ---------------------------------------------------------------------------
 
-CAT_RULES = [
-    ("fiscal", ["hacienda", "tributar", "impuesto", "banco de españa", "presupuest",
-                "aduan", "iva ", "irpf", "deuda pública", "tesoro"]),
-    ("laboral", ["trabajo", "seguridad social", "empleo", "salarial", "convenio colectivo",
-                 "formación profesional", "aula mentor", "desempleo", "autónomo"]),
-    ("mercantil", ["mercantil", "sociedades", "competencia", "auditoría", "contabilidad",
-                   "concursal", "registro de", "mercado de valores"]),
-]
+RUIDO = re.compile(
+    r"\s*PDF\s*\(\s*(?P<id>BOE-[A-Z]-\d{4}-\d+)?[^)]*\)\s*(?:Otros\s+formatos)?\s*$",
+    re.I)
+ID_BOE = re.compile(r"BOE-[A-Z]-\d{4}-\d+")
 
 
-def clasificar(texto: str) -> str:
-    bajo = texto.lower()
-    for cat, claves in CAT_RULES:
-        if any(k in bajo for k in claves):
-            return cat
-    return "otros"
+def limpiar_titulo(texto: str) -> tuple[str, str]:
+    """Devuelve (título limpio, identificador BOE-A-... si aparece)."""
+    ident = ""
+    m = ID_BOE.search(texto)
+    if m:
+        ident = m.group(0)
+    limpio = RUIDO.sub("", texto).strip()
+    limpio = re.sub(r"\s*PDF\s*\(.*$", "", limpio).strip()
+    limpio = re.sub(r"\s*Otros\s+formatos\s*$", "", limpio, flags=re.I).strip()
+    limpio = " ".join(limpio.split())
+    return limpio, ident
+
+
+def clave_dedup(titulo: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", titulo.lower())[:120]
 
 
 def fetch_boe(fecha: dt.date) -> dict | None:
@@ -110,67 +166,81 @@ def fetch_boe(fecha: dt.date) -> dict | None:
 
         soup = BeautifulSoup(r.text, "html.parser")
         entradas: list[dict] = []
-        seccion_actual = ""
-        departamento = ""
+        vistos: set[str] = set()
+        seccion = departamento = epigrafe = ""
 
-        # El sumario alterna encabezados de sección/departamento y listas de disposiciones.
-        for el in soup.find_all(["h2", "h3", "h4", "h5", "li", "p"]):
+        for el in soup.find_all(["h2", "h3", "h4", "h5", "li"]):
             txt = " ".join(el.get_text(" ", strip=True).split())
             if not txt:
                 continue
-            if el.name in ("h2", "h3") and re.match(r"^[IVX]+\.", txt):
-                seccion_actual = txt
+
+            if el.name in ("h2", "h3"):
+                if re.match(r"^[IVX]+\.", txt):
+                    seccion = txt
+                    departamento = epigrafe = ""
                 continue
-            if el.name in ("h4", "h5"):
+            if el.name == "h4":
                 departamento = txt
+                epigrafe = ""
                 continue
-            if el.name in ("li", "p") and len(txt) > 60:
-                if not re.match(r"^(Orden|Resolución|Real Decreto|Ley|Acuerdo|Corrección|"
-                                r"Extracto|Anuncio|Circular|Instrucción)", txt):
-                    continue
-                enlace = ""
-                a = el.find("a", href=True)
-                if a:
-                    href = a["href"]
-                    enlace = href if href.startswith("http") else f"https://www.boe.es{href}"
-                entradas.append({
-                    "seccion": seccion_actual,
-                    "dept": departamento,
-                    "titulo": txt,
-                    "url": enlace,
-                })
+            if el.name == "h5":
+                epigrafe = txt
+                continue
+
+            # <li> con una disposición: debe empezar por un tipo de norma conocido
+            if not re.match(r"^(Orden|Resolución|Real Decreto|Ley|Ley Orgánica|Acuerdo|"
+                            r"Corrección|Extracto|Circular|Instrucción|Decreto)", txt):
+                continue
+            if len(txt) < 40:
+                continue
+
+            titulo, ident = limpiar_titulo(txt)
+            k = clave_dedup(titulo)
+            if not k or k in vistos:
+                continue
+            vistos.add(k)
+
+            enlace = ""
+            a = el.find("a", href=True)
+            if a:
+                href = a["href"]
+                enlace = href if href.startswith("http") else f"https://www.boe.es{href}"
+            if ident and not enlace:
+                enlace = f"https://www.boe.es/diario_boe/txt.php?id={ident}"
+
+            entradas.append({
+                "seccion": seccion,
+                "dept": departamento,
+                "epigrafe": epigrafe,
+                "titulo": titulo,
+                "ident": ident,
+                "url": enlace,
+            })
 
         num = ""
-        m = re.search(r"[Nn]úm(?:ero)?\.?\s*(\d+)", soup.get_text(" ", strip=True)[:4000])
+        cab = soup.get_text(" ", strip=True)[:3000]
+        m = re.search(r"[Nn]úm(?:ero)?\.?\s*(\d+)", cab)
         if m:
             num = m.group(1)
 
-        log(f"BOE: {len(entradas)} entradas encontradas para {d.isoformat()}")
+        log(f"BOE: {len(entradas)} disposiciones únicas para {d.isoformat()}")
         if entradas:
-            return {
-                "fecha_boe": d,
-                "numero": num,
-                "sourceUrl": url,
-                "entradas": entradas,
-            }
+            return {"fecha_boe": d, "numero": num, "sourceUrl": url, "entradas": entradas}
     return None
 
 
 # ---------------------------------------------------------------------------
-# 1b. RECOLECCIÓN — Congreso y Senado
+# Congreso y Senado
 # ---------------------------------------------------------------------------
 
-def pdf_text(url: str, max_chars: int = 120_000) -> str:
-    """Descarga un PDF y devuelve su texto. Cadena vacía si no se puede."""
-    r = get(url, tries=2)
+def pdf_text(url: str, referer: str | None = None, max_chars: int = 120_000) -> str:
+    r = get(url, tries=2, referer=referer)
     if not r:
         return ""
     try:
         from pypdf import PdfReader
-        import io
         reader = PdfReader(io.BytesIO(r.content))
-        partes = []
-        total = 0
+        partes, total = [], 0
         for page in reader.pages:
             t = page.extract_text() or ""
             partes.append(t)
@@ -178,21 +248,21 @@ def pdf_text(url: str, max_chars: int = 120_000) -> str:
             if total > max_chars:
                 break
         return "\n".join(partes)
-    except Exception as exc:                          # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         log(f"  no se pudo leer el PDF {url}: {exc}")
         return ""
 
 
 def fetch_congreso() -> list[dict]:
-    """Últimas publicaciones oficiales del Congreso: BOCG y Diarios de Sesiones."""
     docs: list[dict] = []
-    r = get("https://www.congreso.es/ultimas-publicaciones-oficiales")
+    idx = "https://www.congreso.es/ultimas-publicaciones-oficiales"
+    r = get(idx)
     if not r:
         log("Congreso: no se pudo abrir la página de publicaciones")
         return docs
 
     soup = BeautifulSoup(r.text, "html.parser")
-    vistos = set()
+    candidatos, vistos = [], set()
     for a in soup.find_all("a", href=True):
         href = a["href"]
         if ".PDF" not in href.upper():
@@ -202,27 +272,27 @@ def fetch_congreso() -> list[dict]:
             continue
         vistos.add(full)
         nombre = full.rsplit("/", 1)[-1]
-        if "/DS/" in full.upper() or nombre.upper().startswith("DSCD"):
+        up = full.upper()
+        if "/DS/" in up or nombre.upper().startswith("DSCD"):
             tipo = "Diario de Sesiones"
-        elif "/BOCG/" in full.upper():
+        elif "/BOCG/" in up:
             tipo = "BOCG"
         else:
             continue
-        docs.append({"tipo": tipo, "url": full, "nombre": nombre})
+        candidatos.append({"tipo": tipo, "url": full, "nombre": nombre})
 
-    log(f"Congreso: {len(docs)} publicaciones detectadas")
-    # Priorizamos un Diario de Sesiones (trae intervenciones literales) y un BOCG.
-    ds = [d for d in docs if d["tipo"] == "Diario de Sesiones"][:1]
-    bocg = [d for d in docs if d["tipo"] == "BOCG"][:2]
-    seleccion = ds + bocg
-    for d in seleccion:
-        d["texto"] = pdf_text(d["url"])
+    log(f"Congreso: {len(candidatos)} publicaciones detectadas")
+    ds = [d for d in candidatos if d["tipo"] == "Diario de Sesiones"][:2]
+    bocg = [d for d in candidatos if d["tipo"] == "BOCG"][:2]
+    for d in ds + bocg:
+        d["texto"] = pdf_text(d["url"], referer=idx)
         log(f"  {d['nombre']}: {len(d['texto'])} caracteres")
-    return seleccion
+        if d["texto"]:
+            docs.append(d)
+    return docs
 
 
 def fetch_senado() -> list[dict]:
-    """Últimos boletines oficiales del Senado."""
     docs: list[dict] = []
     idx = ("https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/"
            "senado/boletinesoficiales/index.html")
@@ -231,20 +301,15 @@ def fetch_senado() -> list[dict]:
         log("Senado: no se pudo abrir el índice de boletines")
         return docs
 
-    soup = BeautifulSoup(r.text, "html.parser")
-    nums = set()
-    for a in soup.find_all("a", href=True):
-        m = re.search(r"BOCG_T_15_(\d+)\.PDF", a["href"], re.I)
-        if m:
-            nums.add(int(m.group(1)))
+    nums = {int(m.group(1)) for m in re.finditer(r"BOCG_T_15_(\d+)", r.text, re.I)}
     if not nums:
-        # Plan B: los números son correlativos; probamos el texto plano de la página.
-        for m in re.finditer(r"BOCG_T_15_(\d+)", r.text, re.I):
-            nums.add(int(m.group(1)))
+        log("Senado: no se encontró ningún número de boletín en el índice")
+        return docs
 
     for n in sorted(nums, reverse=True)[:1]:
-        url = f"https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/BOCG_T_15_{n}.PDF"
-        texto = pdf_text(url)
+        url = (f"https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/"
+               f"BOCG_T_15_{n}.PDF")
+        texto = pdf_text(url, referer=idx)
         log(f"Senado: boletín {n}, {len(texto)} caracteres")
         if texto:
             docs.append({"tipo": "BOCG Senado", "numero": n, "url": url,
@@ -253,11 +318,202 @@ def fetch_senado() -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# 2. REDACCIÓN
+# Clasificación
 # ---------------------------------------------------------------------------
 
-MODEL_ENDPOINT = "https://models.github.ai/inference/chat/completions"
-MODEL_NAME = os.environ.get("DIGEST_MODEL", "openai/gpt-4o-mini")
+REGLAS = [
+    ("fiscal", ["hacienda", "tributar", "impuesto", "fiscal", "presupuesto", "banco de españa",
+                "cambios del euro", "deuda pública", "tesoro público", "aduana", "iva",
+                "irpf", "subvenci", "financiación", "ayudas", "crédito extraordinario"]),
+    ("laboral", ["trabajo", "seguridad social", "empleo", "convenio colectivo", "salario",
+                 "formación profesional", "aula mentor", "desempleo", "autónomo",
+                 "jubilación", "pensiones", "relaciones laborales", "prevención de riesgos"]),
+    ("mercantil", ["mercantil", "sociedades", "competencia", "auditoría", "contabilidad",
+                   "concursal", "mercado de valores", "consumidores", "empresa",
+                   "inversiones estratégicas", "industria"]),
+]
+
+
+def _patron(clave: str) -> re.Pattern:
+    """Palabra completa para claves cortas ('iva' no debe casar con 'Universidad');
+    prefijo para las largas ('subvenci' casa con 'subvenciones')."""
+    fin = r"\b" if len(clave) <= 4 else ""
+    return re.compile(r"\b" + re.escape(clave) + fin)
+
+
+_REGLAS_C = [(cat, [_patron(k) for k in claves]) for cat, claves in REGLAS]
+
+
+def clasificar(*textos: str) -> str:
+    bajo = " ".join(t for t in textos if t).lower()
+    mejor, puntos_mejor = "otros", 0
+    for cat, patrones in _REGLAS_C:
+        puntos = sum(1 for p in patrones if p.search(bajo))
+        if puntos > puntos_mejor:
+            mejor, puntos_mejor = cat, puntos
+    return mejor
+
+
+# ---------------------------------------------------------------------------
+# Redacción determinista (sin modelo)
+# ---------------------------------------------------------------------------
+
+SEPARADORES = [", por la que se ", ", por el que se ", ", por los que se ",
+               ", por la que ", ", por el que ", ", sobre ", ", relativa a ",
+               ", de la que ", " por la que se ", " por el que se "]
+
+# Verbo con el que arranca el objeto de la disposición -> gancho del titular.
+# El verbo se elimina del objeto para que el titular no se repita a sí mismo
+# ("NUEVAS REGLAS PARA: REGULA EL COMITÉ..." queda en "NUEVAS REGLAS PARA EL COMITÉ...").
+VERBOS = [
+    (r"^crean?\b", "NACE"),
+    (r"^regulan?\b", "NUEVAS REGLAS PARA"),
+    (r"^modifican?\b", "CAMBIA"),
+    (r"^conceden?\b", "DINERO PÚBLICO PARA"),
+    (r"^convocan?\b", "CONVOCATORIA ABIERTA:"),
+    (r"^publican?\b", "SE PUBLICA"),
+    (r"^apruebae?n?\b|^aprueban?\b", "APROBADO:"),
+    (r"^declaran?\b", "SELLO OFICIAL PARA"),
+    (r"^autorizan?\b", "LUZ VERDE A"),
+    (r"^desarrollan?\b", "LETRA PEQUEÑA NUEVA:"),
+    (r"^delegan?\b", "CAMBIA QUIEN FIRMA:"),
+    (r"^fijan?\b|^establecen?\b", "QUEDA FIJADO:"),
+    (r"^nombran?\b|^cesan?\b", "CAMBIO DE SILLAS:"),
+    (r"^dispone[n]?\b|^ordenan?\b", "ORDENADO:"),
+    (r"^prorrogan?\b", "SE ALARGA:"),
+    (r"^suprimen?\b|^deroga[n]?\b", "SE ELIMINA:"),
+]
+
+INSTRUMENTOS = [
+    (r"^Ley Orgánica", "Ley Orgánica",
+     "Una ley orgánica regula derechos fundamentales o materias reservadas por la "
+     "Constitución, y necesita mayoría absoluta del Congreso para salir adelante."),
+    (r"^Ley\b", "Ley",
+     "Una ley la aprueba un parlamento — el estatal o el autonómico — y se publica en el "
+     "BOE para entrar en vigor."),
+    (r"^Real Decreto-ley", "Real Decreto-ley",
+     "Un real decreto-ley lo dicta el Gobierno por urgencia y tiene fuerza de ley, pero el "
+     "Congreso debe convalidarlo en 30 días o decae."),
+    (r"^Real Decreto", "Real Decreto",
+     "Un real decreto es una norma del Gobierno aprobada en Consejo de Ministros: desarrolla "
+     "lo que una ley deja abierto y es donde suele estar la letra pequeña que de verdad aplica."),
+    (r"^Orden", "Orden ministerial",
+     "Una orden ministerial la firma un ministerio y está por debajo del real decreto: "
+     "concreta detalles técnicos y procedimientos sin pasar por el Consejo de Ministros."),
+    (r"^Resolución", "Resolución",
+     "Una resolución es un acto de un órgano concreto de la Administración. No crea normas "
+     "generales: aplica las que ya existen a un caso determinado."),
+    (r"^Corrección", "Corrección de errores",
+     "Una corrección de errores enmienda lo ya publicado. Conviene mirarlas: a veces lo que "
+     "se corrige cambia el sentido de la norma original."),
+    (r"^Acuerdo", "Acuerdo",
+     "Un acuerdo recoge lo pactado entre administraciones u órganos y se publica para que "
+     "sea oponible a terceros."),
+    (r"^Extracto", "Extracto de convocatoria",
+     "Un extracto anuncia una convocatoria de ayudas: el texto completo vive en la Base de "
+     "Datos Nacional de Subvenciones."),
+]
+
+
+def instrumento(titulo: str) -> tuple[str, str]:
+    for patron, nombre, explicacion in INSTRUMENTOS:
+        if re.match(patron, titulo, re.I):
+            return nombre, explicacion
+    return "Disposición", "El texto íntegro está enlazado al pie de esta pieza."
+
+
+def objeto_de(titulo: str) -> str:
+    """Lo que la disposición HACE, que es lo informativo — no su número."""
+    for sep in SEPARADORES:
+        if sep in titulo:
+            obj = titulo.split(sep, 1)[1]
+            return obj.strip().rstrip(".")
+    # Sin separador: quitamos la parte identificativa inicial si la hay
+    sin_id = re.sub(r"^[^,]+,\s*de\s+\d{1,2}\s+de\s+\w+(?:\s+de\s+\d{4})?,\s*", "", titulo)
+    sin_id = (sin_id or titulo).strip().rstrip(".")
+    # "Ley 4/2026, de 22 de julio, de presupuestos..." -> "presupuestos..."
+    sin_id = re.sub(r"^de\s+", "", sin_id)
+    return sin_id
+
+
+def titular_de(objeto: str, titulo: str) -> str:
+    """Compone el titular sin repetir el verbo que ya expresa el gancho."""
+    obj = objeto.strip()
+    # Un titular dice una cosa: cortamos antes de la segunda oración encadenada.
+    obj = re.split(r"\s+y\s+se\s+|\s*;\s*", obj, maxsplit=1)[0].strip().rstrip(",;")
+    for patron, gancho in VERBOS:
+        m = re.match(patron, obj, re.I)
+        if m:
+            resto = obj[m.end():].strip()
+            # "publica el Convenio ..." merece un gancho más específico
+            if gancho == "SE PUBLICA" and re.match(r"^el convenio\b", resto, re.I):
+                gancho = "ACUERDO FIRMADO:"
+                resto = re.sub(r"^el convenio\s*", "", resto, flags=re.I)
+            sep = "" if gancho.endswith(":") else ""
+            return f"{gancho}{sep} {recortar(resto or obj).upper()}".strip()
+    # Sin verbo reconocible: el objeto ya es informativo por sí solo
+    return recortar(obj or titulo, 105).upper()
+
+
+def recortar(texto: str, limite: int = 95) -> str:
+    if len(texto) <= limite:
+        return texto
+    corte = texto[:limite]
+    if " " in corte:
+        corte = corte[:corte.rfind(" ")]
+    return corte.rstrip(" ,;:") + "…"
+
+
+FEMENINOS = {"Ley", "Ley Orgánica", "Orden ministerial", "Resolución",
+             "Corrección de errores", "Disposición"}
+
+
+def articulo_deterministico(e: dict) -> dict:
+    titulo = e["titulo"]
+    obj = objeto_de(titulo)
+    nombre_inst, explicacion = instrumento(titulo)
+    quien = (e.get("dept") or "").strip()
+    epi = (e.get("epigrafe") or "").strip()
+
+    headline = titular_de(obj, titulo)
+
+    participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
+    if quien and epi:
+        origen = f"{participio} por {quien}, en el epígrafe «{epi}»"
+    elif quien:
+        origen = f"{participio} bajo el epígrafe «{quien}»" if quien.istitle() and len(quien) < 45 \
+                 else f"{participio} por {quien}"
+    else:
+        origen = participio
+
+    body = [
+        f"{nombre_inst} {origen}. Lo que hace: {obj[:400]}.",
+        explicacion,
+    ]
+    if e.get("seccion", "").startswith("I."):
+        body.append(
+            "Va en la Sección I del BOE, la de disposiciones generales: es donde aparece lo "
+            "que cambia las reglas para todo el mundo, no solo para un expediente concreto.")
+
+    return {
+        "cat": clasificar(e.get("dept", ""), epi, titulo),
+        "size": "sm",
+        "headline": headline,
+        "standfirst": recortar(titulo, 260),
+        "body": body,
+        "dept": quien,
+        "ref": e.get("ident") or e.get("seccion") or "",
+        "url": e.get("url", ""),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Redacción con modelo (cualquier proveedor compatible con OpenAI)
+# ---------------------------------------------------------------------------
+
+LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "").rstrip("/")
+LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
+LLM_MODEL = os.environ.get("LLM_MODEL", "")
 
 SYSTEM_PROMPT = """Eres la redacción de "BOE Digest & Cortes en Directo", una publicación
 para el gran público que cuenta lo que publica el BOE y lo que hacen diputados y senadores,
@@ -278,140 +534,95 @@ Responde SIEMPRE con JSON válido y nada más."""
 
 
 def llm_disponible() -> bool:
-    return bool(os.environ.get("GITHUB_TOKEN") or os.environ.get("MODELS_TOKEN"))
+    return bool(LLM_BASE_URL and LLM_API_KEY and LLM_MODEL)
 
 
-def llm(prompt: str, max_tokens: int = 3000) -> dict | None:
-    """Llama a GitHub Models. Devuelve None si no está disponible o falla."""
-    token = os.environ.get("MODELS_TOKEN") or os.environ.get("GITHUB_TOKEN")
-    if not token:
+def llm(prompt: str, max_tokens: int = 4000) -> dict | None:
+    if not llm_disponible():
         return None
     try:
         r = requests.post(
-            MODEL_ENDPOINT,
-            headers={"Authorization": f"Bearer {token}",
-                     "Content-Type": "application/json",
-                     "Accept": "application/vnd.github+json"},
-            json={"model": MODEL_NAME,
+            f"{LLM_BASE_URL}/chat/completions",
+            headers={"Authorization": f"Bearer {LLM_API_KEY}",
+                     "Content-Type": "application/json"},
+            json={"model": LLM_MODEL,
                   "messages": [{"role": "system", "content": SYSTEM_PROMPT},
                                {"role": "user", "content": prompt}],
                   "temperature": 0.7,
                   "max_tokens": max_tokens},
-            timeout=120,
+            timeout=180,
         )
         if r.status_code != 200:
             log(f"  modelo no disponible ({r.status_code}): {r.text[:200]}")
+            DIAG["llm"] = f"error {r.status_code}"
             return None
         contenido = r.json()["choices"][0]["message"]["content"]
         contenido = re.sub(r"^```(?:json)?|```$", "", contenido.strip(), flags=re.M).strip()
+        DIAG["llm"] = "ok"
         return json.loads(contenido)
-    except Exception as exc:                          # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         log(f"  fallo al redactar con modelo: {exc}")
+        DIAG["llm"] = f"excepción: {str(exc)[:120]}"
         return None
 
 
-# --- Redacción determinista (sin modelo): nunca inventa, solo reformula --------
-
-GANCHOS = {
-    "subvención": "DINERO PÚBLICO EN MARCHA",
-    "convenio": "ACUERDO FIRMADO",
-    "premio": "HAY PREMIO",
-    "beca": "SE BUSCA BECARIO",
-    "plan de estudios": "CAMBIO EN LAS AULAS",
-    "instalación eléctrica": "LUZ VERDE A LA RED",
-    "fiesta": "FIESTA CON SELLO OFICIAL",
-    "nombramiento": "CAMBIO DE SILLAS",
-    "cese": "CAMBIO DE SILLAS",
-    "cambios del euro": "LA CALCULADORA DEL EURO",
-}
-
-
-def gancho(titulo: str) -> str:
-    bajo = titulo.lower()
-    for clave, valor in GANCHOS.items():
-        if clave in bajo:
-            return valor
-    return "LO PUBLICA EL BOE"
-
-
-def articulo_deterministico(entrada: dict) -> dict:
-    titulo = entrada["titulo"]
-    corto = titulo.split(", por la que")[0].split(", por el que")[0]
-    corto = corto[:110].rstrip(" ,.")
-    return {
-        "cat": clasificar(f"{entrada.get('dept','')} {titulo}"),
-        "size": "sm",
-        "headline": f"{gancho(titulo)}: {corto.upper()}",
-        "standfirst": titulo[:300],
-        "body": [
-            f"Publicado en el BOE por {entrada.get('dept') or 'el organismo firmante'}. "
-            "El texto completo está enlazado al pie de esta pieza.",
-            "Esta edición se ha generado sin la capa de redacción automática, así que "
-            "el titular es descriptivo y el contenido se limita a lo que dice literalmente "
-            "el boletín.",
-        ],
-        "dept": entrada.get("dept") or "BOE",
-        "ref": entrada.get("seccion") or "",
-    }
-
+# ---------------------------------------------------------------------------
+# Composición de la edición
+# ---------------------------------------------------------------------------
 
 def redactar_boe(boe: dict) -> dict:
-    """Convierte las entradas del sumario en artículos."""
     entradas = boe["entradas"]
-    # Solo las secciones sustantivas: I (disposiciones generales) y III (otras disposiciones)
-    sustantivas = [e for e in entradas
-                   if e["seccion"].startswith(("I.", "III.")) or not e["seccion"]]
-    if not sustantivas:
-        sustantivas = entradas
-    sustantivas = sustantivas[:14]
-
+    sustantivas = [e for e in entradas if e["seccion"].startswith(("I.", "III."))] or entradas
+    sustantivas = sustantivas[:16]
     otras = len(entradas) - len(sustantivas)
-    extra = (f"Además, el resto del sumario suma unas {otras} entradas entre nombramientos, "
-             "oposiciones, anuncios y licitaciones." if otras > 0 else "")
 
     articulos: list[dict] = []
-    if llm_disponible() and sustantivas:
+    if llm_disponible():
         material = "\n".join(
-            f"- [{e.get('seccion','')}] {e.get('dept','')}: {e['titulo']}"
-            for e in sustantivas
-        )
+            f"- [{e.get('seccion','')}] [{e.get('dept','')} / {e.get('epigrafe','')}] "
+            f"{e['titulo']} ({e.get('ident','')})" for e in sustantivas)
         prompt = f"""Material del BOE de hoy (sumario oficial, títulos literales):
 
 {material}
 
-Escribe un artículo por cada entrada. Devuelve JSON con esta forma exacta:
-{{"articulos": [
-  {{"cat": "fiscal|laboral|mercantil|otros",
-    "size": "lead|md|sm",
-    "headline": "TITULAR EN MAYÚSCULAS, mordaz pero fiel, con el dato concreto dentro",
-    "standfirst": "una o dos frases de entradilla",
-    "body": ["párrafo 1", "párrafo 2", "párrafo 3"],
-    "dept": "organismo emisor",
-    "ref": "referencia de la orden o sección"}}
-]}}
+Escribe un artículo por cada entrada. Devuelve JSON:
+{{"articulos": [{{"cat":"fiscal|laboral|mercantil|otros","size":"lead|md|sm",
+ "headline":"TITULAR EN MAYÚSCULAS, mordaz pero fiel, con el dato concreto",
+ "standfirst":"una o dos frases","body":["párrafo 1","párrafo 2","párrafo 3"],
+ "dept":"organismo","ref":"identificador BOE-A o referencia"}}]}}
 
-Exactamente una entrada debe llevar size "lead" (la más noticiable para el gran público),
-dos o tres "md" y el resto "sm". En el cuerpo explica en lenguaje llano qué es y por qué
-importa, incluido el mecanismo jurídico (qué es una subvención directa, un convenio, una
-orden). No inventes importes ni datos que no estén en los títulos."""
-        resp = llm(prompt, max_tokens=4000)
+Exactamente una entrada lleva size "lead" (la más noticiable para el gran público), dos o
+tres "md" y el resto "sm". En el cuerpo explica en lenguaje llano qué hace la norma y por
+qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que no estén."""
+        resp = llm(prompt)
         if resp and isinstance(resp.get("articulos"), list):
             articulos = [a for a in resp["articulos"] if a.get("headline")]
+            for a, e in zip(articulos, sustantivas):
+                a.setdefault("url", e.get("url", ""))
             log(f"BOE: {len(articulos)} artículos redactados con modelo")
 
     if not articulos:
-        log("BOE: usando redacción determinista")
+        log("BOE: redacción determinista")
         articulos = [articulo_deterministico(e) for e in sustantivas]
-        if articulos:
-            articulos[0]["size"] = "lead"
-            for a in articulos[1:3]:
+        # El lead: preferimos la Sección I (disposiciones generales), que es lo que cambia reglas
+        idx_lead = next((i for i, e in enumerate(sustantivas)
+                         if e["seccion"].startswith("I.")), 0)
+        articulos[idx_lead]["size"] = "lead"
+        puestos = 0
+        for i, a in enumerate(articulos):
+            if i != idx_lead and puestos < 3:
                 a["size"] = "md"
+                puestos += 1
 
     counts = {"fiscal": 0, "laboral": 0, "mercantil": 0, "otros": 0}
     for a in articulos:
-        counts[a.get("cat", "otros") if a.get("cat") in counts else "otros"] += 1
+        cat = a.get("cat") if a.get("cat") in counts else "otros"
+        counts[cat] += 1
 
     d = boe["fecha_boe"]
+    extra = (f"El sumario completo de hoy trae {len(entradas)} disposiciones; aquí están "
+             f"desarrolladas las {len(sustantivas)} con alcance general."
+             + (f" Las otras {otras} son nombramientos, oposiciones y anuncios." if otras > 0 else ""))
     return {
         "numero": boe.get("numero", ""),
         "fecha": f"{d.day} de {MESES[d.month-1]} de {d.year}",
@@ -423,7 +634,6 @@ orden). No inventes importes ni datos que no estén en los títulos."""
 
 
 def redactar_cortes(docs: list[dict], anterior: dict | None) -> dict:
-    """Artículos de auditoría a partir de las publicaciones de ambas cámaras."""
     base = {
         "congreso": (anterior or {}).get("congreso", {
             "presidenta": "Francina Armengol Socias",
@@ -439,40 +649,29 @@ def redactar_cortes(docs: list[dict], anterior: dict | None) -> dict:
 
     if not docs:
         base["constructionNote"] = (
-            "Hoy no se pudo descargar ninguna publicación oficial legible del Congreso "
-            "ni del Senado. Antes que rellenar con ruido, lo decimos: volvemos mañana.")
+            "Hoy no se pudo descargar ninguna publicación oficial legible del Congreso ni "
+            "del Senado. Antes que rellenar con ruido, lo decimos: volvemos mañana.")
         return base
 
     if llm_disponible():
-        material = ""
-        for d in docs:
-            material += (f"\n\n=== {d['nombre']} ({d['tipo']}) — fuente: {d['url']} ===\n"
-                         + d.get("texto", "")[:28000])
+        material = "".join(
+            f"\n\n=== {d['nombre']} ({d['tipo']}) — fuente: {d['url']} ===\n"
+            + d.get("texto", "")[:26000] for d in docs)
         prompt = f"""Material oficial de las Cortes publicado hoy:
 {material}
 
-Escribe entre 3 y 6 artículos de AUDITORÍA PÚBLICA sobre lo que hacen sus señorías.
-Devuelve JSON con esta forma exacta:
-{{"feed": [
-  {{"chamber": "congreso|senado",
-    "type": "Pleno|Comisión|Comisión de investigación|Interpelaciones urgentes|Preguntas escritas|Tramitación legislativa|Administración de la Cámara",
-    "date": "DD mmm AAAA",
-    "headline": "TITULAR mordaz pero fiel",
-    "standfirst": "entradilla de una o dos frases",
-    "quote": {{"text": "cita LITERAL del documento", "author": "nombre y cargo"}},
-    "body": ["párrafo 1", "párrafo 2", "párrafo 3 que empieza por 'Auditoría del día:'"],
-    "source": {{"label": "nombre del documento", "url": "url del PDF"}}}}
- ],
- "scoreboard": {{"note": "aclaración de qué se ha contado",
-                 "rows": [{{"g": "grupo parlamentario", "n": 2}}]}}
-}}
+Escribe entre 3 y 6 artículos de AUDITORÍA PÚBLICA sobre lo que hacen sus señorías. JSON:
+{{"feed":[{{"chamber":"congreso|senado","type":"Pleno|Comisión|Comisión de investigación|
+Interpelaciones urgentes|Preguntas escritas|Tramitación legislativa|Administración de la Cámara",
+"date":"DD mmm AAAA","headline":"TITULAR mordaz pero fiel","standfirst":"entradilla",
+"quote":{{"text":"cita LITERAL","author":"nombre y cargo"}},
+"body":["p1","p2","p3 que empieza por 'Auditoría del día:'"],
+"source":{{"label":"documento","url":"url del PDF"}}}}],
+"scoreboard":{{"note":"qué se ha contado","rows":[{{"g":"grupo","n":2}}]}}}}
 
-Baja al detalle: nombres y apellidos de quien interviene o es nombrado, grupo parlamentario,
-número de expediente, ministerio destinatario. El campo "quote" es opcional y SOLO se incluye
-si la frase aparece literalmente en el material. El último párrafo de cada artículo empieza
-por "Auditoría del día:" y aporta el ángulo de escrutinio. Reparte la mordacidad entre todos
-los partidos que aparezcan."""
-        resp = llm(prompt, max_tokens=4000)
+Baja al detalle: nombres y apellidos, grupo parlamentario, expediente, ministerio. "quote"
+es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre todos."""
+        resp = llm(prompt)
         if resp and isinstance(resp.get("feed"), list) and resp["feed"]:
             base["feed"] = resp["feed"]
             if isinstance(resp.get("scoreboard"), dict):
@@ -480,47 +679,80 @@ los partidos que aparezcan."""
             log(f"Cortes: {len(base['feed'])} artículos redactados con modelo")
             return base
 
-    # Sin modelo: publicamos el inventario verificable, que ya es auditoría.
-    log("Cortes: usando inventario determinista")
+    log("Cortes: inventario determinista")
     hoy = dt.date.today()
     fecha_txt = f"{hoy.day} {MES_ABBR[hoy.month-1].lower()} {hoy.year}"
     for d in docs:
-        camara = "senado" if "Senado" in d["nombre"] or "Senado" in d["tipo"] else "congreso"
+        camara = "senado" if "Senado" in f"{d['nombre']} {d['tipo']}" else "congreso"
         texto = d.get("texto", "")
-        primeras = [ln.strip() for ln in texto.splitlines() if len(ln.strip()) > 70][:3]
+        lineas = [ln.strip() for ln in texto.splitlines() if len(ln.strip()) > 70][:4]
         base["feed"].append({
             "chamber": camara,
             "type": d["tipo"],
             "date": fecha_txt,
-            "headline": f"PUBLICADO HOY: {d['nombre'].upper()}",
-            "standfirst": ("Publicación oficial registrada hoy. Esta edición se ha generado "
-                           "sin la capa de redacción automática, así que reproducimos el "
-                           "inventario verificable y el enlace al documento."),
-            "body": (primeras or ["El documento está disponible en el enlace de la fuente."]) +
-                    ["Auditoría del día: el documento queda registrado y enlazado. "
-                     "Todo lo que aquí aparece procede literalmente de la publicación oficial."],
+            "headline": f"REGISTRADO HOY: {d['nombre'].upper()}",
+            "standfirst": ("Publicación oficial de hoy. Reproducimos el inventario "
+                           "verificable y el enlace al documento completo."),
+            "body": (lineas or ["El documento está disponible en el enlace de la fuente."]) +
+                    ["Auditoría del día: todo lo que aparece aquí procede literalmente de "
+                     "la publicación oficial enlazada."],
             "source": {"label": d["nombre"], "url": d["url"]},
         })
     return base
 
 
+def fusionar_curado(dia: dict) -> dict:
+    """Lo curado a mano manda sobre lo generado. Nunca se pierde trabajo."""
+    f = CURATED_DIR / f"{dia['id']}.json"
+    if not f.exists():
+        return dia
+    try:
+        cur = json.loads(f.read_text(encoding="utf-8"))
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"curated/{f.name} ilegible: {exc}")
+        return dia
+
+    for seccion in ("boe", "cortes"):
+        if seccion in cur:
+            dia.setdefault(seccion, {})
+            for k, v in cur[seccion].items():
+                dia[seccion][k] = v
+    for k, v in cur.items():
+        if k not in ("boe", "cortes"):
+            dia[k] = v
+
+    # Si lo curado aporta artículos, el aviso de "no se pudo descargar nada" sobra.
+    if dia.get("cortes", {}).get("feed"):
+        dia["cortes"].pop("constructionNote", None)
+
+    dia["curated"] = True
+    log(f"curated/{f.name} fusionado sobre la edición generada")
+    return dia
+
+
 # ---------------------------------------------------------------------------
-# 3. RENDERIZADO
+# Construcción y renderizado
 # ---------------------------------------------------------------------------
 
 def construir_dia(fecha: dt.date) -> dict | None:
-    log(f"=== Construyendo edición del {fecha.isoformat()} ===")
+    log(f"=== Edición del {fecha.isoformat()} ===")
     boe_raw = fetch_boe(fecha)
     congreso = fetch_congreso()
     senado = fetch_senado()
+
+    DIAG["resumen"] = {
+        "boe_entradas": len(boe_raw["entradas"]) if boe_raw else 0,
+        "congreso_docs": len(congreso),
+        "senado_docs": len(senado),
+    }
 
     anterior = None
     previos = sorted(DATA_DIR.glob("*.json"), reverse=True)
     if previos:
         try:
             anterior = json.loads(previos[0].read_text(encoding="utf-8")).get("cortes")
-        except Exception:                             # noqa: BLE001
-            anterior = None
+        except Exception:                                     # noqa: BLE001
+            pass
 
     if not boe_raw and not congreso and not senado:
         log("No se obtuvo NINGUNA fuente. No se escribe edición.")
@@ -535,7 +767,7 @@ def construir_dia(fecha: dt.date) -> dict | None:
             "extra": "Hoy no se pudo leer el sumario del BOE.", "stories": []},
         "cortes": redactar_cortes(congreso + senado, anterior),
     }
-    return dia
+    return fusionar_curado(dia)
 
 
 def renderizar() -> None:
@@ -543,15 +775,14 @@ def renderizar() -> None:
     for f in sorted(DATA_DIR.glob("*.json"), reverse=True)[:MAX_DAYS]:
         try:
             dias.append(json.loads(f.read_text(encoding="utf-8")))
-        except Exception as exc:                      # noqa: BLE001
+        except Exception as exc:                              # noqa: BLE001
             log(f"  {f.name} ilegible: {exc}")
     if not dias:
         log("No hay datos que renderizar.")
         sys.exit(1)
 
-    tpl = TEMPLATE.read_text(encoding="utf-8")
-    payload = json.dumps(dias, ensure_ascii=False, separators=(",", ":"))
-    html = tpl.replace("__DIGEST_DATA__", payload)
+    html = TEMPLATE.read_text(encoding="utf-8").replace(
+        "__DIGEST_DATA__", json.dumps(dias, ensure_ascii=False, separators=(",", ":")))
     OUTPUT.write_text(html, encoding="utf-8")
     log(f"index.html generado con {len(dias)} ediciones ({len(html)} bytes)")
 
@@ -566,21 +797,25 @@ def renderizar() -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--render", action="store_true", help="solo renderizar")
-    ap.add_argument("--date", help="fecha AAAA-MM-DD (por defecto, hoy)")
+    ap.add_argument("--render", action="store_true")
+    ap.add_argument("--date")
     args = ap.parse_args()
 
     DATA_DIR.mkdir(exist_ok=True)
+    DEBUG_DIR.mkdir(exist_ok=True)
 
     if not args.render:
         fecha = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
         dia = construir_dia(fecha)
         if dia:
-            destino = DATA_DIR / f"{dia['id']}.json"
-            destino.write_text(json.dumps(dia, ensure_ascii=False, indent=2), encoding="utf-8")
-            log(f"escrito {destino.name}")
+            (DATA_DIR / f"{dia['id']}.json").write_text(
+                json.dumps(dia, ensure_ascii=False, indent=2), encoding="utf-8")
+            log(f"escrito data/{dia['id']}.json")
         else:
             log("Edición no escrita; se conserva lo publicado.")
+        DIAG["fin"] = dt.datetime.now(dt.timezone.utc).isoformat()
+        (DEBUG_DIR / "last-run.json").write_text(
+            json.dumps(DIAG, ensure_ascii=False, indent=2), encoding="utf-8")
 
     renderizar()
 
