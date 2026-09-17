@@ -355,7 +355,12 @@
           "url": "https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/BOCG_T_15_459.PDF"
         }
       }
-    ]
+    ],
+    "coverage": {
+      "congreso": true,
+      "senado": false,
+      "nota": "El Congreso ha respondido con normalidad. El Senado ha rechazado las peticiones automatizadas, así que hoy su actividad no está cubierta. Lo decimos en vez de disimularlo."
+    }
   },
   "curated": true
 }

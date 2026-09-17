@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-17T15:13:25.033204+00:00",
+  "inicio": "2026-09-17T15:26:07.853529+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/17/index.php",
@@ -29,12 +29,36 @@
     {
       "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
       "status": 403
+    },
+    {
+      "url": "https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/BOCG_T_15_461.PDF",
+      "status": 403
+    },
+    {
+      "url": "https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/BOCG_T_15_460.PDF",
+      "status": 403
+    },
+    {
+      "url": "https://www.senado.es/legis15/publicaciones/pdf/senado/bocg/BOCG_T_15_459.PDF",
+      "status": 403
     }
+  ],
+  "403": {
+    "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
+    "server": "",
+    "via": "",
+    "set_cookie": "",
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;4666cd17&#46;1789658775&#46;2aec9386 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
+  },
+  "senado_fallback": [
+    461,
+    460,
+    459
   ],
   "resumen": {
     "boe_entradas": 76,
     "congreso_docs": 3,
     "senado_docs": 0
   },
-  "fin": "2026-09-17T15:13:37.143925+00:00"
+  "fin": "2026-09-17T15:26:27.481588+00:00"
 }
