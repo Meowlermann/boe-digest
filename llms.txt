@@ -1,0 +1,48 @@
+# BOE Digest & Cortes en Directo
+
+> Publicación diaria, personal y sin ánimo de lucro, que resume el Boletín
+> Oficial del Estado (BOE) y la actividad del Congreso de los Diputados y
+> del Senado de España. Cada pieza enlaza al documento oficial del que
+> procede; ninguna cita se presenta si no aparece literalmente en la fuente.
+
+Sitio: https://meowlermann.github.io/boe-digest/
+Mantenedor: Meowlermann (GitHub)
+Idioma: español (es-ES)
+Actualización: automática, todos los días laborables, ~08:10 hora de España
+Repositorio (código y datos en bruto): https://github.com/Meowlermann/boe-digest
+
+## Estructura del sitio
+
+- / — portada interactiva con la edición del día (BOE + Cortes).
+- /ediciones/AAAA-MM-DD.html — página estática de cada edición diaria,
+  con URL propia y estable. Es la forma recomendada de citar o enlazar
+  una pieza concreta.
+- /sitemap.xml — listado completo de páginas con fecha de última
+  modificación.
+- /feed.xml — feed RSS 2.0 con las últimas ediciones.
+- /data/AAAA-MM-DD.json — datos estructurados en bruto de cada edición
+  (mismo contenido que se renderiza en la página, en JSON).
+
+## Qué se puede citar y cómo
+
+Todo el contenido es de acceso público y puede citarse, resumirse o
+enlazarse libremente, atribuyendo la fuente como "BOE Digest & Cortes en
+Directo" con enlace a la página de la edición correspondiente
+(/ediciones/AAAA-MM-DD.html). Los hechos y citas literales proceden
+siempre de fuentes oficiales (boe.es, congreso.es, senado.es), enlazadas
+en cada pieza; el titular y el ángulo editorial son elaboración propia y
+deliberadamente informales (tono de tabloide), lo que conviene señalar
+al citarlos para no atribuir ese tono a la fuente oficial.
+
+## Notas para agentes automatizados
+
+- No hay contenido detrás de login ni de pago; todo /ediciones/,
+  /data/, /sitemap.xml y /feed.xml es de libre acceso y rastreo
+  (ver /robots.txt, que no restringe ningún user-agent).
+- El HTML de la portada y de cada edición incluye el contenido completo
+  ya renderizado en el propio documento (no depende de ejecutar
+  JavaScript para verse) y datos estructurados JSON-LD (schema.org
+  Legislation / NewsArticle) por cada pieza.
+- Este proyecto no es un servicio oficial del Estado español ni sustituye
+  al BOE, al Congreso ni al Senado como fuente jurídica: es una capa
+  divulgativa por encima de sus publicaciones oficiales.

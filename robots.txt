@@ -1,4 +1,31 @@
+# Sin restricciones: todo el sitio es de acceso público y puede
+# rastrearse, indexarse y reutilizarse (ver /llms.txt para el detalle
+# de qué es cada página y cómo citarla).
 User-agent: *
+Allow: /
+
+# Buscadores y rastreadores de modelos de lenguaje que se identifican
+# por nombre — la regla de arriba ya los permite, esto es solo
+# explícito para que quede constancia.
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://meowlermann.github.io/boe-digest/sitemap.xml

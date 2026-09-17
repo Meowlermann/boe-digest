@@ -44,10 +44,14 @@ DATA_DIR = ROOT / "data"
 CURATED_DIR = ROOT / "curated"
 DEBUG_DIR = ROOT / "debug"
 TEMPLATE = ROOT / "template.html"
+TEMPLATE_EDICION = ROOT / "template_edicion.html"
 OUTPUT = ROOT / "index.html"
+EDICIONES_DIR = ROOT / "ediciones"
+FEED_FILE = ROOT / "feed.xml"
 
 SITE_URL = "https://meowlermann.github.io/boe-digest/"
 MAX_DAYS = 30
+MAX_FEED_ITEMS = 20
 REQUEST_TIMEOUT = 45
 
 # Cabeceras de navegador real: las webs del Congreso y del Senado rechazan
@@ -819,6 +823,299 @@ def fusionar_curado(dia: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Renderizado estático (SSR) — SEO y accesibilidad para lectores sin JS
+# ---------------------------------------------------------------------------
+#
+# El sitio es, de cara al humano, una SPA: el JS del template pinta el día
+# activo a partir de __DIGEST_DATA__. Pero los rastreadores de las IAs
+# (GPTBot, ClaudeBot, CCBot, PerplexityBot...) normalmente NO ejecutan
+# JavaScript: solo leen el HTML que devuelve el servidor. Si el contenido
+# solo existiera dentro del <script>, esos rastreadores verían una página
+# casi vacía. Por eso estas funciones generan en Python el mismo HTML que
+# el JS generaría para el día activo, y ese HTML va ya escrito en el
+# documento: el navegador con JS lo vuelve a pintar igual (sin parpadeo
+# visible) y el rastreador sin JS ya lo tiene desde la primera respuesta.
+
+CAT_LABEL = {"fiscal": "Fiscal / Hacienda", "laboral": "Laboral",
+             "mercantil": "Mercantil / Contable", "otros": "Sociedad / Varios"}
+CHAMBER_LABEL = {"congreso": "Congreso", "senado": "Senado"}
+DIAS_SEMANA = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+
+
+def esc_html(s) -> str:
+    """Igual que la función esc() del JS: solo &, < y >."""
+    if s is None:
+        return ""
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def esc_attr(s) -> str:
+    """Como esc_html, pero también apta para ir dentro de un atributo con comillas."""
+    return esc_html(s).replace('"', "&quot;")
+
+
+def fmt_date_es(iso: str) -> str:
+    """Equivalente en Python de fmtDate() del JS (toLocaleDateString es-ES)."""
+    try:
+        d = dt.date.fromisoformat(iso)
+        return f"{DIAS_SEMANA[d.weekday()]}, {d.day} de {MESES[d.month-1]} de {d.year}"
+    except Exception:                                         # noqa: BLE001
+        return iso
+
+
+def body_html_ssr(paras: list[str] | None) -> str:
+    return '<div class="articlebody">' + "".join(
+        f"<p>{esc_html(p)}</p>" for p in (paras or [])) + "</div>"
+
+
+def render_ticker_ssr(day: dict) -> str:
+    items = []
+    for s in (day.get("boe", {}).get("stories") or [])[:5]:
+        items.append(f"<span><b>BOE</b>{esc_html(s.get('headline'))}</span>")
+    for f in (day.get("cortes", {}).get("feed") or [])[:4]:
+        etiqueta = CHAMBER_LABEL.get(f.get("chamber"), "CORTES")
+        items.append(f"<span><b>{esc_html(etiqueta)}</b>{esc_html(f.get('headline'))}</span>")
+    if not items:
+        items.append("<span><b>AVISO</b>Sin titulares en esta edición.</span>")
+    html = "".join(items)
+    return html + html
+
+
+def render_daystrip_ssr(dias: list[dict], current_id: str) -> str:
+    out = []
+    for d in dias:
+        sel = "true" if d["id"] == current_id else "false"
+        out.append(f'<button class="daypill" aria-selected="{sel}">{esc_html(d.get("label"))}</button>')
+    return "".join(out)
+
+
+def render_boe_stats_ssr(day: dict) -> str:
+    c = day.get("boe", {}).get("counts") or {}
+    orden = ["fiscal", "laboral", "mercantil", "otros"]
+    maximo = max(1, *(c.get(k, 0) for k in orden))
+    out = []
+    for k in orden:
+        n = c.get(k, 0)
+        pct = round((n / maximo) * 100)
+        out.append(
+            f'<div class="stat"><div class="label">{esc_html(CAT_LABEL[k])}</div>'
+            f'<div class="n">{n}</div>'
+            f'<div class="meter"><i style="width:{pct}%;background:var(--{k})"></i></div></div>')
+    return "".join(out)
+
+
+def render_boe_grid_ssr(day: dict) -> str:
+    out = []
+    for s in day.get("boe", {}).get("stories") or []:
+        is_lead = s.get("size") == "lead"
+        cuerpo = body_html_ssr(s.get("body"))
+        articulo = cuerpo if is_lead else (
+            f'<details class="reader"><summary>Leer el artículo</summary>{cuerpo}</details>')
+        cat = s.get("cat") or "otros"
+        out.append(
+            f'<article class="story {esc_attr(s.get("size",""))}" '
+            f'style="--cat:var(--{cat});--catsoft:var(--{cat}-soft)">'
+            f'<div class="kicker"><span class="pill">{esc_html(CAT_LABEL.get(cat, "Varios"))}</span></div>'
+            f'<h3>{esc_html(s.get("headline"))}</h3>'
+            f'<p class="standfirst">{esc_html(s.get("standfirst"))}</p>'
+            f'{articulo}'
+            f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
+            f'<span class="ref">{esc_html(s.get("ref",""))}</span></div>'
+            f'</article>')
+    return "".join(out)
+
+
+def render_boe_note_ssr(day: dict) -> str:
+    b = day.get("boe", {}) or {}
+    enlace = ""
+    if b.get("sourceUrl"):
+        enlace = (f' <a class="srclink" href="{esc_attr(b["sourceUrl"])}" target="_blank" '
+                  f'rel="noopener">Ver el sumario oficial ↗</a>')
+    return (f'<b>BOE núm. {esc_html(b.get("numero",""))}</b> · {esc_html(b.get("fecha",""))}. '
+            f'{esc_html(b.get("extra",""))}{enlace}')
+
+
+def render_chamber_cards_ssr(day: dict) -> str:
+    c = day.get("cortes", {}) or {}
+    cong = c.get("congreso") or {}
+    sen = c.get("senado") or {}
+    return (
+        '<div class="chamber-card" style="--cc:var(--congreso)"><div class="h">CONGRESO DE LOS DIPUTADOS</div>'
+        f'<div class="who">{esc_html(cong.get("presidenta","—"))}</div>'
+        f'<div class="meta">Presidenta · {esc_html(cong.get("legislatura",""))}<br>{esc_html(cong.get("sede",""))}</div></div>'
+        '<div class="chamber-card" style="--cc:var(--senado)"><div class="h">SENADO</div>'
+        f'<div class="who">{esc_html(sen.get("presidente","—"))}</div>'
+        f'<div class="meta">Presidente · {esc_html(sen.get("legislatura",""))}<br>{esc_html(sen.get("sede",""))}</div></div>')
+
+
+def render_scoreboard_ssr(day: dict) -> tuple[bool, str]:
+    sb = (day.get("cortes", {}) or {}).get("scoreboard")
+    if not sb or not sb.get("rows"):
+        return True, ""
+    maximo = max(1, *(r.get("n", 0) for r in sb["rows"]))
+    filas = []
+    for r in sb["rows"]:
+        pct = round((r.get("n", 0) / maximo) * 100)
+        filas.append(
+            f'<div class="scorerow"><span class="g">{esc_html(r.get("g"))}</span>'
+            f'<span class="bar"><i style="width:{pct}%"></i></span>'
+            f'<span class="v">{esc_html(r.get("n"))}</span></div>')
+    html = (f'<h3>Marcador del día</h3><p class="sub">{esc_html(sb.get("note",""))}</p>'
+            + "".join(filas))
+    return False, html
+
+
+def render_coverage_note_ssr(day: dict) -> tuple[bool, str]:
+    cov = (day.get("cortes", {}) or {}).get("coverage")
+    if not cov or not cov.get("nota"):
+        return True, ""
+    return False, f'<b>Cobertura de hoy:</b> {esc_html(cov["nota"])}'
+
+
+def render_cortes_feed_ssr(day: dict) -> str:
+    feed = (day.get("cortes", {}) or {}).get("feed") or []
+    if not feed:
+        nota = (day.get("cortes", {}) or {}).get("constructionNote") or (
+            "La extracción del día no obtuvo publicaciones oficiales legibles. "
+            "Antes que rellenar con ruido, lo decimos.")
+        return (
+            '<div class="acard" style="--cc:var(--otros);--ccsoft:var(--otros-soft)">'
+            '<div class="row1"><span class="tag-cc">Sin datos verificados</span></div>'
+            '<h3>Hoy no se ha podido verificar actividad en las fuentes oficiales</h3>'
+            f'<p class="standfirst">{esc_html(nota)}</p></div>')
+    out = []
+    for f in feed:
+        cc = "senado" if f.get("chamber") == "senado" else "congreso"
+        cita = ""
+        if f.get("quote"):
+            cita = (f'<blockquote class="pull"><p>«{esc_html(f["quote"].get("text"))}»</p>'
+                    f'<cite>{esc_html(f["quote"].get("author"))}</cite></blockquote>')
+        fuente = ""
+        if f.get("source"):
+            fuente = (f'<a class="srclink" href="{esc_attr(f["source"].get("url"))}" '
+                      f'target="_blank" rel="noopener">{esc_html(f["source"].get("label"))} ↗</a>')
+        out.append(
+            f'<article class="acard" style="--cc:var(--{cc});--ccsoft:var(--{cc}-soft)">'
+            f'<div class="row1"><span class="tag-cc">{esc_html(CHAMBER_LABEL[cc])}</span>'
+            f'<span class="tag-cc">{esc_html(f.get("type",""))}</span>'
+            f'<span class="tstamp">{esc_html(f.get("date",""))}</span></div>'
+            f'<h3>{esc_html(f.get("headline"))}</h3>'
+            f'<p class="standfirst">{esc_html(f.get("standfirst",""))}</p>{cita}'
+            f'<details class="reader"><summary>Leer la auditoría completa</summary>'
+            f'{body_html_ssr(f.get("body"))}</details>'
+            f'<div class="foot"><span>Verificado en fuente oficial</span>{fuente}</div>'
+            f'</article>')
+    return "".join(out)
+
+
+def lead_story(day: dict) -> dict | None:
+    stories = (day.get("boe", {}) or {}).get("stories") or []
+    return next((s for s in stories if s.get("size") == "lead"), stories[0] if stories else None)
+
+
+def build_title(day: dict, edicion: bool = False) -> str:
+    fecha = fmt_date_es(day["id"])
+    if edicion:
+        return f"Edición del {fecha} — BOE Digest & Cortes en Directo"
+    return f"BOE Digest & Cortes en Directo — {fecha}"
+
+
+def build_meta_description(day: dict) -> str:
+    boe = day.get("boe", {}) or {}
+    n = len(boe.get("stories") or [])
+    fecha = fmt_date_es(day["id"])
+    lead = lead_story(day)
+    base = f"BOE del {fecha}: {n} disposiciones oficiales explicadas en lenguaje llano"
+    lead_bit = f", desde «{lead['headline'].capitalize()}»" if lead and lead.get("headline") else ""
+    cov = (day.get("cortes", {}) or {}).get("coverage") or {}
+    if cov.get("congreso") and cov.get("senado"):
+        cortes_bit = " Cobertura completa del Congreso y el Senado, con enlace a la fuente oficial."
+    elif cov.get("congreso"):
+        cortes_bit = " Cobertura del Congreso; el Senado bloqueó el acceso automatizado hoy."
+    elif cov.get("senado"):
+        cortes_bit = " Cobertura del Senado; el Congreso no publicó hoy."
+    else:
+        cortes_bit = " Auditoría diaria del Congreso y el Senado, con enlace a la fuente oficial."
+    return recortar(f"{base}{lead_bit}.{cortes_bit}", 300)
+
+
+def jsonld_script(objetos: list[dict]) -> str:
+    grafo = {"@context": "https://schema.org", "@graph": objetos}
+    payload = json.dumps(grafo, ensure_ascii=False, separators=(",", ":"))
+    payload = payload.replace("</", "<\\/")           # nunca cerrar el <script> por accidente
+    return f'<script type="application/ld+json">{payload}</script>'
+
+
+def jsonld_for_day(day: dict, page_url: str) -> str:
+    fecha_iso = day["id"]
+    objetos: list[dict] = [{
+        "@type": "WebSite",
+        "name": "BOE Digest & Cortes en Directo",
+        "url": SITE_URL,
+        "description": build_meta_description(day),
+        "inLanguage": "es-ES",
+        "dateModified": fecha_iso,
+    }]
+    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
+
+    for s in (day.get("boe", {}) or {}).get("stories") or []:
+        item = {
+            "@type": "Legislation",
+            "name": s.get("headline", ""),
+            "description": s.get("standfirst", ""),
+            "legislationIdentifier": s.get("ref", ""),
+            "datePublished": fecha_iso,
+            "inLanguage": "es-ES",
+            "isPartOf": {"@type": "WebSite", "url": SITE_URL},
+        }
+        if s.get("url"):
+            item["url"] = s["url"]
+            item["subjectOf"] = page_url
+        else:
+            item["url"] = page_url
+        objetos.append(item)
+
+    for f in (day.get("cortes", {}) or {}).get("feed") or []:
+        item = {
+            "@type": "NewsArticle",
+            "headline": f.get("headline", ""),
+            "description": f.get("standfirst", ""),
+            "datePublished": fecha_iso,
+            "inLanguage": "es-ES",
+            "author": editor,
+            "publisher": editor,
+            "mainEntityOfPage": page_url,
+        }
+        if f.get("source", {}).get("url"):
+            item["isBasedOn"] = f["source"]["url"]
+        objetos.append(item)
+
+    return jsonld_script(objetos)
+
+
+def render_ssr_fragments(day: dict, dias: list[dict] | None = None) -> dict:
+    """Todos los trozos de HTML/estado que hacen falta para pintar una edición."""
+    cov_hidden, cov_html = render_coverage_note_ssr(day)
+    sb_hidden, sb_html = render_scoreboard_ssr(day)
+    frag = {
+        "EDITION_DATE": fmt_date_es(day["id"]).upper(),
+        "TICKER": render_ticker_ssr(day),
+        "BOE_STATS": render_boe_stats_ssr(day),
+        "BOE_GRID": render_boe_grid_ssr(day),
+        "BOE_NOTE": render_boe_note_ssr(day),
+        "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
+        "COVERAGE_NOTE": cov_html,
+        "CHAMBER_CARDS": render_chamber_cards_ssr(day),
+        "SCOREBOARD_HIDDEN": "hidden" if sb_hidden else "",
+        "SCOREBOARD": sb_html,
+        "CORTES_FEED": render_cortes_feed_ssr(day),
+    }
+    if dias is not None:
+        frag["DAYSTRIP"] = render_daystrip_ssr(dias, day["id"])
+    return frag
+
+
+# ---------------------------------------------------------------------------
 # Construcción y renderizado
 # ---------------------------------------------------------------------------
 
@@ -858,6 +1155,130 @@ def construir_dia(fecha: dt.date) -> dict | None:
     return fusionar_curado(dia)
 
 
+def _replace_placeholders(html: str, frag: dict) -> str:
+    for clave, valor in frag.items():
+        html = html.replace(f"__SSR_{clave}__", valor)
+    return html
+
+
+def renderizar_index(dias: list[dict]) -> None:
+    """Portada: SPA interactiva, con el día de hoy ya pintado en el HTML servido
+    (para que un rastreador sin JS reciba contenido completo, no un <script> vacío)."""
+    day0 = dias[0]
+    frag = render_ssr_fragments(day0, dias=dias)
+    frag["TITLE"] = esc_html(build_title(day0))
+    frag["META_DESC"] = esc_attr(build_meta_description(day0))
+    frag["JSONLD"] = jsonld_for_day(day0, SITE_URL)
+
+    html = TEMPLATE.read_text(encoding="utf-8")
+    html = html.replace(
+        "__DIGEST_DATA__", json.dumps(dias, ensure_ascii=False, separators=(",", ":")))
+    html = _replace_placeholders(html, frag)
+    OUTPUT.write_text(html, encoding="utf-8")
+    log(f"index.html generado con {len(dias)} ediciones ({len(html)} bytes)")
+
+
+def renderizar_ediciones(dias: list[dict]) -> list[dict]:
+    """Una página estática por edición (ediciones/AAAA-MM-DD.html): URL propia,
+    indexable y enlazable por separado — la palanca principal para que cada día
+    de contenido pueda encontrarse en buscadores y agentes de IA, no solo hoy."""
+    EDICIONES_DIR.mkdir(exist_ok=True)
+    plantilla = TEMPLATE_EDICION.read_text(encoding="utf-8")
+    manifiesto = []          # para el sitemap y el feed
+    existentes_antes = {p.name for p in EDICIONES_DIR.glob("*.html")}
+    escritos = set()
+
+    ordenados = sorted(dias, key=lambda d: d["id"])       # más antigua primero, para prev/next
+    por_id = {d["id"]: d for d in ordenados}
+    ids = [d["id"] for d in ordenados]
+
+    for i, day in enumerate(ordenados):
+        page_url = f"{SITE_URL}ediciones/{day['id']}.html"
+        frag = render_ssr_fragments(day)
+        frag["TITLE"] = esc_html(build_title(day, edicion=True))
+        frag["META_DESC"] = esc_attr(build_meta_description(day))
+        frag["CANONICAL"] = page_url
+        frag["JSONLD"] = jsonld_for_day(day, page_url)
+        frag["LABEL_LARGO"] = fmt_date_es(day["id"])
+
+        anterior = ids[i - 1] if i > 0 else None
+        siguiente = ids[i + 1] if i + 1 < len(ids) else None
+        frag["PREV_LINK"] = (f'<a class="srclink" href="{anterior}.html">← '
+                              f'{esc_html(fmt_date_es(anterior))}</a>') if anterior else ""
+        frag["NEXT_LINK"] = (f'<a class="srclink" href="{siguiente}.html">'
+                              f'{esc_html(fmt_date_es(siguiente))} →</a>') if siguiente else ""
+
+        html = _replace_placeholders(plantilla, frag)
+        nombre = f"{day['id']}.html"
+        (EDICIONES_DIR / nombre).write_text(html, encoding="utf-8")
+        escritos.add(nombre)
+        manifiesto.append({"id": day["id"], "url": page_url})
+
+    huerfanas = existentes_antes - escritos
+    if huerfanas:
+        log(f"ediciones/: {len(huerfanas)} páginas antiguas fuera de la ventana de {MAX_DAYS} días "
+            f"(se conservan; no se listan en el sitemap ni en el feed)")
+
+    log(f"ediciones/: {len(manifiesto)} páginas de archivo generadas")
+    return manifiesto
+
+
+def renderizar_sitemap(manifiesto: list[dict]) -> None:
+    hoy = dt.date.today().isoformat()
+    urls = [f"  <url>\n    <loc>{SITE_URL}</loc>\n    <lastmod>{hoy}</lastmod>\n"
+            "    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>"]
+    for item in sorted(manifiesto, key=lambda m: m["id"], reverse=True):
+        urls.append(f"  <url>\n    <loc>{item['url']}</loc>\n    <lastmod>{item['id']}</lastmod>\n"
+                    "    <changefreq>never</changefreq>\n    <priority>0.6</priority>\n  </url>")
+    (ROOT / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls) + "\n</urlset>\n", encoding="utf-8")
+    log(f"sitemap.xml generado con {len(manifiesto) + 1} URLs")
+
+
+def renderizar_feed(dias: list[dict], manifiesto: list[dict]) -> None:
+    """RSS 2.0: descubrible por agregadores, lectores de feeds y bastantes
+    pipelines de ingesta de IA que sí saben seguir un <link rel=alternate>."""
+    from email.utils import format_datetime
+    from xml.sax.saxutils import escape as xml_esc
+
+    urls_por_id = {m["id"]: m["url"] for m in manifiesto}
+    items = []
+    for day in dias[:MAX_FEED_ITEMS]:
+        link = urls_por_id.get(day["id"], SITE_URL)
+        titulo = build_title(day, edicion=True)
+        cortes_n = len((day.get("cortes", {}) or {}).get("feed") or [])
+        desc_bits = [build_meta_description(day)]
+        if cortes_n:
+            desc_bits.append(f"{cortes_n} piezas de auditoría parlamentaria hoy.")
+        descripcion = " ".join(desc_bits)
+        pub_dt = dt.datetime.combine(dt.date.fromisoformat(day["id"]), dt.time(7, 0),
+                                      tzinfo=dt.timezone.utc)
+        items.append(
+            "  <item>\n"
+            f"    <title>{xml_esc(titulo)}</title>\n"
+            f"    <link>{xml_esc(link)}</link>\n"
+            f"    <guid isPermaLink=\"true\">{xml_esc(link)}</guid>\n"
+            f"    <pubDate>{format_datetime(pub_dt)}</pubDate>\n"
+            f"    <description>{xml_esc(descripcion)}</description>\n"
+            "  </item>")
+
+    canal = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0"><channel>\n'
+        "  <title>BOE Digest &amp; Cortes en Directo</title>\n"
+        f"  <link>{SITE_URL}</link>\n"
+        "  <description>Auditoría pública diaria del BOE, el Congreso y el Senado, "
+        "con enlace a la fuente oficial.</description>\n"
+        "  <language>es-es</language>\n"
+        f"  <atom:link href=\"{SITE_URL}feed.xml\" rel=\"self\" type=\"application/rss+xml\" "
+        "xmlns:atom=\"http://www.w3.org/2005/Atom\"/>\n"
+        + "\n".join(items) + "\n</channel></rss>\n")
+    FEED_FILE.write_text(canal, encoding="utf-8")
+    log(f"feed.xml generado con {len(items)} ediciones")
+
+
 def renderizar() -> None:
     dias = []
     for f in sorted(DATA_DIR.glob("*.json"), reverse=True)[:MAX_DAYS]:
@@ -869,18 +1290,10 @@ def renderizar() -> None:
         log("No hay datos que renderizar.")
         sys.exit(1)
 
-    html = TEMPLATE.read_text(encoding="utf-8").replace(
-        "__DIGEST_DATA__", json.dumps(dias, ensure_ascii=False, separators=(",", ":")))
-    OUTPUT.write_text(html, encoding="utf-8")
-    log(f"index.html generado con {len(dias)} ediciones ({len(html)} bytes)")
-
-    hoy = dt.date.today().isoformat()
-    (ROOT / "sitemap.xml").write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f"  <url>\n    <loc>{SITE_URL}</loc>\n    <lastmod>{hoy}</lastmod>\n"
-        "    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n"
-        "</urlset>\n", encoding="utf-8")
+    renderizar_index(dias)
+    manifiesto = renderizar_ediciones(dias)
+    renderizar_sitemap(manifiesto)
+    renderizar_feed(dias, manifiesto)
 
 
 def main() -> None:
@@ -891,7 +1304,7 @@ def main() -> None:
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
-    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO):
+    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:

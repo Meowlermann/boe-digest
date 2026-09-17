@@ -82,6 +82,30 @@ Deliberadamente **no** se usa un runner self-hosted de GitHub Actions: en un
 repositorio público, cualquiera que abra un pull request podría lograr ejecución de
 código en la máquina que lo aloja.
 
+## SEO e indexación por buscadores e IA
+
+Cada ejecución, además de `index.html`, genera:
+
+- `ediciones/AAAA-MM-DD.html`: una página estática por edición, con URL propia,
+  enlace a la anterior/siguiente y su propio `<title>`, descripción y JSON-LD
+  (`schema.org` `Legislation` por cada norma del BOE y `NewsArticle` por cada
+  pieza de Cortes). Es lo que hace que cada día pueda encontrarse por separado
+  en un buscador, no solo "la portada de hoy".
+- `sitemap.xml`: la portada más todas las ediciones, con `lastmod`.
+- `feed.xml`: RSS 2.0 con las últimas ediciones, para agregadores y lectores
+  de feeds.
+
+La portada (`index.html`) lleva además el contenido de la edición de hoy ya
+escrito en el HTML que se sirve — el JS lo vuelve a pintar igual al cargar,
+así que para un humano no cambia nada — porque los rastreadores de los
+modelos de lenguaje (GPTBot, ClaudeBot, CCBot, PerplexityBot…) normalmente
+no ejecutan JavaScript: si el contenido solo viviera dentro del `<script>`
+con los datos, esos rastreadores verían una página casi vacía.
+
+`robots.txt` no restringe ningún rastreador (buscadores ni IA) y `llms.txt`
+explica en texto plano, para agentes automatizados, qué es el sitio, cómo
+está organizado y cómo citarlo.
+
 ## Diagnóstico: `debug/last-run.json`
 
 Cada ejecución deja ahí el detalle de qué URL se pidió, con qué código de respuesta y cuánto
@@ -118,14 +142,21 @@ python build.py --date 2026-09-17
 ## Estructura
 
 ```
-build.py                    pipeline: recolección, redacción y renderizado
+build.py                    pipeline: recolección, redacción, renderizado y SEO
 senado_local.py             recolector del Senado para ejecutar en tu equipo
-template.html               plantilla del sitio (marcador __DIGEST_DATA__)
+template.html               plantilla de la portada (marcadores __DIGEST_DATA__, __SSR_*__)
+template_edicion.html       plantilla de cada página de archivo (ediciones/AAAA-MM-DD.html)
+assets/style.css            hoja de estilos compartida por portada y ediciones
 data/AAAA-MM-DD.json        una edición por día (regenerable)
 curated/AAAA-MM-DD.json     contenido escrito a mano, se fusiona por encima
 debug/last-run.json         diagnóstico de la última ejecución
 state/senado.json           último boletín del Senado leído, para estimar el siguiente
 docs/                       notas del proyecto
 index.html                  generado por build.py — no editar a mano
+ediciones/AAAA-MM-DD.html   generado por build.py — página propia por edición
+sitemap.xml                 generado por build.py
+feed.xml                    generado por build.py — RSS de las últimas ediciones
+llms.txt                    descripción del sitio para agentes/IA (estático, no se regenera)
+robots.txt                  sin restricciones para ningún rastreador (estático)
 .github/workflows/daily.yml automatización diaria
 ```
