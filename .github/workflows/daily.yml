@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write           # para hacer commit del index.html regenerado
-  models: read              # para usar GitHub Models en la redacción
 
 concurrency:
   group: edicion-diaria
@@ -31,15 +30,18 @@ jobs:
 
       - name: Construir la edición de hoy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DIGEST_MODEL: openai/gpt-4o-mini
+          # Opcional: cualquier proveedor compatible con la API de OpenAI.
+          # Si no están definidos, el pipeline usa la redacción determinista.
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
         run: python build.py
 
       - name: Publicar si hay cambios
         run: |
           git config user.name "BOE Digest bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data index.html sitemap.xml
+          git add -A data curated debug index.html sitemap.xml
           if git diff --staged --quiet; then
             echo "Sin cambios: no se publica nada."
           else
