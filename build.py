@@ -547,6 +547,179 @@ def desambiguar_titulares(articulos: list[dict]) -> None:
                 a["headline"] = f"{base}: {recortar(materia, 58).upper()}"
 
 
+
+# ---------------------------------------------------------------------------
+# Titulares: buscar el núcleo noticioso, no cortar el título legal
+# ---------------------------------------------------------------------------
+#
+# Un titular no puede ser el principio del título oficial rematado con «…».
+# Estas reglas localizan lo noticioso de las familias que el BOE repite cada
+# día —convalidaciones, subvenciones, convenios, retribuciones reguladas,
+# listas de admitidos— y lo ponen delante, entero y corto. Lo que no encaja
+# en ninguna cae al compositor genérico de más abajo, que tampoco trunca.
+#
+# El techo de esto son reglas: para titulares de verdad mordaces está la vía
+# del modelo (LLM_BASE_URL / LLM_MODEL / LLM_API_KEY), que ya existe.
+
+CONECTORES_FINALES = {
+    "de","del","la","el","los","las","y","e","o","u","en","con","para","por","a","al",
+    "que","se","su","sus","un","una","unos","unas","sobre","entre","desde","hasta",
+    "como","ante","tras","segun","según","cuyo","cuya","lo","le","les","esta","este"}
+
+
+def cerrar(texto: str, limite: int = 78) -> str:
+    """Corta por palabra y cierra limpio. NUNCA deja puntos suspensivos:
+    un titular que acaba en «…» no es un titular, es un texto cortado."""
+    t = " ".join((texto or "").split()).strip(" .,;:—-–«»")
+    if len(t) > limite:
+        t = t[:limite]
+        if " " in t:
+            t = t[:t.rfind(" ")]
+    palabras = t.split()
+    while palabras and palabras[-1].lower().strip(",;:.»«") in CONECTORES_FINALES:
+        palabras.pop()
+    return " ".join(palabras).strip(" .,;:—-–«»")
+
+
+def _limpiar(t: str) -> str:
+    """Quita la chatarra identificativa: números de norma y fechas."""
+    t = re.sub(r"\b(?:Real Decreto-ley|Real Decreto|Ley Orgánica|Ley|Orden|Resolución|"
+               r"Circular|Instrucción|Decreto-ley|Decreto)\s+[A-Z]{0,4}/?[\d./]+/\d{4}\b", "", t)
+    t = re.sub(r",?\s*de\s+\d{1,2}\s+de\s+[a-záéíóú]+(?:\s+de\s+\d{4})?", "", t, flags=re.I)
+    return " ".join(t.split()).strip(" ,;")
+
+
+def _materia_final(t: str) -> str:
+    """Lo que la norma trata, que suele ir tras el último «, de » o «por el que se»."""
+    m = re.search(r"por (?:el|la|los|las) que se\s+\w+\s+(.+)$", t, re.I)
+    if m:
+        return m.group(1)
+    partes = re.split(r",\s*de\s+", t)
+    return partes[-1] if len(partes) > 1 else t
+
+
+def _proposito(t: str) -> str:
+    """La cláusula de finalidad: «para <hacer algo>». Es lo más noticioso."""
+    m = re.search(r"\bpara\s+(?!el|la|los|las|su|sus)([a-záéíóúñ]+(?:ar|er|ir)\b.+?)"
+                  r"(?=,|;| y de | y la | y el |$)", t, re.I)
+    return m.group(1) if m else ""
+
+
+def _entidad(t: str) -> str:
+    """Nombre propio del destinatario. Solo palabras con mayúscula inicial, o
+    «Canarias para abaratar…» acaba dentro del nombre de la comunidad."""
+    propio = r"[A-ZÁÉÍÓÚÑ][\wáéíóúñ]*(?:\s+(?:de|del|la|las|y)\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ]*)*"
+    for patron in (rf"\b(?:Comunidad|Ciudad) Autónoma de\s+(?:las\s+|los\s+)?({propio})",
+                   rf"\b(?:Universidad|Ayuntamiento|Diputación)\s+de\s+({propio})",
+                   rf"\bMancomunidad de Municipios del\s+({propio})"):
+        m = re.search(patron, t)
+        if m:
+            return m.group(1).strip()
+    return ""
+
+
+REGLAS_TITULAR = []
+
+
+def _regla_titular(patron):
+    def deco(f):
+        REGLAS_TITULAR.append((re.compile(patron, re.I | re.S), f))
+        return f
+    return deco
+
+
+@_regla_titular(r"Acuerdo de (convalidación|derogación) del Real Decreto-ley\s*[\d/]*\s*,?\s*(.+)$")
+def _convalidacion(m, t):
+    verbo = "CONVALIDA" if m.group(1).lower().startswith("conval") else "DEROGA"
+    # La materia es la del decreto convalidado, que va detrás de su referencia
+    materia = cerrar(_limpiar(_materia_final(m.group(2))), 52)
+    return f"EL CONGRESO {verbo} EL DECRETO DE {materia.upper()}" if materia else \
+           f"EL CONGRESO {verbo} UN DECRETO-LEY"
+
+
+@_regla_titular(r"concesión directa de (?:una |)(?:subvención|subvenciones|ayudas?)")
+def _subvencion(m, t):
+    quien = _entidad(t)
+    fin = cerrar(_limpiar(_proposito(t)), 48)
+    if quien and fin:
+        return f"{quien.upper()} RECIBE DINERO PÚBLICO PARA {fin.upper()}"
+    if quien:
+        return f"DINERO PÚBLICO PARA {quien.upper()}"
+    return f"DINERO PÚBLICO PARA {cerrar(_limpiar(_materia_final(t)), 50).upper()}"
+
+
+@_regla_titular(r"metodolog[íi]a\s+(?:de retribución|para determinar la retribución)\s+(?:de\s+)?(.+)")
+def _retribucion(m, t):
+    return f"QUEDA FIJADO CUÁNTO SE COBRA POR {cerrar(_limpiar(m.group(1)), 50).upper()}"
+
+
+@_regla_titular(r"tasa de retribución financiera aplicable a (?:las actividades de\s+)?(.+)")
+def _tasa(m, t):
+    return f"NUEVA TASA DE RETRIBUCIÓN PARA {cerrar(_limpiar(m.group(1)), 48).upper()}"
+
+
+@_regla_titular(r"Adenda de (prórroga|modificación) del Convenio con ((?:la|el|los|las)\s+.+?|.+?)(?:,|\s+para\b|$)")
+def _adenda(m, t):
+    verbo = "SE PRORROGA" if m.group(1).lower().startswith("pr") else "CAMBIA"
+    return f"{verbo} EL CONVENIO CON {cerrar(_limpiar(m.group(2)), 50).upper()}"
+
+
+@_regla_titular(r"relación de (?:personas |aspirantes |)admitid[oa]s y excluid[oa]s.*?"
+       r"(?:para|de)\s+(?:el proceso selectivo de\s+|)([^,.]+)")
+def _admitidos(m, t):
+    return f"LISTA DE ADMITIDOS: {cerrar(_limpiar(m.group(1)), 52).upper()}"
+
+
+@_regla_titular(r"se publica (?:el |la |)Convenio con ((?:la|el|los|las)\s+.+?|.+?)(?:,|\s+para\b|$)")
+def _convenio(m, t):
+    return f"ACUERDO CON {cerrar(_limpiar(m.group(1)), 54).upper()}"
+
+
+@_regla_titular(r"se (?:modifica|modifican) (?:la|el|los|las)\s+.*?por (?:la|el) que se \w+\s+(.+)")
+def _modifica(m, t):
+    return f"CAMBIAN LAS REGLAS: {cerrar(_limpiar(m.group(1)), 52).upper()}"
+
+
+@_regla_titular(r"se (?:regula|regulan|crea|crean)\s+((?:el|la|los|las|un|una)\s+.+)")
+def _regula(m, t):
+    nucleo = re.split(r"\s+y (?:el|la|los|las)\s+", m.group(1))[0]
+    return f"NUEVAS REGLAS PARA {cerrar(_limpiar(nucleo), 52).upper()}"
+
+
+@_regla_titular(r"actuaciones urgentes en materia de\s+(.+)")
+def _urgentes(m, t):
+    return f"MEDIDAS EXPRÉS EN {cerrar(_limpiar(m.group(1)), 54).upper()}"
+
+
+@_regla_titular(r"se (?:determina|determinan|establece|establecen)\s+(?:el|la|los|las)\s+(.+)")
+def _determina(m, t):
+    nucleo = re.split(r"\s+para\s+su\s+|\s+en función de\s+|,", m.group(1))[0]
+    return f"QUEDA FIJADA {cerrar(_limpiar(nucleo), 54).upper()}"
+
+
+@_regla_titular(r"se publican?\s+(?:el|la|los|las)?\s*«(.+?)»")
+def _entrecomillado(m, t):
+    return f"SE PUBLICAN LAS CUENTAS: {cerrar(_limpiar(m.group(1)), 50).upper()}"
+
+
+@_regla_titular(r"medidas (extraordinarias|urgentes|excepcionales)[^,]*?\s+(?:orientadas a|para|de)\s+(.+)")
+def _medidas(m, t):
+    return f"MEDIDAS {m.group(1).upper()}: {cerrar(_limpiar(m.group(2)), 52).upper()}"
+
+
+def titular_por_reglas(titulo: str) -> str:
+    for patron, f in REGLAS_TITULAR:
+        m = patron.search(titulo)
+        if m:
+            try:
+                salida = f(m, titulo)
+            except Exception:
+                continue
+            if salida and len(salida) > 18:
+                return cerrar(salida, 82)
+    return ""
+
+
 def instrumento(titulo: str) -> tuple[str, str]:
     for patron, nombre, explicacion in INSTRUMENTOS:
         if re.match(patron, titulo, re.I):
@@ -581,10 +754,11 @@ def titular_de(objeto: str, titulo: str) -> str:
             if gancho == "SE PUBLICA" and re.match(r"^el convenio\b", resto, re.I):
                 gancho = "ACUERDO FIRMADO:"
                 resto = re.sub(r"^el convenio\s*", "", resto, flags=re.I)
-            sep = "" if gancho.endswith(":") else ""
-            return f"{gancho}{sep} {recortar(resto or obj).upper()}".strip()
+            # cerrar() en vez de recortar(): un titular nunca acaba en «…»,
+            # se corta por palabra y se cierra en seco.
+            return f"{gancho} {cerrar(_limpiar(resto or obj), 58).upper()}".strip()
     # Sin verbo reconocible: el objeto ya es informativo por sí solo
-    return recortar(obj or titulo, 105).upper()
+    return cerrar(_limpiar(obj or titulo), 72).upper()
 
 
 def recortar(texto: str, limite: int = 95) -> str:
@@ -607,7 +781,8 @@ def articulo_deterministico(e: dict) -> dict:
     quien = (e.get("dept") or "").strip()
     epi = (e.get("epigrafe") or "").strip()
 
-    headline = titular_bilateral(titulo) or titular_de(obj, titulo)
+    headline = (titular_bilateral(titulo) or titular_por_reglas(titulo)
+                or titular_de(obj, titulo))
 
     participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
     if quien and epi:
