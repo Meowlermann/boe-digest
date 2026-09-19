@@ -48,6 +48,8 @@ TEMPLATE_EDICION = ROOT / "template_edicion.html"
 TEMPLATE_ARCHIVO = ROOT / "template_archivo.html"
 OUTPUT = ROOT / "index.html"
 EDICIONES_DIR = ROOT / "ediciones"
+NORMAS_DIR = ROOT / "normas"
+TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
 SITE_URL = "https://meowlermann.github.io/boe-digest/"
@@ -641,6 +643,53 @@ def datos_clave(texto: str) -> dict:
     return d
 
 
+def _euros_titular(importe: str) -> str:
+    """«1.040.000 euros» -> «1.040.000 EUROS»; «27.991,89 euros» se deja igual.
+    No se redondea: la cifra es la que dice el BOE."""
+    return importe.upper().replace("EUROS", "EUROS").strip()
+
+
+def enriquecer_titular(headline: str, d: dict, limite: int = 104) -> str:
+    """El dato que convierte una nota administrativa en una noticia —cuánto
+    dinero, hasta cuándo, cuánto plazo— está en el articulado, no en el título.
+    Aquí se sube al titular, que es donde lo busca quien lee.
+
+    Orden de importancia: el dinero manda; después la fecha límite; después el
+    plazo para reaccionar. Solo se añade uno: dos datos en un titular ya son
+    una ficha."""
+    if not headline or not d:
+        return headline
+    plano = headline.upper()
+
+    if d.get("importe") and not re.search(r"\bEUROS?\b|€", plano):
+        cifra = _euros_titular(d["importe"])
+        cand = f"{headline}: {cifra}"
+        if len(cand) <= limite:
+            return cand
+
+    if d.get("hasta") and "HASTA" not in plano:
+        cand = cerrar(headline + coletilla_fecha(d), limite)
+        if "HASTA" in cand.upper():
+            return cand
+
+    # El plazo solo sube al titular cuando la norma abre de verdad una puerta
+    # al ciudadano. En un convenio, «plazo de cinco días» es una cláusula
+    # interna: ponerlo como «cinco días para reclamar» sería inventarse el
+    # sentido de la norma.
+    if (d.get("plazo") and d.get("_reclamable")
+            and "PLAZO" not in plano and " DÍAS" not in plano and " MESES" not in plano):
+        cand = f"{headline}: {d['plazo'].upper()} PARA {d.get('_accion', 'RECURRIR')}"
+        if len(cand) <= limite:
+            return cand
+
+    if d.get("vigor") and re.search(r"\d", d["vigor"]) and "VIGOR" not in plano:
+        corto = _SIN_MES.sub("", d["vigor"])
+        cand = f"{headline}, EN VIGOR {corto.upper()}"
+        if len(cand) <= limite:
+            return cand
+    return headline
+
+
 def frase_datos_clave(d: dict) -> str:
     """Una línea con lo que hay que saber, en el orden en que importa."""
     trozos = []
@@ -697,7 +746,7 @@ CONECTORES_FINALES = {
 def cerrar(texto: str, limite: int = 78) -> str:
     """Corta por palabra y cierra limpio. NUNCA deja puntos suspensivos:
     un titular que acaba en «…» no es un titular, es un texto cortado."""
-    t = " ".join((texto or "").split()).strip(" .,;:—-–«»")
+    t = " ".join((texto or "").split()).lstrip(" .,;:—-–»").rstrip(" .,;:—-–«")
     if len(t) > limite:
         t = t[:limite]
         if " " in t:
@@ -705,7 +754,11 @@ def cerrar(texto: str, limite: int = 78) -> str:
     palabras = t.split()
     while palabras and palabras[-1].lower().strip(",;:.»«") in CONECTORES_FINALES:
         palabras.pop()
-    return " ".join(palabras).strip(" .,;:—-–«»")
+    t = " ".join(palabras).strip(" .,;:—-–")
+    # «SEGRIA LEVANTE sin cerrar es una errata a la vista de todo el mundo.
+    if t.count("«") > t.count("»"):
+        t = t[:t.rfind("«")].strip(" .,;:—-–")
+    return t.strip(" .,;:—-–")
 
 
 def _limpiar(t: str) -> str:
@@ -743,6 +796,34 @@ def _entidad(t: str) -> str:
         if m:
             return m.group(1).strip()
     return ""
+
+
+def _organo(t: str) -> str:
+    """Quién dicta la norma: va entre la fecha y el «por la que se»."""
+    m = re.search(r",\s*de\s+(?:la|el)\s+(.+?),\s*(?:AAI,\s*)?por (?:la|el) que se", t, re.I)
+    if not m:
+        return ""
+    o = m.group(1).strip()
+    # «Dirección General para la Eficiencia del Servicio Público de Justicia»
+    # se lee como «Justicia»: el nombre del ramo está al final.
+    if re.match(r"(?:Direcci[óo]n General|Subdirecci[óo]n|Secretar[íi]a)", o, re.I):
+        cola = re.findall(r"\bde\s+([A-ZÁÉÍÓÚÑ][\wáéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ]+)*)", o)
+        if cola:
+            return cerrar(cola[-1], 40)
+    return cerrar(o, 48)
+
+
+_COLETILLA_ENTE = re.compile(r",\s*(?:M\.?\s?P\.?|O\.?\s?A\.?|AAI|F\.?S\.?P\.?|"
+                             r"E\.?P\.?E\.?)\.?(?=[,.]|\s|$)", re.I)
+
+
+def _sin_para_interno(t: str) -> str:
+    """«el Instituto para la Competitividad Empresarial de Castilla y León, para
+    la mejora…»: el primer «para» es parte del nombre, el segundo es la
+    finalidad. Solo corta el «para» que viene detrás de una coma."""
+    t = _COLETILLA_ENTE.sub("", t)
+    m = re.search(r",\s*(?:para|por|con el fin de|a fin de)\b", t)
+    return (t[:m.start()] if m else t).strip(" ,;.")
 
 
 REGLAS_TITULAR = []
@@ -797,9 +878,100 @@ def _admitidos(m, t):
     return f"LISTA DE ADMITIDOS: {cerrar(_limpiar(m.group(1)), 52).upper()}"
 
 
-@_regla_titular(r"se publica (?:el |la |)Convenio con ((?:la|el|los|las)\s+.+?|.+?)(?:,|\s+para\b|$)")
+@_regla_titular(r"se publica (?:el |la |)Convenio con (.+)$")
 def _convenio(m, t):
-    return f"ACUERDO CON {cerrar(_limpiar(m.group(1)), 54).upper()}"
+    """El nombre de la entidad entero (el «para» de «Instituto para la
+    Competitividad» no es el «para» de la finalidad) y, detrás, para qué es el
+    acuerdo, que es lo que le importa a quien lo lee."""
+    cola = m.group(1)
+    quien = cerrar(_limpiar(_sin_para_interno(cola)), 78)
+    fin = cerrar(_limpiar(_proposito(cola)), 46)
+    if len(fin.split()) < 3:
+        fin = ""
+    # Si la finalidad no cabe entera, no se pone: media finalidad engaña más
+    # que ninguna («…CIENTÍFICAS: COLABORAR» no dice en qué).
+    if quien and fin and len(f"ACUERDO CON {quien}: {fin}") <= 94:
+        return f"ACUERDO CON {quien.upper()}: {fin.upper()}"
+    return f"ACUERDO CON {quien.upper()}" if quien else ""
+
+
+@_regla_titular(r"se publica (?:el |la |)Convenio entre (.+?)\s+y\s+((?:la|el|los|las)\s+.+)$")
+def _convenio_entre(m, t):
+    uno = cerrar(_limpiar(_sin_para_interno(m.group(1))), 52)
+    dos = cerrar(_limpiar(_sin_para_interno(m.group(2))), 52)
+    if not (uno and dos):
+        return ""
+    return f"{uno.upper()} FIRMA CON {dos.upper()}"
+
+
+@_regla_titular(r"se publica (?:el |la |)Anexo\s+([IVXΙ\d]+)\s+al Convenio con (.+)$")
+def _anexo_convenio(m, t):
+    quien = cerrar(_limpiar(_sin_para_interno(m.group(2))), 60)
+    return f"SE AMPLÍA EL ACUERDO CON {quien.upper()}" if quien else ""
+
+
+@_regla_titular(r"se concede el t[íi]tulo de\s+(.+?)\s+a la\s+(?:fiesta\s+)?«(.+?)»"
+                r"(?:,?\s*de\s+([^,.]+))?")
+def _concede_titulo(m, t):
+    """La noticia es la fiesta que lo gana, no la categoría administrativa."""
+    titulo_dado = cerrar(_limpiar(m.group(1)), 56)
+    fiesta = cerrar(_limpiar(m.group(2)), 44)
+    lugar = cerrar(_limpiar(m.group(3) or ""), 26)
+    donde = f" DE {lugar.upper()}" if lugar else ""
+    return f"«{fiesta.upper()}»{donde} YA ES {titulo_dado.upper()}"
+
+
+@_regla_titular(r"se declara\s+Bien de Inter[ée]s Cultural"
+                r"(?:,\s*con la categor[íi]a de\s+([^,]+))?,\s*(.+)$")
+def _declara_bic(m, t):
+    que = cerrar(_limpiar(m.group(2)), 62)
+    cat = cerrar(_limpiar(m.group(1) or ""), 26)
+    if not que:
+        return ""
+    coda = f", COMO {cat.upper()}" if cat else ""
+    return f"{que.upper()} YA ES BIEN DE INTERÉS CULTURAL{coda}"
+
+
+@_regla_titular(r"se emplaza a (?:las personas |los |)interesad[oa]s en el\s+(recurso[^,.]*)")
+def _emplaza(m, t):
+    quien = _organo(t)
+    cabeza = f"{quien.upper()} LLAMA" if quien else "LA ADMINISTRACIÓN LLAMA"
+    return f"{cabeza} A LOS AFECTADOS POR UN {cerrar(_limpiar(m.group(1)), 46).upper()}"
+
+
+@_regla_titular(r"se publican? los precios de venta al p[úu]blico de determinadas labores"
+                r"(?:\s+de\s+(tabaco))?")
+def _precios_tabaco(m, t):
+    return "CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS" if m.group(1) \
+        else "CAMBIAN LOS PRECIOS DE VENTA AL PÚBLICO DE DETERMINADAS LABORES"
+
+
+@_regla_titular(r"cambio de titularidad de\s+(.+?)(?:,\s*entre sus puntos[^,]*)?"
+                r",?\s*a favor d(el|e la|e los|e las)\s+(.+?)(?:,|\.|$)")
+def _cambio_titularidad(m, t):
+    art = {"el": "EL", "e la": "LA", "e los": "LOS", "e las": "LAS"}.get(m.group(2).lower(), "EL")
+    que = cerrar(_limpiar(m.group(1)), 50)
+    quien = cerrar(_limpiar(m.group(3)), 46)
+    quien = f"{art} {quien}" if quien else ""
+    if not (que and quien):
+        return ""
+    return f"{quien.upper()} SE QUEDA {que.upper()}"
+
+
+@_regla_titular(r"se cancela ((?:la|el|los|las)\s+.+|.+)$")
+def _cancela(m, t):
+    que = cerrar(_limpiar(m.group(1)), 80)
+    return f"SE DISUELVE {que.upper()}" if que else ""
+
+
+@_regla_titular(r"se publica el Acuerdo del Consejo de Ministros[^,]*,\s*"
+                r"por el que se\s+(\w+)\s+(.+)$")
+def _acuerdo_consejo(m, t):
+    verbo = {"aprueba": "APRUEBA", "aprueban": "APRUEBA", "declara": "DECLARA",
+             "modifica": "CAMBIA", "autoriza": "AUTORIZA"}.get(m.group(1).lower(),
+                                                               m.group(1).upper())
+    que = cerrar(_limpiar(m.group(2)), 58)
+    return f"EL CONSEJO DE MINISTROS {verbo} {que.upper()}" if que else ""
 
 
 @_regla_titular(r"se (?:modifica|modifican) (?:la|el|los|las)\s+.*?por (?:la|el) que se \w+\s+(.+)")
@@ -880,7 +1052,7 @@ def titular_por_reglas(titulo: str) -> str:
             except Exception:
                 continue
             if salida and len(salida) > 18:
-                return cerrar(salida, 82)
+                return cerrar(salida, 96)
     return ""
 
 
@@ -953,7 +1125,16 @@ def articulo_deterministico(e: dict) -> dict:
     # busca quien lee.
     clave = datos_clave(texto_disposicion(e.get("ident", "")))
     if clave.get("hasta") and re.search(r"PRORROG|RESTABLEC|SUSPEN|AMPL[IÍ]A|ALARG", headline):
-        headline = cerrar(headline + coletilla_fecha(clave), 96)
+        headline = cerrar(headline + coletilla_fecha(clave), 104)
+    else:
+        if re.search(r"emplaza|recurso contencioso|interposici[óo]n de recurso|"
+                     r"alegaciones|informaci[óo]n p[úu]blica|convocatoria|concurso|"
+                     r"subvenci[óo]n|solicitudes", titulo, re.I):
+            clave["_reclamable"] = True
+            clave["_accion"] = ("PERSONARSE" if re.search(r"emplaza|recurso", titulo, re.I)
+                                else "PRESENTARSE")
+        headline = enriquecer_titular(headline, clave)
+        clave.pop("_reclamable", None); clave.pop("_accion", None)
 
     participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
     if quien and epi:
@@ -1347,17 +1528,32 @@ def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
 
 # --- De los datos al titular -------------------------------------------------
 
-CONECTORES_C = {"de","del","la","el","los","las","y","e","en","con","para","por","a","al","que","se","su"}
+CONECTORES_C = {
+    "de","del","la","el","los","las","y","e","o","u","en","con","para","por","a","al",
+    "que","se","su","sus","un","una","unos","unas","lo",
+    # Un titular cortado en «...PROTECCIÓN LABORAL Y SOCIAL FRENTE» no es un titular.
+    # Toda preposición o nexo que pide complemento tiene que caer con él.
+    "frente","ante","bajo","cabe","contra","desde","durante","entre","hacia","hasta",
+    "mediante","salvo","según","segun","sin","sobre","tras","como","cuando","donde",
+    "cuyo","cuya","cuyos","cuyas","cual","cuales","tanto","tan","más","mas","menos",
+    "respecto","relativa","relativo","relativas","relativos","así","asi","no","ni",
+}
 
 def _cerrar_c(t, n=64):
     t = " ".join(t.split())
-    if len(t) > n:
+    cortado = len(t) > n
+    if cortado:
         t = t[:n]
         if " " in t: t = t[:t.rfind(" ")]
     pal = t.split()
-    while pal and pal[-1].lower().strip(",;.") in CONECTORES_C:
+    # Si el corte dejó colgando el último elemento de una enumeración («A, B, C,
+    # D» -> «A, B, C»), ese elemento suelto sobra: la coma anterior ya prometía
+    # una lista que no se va a completar.
+    if cortado and len(pal) > 2 and pal[-2].endswith(","):
+        pal = pal[:-1]
+    while pal and pal[-1].lower().strip(",;.:") in CONECTORES_C:
         pal.pop()
-    return " ".join(pal).strip(" .,;")
+    return " ".join(pal).strip(" .,;:-–—")
 
 def _materia_c(t):
     """«Orgánica de modificación de la Ley Orgánica 5/2005, de 17 de noviembre,
@@ -1575,6 +1771,7 @@ def render_boe_grid_ssr(day: dict) -> str:
             f'<p class="standfirst">{esc_html(s.get("standfirst"))}</p>'
             f'{articulo}'
             f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
+            f'{ficha_link(s)}'
             f'<span class="ref">{esc_html(s.get("ref",""))}</span></div>'
             f'</article>')
     return "".join(out)
@@ -1794,6 +1991,7 @@ def render_boe_destacados_ssr(day: dict, permalink: str) -> str:
             f'<h3>{esc_html(s.get("headline"))}</h3>'
             f'{_parrafo("linea", una_linea(s, 120))}'
             f'<div class="foot"><span>{esc_html(recortar(s.get("dept",""), 44))}</span>'
+            f'{ficha_link(s, "normas/")}'
             f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer →</a></div>'
             f'</article>')
     return "".join(out)
@@ -2277,7 +2475,194 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> None:
     log(f"ediciones/index.html generado con {len(entradas)} entradas")
 
 
-def renderizar_sitemap(entradas: list[dict]) -> None:
+RE_REF_BOE = re.compile(r"^BOE-[A-Z]-\d{4}-\d+$")
+
+
+def ref_norma(story: dict) -> str:
+    """El identificador oficial, que es lo que da una URL estable y única."""
+    r = (story.get("ref") or "").strip()
+    return r if RE_REF_BOE.fullmatch(r) else ""
+
+
+def ficha_link(story: dict, prefijo: str = "../normas/") -> str:
+    r = ref_norma(story)
+    if not r:
+        return ""
+    return (f'<a class="srclink fichalink" href="{prefijo}{r}.html">Ficha completa</a>')
+
+
+def _ficha_filas(s: dict, day: dict) -> str:
+    """La tabla de datos duros. Es lo que un buscador y un agente de IA pueden
+    leer sin interpretar prosa, y lo que busca quien llega desde Google."""
+    filas = []
+    def fila(k, v):
+        if v:
+            filas.append(f"<dt>{esc_html(k)}</dt><dd>{esc_html(v)}</dd>")
+    d = s.get("datos") or {}
+    fila("Identificador", s.get("ref", ""))
+    fila("Publicado", fmt_date_es(fecha_boe_iso(day)))
+    fila("Organismo", s.get("dept", ""))
+    if d.get("desde") and d.get("hasta"):
+        fila("Vigencia", f"del {d['desde']} al {d['hasta']}")
+    elif d.get("hasta"):
+        fila("Hasta", d["hasta"])
+    fila("Entrada en vigor", d.get("vigor", ""))
+    fila("Importe", d.get("importe", ""))
+    fila("Plazo", d.get("plazo", ""))
+    return "".join(filas)
+
+
+def jsonld_for_norma(s: dict, day: dict, page_url: str) -> str:
+    oficial = titulo_oficial_de(s)
+    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
+    norma = {
+        "@type": "Legislation",
+        "name": oficial or s.get("headline", ""),
+        "datePublished": fecha_boe_iso(day),
+        "inLanguage": "es-ES",
+        "legislationJurisdiction": "ES",
+        "url": page_url,
+    }
+    if oficial and s.get("headline"):
+        norma["alternativeHeadline"] = s["headline"]
+    if ref_norma(s):
+        norma["legislationIdentifier"] = s["ref"]
+    if s.get("url"):
+        norma["isBasedOn"] = s["url"]
+    if s.get("dept"):
+        norma["legislationPassedBy"] = {"@type": "GovernmentOrganization", "name": s["dept"]}
+
+    articulo = {
+        "@type": "NewsArticle",
+        "headline": recortar(s.get("headline", ""), 110),
+        "description": recortar(oficial, 260),
+        "datePublished": fecha_boe_iso(day),
+        "dateModified": day["id"],
+        "inLanguage": "es-ES",
+        "author": editor,
+        "publisher": editor,
+        "isBasedOn": s.get("url") or SITE_URL,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
+        "about": norma,
+    }
+    miga = {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
+            {"@type": "ListItem", "position": 2, "name": "Archivo",
+             "item": f"{SITE_URL}ediciones/"},
+            {"@type": "ListItem", "position": 3, "name": fmt_date_es(day["id"]),
+             "item": f"{SITE_URL}ediciones/{day['id']}.html"},
+            {"@type": "ListItem", "position": 4, "name": recortar(s.get("headline", ""), 90),
+             "item": page_url},
+        ],
+    }
+    return jsonld_script([articulo, miga])
+
+
+def renderizar_normas(dias: list[dict]) -> list[dict]:
+    """Una página por disposición del BOE.
+
+    Es la palanca de posicionamiento que faltaba: nadie busca «BOE del 19 de
+    septiembre», la gente busca «Orden INT/977/2026» o «prórroga controles
+    fronterizos Italia». Una URL por norma, con el título oficial en el
+    <title>, el dato duro en una ficha legible por máquina y el enlace a la
+    fuente, es lo que compite por esa consulta. Y son cientos de páginas nuevas
+    con contenido distinto entre sí, no una sola que lo repite todo."""
+    if not TEMPLATE_NORMA.exists():
+        log("  template_norma.html no está; no se generan fichas por norma")
+        return []
+    NORMAS_DIR.mkdir(exist_ok=True)
+    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    fichas, escritas = [], 0
+
+    for day in sorted(dias, key=lambda d: d["id"]):
+        stories = (day.get("boe", {}) or {}).get("stories") or []
+        conocidas = [x for x in stories if ref_norma(x)]
+        for s in conocidas:
+            ref = ref_norma(s)
+            page_url = f"{SITE_URL}normas/{ref}.html"
+            oficial = titulo_oficial_de(s)
+            try:
+                relacionadas = "".join(
+                    f'<li><a href="{esc_attr(ref_norma(o))}.html">{esc_html(o.get("headline",""))}</a></li>'
+                    for o in conocidas if ref_norma(o) != ref)[:12000]
+                frag = {
+                    "TITLE": esc_html(cerrar(primera_mayuscula(oficial) or s.get("headline", ""), 88)
+                                      + " | BOE Digest"),
+                    "META_DESC": esc_attr(recortar(
+                        (frase_datos_clave(s.get("datos") or {}) + " " +
+                         primera_mayuscula(objeto_de(oficial) or oficial)).strip(), 155)),
+                    "CANONICAL": page_url,
+                    "JSONLD": jsonld_for_norma(s, day, page_url),
+                    "EDITION_DATE": esc_html(fmt_date_es(day["id"])),
+                    "MIGA": (f'<a href="../">Portada</a> › <a href="../ediciones/">Archivo</a> › '
+                             f'<a href="../ediciones/{day["id"]}.html">{esc_html(fmt_date_es(day["id"]))}</a>'
+                             f' › <span aria-current="page">{esc_html(s.get("ref",""))}</span>'),
+                    "KICKER": esc_html(CAT_LABEL.get(s.get("cat") or "otros", "Varios")),
+                    "HEADLINE": esc_html(s.get("headline", "")),
+                    "STANDFIRST": esc_html(primera_mayuscula(oficial)),
+                    "FICHA": _ficha_filas(s, day),
+                    "CUERPO": body_html_ssr(s.get("body")),
+                    "FUENTE": (f'Texto oficial: <a class="srclink" href="{esc_attr(s.get("url",""))}" '
+                               f'target="_blank" rel="noopener">{esc_html(s.get("ref",""))} en el BOE ↗</a>'
+                               if s.get("url") else "Fuente: Boletín Oficial del Estado."),
+                    "RELACIONADAS": relacionadas,
+                    "RELACIONADAS_HIDDEN": "" if relacionadas else "hidden",
+                }
+                html = _replace_placeholders(plantilla, frag)
+            except Exception as exc:                          # noqa: BLE001
+                log(f"  normas/{ref}.html NO generada: {exc}")
+                continue
+            destino = NORMAS_DIR / f"{ref}.html"
+            if not destino.exists() or destino.read_text(encoding="utf-8") != html:
+                destino.write_text(html, encoding="utf-8")
+                escritas += 1
+            fichas.append({"url": page_url, "lastmod": day["id"], "id": ref})
+
+    _indice_normas(dias, plantilla)
+    log(f"normas/: {len(fichas)} fichas ({escritas} escritas o actualizadas)")
+    return fichas
+
+
+def _indice_normas(dias: list[dict], plantilla: str) -> None:
+    """normas/index.html. GitHub Pages no lista directorios: sin esta página la
+    carpeta devuelve 404 y el enlace del pie apunta a la nada."""
+    bloques = []
+    for day in sorted(dias, key=lambda d: d["id"], reverse=True):
+        filas = "".join(
+            f'<li><a href="{esc_attr(ref_norma(x))}.html">{esc_html(x.get("headline",""))}</a>'
+            f' <span class="ref">{esc_html(x.get("ref",""))}</span></li>'
+            for x in ((day.get("boe", {}) or {}).get("stories") or []) if ref_norma(x))
+        if filas:
+            bloques.append(f'<h2 class="rotulo">{esc_html(fmt_date_es(day["id"]))}</h2>'
+                           f'<ul class="indice">{filas}</ul>')
+    cuerpo = "".join(bloques) or "<p>Todavía no hay fichas publicadas.</p>"
+    url = f"{SITE_URL}normas/"
+    frag = {
+        "TITLE": "Todas las normas del BOE, una a una | BOE Digest",
+        "META_DESC": esc_attr("Índice de las disposiciones del BOE cubiertas por BOE Digest: "
+                              "una ficha por norma, con el dato clave y el enlace oficial."),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{
+            "@type": "CollectionPage", "name": "Fichas por norma", "url": url,
+            "inLanguage": "es-ES",
+            "isPartOf": {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo",
+                         "url": SITE_URL}}]),
+        "EDITION_DATE": esc_html(fmt_date_es(dt.date.today().isoformat())),
+        "MIGA": ('<a href="../">Portada</a> › <span aria-current="page">Normas</span>'),
+        "KICKER": "Índice",
+        "HEADLINE": "Una ficha por norma",
+        "STANDFIRST": ("Cada disposición del BOE que hemos cubierto tiene su propia página, "
+                       "con el dato duro por delante y el texto oficial a un clic."),
+        "FICHA": "", "CUERPO": cuerpo, "FUENTE": "Fuente: Boletín Oficial del Estado.",
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    }
+    (NORMAS_DIR / "index.html").write_text(_replace_placeholders(plantilla, frag),
+                                           encoding="utf-8")
+
+
+def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
     """Todas las ediciones, no solo la ventana de render, y con la fecha de
     modificación real de cada una."""
     hoy = dt.date.today().isoformat()
@@ -2292,6 +2677,14 @@ def renderizar_sitemap(entradas: list[dict]) -> None:
         freq = "weekly" if e["id"] >= limite else "monthly"
         urls.append(f"  <url>\n    <loc>{e['url']}</loc>\n    <lastmod>{e['lastmod']}</lastmod>\n"
                     f"    <changefreq>{freq}</changefreq>\n    <priority>0.7</priority>\n  </url>")
+    if fichas:
+        urls.append(f"  <url>\n    <loc>{SITE_URL}normas/</loc>\n    <lastmod>{hoy}</lastmod>\n"
+                    "    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>")
+    for f in sorted(fichas or [], key=lambda x: x["lastmod"], reverse=True):
+        # Una ficha por norma no cambia nunca una vez publicada: el BOE no
+        # reescribe lo publicado, lo corrige con otra disposición.
+        urls.append(f"  <url>\n    <loc>{f['url']}</loc>\n    <lastmod>{f['lastmod']}</lastmod>\n"
+                    f"    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -2346,16 +2739,19 @@ def renderizar() -> None:
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(dias)
+    fichas = renderizar_normas(dias)
     renderizar_archivo(entradas, dias)
-    renderizar_sitemap(entradas)
+    renderizar_sitemap(entradas, fichas)
     renderizar_feed(dias)
 
     # Portada y archivo cambian cada día; las ediciones, solo las que se han
     # regenerado de verdad. Se avisa de esas, no de las 300 del archivo.
     # El JSON se deja montado aquí para que el workflow solo tenga que hacer
     # un curl: así no hay que escribir Python dentro del YAML.
+    hoy_iso = dt.date.today().isoformat()
+    fichas_hoy = [f["url"] for f in fichas if f["lastmod"] == hoy_iso]
     urls = list(dict.fromkeys([SITE_URL, f"{SITE_URL}ediciones/"]
-                              + DIAG.get("urls_cambiadas", [])))[:1000]
+                              + DIAG.get("urls_cambiadas", []) + fichas_hoy))[:1000]
     INDEXNOW_JSON.write_text(json.dumps({
         "host": INDEXNOW_HOST,
         "key": INDEXNOW_KEY,
@@ -2373,7 +2769,7 @@ def main() -> None:
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
-    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR):
+    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR, NORMAS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
