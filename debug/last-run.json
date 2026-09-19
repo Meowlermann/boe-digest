@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-19T11:19:46.883550+00:00",
+  "inicio": "2026-09-19T11:37:13.027036+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/19/index.php",
@@ -121,7 +121,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;1868dc17&#46;1789816792&#46;3c1a24a1 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;a92d3e17&#46;1789817842&#46;14db5767 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
   },
   "senado_fallback": [
     462,
@@ -134,5 +134,5 @@
     "congreso_docs": 4,
     "senado_docs": 0
   },
-  "fin": "2026-09-19T11:20:01.280663+00:00"
+  "fin": "2026-09-19T11:37:32.384563+00:00"
 }
