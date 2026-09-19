@@ -1419,16 +1419,7 @@ es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre
         if not titulo:
             continue          # antes que publicar un nombre de fichero, no se publica
 
-        cuerpo = []
-        if datos.get("puntos"):
-            cuerpo.append("En el orden del día: " + "; ".join(
-                _cerrar_c(_asunto_c(p), 150) for p in datos["puntos"][:6]) + ".")
-        if datos.get("plazo_enmiendas"):
-            cuerpo.append(f"Quien quiera cambiar este texto tiene hasta el "
-                          f"{datos['plazo_enmiendas']} para registrar enmiendas"
-                          + (f", en la Comisión de {datos['comision']}." if datos.get("comision") else "."))
-        cuerpo.append("Auditoría del día: todo lo que aparece aquí procede literalmente de "
-                      "la publicación oficial enlazada.")
+        cuerpo = cuerpo_cortes(datos, d)
 
         base["feed"].append({
             "chamber": camara,
@@ -1505,8 +1496,99 @@ def _asunto_c(punto: str) -> str:
     s = re.sub(r"\s*A petici[óo]n del Grupo Parlamentario.*$", "", s, flags=re.I)
     return s.strip(" ,.;")
 
+def _objeto_ley(t: str) -> str:
+    """De qué va la ley, en una frase suya. Primero la fórmula ritual («tiene
+    por objeto»), que es la declaración explícita; si no está, la primera frase
+    de la exposición de motivos, que es donde el legislador cuenta el problema."""
+    for patron in (r"tiene\s+por\s+objeto\s+([^.]{40,320}\.)",
+                   r"El\s+objeto\s+de\s+(?:esta|la presente)\s+\w+\s+es\s+([^.]{40,320}\.)",
+                   r"(?:se\s+)?regula(?:n)?\s+en\s+(?:esta|la presente)\s+\w+\s+([^.]{40,320}\.)"):
+        m = re.search(patron, t, re.I)
+        if m:
+            return _limpiar_c(m.group(1)).strip(" .") + "."
+    # La exposición de motivos empieza tras el título en mayúsculas y un «I».
+    m = re.search(r"\bI\s+([A-ZÁÉÍÓÚÑ][^.]{80,560}\.)", t)
+    if m:
+        return _limpiar_c(m.group(1)).strip(" .") + "."
+    return ""
+
+
+def _votacion(t: str) -> str:
+    """El resultado de una votación es el dato más noticioso de un pleno."""
+    m = re.search(r"votos?\s+emitidos,?\s*(\d+)[^.]{0,60}?a\s+favor,?\s*(\d+)"
+                  r"[^.]{0,60}?en\s+contra,?\s*(\d+)(?:[^.]{0,60}?abstenciones,?\s*(\d+))?",
+                  t, re.I)
+    if not m:
+        return ""
+    base = f"{m.group(2)} votos a favor, {m.group(3)} en contra"
+    return base + (f" y {m.group(4)} abstenciones." if m.group(4) else ".")
+
+
+def cuerpo_cortes(d: dict, doc: dict) -> list:
+    """El cuerpo del artículo de Cortes.
+
+    El objetivo de esta página es ahorrarle a la gente leerse el original. Un
+    artículo que solo diga «procede de la publicación oficial enlazada» no
+    ahorra nada: obliga a abrir el PDF, que es exactamente lo que veníamos a
+    evitar. Aquí se cuenta lo que dice el boletín —de qué va, de dónde viene,
+    quién lo tramita, hasta cuándo se puede tocar— con sus propias palabras."""
+    c = []
+    if d.get("objeto"):
+        c.append("De qué va: " + primera_mayuscula(d["objeto"]))
+
+    if d.get("procedente"):
+        origen = f"Viene del {d['procedente']}"
+        if d.get("convalidado"):
+            origen += (f", que el Congreso convalidó el {d['convalidado']} y decidió tramitar "
+                       f"además como proyecto de ley")
+            origen += (". Convalidar es dejarlo en vigor; tramitarlo como ley significa que "
+                       "ahora sí se puede enmendar, y que el texto final puede no parecerse "
+                       "al que aprobó el Gobierno.")
+        else:
+            origen += "."
+        c.append(origen)
+    elif d.get("autor"):
+        quien = d["autor"]
+        articulo = "el " if quien in ("Gobierno", "Senado", "Congreso") else ""
+        c.append(f"Lo trae {articulo}{quien}.")
+
+    if d.get("comision"):
+        quien = f"Lo lleva la Comisión de {d['comision']}"
+        if d.get("competencia_plena"):
+            quien += (", con competencia legislativa plena: lo aprueba la comisión, "
+                      "sin pasar por el Pleno.")
+        else:
+            quien += "."
+        c.append(quien)
+
+    if d.get("plazo_enmiendas"):
+        plazo = (f"Quien quiera cambiar el texto tiene hasta el {d['plazo_enmiendas']} "
+                 f"para registrar enmiendas")
+        plazo += f" ({d['dias_plazo']})." if d.get("dias_plazo") else "."
+        if d.get("urgencia"):
+            plazo += (" Se tramita por el procedimiento de urgencia, que reduce los plazos "
+                      "a la mitad.")
+        c.append(plazo)
+    elif d.get("urgencia"):
+        c.append("Se tramita por el procedimiento de urgencia, que reduce los plazos a la mitad.")
+
+    if d.get("puntos"):
+        c.append("En el orden del día: " + "; ".join(
+            _cerrar_c(_asunto_c(p), 150) for p in d["puntos"][:6]) + ".")
+    if d.get("votacion"):
+        c.append("Resultado de la votación: " + d["votacion"])
+
+    # La procedencia va al final y con el dato concreto, no como coletilla: si
+    # no hay nada más que contar, al menos se dice qué documento es.
+    ident = d.get("expediente") or doc.get("nombre", "")
+    sello = f"Fuente: {doc.get('nombre','publicación oficial')}"
+    sello += f", expediente {ident}." if d.get("expediente") else "."
+    c.append(sello)
+    return c
+
+
 def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
-    t = _limpiar_c(texto[:9000])
+    t = _limpiar_c(texto[:16000])
     fecha = _fecha_sesion(t)
 
     # --- BOCG serie A y B: proyectos y proposiciones de ley ---
@@ -1521,16 +1603,38 @@ def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
             autor = ma.group(1).strip()
             if "Grupo Parlamentario" in autor:
                 autor = _grupo_c(autor) or autor
-        com = re.search(r"a la Comisi[óo]n de ([A-ZÁÉÍÓÚÑ][\w\sáéíóúñ,]{2,50}?)\.", t)
+        # La comisión puede acabar en punto («…a la Comisión de Sanidad.») o
+        # seguir con la competencia («…y Migraciones, para su aprobación…»).
+        com = re.search(r"(?:remisi[óo]n|env[íi]o)?\s*a la Comisi[óo]n de "
+                        r"([A-ZÁÉÍÓÚÑ][\w\sáéíóúñ,]{2,90}?)"
+                        r"(?=\.|,\s*(?:para|con|a fin)|\s+para su)", t)
+        # Dos redacciones para lo mismo: «el plazo … finaliza el día X» y
+        # «abrir un plazo de ocho días hábiles que expira el día X».
         plazo = re.search(rf"plazo de enmiendas.{{0,120}}?finaliza el d[íi]a\s+"
                           rf"(\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})", t, re.I)
+        if not plazo:
+            plazo = re.search(rf"plazo\s+de\s+[\w\s]{{0,24}}?(?:que\s+)?(?:expira|finaliza|"
+                              rf"termina|vence)\s+el\s+d[íi]a\s+"
+                              rf"(\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})", t, re.I)
+        mdias = re.search(r"plazo de ([\w]+ d[íi]as?(?:\s+h[áa]biles)?)", t, re.I)
+        mproc = re.search(rf"procedente del (Real Decreto-ley\s+[\d/]+,?\s*de\s+\d{{1,2}} de "
+                          rf"(?:{MESES_RE}))", t, re.I)
+        mconv = re.search(rf"sesi[óo]n\s+del\s+d[íi]a\s+(\d{{1,2}} de (?:{MESES_RE}) de \d{{4}}),"
+                          rf"\s*en la que se acord[óo] su convalidaci[óo]n", t, re.I)
         nucleo = re.sub(r"^(?:Proyecto|Proposici[óo]n) de Ley\s+(?:Org[áa]nica\s+)?(?:del?\s+|sobre\s+)?",
                         "", titulo, flags=re.I)
         return {"clase": clase, "expediente": exp, "titulo": titulo, "nucleo": nucleo,
                 "de_decreto": bool(re.search(r"procedente del Real Decreto-ley", t, re.I)),
-                "autor": autor, "comision": com.group(1).strip() if com else "",
-                "plazo_enmiendas": plazo.group(1) if plazo else "", "fecha": fecha,
-                "puntos": []}
+                "autor": autor,
+                "comision": " ".join(com.group(1).split()).strip(" ,.") if com else "",
+                "plazo_enmiendas": plazo.group(1) if plazo else "",
+                "dias_plazo": mdias.group(1).lower() if mdias else "",
+                "procedente": mproc.group(1) if mproc else "",
+                "convalidado": mconv.group(1) if mconv else "",
+                "competencia_plena": bool(re.search(r"competencia legislativa plena", t, re.I)),
+                "urgencia": bool(re.search(r"procedimiento de urgencia", t, re.I)),
+                "objeto": _objeto_ley(t),
+                "fecha": fecha, "puntos": []}
 
     # --- Diario de Sesiones ---
     puntos = _orden_del_dia(t)
@@ -1543,6 +1647,7 @@ def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
             mc = re.search(r"N[úu]m\. \d+\s+([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ\s,Y]{4,55}?)\s+PRESIDENCIA", t)
         organo = ("Comisión de " + " ".join(mc.group(1).split()).title()) if mc else "Comisión"
     return {"clase": "DIARIO", "organo": organo, "fecha": fecha, "puntos": puntos,
+            "votacion": _votacion(t),
             "grupos": [g for g in (_grupo_c(p) for p in puntos) if g]}
 
 
