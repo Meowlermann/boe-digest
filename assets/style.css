@@ -386,3 +386,27 @@ blockquote.pull p{ font-family:'Lora',Georgia,serif; }
 .sigue-f{ margin-left:auto; font-size:22px; color:var(--red); }
 .sigue.cortes .sigue-n, .sigue.cortes .sigue-f{ color:var(--congreso); }
 .sigue.cortes a:hover{ border-color:var(--congreso); }
+
+/* --- Página por norma -------------------------------------------------- */
+.miga{font:500 11px/1.4 "Work Sans",system-ui,sans-serif;letter-spacing:.04em;
+  text-transform:uppercase;opacity:.72;margin:14px 0 6px}
+.miga a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}
+.miga span[aria-current]{opacity:.6}
+.norma{max-width:44rem;margin:0 auto 28px}
+.norma h1.display{font-size:clamp(26px,5.4vw,46px);line-height:1.02;margin:4px 0 12px}
+.norma .entradilla{font:400 17px/1.55 Lora,Georgia,serif;margin:0 0 18px;opacity:.9}
+.ficha{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0 0 22px;
+  padding:14px 16px;border:1px solid color-mix(in srgb,currentColor 18%,transparent);
+  border-left:4px solid #c81e2c;font:14px/1.5 "Work Sans",system-ui,sans-serif}
+.ficha dt{font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.05em;
+  opacity:.7;align-self:center}
+.ficha dd{margin:0}
+.norma .cuerpo p{font:400 16px/1.65 Lora,Georgia,serif;margin:0 0 14px}
+.norma .fuente{font:500 13px/1.5 "IBM Plex Mono",ui-monospace,monospace;opacity:.8;
+  border-top:1px solid color-mix(in srgb,currentColor 18%,transparent);padding-top:12px}
+.relacionadas ul.indice{list-style:none;padding:0;margin:8px 0 0}
+.relacionadas ul.indice li{padding:7px 0;border-bottom:1px dotted
+  color-mix(in srgb,currentColor 25%,transparent)}
+.relacionadas ul.indice a{color:inherit;text-decoration:none;
+  font:600 14px/1.35 "Work Sans",system-ui,sans-serif}
+.relacionadas ul.indice a:hover{text-decoration:underline}
