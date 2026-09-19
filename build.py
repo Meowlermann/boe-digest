@@ -1204,26 +1204,227 @@ es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre
     except Exception as exc:                                  # noqa: BLE001
         log(f"  no se pudo escribir la muestra de Cortes: {exc}")
 
-    log("Cortes: inventario determinista")
+    log("Cortes: lectura estructurada de los boletines")
     hoy = dt.date.today()
     fecha_txt = f"{hoy.day} {MES_ABBR[hoy.month-1].lower()} {hoy.year}"
     for d in docs:
         camara = d.get("chamber_hint", "congreso")
-        texto = d.get("texto", "")
-        lineas = [ln.strip() for ln in texto.splitlines() if len(ln.strip()) > 70][:4]
+        try:
+            datos = parsear_cortes(d.get("nombre", ""), d.get("tipo", ""), d.get("texto", ""))
+            titulo, entradilla = titular_cortes(datos)
+        except Exception as exc:                              # noqa: BLE001
+            log(f"  no se pudo leer {d.get('nombre')}: {exc}")
+            datos, titulo, entradilla = {}, "", ""
+        if not titulo:
+            continue          # antes que publicar un nombre de fichero, no se publica
+
+        cuerpo = []
+        if datos.get("puntos"):
+            cuerpo.append("En el orden del día: " + "; ".join(
+                _cerrar_c(_asunto_c(p), 150) for p in datos["puntos"][:6]) + ".")
+        if datos.get("plazo_enmiendas"):
+            cuerpo.append(f"Quien quiera cambiar este texto tiene hasta el "
+                          f"{datos['plazo_enmiendas']} para registrar enmiendas"
+                          + (f", en la Comisión de {datos['comision']}." if datos.get("comision") else "."))
+        cuerpo.append("Auditoría del día: todo lo que aparece aquí procede literalmente de "
+                      "la publicación oficial enlazada.")
+
         base["feed"].append({
             "chamber": camara,
             "type": d["tipo"],
-            "date": fecha_txt,
-            "headline": f"REGISTRADO HOY: {d['nombre'].upper()}",
-            "standfirst": ("Publicación oficial de hoy. Reproducimos el inventario "
-                           "verificable y el enlace al documento completo."),
-            "body": (lineas or ["El documento está disponible en el enlace de la fuente."]) +
-                    ["Auditoría del día: todo lo que aparece aquí procede literalmente de "
-                     "la publicación oficial enlazada."],
+            "date": datos.get("fecha") or fecha_txt,
+            "headline": titulo,
+            "standfirst": entradilla,
+            "body": cuerpo,
             "source": {"label": d["nombre"], "url": d["url"]},
         })
     return base
+
+
+# ---------------------------------------------------------------------------
+# Cortes: del PDF al titular
+# ---------------------------------------------------------------------------
+#
+# Antes esta sección publicaba «REGISTRADO HOY: BOCG-15-A-114-1.PDF», que es un
+# nombre de fichero, no una noticia. Los boletines del Congreso tienen una
+# estructura muy regular —expediente, autor, órgano, orden del día, acuerdos de
+# la Mesa— y de ahí sale lo que de verdad importa: qué se tramita, quién lo
+# trae y hasta cuándo se puede enmendar.
+
+MESES_RE = ("enero|febrero|marzo|abril|mayo|junio|julio|agosto|"
+            "septiembre|octubre|noviembre|diciembre")
+
+def _limpiar_c(t: str) -> str:
+    t = t.replace("‑", "-").replace("\xad", "")
+    t = re.sub(r"\.{3,}\s*\d*", " ", t)                 # puntos guía del índice
+    t = re.sub(r"cve:\s*\S+", " ", t)
+    t = re.sub(r"\s+", " ", t)
+    return t.strip()
+
+def _grupo_c(t: str) -> str:
+    m = re.search(r"Grupo Parlamentario\s+([A-ZÁÉÍÓÚÑ][\w\sáéíóúñ\-]{2,40}?)"
+                  r"(?:,|\.|\s+en el Congreso|\s+relativa|\s+sobre|\s+para|$)", t)
+    if not m:
+        return ""
+    g = " ".join(m.group(1).split())
+    return {"Plurinacional SUMAR":"SUMAR","Popular":"PP","Socialista":"PSOE",
+            "Republicano":"ERC","Vasco":"PNV","Mixto":"Grupo Mixto"}.get(g, g)
+
+def _fecha_sesion(t: str) -> str:
+    m = re.search(rf"celebrada el\s+\w+\s+(\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})", t, re.I)
+    return m.group(1) if m else ""
+
+def _orden_del_dia(t: str) -> list:
+    """Los puntos del orden del día: cada uno empieza por raya."""
+    m = re.search(r"ORDEN DEL D[ÍI]A(.{0,6000})", t, re.S | re.I)
+    if not m:
+        return []
+    bloque = m.group(1)
+    puntos = []
+    for trozo in re.split(r"\s—\s|\n—\s*|^—\s*", bloque, flags=re.M)[1:]:
+        texto = _limpiar_c(trozo)
+        texto = re.split(r"\(N[úu]mero de expediente", texto)[0]
+        texto = re.sub(r"«BOCG.*?»", "", texto)
+        texto = re.sub(r"serie [A-Z], n[úu]mero [\d‑\-]+, de .{0,30}\d{4}\.?", "", texto)
+        texto = _limpiar_c(texto).strip(" ,.;")
+        if 25 < len(texto) < 400:
+            puntos.append(texto)
+    # el cuerpo del diario repite el orden del día en mayúsculas
+    vistos, unicos = set(), []
+    for p in puntos:
+        k = re.sub(r"[^a-záéíóúñ0-9]", "", p.lower())[:70]
+        if k not in vistos:
+            vistos.add(k); unicos.append(p)
+    return unicos
+
+def _asunto_c(punto: str) -> str:
+    """Quita el «Del Grupo Parlamentario X,» de delante y deja el asunto."""
+    s = re.sub(r"^Del?\s+(?:la\s+)?Grupo Parlamentario[^,]{0,45},\s*", "", punto, flags=re.I)
+    s = re.sub(r"^(?:relativa a|sobre|para|por la que se)\s+", "", s, flags=re.I)
+    s = re.sub(r"\s*A petici[óo]n del Grupo Parlamentario.*$", "", s, flags=re.I)
+    return s.strip(" ,.;")
+
+def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
+    t = _limpiar_c(texto[:9000])
+    fecha = _fecha_sesion(t)
+
+    # --- BOCG serie A y B: proyectos y proposiciones de ley ---
+    m = re.search(r"(PROYECTO DE LEY|PROPOSICI[ÓO]N DE LEY)\s+(\d{3}/\d{6})\s+(.{10,260}?)"
+                  r"(?=\s+La Mesa|\s*\(procedente|\.\s+En cumplimiento)", t, re.I)
+    if m:
+        clase, exp, titulo = m.group(1).upper(), m.group(2), _limpiar_c(m.group(3)).strip(" .")
+        autor = ""
+        ma = re.search(r"Autor:\s*(Gobierno|Grupo Parlamentario [^,.]{2,40}|[A-ZÁÉÍÓÚÑ][^,.]{2,40}?)"
+                       r"(?=\s+(?:Proyecto|Proposici|Acuerdo|Exposici|En ejecuci))", t)
+        if ma:
+            autor = ma.group(1).strip()
+            if "Grupo Parlamentario" in autor:
+                autor = _grupo_c(autor) or autor
+        com = re.search(r"a la Comisi[óo]n de ([A-ZÁÉÍÓÚÑ][\w\sáéíóúñ,]{2,50}?)\.", t)
+        plazo = re.search(rf"plazo de enmiendas.{{0,120}}?finaliza el d[íi]a\s+"
+                          rf"(\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})", t, re.I)
+        nucleo = re.sub(r"^(?:Proyecto|Proposici[óo]n) de Ley\s+(?:Org[áa]nica\s+)?(?:del?\s+|sobre\s+)?",
+                        "", titulo, flags=re.I)
+        return {"clase": clase, "expediente": exp, "titulo": titulo, "nucleo": nucleo,
+                "de_decreto": bool(re.search(r"procedente del Real Decreto-ley", t, re.I)),
+                "autor": autor, "comision": com.group(1).strip() if com else "",
+                "plazo_enmiendas": plazo.group(1) if plazo else "", "fecha": fecha,
+                "puntos": []}
+
+    # --- Diario de Sesiones ---
+    puntos = _orden_del_dia(t)
+    organo = ""
+    if re.search(r"\bPLENO\b", t):
+        organo = "Pleno"
+    else:
+        mc = re.search(r"SESI[ÓO]N DE LA COMISI[ÓO]N DE\s+([A-ZÁÉÍÓÚÑ\s,Y]{4,60}?)\s+CELEBRADA", t)
+        if not mc:
+            mc = re.search(r"N[úu]m\. \d+\s+([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ\s,Y]{4,55}?)\s+PRESIDENCIA", t)
+        organo = ("Comisión de " + " ".join(mc.group(1).split()).title()) if mc else "Comisión"
+    return {"clase": "DIARIO", "organo": organo, "fecha": fecha, "puntos": puntos,
+            "grupos": [g for g in (_grupo_c(p) for p in puntos) if g]}
+
+
+# --- De los datos al titular -------------------------------------------------
+
+CONECTORES_C = {"de","del","la","el","los","las","y","e","en","con","para","por","a","al","que","se","su"}
+
+def _cerrar_c(t, n=64):
+    t = " ".join(t.split())
+    if len(t) > n:
+        t = t[:n]
+        if " " in t: t = t[:t.rfind(" ")]
+    pal = t.split()
+    while pal and pal[-1].lower().strip(",;.") in CONECTORES_C:
+        pal.pop()
+    return " ".join(pal).strip(" .,;")
+
+def _materia_c(t):
+    """«Orgánica de modificación de la Ley Orgánica 5/2005, de 17 de noviembre,
+    de la Defensa Nacional» -> «la Defensa Nacional»: lo que la ley regula va
+    detrás de la última fecha."""
+    partes = re.split(rf",\s*de\s+\d{{1,2}} de (?:{MESES_RE})(?: de \d{{4}})?,\s*", t)
+    cola = partes[-1] if len(partes) > 1 else t
+    cola = re.sub(r"^(?:por (?:la|el) que se \w+|de|sobre|para)\s+", "", cola, flags=re.I)
+    return cola.strip(" .,;")
+
+def _corto_c(t, n=64):
+    t = " ".join(t.split())
+    if len(t) <= n:
+        return t.strip(" .,;")
+    t = t[:n]
+    return t[:t.rfind(" ")].strip(" .,;") if " " in t else t
+
+def titular_cortes(d: dict) -> tuple:
+    """Devuelve (titular, entradilla). Lo relevante delante: qué se tramita,
+    quién lo trae y hasta cuándo se puede enmendar."""
+    if d["clase"] in ("PROYECTO DE LEY", "PROPOSICIÓN DE LEY", "PROPOSICION DE LEY"):
+        quien = d.get("autor") or ""
+        crudo = d.get("nucleo") or d.get("titulo", "")
+        crudo = re.sub(r"^(?:por (?:la|el) que se \w+)\s+", "", crudo, flags=re.I)
+        nucleo = _cerrar_c(crudo, 70)
+        if d.get("de_decreto"):
+            cabeza = "SE TRAMITA COMO LEY EL DECRETO DE"
+        elif quien.lower().startswith("gobierno"):
+            cabeza = "EL GOBIERNO LLEVA AL CONGRESO"
+        elif quien:
+            cabeza = f"{quien.upper()} LLEVA AL CONGRESO"
+        else:
+            cabeza = "ENTRA EN EL CONGRESO"
+        tit = f"{cabeza} {nucleo.upper()}"
+        if d.get("plazo_enmiendas"):
+            corta = re.sub(r"\s+de\s+\d{4}$", "", d["plazo_enmiendas"])
+            tit += f": ENMIENDAS HASTA EL {corta.upper()}"
+        partes = [f"Expediente {d['expediente']}"]
+        if d.get("comision"):
+            partes.append(f"se tramita en la Comisión de {d['comision']}")
+        if d.get("plazo_enmiendas"):
+            partes.append(f"el plazo de enmiendas acaba el {d['plazo_enmiendas']}")
+        return tit, ", ".join(partes) + "."
+
+    puntos = d.get("puntos", [])
+    organo = d.get("organo", "El Pleno")
+    if not puntos:
+        return f"SESIÓN DEL {organo.upper()}", "Publicación oficial del Diario de Sesiones."
+    asuntos = [_asunto_c(p) for p in puntos]
+    grupos = [g for g in d.get("grupos", []) if g]
+    if organo == "Pleno":
+        primero = _cerrar_c(_materia_c(asuntos[0]), 54)
+        g0 = grupos[0] if grupos else ""
+        tit = (f"{g0.upper()} LLEVA AL PLENO {primero.upper()}" if g0
+               else f"EL PLENO DEBATE {primero.upper()}")
+        if len(asuntos) > 1:
+            tit += f", Y {len(asuntos)-1} ASUNTOS MÁS"
+    else:
+        comparecientes = re.findall(r"(?:Del?|De la)\s+([a-záéíóúñ\s\-]{4,40}?)\s+(?:de la |de |del )"
+                                    r"(?:organizaci[óo]n |Fundaci[óo]n |)([A-ZÁÉÍÓÚÑ][\w\s]{2,30})", " | ".join(puntos))
+        quienes = ", ".join(dict.fromkeys(c[1].strip() for c in comparecientes))[:60]
+        tit = (f"{organo.upper()} ESCUCHA A {quienes.upper()}" if quienes
+               else f"{organo.upper()}: {_corto_c(asuntos[0], 52).upper()}")
+    entradilla = f"Orden del día de la sesión: {len(puntos)} punto{'s' if len(puntos)>1 else ''}."
+    if grupos:
+        entradilla += " Intervienen " + ", ".join(dict.fromkeys(grupos)) + "."
+    return tit, entradilla
 
 
 def fusionar_curado(dia: dict) -> dict:
