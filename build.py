@@ -549,6 +549,133 @@ def desambiguar_titulares(articulos: list[dict]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Lectura del texto de la norma: lo relevante casi nunca está en el título
+# ---------------------------------------------------------------------------
+#
+# El sumario del BOE solo trae títulos. Pero lo que le importa a quien lee
+# —hasta cuándo dura una prórroga, cuánto dinero se reparte, qué plazo hay
+# para pedir algo— está en el articulado. Ejemplo real: la orden que prorroga
+# los controles fronterizos con Italia no dice en su título hasta cuándo; el
+# «hasta las 24:00 horas del día 7 de octubre de 2026» está en el artículo 2.
+#
+# Así que para las piezas desarrolladas se descarga el texto íntegro y se
+# extraen los datos duros. Son ~16 peticiones más al día a boe.es.
+
+BOE_TXT = "https://www.boe.es/diario_boe/txt.php?id={ident}"
+MESES_RE = ("enero|febrero|marzo|abril|mayo|junio|julio|agosto|"
+            "septiembre|octubre|noviembre|diciembre")
+
+
+def texto_disposicion(ident: str) -> str:
+    """Texto íntegro de una disposición, desde su versión consolidada en HTML."""
+    if not re.fullmatch(r"BOE-[A-Z]-\d{4}-\d+", ident or ""):
+        return ""
+    r = get(BOE_TXT.format(ident=ident), tries=2)
+    if not r:
+        return ""
+    try:
+        soup = BeautifulSoup(r.text, "html.parser")
+        cuerpo = soup.find("div", id="textoxslt")
+        if not cuerpo:
+            return ""
+        return " ".join(cuerpo.get_text(" ", strip=True).split())
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudo leer el texto de {ident}: {exc}")
+        return ""
+
+
+def _fecha_larga(txt: str) -> str:
+    return " ".join(txt.split()).strip(" .,")
+
+
+def datos_clave(texto: str) -> dict:
+    """Los datos duros del articulado. Solo se extrae lo que aparece literal:
+    fechas, importes y plazos. Nada se deduce ni se redondea."""
+    if not texto:
+        return {}
+    d: dict = {}
+
+    # Vigencia. Cuidado: el preámbulo de una prórroga recita las fechas de las
+    # órdenes ANTERIORES, así que quedarse con la primera coincidencia da la
+    # fecha equivocada. Se busca primero el par «surtirá efectos desde … hasta
+    # …», que es el dispositivo; y si no aparece, la ÚLTIMA fecha del texto,
+    # porque el articulado va después de los antecedentes.
+    fecha = rf"(\d{{1,2}}\s+de\s+(?:{MESES_RE})\s+de\s+\d{{4}})"
+    hora = r"(?:las?\s+[\d:.]+\s*horas\s+del\s+d[íi]a\s+|el\s+(?:d[íi]a\s+)?)"
+
+    par = re.search(rf"(?:surtir[áa]\s+efectos|con\s+efectos|tendr[áa]\s+efectos|ser[áa]n?\s+"
+                    rf"de\s+aplicaci[óo]n)\s+desde\s+{hora}{fecha}\s+hasta\s+{hora}{fecha}",
+                    texto, re.I)
+    if par:
+        d["desde"], d["hasta"] = _fecha_larga(par.group(1)), _fecha_larga(par.group(2))
+    else:
+        finales = re.findall(rf"hasta\s+{hora}{fecha}", texto, re.I)
+        if finales:
+            d["hasta"] = _fecha_larga(finales[-1])
+        inicios = re.findall(rf"(?:surtir[áa]\s+efectos|con\s+efectos)\s+desde\s+{hora}{fecha}",
+                             texto, re.I)
+        if inicios:
+            d["desde"] = _fecha_larga(inicios[-1])
+
+    # Importe: el mayor que aparezca, que suele ser el del reparto
+    importes = []
+    for m in re.finditer(r"(\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?)\s*(?:euros|€)", texto):
+        try:
+            importes.append((float(m.group(1).replace(".", "").replace(",", ".")), m.group(1)))
+        except ValueError:
+            pass
+    if importes:
+        valor, literal = max(importes)
+        if valor >= 1000:                     # por debajo suele ser una tasa suelta
+            d["importe"] = f"{literal} euros"
+
+    m = re.search(r"plazo\s+de\s+(\w+|\d+)\s+(d[íi]as?|meses?|a[ñn]os?)", texto, re.I)
+    if m:
+        d["plazo"] = f"{m.group(1)} {m.group(2)}"
+
+    m = re.search(rf"entrar[áa]\s+en\s+vigor\s+(el\s+(?:d[íi]a\s+)?"
+                  rf"(?:\d{{1,2}}\s+de\s+(?:{MESES_RE})\s+de\s+\d{{4}}|siguiente[^.]{{0,60}}))",
+                  texto, re.I)
+    if m:
+        d["vigor"] = _fecha_larga(m.group(1))
+    return d
+
+
+def frase_datos_clave(d: dict) -> str:
+    """Una línea con lo que hay que saber, en el orden en que importa."""
+    trozos = []
+    if d.get("desde") and d.get("hasta"):
+        trozos.append(f"en vigor del {d['desde']} al {d['hasta']}")
+    elif d.get("hasta"):
+        trozos.append(f"con efecto hasta el {d['hasta']}")
+    elif d.get("vigor"):
+        trozos.append(f"entra en vigor {d['vigor']}")
+    if d.get("importe"):
+        trozos.append(f"importe: {d['importe']}")
+    if d.get("plazo"):
+        trozos.append(f"plazo de {d['plazo']}")
+    if not trozos:
+        return ""
+    return "Datos clave: " + "; ".join(trozos) + "."
+
+
+_SIN_MES = re.compile(rf"\s+de\s+\d{{4}}$", re.I)
+
+
+def coletilla_fecha(d: dict) -> str:
+    """Para el titular: «HASTA EL 7 DE OCTUBRE». Sin el año, que en un titular
+    del día sobra salvo que sea de otro año."""
+    hasta = d.get("hasta", "")
+    if not hasta:
+        return ""
+    corto = _SIN_MES.sub("", hasta)
+    anio = re.search(r"(\d{4})$", hasta)
+    if anio and anio.group(1) != str(dt.date.today().year):
+        corto = hasta
+    return f" HASTA EL {corto.upper()}"
+
+
+# ---------------------------------------------------------------------------
 # Titulares: buscar el núcleo noticioso, no cortar el título legal
 # ---------------------------------------------------------------------------
 #
@@ -707,6 +834,43 @@ def _medidas(m, t):
     return f"MEDIDAS {m.group(1).upper()}: {cerrar(_limpiar(m.group(2)), 52).upper()}"
 
 
+# Gentilicios que aparecen en los títulos del BOE como «República X»
+_PAISES = {"italiana": "Italia", "francesa": "Francia", "portuguesa": "Portugal",
+           "alemana": "Alemania", "hel[ée]nica": "Grecia", "checa": "Chequia",
+           "eslovaca": "Eslovaquia", "polaca": "Polonia", "argentina": "Argentina",
+           "dominicana": "República Dominicana", "oriental del uruguay": "Uruguay",
+           "bolivariana de venezuela": "Venezuela", "islámica de ir[áa]n": "Irán"}
+
+
+def _pais_de(t: str) -> str:
+    m = re.search(r"procedentes de (?:la |el |los |las )?(?:Rep[úu]blica\s+)?"
+                  r"([A-Za-zÁÉÍÓÚÑáéíóúñ][\wáéíóúñ\s]{2,30}?)(?:[.,]|$)", t)
+    if not m:
+        return ""
+    bruto = m.group(1).strip().lower()
+    for patron, nombre in _PAISES.items():
+        if re.fullmatch(patron, bruto):
+            return nombre
+    return m.group(1).strip()
+
+
+@_regla_titular(r"se prorroga(?:n)?\s+((?:el|la|los|las)\s+.+)")
+def _prorroga(m, t):
+    """Una prórroga tiene dos datos y el título solo trae uno: qué se prorroga.
+    El «con Italia» se rescata de la cola del título; el «hasta cuándo» lo pone
+    después datos_clave(), que sí ha leído el articulado."""
+    obj = re.split(r"\s+en las\s+|\s+con respecto a\s+|\s+respecto a\s+|,", m.group(1))[0]
+    # «el restablecimiento temporal de los controles fronterizos» habla de los
+    # controles, no del restablecimiento: se quita la nominalización de delante.
+    sin_nominal = re.sub(r"^(?:el|la|los|las)\s+\w+(?:\s+(?:temporal|parcial|extraordinari[oa]|"
+                         r"provisional))?\s+de\s+(?=(?:el|la|los|las)\s+\w{4,})", "", obj, flags=re.I)
+    if len(sin_nominal.split()) >= 2:
+        obj = sin_nominal
+    pais = _pais_de(t)
+    cola = f" CON {pais.upper()}" if pais else ""
+    return f"SE PRORROGAN {cerrar(_limpiar(obj), 46).upper()}{cola}"
+
+
 def titular_por_reglas(titulo: str) -> str:
     for patron, f in REGLAS_TITULAR:
         m = patron.search(titulo)
@@ -784,6 +948,13 @@ def articulo_deterministico(e: dict) -> dict:
     headline = (titular_bilateral(titulo) or titular_por_reglas(titulo)
                 or titular_de(obj, titulo))
 
+    # Lo relevante suele estar en el articulado, no en el título: se lee la
+    # norma y, si trae fecha de fin, se pone en el titular, que es donde la
+    # busca quien lee.
+    clave = datos_clave(texto_disposicion(e.get("ident", "")))
+    if clave.get("hasta") and re.search(r"PRORROG|RESTABLEC|SUSPEN|AMPL[IÍ]A|ALARG", headline):
+        headline = cerrar(headline + coletilla_fecha(clave), 96)
+
     participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
     if quien and epi:
         origen = f"{participio} por {quien}, en el epígrafe «{epi}»"
@@ -797,6 +968,9 @@ def articulo_deterministico(e: dict) -> dict:
         f"{nombre_inst} {origen}. Lo que hace: {obj[:400]}.",
         explicacion,
     ]
+    frase = frase_datos_clave(clave)
+    if frase:
+        body.insert(0, frase)          # lo primero que se lee es el dato duro
     if e.get("seccion", "").startswith("I."):
         body.append(
             "Va en la Sección I del BOE, la de disposiciones generales: es donde aparece lo "
@@ -811,6 +985,7 @@ def articulo_deterministico(e: dict) -> dict:
         # casa es nuestro; esto es de la norma, y es lo que se declara como
         # nombre en los datos estructurados.
         "titulo_oficial": titulo,
+        "datos": clave,
         "body": body,
         "dept": quien,
         "ref": e.get("ident") or e.get("seccion") or "",
@@ -1015,6 +1190,19 @@ es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre
                 base["scoreboard"] = resp["scoreboard"]
             log(f"Cortes: {len(base['feed'])} artículos redactados con modelo")
             return base
+
+    # Diagnóstico: una muestra del texto extraído de cada documento. Sin esto
+    # el parser de Cortes se escribe a ciegas, y un boletín parlamentario no se
+    # parece a nada que uno pueda imaginar desde fuera.
+    try:
+        DEBUG_DIR.mkdir(exist_ok=True)
+        (DEBUG_DIR / "cortes-muestra.json").write_text(json.dumps(
+            [{"nombre": d.get("nombre"), "tipo": d.get("tipo"), "url": d.get("url"),
+              "caracteres": len(d.get("texto", "")),
+              "muestra": d.get("texto", "")[:6000]} for d in docs],
+            ensure_ascii=False, indent=1), encoding="utf-8")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudo escribir la muestra de Cortes: {exc}")
 
     log("Cortes: inventario determinista")
     hoy = dt.date.today()
