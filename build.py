@@ -619,17 +619,37 @@ def datos_clave(texto: str) -> dict:
         if inicios:
             d["desde"] = _fecha_larga(inicios[-1])
 
-    # Importe: el mayor que aparezca, que suele ser el del reparto
-    importes = []
-    for m in re.finditer(r"(\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?)\s*(?:euros|€)", texto):
+    # Importe. Desde que la cifra sube al titular hay que hilar más fino: en una
+    # resolución de precios del tabaco hay cientos de importes y ninguno es «el»
+    # importe de la norma. Primero se buscan las cifras ancladas a una palabra
+    # que las declare como totales; solo si no hay ninguna se cae al máximo, y
+    # únicamente cuando el texto no parece un tarifario.
+    NUM = r"(\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+(?:,\d+)?)\s*(?:euros|€)"
+    ANCLA = (r"(?:importe|coste|cuant[íi]a|presupuesto|dotaci[óo]n|aportaci[óo]n|"
+             r"asciende a|valorad[oa] en|por un total de|total de)")
+
+    def _num(lit: str):
         try:
-            importes.append((float(m.group(1).replace(".", "").replace(",", ".")), m.group(1)))
+            return float(lit.replace(".", "").replace(",", "."))
         except ValueError:
-            pass
-    if importes:
-        valor, literal = max(importes)
-        if valor >= 1000:                     # por debajo suele ser una tasa suelta
-            d["importe"] = f"{literal} euros"
+            return None
+
+    todos = [x for x in (_num(m.group(1)) for m in re.finditer(NUM, texto)) if x is not None]
+    anclados = []
+    for m in re.finditer(rf"{ANCLA}[^.;]{{0,80}}?{NUM}", texto, re.I):
+        v = _num(m.group(1))
+        if v is not None:
+            anclados.append((v, m.group(1)))
+
+    elegido = None
+    if anclados:
+        elegido = max(anclados)
+    elif len(todos) <= 12:            # más de doce cifras ya es una tabla de tarifas
+        crudos = [(v, m.group(1)) for m, v in
+                  ((m, _num(m.group(1))) for m in re.finditer(NUM, texto)) if v is not None]
+        elegido = max(crudos) if crudos else None
+    if elegido and elegido[0] >= 1000:        # por debajo suele ser una tasa suelta
+        d["importe"] = f"{elegido[1]} euros"
 
     m = re.search(r"plazo\s+de\s+(\w+|\d+)\s+(d[íi]as?|meses?|a[ñn]os?)", texto, re.I)
     if m:
