@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-19T10:55:35.977104+00:00",
+  "inicio": "2026-09-19T11:15:12.781942+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/19/index.php",
@@ -34,6 +34,86 @@
     {
       "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
       "status": 403
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19484",
+      "status": 200,
+      "bytes": 22540
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19485",
+      "status": 200,
+      "bytes": 17241
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19486",
+      "status": 200,
+      "bytes": 44125
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19504",
+      "status": 200,
+      "bytes": 15583
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19505",
+      "status": 200,
+      "bytes": 20375
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19506",
+      "status": 200,
+      "bytes": 37482
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19507",
+      "status": 200,
+      "bytes": 903975
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19508",
+      "status": 200,
+      "bytes": 21814
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19509",
+      "status": 200,
+      "bytes": 45794
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19510",
+      "status": 200,
+      "bytes": 15434
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19511",
+      "status": 200,
+      "bytes": 15298
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19512",
+      "status": 200,
+      "bytes": 15846
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19513",
+      "status": 200,
+      "bytes": 42355
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19514",
+      "status": 200,
+      "bytes": 33380
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19515",
+      "status": 200,
+      "bytes": 43081
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19516",
+      "status": 200,
+      "bytes": 36615
     }
   ],
   "403": {
@@ -41,7 +121,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;4a532217&#46;1789815344&#46;66d8632 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;51deda17&#46;1789816520&#46;e0887a1 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
   },
   "senado_fallback": [
     462,
@@ -54,5 +134,5 @@
     "congreso_docs": 4,
     "senado_docs": 0
   },
-  "fin": "2026-09-19T10:55:50.866616+00:00"
+  "fin": "2026-09-19T11:15:29.618303+00:00"
 }
