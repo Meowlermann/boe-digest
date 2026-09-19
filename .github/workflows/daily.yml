@@ -2,8 +2,19 @@ name: Edición diaria
 
 on:
   schedule:
-    # 06:10 UTC ≈ 08:10 en España (horario de verano) / 07:10 (invierno)
-    - cron: "10 6 * * *"
+    # GitHub no garantiza la puntualidad de los cron: los encola y bajo carga
+    # los retrasa horas. Medido aquí: programado a las 06:10 UTC, se ejecutó a
+    # las 11:10 el 18 de septiembre y a las 10:55 el 19. Casi cinco horas tarde,
+    # que para una edición diaria es la diferencia entre desayunar con ella o
+    # leerla a mediodía.
+    #
+    # Dos mitigaciones: minutos "raros" (las horas en punto y los primeros
+    # minutos son los más congestionados) y varios intentos. El primero que
+    # entre publica; los siguientes encuentran la edición ya hecha y no
+    # cambian nada, porque el paso de publicar solo hace commit si hay
+    # diferencias reales.
+    - cron: "37 5 * * *"    # 07:37 en España (verano) / 06:37 (invierno)
+    - cron: "23 8 * * *"    # 10:23 / 09:23 — red de seguridad si el primero se retrasa
   workflow_dispatch:        # permite lanzarla a mano desde la pestaña Actions
 
 permissions:
