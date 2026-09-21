@@ -590,6 +590,50 @@ def _fecha_larga(txt: str) -> str:
     return " ".join(txt.split()).strip(" .,")
 
 
+_FIN_DISPOSITIVO = re.compile(
+    r"(?:Contra (?:la|el) presente|Palacio del|Madrid,\s*\d|Disposici[óo]n (?:adicional|transitoria|"
+    r"derogatoria|final)|La presente resoluci[óo]n (?:podr[áa]|ser[áa] recurrible)|"
+    r"lo que se hace p[úu]blico)", re.I)
+
+
+def parte_dispositiva(texto: str) -> str:
+    """Lo que la norma ORDENA. Casi nunca está en el título.
+
+    «Se modifica la dirección electrónica de la sede electrónica» es lo que dice
+    el título; cuál era y cuál pasa a ser está en el artículo único. Un artículo
+    que no lo cuenta obliga a abrir el BOE, que es justo lo que veníamos a
+    evitar."""
+    if not texto:
+        return ""
+    m = re.search(r"(?:Art[íi]culo [úu]nico[.\s]|DISPONGO[:.\s]|RESUELVO[:.\s]|"
+                  r"\bPrimero[.º]\s|\bAcuerdo [úu]nico[.\s])", texto)
+    if not m:
+        return ""
+    cuerpo = texto[m.end():]
+    corte = _FIN_DISPOSITIVO.search(cuerpo)
+    if corte:
+        cuerpo = cuerpo[:corte.start()]
+    cuerpo = " ".join(cuerpo.split())
+    if len(cuerpo) < 30:
+        return ""
+    # Frases enteras hasta unos 420 caracteres: cortar a media frase una parte
+    # dispositiva es peor que no ponerla.
+    frases, total = [], 0
+    for f in re.split(r"(?<=[.:])\s+", cuerpo):
+        f = f.strip()
+        if not f:
+            continue
+        if total + len(f) > 420 and frases:
+            break
+        frases.append(f); total += len(f)
+    salida = " ".join(frases).strip()
+    # Un ordinal suelto al final («… transición. Cuarto.») es el encabezado del
+    # apartado que no ha cabido: anuncia algo que no llega.
+    salida = re.sub(r"\s+(?:Primero|Segundo|Tercero|Cuarto|Quinto|Sexto|S[ée]ptimo|Octavo|"
+                    r"Noveno|D[ée]cimo)[.º:]?\s*$", "", salida, flags=re.I).strip()
+    return salida if salida.endswith((".", ":")) else salida + "."
+
+
 def datos_clave(texto: str) -> dict:
     """Los datos duros del articulado. Solo se extrae lo que aparece literal:
     fechas, importes y plazos. Nada se deduce ni se redondea."""
@@ -1143,7 +1187,8 @@ def articulo_deterministico(e: dict) -> dict:
     # Lo relevante suele estar en el articulado, no en el título: se lee la
     # norma y, si trae fecha de fin, se pone en el titular, que es donde la
     # busca quien lee.
-    clave = datos_clave(texto_disposicion(e.get("ident", "")))
+    texto = texto_disposicion(e.get("ident", ""))
+    clave = datos_clave(texto)
     if clave.get("hasta") and re.search(r"PRORROG|RESTABLEC|SUSPEN|AMPL[IÍ]A|ALARG", headline):
         headline = cerrar(headline + coletilla_fecha(clave), 104)
     else:
@@ -1169,6 +1214,11 @@ def articulo_deterministico(e: dict) -> dict:
         f"{nombre_inst} {origen}. Lo que hace: {obj[:400]}.",
         explicacion,
     ]
+    disp = parte_dispositiva(texto)
+    if disp:
+        # Va en primer lugar y con sus palabras: aquí están las direcciones,
+        # las cifras y los nombres que el título se calla.
+        body.insert(0, "Lo que dice la norma: " + disp)
     frase = frase_datos_clave(clave)
     if frase:
         body.insert(0, frase)          # lo primero que se lee es el dato duro
@@ -1533,6 +1583,27 @@ def cuerpo_cortes(d: dict, doc: dict) -> list:
     evitar. Aquí se cuenta lo que dice el boletín —de qué va, de dónde viene,
     quién lo tramita, hasta cuándo se puede tocar— con sus propias palabras."""
     c = []
+    if d.get("clase") == "TOMA_EN_CONSIDERACION":
+        estado = {"Rechazada": "la rechazó", "Aprobada": "la aprobó",
+                  "Tomada en consideración": "la tomó en consideración",
+                  "Retirada": "la dio por retirada",
+                  "Caducada": "la dejó caducar"}.get(d.get("estado", ""), "la votó")
+        quien = f", presentada por {d['autor']}," if d.get("autor") else ""
+        cuando = f" en su sesión del {d['fecha']}" if d.get("fecha") else ""
+        c.append(f"El Pleno del Congreso debatió la toma en consideración de la "
+                 f"{d.get('titulo','proposición de ley')}{quien} y {estado}{cuando}.")
+        if d.get("estado") == "Rechazada":
+            c.append("Rechazada la toma en consideración, la proposición no llega a "
+                     "tramitarse: se cierra el expediente y el texto no se debate ni "
+                     "se enmienda. Para volver a intentarlo hay que registrarla de nuevo.")
+        elif d.get("estado") in ("Aprobada", "Tomada en consideración"):
+            c.append("Tomada en consideración, la proposición empieza su tramitación: "
+                     "se abre plazo de enmiendas y pasa a comisión.")
+        if d.get("expediente"):
+            c.append(f"Fuente: {doc.get('nombre','publicación oficial')}, "
+                     f"expediente {d['expediente']}.")
+        return c
+
     if d.get("objeto"):
         c.append("De qué va: " + primera_mayuscula(d["objeto"]))
 
@@ -1591,6 +1662,25 @@ def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
     t = _limpiar_c(texto[:16000])
     fecha = _fecha_sesion(t)
 
+    # --- BOCG serie B: tomas en consideración, que es donde se vota ---
+    # Aquí está la noticia de verdad —el Pleno tumba o admite una proposición—
+    # y antes caía al cajón genérico y salía como «SESIÓN DEL COMISIÓN».
+    mb = re.search(r"(PROPOSICI[ÓO]N DE LEY)\s+(\d{3}/\d{6})\s+(.{10,300}?)\s+"
+                   r"(Rechazada|Aprobada|Retirada|Caducada|Tomada en consideraci[óo]n)\b", t, re.I)
+    if mb:
+        titulo = _limpiar_c(mb.group(3)).strip(" .")
+        estado = mb.group(4).capitalize()
+        mg = re.search(r"presentada por (?:el|la)\s+(Grupo Parlamentario [^,.]{2,45}|"
+                       r"[A-ZÁÉÍÓÚÑ][^,.]{2,45}?)(?=,|\.| publicada)", t)
+        autor = mg.group(1).strip() if mg else ""
+        if "Grupo Parlamentario" in autor:
+            autor = _grupo_c(autor) or autor
+        morig = re.search(rf"n[úu]m\.\s*[\d-]+,\s*de\s+(\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})", t)
+        return {"clase": "TOMA_EN_CONSIDERACION", "expediente": mb.group(2),
+                "titulo": titulo, "nucleo": _materia_c(titulo), "estado": estado,
+                "autor": autor, "registrada": morig.group(1) if morig else "",
+                "organo": "Pleno", "fecha": fecha, "puntos": []}
+
     # --- BOCG serie A y B: proyectos y proposiciones de ley ---
     m = re.search(r"(PROYECTO DE LEY|PROPOSICI[ÓO]N DE LEY)\s+(\d{3}/\d{6})\s+(.{10,260}?)"
                   r"(?=\s+La Mesa|\s*\(procedente|\.\s+En cumplimiento)", t, re.I)
@@ -1645,7 +1735,7 @@ def parsear_cortes(nombre: str, tipo: str, texto: str) -> dict:
         mc = re.search(r"SESI[ÓO]N DE LA COMISI[ÓO]N DE\s+([A-ZÁÉÍÓÚÑ\s,Y]{4,60}?)\s+CELEBRADA", t)
         if not mc:
             mc = re.search(r"N[úu]m\. \d+\s+([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ\s,Y]{4,55}?)\s+PRESIDENCIA", t)
-        organo = ("Comisión de " + " ".join(mc.group(1).split()).title()) if mc else "Comisión"
+        organo = ("Comisión de " + " ".join(mc.group(1).split()).title()) if mc else ""
     return {"clase": "DIARIO", "organo": organo, "fecha": fecha, "puntos": puntos,
             "votacion": _votacion(t),
             "grupos": [g for g in (_grupo_c(p) for p in puntos) if g]}
@@ -1678,7 +1768,12 @@ def _cerrar_c(t, n=64):
         pal = pal[:-1]
     while pal and pal[-1].lower().strip(",;.:") in CONECTORES_C:
         pal.pop()
-    return " ".join(pal).strip(" .,;:-–—")
+    salida = " ".join(pal).strip(" .,;:-–—")
+    # Contracciones: al unir trozos sale «DE EL DERECHO», que no es español.
+    salida = re.sub(r"\bDE EL\b", "DEL", salida)
+    salida = re.sub(r"\bA EL\b", "AL", salida)
+    salida = re.sub(r"\bde el\b", "del", salida)
+    return salida
 
 def _materia_c(t):
     """«Orgánica de modificación de la Ley Orgánica 5/2005, de 17 de noviembre,
@@ -1697,6 +1792,26 @@ def _corto_c(t, n=64):
     return t[:t.rfind(" ")].strip(" .,;") if " " in t else t
 
 def titular_cortes(d: dict) -> tuple:
+    if d.get("clase") == "TOMA_EN_CONSIDERACION":
+        materia = d.get("nucleo") or d.get("titulo", "")
+        # «Ley 12/2023, por el derecho a la vivienda» -> «el derecho a la vivienda»:
+        # el «por» es del título legal, no del titular.
+        materia = re.sub(r"^por\s+(?=(?:el|la|los|las)\s)", "", materia, flags=re.I)
+        materia = _cerrar_c(materia, 58)
+        de_quien = f" DE {d['autor'].upper()}" if d.get("autor") else ""
+        verbo = {"Rechazada": "TUMBA", "Aprobada": "APRUEBA",
+                 "Tomada en consideración": "ADMITE A TRÁMITE",
+                 "Retirada": "SE QUEDA SIN", "Caducada": "DEJA CADUCAR"}.get(
+                     d.get("estado", ""), "VOTA")
+        titulo = _cerrar_c(f"EL CONGRESO {verbo} LA REFORMA DE {materia.upper()}{de_quien}", 96)
+        partes = []
+        if d.get("autor"):
+            partes.append(f"La presentó {d['autor']}")
+        if d.get("registrada"):
+            partes.append(f"estaba registrada desde el {d['registrada']}")
+        entradilla = (", ".join(partes) + ".") if partes else ""
+        return titulo, entradilla
+
     """Devuelve (titular, entradilla). Lo relevante delante: qué se tramita,
     quién lo trae y hasta cuándo se puede enmendar."""
     if d["clase"] in ("PROYECTO DE LEY", "PROPOSICIÓN DE LEY", "PROPOSICION DE LEY"):
