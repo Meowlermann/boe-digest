@@ -618,14 +618,18 @@ def parte_dispositiva(texto: str) -> str:
         return ""
     # Frases enteras hasta unos 420 caracteres: cortar a media frase una parte
     # dispositiva es peor que no ponerla.
+    todas = [f.strip() for f in re.split(r"(?<=[.:])\s+", cuerpo) if f.strip()]
     frases, total = [], 0
-    for f in re.split(r"(?<=[.:])\s+", cuerpo):
-        f = f.strip()
-        if not f:
-            continue
-        if total + len(f) > 420 and frases:
+    for f in todas:
+        if total + len(f) > 520 and frases:
             break
         frases.append(f); total += len(f)
+    # Si la norma da una dirección web, esa frase es EL dato: entra aunque el
+    # presupuesto de caracteres se haya agotado antes de llegar a ella.
+    if "http" in cuerpo and not any("http" in f for f in frases):
+        con_url = next((f for f in todas if "http" in f), "")
+        if con_url:
+            frases.append(con_url)
     salida = " ".join(frases).strip()
     # Un ordinal suelto al final («… transición. Cuarto.») es el encabezado del
     # apartado que no ha cabido: anuncia algo que no llega.
