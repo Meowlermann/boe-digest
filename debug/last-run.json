@@ -1,123 +1,109 @@
 {
-  "inicio": "2026-09-20T13:04:49.368740+00:00",
+  "inicio": "2026-09-21T11:02:28.466092+00:00",
   "peticiones": [
     {
-      "url": "https://www.boe.es/boe/dias/2026/09/20/index.php",
-      "status": 404
-    },
-    {
-      "url": "https://www.boe.es/boe/dias/2026/09/19/index.php",
+      "url": "https://www.boe.es/boe/dias/2026/09/21/index.php",
       "status": 200,
-      "bytes": 139774
+      "bytes": 204630
     },
     {
       "url": "https://www.congreso.es/ultimas-publicaciones-oficiales",
       "status": 200,
-      "bytes": 91704
+      "bytes": 88637
     },
     {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/PL/DSCD-15-PL-204.PDF",
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/B/BOCG-15-B-24-2.PDF",
       "status": 200,
-      "bytes": 632879
+      "bytes": 115931
     },
     {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/CO/DSCD-15-CO-616.PDF",
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/B/BOCG-15-B-300-2.PDF",
       "status": 200,
-      "bytes": 247903
-    },
-    {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/A/BOCG-15-A-113-1.PDF",
-      "status": 200,
-      "bytes": 548969
-    },
-    {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/A/BOCG-15-A-114-1.PDF",
-      "status": 200,
-      "bytes": 205510
+      "bytes": 116000
     },
     {
       "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
       "status": 403
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19484",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19523",
       "status": 200,
-      "bytes": 22540
+      "bytes": 27433
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19485",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19524",
       "status": 200,
-      "bytes": 17241
+      "bytes": 40782
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19486",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19525",
       "status": 200,
-      "bytes": 44125
+      "bytes": 41799
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19504",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19526",
       "status": 200,
-      "bytes": 15583
+      "bytes": 36080
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19505",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19527",
       "status": 200,
-      "bytes": 20375
+      "bytes": 52443
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19506",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19590",
       "status": 200,
-      "bytes": 37482
+      "bytes": 31339
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19507",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19591",
       "status": 200,
-      "bytes": 903975
+      "bytes": 57183
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19508",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19592",
       "status": 200,
-      "bytes": 21814
+      "bytes": 24214
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19509",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19593",
       "status": 200,
-      "bytes": 45794
+      "bytes": 14180
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19510",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19594",
       "status": 200,
-      "bytes": 15434
+      "bytes": 21137
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19511",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19595",
       "status": 200,
-      "bytes": 15298
+      "bytes": 35626
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19512",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19596",
       "status": 200,
-      "bytes": 15846
+      "bytes": 37589
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19513",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19597",
       "status": 200,
-      "bytes": 42355
+      "bytes": 36822
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19514",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19599",
       "status": 200,
-      "bytes": 33380
+      "bytes": 34039
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19515",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19600",
       "status": 200,
-      "bytes": 43081
+      "bytes": 51047
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19516",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19601",
       "status": 200,
-      "bytes": 36615
+      "bytes": 35478
     }
   ],
   "403": {
@@ -125,18 +111,19 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;d668dc17&#46;1789909496&#46;47788b0b <P>https&#58;&#47;&#47;errors&#46;edgesuite"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;6dcfdb17&#46;1789988554&#46;1e58004 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
   },
   "senado_fallback": [
+    463,
     462,
     461,
     460,
     459
   ],
   "resumen": {
-    "boe_entradas": 36,
-    "congreso_docs": 4,
+    "boe_entradas": 95,
+    "congreso_docs": 2,
     "senado_docs": 0
   },
-  "fin": "2026-09-20T13:05:04.858957+00:00"
+  "fin": "2026-09-21T11:02:44.636877+00:00"
 }
