@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-22T10:16:14.307005+00:00",
+  "inicio": "2026-09-22T13:27:13.628403+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/22/index.php",
@@ -38,17 +38,17 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19628",
       "status": 200,
-      "bytes": 40812
+      "bytes": 49343
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19629",
       "status": 200,
-      "bytes": 42025
+      "bytes": 51126
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19634",
       "status": 200,
-      "bytes": 325253
+      "bytes": 333124
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19674",
@@ -88,7 +88,7 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19681",
       "status": 200,
-      "bytes": 160757
+      "bytes": 168560
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19682",
@@ -103,7 +103,7 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19684",
       "status": 200,
-      "bytes": 45701
+      "bytes": 54985
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19685",
@@ -121,7 +121,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;b42d3e17&#46;1790072186&#46;465c5584 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;44d02e17&#46;1790083641&#46;9b2ed1f7 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
   },
   "senado_fallback": [
     464,
@@ -136,5 +136,5 @@
     "congreso_docs": 4,
     "senado_docs": 0
   },
-  "fin": "2026-09-22T10:16:38.190594+00:00"
+  "fin": "2026-09-22T13:27:33.392593+00:00"
 }
