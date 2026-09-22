@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BOE Digest & Cortes en Directo — pipeline diario.
+La Tercera Cámara — pipeline diario.
 
 Se ejecuta en GitHub Actions. Hace tres cosas:
 
@@ -55,17 +55,16 @@ PLAZOS_DIR = ROOT / "plazos"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
-SITE_URL = "https://meowlermann.github.io/boe-digest/"
+SITE_URL = "https://terceracamara.es/"
 MAX_DAYS = 30
 MAX_FEED_ITEMS = 20
 
 # IndexNow: avisa a Bing, Yandex, Seznam, Naver, Yep e Internet Archive de las
 # URLs que han cambiado, sin cuenta ni verificación. El fichero de clave vive en
-# /boe-digest/ y eso delimita lo que se puede enviar: cualquier URL bajo esa
-# ruta, que son todas las nuestras. (Google no participa: ahí hace falta Search
+# la raíz del dominio, así que alcanza a cualquier URL del sitio. (Google no participa: ahí hace falta Search
 # Console, porque retiró el ping de sitemaps en 2023.)
 INDEXNOW_KEY = "d29eac49b00fed8432cc6c405d618f35"
-INDEXNOW_HOST = "meowlermann.github.io"
+INDEXNOW_HOST = "terceracamara.es"
 INDEXNOW_JSON = ROOT / "indexnow.json"      # sin versionar: lo publica el workflow con curl
 REQUEST_TIMEOUT = 45
 
@@ -1264,7 +1263,7 @@ LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "").rstrip("/")
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
 LLM_MODEL = os.environ.get("LLM_MODEL", "")
 
-SYSTEM_PROMPT = """Eres la redacción de "BOE Digest & Cortes en Directo", una publicación
+SYSTEM_PROMPT = """Eres la redacción de "La Tercera Cámara", una publicación
 para el gran público que cuenta lo que publica el BOE y lo que hacen diputados y senadores,
 con tono de tabloide inteligente: titulares mordaces y con gancho, pero SIEMPRE fieles a los
 hechos.
@@ -2399,8 +2398,8 @@ def fecha_boe_iso(day: dict) -> str:
 def build_title(day: dict, edicion: bool = False) -> str:
     fecha = fmt_date_es(day["id"])
     if edicion:
-        return f"Edición del {fecha} — BOE Digest & Cortes en Directo"
-    return f"BOE Digest & Cortes en Directo — {fecha}"
+        return f"Edición del {fecha} — La Tercera Cámara"
+    return f"La Tercera Cámara — {fecha}"
 
 
 def build_meta_description(day: dict) -> str:
@@ -2441,7 +2440,7 @@ def jsonld_portada(day: dict, permalink_abs: str) -> str:
     y enlaces, no los títulos oficiales completos. Esos se declaran en la página
     de la edición, que es donde están escritos. Los datos estructurados tienen
     que coincidir con el contenido visible."""
-    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
+    editor = {"@type": "Organization", "name": "La Tercera Cámara", "url": SITE_URL}
     elementos = []
     stories = (day.get("boe", {}) or {}).get("stories") or []
     for i, s in enumerate(stories):
@@ -2457,7 +2456,7 @@ def jsonld_portada(day: dict, permalink_abs: str) -> str:
             "url": f"{permalink_abs}#cortes-{n}",
         })
     return jsonld_script([
-        {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL,
+        {"@type": "WebSite", "name": "La Tercera Cámara", "url": SITE_URL,
          "description": build_meta_description(day), "inLanguage": "es-ES",
          "publisher": editor, "dateModified": day["id"]},
         {"@type": "CollectionPage", "url": SITE_URL,
@@ -2476,10 +2475,10 @@ def jsonld_for_day(day: dict, page_url: str) -> str:
     máquina que la norma se llama así — exactamente lo que este proyecto se
     prohíbe a sí mismo.
     """
-    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
+    editor = {"@type": "Organization", "name": "La Tercera Cámara", "url": SITE_URL}
     objetos: list[dict] = [{
         "@type": "WebSite",
-        "name": "BOE Digest & Cortes en Directo",
+        "name": "La Tercera Cámara",
         "url": SITE_URL,
         "description": build_meta_description(day),
         "inLanguage": "es-ES",
@@ -2775,17 +2774,17 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> None:
     if mes_actual is not None:
         filas.append("</ul>")
 
-    desc = (f"Archivo completo de BOE Digest & Cortes en Directo: {len(entradas)} ediciones "
+    desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE, el Congreso y el Senado, cada una con su enlace permanente.")
     frag = {
-        "TITLE": esc_html("Archivo de ediciones — BOE Digest & Cortes en Directo"),
+        "TITLE": esc_html("Archivo de ediciones — La Tercera Cámara"),
         "META_DESC": esc_attr(recortar(desc, 155)),
         "CANONICAL": f"{SITE_URL}ediciones/",
         "TOTAL": str(len(entradas)),
         "LISTA": "\n".join(filas),
         "JSONLD": jsonld_script([{
             "@type": "CollectionPage",
-            "name": "Archivo de ediciones — BOE Digest & Cortes en Directo",
+            "name": "Archivo de ediciones — La Tercera Cámara",
             "url": f"{SITE_URL}ediciones/",
             "inLanguage": "es-ES",
             "isPartOf": {"@type": "WebSite", "url": SITE_URL},
@@ -2838,7 +2837,7 @@ def _ficha_filas(s: dict, day: dict) -> str:
 
 def jsonld_for_norma(s: dict, day: dict, page_url: str) -> str:
     oficial = titulo_oficial_de(s)
-    editor = {"@type": "Organization", "name": "BOE Digest & Cortes en Directo", "url": SITE_URL}
+    editor = {"@type": "Organization", "name": "La Tercera Cámara", "url": SITE_URL}
     norma = {
         "@type": "Legislation",
         "name": oficial or s.get("headline", ""),
@@ -2913,7 +2912,7 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
                     for o in conocidas if ref_norma(o) != ref)[:12000]
                 frag = {
                     "TITLE": esc_html(cerrar(primera_mayuscula(oficial) or s.get("headline", ""), 88)
-                                      + " | BOE Digest"),
+                                      + " | La Tercera Cámara"),
                     "META_DESC": esc_attr(recortar(
                         (frase_datos_clave(s.get("datos") or {}) + " " +
                          primera_mayuscula(objeto_de(oficial) or oficial)).strip(), 155)),
@@ -2964,14 +2963,14 @@ def _indice_normas(dias: list[dict], plantilla: str) -> None:
     cuerpo = "".join(bloques) or "<p>Todavía no hay fichas publicadas.</p>"
     url = f"{SITE_URL}normas/"
     frag = {
-        "TITLE": "Todas las normas del BOE, una a una | BOE Digest",
-        "META_DESC": esc_attr("Índice de las disposiciones del BOE cubiertas por BOE Digest: "
+        "TITLE": "Todas las normas del BOE, una a una | La Tercera Cámara",
+        "META_DESC": esc_attr("Índice de las disposiciones del BOE cubiertas por La Tercera Cámara: "
                               "una ficha por norma, con el dato clave y el enlace oficial."),
         "CANONICAL": url,
         "JSONLD": jsonld_script([{
             "@type": "CollectionPage", "name": "Fichas por norma", "url": url,
             "inLanguage": "es-ES",
-            "isPartOf": {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo",
+            "isPartOf": {"@type": "WebSite", "name": "La Tercera Cámara",
                          "url": SITE_URL}}]),
         "EDITION_DATE": esc_html(fmt_date_es(dt.date.today().isoformat())),
         "MIGA": ('<a href="../">Portada</a> › <span aria-current="page">Normas</span>'),
@@ -3122,7 +3121,7 @@ def renderizar_plazos(dias: list) -> list:
     cuerpo = "".join(bloques) or "<p>Ahora mismo no hay ningún plazo abierto en las ediciones publicadas.</p>"
     url = f"{SITE_URL}plazos/"
     _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), PLAZOS_DIR, "index.html", {
-        "TITLE": "Plazos del BOE que vencen | BOE Digest",
+        "TITLE": "Plazos del BOE que vencen | La Tercera Cámara",
         "META_DESC": esc_attr("Todos los plazos abiertos publicados en el BOE y en el Congreso, "
                               "ordenados por fecha de vencimiento: alegaciones, convocatorias, "
                               "recursos y enmiendas."),
@@ -3130,7 +3129,7 @@ def renderizar_plazos(dias: list) -> list:
         "JSONLD": jsonld_script([{
             "@type": "CollectionPage", "name": "Plazos que vencen", "url": url,
             "inLanguage": "es-ES", "dateModified": hoy.isoformat(),
-            "isPartOf": {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo",
+            "isPartOf": {"@type": "WebSite", "name": "La Tercera Cámara",
                          "url": SITE_URL}}]),
         "EDITION_DATE": esc_html(fmt_date_es(hoy.isoformat())),
         "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Plazos</span>',
@@ -3181,7 +3180,7 @@ def renderizar_temas(dias: list) -> list:
             for o, _e, _k in MATERIAS if o != slug and por_materia.get(o))
         url = f"{SITE_URL}temas/{slug}.html"
         _pagina_suelta(plantilla, TEMAS_DIR, f"{slug}.html", {
-            "TITLE": f"{etiqueta} en el BOE | BOE Digest",
+            "TITLE": f"{etiqueta} en el BOE | La Tercera Cámara",
             "META_DESC": esc_attr(f"Todo lo que el BOE publica sobre {etiqueta.lower()}, "
                                   f"día a día, con el dato clave por delante y enlace al "
                                   f"texto oficial. {len(piezas)} disposiciones recogidas."),
@@ -3189,7 +3188,7 @@ def renderizar_temas(dias: list) -> list:
             "JSONLD": jsonld_script([
                 {"@type": "CollectionPage", "name": f"{etiqueta} en el BOE", "url": url,
                  "inLanguage": "es-ES", "dateModified": hoy,
-                 "isPartOf": {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo",
+                 "isPartOf": {"@type": "WebSite", "name": "La Tercera Cámara",
                               "url": SITE_URL}},
                 {"@type": "BreadcrumbList", "itemListElement": [
                     {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
@@ -3219,7 +3218,7 @@ def renderizar_temas(dias: list) -> list:
             for x in sorted(salidas, key=lambda x: -x["n"]))
         url = f"{SITE_URL}temas/"
         _pagina_suelta(plantilla, TEMAS_DIR, "index.html", {
-            "TITLE": "El BOE por materias | BOE Digest",
+            "TITLE": "El BOE por materias | La Tercera Cámara",
             "META_DESC": esc_attr("El BOE ordenado por materias: subvenciones, fiscal, laboral, "
                                   "seguridad social, contratación pública y once materias más."),
             "CANONICAL": url,
@@ -3359,7 +3358,7 @@ def renderizar_diputados(fichas: list) -> list:
                       "series que publicamos.</p>"]
 
         _pagina_suelta(plantilla, DIPUTADOS_DIR, f"{f['slug']}.html", {
-            "TITLE": esc_html(f"{f['natural']} — actividad en el Congreso | BOE Digest"),
+            "TITLE": esc_html(f"{f['natural']} — actividad en el Congreso | La Tercera Cámara"),
             "META_DESC": esc_attr(
                 f"{f['natural']} ({f['grupo'] or f['partido']}, {f['circunscripcion']}): "
                 f"{f['intervenciones']} intervenciones y {f['votaciones']} votaciones "
@@ -3410,7 +3409,7 @@ def renderizar_diputados(fichas: list) -> list:
                        f'<ul class="indice">{filas}</ul>')
     url = f"{SITE_URL}diputados/"
     _pagina_suelta(plantilla, DIPUTADOS_DIR, "index.html", {
-        "TITLE": "Qué hace cada diputado | BOE Digest",
+        "TITLE": "Qué hace cada diputado | La Tercera Cámara",
         "META_DESC": esc_attr("Ficha de actividad de cada diputado del Congreso: "
                               "intervenciones, votaciones y votos distintos a los de su "
                               "grupo, con enlace a la publicación oficial."),
@@ -3490,7 +3489,7 @@ def renderizar_feed(dias: list[dict]) -> None:
     canal = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>\n'
-        "  <title>BOE Digest &amp; Cortes en Directo</title>\n"
+        "  <title>La Tercera Cámara</title>\n"
         f"  <link>{SITE_URL}</link>\n"
         "  <description>Auditoría pública diaria del BOE, el Congreso y el Senado, "
         "con enlace a la fuente oficial.</description>\n"

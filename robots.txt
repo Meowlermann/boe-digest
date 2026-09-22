@@ -1,3 +1,6 @@
+# terceracamara.es — raíz del dominio. Ahora este fichero SÍ lo leen los
+# buscadores: antes vivía en un subdirectorio y era decorativo.
+#
 # Sin restricciones: todo el sitio es de acceso público y puede
 # rastrearse, indexarse y reutilizarse (ver /llms.txt para el detalle
 # de qué es cada página y cómo citarla).
@@ -28,4 +31,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://meowlermann.github.io/boe-digest/sitemap.xml
+Sitemap: https://terceracamara.es/sitemap.xml
