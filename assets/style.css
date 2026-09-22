@@ -410,3 +410,10 @@ blockquote.pull p{ font-family:'Lora',Georgia,serif; }
 .relacionadas ul.indice a{color:inherit;text-decoration:none;
   font:600 14px/1.35 "Work Sans",system-ui,sans-serif}
 .relacionadas ul.indice a:hover{text-decoration:underline}
+
+/* --- Listas de índice: nota secundaria bajo cada entrada --------------- */
+ul.indice .nota{display:block;font:400 12px/1.45 "Work Sans",system-ui,sans-serif;
+  opacity:.68;margin-top:2px}
+ul.indice .ref{display:block;font:500 11px/1.5 "IBM Plex Mono",ui-monospace,monospace;
+  opacity:.72;letter-spacing:.02em;margin-top:2px}
+.relacionadas .srclink{display:inline-block;margin:0 10px 8px 0}
