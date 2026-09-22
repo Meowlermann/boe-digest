@@ -49,6 +49,8 @@ TEMPLATE_ARCHIVO = ROOT / "template_archivo.html"
 OUTPUT = ROOT / "index.html"
 EDICIONES_DIR = ROOT / "ediciones"
 NORMAS_DIR = ROOT / "normas"
+TEMAS_DIR = ROOT / "temas"
+PLAZOS_DIR = ROOT / "plazos"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -1203,7 +1205,12 @@ def articulo_deterministico(e: dict) -> dict:
             clave["_accion"] = ("PERSONARSE" if re.search(r"emplaza|recurso", titulo, re.I)
                                 else "PRESENTARSE")
         headline = enriquecer_titular(headline, clave)
-        clave.pop("_reclamable", None); clave.pop("_accion", None)
+        # Se conserva la marca: es lo que distingue un plazo que le corre a la
+        # gente (alegar, concurrir, recurrir) de una cláusula interna de un
+        # convenio. Solo los primeros entran en la agenda de vencimientos.
+        if clave.pop("_reclamable", None):
+            clave["plazo_publico"] = True
+        clave.pop("_accion", None)
 
     participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
     if quien and epi:
@@ -1916,6 +1923,78 @@ def fusionar_curado(dia: dict) -> dict:
 # el JS generaría para el día activo, y ese HTML va ya escrito en el
 # documento: el navegador con JS lo vuelve a pintar igual (sin parpadeo
 # visible) y el rastreador sin JS ya lo tiene desde la primera respuesta.
+
+# ---------------------------------------------------------------------------
+# Materias: una norma puede estar en varias
+# ---------------------------------------------------------------------------
+#
+# `cat` pinta la tarjeta y es excluyente; esto es otra cosa: las materias por
+# las que alguien buscaría o querría que le avisaran. Una orden de subvenciones
+# a la contratación es a la vez «subvenciones» y «laboral», y tiene que salir
+# en las dos secciones.
+
+MATERIAS = [
+    ("subvenciones", "Subvenciones y ayudas",
+     ["subvenci", "ayudas", "concesión directa", "convocatoria", "bases reguladoras",
+      "premios", "beca", "financiación de proyectos"]),
+    ("fiscal", "Fiscal y tributario",
+     ["tribut", "impuesto", "iva", "irpf", "sociedades", "hacienda", "aduana",
+      "recaudación", "catastro", "tasa", "arancel"]),
+    ("laboral", "Laboral y empleo",
+     ["laboral", "trabajo", "empleo", "convenio colectivo", "salario", "salarios",
+      "despido", "jornada", "prevención de riesgos", "autónomo", "desemple",
+      "formación profesional para el empleo"]),
+    ("seguridad-social", "Seguridad Social y pensiones",
+     ["seguridad social", "pensión", "pensiones", "jubilación", "cotización",
+      "incapacidad", "prestación"]),
+    ("mercantil", "Mercantil y contable",
+     ["mercantil", "sociedades de capital", "contabilidad", "auditoría", "concursal",
+      "registro mercantil", "mercado de valores", "competencia", "consumidores"]),
+    ("contratacion", "Contratación pública",
+     ["contratación del sector público", "licitación", "pliego", "adjudicación",
+      "encargo a medio propio", "contrato menor", "mesa de contratación"]),
+    ("convenios", "Convenios y colaboración",
+     ["convenio con", "convenio entre", "adenda", "protocolo general de actuación",
+      "encomienda de gestión"]),
+    ("administracion", "Administración y función pública",
+     ["función pública", "personal estatutario", "oposicion", "proceso selectivo",
+      "admitidos y excluidos", "cuerpo superior", "nombramiento", "sede electrónica",
+      "administración digital"]),
+    ("energia", "Energía",
+     ["energía", "eléctric", "hidrocarburo", "renovable", "gas natural", "carburante"]),
+    ("vivienda", "Vivienda y urbanismo",
+     ["vivienda", "alquiler", "urbanis", "suelo", "edificación"]),
+    ("sanidad", "Sanidad",
+     ["sanidad", "sanitari", "medicamento", "farmac", "servicios de salud", "salud pública"]),
+    ("educacion", "Educación",
+     ["educación", "universidad", "enseñanza", "título universitario", "profesorado",
+      "formación profesional"]),
+    ("transporte", "Transporte e infraestructuras",
+     ["transporte", "carretera", "ferroviari", "aeropuerto", "aviación", "puerto",
+      "movilidad"]),
+    ("agricultura", "Agricultura, pesca y alimentación",
+     ["agricultura", "agrari", "pesca", "alimentación", "ganader", "denominación de origen"]),
+    ("medioambiente", "Medio ambiente",
+     ["medio ambiente", "ambiental", "residuos", "emisiones", "biodiversidad",
+      "cambio climático", "incendios forestales", "agua"]),
+    ("justicia", "Justicia e interior",
+     ["justicia", "judicial", "penal", "penitenciari", "recurso contencioso",
+      "seguridad ciudadana", "fronter", "extranjería", "guardia civil", "policía"]),
+    ("cultura", "Cultura y patrimonio",
+     ["cultura", "patrimonio histórico", "bien de interés cultural", "museo",
+      "archivo", "artes escénicas", "cinematograf", "interés turístico"]),
+]
+
+_MATERIAS_C = [(slug, etiqueta, [_patron(k) for k in claves])
+               for slug, etiqueta, claves in MATERIAS]
+MATERIA_LABEL = {slug: etiqueta for slug, etiqueta, _ in MATERIAS}
+
+
+def materias_de(*textos: str) -> list:
+    """Todas las materias que toca un texto, no solo la principal."""
+    bajo = " ".join(t for t in textos if t).lower()
+    return [slug for slug, _, patrones in _MATERIAS_C if any(p.search(bajo) for p in patrones)]
+
 
 CAT_LABEL = {"fiscal": "Fiscal / Hacienda", "laboral": "Laboral",
              "mercantil": "Mercantil / Contable", "otros": "Sociedad / Varios"}
@@ -2906,6 +2985,262 @@ def _indice_normas(dias: list[dict], plantilla: str) -> None:
                                            encoding="utf-8")
 
 
+MES_NUM = {m.lower(): i + 1 for i, m in enumerate(MESES)}
+_NUM_PALABRA = {"un": 1, "uno": 1, "una": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5,
+                "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10, "once": 11,
+                "doce": 12, "quince": 15, "veinte": 20, "treinta": 30}
+
+
+def fecha_es_a_iso(texto: str) -> str:
+    """«7 de octubre de 2026» -> «2026-10-07». Devuelve "" si no es una fecha."""
+    m = re.search(r"(\d{1,2})\s+de\s+([a-záéíóúñ]+)\s+de\s+(\d{4})", texto or "", re.I)
+    if not m:
+        return ""
+    mes = MES_NUM.get(m.group(2).lower())
+    if not mes:
+        return ""
+    try:
+        return dt.date(int(m.group(3)), mes, int(m.group(1))).isoformat()
+    except ValueError:
+        return ""
+
+
+def sumar_plazo(desde_iso: str, plazo: str) -> str:
+    """«dos meses» desde la publicación -> fecha ISO. Cálculo de calendario, no
+    de días hábiles: por eso en la página se marca como orientativo y se remite
+    al texto oficial, que es el que manda."""
+    if not (desde_iso and plazo):
+        return ""
+    m = re.match(r"(\w+)\s+(d[íi]as?|meses?|a[ñn]os?)", plazo.strip(), re.I)
+    if not m:
+        return ""
+    bruto = m.group(1).lower()
+    n = int(bruto) if bruto.isdigit() else _NUM_PALABRA.get(bruto, 0)
+    if not n:
+        return ""
+    unidad = m.group(2).lower()
+    try:
+        d = dt.date.fromisoformat(desde_iso)
+    except ValueError:
+        return ""
+    if unidad.startswith("d"):
+        return (d + dt.timedelta(days=n)).isoformat()
+    if unidad.startswith("a"):
+        try:
+            return d.replace(year=d.year + n).isoformat()
+        except ValueError:
+            return d.replace(year=d.year + n, day=28).isoformat()
+    mes = d.month - 1 + n
+    anio, mes = d.year + mes // 12, mes % 12 + 1
+    import calendar
+    return dt.date(anio, mes, min(d.day, calendar.monthrange(anio, mes)[1])).isoformat()
+
+
+def recolectar_plazos(dias: list) -> list:
+    """La agenda de vencimientos: todo lo que tiene fecha de caducidad y sigue
+    abierto. Es la información más útil que da este sitio y la que nadie agrega:
+    el BOE publica el plazo dentro de cada norma y nunca en una lista."""
+    hoy = dt.date.today().isoformat()
+    filas = []
+    for day in dias:
+        pub = fecha_boe_iso(day)
+        for s_ in (day.get("boe", {}) or {}).get("stories") or []:
+            d = s_.get("datos") or {}
+            vence, clase, nota = "", "", ""
+            if d.get("hasta"):
+                vence, clase = fecha_es_a_iso(d["hasta"]), "Vigencia"
+                nota = "Fecha que fija la propia norma."
+            elif d.get("plazo") and d.get("plazo_publico"):
+                vence = sumar_plazo(pub, d["plazo"])
+                clase = "Plazo abierto"
+                nota = f"{d['plazo']} desde la publicación ({fmt_date_es(pub)}). Cómputo orientativo."
+            if not vence or vence < hoy:
+                continue
+            filas.append({"vence": vence, "clase": clase, "nota": nota,
+                          "titular": s_.get("headline", ""), "ref": s_.get("ref", ""),
+                          "url": (f"{SITE_URL}normas/{s_['ref']}.html"
+                                  if ref_norma(s_) else f"{SITE_URL}ediciones/{day['id']}.html"),
+                          "fuente": s_.get("url", ""), "origen": "BOE",
+                          "dept": s_.get("dept", "")})
+        for f in (day.get("cortes", {}) or {}).get("feed") or []:
+            m = re.search(rf"hasta el (\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})",
+                          " ".join(f.get("body") or []), re.I)
+            if not m:
+                continue
+            vence = fecha_es_a_iso(m.group(1))
+            if not vence or vence < hoy:
+                continue
+            filas.append({"vence": vence, "clase": "Enmiendas", "nota": "Plazo fijado por la Mesa.",
+                          "titular": f.get("headline", ""), "ref": f.get("source", {}).get("label", ""),
+                          "url": f"{SITE_URL}ediciones/{day['id']}.html",
+                          "fuente": f.get("source", {}).get("url", ""),
+                          "origen": "Congreso", "dept": ""})
+    vistos, unicas = set(), []
+    for f in sorted(filas, key=lambda x: (x["vence"], x["titular"])):
+        k = (f["vence"], f["ref"])
+        if k not in vistos:
+            vistos.add(k); unicas.append(f)
+    return unicas
+
+
+def _pagina_suelta(plantilla: str, carpeta: pathlib.Path, nombre: str, frag: dict) -> None:
+    """Todas las páginas auxiliares comparten la plantilla de ficha: un diseño,
+    un sitio donde tocarlo."""
+    carpeta.mkdir(exist_ok=True)
+    (carpeta / nombre).write_text(_replace_placeholders(plantilla, frag), encoding="utf-8")
+
+
+def renderizar_plazos(dias: list) -> list:
+    if not TEMPLATE_NORMA.exists():
+        return []
+    filas = recolectar_plazos(dias)
+    hoy = dt.date.today()
+    bloques, grupo_actual = [], None
+    for f in filas[:300]:
+        v = dt.date.fromisoformat(f["vence"])
+        quedan = (v - hoy).days
+        grupo = ("Esta semana" if quedan <= 7 else
+                 "En dos semanas" if quedan <= 14 else
+                 "Este mes" if quedan <= 31 else "Más adelante")
+        if grupo != grupo_actual:
+            if grupo_actual is not None:
+                bloques.append("</ul>")
+            bloques.append(f'<h2 class="rotulo">{esc_html(grupo)}</h2><ul class="indice">')
+            grupo_actual = grupo
+        cuenta = ("vence hoy" if quedan == 0 else
+                  "vence mañana" if quedan == 1 else f"quedan {quedan} días")
+        bloques.append(
+            f'<li><a href="../{esc_attr(f["url"].replace(SITE_URL, ""))}">'
+            f'{esc_html(f["titular"])}</a> '
+            f'<span class="ref">{esc_html(f["clase"])} · {esc_html(fmt_date_es(f["vence"]))} '
+            f'· {esc_html(cuenta)}</span>'
+            + (f'<span class="nota">{esc_html(f["nota"])}</span>' if f.get("nota") else "")
+            + '</li>')
+    if grupo_actual is not None:
+        bloques.append("</ul>")
+    cuerpo = "".join(bloques) or "<p>Ahora mismo no hay ningún plazo abierto en las ediciones publicadas.</p>"
+    url = f"{SITE_URL}plazos/"
+    _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), PLAZOS_DIR, "index.html", {
+        "TITLE": "Plazos del BOE que vencen | BOE Digest",
+        "META_DESC": esc_attr("Todos los plazos abiertos publicados en el BOE y en el Congreso, "
+                              "ordenados por fecha de vencimiento: alegaciones, convocatorias, "
+                              "recursos y enmiendas."),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{
+            "@type": "CollectionPage", "name": "Plazos que vencen", "url": url,
+            "inLanguage": "es-ES", "dateModified": hoy.isoformat(),
+            "isPartOf": {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo",
+                         "url": SITE_URL}}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy.isoformat())),
+        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Plazos</span>',
+        "KICKER": "Agenda",
+        "HEADLINE": "Plazos que vencen",
+        "STANDFIRST": ("Lo que el BOE publica con fecha de caducidad —alegaciones, convocatorias, "
+                       "recursos, vigencias— y lo que el Congreso abre a enmiendas, en una sola "
+                       "lista y por orden de urgencia."),
+        "FICHA": ("<dt>Plazos abiertos</dt><dd>" + str(len(filas)) + "</dd>"
+                  "<dt>Actualizado</dt><dd>" + esc_html(fmt_date_es(hoy.isoformat())) + "</dd>"),
+        "CUERPO": cuerpo,
+        "FUENTE": ("Aviso: el cómputo marcado como orientativo es de días naturales sobre la fecha "
+                   "de publicación. El plazo que vale es el del texto oficial enlazado en cada "
+                   "ficha, que puede contar días hábiles o arrancar en otra fecha."),
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    log(f"plazos/: {len(filas)} plazos abiertos")
+    return [{"url": url, "lastmod": hoy.isoformat()}]
+
+
+def renderizar_temas(dias: list) -> list:
+    """Una página por materia. Es la sección que la gente busca («subvenciones
+    BOE», «plazos laborales») y el cimiento de las alertas: cuando haya correo,
+    suscribirse será elegir estas mismas materias."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    hoy = dt.date.today().isoformat()
+    por_materia: dict = {}
+    for day in sorted(dias, key=lambda d: d["id"], reverse=True):
+        for s_ in (day.get("boe", {}) or {}).get("stories") or []:
+            for slug in materias_de(titulo_oficial_de(s_), s_.get("headline", "")):
+                por_materia.setdefault(slug, []).append((day, s_))
+
+    salidas = []
+    for slug, etiqueta, _ in MATERIAS:
+        piezas = por_materia.get(slug, [])
+        if not piezas:
+            continue
+        filas = "".join(
+            f'<li><a href="{esc_attr("../normas/" + ref_norma(x) + ".html") if ref_norma(x) else esc_attr("../ediciones/" + d["id"] + ".html")}">'
+            f'{esc_html(x.get("headline",""))}</a>'
+            f'<span class="ref">{esc_html(fmt_date_es(d["id"]))}'
+            + (f' · {esc_html(recortar(x.get("dept",""), 60))}' if x.get("dept") else "")
+            + '</span></li>' for d, x in piezas[:150])
+        otras = "".join(
+            f'<a class="srclink" href="{o}.html">{esc_html(MATERIA_LABEL[o])}</a> '
+            for o, _e, _k in MATERIAS if o != slug and por_materia.get(o))
+        url = f"{SITE_URL}temas/{slug}.html"
+        _pagina_suelta(plantilla, TEMAS_DIR, f"{slug}.html", {
+            "TITLE": f"{etiqueta} en el BOE | BOE Digest",
+            "META_DESC": esc_attr(f"Todo lo que el BOE publica sobre {etiqueta.lower()}, "
+                                  f"día a día, con el dato clave por delante y enlace al "
+                                  f"texto oficial. {len(piezas)} disposiciones recogidas."),
+            "CANONICAL": url,
+            "JSONLD": jsonld_script([
+                {"@type": "CollectionPage", "name": f"{etiqueta} en el BOE", "url": url,
+                 "inLanguage": "es-ES", "dateModified": hoy,
+                 "isPartOf": {"@type": "WebSite", "name": "BOE Digest & Cortes en Directo",
+                              "url": SITE_URL}},
+                {"@type": "BreadcrumbList", "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
+                    {"@type": "ListItem", "position": 2, "name": "Materias",
+                     "item": f"{SITE_URL}temas/"},
+                    {"@type": "ListItem", "position": 3, "name": etiqueta, "item": url}]}]),
+            "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+            "MIGA": (f'<a href="../">Portada</a> › <a href="./">Materias</a> › '
+                     f'<span aria-current="page">{esc_html(etiqueta)}</span>'),
+            "KICKER": "Materia",
+            "HEADLINE": etiqueta,
+            "STANDFIRST": (f"Todo lo que hemos recogido del BOE en esta materia, de lo más "
+                           f"reciente a lo más antiguo."),
+            "FICHA": f"<dt>Disposiciones</dt><dd>{len(piezas)}</dd>",
+            "CUERPO": f'<ul class="indice">{filas}</ul>',
+            "FUENTE": "Fuente: Boletín Oficial del Estado.",
+            "RELACIONADAS": f'<li>{otras}</li>' if otras else "",
+            "RELACIONADAS_HIDDEN": "" if otras else "hidden",
+        })
+        salidas.append({"url": url, "lastmod": hoy, "slug": slug,
+                        "etiqueta": etiqueta, "n": len(piezas)})
+
+    if salidas:
+        indice = "".join(
+            f'<li><a href="{esc_attr(x["slug"])}.html">{esc_html(x["etiqueta"])}</a>'
+            f'<span class="ref">{x["n"]} disposici{"ón" if x["n"] == 1 else "ones"}</span></li>'
+            for x in sorted(salidas, key=lambda x: -x["n"]))
+        url = f"{SITE_URL}temas/"
+        _pagina_suelta(plantilla, TEMAS_DIR, "index.html", {
+            "TITLE": "El BOE por materias | BOE Digest",
+            "META_DESC": esc_attr("El BOE ordenado por materias: subvenciones, fiscal, laboral, "
+                                  "seguridad social, contratación pública y once materias más."),
+            "CANONICAL": url,
+            "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": "Materias", "url": url,
+                                      "inLanguage": "es-ES", "dateModified": hoy}]),
+            "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+            "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Materias</span>',
+            "KICKER": "Índice",
+            "HEADLINE": "El BOE por materias",
+            "STANDFIRST": ("Cada materia tiene su propia página con todo lo publicado en ella. "
+                           "Una norma puede estar en varias: una subvención a la contratación "
+                           "es subvención y es laboral."),
+            "FICHA": f"<dt>Materias con contenido</dt><dd>{len(salidas)}</dd>",
+            "CUERPO": f'<ul class="indice">{indice}</ul>',
+            "FUENTE": "Fuente: Boletín Oficial del Estado.",
+            "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+        })
+        salidas.append({"url": url, "lastmod": hoy})
+    log(f"temas/: {len(salidas)} páginas de materia")
+    return salidas
+
+
 def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
     """Todas las ediciones, no solo la ventana de render, y con la fecha de
     modificación real de cada una."""
@@ -2984,8 +3319,9 @@ def renderizar() -> None:
     renderizar_index(dias)
     entradas = renderizar_ediciones(dias)
     fichas = renderizar_normas(dias)
+    extras = renderizar_temas(dias) + renderizar_plazos(dias)
     renderizar_archivo(entradas, dias)
-    renderizar_sitemap(entradas, fichas)
+    renderizar_sitemap(entradas, fichas + extras)
     renderizar_feed(dias)
 
     # Portada y archivo cambian cada día; las ediciones, solo las que se han
@@ -3013,7 +3349,8 @@ def main() -> None:
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
-    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR, NORMAS_DIR):
+    for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
+                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
