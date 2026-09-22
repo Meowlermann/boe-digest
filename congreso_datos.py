@@ -56,6 +56,16 @@ def _slug(nombre: str) -> str:
     return base[:70] or "sin-nombre"
 
 
+def clave_nombre(nombre: str) -> str:
+    """La misma persona aparece escrita de dos formas distintas según el
+    fichero: el censo dice «Rego Candamil, Néstor» y las intervenciones dicen
+    «Rego Candamil, Néstor (GMx)». Sin normalizar, el 97 % de las
+    intervenciones no casaba con nadie y las fichas salían a cero."""
+    n = re.sub(r"\s*\([^)]*\)\s*$", "", (nombre or "").strip())
+    n = unicodedata.normalize("NFKD", n).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", " ", n.lower()).strip()
+
+
 def nombre_natural(nombre: str) -> str:
     if "," not in nombre:
         return nombre.strip()
@@ -97,7 +107,7 @@ def censo(get, log) -> dict:
         nombre = (f.get("NOMBRE") or "").strip()
         if not nombre:
             continue
-        salida[nombre] = {
+        salida[clave_nombre(nombre)] = {
             "nombre": nombre,
             "natural": nombre_natural(nombre),
             "slug": _slug(nombre),
@@ -136,7 +146,8 @@ def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
         orador = (f.get("ORADOR") or "").strip()
         if not orador:
             continue
-        p = por_persona.setdefault(orador, {"total": 0, "organos": {}, "ultimas": []})
+        p = por_persona.setdefault(clave_nombre(orador),
+                                   {"total": 0, "organos": {}, "ultimas": []})
         p["total"] += 1
         organo = (f.get("ORGANO") or "").strip() or "Sin órgano"
         p["organos"][organo] = p["organos"].get(organo, 0) + 1
@@ -243,9 +254,10 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
             voto = VOTOS.get((x.get("voto") or "").strip(), "")
             if not voto:
                 continue
-            p = estado["personas"].setdefault(nombre, {
+            p = estado["personas"].setdefault(clave_nombre(nombre), {
                 "si": 0, "no": 0, "abstencion": 0, "no_vota": 0,
-                "votaciones": 0, "disidencias": 0, "grupo": "", "ultimas": []})
+                "votaciones": 0, "disidencias": 0, "grupo": "",
+                "nombre": nombre, "ultimas": []})
             p["grupo"] = (x.get("grupo") or p["grupo"]).strip()
             p["votaciones"] += 1
             p[voto] += 1
@@ -284,9 +296,9 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
 def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
     """Una ficha por diputado, con lo que se sepa de cada fuente."""
     fichas = []
-    for nombre, base in censo_actual.items():
-        v = (estado.get("personas") or {}).get(nombre) or {}
-        i = intervs.get(nombre) or {}
+    for clave, base in censo_actual.items():
+        v = (estado.get("personas") or {}).get(clave) or {}
+        i = intervs.get(clave) or {}
         emitidos = v.get("si", 0) + v.get("no", 0) + v.get("abstencion", 0)
         ficha = dict(base)
         ficha.update({

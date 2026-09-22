@@ -3268,6 +3268,15 @@ def cosechar_congreso() -> list:
         except Exception as exc:                              # noqa: BLE001
             log(f"  estado de Congreso ilegible, se empieza de cero: {exc}")
 
+    # Los nombres pasaron a indexarse normalizados; el acumulado anterior está
+    # en el formato viejo y no se puede mezclar. Se descarta y se reconstruye:
+    # las votaciones se vuelven a cosechar solas.
+    ESQUEMA = 2
+    if estado.get("esquema") != ESQUEMA:
+        if estado:
+            log("  formato de estado antiguo: se reinicia el acumulado de votaciones")
+        estado = {"esquema": ESQUEMA}
+
     log("Congreso: datos abiertos de diputados, intervenciones y votaciones")
     censo = cd.censo(get, log) or estado.get("censo") or {}
     if censo:
