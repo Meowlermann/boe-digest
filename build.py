@@ -50,6 +50,7 @@ OUTPUT = ROOT / "index.html"
 EDICIONES_DIR = ROOT / "ediciones"
 NORMAS_DIR = ROOT / "normas"
 TEMAS_DIR = ROOT / "temas"
+DIPUTADOS_DIR = ROOT / "diputados"
 PLAZOS_DIR = ROOT / "plazos"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
@@ -3241,6 +3242,192 @@ def renderizar_temas(dias: list) -> list:
     return salidas
 
 
+ESTADO_CONGRESO = ESTADO / "congreso.json"
+
+
+def _pct(n, total):
+    return f"{round(100 * n / total)} %" if total else "—"
+
+
+def cosechar_congreso() -> list:
+    """Censo, intervenciones y votaciones del Congreso, acumuladas en state/.
+
+    Se hace aquí y no en construir_dia porque no es información de una edición:
+    es una serie que crece. Si el portal falla un día, se sigue con lo que ya
+    había en vez de publicar fichas vacías."""
+    try:
+        import congreso_datos as cd
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"Congreso: módulo de datos no disponible ({exc})")
+        return []
+
+    estado = {}
+    if ESTADO_CONGRESO.exists():
+        try:
+            estado = json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8"))
+        except Exception as exc:                              # noqa: BLE001
+            log(f"  estado de Congreso ilegible, se empieza de cero: {exc}")
+
+    log("Congreso: datos abiertos de diputados, intervenciones y votaciones")
+    censo = cd.censo(get, log) or estado.get("censo") or {}
+    if censo:
+        estado["censo"] = censo
+    try:
+        estado = cd.acumular(estado, cd.votaciones_publicadas(get, log), log)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudieron acumular votaciones: {exc}")
+
+    # Las intervenciones son un volcado de decenas de megas: no se guarda
+    # entero, solo el resumen por persona que cabe en el repositorio.
+    intervs = {}
+    try:
+        intervs = cd.intervenciones(get, log)
+        if intervs:
+            estado["intervenciones"] = intervs
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudieron leer las intervenciones: {exc}")
+    if not intervs:
+        intervs = estado.get("intervenciones") or {}
+
+    ESTADO.mkdir(exist_ok=True)
+    ESTADO_CONGRESO.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
+    return cd.fusionar(censo, estado, intervs)
+
+
+def renderizar_diputados(fichas: list) -> list:
+    """Una página por diputado. Solo recuentos de actos públicos, cada uno con
+    su enlace: ni valoraciones, ni rankings de vagos, ni adjetivos."""
+    if not (fichas and TEMPLATE_NORMA.exists()):
+        return []
+    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    hoy = dt.date.today().isoformat()
+    salidas = []
+
+    for f in fichas:
+        url = f"{SITE_URL}diputados/{f['slug']}.html"
+        organos = "".join(
+            f"<dt>{esc_html(o)}</dt><dd>{n} intervenciones</dd>"
+            for o, n in sorted(f["organos"].items(), key=lambda x: -x[1])[:5])
+        ficha = (
+            f'<dt>Grupo</dt><dd>{esc_html(f["grupo"] or "—")}</dd>'
+            f'<dt>Partido</dt><dd>{esc_html(f["partido"] or "—")}</dd>'
+            f'<dt>Circunscripción</dt><dd>{esc_html(f["circunscripcion"] or "—")}</dd>'
+            f'<dt>Escaño desde</dt><dd>{esc_html(f["alta"] or "—")}</dd>'
+            f'<dt>Intervenciones</dt><dd>{f["intervenciones"]}</dd>' + organos)
+        if f["votaciones"]:
+            ficha += (
+                f'<dt>Votaciones registradas</dt><dd>{f["votaciones"]}</dd>'
+                f'<dt>A favor</dt><dd>{f["si"]} ({_pct(f["si"], f["votaciones"])})</dd>'
+                f'<dt>En contra</dt><dd>{f["no"]} ({_pct(f["no"], f["votaciones"])})</dd>'
+                f'<dt>Abstenciones</dt><dd>{f["abstencion"]}</dd>'
+                f'<dt>No votó</dt><dd>{f["no_vota"]}</dd>'
+                f'<dt>Votos distintos a su grupo</dt><dd>{f["disidencias"]}</dd>')
+
+        cuerpo = []
+        if f["ultimas_intervenciones"]:
+            cuerpo.append('<h2 class="rotulo">Últimas intervenciones</h2><ul class="indice">')
+            for i in f["ultimas_intervenciones"]:
+                enlace = (f'<a href="{esc_attr(i["video"])}" rel="nofollow noopener" '
+                          f'target="_blank">{esc_html(i["asunto"] or "Intervención")}</a>'
+                          if i.get("video") else esc_html(i["asunto"] or "Intervención"))
+                cuerpo.append(f'<li>{enlace}<span class="ref">'
+                              f'{esc_html(i["fecha"])} · {esc_html(i["organo"])}'
+                              + (f' · {esc_html(i["fase"])}' if i.get("fase") else "")
+                              + '</span></li>')
+            cuerpo.append("</ul>")
+        if f["ultimos_votos"]:
+            cuerpo.append('<h2 class="rotulo">Últimos votos</h2><ul class="indice">')
+            etiqueta = {"si": "A favor", "no": "En contra",
+                        "abstencion": "Abstención", "no_vota": "No votó"}
+            for v in f["ultimos_votos"]:
+                coda = "" if v.get("con_su_grupo", True) else " · distinto a su grupo"
+                cuerpo.append(f'<li>{esc_html(v["asunto"])}<span class="ref">'
+                              f'{esc_html(v["fecha"])} · {etiqueta.get(v["voto"], v["voto"])}'
+                              f'{coda}</span></li>')
+            cuerpo.append("</ul>")
+        if not cuerpo:
+            cuerpo = ["<p>Todavía no hay actividad registrada de este diputado en las "
+                      "series que publicamos.</p>"]
+
+        _pagina_suelta(plantilla, DIPUTADOS_DIR, f"{f['slug']}.html", {
+            "TITLE": esc_html(f"{f['natural']} — actividad en el Congreso | BOE Digest"),
+            "META_DESC": esc_attr(
+                f"{f['natural']} ({f['grupo'] or f['partido']}, {f['circunscripcion']}): "
+                f"{f['intervenciones']} intervenciones y {f['votaciones']} votaciones "
+                f"registradas, con enlace a la fuente oficial."),
+            "CANONICAL": url,
+            "JSONLD": jsonld_script([
+                {"@type": "ProfilePage", "url": url, "inLanguage": "es-ES",
+                 "dateModified": hoy,
+                 "mainEntity": {"@type": "Person", "name": f["natural"],
+                                "jobTitle": "Diputado del Congreso de los Diputados",
+                                "affiliation": {"@type": "Organization",
+                                                "name": f["grupo"] or f["partido"]},
+                                "workLocation": f["circunscripcion"]}},
+                {"@type": "BreadcrumbList", "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
+                    {"@type": "ListItem", "position": 2, "name": "Diputados",
+                     "item": f"{SITE_URL}diputados/"},
+                    {"@type": "ListItem", "position": 3, "name": f["natural"], "item": url}]}]),
+            "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+            "MIGA": (f'<a href="../">Portada</a> › <a href="./">Diputados</a> › '
+                     f'<span aria-current="page">{esc_html(f["natural"])}</span>'),
+            "KICKER": esc_html(f["grupo"] or f["partido"] or "Congreso"),
+            "HEADLINE": esc_html(f["natural"]),
+            "STANDFIRST": esc_html(
+                f"Diputado por {f['circunscripcion']}. Todo lo que consta de su actividad "
+                f"en las publicaciones oficiales del Congreso."),
+            "FICHA": ficha,
+            "CUERPO": "".join(cuerpo),
+            "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados "
+                       "(diputados, intervenciones y votaciones). Recuentos de actos "
+                       "públicos; ninguna cifra es una valoración."),
+            "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+        })
+        salidas.append({"url": url, "lastmod": hoy})
+
+    por_grupo: dict = {}
+    for f in fichas:
+        por_grupo.setdefault(f["grupo"] or "Sin grupo", []).append(f)
+    bloques = []
+    for g, gente in sorted(por_grupo.items(), key=lambda x: -len(x[1])):
+        filas = "".join(
+            f'<li><a href="{esc_attr(x["slug"])}.html">{esc_html(x["natural"])}</a>'
+            f'<span class="ref">{esc_html(x["circunscripcion"])} · '
+            f'{x["intervenciones"]} intervenciones'
+            + (f' · {x["votaciones"]} votaciones' if x["votaciones"] else "")
+            + '</span></li>' for x in gente)
+        bloques.append(f'<h2 class="rotulo">{esc_html(g)} ({len(gente)})</h2>'
+                       f'<ul class="indice">{filas}</ul>')
+    url = f"{SITE_URL}diputados/"
+    _pagina_suelta(plantilla, DIPUTADOS_DIR, "index.html", {
+        "TITLE": "Qué hace cada diputado | BOE Digest",
+        "META_DESC": esc_attr("Ficha de actividad de cada diputado del Congreso: "
+                              "intervenciones, votaciones y votos distintos a los de su "
+                              "grupo, con enlace a la publicación oficial."),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": "Diputados",
+                                  "url": url, "inLanguage": "es-ES", "dateModified": hoy}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Diputados</span>',
+        "KICKER": "Seguimiento",
+        "HEADLINE": "Qué hace cada diputado",
+        "STANDFIRST": ("Cuántas veces interviene, cómo vota y cuántas veces se aparta de "
+                       "su grupo. Recuentos sobre las publicaciones oficiales del Congreso, "
+                       "sin adjetivos."),
+        "FICHA": f"<dt>Diputados con ficha</dt><dd>{len(fichas)}</dd>"
+                 f"<dt>Actualizado</dt><dd>{esc_html(fmt_date_es(hoy))}</dd>",
+        "CUERPO": "".join(bloques),
+        "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados. Las cifras de "
+                   "votación se acumulan desde que empezamos a registrarlas, así que aún "
+                   "no cubren toda la legislatura; las de intervenciones sí."),
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    salidas.append({"url": url, "lastmod": hoy})
+    log(f"diputados/: {len(fichas)} fichas")
+    return salidas
+
+
 def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
     """Todas las ediciones, no solo la ventana de render, y con la fecha de
     modificación real de cada una."""
@@ -3320,6 +3507,10 @@ def renderizar() -> None:
     entradas = renderizar_ediciones(dias)
     fichas = renderizar_normas(dias)
     extras = renderizar_temas(dias) + renderizar_plazos(dias)
+    try:
+        extras += renderizar_diputados(cosechar_congreso())
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"diputados/: no se pudo generar ({exc})")
     renderizar_archivo(entradas, dias)
     renderizar_sitemap(entradas, fichas + extras)
     renderizar_feed(dias)
@@ -3350,7 +3541,7 @@ def main() -> None:
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
-                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR):
+                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
