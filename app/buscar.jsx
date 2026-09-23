@@ -154,6 +154,14 @@ function Buscador({ datos }) {
 
   useEffect(() => { setActivo(0); }, [q, clase]);
 
+  /* La lista de «lo más reciente» es el respaldo para quien llega sin
+   * JavaScript o sin consulta. En cuanto se busca algo estorba, así que se
+   * esconde en vez de quedarse debajo de los resultados. */
+  useEffect(() => {
+    const rec = document.getElementById("buscar-recientes");
+    if (rec) rec.hidden = terminos.length > 0;
+  }, [terminos]);
+
   /* La barra de direcciones refleja la búsqueda: así se puede compartir un
    * resultado y así funciona el botón de atrás. */
   useEffect(() => {
