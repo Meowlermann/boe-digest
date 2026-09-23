@@ -1,0 +1,11 @@
+name = "terceracamara-disparador"
+main = "index.js"
+compatibility_date = "2026-09-23"
+
+# Cloudflare interpreta los cron en UTC, igual que GitHub.
+#   05:40 UTC = 07:40 en España en verano / 06:40 en invierno
+#   06:40 UTC = 08:40 / 07:40  — segundo intento por si el primero falla
+# El workflow es idempotente: si la edición del día ya está hecha, la segunda
+# ejecución no cambia nada y no hace commit.
+[triggers]
+crons = ["40 5 * * *", "40 6 * * *"]
