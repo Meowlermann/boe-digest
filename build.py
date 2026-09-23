@@ -3749,7 +3749,8 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         '<label for="qg">Buscar en el sitio</label> '
         '<input id="qg" type="search" name="q" placeholder="Orden INT, subvenciones, Gamarra…">'
         '<button type="submit">Buscar</button></form></noscript>'
-        f'<h2 class="rotulo">Lo más reciente</h2><ul class="indice">{recientes}</ul>'
+        f'<div id="buscar-recientes"><h2 class="rotulo">Lo más reciente</h2>'
+        f'<ul class="indice">{recientes}</ul></div>'
         '<script src="../assets/buscar.js" defer></script>')
     _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), BUSCAR_DIR, "index.html", {
         "TITLE": "Buscador: normas del BOE, diputados, materias y plazos | La Tercera Cámara",
