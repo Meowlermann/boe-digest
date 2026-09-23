@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-23T16:20:39.944764+00:00",
+  "inicio": "2026-09-23T16:43:39.007047+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/23/index.php",
@@ -91,7 +91,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;ad23df17&#46;1790180448&#46;829c68d <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;aa27c817&#46;1790181830&#46;9e409afe <P>https&#58;&#47;&#47;errors&#46;edgesuite"
   },
   "senado_fallback": [
     465,
@@ -107,5 +107,11 @@
     "congreso_docs": 2,
     "senado_docs": 0
   },
-  "fin": "2026-09-23T16:20:59.411623+00:00"
+  "titulares_descartados": [
+    "CONVOCATORIA ABIERTA: EL PREMIO NACIONAL DE ARQUITECTURA CORRESPONDIENTE AL AÑO 2025 — acaba en el número «2025» sin decir de qué",
+    "CONVOCA EL PREMIO NACIONAL DE ARQUITECTURA CORRESPONDIENTE AL AÑO 2025 — acaba en el número «2025» sin decir de qué",
+    "SE PUBLICAN LOS CAMBIOS DEL EURO CORRESPONDIENTES AL DÍA 22 DE SEPTIEMBRE DE 2026 — acaba en el número «2026» sin decir de qué",
+    "SE PUBLICAN LOS CAMBIOS DEL EURO CORRESPONDIENTES AL DÍA 22 DE SEPTIEMBRE DE 2026 — acaba en el número «2026» sin decir de qué"
+  ],
+  "fin": "2026-09-23T16:44:01.706309+00:00"
 }
