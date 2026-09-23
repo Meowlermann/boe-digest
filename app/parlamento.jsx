@@ -22,12 +22,13 @@ const pct = (n, t) => {
 const plano = (t) =>
   (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-function Ficha({ d, x, y }) {
+function Ficha({ d, x, y, abajo }) {
   if (!d) return null;
   const asistencia = pct(d.sa, d.st);
   const emitidos = pct(d.si + d.no + d.ab, d.vt);
   return (
-    <div className="ficha-flotante" style={{ left: x, top: y }} role="tooltip">
+    <div className={"ficha-flotante" + (abajo ? " ff-abajo" : "")}
+         style={{ left: x, top: y }} role="tooltip">
       <p className="ff-grupo">{d.g}{d.c ? ` · ${d.c}` : ""}</p>
       <h3 className="ff-nombre">{d.n}</h3>
       <dl className="ff-datos">
@@ -126,7 +127,7 @@ function Controles({ grupos, estado, set, conteos, total, fechaSesion }) {
 function Hemiciclo({ datos }) {
   const [estado, setEstado] = useState({ q: "", grupo: "", marca: "" });
   const [activo, setActivo] = useState(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [pos, setPos] = useState({ x: 0, y: 0, abajo: false });
   const caja = useRef(null);
 
   const porSlug = useMemo(() => {
@@ -192,7 +193,16 @@ function Hemiciclo({ datos }) {
       if (!d) return;
       const r = rect();
       const b = c.getBoundingClientRect();
-      if (r) setPos({ x: b.left - r.left + b.width / 2, y: b.top - r.top });
+      if (r) {
+        // Los escaños de la fila de arriba no dejan sitio para la ficha
+        // encima: ahí se dibuja debajo. Y el centro se recorta a los bordes
+        // del contenedor para que no se salga por los lados en pantallas
+        // estrechas.
+        const abajo = b.top < 250;
+        const medio = Math.min(Math.max(b.left - r.left + b.width / 2, 8),
+                               r.width - 8);
+        setPos({ x: medio, y: (abajo ? b.bottom : b.top) - r.top, abajo });
+      }
       setActivo(d);
     };
     const salir = (e) => {
@@ -240,7 +250,7 @@ function Hemiciclo({ datos }) {
         total={destacados.size}
         fechaSesion={datos.fechaUltimaSesion}
       />
-      <Ficha d={activo} x={pos.x} y={pos.y} />
+      <Ficha d={activo} x={pos.x} y={pos.y} abajo={pos.abajo} />
       {filtrando && (
         <ul className="rejilla-dip hemi-resultados">
           {lista.map((d) => (
