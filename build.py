@@ -3083,6 +3083,12 @@ def recolectar_plazos(dias: list) -> list:
     return unicas
 
 
+def _slug_txt(t: str) -> str:
+    import unicodedata
+    base = unicodedata.normalize("NFKD", t or "").encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-")[:50] or "sin-nombre"
+
+
 def _pagina_suelta(plantilla: str, carpeta: pathlib.Path, nombre: str, frag: dict) -> None:
     """Todas las páginas auxiliares comparten la plantilla de ficha: un diseño,
     un sitio donde tocarlo."""
@@ -3307,19 +3313,79 @@ def cosechar_congreso() -> list:
     return cd.fusionar(censo, estado, intervs)
 
 
+def _barra(n, total, etiqueta):
+    """Una barra de porcentaje, con el dato crudo al lado. El porcentaje solo
+    engaña si se esconde de qué sobre qué."""
+    if not total:
+        return ""
+    # Redondear 429 de 430 a «100 %» es mentir en el último dígito: si falta
+    # aunque sea uno, no está al 100.
+    pct = round(100 * n / total)
+    if pct == 100 and n < total:
+        pct = 99
+    if pct == 0 and n:
+        pct = 1
+    return (f'<div class="metrica"><div class="metrica-cab"><span>{esc_html(etiqueta)}</span>'
+            f'<b>{pct} %</b></div>'
+            f'<div class="barra"><i style="width:{pct}%"></i></div>'
+            f'<div class="metrica-pie">{n} de {total}</div></div>')
+
+
+def _tarjeta_diputado(f, prefijo=""):
+    sigla = f.get("sigla") or f.get("partido") or ""
+    return (f'<li class="dip"><a href="{prefijo}{esc_attr(f["slug"])}.html">'
+            f'<span class="dip-nombre">{esc_html(f["natural"])}</span>'
+            f'<span class="dip-meta">{esc_html(sigla)} · {esc_html(f["circunscripcion"])}</span>'
+            f'<span class="dip-cifras">{f["intervenciones"]} intervenciones'
+            + (f' · {f["votaciones"]} votaciones' if f["votaciones"] else "")
+            + '</span></a></li>')
+
+
+def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
+                    url, miga, kicker, ficha_extra="", cuerpo_extra=""):
+    filas = "".join(_tarjeta_diputado(f, "../") for f in fichas)
+    hoy = dt.date.today().isoformat()
+    _pagina_suelta(plantilla, carpeta, nombre, {
+        "TITLE": esc_html(titulo),
+        "META_DESC": esc_attr(entradilla[:155]),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": h1, "url": url,
+                                  "inLanguage": "es-ES", "dateModified": hoy}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+        "MIGA": miga,
+        "KICKER": esc_html(kicker),
+        "HEADLINE": esc_html(h1),
+        "STANDFIRST": esc_html(entradilla),
+        "FICHA": ficha_extra or f"<dt>Diputados</dt><dd>{len(fichas)}</dd>",
+        "CUERPO": cuerpo_extra + f'<ul class="rejilla-dip">{filas}</ul>',
+        "FUENTE": "Fuente: datos abiertos del Congreso de los Diputados.",
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    return {"url": url, "lastmod": hoy}
+
+
 def renderizar_diputados(fichas: list) -> list:
-    """Una página por diputado. Solo recuentos de actos públicos, cada uno con
-    su enlace: ni valoraciones, ni rankings de vagos, ni adjetivos."""
+    """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
+
+    Los filtros son páginas de verdad —una por grupo y una por provincia— y no
+    un desplegable de JavaScript. Cuesta lo mismo generarlas y la diferencia es
+    que existen: se pueden enlazar, compartir e indexar. Un buscador ve sesenta
+    listados en vez de una página con un menú que no sabe abrir."""
     if not (fichas and TEMPLATE_NORMA.exists()):
+        return []
+    try:
+        import congreso_datos as cd
+    except Exception:                                          # noqa: BLE001
         return []
     plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
     hoy = dt.date.today().isoformat()
     salidas = []
 
+    # --- ficha individual -------------------------------------------------
     for f in fichas:
         url = f"{SITE_URL}diputados/{f['slug']}.html"
         organos = "".join(
-            f"<dt>{esc_html(o)}</dt><dd>{n} intervenciones</dd>"
+            f"<dt>{esc_html(o)}</dt><dd>{n}</dd>"
             for o, n in sorted(f["organos"].items(), key=lambda x: -x[1])[:5])
         ficha = (
             f'<dt>Grupo</dt><dd>{esc_html(f["grupo"] or "—")}</dd>'
@@ -3327,16 +3393,23 @@ def renderizar_diputados(fichas: list) -> list:
             f'<dt>Circunscripción</dt><dd>{esc_html(f["circunscripcion"] or "—")}</dd>'
             f'<dt>Escaño desde</dt><dd>{esc_html(f["alta"] or "—")}</dd>'
             f'<dt>Intervenciones</dt><dd>{f["intervenciones"]}</dd>' + organos)
+
+        metricas = []
+        if f.get("sesiones_totales"):
+            metricas.append(_barra(f.get("sesiones_asistidas", 0),
+                                   f["sesiones_totales"], "Asistencia a sesiones"))
         if f["votaciones"]:
-            ficha += (
-                f'<dt>Votaciones registradas</dt><dd>{f["votaciones"]}</dd>'
-                f'<dt>A favor</dt><dd>{f["si"]} ({_pct(f["si"], f["votaciones"])})</dd>'
-                f'<dt>En contra</dt><dd>{f["no"]} ({_pct(f["no"], f["votaciones"])})</dd>'
-                f'<dt>Abstenciones</dt><dd>{f["abstencion"]}</dd>'
-                f'<dt>No votó</dt><dd>{f["no_vota"]}</dd>'
-                f'<dt>Votos distintos a su grupo</dt><dd>{f["disidencias"]}</dd>')
+            metricas.append(_barra(f["emitidos"], f["votaciones"], "Votos emitidos"))
+            metricas.append(_barra(f["si"], f["votaciones"], "A favor"))
+            metricas.append(_barra(f["no"], f["votaciones"], "En contra"))
+            if f["disidencias"]:
+                metricas.append(_barra(f["disidencias"], f["votaciones"],
+                                       "Votos distintos a su grupo"))
 
         cuerpo = []
+        if metricas:
+            cuerpo.append('<h2 class="rotulo">Su actividad en cifras</h2>'
+                          '<div class="metricas">' + "".join(metricas) + "</div>")
         if f["ultimas_intervenciones"]:
             cuerpo.append('<h2 class="rotulo">Últimas intervenciones</h2><ul class="indice">')
             for i in f["ultimas_intervenciones"]:
@@ -3362,10 +3435,19 @@ def renderizar_diputados(fichas: list) -> list:
             cuerpo = ["<p>Todavía no hay actividad registrada de este diputado en las "
                       "series que publicamos.</p>"]
 
+        gslug = cd.GRUPO_SLUG.get(f["grupo"], "")
+        rel = []
+        if gslug:
+            rel.append(f'<a class="srclink" href="grupo-{esc_attr(gslug)}.html">'
+                       f'Todo el grupo {esc_html(cd.GRUPO_CORTO.get(f["grupo"], ""))}</a>')
+        if f["circunscripcion"]:
+            rel.append(f'<a class="srclink" href="provincia-{esc_attr(_slug_txt(f["circunscripcion"]))}.html">'
+                       f'Diputados por {esc_html(f["circunscripcion"])}</a>')
+
         _pagina_suelta(plantilla, DIPUTADOS_DIR, f"{f['slug']}.html", {
-            "TITLE": esc_html(f"{f['natural']} — actividad en el Congreso | La Tercera Cámara"),
+            "TITLE": esc_html(f"{f['natural']} — cómo vota y qué hace | La Tercera Cámara"),
             "META_DESC": esc_attr(
-                f"{f['natural']} ({f['grupo'] or f['partido']}, {f['circunscripcion']}): "
+                f"{f['natural']} ({f['sigla'] or f['partido']}, {f['circunscripcion']}): "
                 f"{f['intervenciones']} intervenciones y {f['votaciones']} votaciones "
                 f"registradas, con enlace a la fuente oficial."),
             "CANONICAL": url,
@@ -3379,65 +3461,114 @@ def renderizar_diputados(fichas: list) -> list:
                                 "workLocation": f["circunscripcion"]}},
                 {"@type": "BreadcrumbList", "itemListElement": [
                     {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
-                    {"@type": "ListItem", "position": 2, "name": "Diputados",
+                    {"@type": "ListItem", "position": 2, "name": "Parlamentarios",
                      "item": f"{SITE_URL}diputados/"},
                     {"@type": "ListItem", "position": 3, "name": f["natural"], "item": url}]}]),
             "EDITION_DATE": esc_html(fmt_date_es(hoy)),
-            "MIGA": (f'<a href="../">Portada</a> › <a href="./">Diputados</a> › '
+            "MIGA": (f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
                      f'<span aria-current="page">{esc_html(f["natural"])}</span>'),
-            "KICKER": esc_html(f["grupo"] or f["partido"] or "Congreso"),
+            "KICKER": esc_html(cd.GRUPO_CORTO.get(f["grupo"], f["partido"] or "Congreso")),
             "HEADLINE": esc_html(f["natural"]),
             "STANDFIRST": esc_html(
                 f"Diputado por {f['circunscripcion']}. Todo lo que consta de su actividad "
                 f"en las publicaciones oficiales del Congreso."),
             "FICHA": ficha,
             "CUERPO": "".join(cuerpo),
-            "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados "
-                       "(diputados, intervenciones y votaciones). Recuentos de actos "
-                       "públicos; ninguna cifra es una valoración."),
-            "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+            "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados. Recuentos de "
+                       "actos públicos; ninguna cifra es una valoración."),
+            "RELACIONADAS": ("<li>" + " ".join(rel) + "</li>") if rel else "",
+            "RELACIONADAS_HIDDEN": "" if rel else "hidden",
         })
         salidas.append({"url": url, "lastmod": hoy})
 
-    por_grupo: dict = {}
+    # --- una página por grupo --------------------------------------------
+    por_grupo = {}
     for f in fichas:
         por_grupo.setdefault(f["grupo"] or "Sin grupo", []).append(f)
-    bloques = []
-    for g, gente in sorted(por_grupo.items(), key=lambda x: -len(x[1])):
-        filas = "".join(
-            f'<li><a href="{esc_attr(x["slug"])}.html">{esc_html(x["natural"])}</a>'
-            f'<span class="ref">{esc_html(x["circunscripcion"])} · '
-            f'{x["intervenciones"]} intervenciones'
-            + (f' · {x["votaciones"]} votaciones' if x["votaciones"] else "")
-            + '</span></li>' for x in gente)
-        bloques.append(f'<h2 class="rotulo">{esc_html(g)} ({len(gente)})</h2>'
-                       f'<ul class="indice">{filas}</ul>')
+    for largo, corto, slug, _color in cd.GRUPOS:
+        gente = por_grupo.get(largo)
+        if not gente:
+            continue
+        url = f"{SITE_URL}diputados/grupo-{slug}.html"
+        salidas.append(_pagina_listado(
+            plantilla, DIPUTADOS_DIR, f"grupo-{slug}.html",
+            f"Diputados de {corto} — actividad y votos | La Tercera Cámara",
+            f"Diputados de {corto}",
+            f"Los {len(gente)} diputados del {largo}, con sus intervenciones y sus votos.",
+            gente, url,
+            f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
+            f'<span aria-current="page">{esc_html(corto)}</span>',
+            "Grupo parlamentario",
+            f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>{esc_html(largo)}</dd>"))
+
+    # --- una página por provincia ----------------------------------------
+    por_prov = {}
+    for f in fichas:
+        if f["circunscripcion"]:
+            por_prov.setdefault(f["circunscripcion"], []).append(f)
+    for prov, gente in sorted(por_prov.items()):
+        ps = _slug_txt(prov)
+        url = f"{SITE_URL}diputados/provincia-{ps}.html"
+        salidas.append(_pagina_listado(
+            plantilla, DIPUTADOS_DIR, f"provincia-{ps}.html",
+            f"Diputados por {prov} — quiénes son y cómo votan | La Tercera Cámara",
+            f"Diputados por {prov}",
+            f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
+            f"con su actividad y sus votos.",
+            gente, url,
+            f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
+            f'<span aria-current="page">{esc_html(prov)}</span>',
+            "Circunscripción",
+            f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
+            f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>"))
+
+    # --- índice con hemiciclo --------------------------------------------
+    conteo = {g: len(v) for g, v in por_grupo.items()}
+    hemi = cd.hemiciclo_svg(conteo)
+    leyenda = "".join(
+        f'<li><a href="grupo-{slug}.html"><i style="background:{color}"></i>'
+        f'<span>{esc_html(corto)}</span><b>{conteo.get(largo, 0)}</b></a></li>'
+        for largo, corto, slug, color in cd.GRUPOS if conteo.get(largo))
+    provincias = "".join(
+        f'<li><a href="provincia-{_slug_txt(p)}.html">{esc_html(p)}'
+        f'<span class="ref">{len(v)}</span></a></li>'
+        for p, v in sorted(por_prov.items()))
+    activos = sorted(fichas, key=lambda f: -f["intervenciones"])[:15]
+
+    cuerpo = (
+        f'<div class="hemi-caja">{hemi}<ul class="leyenda-grupos">{leyenda}</ul></div>'
+        f'<h2 class="rotulo">Los que más intervienen</h2>'
+        f'<ul class="rejilla-dip">{"".join(_tarjeta_diputado(f) for f in activos)}</ul>'
+        f'<h2 class="rotulo">Por circunscripción</h2>'
+        f'<ul class="provincias">{provincias}</ul>')
     url = f"{SITE_URL}diputados/"
     _pagina_suelta(plantilla, DIPUTADOS_DIR, "index.html", {
-        "TITLE": "Qué hace cada diputado | La Tercera Cámara",
-        "META_DESC": esc_attr("Ficha de actividad de cada diputado del Congreso: "
-                              "intervenciones, votaciones y votos distintos a los de su "
-                              "grupo, con enlace a la publicación oficial."),
+        "TITLE": "Así vota y así trabaja cada diputado | La Tercera Cámara",
+        "META_DESC": esc_attr("Los 350 diputados del Congreso, uno a uno: intervenciones, "
+                              "votaciones, asistencia y votos distintos a los de su grupo, "
+                              "con enlace a la publicación oficial."),
         "CANONICAL": url,
-        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": "Diputados",
+        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": "Parlamentarios",
                                   "url": url, "inLanguage": "es-ES", "dateModified": hoy}]),
         "EDITION_DATE": esc_html(fmt_date_es(hoy)),
-        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Diputados</span>',
+        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Parlamentarios</span>',
         "KICKER": "Seguimiento",
-        "HEADLINE": "Qué hace cada diputado",
-        "STANDFIRST": ("Cuántas veces interviene, cómo vota y cuántas veces se aparta de "
-                       "su grupo. Recuentos sobre las publicaciones oficiales del Congreso, "
-                       "sin adjetivos."),
+        "HEADLINE": "Así vota y así trabaja cada diputado",
+        "STANDFIRST": ("Cuántas veces interviene, cómo vota, a cuántas sesiones asiste y "
+                       "cuántas veces se aparta de su grupo. Recuentos sobre las "
+                       "publicaciones oficiales del Congreso, sin adjetivos."),
         "FICHA": f"<dt>Diputados con ficha</dt><dd>{len(fichas)}</dd>"
+                 f"<dt>Grupos</dt><dd>{len(conteo)}</dd>"
+                 f"<dt>Circunscripciones</dt><dd>{len(por_prov)}</dd>"
                  f"<dt>Actualizado</dt><dd>{esc_html(fmt_date_es(hoy))}</dd>",
-        "CUERPO": "".join(bloques),
+        "CUERPO": cuerpo,
         "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados. Las cifras de "
-                   "votación se acumulan desde que empezamos a registrarlas, así que aún "
-                   "no cubren toda la legislatura; las de intervenciones sí."),
+                   "votación se acumulan desde que empezamos a registrarlas; las de "
+                   "intervenciones cubren toda la legislatura."),
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     })
     salidas.append({"url": url, "lastmod": hoy})
-    log(f"diputados/: {len(fichas)} fichas")
+    log(f"diputados/: {len(fichas)} fichas, {len(conteo)} grupos, {len(por_prov)} provincias")
     return salidas
 
 

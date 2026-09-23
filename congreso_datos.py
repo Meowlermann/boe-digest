@@ -46,6 +46,27 @@ SIGLAS = {
 }
 
 
+# Orden de izquierda a derecha del hemiciclo y color de cada grupo. El color
+# es el de cada formación, no decoración nuestra: en un hemiciclo la gente los
+# reconoce, y usar la paleta de la casa haría el gráfico ilegible. Están
+# rebajados en saturación para que convivan con el papel del resto del sitio.
+GRUPOS = [
+    ("Grupo Parlamentario Euskal Herria Bildu",      "EH Bildu", "bildu",  "#5aa02c"),
+    ("Grupo Parlamentario Republicano",              "ERC",      "erc",    "#d4a017"),
+    ("Grupo Parlamentario Plurinacional SUMAR",      "Sumar",    "sumar",  "#c4267b"),
+    ("Grupo Parlamentario Socialista",               "PSOE",     "psoe",   "#c8352f"),
+    ("Grupo Parlamentario Mixto",                    "Mixto",    "mixto",  "#8d8d8d"),
+    ("Grupo Parlamentario Vasco (EAJ-PNV)",          "PNV",      "pnv",    "#1f7a5a"),
+    ("Grupo Parlamentario Junts per Catalunya",      "Junts",    "junts",  "#2a9d9b"),
+    ("Grupo Parlamentario Popular en el Congreso",   "PP",       "pp",     "#2b5fa8"),
+    ("Grupo Parlamentario VOX",                      "Vox",      "vox",    "#4d8b2f"),
+]
+GRUPO_CORTO = {largo: corto for largo, corto, _s, _c in GRUPOS}
+GRUPO_SLUG = {largo: slug for largo, _c, slug, _col in GRUPOS}
+GRUPO_COLOR = {largo: color for largo, _c, _s, color in GRUPOS}
+ORDEN_GRUPO = {largo: i for i, (largo, *_r) in enumerate(GRUPOS)}
+
+
 def _slug(nombre: str) -> str:
     """«Cobo Pérez, Noelia» -> «noelia-cobo-perez». El apellido va delante en
     el dato oficial; en una URL manda el nombre, que es como se busca."""
@@ -415,3 +436,65 @@ def cosechar_historico(get, log, estado: dict, presupuesto: int = 400) -> list:
     log(f"  histórico: {len(nuevas)} votaciones de {dias} días revisados "
         f"({gastado} peticiones); quedan {estado['dias_pendientes']} días")
     return nuevas
+
+
+# ---------------------------------------------------------------------------
+# El hemiciclo
+# ---------------------------------------------------------------------------
+
+def hemiciclo_svg(conteo: dict, ancho: int = 720, filas: int = 11) -> str:
+    """El semicírculo de escaños, dibujado en el servidor.
+
+    Se genera como SVG en el build y no con JavaScript en el navegador: así lo
+    ve quien llega sin scripts, lo lee un rastreador y no hay un segundo de
+    pantalla en blanco. Cada escaño lleva su <title>, que es lo que convierte
+    un adorno en información para quien navega con lector de pantalla."""
+    import math
+
+    total = sum(conteo.values())
+    if not total:
+        return ""
+    r_int, r_ext = 0.42, 1.0
+    puntos = []
+    # Escaños por fila proporcionales al radio: las de fuera son más largas.
+    pesos = [r_int + (r_ext - r_int) * i / (filas - 1) for i in range(filas)]
+    suma = sum(pesos)
+    reparto = [max(1, round(total * w / suma)) for w in pesos]
+    # Ajuste fino para cuadrar con el total exacto.
+    while sum(reparto) > total:
+        reparto[reparto.index(max(reparto))] -= 1
+    while sum(reparto) < total:
+        reparto[reparto.index(min(reparto))] += 1
+
+    for fila, (radio, n) in enumerate(zip(pesos, reparto)):
+        for k in range(n):
+            # De π a 0: de la izquierda del hemiciclo a la derecha.
+            ang = math.pi * (1 - (k + 0.5) / n)
+            puntos.append((ang, radio, fila))
+    # El orden de colocación es el político, no el de dibujo.
+    puntos.sort(key=lambda p: (-p[0], p[1]))
+
+    cola = []
+    for largo, corto, slug, color in GRUPOS:
+        cola += [(corto, color)] * conteo.get(largo, 0)
+    cola += [("Otros", "#8d8d8d")] * max(0, total - len(cola))
+
+    alto = ancho // 2 + 26
+    cx, cy = ancho / 2, ancho / 2 + 6
+    escala = (ancho / 2) - 14
+    radio_punto = max(2.4, escala / (filas * 3.4))
+    circulos = []
+    for (ang, radio, _f), (corto, color) in zip(puntos, cola):
+        x = cx + math.cos(ang) * radio * escala
+        y = cy - math.sin(ang) * radio * escala
+        circulos.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{radio_punto:.1f}" '
+                        f'fill="{color}"><title>{corto}</title></circle>')
+
+    return (f'<svg class="hemiciclo" viewBox="0 0 {ancho} {alto}" '
+            f'role="img" aria-label="Distribución de los {total} escaños por grupo '
+            f'parlamentario" xmlns="http://www.w3.org/2000/svg">'
+            f'<text x="{cx:.0f}" y="{cy - 14:.0f}" text-anchor="middle" '
+            f'class="hemi-total">{total}</text>'
+            f'<text x="{cx:.0f}" y="{cy + 4:.0f}" text-anchor="middle" '
+            f'class="hemi-pie">escaños</text>'
+            + "".join(circulos) + '</svg>')
