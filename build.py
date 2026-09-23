@@ -924,6 +924,16 @@ def cerrar(texto: str, limite: int = 78) -> str:
         if cabeza and len(cola.split()) < 4:
             t = cabeza.strip(" .,;:—-–")
 
+    # Lo mismo con las subordinadas de relativo: «...personas expertas que
+    # colaborarán» deja el verbo esperando un complemento que ya no llega.
+    if recortado:
+        bajo = t.lower()
+        for nexo in (" que ", " cuyo ", " cuya ", " donde ", " para ", " en el marco de "):
+            i = bajo.rfind(nexo)
+            if i > 0 and len(t[i + len(nexo):].split()) < 4:
+                t = t[:i].strip(" .,;:—-–")
+                break
+
     # «SEGRIA LEVANTE sin cerrar es una errata a la vista de todo el mundo.
     if t.count("«") > t.count("»"):
         t = t[:t.rfind("«")].strip(" .,;:—-–")
