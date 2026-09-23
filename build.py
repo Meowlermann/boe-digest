@@ -53,6 +53,7 @@ TEMAS_DIR = ROOT / "temas"
 DIPUTADOS_DIR = ROOT / "diputados"
 DATOS_DIR = ROOT / "datos"
 PLAZOS_DIR = ROOT / "plazos"
+BUSCAR_DIR = ROOT / "buscar"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -3635,6 +3636,151 @@ def renderizar_diputados(fichas: list) -> list:
     return salidas
 
 
+def _entrada_indice(titulo, sub, url, clase, fecha="", extra=""):
+    """Una fila del índice del buscador. Campos de una letra porque esto viaja
+    por la red entero: con quinientas normas, cada nombre de campo largo son
+    kilobytes que el lector paga sin ver nada a cambio."""
+    def cortar(t, n):
+        t = " ".join((t or "").split())
+        if len(t) <= n:
+            return t
+        corte = t[:n].rsplit(" ", 1)[0]
+        return (corte or t[:n]).rstrip(" ,;:") + "…"
+    return {"t": cortar(titulo, 140), "s": cortar(sub, 120),
+            "u": url, "k": clase, "d": fecha, "x": " ".join((extra or "").split())[:90]}
+
+
+def renderizar_buscador(dias: list, fichas_dip: list) -> list:
+    """El metabuscador: una sola caja que busca a la vez en las normas del BOE,
+    en los diputados, en las materias, en los plazos y en las ediciones.
+
+    Hasta ahora, para encontrar algo había que saber de antemano en qué sección
+    estaba. El índice se genera aquí, en el build, y se resuelve en el navegador:
+    no hay servidor que mantener ni consulta que se caiga, y funciona igual de
+    rápido con quinientas fichas que con cinco mil."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    hoy = dt.date.today().isoformat()
+    idx: list = []
+
+    # Normas del BOE: lo que más gente busca y con el nombre más raro.
+    for day in sorted(dias, key=lambda d: d["id"], reverse=True):
+        for s in (day.get("boe", {}) or {}).get("stories") or []:
+            ref = ref_norma(s)
+            oficial = titulo_oficial_de(s)
+            if ref:
+                idx.append(_entrada_indice(
+                    s.get("headline", ""), primera_mayuscula(oficial),
+                    f"normas/{ref}.html", "norma", day["id"],
+                    s.get("ref", "") + " " + (s.get("dept") or "")))
+            else:
+                idx.append(_entrada_indice(
+                    s.get("headline", ""), primera_mayuscula(oficial),
+                    f"ediciones/{day['id']}.html", "norma", day["id"],
+                    s.get("dept") or ""))
+        # Las Cortes no van en «stories» sino en «feed», con otra forma: aquí
+        # el subtítulo útil es el standfirst, que ya resume la sesión.
+        for it in (day.get("cortes", {}) or {}).get("feed") or []:
+            fuente = (it.get("source") or {}).get("label") or ""
+            idx.append(_entrada_indice(
+                it.get("headline", ""), it.get("standfirst", ""),
+                f"ediciones/{day['id']}.html", "cortes", day["id"],
+                f'{it.get("chamber", "")} {it.get("type", "")} {fuente}'))
+
+    # Diputados: el nombre propio es la consulta más natural que existe.
+    for f in fichas_dip or []:
+        sigla = f.get("sigla") or f.get("partido") or ""
+        idx.append(_entrada_indice(
+            f.get("natural", ""),
+            f'{sigla} · {f.get("circunscripcion", "")}',
+            f'diputados/{f.get("slug", "")}.html', "diputado", "",
+            f'{f.get("partido", "")} {f.get("grupo", "")}'))
+
+    # Materias y ediciones, para que la caja cubra también la navegación.
+    for slug, etiqueta, claves in MATERIAS:
+        idx.append(_entrada_indice(etiqueta, "Materia del BOE",
+                                   f"temas/{slug}.html", "tema", "",
+                                   " ".join(claves) if isinstance(claves, (list, tuple)) else str(claves)))
+    for day in sorted(dias, key=lambda d: d["id"], reverse=True):
+        idx.append(_entrada_indice(f'Edición del {fmt_date_es(day["id"])}',
+                                   "Todo lo publicado ese día",
+                                   f'ediciones/{day["id"]}.html', "edicion", day["id"]))
+
+    # Deduplicar por URL+titular: una norma citada dos días no es dos resultados.
+    vistos, limpio = set(), []
+    for e in idx:
+        clave = (e["u"], e["t"])
+        if clave in vistos:
+            continue
+        vistos.add(clave)
+        limpio.append(e)
+
+    DATOS_DIR.mkdir(exist_ok=True)
+    (DATOS_DIR / "indice.json").write_text(json.dumps(
+        {"actualizado": hoy, "n": len(limpio), "items": limpio},
+        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+    # La página. Sin JavaScript sigue siendo útil: lleva los enlaces a las
+    # secciones y un formulario que delega en el buscador de Google acotado
+    # al sitio. Con JavaScript, la caja resuelve en local y sin salir de aquí.
+    por_clase: dict = {}
+    for e in limpio:
+        por_clase[e["k"]] = por_clase.get(e["k"], 0) + 1
+    resumen = "".join(
+        f'<dt>{esc_html(ETIQUETA_CLASE.get(k, k))}</dt><dd>{v}</dd>'
+        for k, v in sorted(por_clase.items(), key=lambda kv: -kv[1]))
+    recientes = "".join(
+        f'<li><a href="../{esc_attr(e["u"])}">{esc_html(e["t"])}</a>'
+        f'<span class="ref">{esc_html(ETIQUETA_CLASE.get(e["k"], e["k"]))}'
+        + (f' · {esc_html(fmt_date_es(e["d"]))}' if e["d"] else "") + '</span></li>'
+        for e in limpio[:40])
+    url = f"{SITE_URL}buscar/"
+    cuerpo = (
+        '<div id="buscador-app" data-src="../datos/indice.json"></div>'
+        '<noscript><form class="buscador-fallback" action="https://www.google.com/search" '
+        'method="get" target="_blank" rel="noopener">'
+        '<input type="hidden" name="q" value="site:terceracamara.es">'
+        '<label for="qg">Buscar en el sitio</label> '
+        '<input id="qg" type="search" name="q" placeholder="Orden INT, subvenciones, Gamarra…">'
+        '<button type="submit">Buscar</button></form></noscript>'
+        f'<h2 class="rotulo">Lo más reciente</h2><ul class="indice">{recientes}</ul>'
+        '<script src="../assets/buscar.js" defer></script>')
+    _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), BUSCAR_DIR, "index.html", {
+        "TITLE": "Buscador: normas del BOE, diputados, materias y plazos | La Tercera Cámara",
+        "META_DESC": esc_attr("Busca de una vez en las normas del BOE, en los 350 diputados, "
+                              "en las materias y en los plazos abiertos. Sin registro."),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([
+            {"@type": "WebSite", "name": "La Tercera Cámara", "url": SITE_URL,
+             "potentialAction": {"@type": "SearchAction",
+                                 "target": {"@type": "EntryPoint",
+                                            "urlTemplate": f"{url}?q={{search_term_string}}"},
+                                 "query-input": "required name=search_term_string"}},
+            {"@type": "CollectionPage", "name": "Buscador", "url": url,
+             "inLanguage": "es-ES", "dateModified": hoy},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
+                {"@type": "ListItem", "position": 2, "name": "Buscador", "item": url}]}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Buscador</span>',
+        "KICKER": "Buscador",
+        "HEADLINE": "Todo el sitio en una sola caja",
+        "STANDFIRST": ("Normas del BOE, actividad de las Cortes, los 350 diputados, las materias "
+                       "y los plazos abiertos. Se busca en el navegador: ni se registra la "
+                       "consulta ni sale de tu ordenador."),
+        "FICHA": resumen,
+        "CUERPO": cuerpo,
+        "FUENTE": "Fuentes: Boletín Oficial del Estado y datos abiertos del Congreso.",
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    log(f"buscar/: índice con {len(limpio)} entradas")
+    return [{"url": url, "lastmod": hoy}]
+
+
+ETIQUETA_CLASE = {"norma": "Norma del BOE", "cortes": "Cortes", "diputado": "Diputado",
+                  "tema": "Materia", "plazo": "Plazo", "edicion": "Edición"}
+
+
 def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
     """Todas las ediciones, no solo la ventana de render, y con la fecha de
     modificación real de cada una."""
@@ -3714,10 +3860,16 @@ def renderizar() -> None:
     entradas = renderizar_ediciones(dias)
     fichas = renderizar_normas(dias)
     extras = renderizar_temas(dias) + renderizar_plazos(dias)
+    fichas_dip: list = []
     try:
-        extras += renderizar_diputados(cosechar_congreso())
+        fichas_dip = cosechar_congreso()
+        extras += renderizar_diputados(fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
         log(f"diputados/: no se pudo generar ({exc})")
+    try:
+        extras += renderizar_buscador(dias, fichas_dip)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: no se pudo generar ({exc})")
     renderizar_archivo(entradas, dias)
     renderizar_sitemap(entradas, fichas + extras)
     renderizar_feed(dias)

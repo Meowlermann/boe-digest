@@ -3,7 +3,9 @@
   "private": true,
   "description": "Capa interactiva del hemiciclo. El fuente es React estándar; el bundle se compila contra preact/compat, que expone la misma API y pesa una décima parte. Se commitea ya construido: el workflow diario no necesita Node y assets/parlamento.js solo cambia cuando cambia app/parlamento.jsx.",
   "scripts": {
-    "build": "esbuild app/parlamento.jsx --bundle --minify --format=iife --target=es2019 --jsx=automatic --jsx-import-source=preact --alias:react=preact/compat --alias:react-dom=preact/compat --alias:react-dom/client=preact/compat --outfile=assets/parlamento.js --define:process.env.NODE_ENV='\"production\"'"
+    "build": "npm run build:parlamento && npm run build:buscar",
+    "build:parlamento": "esbuild app/parlamento.jsx --bundle --minify --format=iife --target=es2019 --jsx=automatic --jsx-import-source=preact --alias:react=preact/compat --alias:react-dom=preact/compat --alias:react-dom/client=preact/compat --outfile=assets/parlamento.js --define:process.env.NODE_ENV='\"production\"'",
+    "build:buscar": "esbuild app/buscar.jsx --bundle --minify --format=iife --target=es2019 --jsx=automatic --jsx-import-source=preact --alias:react=preact/compat --alias:react-dom=preact/compat --alias:react-dom/client=preact/compat --outfile=assets/buscar.js --define:process.env.NODE_ENV='\"production\"'"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
