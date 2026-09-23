@@ -812,21 +812,118 @@ def coletilla_fecha(d: dict) -> str:
 CONECTORES_FINALES = {
     "de","del","la","el","los","las","y","e","o","u","en","con","para","por","a","al",
     "que","se","su","sus","un","una","unos","unas","sobre","entre","desde","hasta",
-    "como","ante","tras","segun","según","cuyo","cuya","lo","le","les","esta","este"}
+    "como","ante","tras","segun","según","cuyo","cuya","lo","le","les","esta","este",
+    # Toda preposición o nexo pide complemento: si se queda la última, la frase
+    # está cortada. «...PROTECCIÓN LABORAL Y SOCIAL FRENTE» no es un titular.
+    "frente","bajo","cabe","contra","durante","hacia","mediante","salvo","sin",
+    "cuyos","cuyas","cual","cuales","ni","si","pero","aunque","mientras","cuando",
+    "donde","quien","quienes","relativa","relativo","relativas","relativos",
+    "respecto","correspondiente","correspondientes","denominada","denominado"}
+
+
+# Palabras que ABREN un sintagma nuevo. Si el corte cae justo antes de una de
+# ellas, la frase queda entera; si cae antes de cualquier otra cosa, estamos
+# partiendo un sintagma por la mitad — y ahí es donde «el panel de personas
+# expertas» se convierte en «el panel de personas», que significa otra cosa.
+ABRIDORES = {
+    "de", "del", "la", "el", "los", "las", "un", "una", "unos", "unas",
+    "y", "e", "o", "u", "ni", "en", "con", "por", "para", "a", "al",
+    "que", "quien", "quienes", "cuyo", "cuya", "cuyos", "cuyas", "cual", "cuales",
+    "sobre", "entre", "desde", "hasta", "ante", "bajo", "tras", "durante",
+    "mediante", "segun", "según", "sin", "contra", "hacia", "so", "salvo",
+    "cuando", "donde", "como", "si", "pero", "aunque", "mientras",
+}
+
+MESES_CORTE = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+               "agosto", "septiembre", "setiembre", "octubre", "noviembre",
+               "diciembre"}
+
+
+def _limpio(w: str) -> str:
+    return w.lower().strip(",;:.»«()¿?¡!")
 
 
 def cerrar(texto: str, limite: int = 78) -> str:
     """Corta por palabra y cierra limpio. NUNCA deja puntos suspensivos:
-    un titular que acaba en «…» no es un titular, es un texto cortado."""
-    t = " ".join((texto or "").split()).lstrip(" .,;:—-–»").rstrip(" .,;:—-–«")
-    if len(t) > limite:
-        t = t[:limite]
-        if " " in t:
-            t = t[:t.rfind(" ")]
-    palabras = t.split()
-    while palabras and palabras[-1].lower().strip(",;:.»«") in CONECTORES_FINALES:
-        palabras.pop()
-    t = " ".join(palabras).strip(" .,;:—-–")
+    un titular que acaba en «…» no es un titular, es un texto cortado.
+
+    Y nunca corta por la mitad de un sintagma. Un recorte que cae entre un
+    sustantivo y su adjetivo no acorta la frase: la cambia. «Concurso para la
+    constitución del panel de personas expertas» recortado a «del panel de
+    personas» dice algo que la norma no dice, y además suena absurdo. Cuando
+    el corte cae ahí, se retrocede hasta el principio del sintagma, aunque el
+    titular salga más corto: más vale breve que falso."""
+    t0 = " ".join((texto or "").split()).lstrip(" .,;:—-–»").rstrip(" .,;:—-–«")
+    todas = t0.split()
+    if not todas:
+        return ""
+
+    # Cuántas palabras caben.
+    n, acc = 0, 0
+    for i, w in enumerate(todas):
+        add = len(w) + (1 if i else 0)
+        if acc + add > limite:
+            break
+        acc += add
+        n = i + 1
+    recortado = n < len(todas)
+    if not recortado:
+        n = len(todas)
+
+    def podar():
+        m = n
+        while m and _limpio(todas[m - 1]) in CONECTORES_FINALES:
+            m -= 1
+        return m
+
+    n = podar()
+
+    if recortado and n:
+        # El corte ha caído donde ha caído, y lo que viene detrás puede estar
+        # completando el sintagma («personas | expertas») en vez de abrir uno
+        # nuevo. Partirlo ahí no acorta la frase: la cambia.
+        #
+        # Lo primero que se intenta es TERMINAR el sintagma, no amputarlo:
+        # nueve caracteres de más son mejores que un titular que dice otra
+        # cosa. Solo si completarlo se va de madre se retrocede al principio
+        # del sintagma, aunque el titular salga corto.
+        holgura = limite + max(22, limite // 4)
+        m = n
+        while (m < len(todas)
+               and _limpio(todas[m]) not in ABRIDORES
+               and not todas[m - 1].endswith(",")
+               and len(" ".join(todas[:m + 1])) <= holgura):
+            m += 1
+        if m < len(todas) and _limpio(todas[m]) not in ABRIDORES and not todas[m - 1].endswith(","):
+            # No cabía: retrocedemos hasta el último principio de sintagma.
+            suelo = 2 if len(todas) > 3 else 1
+            while (n > suelo and n < len(todas)
+                   and _limpio(todas[n]) not in ABRIDORES
+                   and not todas[n - 1].endswith(",")):
+                n -= 1
+        else:
+            n = m
+        n = podar()
+
+    # Una fecha partida —«al día 22» sin el mes— es peor que una fecha larga:
+    # el lector no puede fecharla. Si al cortar queda un número suelto y lo
+    # que sigue es «de <mes>», se deja entrar aunque pase del límite.
+    if (recortado and 0 < n < len(todas) - 1
+            and todas[n - 1].strip(",;:.").isdigit()
+            and _limpio(todas[n]) == "de"
+            and _limpio(todas[n + 1]) in MESES_CORTE):
+        n += 2
+
+    t = " ".join(todas[:n]).strip(" .,;:—-–")
+
+    # Si hemos recortado y lo último que queda es el arranque de una cláusula
+    # subordinada («..., EN LA CATEGORÍA», «..., PUBLICADOS»), se tira entera:
+    # una oración principal completa informa más que un apéndice a medias.
+    if recortado and "," in t:
+        cabeza, _, cola = t.rpartition(",")
+        if cabeza and len(cola.split()) < 4:
+            t = cabeza.strip(" .,;:—-–")
+
     # «SEGRIA LEVANTE sin cerrar es una errata a la vista de todo el mundo.
     if t.count("«") > t.count("»"):
         t = t[:t.rfind("«")].strip(" .,;:—-–")
@@ -942,6 +1039,22 @@ def _tasa(m, t):
 def _adenda(m, t):
     verbo = "SE PRORROGA" if m.group(1).lower().startswith("pr") else "CAMBIA"
     return f"{verbo} EL CONVENIO CON {cerrar(_limpiar(m.group(2)), 50).upper()}"
+
+
+@_regla_titular(r"se incoa expediente (?:de declaraci[óo]n|para la declaraci[óo]n)"
+       r"(?:\s+como|\s+de)?\s+bien de inter[ée]s cultural"
+       r"(?:,\s*en la categor[íi]a de\s+([^,]+))?,?\s*"
+       r"(?:a favor d\w+\s+|d\w+\s+)(.+)")
+def _incoacion_bic(m, t):
+    # El BOE deja el nombre del monumento para el final, detrás de toda la
+    # maquinaria administrativa. Es justo lo único que le importa al lector:
+    # sin él, el titular dice «se incoa expediente» y nada más.
+    categoria = _limpiar((m.group(1) or "").strip())
+    sujeto = cerrar(_limpiar(re.split(r"\s+y el vinculado\b|;", m.group(2))[0]), 62)
+    if not sujeto:
+        return ""
+    cola = f" COMO {categoria.upper()}" if categoria else ""
+    return f"{sujeto.upper()}, CAMINO DE SER BIEN DE INTERÉS CULTURAL{cola}"
 
 
 @_regla_titular(r"relación de (?:personas |aspirantes |)admitid[oa]s y excluid[oa]s.*?"
@@ -1062,10 +1175,13 @@ def _urgentes(m, t):
     return f"MEDIDAS EXPRÉS EN {cerrar(_limpiar(m.group(1)), 54).upper()}"
 
 
-@_regla_titular(r"se (?:determina|determinan|establece|establecen)\s+(?:el|la|los|las)\s+(.+)")
+@_regla_titular(r"se (?:determina|determinan|establece|establecen)\s+((?:el|la|los|las)\s+.+)")
 def _determina(m, t):
+    # El artículo se conserva: sin él salía «QUEDA FIJADA TEMARIO», que además
+    # de perder la concordancia suena a telegrama. Y el gancho va en neutro con
+    # dos puntos, así que da igual el género de lo que venga detrás.
     nucleo = re.split(r"\s+para\s+su\s+|\s+en función de\s+|,", m.group(1))[0]
-    return f"QUEDA FIJADA {cerrar(_limpiar(nucleo), 54).upper()}"
+    return f"QUEDA FIJADO: {cerrar(_limpiar(nucleo), 54).upper()}"
 
 
 @_regla_titular(r"se publican?\s+(?:el|la|los|las)?\s*«(.+?)»")
@@ -1128,6 +1244,103 @@ def titular_por_reglas(titulo: str) -> str:
     return ""
 
 
+
+# ---------------------------------------------------------------------------
+# Última verja antes de publicar un titular
+#
+# Las reglas de titular son muchas y cada una recorta a su manera. Vigilar una
+# por una es perder: lo que hace falta es un sitio por el que pasen todos y
+# donde lo que no se sostiene no salga. Esto no embellece nada — corrige lo
+# mecánico y, cuando el titular no tiene arreglo, avisa para que quien llama
+# pruebe otra estrategia.
+
+_PLURALIZA = {"PUBLICA": "PUBLICAN", "ESTABLECE": "ESTABLECEN", "APRUEBA": "APRUEBAN",
+              "MODIFICA": "MODIFICAN", "FIJA": "FIJAN", "CONVOCA": "CONVOCAN",
+              "REGULA": "REGULAN", "DECLARA": "DECLARAN", "CREA": "CREAN"}
+
+_SINGULARIZA = {v: k for k, v in _PLURALIZA.items()}
+
+
+def sanear_titular(h: str, limite: int = 104) -> str:
+    """Arregla lo que es objetivamente incorrecto. No inventa contenido."""
+    if not h:
+        return ""
+    t = " ".join(h.split())
+
+    # Un titular jamás lleva puntos suspensivos: o cabe o se corta en seco.
+    t = t.replace("…", " ").replace("...", " ")
+    t = " ".join(t.split())
+
+    # «SE PUBLICA LOS CAMBIOS» -> «SE PUBLICAN LOS CAMBIOS».
+    def _concordar_se(m):
+        verbo = _PLURALIZA.get(m.group(1).upper(), m.group(1).upper())
+        return f"SE {verbo} {m.group(2)}"
+    t = re.sub(r"^SE (PUBLICA|ESTABLECE|APRUEBA|MODIFICA|FIJA|CONVOCA|REGULA|DECLARA|CREA)"
+               r"\s+(LOS|LAS|UNOS|UNAS)\b", _concordar_se, t)
+
+    # Algunas reglas devuelven el verbo del título tal cual: «PUBLICAN LOS
+    # CAMBIOS DEL EURO». Sin sujeto y sin «se», eso no es español.
+    t = re.sub(r"^(PUBLICAN|ESTABLECEN|APRUEBAN|MODIFICAN|FIJAN|CONVOCAN|REGULAN"
+               r"|DECLARAN|CREAN|DETERMINAN|DESIGNAN)\b", r"SE \1", t)
+
+    # «EL CONSEJO DE MINISTROS ESTABLECEN» -> «ESTABLECE». Sujeto singular.
+    def _concordar_sujeto(m):
+        return f"{m.group(1)} {_SINGULARIZA.get(m.group(2).upper(), m.group(2))}"
+    t = re.sub(r"^(EL CONSEJO DE MINISTROS|LA ADMINISTRACIÓN|EL MINISTERIO[^ ]*|EL GOBIERNO)"
+               r"\s+(PUBLICAN|ESTABLECEN|APRUEBAN|MODIFICAN|FIJAN|CONVOCAN|REGULAN|DECLARAN|CREAN)\b",
+               _concordar_sujeto, t)
+
+    # Dos puntos que no introducen nada, y comas huérfanas detrás de artículo.
+    t = re.sub(r"\s*:\s*$", "", t)
+    # Un artículo al que se le ha comido el sustantivo («CAMBIA LA, SOBRE
+    # EMISIÓN...») no se arregla quitando la coma: hay que quitarlo a él.
+    t = re.sub(r"\b(LA|EL|LOS|LAS|DE|DEL)\s*,\s*(?=[A-ZÁÉÍÓÚÑ])", "", t)
+
+    # «CORRESPONDIENTE AL AÑO» sin año detrás no informa de nada: fuera.
+    t = re.sub(r",?\s+CORRESPONDIENTES?\s+AL\s+AÑO(?!\s+\d)", "", t)
+
+    # El título oficial suele empezar por «de»: «Ley 4/2026, de …, de
+    # presupuestos». Arrastrarla al titular deja «DE PRESUPUESTOS DE LA…».
+    t = re.sub(r"^(?:DE|DEL)\s+(?=[A-ZÁÉÍÓÚÑ])", "", t)
+    t = re.sub(r"\s{2,}", " ", t).strip(" .,;:—-–")
+    return cerrar(t, limite)
+
+
+# Palabras con las que un titular no puede acabar sin quedar en el aire.
+_COLGANTES = CONECTORES_FINALES | {"n", "n.º", "nº", "número", "numero"}
+
+_CARDINALES = ("dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve",
+               "diez", "once", "doce", "veinte", "treinta", "cien", "mil")
+
+
+def titular_valido(h: str) -> str:
+    """Devuelve "" si el titular es publicable, o el motivo por el que no.
+
+    Se comprueba lo que un lector detecta sin abrir el BOE: frases cortadas,
+    titulares que no dicen nada y concordancias rotas."""
+    if not h:
+        return "vacío"
+    pal = h.split()
+    if len(pal) < 5:
+        return "menos de cinco palabras"
+    if _limpio(pal[-1]) in _COLGANTES:
+        return f"acaba en «{pal[-1]}», que pide complemento"
+    if re.fullmatch(r"\d+|" + "|".join(_CARDINALES), _limpio(pal[-1])):
+        return f"acaba en el número «{pal[-1]}» sin decir de qué"
+    if "…" in h or h.endswith("..."):
+        return "acaba en puntos suspensivos"
+    if "," in h and len(h.rpartition(",")[2].split()) == 1:
+        return "acaba en una cláusula de una sola palabra"
+    if h.rstrip().endswith(":"):
+        return "acaba en dos puntos sin contenido"
+    # «APROBADO: APRUEBAN», «SE PUBLICA: SE PUBLICA»: el gancho repite el verbo
+    # y el titular no aporta ni un dato.
+    m = re.match(r"^([A-ZÁÉÍÓÚÑ]+)[^:]*:\s*(\S+)", h)
+    if m and m.group(2).upper().startswith(m.group(1)[:5]):
+        return "el gancho repite el verbo y no dice nada más"
+    return ""
+
+
 def instrumento(titulo: str) -> tuple[str, str]:
     for patron, nombre, explicacion in INSTRUMENTOS:
         if re.match(patron, titulo, re.I):
@@ -1164,9 +1377,9 @@ def titular_de(objeto: str, titulo: str) -> str:
                 resto = re.sub(r"^el convenio\s*", "", resto, flags=re.I)
             # cerrar() en vez de recortar(): un titular nunca acaba en «…»,
             # se corta por palabra y se cierra en seco.
-            return f"{gancho} {cerrar(_limpiar(resto or obj), 58).upper()}".strip()
+            return f"{gancho} {cerrar(_limpiar(resto or obj), 76).upper()}".strip()
     # Sin verbo reconocible: el objeto ya es informativo por sí solo
-    return cerrar(_limpiar(obj or titulo), 72).upper()
+    return cerrar(_limpiar(obj or titulo), 88).upper()
 
 
 def recortar(texto: str, limite: int = 95) -> str:
@@ -1189,8 +1402,25 @@ def articulo_deterministico(e: dict) -> dict:
     quien = (e.get("dept") or "").strip()
     epi = (e.get("epigrafe") or "").strip()
 
-    headline = (titular_bilateral(titulo) or titular_por_reglas(titulo)
-                or titular_de(obj, titulo))
+    # Se prueban las estrategias por orden de especificidad y se publica la
+    # primera que pasa la verja. Antes se encadenaban con `or`, así que la
+    # primera que devolviera *algo* ganaba aunque ese algo fuese «APROBADO:
+    # APRUEBAN». Preferimos un titular genérico pero cierto a uno vistoso y
+    # roto.
+    headline = ""
+    for intento in (titular_bilateral(titulo), titular_por_reglas(titulo),
+                    titular_de(obj, titulo), cerrar(_limpiar(obj or titulo), 96).upper()):
+        cand = sanear_titular(intento or "")
+        motivo = titular_valido(cand) if cand else "vacío"
+        if not motivo:
+            headline = cand
+            break
+        if cand:
+            DIAG.setdefault("titulares_descartados", []).append(f"{cand} — {motivo}")
+    if not headline:
+        # Nada ha pasado: el título oficial, recortado por sintagma. Feo pero
+        # cierto, que es el orden correcto de prioridades.
+        headline = sanear_titular(cerrar(_limpiar(titulo), 96).upper())
 
     # Lo relevante suele estar en el articulado, no en el título: se lee la
     # norma y, si trae fecha de fin, se pone en el titular, que es donde la
@@ -1213,6 +1443,10 @@ def articulo_deterministico(e: dict) -> dict:
         if clave.pop("_reclamable", None):
             clave["plazo_publico"] = True
         clave.pop("_accion", None)
+
+    # enriquecer_titular() y coletilla_fecha() añaden texto por detrás: se
+    # vuelve a pasar la verja sobre el resultado final, no sobre el borrador.
+    headline = sanear_titular(headline)
 
     participio = "publicada" if nombre_inst in FEMENINOS else "publicado"
     if quien and epi:
@@ -2642,6 +2876,63 @@ def ids_de_ediciones() -> list[str]:
     return sorted(ids)
 
 
+
+def render_parlamento_ssr() -> tuple[bool, str]:
+    """El bloque de parlamentarios en portada.
+
+    Hasta ahora la sección solo se alcanzaba por el pie, que es donde va lo
+    que no le importa a nadie. Es la única parte del sitio que no habla del
+    día de hoy sino de los cuatro años: merece puerta propia."""
+    try:
+        datos = json.loads((DATOS_DIR / "parlamento.json").read_text(encoding="utf-8"))
+        hemi = (DATOS_DIR / "hemiciclo.svg").read_text(encoding="utf-8")
+    except Exception:                                         # noqa: BLE001
+        return True, ""
+
+    dip = datos.get("diputados") or []
+    if not dip:
+        return True, ""
+
+    grupos = len({d.get("gs") for d in dip if d.get("gs")})
+    circ = len({d.get("c") for d in dip if d.get("c")})
+    hablaron = sum(1 for d in dip if d.get("ult"))
+    disidentes = sum(1 for d in dip if d.get("ds"))
+    u = datos.get("ultimaSesion") or ""
+    fecha = f"{u[6:8]}/{u[4:6]}/{u[0:4]}" if len(u) == 8 else ""
+
+    destacados = sorted(dip, key=lambda d: -(d.get("iv") or 0))[:4]
+    filas = "".join(
+        f'<li><a href="diputados/{esc_attr(d["s"])}.html">'
+        f'<span class="dip-nombre">{esc_html(d["n"])}</span>'
+        f'<span class="dip-meta">{esc_html(d.get("g",""))} · {esc_html(d.get("c",""))}</span>'
+        f'<span class="dip-cifras">{d.get("iv",0)} intervenciones</span></a></li>'
+        for d in destacados)
+
+    cifras = "".join(
+        f'<div class="stat"><div class="label">{e}</div><div class="n">{v}</div></div>'
+        for e, v in [("Diputados con ficha", len(dip)), ("Grupos", grupos),
+                     ("Circunscripciones", circ),
+                     ("Se apartaron de su grupo", disidentes)])
+
+    pie = (f"{hablaron} intervinieron en la última sesión de la que tenemos constancia, "
+           f"la del {fecha}." if fecha and hablaron else
+           "Recuentos sobre las publicaciones oficiales del Congreso, sin adjetivos.")
+
+    # En portada el hemiciclo es un dibujo, no una interfaz: no hay capa
+    # interactiva que lea los slugs ni tooltips que mostrar. Quitarlos ahorra
+    # unos 25 KB en la página más visitada del sitio.
+    hemi = re.sub(r'\s*data-d="[^"]*"', "", hemi)
+    hemi = re.sub(r"<title>.*?</title>", "", hemi, flags=re.S)
+    hemi = hemi.replace('id="hemiciclo"', 'aria-hidden="true"', 1)
+
+    return False, (
+        f'<div class="stats">{cifras}</div>'
+        f'<div class="portada-hemi"><a href="diputados/" '
+        f'aria-label="Ver la ficha de cada diputado">{hemi}</a></div>'
+        f'<p class="aside-note">{esc_html(pie)}</p>'
+        f'<ul class="rejilla-dip portada-dip">{filas}</ul>')
+
+
 def renderizar_index(dias: list[dict]) -> None:
     """Portada: escaparate, no archivo.
 
@@ -2656,6 +2947,7 @@ def renderizar_index(dias: list[dict]) -> None:
     permalink = f"ediciones/{day0['id']}.html"
     cov_hidden, cov_html = render_coverage_note_ssr(day0)
     sb_hidden, sb_html = render_scoreboard_ssr(day0)
+    parl_hidden, parl_html = render_parlamento_ssr()
 
     frag = {
         "TITLE": esc_html(build_title(day0)),
@@ -2678,6 +2970,8 @@ def renderizar_index(dias: list[dict]) -> None:
         "CORTES_RESTO": render_cortes_resto_ssr(day0, permalink),
         "PERMALINK_HOY": permalink,
         "FECHA_HOY": esc_html(fmt_date_es(day0["id"])),
+        "PARLAMENTO_HIDDEN": "hidden" if parl_hidden else "",
+        "PARLAMENTO": parl_html,
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     OUTPUT.write_text(html, encoding="utf-8")
@@ -3586,6 +3880,10 @@ def renderizar_diputados(fichas: list) -> list:
     conteo = {g: len(v) for g, v in por_grupo.items()}
     orden = cd.orden_hemiciclo(fichas)
     hemi = cd.hemiciclo_svg(orden)
+    # La portada lo reutiliza tal cual: dibujarlo dos veces sería tener dos
+    # geometrías que se separan en cuanto se toque una.
+    DATOS_DIR.mkdir(exist_ok=True)
+    (DATOS_DIR / "hemiciclo.svg").write_text(hemi, encoding="utf-8")
     _datos_parlamento(orden, cd)
     leyenda = "".join(
         f'<li><a href="grupo-{slug}.html"><i style="background:{color}"></i>'
@@ -3863,16 +4161,20 @@ def renderizar() -> None:
         log("No hay datos que renderizar.")
         sys.exit(1)
 
-    renderizar_index(dias)
-    entradas = renderizar_ediciones(dias)
-    fichas = renderizar_normas(dias)
-    extras = renderizar_temas(dias) + renderizar_plazos(dias)
+    # Los diputados van primero: la portada enseña el hemiciclo y las cifras,
+    # y para eso datos/parlamento.json tiene que existir ya.
     fichas_dip: list = []
+    extras: list = []
     try:
         fichas_dip = cosechar_congreso()
         extras += renderizar_diputados(fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
         log(f"diputados/: no se pudo generar ({exc})")
+
+    renderizar_index(dias)
+    entradas = renderizar_ediciones(dias)
+    fichas = renderizar_normas(dias)
+    extras += renderizar_temas(dias) + renderizar_plazos(dias)
     try:
         extras += renderizar_buscador(dias, fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
