@@ -442,55 +442,65 @@ def cosechar_historico(get, log, estado: dict, presupuesto: int = 400) -> list:
 # El hemiciclo
 # ---------------------------------------------------------------------------
 
-def hemiciclo_svg(conteo: dict, ancho: int = 720, filas: int = 11) -> str:
+def orden_hemiciclo(fichas: list) -> list:
+    """Los escaños, de la izquierda del hemiciclo a la derecha.
+
+    Dentro de cada grupo el orden es alfabético y no corresponde al asiento
+    real de nadie: el Congreso no publica el plano de escaños. La página lo
+    dice, porque una silla concreta invita a creer que es «la suya»."""
+    def clave(f):
+        return (ORDEN_GRUPO.get(f.get("grupo", ""), 99), f.get("natural", ""))
+    return sorted(fichas, key=clave)
+
+
+def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
     """El semicírculo de escaños, dibujado en el servidor.
 
     Se genera como SVG en el build y no con JavaScript en el navegador: así lo
     ve quien llega sin scripts, lo lee un rastreador y no hay un segundo de
-    pantalla en blanco. Cada escaño lleva su <title>, que es lo que convierte
-    un adorno en información para quien navega con lector de pantalla."""
+    pantalla en blanco. La capa interactiva se monta encima, sobre este mismo
+    dibujo, en vez de sustituirlo por un hueco vacío.
+
+    Cada escaño lleva el identificador de su diputado, que es lo que permite
+    que al pasar el ratón salga su ficha sin volver a calcular nada."""
     import math
 
-    total = sum(conteo.values())
+    total = len(orden)
     if not total:
         return ""
     r_int, r_ext = 0.42, 1.0
-    puntos = []
-    # Escaños por fila proporcionales al radio: las de fuera son más largas.
     pesos = [r_int + (r_ext - r_int) * i / (filas - 1) for i in range(filas)]
     suma = sum(pesos)
     reparto = [max(1, round(total * w / suma)) for w in pesos]
-    # Ajuste fino para cuadrar con el total exacto.
     while sum(reparto) > total:
         reparto[reparto.index(max(reparto))] -= 1
     while sum(reparto) < total:
         reparto[reparto.index(min(reparto))] += 1
 
-    for fila, (radio, n) in enumerate(zip(pesos, reparto)):
+    puntos = []
+    for radio, n in zip(pesos, reparto):
         for k in range(n):
-            # De π a 0: de la izquierda del hemiciclo a la derecha.
             ang = math.pi * (1 - (k + 0.5) / n)
-            puntos.append((ang, radio, fila))
-    # El orden de colocación es el político, no el de dibujo.
+            puntos.append((ang, radio))
     puntos.sort(key=lambda p: (-p[0], p[1]))
-
-    cola = []
-    for largo, corto, slug, color in GRUPOS:
-        cola += [(corto, color)] * conteo.get(largo, 0)
-    cola += [("Otros", "#8d8d8d")] * max(0, total - len(cola))
 
     alto = ancho // 2 + 26
     cx, cy = ancho / 2, ancho / 2 + 6
     escala = (ancho / 2) - 14
-    radio_punto = max(2.4, escala / (filas * 3.4))
+    rp = max(2.4, escala / (filas * 3.4))
     circulos = []
-    for (ang, radio, _f), (corto, color) in zip(puntos, cola):
+    for (ang, radio), f in zip(puntos, orden):
         x = cx + math.cos(ang) * radio * escala
         y = cy - math.sin(ang) * radio * escala
-        circulos.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{radio_punto:.1f}" '
-                        f'fill="{color}"><title>{corto}</title></circle>')
+        color = GRUPO_COLOR.get(f.get("grupo", ""), "#8d8d8d")
+        corto = GRUPO_CORTO.get(f.get("grupo", ""), "")
+        nombre = (f.get("natural") or "").replace("&", "&amp;").replace("<", "&lt;")
+        circulos.append(
+            f'<circle class="escano" data-d="{f.get("slug", "")}" '
+            f'cx="{x:.1f}" cy="{y:.1f}" r="{rp:.1f}" fill="{color}">'
+            f'<title>{nombre} ({corto})</title></circle>')
 
-    return (f'<svg class="hemiciclo" viewBox="0 0 {ancho} {alto}" '
+    return (f'<svg id="hemiciclo" class="hemiciclo" viewBox="0 0 {ancho} {alto}" '
             f'role="img" aria-label="Distribución de los {total} escaños por grupo '
             f'parlamentario" xmlns="http://www.w3.org/2000/svg">'
             f'<text x="{cx:.0f}" y="{cy - 14:.0f}" text-anchor="middle" '

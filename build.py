@@ -51,6 +51,7 @@ EDICIONES_DIR = ROOT / "ediciones"
 NORMAS_DIR = ROOT / "normas"
 TEMAS_DIR = ROOT / "temas"
 DIPUTADOS_DIR = ROOT / "diputados"
+DATOS_DIR = ROOT / "datos"
 PLAZOS_DIR = ROOT / "plazos"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
@@ -3364,6 +3365,58 @@ def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
     return {"url": url, "lastmod": hoy}
 
 
+def _datos_parlamento(orden: list, cd) -> None:
+    """El JSON que consume la capa interactiva.
+
+    Va aparte y no incrustado en el HTML por dos razones: la página sigue
+    pesando lo mismo para quien solo quiere leerla, y el fichero se cachea
+    entre visitas. Solo lleva lo que la interfaz necesita enseñar; la ficha
+    completa sigue estando en su propia página."""
+    ultima = ""
+    for f in orden:
+        for i in f.get("ultimas_intervenciones") or []:
+            fecha = _fecha_int(i.get("fecha", ""))
+            if fecha > ultima:
+                ultima = fecha
+
+    salida = []
+    for f in orden:
+        intervenciones = f.get("ultimas_intervenciones") or []
+        reciente = next(iter(intervenciones), {})
+        salida.append({
+            "s": f["slug"],
+            "n": f["natural"],
+            "g": cd.GRUPO_CORTO.get(f.get("grupo", ""), f.get("partido", "")),
+            "gs": cd.GRUPO_SLUG.get(f.get("grupo", ""), ""),
+            "c": f.get("circunscripcion", ""),
+            "p": f.get("partido", ""),
+            "iv": f.get("intervenciones", 0),
+            "vt": f.get("votaciones", 0),
+            "si": f.get("si", 0), "no": f.get("no", 0),
+            "ab": f.get("abstencion", 0), "ds": f.get("disidencias", 0),
+            "sa": f.get("sesiones_asistidas", 0), "st": f.get("sesiones_totales", 0),
+            # ¿Intervino en la última sesión de la que tenemos constancia?
+            "ult": bool(reciente and _fecha_int(reciente.get("fecha", "")) == ultima),
+            "ua": " ".join((reciente.get("asunto") or "").split())[:110],
+            "uf": reciente.get("fecha", ""),
+        })
+    DATOS_DIR.mkdir(exist_ok=True)
+    (DATOS_DIR / "parlamento.json").write_text(json.dumps({
+        "actualizado": dt.date.today().isoformat(),
+        "ultimaSesion": ultima,
+        "grupos": [{"n": corto, "s": slug, "c": color}
+                   for _l, corto, slug, color in cd.GRUPOS],
+        "diputados": salida,
+    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    log(f"datos/parlamento.json: {len(salida)} diputados")
+
+
+def _fecha_int(f: str) -> str:
+    """«17/09/2026» -> «20260917», para comparar sin parsear."""
+    m = re.match(r"(\d{2})/(\d{2})/(\d{4})", f or "")
+    return f"{m.group(3)}{m.group(2)}{m.group(1)}" if m else ""
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -3524,7 +3577,9 @@ def renderizar_diputados(fichas: list) -> list:
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
-    hemi = cd.hemiciclo_svg(conteo)
+    orden = cd.orden_hemiciclo(fichas)
+    hemi = cd.hemiciclo_svg(orden)
+    _datos_parlamento(orden, cd)
     leyenda = "".join(
         f'<li><a href="grupo-{slug}.html"><i style="background:{color}"></i>'
         f'<span>{esc_html(corto)}</span><b>{conteo.get(largo, 0)}</b></a></li>'
@@ -3535,12 +3590,20 @@ def renderizar_diputados(fichas: list) -> list:
         for p, v in sorted(por_prov.items()))
     activos = sorted(fichas, key=lambda f: -f["intervenciones"])[:15]
 
+    # El SVG y la leyenda ya van servidos; el <div> de la app y el script solo
+    # añaden la capa interactiva encima. Si el script no carga, lo de debajo
+    # sigue siendo una página completa.
     cuerpo = (
         f'<div class="hemi-caja">{hemi}<ul class="leyenda-grupos">{leyenda}</ul></div>'
+        f'<div id="hemiciclo-app" data-src="../datos/parlamento.json"></div>'
+        f'<p class="hemi-nota">Pasa el ratón por cualquier escaño para ver quién lo ocupa. '
+        f'Dentro de cada grupo el orden es alfabético: el Congreso no publica el plano '
+        f'de asientos, así que ninguna silla del dibujo es la de nadie en concreto.</p>'
         f'<h2 class="rotulo">Los que más intervienen</h2>'
         f'<ul class="rejilla-dip">{"".join(_tarjeta_diputado(f) for f in activos)}</ul>'
         f'<h2 class="rotulo">Por circunscripción</h2>'
-        f'<ul class="provincias">{provincias}</ul>')
+        f'<ul class="provincias">{provincias}</ul>'
+        f'<script src="../assets/parlamento.js" defer></script>')
     url = f"{SITE_URL}diputados/"
     _pagina_suelta(plantilla, DIPUTADOS_DIR, "index.html", {
         "TITLE": "Así vota y así trabaja cada diputado | La Tercera Cámara",
@@ -3685,7 +3748,7 @@ def main() -> None:
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
-                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR):
+                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
