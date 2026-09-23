@@ -464,3 +464,379 @@ ul.indice .ref{display:block;font:500 11px/1.5 "IBM Plex Mono",ui-monospace,mono
 .barra{height:7px;margin:5px 0 3px;background:color-mix(in srgb,currentColor 14%,transparent)}
 .barra i{display:block;height:100%;background:#c81e2c}
 .metrica-pie{font:500 11px/1.4 "IBM Plex Mono",ui-monospace,monospace;opacity:.62}
+
+/* ---------------------------------------------------------------- buscador */
+.buscador { margin: 0 0 2rem; }
+
+.buscador-caja { position: relative; }
+
+.buscador-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .95rem 2.6rem .95rem 1rem;
+  font: inherit;
+  font-size: 1.15rem;
+  border: 2px solid var(--rule, #d6d2c8);
+  border-radius: 3px;
+  background: #fff;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.buscador-input:focus {
+  outline: none;
+  border-color: var(--accent, #9b1c1c);
+  box-shadow: 0 0 0 3px rgba(155, 28, 28, .12);
+}
+.buscador-input::-webkit-search-cancel-button { display: none; }
+
+.buscador-limpiar {
+  position: absolute;
+  right: .45rem; top: 50%;
+  transform: translateY(-50%);
+  width: 2rem; height: 2rem;
+  border: 0; background: none;
+  font-size: 1.4rem; line-height: 1;
+  color: #8a8478; cursor: pointer;
+}
+.buscador-limpiar:hover { color: var(--accent, #9b1c1c); }
+
+.buscador-filtros {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+  margin: .8rem 0 0;
+}
+
+.buscador-pista {
+  margin: .9rem 0 0;
+  font-size: .85rem;
+  color: #6c665c;
+}
+.buscador-pista kbd {
+  font: inherit;
+  border: 1px solid var(--rule, #d6d2c8);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  padding: 0 .3em;
+  background: #faf8f4;
+}
+
+.res-lista { list-style: none; margin: 1rem 0 0; padding: 0; }
+
+.res { border-top: 1px solid var(--rule, #d6d2c8); }
+.res:last-child { border-bottom: 1px solid var(--rule, #d6d2c8); }
+
+.res > a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .1rem .8rem;
+  padding: .7rem .6rem;
+  text-decoration: none;
+  color: inherit;
+}
+.res > a:hover, .res-activo > a {
+  background: #f6f3ec;
+  box-shadow: inset 3px 0 0 var(--accent, #9b1c1c);
+}
+
+.res-clase {
+  grid-column: 2; grid-row: 1;
+  align-self: start;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8a8478;
+  white-space: nowrap;
+}
+.res-norma { color: #9b1c1c; }
+.res-diputado { color: #1d4e6b; }
+.res-cortes { color: #6b4b1d; }
+
+.res-titulo {
+  grid-column: 1; grid-row: 1;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.res-sub {
+  grid-column: 1; grid-row: 2;
+  font-size: .85rem;
+  color: #5c574e;
+  line-height: 1.4;
+}
+.res-fecha {
+  grid-column: 2; grid-row: 2;
+  align-self: end;
+  font-size: .75rem;
+  color: #8a8478;
+  white-space: nowrap;
+}
+.res mark { background: #fbe9a7; color: inherit; padding: 0 .1em; }
+
+.buscador-fallback { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.buscador-fallback input[type="search"] { flex: 1 1 14rem; padding: .6rem; font: inherit; }
+
+@media (max-width: 34rem) {
+  .res > a { grid-template-columns: minmax(0, 1fr); }
+  .res-clase, .res-fecha { grid-column: 1; grid-row: auto; text-align: left; }
+}
+
+/* Caja de búsqueda de la cabecera. No hace nada por JavaScript: es un
+   formulario GET normal que lleva a /buscar/?q=…, así que funciona igual con
+   el bundle cargado que sin él. */
+.masthead-aux { display: flex; flex-direction: column; align-items: flex-end; gap: .45rem; }
+
+.masthead-buscar { display: flex; gap: .3rem; }
+.masthead-buscar input[type="search"] {
+  width: 15rem; max-width: 42vw;
+  padding: .4rem .55rem;
+  font: inherit; font-size: .85rem;
+  border: 1px solid var(--rule, #d6d2c8);
+  border-radius: 3px; background: #fff;
+  -webkit-appearance: none; appearance: none;
+}
+.masthead-buscar input[type="search"]:focus {
+  outline: none; border-color: var(--accent, #9b1c1c);
+}
+.masthead-buscar button {
+  padding: .4rem .7rem;
+  font: inherit; font-size: .78rem; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  border: 1px solid var(--rule, #d6d2c8);
+  border-radius: 3px; background: #faf8f4;
+  color: inherit; cursor: pointer;
+}
+.masthead-buscar button:hover { border-color: var(--accent, #9b1c1c); color: var(--accent, #9b1c1c); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (max-width: 40rem) {
+  .masthead-aux { align-items: stretch; width: 100%; }
+  .masthead-buscar input[type="search"] { width: 100%; max-width: none; }
+  .masthead-aux .edition-date { text-align: left; }
+}
+
+/* ------------------------------------------------- hemiciclo interactivo */
+/* La capa de React se monta encima del SVG que ya viene servido: sin
+   JavaScript el dibujo y la leyenda siguen ahí, y lo que se añade son los
+   controles. Por eso los estilos del escaño van sobre el SVG estático. */
+
+.escano {
+  transition: opacity .12s ease, transform .12s ease, stroke-width .12s ease;
+  stroke: transparent;
+  stroke-width: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+#hemiciclo-app ~ * .escano, .hemi-caja .escano { cursor: pointer; }
+
+.escano:hover, .escano:focus {
+  stroke: #1b1a17;
+  stroke-width: 2.2;
+  outline: none;
+}
+
+/* Cuando hay un filtro activo, lo que no encaja se apaga en vez de
+   desaparecer: así se ve de un vistazo cuánta cámara es y cuánta no. */
+#hemiciclo.filtrando .escano.apagado { opacity: .13; }
+#hemiciclo.filtrando .escano.vivo {
+  stroke: #1b1a17;
+  stroke-width: 1.6;
+  transform: scale(1.18);
+}
+
+/* La ficha flotante se posiciona respecto a este contenedor, que está
+   debajo del SVG: por eso su «top» sale negativo y no puede haber
+   overflow recortando aquí. */
+.hemi-interactivo { position: relative; margin: .2rem 0 0; }
+
+.hemi-controles {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: .9rem 0 0;
+  border-top: 1px solid var(--rule, #d6d2c8);
+}
+
+.hc-fila { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+
+.hc-buscar {
+  flex: 1 1 16rem;
+  min-width: 0;
+  padding: .55rem .7rem;
+  font: inherit;
+  font-size: .95rem;
+  border: 1px solid var(--rule, #d6d2c8);
+  border-radius: 3px;
+  background: #fff;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.hc-buscar:focus { outline: none; border-color: var(--accent, #9b1c1c); }
+.hc-buscar::-webkit-search-cancel-button { display: none; }
+
+.hc-limpiar {
+  padding: .5rem .8rem;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border: 1px solid var(--rule, #d6d2c8);
+  border-radius: 3px;
+  background: #faf8f4;
+  color: #6c665c;
+  cursor: pointer;
+}
+.hc-limpiar:hover { border-color: var(--accent, #9b1c1c); color: var(--accent, #9b1c1c); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .32rem .62rem;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  line-height: 1.3;
+  border: 1px solid var(--rule, #d6d2c8);
+  border-radius: 999px;
+  background: #fff;
+  color: #46423b;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease, color .12s ease;
+}
+.chip:hover { border-color: #a9a294; }
+.chip i {
+  width: .62rem; height: .62rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: var(--c, #8a8478);
+}
+.chip b { font-variant-numeric: tabular-nums; color: #8a8478; font-weight: 500; }
+
+/* El chip encendido toma el color del grupo, que llega en línea como --c:
+   así no hay nueve reglas duplicadas y el color es siempre el mismo que el
+   del escaño en el SVG. */
+.chip.on {
+  background: var(--c, #1b1a17);
+  border-color: var(--c, #1b1a17);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .28);
+}
+.chip.on i { background: #fff; }
+.chip.on b { color: rgba(255, 255, 255, .85); }
+
+.chip.marca.on { background: #1b1a17; border-color: #1b1a17; color: #fff; }
+
+.hc-resumen {
+  margin: .1rem 0 0;
+  font-size: .82rem;
+  color: #6c665c;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------ ficha flotante */
+.ficha-flotante {
+  position: absolute;
+  z-index: 40;
+  width: min(20rem, 82vw);
+  padding: .8rem .9rem .7rem;
+  background: #fffdf8;
+  border: 1px solid #1b1a17;
+  border-radius: 4px;
+  box-shadow: 0 10px 28px rgba(27, 26, 23, .18);
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 14px));
+}
+.ficha-flotante::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: -7px;
+  width: 12px; height: 12px;
+  margin-left: -6px;
+  background: #fffdf8;
+  border-right: 1px solid #1b1a17;
+  border-bottom: 1px solid #1b1a17;
+  transform: rotate(45deg);
+}
+
+.ff-grupo {
+  margin: 0;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #8a8478;
+}
+.ff-nombre {
+  margin: .15rem 0 .5rem;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.ff-datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .3rem .8rem;
+  margin: 0;
+  padding: .5rem 0 0;
+  border-top: 1px solid var(--rule, #d6d2c8);
+}
+.ff-datos > div { display: flex; justify-content: space-between; gap: .5rem; }
+.ff-datos dt { font-size: .72rem; color: #6c665c; margin: 0; }
+.ff-datos dd {
+  margin: 0;
+  font-size: .82rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.ff-disidencia { grid-column: 1 / -1; }
+.ff-disidencia dd { color: var(--accent, #9b1c1c); }
+
+.ff-ultima {
+  margin: .55rem 0 0;
+  padding: .45rem 0 0;
+  border-top: 1px solid var(--rule, #d6d2c8);
+  font-size: .78rem;
+  line-height: 1.4;
+  color: #46423b;
+}
+.ff-ultima span {
+  display: block;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8a8478;
+  margin-bottom: .1rem;
+}
+
+.ff-pie {
+  margin: .5rem 0 0;
+  font-size: .7rem;
+  color: #8a8478;
+  font-style: italic;
+}
+
+.hemi-resultados { margin-top: 1rem; }
+.dip.vacio {
+  padding: 1rem;
+  color: #6c665c;
+  font-style: italic;
+  border: 1px dashed var(--rule, #d6d2c8);
+}
+
+/* En pantalla táctil no hay hover: la ficha aparece al tocar, así que se
+   ancla abajo en vez de flotar sobre el dedo. */
+@media (hover: none) {
+  .ficha-flotante {
+    position: fixed;
+    left: 50% !important;
+    top: auto !important;
+    bottom: .6rem;
+    transform: translateX(-50%);
+  }
+  .ficha-flotante::after { display: none; }
+}
