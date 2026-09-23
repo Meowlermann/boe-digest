@@ -3335,11 +3335,17 @@ def _barra(n, total, etiqueta):
 
 def _tarjeta_diputado(f, prefijo=""):
     sigla = f.get("sigla") or f.get("partido") or ""
+    emitidos = f.get("si", 0) + f.get("no", 0) + f.get("abstencion", 0)
     return (f'<li class="dip"><a href="{prefijo}{esc_attr(f["slug"])}.html">'
             f'<span class="dip-nombre">{esc_html(f["natural"])}</span>'
             f'<span class="dip-meta">{esc_html(sigla)} · {esc_html(f["circunscripcion"])}</span>'
             f'<span class="dip-cifras">{f["intervenciones"]} intervenciones'
-            + (f' · {f["votaciones"]} votaciones' if f["votaciones"] else "")
+            # «votaciones» es el número de votaciones en las que figura en el
+            # listado nominal, que es el mismo para casi toda la cámara: dicho
+            # a secas parecía mérito propio. Lo que distingue a un diputado de
+            # otro es cuántas veces emitió voto de verdad.
+            + (f' · {emitidos} votos emitidos de {f["votaciones"]}'
+               if f["votaciones"] else "")
             + '</span></a></li>')
 
 
