@@ -382,12 +382,14 @@ def _dias_laborables(desde: dt.date, hasta: dt.date) -> list:
     return dias
 
 
-def cosechar_historico(get, log, estado: dict, presupuesto: int = 130) -> list:
+def cosechar_historico(get, log, estado: dict, presupuesto: int = 400) -> list:
     """Recupera votaciones antiguas poco a poco.
 
-    Con presupuesto de 130 días por ejecución y dos ejecuciones diarias, los
-    ochocientos días laborables de la legislatura quedan cubiertos en tres o
-    cuatro días. Después esto no vuelve a pedir nada: solo los días nuevos."""
+    El presupuesto cuenta PETICIONES, no días: un día sin pleno cuesta una y un
+    día con pleno cuesta una más una por cada votación, que pueden ser sesenta.
+    Contar solo los días hacía que una ejecución se fuera a veinte minutos sin
+    que se notara. Con cuatrocientas peticiones por ejecución y dos ejecuciones
+    al día, la legislatura entera queda cubierta en menos de una semana."""
     mirados = set(estado.get("dias_mirados") or [])
     hoy = dt.date.today()
     pendientes = [d for d in _dias_laborables(INICIO_LEG15, hoy) if d not in mirados]
@@ -396,19 +398,20 @@ def cosechar_historico(get, log, estado: dict, presupuesto: int = 130) -> list:
         estado["dias_pendientes"] = 0
         return []
 
-    nuevas, gastado = [], 0
+    nuevas, gastado, dias = [], 0, 0
     for fecha in pendientes:
         if gastado >= presupuesto:
             break
         v = votaciones_de_dia(get, log, fecha)
-        gastado += 1
+        gastado += 1 + len(v)
+        dias += 1
         mirados.add(fecha)
         if v:
             nuevas.extend(v)
             log(f"  {fecha}: {len(v)} votaciones")
 
     estado["dias_mirados"] = sorted(mirados)
-    estado["dias_pendientes"] = len(pendientes) - gastado
-    log(f"  histórico: {len(nuevas)} votaciones recuperadas de {gastado} días; "
-        f"quedan {estado['dias_pendientes']} días por revisar")
+    estado["dias_pendientes"] = len(pendientes) - dias
+    log(f"  histórico: {len(nuevas)} votaciones de {dias} días revisados "
+        f"({gastado} peticiones); quedan {estado['dias_pendientes']} días")
     return nuevas
