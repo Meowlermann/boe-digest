@@ -853,3 +853,15 @@ ul.indice .ref{display:block;font:500 11px/1.5 "IBM Plex Mono",ui-monospace,mono
   }
   .ficha-flotante::after { display: none; }
 }
+
+/* Bloque de parlamentarios en portada. El hemiciclo entero es un enlace: es
+   lo que la gente intenta pulsar en cuanto lo ve. */
+.portada-hemi { margin: 18px 0 10px; }
+.portada-hemi a { display: block; text-decoration: none; }
+.portada-hemi svg { width: 100%; height: auto; max-height: 260px; }
+.portada-hemi a:hover svg { opacity: .92; }
+
+.portada-dip { margin-top: 14px; }
+@media (min-width: 760px) {
+  .portada-dip { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 18px; }
+}
