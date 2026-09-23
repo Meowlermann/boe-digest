@@ -3270,7 +3270,7 @@ def cosechar_congreso() -> list:
     # Los nombres pasaron a indexarse normalizados; el acumulado anterior está
     # en el formato viejo y no se puede mezclar. Se descarta y se reconstruye:
     # las votaciones se vuelven a cosechar solas.
-    ESQUEMA = 3
+    ESQUEMA = 4
     if estado.get("esquema") != ESQUEMA:
         if estado:
             log("  formato de estado antiguo: se reinicia el acumulado de votaciones")

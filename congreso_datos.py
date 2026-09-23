@@ -24,6 +24,7 @@ adjetivo.
 
 from __future__ import annotations
 
+import datetime as dt
 import json
 import re
 import unicodedata
@@ -175,20 +176,6 @@ def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
 # que parecía cerrada porque no hay listado de directorios ni API.
 VOT_DIA = (CONGRESO + "/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0"
            "&p_p_state=normal&p_p_mode=view&targetLegislatura={leg}&targetDate={fecha}")
-
-# En el calendario, los días con votación llevan la clase «pleno».
-RE_DIA_PLENO = re.compile(r'<td[^>]*class="[^"]*\bpleno\b[^"]*"[^>]*>\s*(\d{1,2})\s*<', re.I)
-
-
-def dias_con_votaciones(get, log, anio: int, mes: int, leg: str = "XV") -> list:
-    """Qué días de ese mes tuvieron votación, según el propio calendario.
-    Una petición por mes en vez de una por día: 38 en vez de 1.150."""
-    r = get(VOT_DIA.format(leg=leg, fecha=f"01/{mes:02d}/{anio}"), tries=2)
-    if not r:
-        return []
-    dias = sorted({int(d) for d in RE_DIA_PLENO.findall(r.text)})
-    return [f"{d:02d}/{mes:02d}/{anio}" for d in dias]
-
 
 def votaciones_de_dia(get, log, fecha: str, leg: str = "XV", tope: int = 80) -> list:
     """Las votaciones nominales de un día concreto."""
@@ -372,67 +359,56 @@ def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
 # ---------------------------------------------------------------------------
 # Cosecha del histórico, a plazos
 # ---------------------------------------------------------------------------
+#
+# El portal no publica índice de sesiones y el calendario que las marca lo
+# dibuja JavaScript, así que desde un script no hay forma de preguntar «qué
+# días hubo votación». Lo que sí funciona es pedir un día concreto: si hubo
+# pleno, la página trae los enlaces a sus votaciones; si no, viene vacía.
+#
+# Así que se recorren los días laborables de la legislatura, unos ochocientos,
+# a razón de un trozo por ejecución. El estado recuerda qué días ya se miraron
+# —incluidos los vacíos— para no repetir ni una petición.
 
-INICIO_LEG15 = (2023, 8)
-
-
-def _meses_hacia_atras(desde_anio: int, desde_mes: int, hasta=INICIO_LEG15) -> list:
-    """Del mes actual hacia atrás hasta el inicio de la legislatura."""
-    meses, a, m = [], desde_anio, desde_mes
-    while (a, m) >= hasta:
-        meses.append((a, m))
-        m -= 1
-        if m == 0:
-            a, m = a - 1, 12
-    return meses
+INICIO_LEG15 = dt.date(2023, 8, 17)
 
 
-def cosechar_historico(get, log, estado: dict, presupuesto: int = 220) -> list:
+def _dias_laborables(desde: dt.date, hasta: dt.date) -> list:
+    """Del más reciente al más antiguo: interesa primero lo de ahora."""
+    dias, d = [], hasta
+    while d >= desde:
+        if d.weekday() < 5:          # el Pleno no vota sábados ni domingos
+            dias.append(d.strftime("%d/%m/%Y"))
+        d -= dt.timedelta(days=1)
+    return dias
+
+
+def cosechar_historico(get, log, estado: dict, presupuesto: int = 130) -> list:
     """Recupera votaciones antiguas poco a poco.
 
-    Bajar la legislatura entera de golpe son más de mil ficheros y unos cuantos
-    minutos de portal ajeno. Como esto se ejecuta cada día, se coge un trozo por
-    ejecución y en una semana está completo; después solo hay que mantenerlo.
-    El estado recuerda qué días ya se miraron, así que nada se pide dos veces."""
-    hechos = set(estado.get("dias_hechos") or [])
-    meses_hechos = set(estado.get("meses_hechos") or [])
-    hoy = __import__("datetime").date.today()
+    Con presupuesto de 130 días por ejecución y dos ejecuciones diarias, los
+    ochocientos días laborables de la legislatura quedan cubiertos en tres o
+    cuatro días. Después esto no vuelve a pedir nada: solo los días nuevos."""
+    mirados = set(estado.get("dias_mirados") or [])
+    hoy = dt.date.today()
+    pendientes = [d for d in _dias_laborables(INICIO_LEG15, hoy) if d not in mirados]
+    if not pendientes:
+        log("  histórico: legislatura completa, nada que recuperar")
+        estado["dias_pendientes"] = 0
+        return []
 
-    gastado, nuevas = 0, []
-    for anio, mes in _meses_hacia_atras(hoy.year, hoy.month):
-        clave_mes = f"{anio}-{mes:02d}"
-        # El mes en curso se vuelve a mirar siempre: aún puede crecer.
-        if clave_mes in meses_hechos and clave_mes != f"{hoy.year}-{hoy.month:02d}":
-            continue
+    nuevas, gastado = [], 0
+    for fecha in pendientes:
         if gastado >= presupuesto:
             break
-        dias = dias_con_votaciones(get, log, anio, mes)
+        v = votaciones_de_dia(get, log, fecha)
         gastado += 1
-        pendientes = [d for d in dias if d not in hechos]
-        if not pendientes:
-            meses_hechos.add(clave_mes)
-            continue
-        log(f"  {clave_mes}: {len(pendientes)} sesiones por cosechar")
-        for fecha in pendientes:
-            if gastado >= presupuesto:
-                break
-            v = votaciones_de_dia(get, log, fecha)
-            gastado += 1 + len(v)
+        mirados.add(fecha)
+        if v:
             nuevas.extend(v)
-            hechos.add(fecha)
-        if all(d in hechos for d in dias):
-            meses_hechos.add(clave_mes)
+            log(f"  {fecha}: {len(v)} votaciones")
 
-    estado["dias_hechos"] = sorted(hechos)
-    estado["meses_hechos"] = sorted(meses_hechos)
-    restantes = len([1 for a, m in _meses_hacia_atras(hoy.year, hoy.month)
-                     if f"{a}-{m:02d}" not in meses_hechos])
-    estado["meses_pendientes"] = restantes
-    if nuevas:
-        log(f"  histórico: {len(nuevas)} votaciones recuperadas "
-            f"({restantes} meses aún por recorrer)")
-    elif restantes:
-        log(f"  histórico: nada nuevo, quedan {restantes} meses por recorrer")
-    else:
-        log("  histórico: legislatura completa")
+    estado["dias_mirados"] = sorted(mirados)
+    estado["dias_pendientes"] = len(pendientes) - gastado
+    log(f"  histórico: {len(nuevas)} votaciones recuperadas de {gastado} días; "
+        f"quedan {estado['dias_pendientes']} días por revisar")
     return nuevas
