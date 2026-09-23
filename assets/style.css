@@ -762,6 +762,19 @@ ul.indice .ref{display:block;font:500 11px/1.5 "IBM Plex Mono",ui-monospace,mono
   transform: rotate(45deg);
 }
 
+/* Cuando el escaño está muy arriba, la ficha se dibuja debajo y la flecha
+   cambia de lado: sin esto, la tarjeta de las primeras filas se salía por
+   encima de la ventana y no se leía el nombre. */
+.ficha-flotante.ff-abajo { transform: translate(-50%, 14px); }
+.ficha-flotante.ff-abajo::after {
+  bottom: auto;
+  top: -7px;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 1px solid #1b1a17;
+  border-top: 1px solid #1b1a17;
+}
+
 .ff-grupo {
   margin: 0;
   font-size: .68rem;
