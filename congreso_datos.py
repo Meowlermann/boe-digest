@@ -170,6 +170,44 @@ def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
     return por_persona
 
 
+# El calendario del portal navega por GET: con targetDate se puede pedir
+# cualquier día de cualquier legislatura. Ahí estaba la puerta al histórico,
+# que parecía cerrada porque no hay listado de directorios ni API.
+VOT_DIA = (CONGRESO + "/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0"
+           "&p_p_state=normal&p_p_mode=view&targetLegislatura={leg}&targetDate={fecha}")
+
+# En el calendario, los días con votación llevan la clase «pleno».
+RE_DIA_PLENO = re.compile(r'<td[^>]*class="[^"]*\bpleno\b[^"]*"[^>]*>\s*(\d{1,2})\s*<', re.I)
+
+
+def dias_con_votaciones(get, log, anio: int, mes: int, leg: str = "XV") -> list:
+    """Qué días de ese mes tuvieron votación, según el propio calendario.
+    Una petición por mes en vez de una por día: 38 en vez de 1.150."""
+    r = get(VOT_DIA.format(leg=leg, fecha=f"01/{mes:02d}/{anio}"), tries=2)
+    if not r:
+        return []
+    dias = sorted({int(d) for d in RE_DIA_PLENO.findall(r.text)})
+    return [f"{d:02d}/{mes:02d}/{anio}" for d in dias]
+
+
+def votaciones_de_dia(get, log, fecha: str, leg: str = "XV", tope: int = 80) -> list:
+    """Las votaciones nominales de un día concreto."""
+    r = get(VOT_DIA.format(leg=leg, fecha=fecha), tries=2)
+    if not r:
+        return []
+    urls = [u for u in _urls_json(r.text) if "/votaciones/" in u][:tope]
+    salida = []
+    for u in urls:
+        d = get(u, tries=1)
+        if not d:
+            continue
+        try:
+            salida.append({"url": u, "datos": d.json()})
+        except Exception:                                      # noqa: BLE001
+            continue
+    return salida
+
+
 def votaciones_publicadas(get, log) -> list:
     """Las votaciones de la sesión que el portal muestra hoy.
 
@@ -243,6 +281,10 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
         if not votos:
             continue
         postura = _postura_del_grupo(votos)
+        sesion_id = f"{info.get('sesion')}|{(info.get('fecha') or '').strip()}"
+        estado.setdefault("sesiones", [])
+        if sesion_id not in estado["sesiones"]:
+            estado["sesiones"].append(sesion_id)
         titulo = (info.get("titulo") or "").strip()
         texto = " ".join((info.get("textoExpediente") or "").split())
         totales = d.get("totales") or {}
@@ -257,10 +299,16 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
             p = estado["personas"].setdefault(clave_nombre(nombre), {
                 "si": 0, "no": 0, "abstencion": 0, "no_vota": 0,
                 "votaciones": 0, "disidencias": 0, "grupo": "",
-                "nombre": nombre, "ultimas": []})
+                "nombre": nombre, "sesiones": [], "ultimas": []})
+            p.setdefault("sesiones", [])
             p["grupo"] = (x.get("grupo") or p["grupo"]).strip()
             p["votaciones"] += 1
             p[voto] += 1
+            # Asistencia: se cuenta la sesión si emitió algún voto en ella.
+            # «No vota» consta en el acta estando presente o ausente, así que
+            # solo un voto efectivo prueba la presencia.
+            if voto != "no_vota" and sesion_id and sesion_id not in p["sesiones"]:
+                p["sesiones"].append(sesion_id)
             g = (x.get("grupo") or "").strip()
             disiente = (voto != "no_vota" and g in postura and postura[g] != voto)
             if disiente:
@@ -287,7 +335,7 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
         vistas.add(url)
         nuevas += 1
 
-    estado["vistas"] = sorted(vistas)[-4000:]
+    estado["vistas"] = sorted(vistas)[-20000:]
     if nuevas:
         log(f"  votaciones nuevas incorporadas: {nuevas}")
     return estado
@@ -300,6 +348,8 @@ def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
         v = (estado.get("personas") or {}).get(clave) or {}
         i = intervs.get(clave) or {}
         emitidos = v.get("si", 0) + v.get("no", 0) + v.get("abstencion", 0)
+        sesiones_totales = len(estado.get("sesiones") or [])
+        asistidas = len(v.get("sesiones") or [])
         ficha = dict(base)
         ficha.update({
             "sigla": SIGLAS.get(v.get("grupo", ""), base.get("partido", "")),
@@ -308,6 +358,8 @@ def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
             "abstencion": v.get("abstencion", 0), "no_vota": v.get("no_vota", 0),
             "emitidos": emitidos,
             "disidencias": v.get("disidencias", 0),
+            "sesiones_asistidas": asistidas,
+            "sesiones_totales": sesiones_totales,
             "ultimos_votos": v.get("ultimas", []),
             "intervenciones": i.get("total", 0),
             "organos": i.get("organos", {}),
@@ -315,3 +367,72 @@ def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
         })
         fichas.append(ficha)
     return sorted(fichas, key=lambda f: (-f["intervenciones"], f["natural"]))
+
+
+# ---------------------------------------------------------------------------
+# Cosecha del histórico, a plazos
+# ---------------------------------------------------------------------------
+
+INICIO_LEG15 = (2023, 8)
+
+
+def _meses_hacia_atras(desde_anio: int, desde_mes: int, hasta=INICIO_LEG15) -> list:
+    """Del mes actual hacia atrás hasta el inicio de la legislatura."""
+    meses, a, m = [], desde_anio, desde_mes
+    while (a, m) >= hasta:
+        meses.append((a, m))
+        m -= 1
+        if m == 0:
+            a, m = a - 1, 12
+    return meses
+
+
+def cosechar_historico(get, log, estado: dict, presupuesto: int = 220) -> list:
+    """Recupera votaciones antiguas poco a poco.
+
+    Bajar la legislatura entera de golpe son más de mil ficheros y unos cuantos
+    minutos de portal ajeno. Como esto se ejecuta cada día, se coge un trozo por
+    ejecución y en una semana está completo; después solo hay que mantenerlo.
+    El estado recuerda qué días ya se miraron, así que nada se pide dos veces."""
+    hechos = set(estado.get("dias_hechos") or [])
+    meses_hechos = set(estado.get("meses_hechos") or [])
+    hoy = __import__("datetime").date.today()
+
+    gastado, nuevas = 0, []
+    for anio, mes in _meses_hacia_atras(hoy.year, hoy.month):
+        clave_mes = f"{anio}-{mes:02d}"
+        # El mes en curso se vuelve a mirar siempre: aún puede crecer.
+        if clave_mes in meses_hechos and clave_mes != f"{hoy.year}-{hoy.month:02d}":
+            continue
+        if gastado >= presupuesto:
+            break
+        dias = dias_con_votaciones(get, log, anio, mes)
+        gastado += 1
+        pendientes = [d for d in dias if d not in hechos]
+        if not pendientes:
+            meses_hechos.add(clave_mes)
+            continue
+        log(f"  {clave_mes}: {len(pendientes)} sesiones por cosechar")
+        for fecha in pendientes:
+            if gastado >= presupuesto:
+                break
+            v = votaciones_de_dia(get, log, fecha)
+            gastado += 1 + len(v)
+            nuevas.extend(v)
+            hechos.add(fecha)
+        if all(d in hechos for d in dias):
+            meses_hechos.add(clave_mes)
+
+    estado["dias_hechos"] = sorted(hechos)
+    estado["meses_hechos"] = sorted(meses_hechos)
+    restantes = len([1 for a, m in _meses_hacia_atras(hoy.year, hoy.month)
+                     if f"{a}-{m:02d}" not in meses_hechos])
+    estado["meses_pendientes"] = restantes
+    if nuevas:
+        log(f"  histórico: {len(nuevas)} votaciones recuperadas "
+            f"({restantes} meses aún por recorrer)")
+    elif restantes:
+        log(f"  histórico: nada nuevo, quedan {restantes} meses por recorrer")
+    else:
+        log("  histórico: legislatura completa")
+    return nuevas

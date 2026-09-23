@@ -3270,7 +3270,7 @@ def cosechar_congreso() -> list:
     # Los nombres pasaron a indexarse normalizados; el acumulado anterior está
     # en el formato viejo y no se puede mezclar. Se descarta y se reconstruye:
     # las votaciones se vuelven a cosechar solas.
-    ESQUEMA = 2
+    ESQUEMA = 3
     if estado.get("esquema") != ESQUEMA:
         if estado:
             log("  formato de estado antiguo: se reinicia el acumulado de votaciones")
@@ -3284,6 +3284,11 @@ def cosechar_congreso() -> list:
         estado = cd.acumular(estado, cd.votaciones_publicadas(get, log), log)
     except Exception as exc:                                  # noqa: BLE001
         log(f"  no se pudieron acumular votaciones: {exc}")
+    # Y un trozo del histórico en cada ejecución, hasta completar la legislatura.
+    try:
+        estado = cd.acumular(estado, cd.cosechar_historico(get, log, estado), log)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudo cosechar el histórico: {exc}")
 
     # Las intervenciones son un volcado de decenas de megas: no se guarda
     # entero, solo el resumen por persona que cabe en el repositorio.
