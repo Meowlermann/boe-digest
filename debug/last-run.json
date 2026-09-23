@@ -1,119 +1,89 @@
 {
-  "inicio": "2026-09-22T19:49:34.273262+00:00",
+  "inicio": "2026-09-23T10:15:03.982415+00:00",
   "peticiones": [
     {
-      "url": "https://www.boe.es/boe/dias/2026/09/22/index.php",
+      "url": "https://www.boe.es/boe/dias/2026/09/23/index.php",
       "status": 200,
-      "bytes": 207849
+      "bytes": 144084
     },
     {
       "url": "https://www.congreso.es/ultimas-publicaciones-oficiales",
       "status": 200,
-      "bytes": 89317
+      "bytes": 88156
     },
     {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/CO/DSCD-15-CO-618.PDF",
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/PL/DSCD-15-PL-205.PDF",
       "status": 200,
-      "bytes": 547553
+      "bytes": 1199625
     },
     {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/CO/DSCD-15-CO-619.PDF",
+      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/D/BOCG-15-D-589.PDF",
       "status": 200,
-      "bytes": 288597
-    },
-    {
-      "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/D/BOCG-15-D-588.PDF",
-      "status": 200,
-      "bytes": 555750
-    },
-    {
-      "url": "https://www.congreso.es/public_oficiales/L15/CORT/BOCG/A/BOCG-15-CG-A-271.PDF",
-      "status": 200,
-      "bytes": 136654
+      "bytes": 166748
     },
     {
       "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
       "status": 403
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19628",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19695",
       "status": 200,
-      "bytes": 49343
+      "bytes": 18245
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19629",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19749",
       "status": 200,
-      "bytes": 51126
+      "bytes": 30986
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19634",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19750",
       "status": 200,
-      "bytes": 333124
+      "bytes": 56824
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19674",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19751",
       "status": 200,
-      "bytes": 18415
+      "bytes": 312000
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19675",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19752",
       "status": 200,
-      "bytes": 64665
+      "bytes": 27605
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19676",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19753",
       "status": 200,
-      "bytes": 15705
+      "bytes": 38784
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19677",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19754",
       "status": 200,
-      "bytes": 15736
+      "bytes": 15479
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19678",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19755",
       "status": 200,
-      "bytes": 15261
+      "bytes": 40816
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19679",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19756",
       "status": 200,
-      "bytes": 37473
+      "bytes": 20501
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19680",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19757",
       "status": 200,
-      "bytes": 16934
+      "bytes": 115810
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19681",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19758",
       "status": 200,
-      "bytes": 168560
+      "bytes": 26919
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19682",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19761",
       "status": 200,
-      "bytes": 18320
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19683",
-      "status": 200,
-      "bytes": 30105
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19684",
-      "status": 200,
-      "bytes": 54985
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19685",
-      "status": 200,
-      "bytes": 48023
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19686",
-      "status": 200,
-      "bytes": 49533
+      "bytes": 20423
     }
   ],
   "403": {
@@ -121,9 +91,10 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;8667cd17&#46;1790106581&#46;24a0d07 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;c272cd17&#46;1790158509&#46;88f2aa92 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
   },
   "senado_fallback": [
+    465,
     464,
     463,
     462,
@@ -132,9 +103,9 @@
     459
   ],
   "resumen": {
-    "boe_entradas": 70,
-    "congreso_docs": 4,
+    "boe_entradas": 65,
+    "congreso_docs": 2,
     "senado_docs": 0
   },
-  "fin": "2026-09-22T19:49:52.762714+00:00"
+  "fin": "2026-09-23T10:15:21.156845+00:00"
 }
