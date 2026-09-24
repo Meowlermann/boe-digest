@@ -865,3 +865,22 @@ ul.indice .ref{display:block;font:500 11px/1.5 "IBM Plex Mono",ui-monospace,mono
 @media (min-width: 760px) {
   .portada-dip { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 18px; }
 }
+
+
+/* ==========================================================================
+   TITULARES GRANDES — Oswald
+   ==========================================================================
+   Anton se queda para la marca (cabecera, rótulos de sección, cifras): es lo
+   que da carácter. Pero en un titular de tres líneas pesaba demasiado. Oswald
+   conserva el aire condensado de cabecera de periódico con un trazo más fino.
+
+   El interlineado no baja de 1.15: con menos, la tilde de una mayúscula
+   («CARBÓN») se clava en la letra de la línea de encima.                  */
+.lead-h,
+.story.lead h3,
+h1.display{
+  font-family:'Oswald','Arial Narrow',sans-serif;
+  font-weight:600;
+  letter-spacing:0;
+  line-height:1.15;
+}
