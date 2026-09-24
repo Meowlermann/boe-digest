@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-24T10:27:45.834708+00:00",
+  "inicio": "2026-09-24T13:07:19.364239+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/24/index.php",
@@ -33,7 +33,7 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19762",
       "status": 200,
-      "bytes": 50325
+      "bytes": 50326
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19823",
@@ -116,7 +116,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;a92d3e17&#46;1790245671&#46;609b8c2 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;dd5ec817&#46;1790255249&#46;a26db62b <P>https&#58;&#47;&#47;errors&#46;edgesuite"
   },
   "senado_fallback": [
     466,
@@ -145,5 +145,5 @@
     "ACUERDO FIRMADO: CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA — acaba en una cláusula de una sola palabra",
     "PUBLICA EL CONVENIO CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA — acaba en una cláusula de una sola palabra"
   ],
-  "fin": "2026-09-24T10:28:05.571474+00:00"
+  "fin": "2026-09-24T13:07:41.112342+00:00"
 }
