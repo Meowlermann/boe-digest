@@ -4171,6 +4171,15 @@ def renderizar() -> None:
         log("No hay datos que renderizar.")
         sys.exit(1)
 
+    # Redacción con Gemini: capa encima de la determinista. Si falla por lo que
+    # sea, la edición sale con los titulares de siempre.
+    try:
+        import redaccion
+        DIAG["redaccion"] = redaccion.aplicar(dias, titular_valido)
+        log(f"redacción IA: {DIAG['redaccion']}")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"redacción IA no disponible en este pase ({exc})")
+
     # Los diputados van primero: la portada enseña el hemiciclo y las cifras,
     # y para eso datos/parlamento.json tiene que existir ya.
     fichas_dip: list = []
