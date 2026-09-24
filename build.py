@@ -4175,7 +4175,7 @@ def renderizar() -> None:
     # sea, la edición sale con los titulares de siempre.
     try:
         import redaccion
-        DIAG["redaccion"] = redaccion.aplicar(dias, titular_valido)
+        DIAG["redaccion"] = redaccion.aplicar(dias, titular_valido, cerrar)
         log(f"redacción IA: {DIAG['redaccion']}")
     except Exception as exc:                                  # noqa: BLE001
         log(f"redacción IA no disponible en este pase ({exc})")

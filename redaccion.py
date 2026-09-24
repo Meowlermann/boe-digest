@@ -60,7 +60,7 @@ INSTRUCCIONES = """Eres el redactor jefe de «La Tercera Cámara», una publicac
 
 Recibirás una lista de piezas. Para cada una escribes:
 
-TITULAR (máximo 95 caracteres):
+TITULAR (máximo 85 caracteres; cuenta los caracteres antes de responder):
 - Dice QUIÉN hace QUÉ y a QUIÉN o DÓNDE afecta. Nombra el sujeto real y el objeto concreto: el municipio, el colectivo, la institución, la cuantía.
 - El BOE suele esconder lo importante al final de la frase, detrás de la maquinaria administrativa. Sácalo delante.
 - Si hay un importe, un plazo o una fecha que el lector necesita, inclúyelo si cabe.
@@ -163,7 +163,7 @@ def verificar(titular: str, entradilla: str, fuente: str) -> str:
     """Devuelve "" si la redacción se sostiene contra la fuente, o el motivo."""
     t = " ".join((titular or "").split()).strip(" .")
     e = " ".join((entradilla or "").split())
-    if not (20 <= len(t) <= 110):
+    if not (20 <= len(t) <= 140):
         return f"titular de {len(t)} caracteres"
     if len(e) > 320:
         return "entradilla demasiado larga"
@@ -227,7 +227,7 @@ def _pedir(clave: str, lote: list[dict]) -> tuple[list[dict] | None, str]:
 
 # ------------------------------------------------------------------ interfaz
 
-def aplicar(dias: list[dict], validar_titular=None) -> dict:
+def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
     """Pone la mejor redacción disponible en cada pieza, en memoria.
 
     Los data/*.json no se tocan: siguen siendo la versión determinista y la
@@ -242,9 +242,14 @@ def aplicar(dias: list[dict], validar_titular=None) -> dict:
     uso = estado["uso"].get(hoy, 0)
 
     todas = list(_piezas(dias))
+    def _pendiente(i, fte):
+        c = piezas.get(i, {})
+        if c.get("huella") != _huella(fte):
+            return True
+        return bool(c.get("descartado")) and c.get("intentos", 1) < 2
+
     pendientes = [{"id": i, "fuente": fte, "huella": _huella(fte)}
-                  for i, fte, _obj in todas
-                  if piezas.get(i, {}).get("huella") != _huella(fte)]
+                  for i, fte, _obj in todas if _pendiente(i, fte)]
 
     clave = os.environ.get("GEMINI_API_KEY", "").strip()
     resumen = {"pendientes": len(pendientes), "redactadas": 0,
@@ -263,6 +268,11 @@ def aplicar(dias: list[dict], validar_titular=None) -> dict:
                 continue
             titular = " ".join((r.get("titular") or "").split()).strip(" .")
             entradilla = " ".join((r.get("entradilla") or "").split())
+            # Si se pasa de largo, se recorta por sintagma (la misma verja que la
+            # redacción determinista), no se tira: el modelo cuenta mal los
+            # caracteres, pero lo que dice suele ser bueno.
+            if recortar and len(titular) > 105:
+                titular = recortar(titular, 105)
             motivo = verificar(titular, entradilla, p["fuente"])
             if not motivo and validar_titular:
                 motivo = validar_titular(titular.upper())
@@ -271,7 +281,10 @@ def aplicar(dias: list[dict], validar_titular=None) -> dict:
                 _log(f"descartado {p['id']}: {motivo} — «{titular}»")
                 # Se apunta igual, sin texto: así no se vuelve a pedir la misma
                 # pieza en cada pase y la cuota no se va en reintentos inútiles.
-                piezas[p["id"]] = {"huella": p["huella"], "descartado": motivo}
+                previo = piezas.get(p["id"], {})
+                intentos = previo.get("intentos", 0) + 1 if previo.get("huella") == p["huella"] else 1
+                piezas[p["id"]] = {"huella": p["huella"], "descartado": motivo,
+                                   "intentos": intentos}
                 continue
             piezas[p["id"]] = {"huella": p["huella"], "titular": titular,
                                "entradilla": entradilla, "modelo": modelo, "fecha": hoy}
