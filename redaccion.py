@@ -257,6 +257,12 @@ def _pedir(clave: str, lote: list[dict]) -> tuple[list[dict] | None, str]:
         if r.status_code == 404:
             _log(f"{modelo}: no existe o no está disponible, pruebo el siguiente")
             continue
+        if r.status_code in (500, 502, 503, 504):
+            # Saturación o caída momentánea de Google: no es culpa de la
+            # petición, así que se prueba el modelo de reserva en vez de perder
+            # el pase entero.
+            _log(f"{modelo}: HTTP {r.status_code} (servidor saturado), pruebo el siguiente")
+            continue
         if r.status_code == 429:
             _log(f"{modelo}: cuota agotada por hoy; se publica con la redacción de siempre")
             return None, modelo
