@@ -109,7 +109,7 @@
   "BOE-A-2026-19838": {
    "huella": "59a979ad76e1c895",
    "descartado": "cifra «170496» que no está en el texto oficial",
-   "intentos": 1
+   "intentos": 2
   },
   "C-9cf38176c4175542": {
    "huella": "b5d19e71cf21e137",
@@ -324,7 +324,7 @@
   "BOE-A-2026-19684": {
    "huella": "20ab99cc7d358d5a",
    "descartado": "cifra «50» que no está en el texto oficial",
-   "intentos": 1
+   "intentos": 2
   },
   "BOE-A-2026-19685": {
    "huella": "a1736665b5152a04",
@@ -336,7 +336,7 @@
   "BOE-A-2026-19686": {
    "huella": "3d1fc3c57ee1d14e",
    "descartado": "cifra «21» que no está en el texto oficial",
-   "intentos": 1
+   "intentos": 2
   },
   "C-f6afdcf0fb4aec13": {
    "huella": "eab088c3a1f1d254",
@@ -484,9 +484,154 @@
    "entradilla": "Tumba la toma en consideración de la iniciativa legislativa presentada por el grupo parlamentario, cerrando su tramitación.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
+  },
+  "C-05d6af7e3ab5e09e": {
+   "huella": "64564e1ffd4337ab",
+   "titular": "El Congreso rechaza la reforma de la ley de vivienda propuesta por Sumar",
+   "entradilla": "El Pleno del Congreso tumba la toma en consideración de la proposición de ley para modificar la norma estatal de vivienda registrada el 30 de enero de 2026.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19484": {
+   "huella": "93046a586e712354",
+   "titular": "Nuevos precios de venta para determinadas labores de tabaco en expendedurías",
+   "entradilla": "Hacienda publica las tarifas actualizadas para varias labores de tabaco en la red de Expendedurías de Tabaco y Timbre del área del Monopolio.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19485": {
+   "huella": "2b9e895dc351e9ef",
+   "titular": "Prorrogan los controles fronterizos para vuelos y barcos desde Italia",
+   "entradilla": "El Ministerio del Interior extiende los controles temporales en fronteras interiores para pasajeros procedentes de la República Italiana hasta el 7 de octubre de 2026.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19486": {
+   "huella": "61e0a967a893f635",
+   "titular": "Crea la Comisión Ministerial de Administración Digital en Educación",
+   "entradilla": "El Ministerio de Educación, Formación Profesional y Deportes constituye un nuevo órgano interno para gestionar su administración digital.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19504": {
+   "huella": "192bd3efb1497d59",
+   "titular": "Emplazan a los interesados en el recurso contencioso-administrativo 1630/2026",
+   "entradilla": "El Tribunal Superior de Justicia de Madrid abre un plazo de nueve días para que los afectados comparezcan en este procedimiento.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19505": {
+   "huella": "fa92e16b3066c940",
+   "titular": "Convenio de prácticas entre la AIReF y la Universidad Complutense por 1.350 euros",
+   "entradilla": "Se publica el anexo económico para la incorporación de estudiantes en prácticas a la Autoridad Independiente de Responsabilidad Fiscal.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19506": {
+   "huella": "f2067aff01d7052e",
+   "titular": "El Ejido incorpora su policía local al sistema de seguimiento de violencia de género",
+   "entradilla": "Interior y el Ayuntamiento de El Ejido firman un convenio para sumar a los agentes locales al sistema de protección contra la violencia machista.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19507": {
+   "huella": "b5ce57e872c1cfff",
+   "titular": "Aprobar el Documento de Regulación Aeroportuaria para el periodo 2027-2031",
+   "entradilla": "El Consejo de Ministros da luz verde al marco que regirá la actividad y tarifas de la red aeroportuaria española durante los próximos años.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19508": {
+   "huella": "74ccbe7a78d1d41f",
+   "titular": "Modifican la titularidad de tramos de carreteras en la provincia de Almería",
+   "entradilla": "El Estado asume un tramo de la vía AL-5106 y cede otro de la AL-3106 a la Diputación Provincial de Almería.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19509": {
+   "huella": "38697ad3ce551754",
+   "titular": "Convenio para Puntos de Atención al Emprendedor en Castilla y León",
+   "entradilla": "Industria y el organismo castellanoleonés de competitividad empresarial colaboran para integrar oficinas en la red CIRCE.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19510": {
+   "huella": "d094c29d717eff65",
+   "titular": "Conceden el título de Fiesta de Interés Turístico Internacional a Alcalá de Henares",
+   "entradilla": "La festividad «Semana Cervantina» de Alcalá de Henares recibe el reconocimiento de interés turístico internacional.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19511": {
+   "huella": "28be5e7c83aea3a5",
+   "titular": "Declaran Fiesta de Interés Turístico Nacional a «La Vendimia» de Jumilla",
+   "entradilla": "La localidad murciana de Jumilla obtiene la distinción nacional para su tradicional celebración de la vendimia.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19512": {
+   "huella": "82c1f8f0c9d6e308",
+   "titular": "Cancelan la Sociedad Agraria de Transformación Segria Levante",
+   "entradilla": "Agricultura decreta la anulación y cancelación registral de esta sociedad agraria de transformación.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19513": {
+   "huella": "a15d234a3c5cf227",
+   "descartado": "cifra «104» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19514": {
+   "huella": "c9394ed5fde5a387",
+   "titular": "Declaran Bien de Interés Cultural la Casa Mudéjar de Córdoba",
+   "entradilla": "Cultura otorga la máxima protección patrimonial con la categoría de monumento a este inmueble histórico cordobés.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19515": {
+   "huella": "4ce7197ddec28b3b",
+   "titular": "Convenio de 12.000 euros para la creación interdisciplinar en el Festival Ídem",
+   "entradilla": "El Ministerio de Cultura apoya la profesionalización artística en el Festival Ídem junto a la Fundación Monte de Madrid.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19516": {
+   "huella": "3045479eed94f624",
+   "titular": "Convenio de 3.000 euros para el Certamen Universitario de Investigación Arquímedes",
+   "entradilla": "Universidades y el CSIC impulsan conjuntamente la edición del certamen científico hasta finales de diciembre de 2026.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-6f56c2ad35a5eb26": {
+   "huella": "0454f3b222474889",
+   "titular": "El Pleno del Congreso debate sobre defensa nacional y coste de la vida",
+   "entradilla": "La cámara baja aborda en su orden del día iniciativas sobre la ley de defensa nacional, vivienda, política exterior y medidas económicas.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-3d5ec9b63146766e": {
+   "huella": "99b0a7b5b80bb0e4",
+   "titular": "La Comisión de Derechos Sociales escucha a Cecu y Fundación Vinjoy",
+   "entradilla": "Los directores de ambas entidades comparecen en el Congreso para aportar su experiencia en el ámbito del consumo y los servicios sociales.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-d556759f19d3d1dc": {
+   "huella": "a1f28aab2f175e09",
+   "titular": "Plazo de enmiendas hasta el 6 de octubre para el Estatuto Marco de Salud",
+   "entradilla": "La Comisión de Sanidad del Congreso tramita el proyecto de ley sobre el personal estatutario de los servicios sanitarios.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-11ba8c849c24d61b": {
+   "huella": "00fa0d60124b12cf",
+   "titular": "Abren el plazo de enmiendas al decreto de protección laboral y social",
+   "entradilla": "El Congreso tramita como proyecto de ley urgente el real decreto de medidas frente a incendios, con plazo de alegaciones hasta el 28 de septiembre.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   }
  },
  "uso": {
-  "2026-09-24": 2
+  "2026-09-24": 3
  }
 }
