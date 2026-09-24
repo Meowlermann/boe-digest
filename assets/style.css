@@ -139,6 +139,14 @@
   .story.lead .standfirst{ font-size:17px; }
   .articlebody{ display:flex; flex-direction:column; gap:10px; margin-top:2px; }
   .articlebody p{ margin:0; font-size:14.5px; line-height:1.62; color:var(--ink-soft); max-width:68ch; }
+  .articlebody .claves-t{ font:600 11px/1 'IBM Plex Mono',Consolas,monospace; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--cat, var(--ink)); margin:2px 0 -4px; }
+  .articlebody ul.claves{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column;
+    gap:8px; max-width:68ch; }
+  .articlebody ul.claves li{ position:relative; padding-left:16px; font-size:15px; line-height:1.55;
+    color:var(--ink); }
+  .articlebody ul.claves li::before{ content:""; position:absolute; left:0; top:.62em; width:7px;
+    height:7px; border-radius:2px; background:var(--cat, var(--ink)); }
   details.reader > summary{
     cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase;
     letter-spacing:.06em; color:var(--cat,var(--otros)); font-weight:600; list-style:none; padding:4px 0;
