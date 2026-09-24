@@ -884,3 +884,186 @@ h1.display{
   letter-spacing:0;
   line-height:1.15;
 }
+
+/* ==========================================================================
+   NAVEGACIÓN
+   ==========================================================================
+   Tres pilares — Hoy, Parlamento, Consultar — que responden a las tres cosas
+   con las que llega la gente. En escritorio es una barra que se queda pegada
+   arriba, con paneles que se abren al pasar el ratón y una caja de búsqueda
+   que responde al momento. En móvil pasa a una barra inferior, al alcance del
+   pulgar, y los paneles salen como hojas desde abajo.
+
+   Todo son enlaces reales: sin JavaScript se navega igual.                 */
+
+.masthead{ position:static; border-bottom:0; padding-bottom:6px; }
+
+.nav{
+  position:sticky; top:0; z-index:45;
+  background:var(--bg);
+  border-top:3px solid var(--ink);
+  border-bottom:1px solid var(--border);
+  margin-bottom:6px;
+}
+.nav-in{ display:flex; align-items:center; gap:6px; min-height:50px; }
+
+.nav-marca{
+  display:none; font-family:'Anton',sans-serif; font-size:18px; letter-spacing:.02em;
+  text-decoration:none; color:var(--red); padding:0 10px 0 0; margin-right:4px;
+  border-right:1px solid var(--border);
+}
+.nav.pegada .nav-marca{ display:block; }
+
+.nav-pilares{ display:flex; list-style:none; margin:0; padding:0; gap:2px; }
+.pilar{ position:relative; }
+.pilar-b{
+  display:flex; align-items:center; gap:7px;
+  padding:13px 13px 11px;
+  font-family:'Anton',sans-serif; font-size:15px; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--ink); text-decoration:none;
+  border-bottom:3px solid transparent;
+}
+.pilar-b svg{ width:18px; height:18px; opacity:.75; }
+.pilar-b:hover, .pilar.abierto .pilar-b{ color:var(--red); }
+.pilar.actual .pilar-b{ border-bottom-color:var(--red); }
+.pilar-b::after{
+  content:""; width:6px; height:6px; margin-left:2px; margin-top:-3px;
+  border-right:1.6px solid currentColor; border-bottom:1.6px solid currentColor;
+  transform:rotate(45deg); opacity:.55;
+}
+
+.panel{
+  position:absolute; top:100%; left:0; z-index:50;
+  min-width:340px; max-width:92vw;
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--border); border-top:3px solid var(--ink);
+  border-radius:0 0 12px 12px; box-shadow:0 18px 40px -18px rgba(20,23,28,.45);
+  padding:14px 14px 16px;
+  opacity:0; visibility:hidden; transform:translateY(-4px);
+  transition:opacity .14s ease, transform .14s ease, visibility 0s linear .14s;
+}
+.panel-ancho{ min-width:560px; }
+@media (hover:hover){
+  .pilar:hover .panel, .pilar:focus-within .panel{
+    opacity:1; visibility:visible; transform:none; transition-delay:0s;
+  }
+}
+.pilar.abierto .panel{ opacity:1; visibility:visible; transform:none; transition-delay:0s; }
+
+.panel-t{
+  margin:4px 8px 6px; font-family:'IBM Plex Mono',monospace; font-size:11px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft);
+}
+.panel-l{ list-style:none; margin:0 0 6px; padding:0; }
+.panel-ancho .panel-l{ display:grid; grid-template-columns:1fr 1fr; gap:0 6px; }
+.panel-l a{ display:block; padding:8px 10px; border-radius:8px; text-decoration:none; color:inherit; }
+.panel-l a:hover, .panel-l a:focus-visible{ background:var(--bg); outline:none; }
+.panel-l a[aria-current="page"]{ box-shadow:inset 3px 0 0 var(--red); }
+.panel-l b{ display:block; font-family:'Work Sans',sans-serif; font-weight:600; font-size:15px; }
+.panel-l span{ display:block; font-size:13px; line-height:1.35; color:var(--ink-soft); margin-top:1px; }
+
+.chips-n{ display:flex; flex-wrap:wrap; gap:6px; padding:0 8px; }
+.chip-n{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 10px; border:1px solid var(--border); border-radius:999px;
+  font-size:12.5px; font-weight:600; text-decoration:none; color:var(--ink); background:var(--surface);
+}
+.chip-n:hover{ border-color:var(--red); color:var(--red); }
+.chip-n i{ width:9px; height:9px; border-radius:50%; }
+
+/* --- Búsqueda en la barra ------------------------------------------------ */
+.nav-buscar{ position:relative; margin-left:auto; display:flex; align-items:center; width:min(340px,40vw); }
+.nav-buscar > svg{ position:absolute; left:10px; width:17px; height:17px; color:var(--ink-soft); pointer-events:none; }
+.nav-buscar input{
+  width:100%; box-sizing:border-box; padding:8px 34px 8px 34px;
+  font:inherit; font-size:14px; color:var(--ink);
+  background:var(--surface); border:1px solid var(--border); border-radius:8px;
+  -webkit-appearance:none; appearance:none;
+}
+.nav-buscar input:focus{ outline:none; border-color:var(--red); box-shadow:0 0 0 3px rgba(200,30,44,.12); }
+.nav-buscar input::-webkit-search-cancel-button{ display:none; }
+.nav-buscar kbd{
+  position:absolute; right:9px; font:600 11px 'IBM Plex Mono',monospace; color:var(--ink-soft);
+  border:1px solid var(--border); border-bottom-width:2px; border-radius:4px; padding:0 5px;
+}
+.nav-buscar input:focus ~ kbd{ display:none; }
+
+.nav-res{
+  position:absolute; top:calc(100% + 6px); right:0; width:min(480px,92vw); z-index:55;
+  max-height:70vh; overflow:auto;
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  box-shadow:0 18px 40px -18px rgba(20,23,28,.5); padding:6px;
+}
+.nav-res-i{ display:block; padding:9px 10px; border-radius:8px; text-decoration:none; color:inherit; }
+.nav-res-i:hover, .nav-res-i.activo{ background:var(--bg); box-shadow:inset 3px 0 0 var(--red); }
+.nav-res-i em{
+  display:block; font:600 10.5px 'IBM Plex Mono',monospace; letter-spacing:.07em;
+  text-transform:uppercase; font-style:normal; color:var(--red);
+}
+.nav-res-i b{ display:block; font-family:'Work Sans',sans-serif; font-size:14px; line-height:1.3; }
+.nav-res-i span{
+  display:block; font-size:12.5px; color:var(--ink-soft); line-height:1.35;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.nav-res-n{ margin:8px 10px; font-size:13px; color:var(--ink-soft); }
+.nav-res-todo{
+  display:block; margin-top:4px; padding:10px; border-top:1px solid var(--border);
+  font-size:13px; font-weight:600; color:var(--red); text-decoration:none;
+}
+
+.nav-velo{ display:none; }
+.tabbar{ display:none; }
+
+.rotulo-sub{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--ink-soft); margin:18px 0 6px;
+}
+
+/* --- Móvil: barra inferior y hojas --------------------------------------- */
+@media (max-width:720px){
+  body{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
+  .nav{ position:static; border:0; margin:0; min-height:0; background:none; }
+  .nav-in{ min-height:0; }
+  .nav-marca, .pilar-b, .nav-buscar{ display:none; }
+
+  .tabbar{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    position:fixed; left:0; right:0; bottom:0; z-index:60;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
+    background:var(--surface); border-top:1px solid var(--border);
+    box-shadow:0 -8px 24px -18px rgba(20,23,28,.5);
+  }
+  .tabbar a{
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    padding:6px 0; text-decoration:none; color:var(--ink-soft);
+    font-size:11px; font-weight:600; letter-spacing:.02em;
+  }
+  .tabbar svg{ width:22px; height:22px; }
+  .tabbar a.actual{ color:var(--red); }
+
+  .panel, .panel-ancho{
+    position:fixed; left:0; right:0; top:auto;
+    bottom:calc(64px + env(safe-area-inset-bottom,0px));
+    min-width:0; max-width:none; max-height:72vh; overflow:auto;
+    border-radius:16px 16px 0 0; border:0; border-top:3px solid var(--ink);
+    transform:translateY(16px);
+  }
+  .panel-ancho .panel-l{ grid-template-columns:1fr; }
+
+  .nav-buscar.abierto{
+    display:flex; flex-direction:column; align-items:stretch;
+    position:fixed; left:0; right:0; top:0; z-index:65; width:auto;
+    padding:12px 12px 10px; background:var(--bg); border-bottom:1px solid var(--border);
+  }
+  .nav-buscar.abierto > svg{ left:22px; top:22px; }
+  .nav-buscar.abierto kbd{ display:none; }
+  .nav-buscar.abierto input{ font-size:16px; padding:11px 12px 11px 38px; }
+  .nav-buscar.abierto .nav-res{
+    position:static; width:auto; margin-top:8px;
+    max-height:calc(100vh - 170px); box-shadow:none;
+  }
+
+  body.hoja-abierta .nav-velo{
+    display:block; position:fixed; inset:0; z-index:44; background:rgba(20,23,28,.32);
+  }
+}
