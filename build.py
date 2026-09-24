@@ -2490,6 +2490,11 @@ def una_linea(story: dict, limite: int = 150) -> str:
     Si acaba diciendo lo mismo que el titular —pasa con las leyes, cuyo título
     ya ES su objeto— se devuelve vacío: repetir la misma frase dos veces
     seguidas es justo el ruido que esta portada quiere quitarse."""
+    # Si Gemini ha escrito la entradilla, esa es la línea: está pensada para
+    # este hueco, ya viene verificada contra la fuente y no repite el titular.
+    # Recortarla aquí la dejaría con puntos suspensivos, así que va entera.
+    if story.get("redaccion_ia") and story.get("standfirst"):
+        return story["standfirst"]
     texto = objeto_de(titulo_oficial_de(story)) or story.get("standfirst", "")
     corto = primera_mayuscula(recortar(texto, limite))
 
