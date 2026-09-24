@@ -45,9 +45,13 @@ API = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generate
 # o renombra uno, se prueba el siguiente: los nombres cambian cada pocos meses
 # y eso no puede tumbar la edición.
 MODELOS = [m for m in [os.environ.get("GEMINI_MODELO", "").strip()] if m] + [
+    # Flash y no Flash-Lite: el ligero seguía cayendo en el estilo telegráfico
+    # («Embajada de España y BBVA firman…») aunque se le pidiera lo contrario.
+    # Como se hace una sola petición al día, el modelo mejor no acerca el uso
+    # al límite gratuito: lo escaso son las peticiones, no los tokens.
+    "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
-    "gemini-3.5-flash",
 ]
 
 # Límites propios, muy por debajo de los del plan gratuito: son un cinturón de
@@ -126,7 +130,7 @@ def _guardar(e: dict) -> None:
 
 # Sube este número cuando cambien las instrucciones: todo lo redactado con las
 # anteriores se vuelve a pedir, por lotes y dentro del tope diario.
-VERSION_ESTILO = 2
+VERSION_ESTILO = 3
 
 
 def _huella_fuente(texto: str) -> str:
