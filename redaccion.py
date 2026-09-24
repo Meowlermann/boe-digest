@@ -64,8 +64,17 @@ TITULAR (máximo 85 caracteres; cuenta los caracteres antes de responder):
 - Dice QUIÉN hace QUÉ y a QUIÉN o DÓNDE afecta. Nombra el sujeto real y el objeto concreto: el municipio, el colectivo, la institución, la cuantía.
 - El BOE suele esconder lo importante al final de la frase, detrás de la maquinaria administrativa. Sácalo delante.
 - Si hay un importe, un plazo o una fecha que el lector necesita, inclúyelo si cabe.
+- Escribe como el titular de un periódico de calidad, en español natural y bien construido: con sus artículos («La Embajada», «el BBVA», «los regantes»), verbo en presente y concordancia correcta. Nada de estilo telegráfico: «Embajada de España en México y BBVA firman» está mal; «La Embajada en México y el BBVA firman» está bien.
+- Cuenta el propósito, no el trámite. Si una empresa financia algo, el titular es qué financia y dónde, no que «firman un convenio». Solo si el texto dice para qué es.
+- Prefiere un solo sujeto que actúa. Si son varios, nombra primero al que hace algo nuevo.
 - Frase normal en mayúsculas y minúsculas, sin punto final, sin signos de exclamación ni interrogación.
 - Sin adjetivos valorativos, sin ironía, sin clickbait, sin opinión.
+
+Ejemplos del estilo buscado (inventados, solo por el tono):
+- MAL: «Ministerio de Hacienda modifica Orden sobre modelos de declaración del impuesto»
+- BIEN: «Hacienda cambia los plazos para declarar el impuesto sobre el carbón»
+- MAL: «Embajada de España en Egipto y CaixaBank firman un convenio para la Fiesta Nacional»
+- BIEN: «CaixaBank patrocinará la recepción del 12 de Octubre en la Embajada de España en Egipto»
 
 ENTRADILLA (una o dos frases, máximo 240 caracteres):
 - Qué cambia en la práctica y para quién. Sin repetir el titular.
@@ -115,10 +124,21 @@ def _guardar(e: dict) -> None:
     ESTADO.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+# Sube este número cuando cambien las instrucciones: todo lo redactado con las
+# anteriores se vuelve a pedir, por lotes y dentro del tope diario.
+VERSION_ESTILO = 2
+
+
+def _huella_fuente(texto: str) -> str:
+    """Solo el texto, sin la versión del estilo: sirve para saber si lo que hay
+    en caché sigue correspondiendo a esta pieza aunque toque rehacerlo."""
+    return hashlib.sha1(texto.encode("utf-8")).hexdigest()[:16]
+
+
 def _huella(texto: str) -> str:
     """Si la fuente cambia (una corrección, el Senado añadido a un día ya
     publicado), la redacción anterior deja de valer y hay que rehacerla."""
-    return hashlib.sha1(texto.encode("utf-8")).hexdigest()[:16]
+    return hashlib.sha1(f"v{VERSION_ESTILO}|{texto}".encode("utf-8")).hexdigest()[:16]
 
 
 # ----------------------------------------------------------------- materiales
@@ -182,6 +202,30 @@ def verificar(titular: str, entradilla: str, fuente: str) -> str:
         if re.search(rf"\b{mes}\b", (t + " " + e).lower()) and mes not in fb:
             return f"mes «{mes}» que no está en el texto oficial"
     return ""
+
+
+# --------------------------------------------------------- artículo inicial
+
+_FEM = ("Embajada", "Secretaría", "Autoridad", "Universidad", "Comisión", "Confederación",
+        "Fundación", "Junta", "Dirección", "Agencia", "Diputación", "Mesa", "Delegación",
+        "Subdelegación", "Consejería", "Comunidad", "Generalitat", "Xunta", "Real Academia",
+        "Abogacía", "Intervención", "Inspección", "Guardia Civil", "Policía", "Armada",
+        "Sala", "Audiencia", "Fiscalía", "Tesorería", "Entidad", "Sociedad", "Asociación",
+        "Federación", "Cámara", "Oficina", "Biblioteca", "Casa", "Orden")
+_MASC = ("Ministerio", "Ayuntamiento", "Consejo", "Gobierno", "Congreso", "Senado",
+         "Instituto", "Tribunal", "Banco", "Servicio", "Organismo", "Cabildo", "Parlamento",
+         "Ejército", "Centro", "Consorcio", "Fondo", "Defensor", "Museo", "Colegio",
+         "Registro", "Departamento", "Patronato", "Estado")
+
+
+def poner_articulo(t: str) -> str:
+    """«Embajada de España firma…» -> «La Embajada de España firma…»."""
+    primera = t.split(" ", 1)[0]
+    for lista, art in ((_FEM, "La"), (_MASC, "El")):
+        for n in lista:
+            if t.startswith(n + " ") and primera[0].isupper():
+                return f"{art} {t}"
+    return t
 
 
 # ---------------------------------------------------------------------- Gemini
@@ -266,7 +310,7 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
             p = por_id.get(str(r.get("id", "")))
             if not p:
                 continue
-            titular = " ".join((r.get("titular") or "").split()).strip(" .")
+            titular = poner_articulo(" ".join((r.get("titular") or "").split()).strip(" ."))
             entradilla = " ".join((r.get("entradilla") or "").split())
             # Si se pasa de largo, se recorta por sintagma (la misma verja que la
             # redacción determinista), no se tira: el modelo cuenta mal los
@@ -283,10 +327,21 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
                 # pieza en cada pase y la cuota no se va en reintentos inútiles.
                 previo = piezas.get(p["id"], {})
                 intentos = previo.get("intentos", 0) + 1 if previo.get("huella") == p["huella"] else 1
-                piezas[p["id"]] = {"huella": p["huella"], "descartado": motivo,
-                                   "intentos": intentos}
+                if previo.get("titular") and intentos >= 2:
+                    # Había uno bueno de la versión anterior: se conserva y se
+                    # marca como al día para no seguir pidiendo esta pieza.
+                    previo["huella"] = p["huella"]
+                    previo.setdefault("fuente", _huella_fuente(p["fuente"]))
+                    continue
+                entrada = {"huella": p["huella"], "descartado": motivo, "intentos": intentos}
+                if previo.get("titular"):
+                    entrada.update({k: previo[k] for k in ("titular", "entradilla", "modelo", "fecha")
+                                    if k in previo})
+                    entrada["fuente"] = previo.get("fuente", previo.get("huella"))
+                piezas[p["id"]] = entrada
                 continue
-            piezas[p["id"]] = {"huella": p["huella"], "titular": titular,
+            piezas[p["id"]] = {"huella": p["huella"], "fuente": _huella_fuente(p["fuente"]),
+                               "titular": titular,
                                "entradilla": entradilla, "modelo": modelo, "fecha": hoy}
             resumen["redactadas"] += 1
         _log(f"{resumen['redactadas']} redactadas, {resumen['descartadas']} descartadas, "
@@ -302,9 +357,12 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
     aplicadas = 0
     for i, fte, obj in todas:
         c = piezas.get(i)
-        if c and c.get("titular") and c.get("huella") == _huella(fte):
+        # Vale lo guardado si corresponde a este texto, aunque sea de una versión
+        # anterior del estilo: se sigue mostrando hasta que llegue la nueva. Las
+        # entradas antiguas no tienen "fuente"; su "huella" era ese mismo hash.
+        if c and c.get("titular") and c.get("fuente", c.get("huella")) == _huella_fuente(fte):
             obj.setdefault("headline_determinista", obj.get("headline", ""))
-            obj["headline"] = c["titular"].upper()
+            obj["headline"] = poner_articulo(c["titular"]).upper()
             if c.get("entradilla"):
                 obj["standfirst"] = c["entradilla"]
             obj["redaccion_ia"] = True

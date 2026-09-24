@@ -54,6 +54,7 @@ DIPUTADOS_DIR = ROOT / "diputados"
 DATOS_DIR = ROOT / "datos"
 PLAZOS_DIR = ROOT / "plazos"
 BUSCAR_DIR = ROOT / "buscar"
+MAPA_DIR = ROOT / "mapa"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -2839,7 +2840,105 @@ def construir_dia(fecha: dt.date) -> dict | None:
     return fusionar_curado(dia)
 
 
+
+# ---------------------------------------------------------------------------
+# Navegación
+#
+# Una sola pieza de HTML para todas las páginas, con enlaces reales: funciona
+# sin JavaScript y los buscadores la recorren entera. Tres pilares, que son las
+# tres preguntas con las que llega la gente: qué ha pasado hoy, qué hacen los
+# parlamentarios y dónde encuentro esto. En móvil la misma navegación pasa a
+# una barra inferior al alcance del pulgar.
+#
+# Rutas absolutas desde la raíz: el sitio vive en la raíz de su dominio y así
+# la misma pieza sirve igual en la portada que tres carpetas más abajo.
+
+_NAV_HTML = ""
+
+
+def _svg(d: str) -> str:
+    return (f'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+            f'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{d}</svg>')
+
+
+_ICO = {
+    "hoy": _svg('<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>'),
+    "parl": _svg('<path d="M3 20a9 9 0 0 1 18 0"/><path d="M7 20a5 5 0 0 1 10 0"/><path d="M2 20h20"/>'),
+    "cons": _svg('<path d="M4 5h16M4 12h16M4 19h10"/>'),
+    "bus": _svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+}
+
+
+def render_nav() -> str:
+    global _NAV_HTML
+    if _NAV_HTML:
+        return _NAV_HTML
+    import congreso_datos as cd
+
+    def enlace(href, titulo, sub=""):
+        sub = f'<span>{esc_html(sub)}</span>' if sub else ""
+        return f'<li><a href="{href}"><b>{esc_html(titulo)}</b>{sub}</a></li>'
+
+    grupos = "".join(
+        f'<a class="chip-n" href="/diputados/grupo-{slug}.html"><i style="background:{color}"></i>'
+        f'{esc_html(corto)}</a>' for _l, corto, slug, color in cd.GRUPOS)
+    materias = "".join(
+        f'<a class="chip-n" href="/temas/{slug}.html">{esc_html(et)}</a>'
+        for slug, et, _k in MATERIAS)
+
+    pilares = (
+        f'<li class="pilar" data-pilar="hoy">'
+        f'<a class="pilar-b" href="/" aria-haspopup="true" aria-expanded="false">{_ICO["hoy"]}<span>Hoy</span></a>'
+        f'<div class="panel"><p class="panel-t">El día a día del Estado</p><ul class="panel-l">'
+        + enlace("/", "Edición de hoy", "El BOE y las Cortes del día, explicados")
+        + enlace("/#h-boe", "El BOE de hoy", "Lo que se publica y a quién afecta")
+        + enlace("/#h-cortes", "Las Cortes hoy", "Qué registran, preguntan y votan")
+        + enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados")
+        + enlace("/feed.xml", "Suscribirse por RSS", "Cada edición, en tu lector")
+        + '</ul></div></li>'
+
+        f'<li class="pilar" data-pilar="parlamento">'
+        f'<a class="pilar-b" href="/diputados/" aria-haspopup="true" aria-expanded="false">{_ICO["parl"]}<span>Parlamento</span></a>'
+        f'<div class="panel"><p class="panel-t">Así vota y así trabaja cada diputado</p><ul class="panel-l">'
+        + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
+        + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
+        + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
+        + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
+
+        f'<li class="pilar" data-pilar="consultar">'
+        f'<a class="pilar-b" href="/mapa/" aria-haspopup="true" aria-expanded="false">{_ICO["cons"]}<span>Consultar</span></a>'
+        f'<div class="panel panel-ancho"><p class="panel-t">Encontrar cualquier cosa</p><ul class="panel-l">'
+        + enlace("/buscar/", "Buscador", "Normas, diputados y materias a la vez")
+        + enlace("/normas/", "Normas, una a una", "Una ficha por disposición del BOE")
+        + enlace("/plazos/", "Plazos que vencen", "Lo que aún se puede recurrir o solicitar")
+        + enlace("/temas/", "Todas las materias", "El BOE ordenado por asunto")
+        + enlace("/mapa/", "Todo el sitio", "Cada sección y cada página, en un solo lugar")
+        + f'</ul><p class="panel-t">Materias</p><div class="chips-n">{materias}</div></div></li>')
+
+    _NAV_HTML = (
+        '<nav class="nav" aria-label="Secciones"><div class="nav-in">'
+        '<a class="nav-marca" href="/" aria-label="La Tercera Cámara, portada">LTC</a>'
+        f'<ul class="nav-pilares">{pilares}</ul>'
+        '<form class="nav-buscar" action="/buscar/" method="get" role="search">'
+        f'{_ICO["bus"]}'
+        '<input type="search" name="q" autocomplete="off" spellcheck="false" '
+        'placeholder="Buscar normas, diputados, materias…" aria-label="Buscar en La Tercera Cámara">'
+        '<kbd aria-hidden="true">/</kbd>'
+        '<div class="nav-res" role="listbox" hidden></div></form>'
+        '</div></nav>'
+        '<nav class="tabbar" aria-label="Navegación principal">'
+        f'<a href="/" data-pilar="hoy">{_ICO["hoy"]}<span>Hoy</span></a>'
+        f'<a href="/diputados/" data-pilar="parlamento" data-abre="parlamento">{_ICO["parl"]}<span>Parlamento</span></a>'
+        f'<a href="/buscar/" data-abre="buscar">{_ICO["bus"]}<span>Buscar</span></a>'
+        f'<a href="/mapa/" data-pilar="consultar" data-abre="consultar">{_ICO["cons"]}<span>Consultar</span></a>'
+        '</nav>')
+    return _NAV_HTML
+
 def _replace_placeholders(html: str, frag: dict) -> str:
+    # La navegación es la misma en todas las páginas: se pone aquí para que
+    # ninguna plantilla ni ningún generador de páginas pueda olvidarla.
+    if "__SSR_NAV__" in html:
+        html = html.replace("__SSR_NAV__", render_nav())
     for clave, valor in frag.items():
         html = html.replace(f"__SSR_{clave}__", valor)
     # Red de seguridad: un marcador sin sustituir (una plantilla editada, una
@@ -3660,7 +3759,7 @@ def _tarjeta_diputado(f, prefijo=""):
 
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
                     url, miga, kicker, ficha_extra="", cuerpo_extra=""):
-    filas = "".join(_tarjeta_diputado(f, "../") for f in fichas)
+    filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
         "TITLE": esc_html(titulo),
@@ -3909,6 +4008,10 @@ def renderizar_diputados(fichas: list) -> list:
         f'<span class="ref">{len(v)}</span></a></li>'
         for p, v in sorted(por_prov.items()))
     activos = sorted(fichas, key=lambda f: -f["intervenciones"])[:15]
+    grupos_lista = "".join(
+        f'<li><a href="grupo-{slug}.html">{esc_html(largo)}'
+        f'<span class="ref">{conteo.get(largo, 0)}</span></a></li>'
+        for largo, corto, slug, color in cd.GRUPOS if conteo.get(largo))
 
     # El SVG y la leyenda ya van servidos; el <div> de la app y el script solo
     # añaden la capa interactiva encima. Si el script no carga, lo de debajo
@@ -3919,9 +4022,11 @@ def renderizar_diputados(fichas: list) -> list:
         f'<p class="hemi-nota">Pasa el ratón por cualquier escaño para ver quién lo ocupa. '
         f'Dentro de cada grupo el orden es alfabético: el Congreso no publica el plano '
         f'de asientos, así que ninguna silla del dibujo es la de nadie en concreto.</p>'
-        f'<h2 class="rotulo">Los que más intervienen</h2>'
+        f'<h2 class="rotulo" id="activos">Los que más intervienen</h2>'
         f'<ul class="rejilla-dip">{"".join(_tarjeta_diputado(f) for f in activos)}</ul>'
-        f'<h2 class="rotulo">Por circunscripción</h2>'
+        f'<h2 class="rotulo" id="grupos">Por grupo parlamentario</h2>'
+        f'<ul class="provincias">{grupos_lista}</ul>'
+        f'<h2 class="rotulo" id="circunscripciones">Por circunscripción</h2>'
         f'<ul class="provincias">{provincias}</ul>'
         f'<script src="../assets/parlamento.js" defer></script>')
     url = f"{SITE_URL}diputados/"
@@ -4101,6 +4206,84 @@ ETIQUETA_CLASE = {"norma": "Norma del BOE", "cortes": "Cortes", "diputado": "Dip
                   "tema": "Materia", "plazo": "Plazo", "edicion": "Edición"}
 
 
+
+def renderizar_mapa(dias: list, fichas_dip: list) -> list:
+    """/mapa/: todas las secciones y todas sus páginas índice en un solo sitio.
+
+    Es la garantía de que ninguna página se queda sin camino: desde aquí se llega
+    a cada edición, a cada materia, a cada grupo y a cada provincia, y desde
+    esas a cada norma y a cada diputado. El sitemap.xml es para los buscadores;
+    este es para las personas."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import congreso_datos as cd
+    hoy = dt.date.today().isoformat()
+
+    def lista(items):
+        return '<ul class="indice">' + "".join(
+            f'<li><a href="{h}">{esc_html(t)}</a>'
+            + (f'<span class="ref">{esc_html(str(n))}</span>' if n not in ("", None) else "")
+            + '</li>' for h, t, n in items) + '</ul>'
+
+    ediciones = [(f"/ediciones/{d['id']}.html", f"Edición del {fmt_date_es(d['id'])}", "")
+                 for d in sorted(dias, key=lambda d: d["id"], reverse=True)]
+    por_grupo: dict = {}
+    por_prov: dict = {}
+    for f in fichas_dip or []:
+        por_grupo[f.get("grupo", "")] = por_grupo.get(f.get("grupo", ""), 0) + 1
+        c = f.get("circunscripcion", "")
+        if c:
+            por_prov[c] = por_prov.get(c, 0) + 1
+    grupos = [(f"/diputados/grupo-{slug}.html", largo, por_grupo.get(largo, ""))
+              for largo, _c, slug, _col in cd.GRUPOS if por_grupo.get(largo)]
+    provs = [(f"/diputados/provincia-{_slug_txt(p)}.html", p, n)
+             for p, n in sorted(por_prov.items())]
+    n_normas = len(list(NORMAS_DIR.glob("BOE-*.html"))) if NORMAS_DIR.exists() else ""
+    materias = [(f"/temas/{slug}.html", et, "") for slug, et, _k in MATERIAS
+                if (TEMAS_DIR / f"{slug}.html").exists()]
+
+    cuerpo = (
+        '<h2 class="rotulo">Hoy</h2>'
+        + lista([("/", "Edición de hoy", ""), ("/ediciones/", "Archivo de ediciones", len(ediciones))]
+                + ediciones)
+        + '<h2 class="rotulo">Parlamento</h2>'
+        + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or "")])
+        + '<h3 class="rotulo-sub">Por grupo</h3>' + lista(grupos)
+        + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
+        + '<h2 class="rotulo">Consultar</h2>'
+        + lista([("/buscar/", "Buscador", ""), ("/normas/", "Todas las normas, una a una", n_normas),
+                 ("/plazos/", "Plazos que vencen", ""), ("/temas/", "Todas las materias", len(materias))])
+        + '<h3 class="rotulo-sub">Materias</h3>' + lista(materias)
+        + '<h2 class="rotulo">Datos abiertos</h2>'
+        + lista([("/feed.xml", "Feed RSS de ediciones", ""),
+                 ("/datos/parlamento.json", "Parlamentarios en JSON", ""),
+                 ("/datos/indice.json", "Índice completo del sitio en JSON", ""),
+                 ("/sitemap.xml", "Sitemap para buscadores", ""),
+                 ("/llms.txt", "Guía del sitio para asistentes de IA", "")]))
+
+    url = f"{SITE_URL}mapa/"
+    _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), MAPA_DIR, "index.html", {
+        "TITLE": "Todo el sitio | La Tercera Cámara",
+        "META_DESC": esc_attr("Todas las secciones de La Tercera Cámara en una página: ediciones, "
+                              "diputados por grupo y provincia, normas, materias y plazos."),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": "Mapa del sitio",
+                                  "url": url, "inLanguage": "es-ES", "dateModified": hoy}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Todo el sitio</span>',
+        "KICKER": "Índice",
+        "HEADLINE": "Todo el sitio, en una página",
+        "STANDFIRST": "Cada sección y cada índice. Desde aquí se llega a cualquier norma y a cualquier diputado en dos clics.",
+        "FICHA": (f"<dt>Ediciones</dt><dd>{len(ediciones)}</dd>"
+                  f"<dt>Diputados</dt><dd>{len(fichas_dip or [])}</dd>"
+                  f"<dt>Normas</dt><dd>{n_normas}</dd>"),
+        "CUERPO": cuerpo,
+        "FUENTE": "Fuentes: Boletín Oficial del Estado y datos abiertos del Congreso.",
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    log("mapa/: página de todo el sitio")
+    return [{"url": url, "lastmod": hoy}]
+
 def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
     """Todas las ediciones, no solo la ventana de render, y con la fecha de
     modificación real de cada una."""
@@ -4201,6 +4384,7 @@ def renderizar() -> None:
     extras += renderizar_temas(dias) + renderizar_plazos(dias)
     try:
         extras += renderizar_buscador(dias, fichas_dip)
+        extras += renderizar_mapa(dias, fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
         log(f"buscar/: no se pudo generar ({exc})")
     renderizar_archivo(entradas, dias)
