@@ -578,8 +578,10 @@
   },
   "BOE-A-2026-19513": {
    "huella": "a15d234a3c5cf227",
-   "descartado": "cifra «104» que no está en el texto oficial",
-   "intentos": 1
+   "titular": "Confederación Hidrográfica del Guadalquivir y Ayuntamiento de Bonares firman convenio de 1.040.000 euros",
+   "entradilla": "Se publica el convenio para la redacción del proyecto, ejecución, entrega y mantenimiento de las conexiones de varios núcleos a la red de abastecimiento.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19514": {
    "huella": "c9394ed5fde5a387",
@@ -629,9 +631,269 @@
    "entradilla": "El Congreso tramita como proyecto de ley urgente el real decreto de medidas frente a incendios, con plazo de alegaciones hasta el 28 de septiembre.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19419": {
+   "huella": "458cae2005e1c61f",
+   "titular": "Congreso de los Diputados publica la derogación del real decreto-ley sobre grupos de interés",
+   "entradilla": "Se ordena la publicación del acuerdo de derogación del Real Decreto-ley 21/2026, de 25 de agosto, de transparencia e integridad.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19420": {
+   "huella": "d9af45dec2aa0e42",
+   "titular": "Congreso de los Diputados publica la convalidación de las medidas urgentes para Ceuta",
+   "entradilla": "Se ordena la publicación del acuerdo que convalida el Real Decreto-ley 22/2026, de 1 de septiembre, de apoyo social y económico a la ciudad.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19421": {
+   "huella": "f2e38c90ab6ab9c4",
+   "titular": "Ministerio de la Presidencia regula comités médicos para mutualistas de la Mutualidad General Judicial",
+   "entradilla": "Se establecen la composición y funciones del comité de tratamientos con hormona de crecimiento y del comité de protonterapia.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19422": {
+   "huella": "a8b1875e09c97a64",
+   "titular": "Gobierno concede una subvención directa a Canarias para abaratar el riego agrícola con agua desalada",
+   "entradilla": "El real decreto regula la ayuda para paliar el sobrecoste de la desalación y extracción de pozos, y modifica otra ayuda en Castilla-La Mancha.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19423": {
+   "huella": "ccd0f62caec4a23f",
+   "titular": "Ministerio de Economía determina la tipología y clasificación de los fondos de pensiones",
+   "entradilla": "Una orden ministerial fija los criterios de clasificación de los fondos de pensiones en función de su política de inversión.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19424": {
+   "huella": "6ffcbc710c44e68e",
+   "titular": "Ministerio de Economía modifica modelos contables y estadísticos para aseguradoras",
+   "entradilla": "Se actualizan los modelos de información cuantitativa para la supervisión y estadísticas de las entidades aseguradoras y reaseguradoras.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19425": {
+   "huella": "0abf29f71fdf71b3",
+   "titular": "CNMC establece la metodología para retribuir las instalaciones de transporte y gas natural licuado",
+   "entradilla": "La circular fija el sistema para determinar los ingresos de las redes de transporte de gas natural y plantas de gas natural licuado.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19426": {
+   "huella": "782e29d41ca38e8b",
+   "descartado": "acaba en el número «2032» sin decir de qué",
+   "intentos": 1
+  },
+  "BOE-A-2026-19427": {
+   "huella": "d8cfa4f3cbe25053",
+   "titular": "CNMC establece la metodología de retribución para la distribución de gas natural",
+   "entradilla": "La circular regula los criterios y el cálculo de los ingresos correspondientes a la actividad de distribución de gas natural.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19428": {
+   "huella": "b093938b67d341c5",
+   "titular": "Comunidad Autónoma de Extremadura adapta su normativa sobre Cámaras de Comercio y comercio ambulante",
+   "entradilla": "Un decreto-ley introduce medidas urgentes para adecuar la legislación autonómica a la estatal y facilitar el ejercicio del comercio ambulante.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19429": {
+   "huella": "f7aabf868a9f3ac8",
+   "titular": "Comunidad Autónoma de Extremadura aprueba medidas urgentes de urbanismo para impulsar la vivienda",
+   "entradilla": "El decreto-ley establece actuaciones para agilizar la aprobación del planeamiento urbanístico y su ejecución orientada a la promoción de viviendas.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19466": {
+   "huella": "8d6e0fa37b90ae4e",
+   "titular": "Ministerio de Hacienda fija los índices de precios de materiales y mano de obra para contratos públicos",
+   "entradilla": "Establece los índices del primer trimestre de 2026 para revisar precios en contratos de administraciones públicas, armamento y transporte.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19467": {
+   "huella": "8cb949f649990757",
+   "titular": "Ministerio de Hacienda prorroga el convenio con el Campo de Gibraltar y el Ayuntamiento de Los Barrios",
+   "entradilla": "Se publica la adenda de prórroga para mantener la financiación de inversiones en este municipio gaditano.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19470": {
+   "huella": "9019a5c7fc2dc7b7",
+   "titular": "Intervención General de la Administración del Estado publica la ejecución presupuestaria de julio",
+   "entradilla": "Se difunden las operaciones de ejecución del Presupuesto del Estado, sus modificaciones y las operaciones de tesorería del mes de julio de 2026.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19471": {
+   "huella": "582619ff8473f3e8",
+   "titular": "Ministerio del Interior publica la lista de admitidos y excluidos para vigilantes de seguridad",
+   "entradilla": "Se da a conocer la relación de aspirantes admitidos y excluidos para las pruebas de selección de vigilante de seguridad, explosivos y escolta.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19472": {
+   "huella": "27129e680dca2dd6",
+   "titular": "Ministerio para la Transición Ecológica modifica el convenio con la Universidad de Huelva",
+   "entradilla": "Se publica la adenda para el desarrollo del Programa Campus Rural de prácticas universitarias en el medio rural.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-1052fdb85a9e2305": {
+   "huella": "271b63b07adf4d0d",
+   "titular": "Congreso de los Diputados publica el Diario de Sesiones con juramentos y minuto de silencio",
+   "entradilla": "El documento oficial recoge el inicio de la sesión plenaria con acatamiento de la Constitución por nuevos diputados.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-bff243815d93203b": {
+   "huella": "769f64e6608cabfb",
+   "titular": "Congreso de los Diputados registra comparecencias en comisión sobre desafíos sociales",
+   "entradilla": "El Diario de Sesiones incluye las intervenciones de expertos para aportar experiencia y orientación en comisiones parlamentarias.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-0751ea093bb344b3": {
+   "huella": "25fb8a105389495c",
+   "titular": "Mesa del Congreso encomienda el Estatuto Marco del personal de salud a la Comisión de Sanidad",
+   "entradilla": "El proyecto de ley tramitará su aprobación con competencia legislativa plena directamente en la comisión correspondiente.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-b3624faf246f3a0e": {
+   "huella": "92dd03af5c8c09de",
+   "titular": "Congreso somete a debate el real decreto-ley de protección frente a incendios forestales",
+   "entradilla": "La Cámara baja tramita el texto que establece medidas urgentes laborales y sociales frente a los incendios forestales.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19327": {
+   "huella": "7a24abac2dbff576",
+   "titular": "Ministerio de la Presidencia regula el Comité de Inversiones Estratégicas y sus proyectos",
+   "entradilla": "El real decreto desarrolla los criterios y procedimientos para declarar y tramitar proyectos estratégicos de inversión.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19328": {
+   "huella": "6524795b598e790e",
+   "titular": "Gobierno regula subvenciones directas para inversiones en municipios del Campo de Gibraltar",
+   "entradilla": "El real decreto establece la concesión directa de fondos destinados a financiar proyectos locales en la comarca gaditana.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19329": {
+   "huella": "bdeceddc99a04b33",
+   "titular": "Ministerio para la Transición Ecológica crea un mercado de capacidad eléctrico en la península",
+   "entradilla": "La orden ministerial establece un nuevo mecanismo para garantizar la seguridad del suministro en el sistema eléctrico peninsular.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19330": {
+   "huella": "0ba22c4172877ffd",
+   "descartado": "acaba en el número «2026» sin decir de qué",
+   "intentos": 1
+  },
+  "BOE-A-2026-19331": {
+   "huella": "dfae49d6459b413e",
+   "titular": "Generalitat Valenciana publica la ley de medidas fiscales, financieras y administrativas",
+   "entradilla": "El texto normativo incluye cambios en materia tributaria, de gestión administrativa y de organización interna de la Generalitat.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19386": {
+   "huella": "67f482f172fbbc97",
+   "titular": "Centro de Estudios Políticos y Constitucionales y Universidad Autónoma elaboran informe de justicia",
+   "entradilla": "Se publica el convenio para la elaboración y difusión conjunta del informe sobre la justicia administrativa de 2026.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19387": {
+   "huella": "06ca77df1f3257f7",
+   "titular": "Instituto Nacional de Técnica Aeroespacial constituye sus mesas de contratación y diálogo competitivo",
+   "entradilla": "Se fijan formalmente con carácter permanente los órganos de contratación y consulta técnica del organismo de defensa.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19388": {
+   "huella": "432cea88064b0afc",
+   "titular": "Ministerio de Defensa y universidades de ingeniería firman convenio para actividades en operaciones",
+   "entradilla": "Se publica el acuerdo para colaborar conjuntamente con ingenierías agroalimentarias y forestales en zonas de operaciones.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19389": {
+   "huella": "b10a1759587ce559",
+   "titular": "Ministerio de Defensa y Universidad San Pablo-CEU acuerdan prácticas académicas externas",
+   "entradilla": "Se publica el convenio de cooperación educativa para facilitar la realización de prácticas de estudiantes en el ministerio.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19390": {
+   "huella": "4f2ac36df7ed4e38",
+   "titular": "Hacienda prorroga el convenio con el Campo de Gibraltar y el Ayuntamiento de Algeciras",
+   "entradilla": "Se publica la adenda para mantener la financiación de inversiones previstas en el municipio algecireño.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19395": {
+   "huella": "15286f8b2a291acc",
+   "titular": "Secretaría General de Pesca distribuye el sobrante de capturas de anchoa en el caladero norte",
+   "entradilla": "Fija el reparto del volumen máximo de capturas sobrantes de anchoa para los buques de cerco del Cantábrico y Noroeste.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19396": {
+   "huella": "b0490009d0fb4e6e",
+   "titular": "Ministerio de Política Territorial publica el acuerdo bilateral sobre policías locales de Cantabria",
+   "entradilla": "Se da a conocer el pacto de la comisión mixta en relación con la ley autonómica de coordinación de policías locales cántabras.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19397": {
+   "huella": "386cbe92ebe37843",
+   "titular": "Ministerio de Política Territorial publica el acuerdo sobre transporte marítimo de Cantabria",
+   "entradilla": "Se difunde el entendimiento de la comisión bilateral respecto a la normativa autonómica de ordenación del transporte marítimo.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19399": {
+   "huella": "b4acb7089a79789d",
+   "titular": "Gobierno y Baleares publican acuerdo sobre la ley balear de aceleración de proyectos estratégicos",
+   "entradilla": "Se da publicidad al acuerdo adoptado en la comisión bilateral de cooperación en relación con las medidas urgentes autonómicas.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19400": {
+   "huella": "0528e729083f6c49",
+   "titular": "Gobierno y Baleares publican acuerdo sobre el decreto balear de medidas por la crisis económica",
+   "entradilla": "Se publica el entendimiento en el seno de la comisión bilateral respecto al decreto de medidas urgentes frente a los efectos internacionales.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19402": {
+   "huella": "5a14b62d3078866a",
+   "titular": "Ministerio de Política Territorial corrige errores en subvenciones por emergencias de protección civil",
+   "entradilla": "Se enmienda la asignación de ayudas para recuperar infraestructuras dañadas por incendios y emergencias declaradas graves.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-eec15f0e103dfde2": {
+   "huella": "2230d853e2ee47eb",
+   "descartado": "acaba en el número «2025» sin decir de qué",
+   "intentos": 1
+  },
+  "C-5fb2ac5dce000138": {
+   "huella": "8cc77a4d24eff9d2",
+   "titular": "El Congreso registra cuatro interpelaciones urgentes dirigidas a Interior y Transición Ecológica",
+   "entradilla": "La oposición reclama explicaciones al Gobierno sobre seguridad en Ceuta, la gestión del Canal de Navarra y el encarecimiento de la vida.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   }
  },
  "uso": {
-  "2026-09-24": 3
+  "2026-09-24": 4
  }
 }
