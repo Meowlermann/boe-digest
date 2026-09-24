@@ -2,114 +2,135 @@
  "esquema": 1,
  "piezas": {
   "BOE-A-2026-19762": {
-   "huella": "4698f3dbacb850e7",
-   "titular": "El Ministerio de Hacienda actualiza los modelos y plazos del Impuesto sobre el Carbón",
-   "entradilla": "Modifica la normativa sobre la presentación de la declaración-liquidación y la gestión recaudatoria de este impuesto especial.",
+   "huella": "a814a70d71700a50",
+   "fuente": "4698f3dbacb850e7",
+   "titular": "Hacienda modifica los modelos y plazos del Impuesto Especial sobre el Carbón",
+   "entradilla": "La norma actualiza las condiciones para presentar la declaración-liquidación y el resumen anual de este impuesto, así como la colaboración de las entidades de depósito.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19823": {
-   "huella": "45dadfd3707d1687",
+   "huella": "40fcde5d045fe499",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Embajada de España en Ecuador e Indra Sistemas firman un convenio para la Fiesta Nacional de España",
    "entradilla": "Se publica el acuerdo de colaboración entre la representación diplomática y la empresa para la celebración oficial.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "45dadfd3707d1687"
   },
   "BOE-A-2026-19824": {
-   "huella": "90a7eea85f270545",
-   "titular": "Embajada de España en Egipto y CaixaBank firman un convenio para la Fiesta Nacional de España",
-   "entradilla": "Se publica el texto del convenio destinado a financiar y organizar la celebración oficial de la festividad nacional.",
+   "huella": "c8795e169260b7f6",
+   "fuente": "90a7eea85f270545",
+   "titular": "CaixaBank patrocinará la Fiesta Nacional en la Embajada de España en Egipto",
+   "entradilla": "La entidad bancaria y la representación diplomática en el país firman el acuerdo de colaboración para la recepción oficial.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19825": {
-   "huella": "6d61ce1259e40d5f",
+   "huella": "8de8bf889851c5d8",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Embajada de España en México y BBVA firman un convenio para la Fiesta Nacional de España",
    "entradilla": "Se hace público el acuerdo de colaboración para la celebración de la festividad nacional en territorio mexicano.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "6d61ce1259e40d5f"
   },
   "BOE-A-2026-19826": {
-   "huella": "5f371bac6cd42328",
+   "huella": "6cd10f99c1ed3eec",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Embajada de España en Costa Rica y Grupo Proval firman un convenio para la Fiesta Nacional de España",
    "entradilla": "Se publica el convenio oficial entre la legación diplomática y la entidad para apoyar los actos de la Fiesta Nacional.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "5f371bac6cd42328"
   },
   "BOE-A-2026-19827": {
-   "huella": "ee2c0b0757a1a311",
-   "titular": "Ministerio de Defensa modifica las especialidades complementarias del Cuerpo Militar de Sanidad",
-   "entradilla": "La orden ministerial actualiza la normativa que regula las diferentes especialidades dentro del Cuerpo Militar de Sanidad.",
+   "huella": "8b741a9f0ea72cf9",
+   "fuente": "ee2c0b0757a1a311",
+   "titular": "Defensa modifica las especialidades complementarias del Cuerpo Militar de Sanidad",
+   "entradilla": "Una orden ministerial actualiza la normativa que regula las especialidades del personal sanitario de las Fuerzas Armadas.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19828": {
-   "huella": "4e931c68a35f6fdc",
-   "titular": "Secretaría de Estado de Seguridad y Ayuntamiento de La Almunia de Doña Godina firman un convenio",
-   "entradilla": "El acuerdo en materia de seguridad pública entre ambas administraciones se publica con un plazo fijado de seis meses.",
+   "huella": "129af2bed459a493",
+   "fuente": "4e931c68a35f6fdc",
+   "titular": "Interior y La Almunia de Doña Godina firman un convenio de seguridad ciudadana",
+   "entradilla": "La Secretaría de Estado de Seguridad y el ayuntamiento zaragozano colaboran en materia policial con un plazo de seis meses.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19830": {
-   "huella": "0950642f2654deef",
-   "titular": "Instituciones Penitenciarias emplaza a los interesados en el recurso contencioso-administrativo 1626/2026",
-   "entradilla": "Se abre un plazo de nueve días para que las personas interesadas puedan personarse ante el Tribunal Superior de Justicia de Madrid.",
+   "huella": "e60caa4bc3e56cc0",
+   "fuente": "0950642f2654deef",
+   "titular": "Instituciones Penitenciarias emplaza a los afectados por un recurso en Madrid",
+   "entradilla": "Se abre un plazo de nueve días para los interesados en el recurso contencioso-administrativo 1626/2026 ante el Tribunal Superior de Justicia.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19831": {
-   "huella": "693b7f3a14f74db5",
-   "titular": "Autoridad Portuaria de Tarragona y Universidad Rovira i Virgili modifican su convenio de investigación",
-   "entradilla": "Se publica la adenda para el desarrollo de un proyecto de doctorado industrial enfocado en los riesgos y seguros portuarios.",
+   "huella": "e6b9b08c0b2647b7",
+   "fuente": "693b7f3a14f74db5",
+   "titular": "El puerto de Tarragona y la Universidad Rovira i Virgili modifican su convenio",
+   "entradilla": "La adenda regula un proyecto de investigación para un doctorado industrial sobre riesgos y seguros en operaciones portuarias.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19832": {
-   "huella": "db55497030d9e89b",
-   "titular": "Autoridad Portuaria de Baleares y Consell Insular de Mallorca firman un convenio de 200.000 euros",
-   "entradilla": "El acuerdo, dotado con 200.000 euros para un plazo de tres años, se destina a la prevención de incendios y protección civil.",
+   "huella": "1ab5dad4f0d97405",
+   "fuente": "db55497030d9e89b",
+   "titular": "El puerto de Baleares y el Consell de Mallorca firman un convenio de incendios",
+   "entradilla": "El acuerdo cuenta con una aportación de 200.000 euros y un plazo de tres años para prevención, salvamento y protección civil.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19833": {
-   "huella": "78e9f7dbdcf85601",
-   "titular": "Consejo Superior de Deportes y Universidad Internacional de La Rioja firman un convenio de prácticas",
-   "entradilla": "El acuerdo permite la realización de prácticas académicas externas para estudiantes de grado y posgrado.",
+   "huella": "726b334f6e35aab8",
+   "fuente": "78e9f7dbdcf85601",
+   "titular": "El Consejo Superior de Deportes y la Universidad Internacional de La Rioja colaboran",
+   "entradilla": "Ambas instituciones formalizan un convenio para facilitar prácticas académicas externas a estudiantes de grado y postgrado.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19834": {
-   "huella": "97004dd8aa697d97",
-   "titular": "El Ministerio de Agricultura reconoce nuevos viñedos singulares en la Denominación de Origen Rioja",
-   "entradilla": "Aprueba los parajes vitícolas solicitados dentro de esta denominación y desestima otra petición no subsanada.",
+   "huella": "ec3a53cc60e7d349",
+   "fuente": "97004dd8aa697d97",
+   "titular": "Agricultura reconoce nuevos viñedos singulares en la Denominación de Origen Rioja",
+   "entradilla": "La orden ministerial valida determinados parajes vitícolas específicos y desestima otra solicitud presentada.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19835": {
-   "huella": "2091eca37f01e3ea",
-   "titular": "Confederación Hidrográfica del Júcar y Junta Central de Regantes modifican su encomienda de gestión",
-   "entradilla": "Se publica la adenda al convenio para la entrega y mantenimiento de las obras de infraestructuras de la Mancha Oriental.",
+   "huella": "6479e5c194f1e372",
+   "fuente": "2091eca37f01e3ea",
+   "titular": "La Confederación Hidrográfica del Júcar modifica su encomienda con los regantes",
+   "entradilla": "Se actualiza el convenio con la Junta Central de Regantes de la Mancha Oriental para explotar obras de sustitución de bombeos.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19836": {
-   "huella": "f65170e0b64148a5",
-   "titular": "CSIC y Fundación Barcelona Zoo firman un convenio de 45.000 euros para conservación animal",
-   "entradilla": "El acuerdo destina 45.000 euros para colaborar en un proyecto de conservación de los hábitats sahelo-saharianos.",
+   "huella": "f25b82063e1a82ed",
+   "fuente": "f65170e0b64148a5",
+   "titular": "El CSIC y la Fundación Barcelona Zoo colaboran en la conservación de hábitats",
+   "entradilla": "Ambas entidades firman un convenio dotado con 45.000 euros para proteger ecosistemas sahelo-saharianos.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19837": {
-   "huella": "3feeb2f2ff13228d",
-   "titular": "CIEMAT y Enresa firman un convenio de 693.300 euros para investigar sobre residuos radiactivos",
-   "entradilla": "El proyecto de I+D evaluará los materiales de confinamiento en almacenamientos con un presupuesto de 693.300 euros.",
+   "huella": "0399791c1ffe12c2",
+   "fuente": "3feeb2f2ff13228d",
+   "titular": "El CIEMAT y Enresa investigan sobre materiales para residuos radiactivos",
+   "entradilla": "El proyecto I+D Cambar III cuenta con una aportación de 693.300 euros para estudiar confinamientos geológicos.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19838": {
-   "huella": "59a979ad76e1c895",
+   "huella": "63f367c76c698810",
    "descartado": "cifra «170496» que no está en el texto oficial",
-   "intentos": 2
+   "intentos": 1
   },
   "C-9cf38176c4175542": {
    "huella": "b5d19e71cf21e137",
@@ -133,86 +154,100 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19695": {
-   "huella": "1b1b353ecb092b86",
-   "titular": "Agricultura suprime una oficina de asistencia en registros de la Agencia de Información Alimentaria",
-   "entradilla": "Elimina formalmente la oficina de asistencia en materia de registros de este organismo autónomo.",
+   "huella": "0da11195b1b136f9",
+   "fuente": "1b1b353ecb092b86",
+   "titular": "Agricultura suprime una oficina de registros en la Agencia de Control Alimentario",
+   "entradilla": "La orden ministerial elimina la oficina de asistencia en materia de registros de este organismo autónomo.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19749": {
-   "huella": "5f8c36c60730b638",
-   "titular": "Embajada de España en Líbano y BLS International firman un convenio para la Fiesta Nacional",
-   "entradilla": "Se hace público el acuerdo de patrocinio y colaboración para la celebración oficial de la festividad nacional.",
+   "huella": "7e2cddc5d2583de4",
+   "fuente": "5f8c36c60730b638",
+   "titular": "BLS International financiará la Fiesta Nacional en la Embajada de España en Líbano",
+   "entradilla": "La empresa y la legación diplomática publican el convenio de patrocinio para la recepción oficial.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19750": {
-   "huella": "3bd731871c3dcc50",
-   "titular": "Secretaría de Estado de Educación convoca un panel de expertos para las Escuelas de Idiomas de Ceuta y Melilla",
-   "entradilla": "El concurso público seleccionará a los especialistas que validarán las pruebas de certificación oficial de idiomas.",
+   "huella": "6c1445d350696fb9",
+   "fuente": "3bd731871c3dcc50",
+   "titular": "Educación convoca un panel de expertos para las Escuelas Oficiales de Idiomas",
+   "entradilla": "Se abre un concurso para seleccionar a los especialistas que validarán las pruebas de certificación en Ceuta y Melilla.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19751": {
-   "huella": "2b3a4f5a5a6a2caa",
-   "titular": "Trabajo publica el convenio colectivo estatal de artes gráficas y sectores afines",
-   "entradilla": "Registra y ordena la publicación del nuevo marco laboral con vigencia hasta el 31 de diciembre de 2026.",
+   "huella": "73534dab9f61cef9",
+   "fuente": "2b3a4f5a5a6a2caa",
+   "titular": "Trabajo publica el convenio colectivo de artes gráficas y editoriales",
+   "entradilla": "El acuerdo laboral para el sector del papel, cartón e industrias auxiliares estará vigente hasta finales de 2026.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19752": {
-   "huella": "5606297e3cc3c9f9",
+   "huella": "81e4a9dfb39f48d3",
+   "descartado": "acaba en el número «2025» sin decir de qué",
+   "intentos": 1,
    "titular": "Vivienda convoca el Premio Nacional de Arquitectura dotado con 60.000 euros",
    "entradilla": "Abre el plazo de presentación para galardonar la trayectoria o la obra de arquitectos en la edición correspondiente al año 2025.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "5606297e3cc3c9f9"
   },
   "BOE-A-2026-19753": {
-   "huella": "9ad76a1dfbe5ee9b",
-   "titular": "Ministerio de Cultura incoa expediente para declarar Bien de Interés Cultural el Palacio de Fontalba en Madrid",
-   "entradilla": "El inmueble inicia los trámites de protección oficial en la categoría de monumento por su valor histórico y artístico.",
+   "huella": "c229f5a2a7adf723",
+   "fuente": "9ad76a1dfbe5ee9b",
+   "titular": "Cultura inicia el expediente para declarar BIC el Palacio de Fontalba en Madrid",
+   "entradilla": "El ministerio incoa el procedimiento para proteger como monumento este inmueble de valor histórico y artístico.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19754": {
-   "huella": "df44c41e0ddfcb03",
-   "titular": "Ministerio de Cultura aprueba la actualización de la Carta de Servicios de la Biblioteca Nacional de España",
-   "entradilla": "La resolución actualiza los compromisos de calidad ofrecidos por la institución pública a los ciudadanos.",
+   "huella": "f56ae82b5b0a7b34",
+   "fuente": "df44c41e0ddfcb03",
+   "titular": "Cultura aprueba la actualización de la Carta de Servicios de la Biblioteca Nacional",
+   "entradilla": "La medida entra en vigor al día siguiente de su publicación oficial para mejorar la atención ciudadana.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19755": {
-   "huella": "23d39e36e928f497",
-   "titular": "Ministerio de Cultura y Asociación Española de Comisionados de Filmaciones firman un convenio de 50.000 euros",
-   "entradilla": "El acuerdo, dotado con 50.000 euros y vigente hasta final de año, busca promover la actividad audiovisual en España.",
+   "huella": "9bbfa6e84eae6007",
+   "fuente": "23d39e36e928f497",
+   "titular": "Cultura y los comisionados de filmaciones firman un convenio audiovisual",
+   "entradilla": "El acuerdo destina 50.000 euros para promocionar la actividad del cine y la televisión en España hasta final de año.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19756": {
-   "huella": "399afc0dd833d691",
-   "titular": "Banco de España publica los cambios oficiales del euro fijados por el Banco Central Europeo",
-   "entradilla": "Se hacen oficial en el mercado de divisas las cotizaciones de la moneda europea correspondientes a la jornada indicada.",
+   "huella": "a9a9412464faf3e2",
+   "fuente": "399afc0dd833d691",
+   "titular": "El Banco de España publica los tipos de cambio oficiales del euro",
+   "entradilla": "Se difunden las cotizaciones oficiales frente a otras monedas establecidas por el Banco Central Europeo.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19757": {
-   "huella": "aec795269f6e5216",
-   "titular": "Asturias inicia la declaración como bien de interés cultural del yacimiento de Os Castros en Taramundi",
-   "entradilla": "Incoa el expediente para proteger como zona arqueológica este yacimiento y el vinculado de A Veiga de Escouredo.",
+   "huella": "85e618687247218f",
+   "fuente": "aec795269f6e5216",
+   "titular": "Asturias inicia los trámites para declarar BIC el yacimiento de Os Castros",
+   "entradilla": "El Principado incoa expediente para proteger como zona arqueológica este emplazamiento y el de A Veiga en Taramundi.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19758": {
-   "huella": "5be2d45b4621b58a",
-   "titular": "Universidad Alfonso X el Sabio publica la modificación de su plan de estudios del Grado en Derecho",
-   "entradilla": "La institución académica adapta oficialmente el contenido curricular de sus enseñanzas universitarias de grado.",
+   "huella": "52bdbfae615a52f2",
+   "fuente": "5be2d45b4621b58a",
+   "titular": "La Universidad Alfonso X el Sabio modifica su plan de estudios de Derecho",
+   "entradilla": "La institución académica publica los cambios introducidos en la titulación oficial de Grado.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19761": {
-   "huella": "839d077037b1adef",
-   "titular": "La Universidad Alfonso X el Sabio modifica su máster en análisis de datos masivos",
-   "entradilla": "Actualiza el plan de estudios del Máster Universitario en Análisis de Datos Masivos para los Negocios.",
+   "huella": "6e799fe78643d6aa",
+   "fuente": "839d077037b1adef",
+   "titular": "La Universidad Alfonso X el Sabio modifica su máster en Big Data para Negocios",
+   "entradilla": "La institución académica publica la actualización del plan de estudios de este posgrado universitario.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
@@ -231,51 +266,58 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19628": {
-   "huella": "2bc6027147032d1b",
-   "titular": "España y Filipinas publican el acuerdo administrativo para aplicar su Convenio de Seguridad Social",
-   "entradilla": "El texto pactado en Madrid establece los mecanismos operativos y de coordinación en materia de prestaciones sociales.",
+   "huella": "965e2861ba8f485f",
+   "fuente": "2bc6027147032d1b",
+   "titular": "España y Filipinas firman un acuerdo administrativo de Seguridad Social",
+   "entradilla": "El texto regula la aplicación del convenio bilateral entre ambos países adoptado en Madrid.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19629": {
-   "huella": "a40efd9460ffd208",
-   "titular": "Ciencia oficializa nuevos títulos de máster universitarios inscritos en el registro",
-   "entradilla": "Publica el acuerdo del Consejo de Ministros que reconoce el carácter oficial de diversos títulos de posgrado.",
+   "huella": "38241e47dfc36a6f",
+   "fuente": "a40efd9460ffd208",
+   "titular": "Universidades publica los nuevos títulos oficiales de Máster aprobados",
+   "entradilla": "El Consejo de Ministros establece el carácter oficial de estos posgrados y su inscripción en el registro.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19634": {
-   "huella": "aaa8521a7120f9b8",
-   "titular": "Comunidad Autónoma de Extremadura aprueba los nuevos Estatutos de la Universidad de Extremadura",
-   "entradilla": "El decreto autonómico establece el marco normativo y organizativo fundamental que regirá la actividad de la universidad.",
+   "huella": "8831ff39db6556d3",
+   "fuente": "aaa8521a7120f9b8",
+   "titular": "Extremadura aprueba los nuevos Estatutos de su Universidad",
+   "entradilla": "Un decreto autonómico da validez a la normativa interna que rige la institución académica extremeña.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19674": {
-   "huella": "faba40e79eb10a01",
-   "titular": "El Consejo General del Poder Judicial publica el reparto de ponencias en el Tribunal Supremo",
-   "entradilla": "Da a luz el acuerdo de la Sala de Gobierno con la distribución de asuntos para las Vocalías Delegadas.",
+   "huella": "fb4cf059a68307b7",
+   "fuente": "faba40e79eb10a01",
+   "titular": "El Consejo General del Poder Judicial publica el reparto de ponencias del Supremo",
+   "entradilla": "Se difunde el acuerdo de la Sala de Gobierno sobre las vocalías delegadas aplicable desde julio.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19675": {
-   "huella": "e7846d5a201e9c5c",
-   "titular": "Ministerio de Defensa y Xunta de Galicia firman un convenio sobre la gestión sanitaria del Hospital de Ferrol",
-   "entradilla": "El acuerdo establece las actuaciones asistenciales derivadas de la cesión de uso del Hospital Básico de Defensa.",
+   "huella": "f0739867413badd8",
+   "fuente": "e7846d5a201e9c5c",
+   "titular": "Defensa y la Xunta de Galicia firman un convenio para el Hospital de Ferrol",
+   "entradilla": "El acuerdo establece las actuaciones sanitarias derivadas de la cesión de uso del Hospital Básico de Defensa.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19676": {
-   "huella": "aeeafb8bc8a222b7",
-   "titular": "Agencia Tributaria emplaza a los interesados en el recurso contencioso-administrativo 126/2026",
-   "entradilla": "Se abre un plazo de nueve días para que las personas afectadas puedan personarse en el procedimiento judicial en curso.",
+   "huella": "dc0585f53c72ec1c",
+   "fuente": "aeeafb8bc8a222b7",
+   "titular": "Hacienda emplaza a los interesados en un recurso contencioso en Madrid",
+   "entradilla": "La Agencia Tributaria abre un plazo de nueve días para comparecer en el procedimiento interpuesto ante el tribunal.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19677": {
-   "huella": "17b2128308f0d0eb",
-   "titular": "Agencia Tributaria emplaza a los interesados en el recurso contencioso-administrativo 1519/2026",
-   "entradilla": "Se comunica la apertura de un plazo de nueve días para la personación de los interesados ante el Tribunal Superior de Justicia.",
+   "huella": "92de0a4a1efcaa7e",
+   "fuente": "17b2128308f0d0eb",
+   "titular": "Hacienda emplaza a los afectados por un recurso ante el Tribunal Superior",
+   "entradilla": "Se abre un plazo de nueve días para que los interesados comparezcan en el procedimiento contencioso-administrativo.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
   },
@@ -891,9 +933,49 @@
    "entradilla": "La oposición reclama explicaciones al Gobierno sobre seguridad en Ceuta, la gestión del Canal de Navarra y el encarecimiento de la vida.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
+  },
+  "C-725d0b73c191daea": {
+   "huella": "4df923625b8ef6f7",
+   "fuente": "b5d19e71cf21e137",
+   "titular": "La Comisión del Pacto de Toledo debate sobre intergeneracionalidad económica",
+   "entradilla": "Comparecen los representantes de FEDEA y de la Universidad de Alcalá para informar sobre este asunto.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-ed6381cc9e889b58": {
+   "huella": "76ed77d5e665da42",
+   "fuente": "ffee22a6c5d844ce",
+   "titular": "El Congreso publica un nuevo documento oficial en su serie de publicaciones",
+   "entradilla": "Se difunde el texto correspondiente al Boletín Oficial de las Cortes Generales.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-59f2707836d04a12": {
+   "huella": "4aaa8825a22fdad6",
+   "fuente": "a8442840244b0473",
+   "titular": "El Congreso publica un nuevo documento en su serie de publicaciones oficiales",
+   "entradilla": "La Cámara baja difunde una nueva edición dentro de su actividad parlamentaria habitual.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-06694bee63ecf11e": {
+   "huella": "27c9f4ae31b8d38e",
+   "fuente": "eec864dae1869121",
+   "titular": "El Pleno del Congreso debate sobre educación y convalida decretos del Gobierno",
+   "entradilla": "Los grupos parlamentarios interpelan a la ministra de Educación y abordan medidas económicas sobre Ceuta y lobbies.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-ad641ba961201b1e": {
+   "huella": "f8cd6c3974fc9acb",
+   "fuente": "072f019042bb0eff",
+   "titular": "El Congreso publica un nuevo documento en su diario de sesiones oficial",
+   "entradilla": "La Cámara baja difunde una nueva referencia parlamentaria dentro de su actividad legislativa.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   }
  },
  "uso": {
-  "2026-09-24": 4
+  "2026-09-24": 5
  }
 }
