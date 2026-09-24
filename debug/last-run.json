@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-24T06:41:09.298707+00:00",
+  "inicio": "2026-09-24T10:27:45.834708+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/24/index.php",
@@ -14,17 +14,17 @@
     {
       "url": "https://www.congreso.es/public_oficiales/L15/CONG/DS/CO/DSCD-15-CO-620.PDF",
       "status": 200,
-      "bytes": 306323
+      "bytes": 313821
     },
     {
       "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/A/BOCG-15-A-93-3.PDF",
       "status": 200,
-      "bytes": 660770
+      "bytes": 631415
     },
     {
       "url": "https://www.congreso.es/public_oficiales/L15/CONG/BOCG/D/BOCG-15-D-590.PDF",
       "status": 200,
-      "bytes": 356099
+      "bytes": 362861
     },
     {
       "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
@@ -33,7 +33,7 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19762",
       "status": 200,
-      "bytes": 39216
+      "bytes": 50325
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19823",
@@ -58,7 +58,7 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19827",
       "status": 200,
-      "bytes": 36546
+      "bytes": 48666
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19828",
@@ -116,7 +116,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;dc427568&#46;1790232079&#46;98379c9 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;a92d3e17&#46;1790245671&#46;609b8c2 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
   },
   "senado_fallback": [
     466,
@@ -145,5 +145,5 @@
     "ACUERDO FIRMADO: CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA — acaba en una cláusula de una sola palabra",
     "PUBLICA EL CONVENIO CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA — acaba en una cláusula de una sola palabra"
   ],
-  "fin": "2026-09-24T06:41:32.433182+00:00"
+  "fin": "2026-09-24T10:28:05.571474+00:00"
 }
