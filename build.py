@@ -585,6 +585,15 @@ def texto_disposicion(ident: str) -> str:
         cuerpo = soup.find("div", id="textoxslt")
         if not cuerpo:
             return ""
+        # Un párrafo por línea: la redacción necesita saber dónde empieza cada
+        # apartado («Uno.», «Artículo 2.») y dónde acaba el preámbulo. Las
+        # expresiones regulares de datos_clave() usan \s, así que el salto de
+        # línea no les estorba.
+        parrafos = [" ".join(el.get_text(" ", strip=True).split())
+                    for el in cuerpo.find_all(["p", "h3", "h4", "h5"])]
+        parrafos = [x for x in parrafos if x]
+        if parrafos:
+            return "\n".join(parrafos)
         return " ".join(cuerpo.get_text(" ", strip=True).split())
     except Exception as exc:                                  # noqa: BLE001
         log(f"  no se pudo leer el texto de {ident}: {exc}")
@@ -601,13 +610,39 @@ _FIN_DISPOSITIVO = re.compile(
     r"lo que se hace p[úu]blico)", re.I)
 
 
-def parte_dispositiva(texto: str) -> str:
+_PALABRA = re.compile(r"[a-záéíóúüñ0-9/]{4,}", re.I)
+
+
+def _repite_titulo(frase: str, titulo: str) -> bool:
+    """¿Esta frase solo repite el título? «Modificación de la Orden EHA/3947/2006,
+    por la que se aprueban los modelos…» es el encabezado del artículo y no
+    añade nada a quien ya ha leído el titular."""
+    if not titulo:
+        return False
+    pf = {w.lower() for w in _PALABRA.findall(frase)}
+    pt = {w.lower() for w in _PALABRA.findall(titulo)}
+    if len(pf) < 4:
+        return False
+    return len(pf & pt) / len(pf) >= 0.6
+
+
+# Frases puente: anuncian lo que viene sin decir nada.
+_PUENTE = re.compile(r"(?:queda(?:n)?\s+(?:modificad|redactad)[oa]s?\s+(?:como\s+sigue|en\s+los\s+"
+                     r"siguientes\s+t[ée]rminos|de\s+la\s+siguiente\s+(?:forma|manera))|"
+                     r"se\s+introducen\s+las\s+siguientes\s+modificaciones)\s*:?\s*$", re.I)
+
+
+def parte_dispositiva(texto: str, titulo: str = "") -> str:
     """Lo que la norma ORDENA. Casi nunca está en el título.
 
     «Se modifica la dirección electrónica de la sede electrónica» es lo que dice
     el título; cuál era y cuál pasa a ser está en el artículo único. Un artículo
     que no lo cuenta obliga a abrir el BOE, que es justo lo que veníamos a
-    evitar."""
+    evitar.
+
+    Se saltan el encabezado que repite el título y las frases puente («queda
+    modificada como sigue:»): ocupaban todo el espacio y el lector se quedaba
+    con el título dos veces y ningún dato."""
     if not texto:
         return ""
     m = re.search(r"(?:Art[íi]culo [úu]nico[.\s]|DISPONGO[:.\s]|RESUELVO[:.\s]|"
@@ -615,32 +650,139 @@ def parte_dispositiva(texto: str) -> str:
     if not m:
         return ""
     cuerpo = texto[m.end():]
+    anexo = re.search(r"\n\s*ANEXO\b", cuerpo)
+    if anexo:
+        cuerpo = cuerpo[:anexo.start()]
     corte = _FIN_DISPOSITIVO.search(cuerpo)
     if corte:
         cuerpo = cuerpo[:corte.start()]
     cuerpo = " ".join(cuerpo.split())
     if len(cuerpo) < 30:
         return ""
-    # Frases enteras hasta unos 420 caracteres: cortar a media frase una parte
-    # dispositiva es peor que no ponerla.
     todas = [f.strip() for f in re.split(r"(?<=[.:])\s+", cuerpo) if f.strip()]
-    frases, total = [], 0
+    utiles = []
     for f in todas:
-        if total + len(f) > 520 and frases:
+        if _PUENTE.search(f) or _repite_titulo(f, titulo):
+            continue
+        # «Uno.» o «Artículo 2.» sueltos: rótulos, no contenido.
+        if re.fullmatch(r"(?:Uno|Dos|Tres|Cuatro|Cinco|Seis|Siete|Ocho|Nueve|Diez|"
+                        r"Art[íi]culo\s+\d+(?:\s+bis)?|\d+)[.º:]?", f, re.I):
+            continue
+        utiles.append(f)
+    if not utiles:
+        return ""
+    # Frases enteras hasta unos 700 caracteres: cortar a media frase una parte
+    # dispositiva es peor que no ponerla.
+    frases, total = [], 0
+    for f in utiles:
+        if total + len(f) > 700 and frases:
             break
         frases.append(f); total += len(f)
     # Si la norma da una dirección web, esa frase es EL dato: entra aunque el
     # presupuesto de caracteres se haya agotado antes de llegar a ella.
     if "http" in cuerpo and not any("http" in f for f in frases):
-        con_url = next((f for f in todas if "http" in f), "")
+        con_url = next((f for f in utiles if "http" in f), "")
         if con_url:
             frases.append(con_url)
     salida = " ".join(frases).strip()
     # Un ordinal suelto al final («… transición. Cuarto.») es el encabezado del
     # apartado que no ha cabido: anuncia algo que no llega.
     salida = re.sub(r"\s+(?:Primero|Segundo|Tercero|Cuarto|Quinto|Sexto|S[ée]ptimo|Octavo|"
-                    r"Noveno|D[ée]cimo)[.º:]?\s*$", "", salida, flags=re.I).strip()
+                    r"Noveno|D[ée]cimo|Uno|Dos|Tres|Cuatro|Cinco)[.º:]?\s*$", "", salida,
+                    flags=re.I).strip()
+    if len(salida) < 30:
+        return ""
     return salida if salida.endswith((".", ":")) else salida + "."
+
+
+# Párrafos del preámbulo que no cuentan nada: la liturgia de los principios de
+# buena regulación, las habilitaciones y el trámite de audiencia. Están en
+# todas las normas y se comen el espacio del texto que sí explica.
+_LITURGIA = re.compile(
+    r"principios? de (?:necesidad|eficacia|proporcionalidad|seguridad jur[íi]dica|"
+    r"transparencia|eficiencia|buena regulaci[óo]n)|habilita(?:ci[óo]n|\b)|"
+    r"atribuye competencias|tr[áa]mite de audiencia|informaci[óo]n p[úu]blica|"
+    r"Memoria de An[áa]lisis|Consejo de Estado|En su virtud|previa aprobaci[óo]n|"
+    r"de acuerdo con la nueva estructura|estructura ministerial|reestructuran", re.I)
+# Y los que sí: dicen qué hace ESTA norma, desde cuándo, para quién, qué había.
+_EXPLICA = re.compile(
+    r"(?:esta|la presente)\s+(?:orden|resoluci[óo]n|norma|real decreto|ley|disposici[óo]n|"
+    r"circular|instrucci[óo]n)|para ello|por (?:lo )?tanto|por primera vez|a partir del?|"
+    r"hasta ahora|actualmente|en lugar de|se (?:modifica|sustituye|ampl[íi]a|reduce|eleva|"
+    r"prorroga|suprime|introduce|crea|fija|establece)|tiene por objeto|finalidad|"
+    r"nuevo|nueva|sustituir[áa]|resultar[áa] aplicable|plazo", re.I)
+
+
+_EXPLICA_FUERTE = re.compile(
+    r"(?:esta|la presente)\s+(?:orden|resoluci[óo]n|norma|real decreto|ley|disposici[óo]n|"
+    r"circular|instrucci[óo]n)|para ello|por primera vez|a partir del?\s+\d|hasta ahora|"
+    r"en lugar de|resultar[áa] aplicable|tiene por objeto", re.I)
+
+
+def materia_redaccion(texto: str, titulo: str = "", limite: int = 3800) -> str:
+    """El trozo de la norma que necesita quien la va a contar.
+
+    El titular y el cuerpo de una pieza no pueden salir solo del título oficial:
+    «por la que se aprueban los modelos, plazos, requisitos y condiciones…» es
+    el nombre de la orden que se MODIFICA, no lo que cambia. Si al redactor solo
+    le llega eso, escribe «cambian los plazos» aunque la orden no toque ningún
+    plazo (pasó con el modelo 595 del impuesto sobre el carbón).
+
+    Se entrega: los párrafos del preámbulo que explican qué hace la norma y
+    desde cuándo, la parte dispositiva entera (hasta los anexos) y la entrada en
+    vigor. Sin la liturgia de principios y habilitaciones."""
+    if not texto:
+        return ""
+    lineas = [l.strip() for l in texto.split("\n") if l.strip()]
+    if len(lineas) < 2:                   # texto sin párrafos: se trocea por frases
+        lineas = [f for f in re.split(r"(?<=\.)\s+(?=[A-ZÁÉÍÓÚÑ])", texto) if f]
+    # Dónde empieza el articulado
+    ini = next((i for i, l in enumerate(lineas)
+                if re.match(r"(?:Art[íi]culo\s+(?:[úu]nico|1|primero)\b|DISPONGO|RESUELVO|"
+                            r"Primero[.º]|Acuerdo\s+[úu]nico|En su virtud)", l, re.I)), None)
+    preambulo = lineas[:ini] if ini is not None else []
+    dispositivo = lineas[ini:] if ini is not None else lineas
+    # Hasta los anexos o la firma
+    fin = next((i for i, l in enumerate(dispositivo)
+                if re.match(r"(?:ANEXO\b|Madrid,\s*\d|Dado en\b)", l)), None)
+    firma_vigor = ""
+    if fin is not None:
+        dispositivo = dispositivo[:fin]
+    dispositivo = [l for l in dispositivo if not re.match(r"En su virtud", l, re.I)]
+    # Encabezado del artículo que repite el título y frases puente: fuera.
+    dispositivo = [l for l in dispositivo
+                   if not (_repite_titulo(l, titulo) and len(l) > 60) and not _PUENTE.search(l)]
+
+    # Se puntúa cada párrafo del preámbulo: los que hablan de ESTA norma pesan
+    # más que los antecedentes («La Ley 13/2023… introdujo…»). Se eligen los
+    # mejores hasta llenar el presupuesto y se devuelven en su orden original.
+    def _peso(l: str) -> int:
+        if _LITURGIA.search(l):
+            return 0
+        fuerte = len(_EXPLICA_FUERTE.findall(l))
+        return fuerte * 3 + (1 if _EXPLICA.search(l) else 0)
+    candidatos = [(i, l, _peso(l)) for i, l in enumerate(preambulo)]
+    candidatos = [c for c in candidatos if c[2] > 0]
+    if not candidatos and preambulo:
+        limpios = [(i, l, 1) for i, l in enumerate(preambulo) if not _LITURGIA.search(l)]
+        candidatos = limpios[-2:]
+
+    disp_txt = "\n".join(dispositivo)
+    presupuesto_pre = max(900, limite - min(len(disp_txt), limite - 900))
+    elegidos, total = [], 0
+    for i, l, _ in sorted(candidatos, key=lambda c: (-c[2], c[0])):
+        if total + len(l) > presupuesto_pre:
+            continue
+        elegidos.append((i, l)); total += len(l)
+    pre = [l for _, l in sorted(elegidos)]
+    salida = ""
+    if pre:
+        salida += "PREÁMBULO (lo que la norma dice de sí misma):\n" + "\n".join(pre) + "\n"
+    salida += "PARTE DISPOSITIVA:\n" + disp_txt + firma_vigor
+    if len(salida) > limite:
+        salida = salida[:limite]
+        salida = salida[:salida.rfind(" ")] + " […]"
+    return salida
 
 
 def datos_clave(texto: str) -> dict:
@@ -708,11 +850,25 @@ def datos_clave(texto: str) -> dict:
     if m:
         d["plazo"] = f"{m.group(1)} {m.group(2)}"
 
+    # «el día siguiente al de su publicación en el «Boletín Oficial del
+    # Estado»»: la frase se corta en el cierre de comillas, en «y» o en el
+    # punto. Antes se cortaba a los 60 caracteres y salía «… Estado» y s.».
     m = re.search(rf"entrar[áa]\s+en\s+vigor\s+(el\s+(?:d[íi]a\s+)?"
-                  rf"(?:\d{{1,2}}\s+de\s+(?:{MESES_RE})\s+de\s+\d{{4}}|siguiente[^.]{{0,60}}))",
+                  rf"(?:\d{{1,2}}\s+de\s+(?:{MESES_RE})\s+de\s+\d{{4}}|"
+                  rf"siguiente\s+al\s+de\s+su\s+publicaci[óo]n(?:\s+en\s+el\s+«[^»]{{1,40}}»)?|"
+                  rf"siguiente[^.;«]{{0,50}}?(?=\s+y\s|[.;,]|$)))",
                   texto, re.I)
     if m:
         d["vigor"] = _fecha_larga(m.group(1))
+    # Cuándo se aplica de verdad, que no siempre es cuando entra en vigor: la
+    # orden del modelo 595 entra en vigor al día siguiente pero no se usa hasta
+    # los periodos que empiezan el 1 de enero de 2027.
+    m = re.search(rf"(?:se\s+aplicar[áa]\s+(?:por\s+primera\s+vez\s+)?|ser[áa]\s+de\s+aplicaci[óo]n\s+|"
+                  rf"resultar[áa]\s+aplicable\s+(?:por\s+primera\s+vez\s+)?)"
+                  rf"[^.;]{{0,160}}?a\s+partir\s+del?\s+(?:d[íi]a\s+)?"
+                  rf"(\d{{1,2}}\s+de\s+(?:{MESES_RE})\s+de\s+\d{{4}})", texto, re.I)
+    if m:
+        d["aplica_desde"] = _fecha_larga(m.group(1))
     return d
 
 
@@ -771,7 +927,11 @@ def frase_datos_clave(d: dict) -> str:
     elif d.get("hasta"):
         trozos.append(f"con efecto hasta el {d['hasta']}")
     elif d.get("vigor"):
-        trozos.append(f"entra en vigor {d['vigor']}")
+        vigor = re.sub(r"^el d[íi]a siguiente al de su publicaci[óo]n.*$",
+                       "al día siguiente de publicarse", d["vigor"], flags=re.I)
+        trozos.append(f"entra en vigor {vigor}")
+    if d.get("aplica_desde"):
+        trozos.append(f"se aplica a partir del {d['aplica_desde']}")
     if d.get("importe"):
         trozos.append(f"importe: {d['importe']}")
     if d.get("plazo"):
@@ -1468,15 +1628,19 @@ def articulo_deterministico(e: dict) -> dict:
     else:
         origen = participio
 
-    body = [
-        f"{nombre_inst} {origen}. Lo que hace: {obj[:400]}.",
-        explicacion,
-    ]
-    disp = parte_dispositiva(texto)
+    disp = parte_dispositiva(texto, titulo)
     if disp:
+        # Con la parte dispositiva delante, «Lo que hace: <el título otra vez>»
+        # sobra: el lector ya lo ha leído en el titular y en la entradilla.
+        body = [f"{nombre_inst} {origen}.", explicacion]
         # Va en primer lugar y con sus palabras: aquí están las direcciones,
         # las cifras y los nombres que el título se calla.
         body.insert(0, "Lo que dice la norma: " + disp)
+    else:
+        # Sin articulado legible, el objeto es lo único que hay; entero o
+        # cortado por frase, nunca a media palabra («colaboración e.»).
+        que = obj if len(obj) <= 420 else cerrar(obj, 420)
+        body = [f"{nombre_inst} {origen}. Lo que hace: {que.rstrip('.')}.", explicacion]
     frase = frase_datos_clave(clave)
     if frase:
         body.insert(0, frase)          # lo primero que se lee es el dato duro
@@ -1496,6 +1660,10 @@ def articulo_deterministico(e: dict) -> dict:
         "titulo_oficial": titulo,
         "datos": clave,
         "body": body,
+        # Lo que se entrega a la redacción con Gemini: preámbulo útil y
+        # articulado. No se publica tal cual; sirve para que el titular y los
+        # puntos clave salgan de la norma y no solo de su título.
+        "materia": materia_redaccion(texto, titulo),
         "dept": quien,
         "ref": e.get("ident") or e.get("seccion") or "",
         "url": e.get("url", ""),
@@ -2270,6 +2438,23 @@ def fmt_date_es(iso: str) -> str:
         return iso
 
 
+def cuerpo_boe_ssr(s: dict) -> str:
+    """Cuerpo de una pieza del BOE. Si la redacción ha sacado los puntos clave
+    del articulado, van primero y sustituyen a los párrafos genéricos («una
+    orden ministerial es…»): el lector viene a saber qué cambia. Se conservan
+    los datos clave deterministas y la cita literal de la norma, que son la
+    prueba de lo que se cuenta."""
+    claves = [c for c in (s.get("claves") or []) if isinstance(c, str) and c.strip()]
+    if not claves:
+        return body_html_ssr(s.get("body"))
+    literales = [p for p in (s.get("body") or []) if isinstance(p, str)
+                 and p.startswith(("Datos clave:", "Lo que dice la norma:"))]
+    lista = "".join(f"<li>{esc_html(c)}</li>" for c in claves)
+    resto = "".join(f"<p>{esc_html(p)}</p>" for p in literales)
+    return (f'<div class="articlebody"><p class="claves-t">Qué cambia</p>'
+            f'<ul class="claves">{lista}</ul>{resto}</div>')
+
+
 def body_html_ssr(paras: list[str] | None) -> str:
     return '<div class="articlebody">' + "".join(
         f"<p>{esc_html(p)}</p>" for p in (paras or [])) + "</div>"
@@ -2329,7 +2514,7 @@ def render_boe_grid_ssr(day: dict) -> str:
     out = []
     for i, s in enumerate(day.get("boe", {}).get("stories") or []):
         is_lead = s.get("size") == "lead"
-        cuerpo = body_html_ssr(s.get("body"))
+        cuerpo = cuerpo_boe_ssr(s)
         articulo = cuerpo if is_lead else (
             f'<details class="reader"><summary>Leer el artículo</summary>{cuerpo}</details>')
         cat = s.get("cat") or "otros"
@@ -3336,7 +3521,7 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
                     "HEADLINE": esc_html(s.get("headline", "")),
                     "STANDFIRST": esc_html(primera_mayuscula(oficial)),
                     "FICHA": _ficha_filas(s, day),
-                    "CUERPO": body_html_ssr(s.get("body")),
+                    "CUERPO": cuerpo_boe_ssr(s),
                     "FUENTE": (f'Texto oficial: <a class="srclink" href="{esc_attr(s.get("url",""))}" '
                                f'target="_blank" rel="noopener">{esc_html(s.get("ref",""))} en el BOE ↗</a>'
                                if s.get("url") else "Fuente: Boletín Oficial del Estado."),
@@ -4408,6 +4593,63 @@ def renderizar() -> None:
     log(f"indexnow.json: {len(urls)} URLs para notificar")
 
 
+def completar_materia(maximo: int = 40) -> int:
+    """Pone al día las piezas publicadas antes de que existiera «materia».
+
+    Las ediciones ya escritas no se regeneran: su data/*.json se queda como
+    salió. Pero las piezas de esos días también merecen un cuerpo que cuente
+    qué cambia. Así que en cada pase se completan unas cuantas, de la más
+    reciente a la más antigua: se lee la norma, se guarda el extracto para la
+    redacción y se rehace el cuerpo determinista (parte dispositiva sin el
+    título repetido, datos clave sin cortar). El titular no se toca aquí: lo
+    rehace Gemini en su pase, ya con el articulado delante."""
+    hechas = 0
+    for f in sorted(DATA_DIR.glob("*.json"), reverse=True)[:MAX_DAYS]:
+        if hechas >= maximo:
+            break
+        try:
+            dia = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:                                     # noqa: BLE001
+            continue
+        cambiado = False
+        for s in (dia.get("boe") or {}).get("stories") or []:
+            if hechas >= maximo:
+                break
+            ref, titulo = s.get("ref", ""), s.get("titulo_oficial", "")
+            if "materia" in s or not re.fullmatch(r"BOE-[A-Z]-\d{4}-\d+", ref) or not titulo:
+                continue
+            hechas += 1
+            texto = texto_disposicion(ref)
+            if not texto:
+                continue                     # se reintenta en otro pase
+            s["materia"] = materia_redaccion(texto, titulo)
+            nuevos = datos_clave(texto)
+            datos = s.setdefault("datos", {})
+            for k in ("vigor", "aplica_desde"):
+                if nuevos.get(k):
+                    datos[k] = nuevos[k]
+            disp = parte_dispositiva(texto, titulo)
+            cuerpo = []
+            frase = frase_datos_clave(datos)
+            if frase:
+                cuerpo.append(frase)
+            if disp:
+                cuerpo.append("Lo que dice la norma: " + disp)
+            for par in s.get("body") or []:
+                if not isinstance(par, str) or par.startswith(("Datos clave:", "Lo que dice la norma:")):
+                    continue
+                if disp and ". Lo que hace:" in par:
+                    par = par.split(". Lo que hace:", 1)[0] + "."
+                cuerpo.append(par)
+            s["body"] = cuerpo
+            cambiado = True
+        if cambiado:
+            f.write_text(json.dumps(dia, ensure_ascii=False, indent=2), encoding="utf-8")
+    if hechas:
+        log(f"materia: {hechas} piezas antiguas completadas con su articulado")
+    return hechas
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--render", action="store_true")
@@ -4429,6 +4671,10 @@ def main() -> None:
             log(f"escrito data/{dia['id']}.json")
         else:
             log("Edición no escrita; se conserva lo publicado.")
+        try:
+            completar_materia()
+        except Exception as exc:                              # noqa: BLE001
+            log(f"materia: no se pudo completar ({exc})")
         DIAG["fin"] = dt.datetime.now(dt.timezone.utc).isoformat()
         (DEBUG_DIR / "last-run.json").write_text(
             json.dumps(DIAG, ensure_ascii=False, indent=2), encoding="utf-8")

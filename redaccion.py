@@ -57,15 +57,22 @@ MODELOS = [m for m in [os.environ.get("GEMINI_MODELO", "").strip()] if m] + [
 # Límites propios, muy por debajo de los del plan gratuito: son un cinturón de
 # seguridad contra un bucle o un reintento desbocado, no el techo real.
 MAX_PETICIONES_DIA = 6
-MAX_PIEZAS_POR_PETICION = 40
-MAX_FUENTE = 1400           # caracteres de texto oficial por pieza
+# 25 y no 40: desde que cada pieza lleva el articulado (hasta ~4.000
+# caracteres) y se piden también los puntos clave, un lote de 40 tarda
+# demasiado en responder. Con 25 y seis peticiones sigue habiendo margen.
+MAX_PIEZAS_POR_PETICION = 25
+MAX_FUENTE = 1400           # caracteres de texto oficial por pieza (Cortes y BOE antiguo)
+MAX_FUENTE_BOE = 4400       # BOE con articulado
 
 INSTRUCCIONES = """Eres el redactor jefe de «La Tercera Cámara», una publicación que traduce el Boletín Oficial del Estado y la actividad de las Cortes a lenguaje llano, con rigor absoluto.
 
-Recibirás una lista de piezas. Para cada una escribes:
+Recibirás una lista de piezas. En las del BOE el texto trae el título oficial y, casi siempre, el PREÁMBULO útil y la PARTE DISPOSITIVA de la norma. Léelos enteros antes de escribir: lo que cambia de verdad está ahí, no en el título. Un título como «Orden por la que se modifica la Orden X, por la que se aprueban los modelos, plazos y requisitos…» solo nombra la orden que se toca; no significa que cambien los plazos.
+
+Para cada pieza escribes:
 
 TITULAR (máximo 85 caracteres; cuenta los caracteres antes de responder):
 - Dice QUIÉN hace QUÉ y a QUIÉN o DÓNDE afecta. Nombra el sujeto real y el objeto concreto: el municipio, el colectivo, la institución, la cuantía.
+- Cuenta el cambio real que describe el texto. No prometas nada que los puntos clave no expliquen: si el titular habla de plazos, los puntos tienen que decir qué plazos son.
 - El BOE suele esconder lo importante al final de la frase, detrás de la maquinaria administrativa. Sácalo delante.
 - Si hay un importe, un plazo o una fecha que el lector necesita, inclúyelo si cabe.
 - Escribe como el titular de un periódico de calidad, en español natural y bien construido: con sus artículos («La Embajada», «el BBVA», «los regantes»), verbo en presente y concordancia correcta. Nada de estilo telegráfico: «Embajada de España en México y BBVA firman» está mal; «La Embajada en México y el BBVA firman» está bien.
@@ -74,14 +81,22 @@ TITULAR (máximo 85 caracteres; cuenta los caracteres antes de responder):
 - Frase normal en mayúsculas y minúsculas, sin punto final, sin signos de exclamación ni interrogación.
 - Sin adjetivos valorativos, sin ironía, sin clickbait, sin opinión.
 
-Ejemplos del estilo buscado (inventados, solo por el tono):
-- MAL: «Ministerio de Hacienda modifica Orden sobre modelos de declaración del impuesto»
-- BIEN: «Hacienda cambia los plazos para declarar el impuesto sobre el carbón»
+Ejemplos del estilo buscado (inventados, solo por el tono; no copies sus datos):
+- MAL: «Ministerio de Agricultura modifica Orden sobre modelos de solicitud de ayudas»
+- BIEN: «Los ganaderos podrán corregir su solicitud de ayuda sin esperar a que resuelva Agricultura»
 - MAL: «Embajada de España en Egipto y CaixaBank firman un convenio para la Fiesta Nacional»
 - BIEN: «CaixaBank patrocinará la recepción del 12 de Octubre en la Embajada de España en Egipto»
 
 ENTRADILLA (una o dos frases, máximo 240 caracteres):
 - Qué cambia en la práctica y para quién. Sin repetir el titular.
+
+PUNTOS CLAVE (campo "claves": de 2 a 4 frases, cada una de 60 a 220 caracteres):
+- Son el cuerpo de la noticia: lo que el lector viene a saber y no cabe en el titular.
+- Cada punto es un hecho concreto sacado del texto: qué cambia exactamente, a quién afecta, desde cuándo se aplica, qué plazo o importe hay, qué se podrá o no se podrá hacer.
+- Si la norma sustituye una cosa por otra y el texto dice cuál era antes y cuál es ahora, di las dos («Hasta ahora…; a partir de…»). Si el texto solo da lo nuevo, da lo nuevo y no te inventes lo anterior.
+- Si el texto no dice cuánto, cuándo o a quién, no lo digas tú. Mejor dos puntos ciertos que cuatro vagos.
+- Nada de generalidades («la norma busca mejorar la gestión»), ni explicaciones de qué es una orden ministerial, ni repetir el titular o la entradilla.
+- Si el texto de la pieza no trae nada más que el título (por ejemplo, en muchas piezas de las Cortes), devuelve una lista vacía.
 
 REGLAS INQUEBRANTABLES:
 - Solo puedes usar hechos que estén en el texto de la pieza. No añadas nada que no esté.
@@ -98,8 +113,9 @@ ESQUEMA_SALIDA = {
             "id": {"type": "STRING"},
             "titular": {"type": "STRING"},
             "entradilla": {"type": "STRING"},
+            "claves": {"type": "ARRAY", "items": {"type": "STRING"}},
         },
-        "required": ["id", "titular", "entradilla"],
+        "required": ["id", "titular", "entradilla", "claves"],
     },
 }
 
@@ -130,7 +146,9 @@ def _guardar(e: dict) -> None:
 
 # Sube este número cuando cambien las instrucciones: todo lo redactado con las
 # anteriores se vuelve a pedir, por lotes y dentro del tope diario.
-VERSION_ESTILO = 3
+# v4: el titular sale del articulado y no solo del título, y se piden los
+# puntos clave del cuerpo.
+VERSION_ESTILO = 4
 
 
 def _huella_fuente(texto: str) -> str:
@@ -148,6 +166,13 @@ def _huella(texto: str) -> str:
 # ----------------------------------------------------------------- materiales
 
 def _fuente_boe(s: dict) -> str:
+    if s.get("materia"):
+        # Piezas nuevas: el título y el trozo útil de la norma (preámbulo que
+        # explica y parte dispositiva). Es lo que permite contar QUÉ cambia.
+        partes = [f"Organismo: {s['dept']}." if s.get("dept") else "",
+                  "TÍTULO OFICIAL: " + (s.get("titulo_oficial") or ""), s["materia"]]
+        texto = "\n".join(p for p in partes if p)
+        return texto[:MAX_FUENTE_BOE]
     cuerpo = " ".join(p for p in (s.get("body") or []) if isinstance(p, str))
     partes = [s.get("titulo_oficial") or "", cuerpo]
     if s.get("dept"):
@@ -183,19 +208,23 @@ def _numeros(texto: str) -> set[str]:
     return {re.sub(r"[.,]", "", n) for n in re.findall(r"\d[\d.,]*\d|\d", texto or "")}
 
 
-def verificar(titular: str, entradilla: str, fuente: str) -> str:
+def verificar(titular: str, entradilla: str, fuente: str, claves: list[str] | None = None) -> str:
     """Devuelve "" si la redacción se sostiene contra la fuente, o el motivo."""
     t = " ".join((titular or "").split()).strip(" .")
     e = " ".join((entradilla or "").split())
+    claves = claves or []
     if not (20 <= len(t) <= 140):
         return f"titular de {len(t)} caracteres"
     if len(e) > 320:
         return "entradilla demasiado larga"
     if re.search(r"[!?¡¿]", t):
         return "titular con exclamación o pregunta"
+    if any(len(c) > 320 for c in claves):
+        return "punto clave demasiado largo"
 
+    todo = " ".join([t, e] + claves)
     fuente_nums = _numeros(fuente)
-    for n in _numeros(t + " " + e):
+    for n in _numeros(todo):
         # Una cifra de un solo dígito puede venir de «dos» escrito en letra en
         # la fuente; no es donde se inventa. Las de dos o más sí se comprueban.
         if len(n) >= 2 and n not in fuente_nums:
@@ -203,8 +232,17 @@ def verificar(titular: str, entradilla: str, fuente: str) -> str:
 
     fb = fuente.lower()
     for mes in MESES:
-        if re.search(rf"\b{mes}\b", (t + " " + e).lower()) and mes not in fb:
+        if re.search(rf"\b{mes}\b", todo.lower()) and mes not in fb:
             return f"mes «{mes}» que no está en el texto oficial"
+
+    # Un titular que promete plazos tiene que darlos. Pasó: «Hacienda modifica
+    # los modelos y plazos del impuesto sobre el carbón» sobre una orden que no
+    # cambiaba ningún plazo; la palabra venía del nombre de la orden modificada.
+    if re.search(r"\bplazos?\b", t, re.I):
+        cuerpo = (e + " " + " ".join(claves)).lower()
+        if not re.search(r"\d|\bd[íi]as?\b|\bmes(?:es)?\b|\bsemanas?\b|\ba[ñn]os?\b|"
+                         r"\bhasta\b|\bantes de[l]?\b", cuerpo):
+            return "el titular habla de plazos que el texto no concreta"
     return ""
 
 
@@ -248,7 +286,7 @@ def _pedir(clave: str, lote: list[dict]) -> tuple[list[dict] | None, str]:
     }
     for modelo in MODELOS:
         try:
-            r = requests.post(API.format(modelo=modelo), json=cuerpo, timeout=120,
+            r = requests.post(API.format(modelo=modelo), json=cuerpo, timeout=240,
                               headers={"x-goog-api-key": clave,
                                        "Content-Type": "application/json"})
         except Exception as exc:                              # noqa: BLE001
@@ -322,12 +360,14 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
                 continue
             titular = poner_articulo(" ".join((r.get("titular") or "").split()).strip(" ."))
             entradilla = " ".join((r.get("entradilla") or "").split())
+            claves = [" ".join(str(c).split()) for c in (r.get("claves") or []) if str(c).strip()]
+            claves = [c if c.endswith((".", "»", ")")) else c + "." for c in claves][:4]
             # Si se pasa de largo, se recorta por sintagma (la misma verja que la
             # redacción determinista), no se tira: el modelo cuenta mal los
             # caracteres, pero lo que dice suele ser bueno.
             if recortar and len(titular) > 105:
                 titular = recortar(titular, 105)
-            motivo = verificar(titular, entradilla, p["fuente"])
+            motivo = verificar(titular, entradilla, p["fuente"], claves)
             if not motivo and validar_titular:
                 motivo = validar_titular(titular.upper())
             if motivo:
@@ -337,6 +377,12 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
                 # pieza en cada pase y la cuota no se va en reintentos inútiles.
                 previo = piezas.get(p["id"], {})
                 intentos = previo.get("intentos", 0) + 1 if previo.get("huella") == p["huella"] else 1
+                # Un titular anterior solo se conserva si pasa las reglas de
+                # ahora: si lo que falla es precisamente lo que las reglas
+                # nuevas prohíben (prometer plazos que no se dan), se retira.
+                if previo.get("titular") and verificar(previo["titular"], previo.get("entradilla", ""),
+                                                       p["fuente"], previo.get("claves")):
+                    previo = {}
                 if previo.get("titular") and intentos >= 2:
                     # Había uno bueno de la versión anterior: se conserva y se
                     # marca como al día para no seguir pidiendo esta pieza.
@@ -345,14 +391,15 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
                     continue
                 entrada = {"huella": p["huella"], "descartado": motivo, "intentos": intentos}
                 if previo.get("titular"):
-                    entrada.update({k: previo[k] for k in ("titular", "entradilla", "modelo", "fecha")
+                    entrada.update({k: previo[k] for k in ("titular", "entradilla", "claves",
+                                                            "modelo", "fecha")
                                     if k in previo})
                     entrada["fuente"] = previo.get("fuente", previo.get("huella"))
                 piezas[p["id"]] = entrada
                 continue
             piezas[p["id"]] = {"huella": p["huella"], "fuente": _huella_fuente(p["fuente"]),
-                               "titular": titular,
-                               "entradilla": entradilla, "modelo": modelo, "fecha": hoy}
+                               "titular": titular, "entradilla": entradilla,
+                               "claves": claves, "modelo": modelo, "fecha": hoy}
             resumen["redactadas"] += 1
         _log(f"{resumen['redactadas']} redactadas, {resumen['descartadas']} descartadas, "
              f"{len(pendientes) - len(lote)} en cola — {modelo or 'sin modelo'}, "
@@ -375,6 +422,8 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
             obj["headline"] = poner_articulo(c["titular"]).upper()
             if c.get("entradilla"):
                 obj["standfirst"] = c["entradilla"]
+            if c.get("claves"):
+                obj["claves"] = list(c["claves"])
             obj["redaccion_ia"] = True
             aplicadas += 1
     resumen["aplicadas"] = aplicadas
