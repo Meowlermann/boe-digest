@@ -46,6 +46,10 @@ jobs:
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
           LLM_MODEL: ${{ vars.LLM_MODEL }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          # Titulares y entradillas con Gemini, en una sola petición por pase.
+          # Sin la clave, la edición sale igual con la redacción determinista.
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODELO: ${{ vars.GEMINI_MODELO }}
         run: python build.py
 
       - name: Publicar si hay cambios
