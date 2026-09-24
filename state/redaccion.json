@@ -3,7 +3,10 @@
  "piezas": {
   "BOE-A-2026-19762": {
    "huella": "4698f3dbacb850e7",
-   "descartado": "titular de 111 caracteres"
+   "titular": "El Ministerio de Hacienda actualiza los modelos y plazos del Impuesto sobre el Carbón",
+   "entradilla": "Modifica la normativa sobre la presentación de la declaración-liquidación y la gestión recaudatoria de este impuesto especial.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19823": {
    "huella": "45dadfd3707d1687",
@@ -77,7 +80,10 @@
   },
   "BOE-A-2026-19834": {
    "huella": "97004dd8aa697d97",
-   "descartado": "titular de 113 caracteres"
+   "titular": "El Ministerio de Agricultura reconoce nuevos viñedos singulares en la Denominación de Origen Rioja",
+   "entradilla": "Aprueba los parajes vitícolas solicitados dentro de esta denominación y desestima otra petición no subsanada.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19835": {
    "huella": "2091eca37f01e3ea",
@@ -102,7 +108,8 @@
   },
   "BOE-A-2026-19838": {
    "huella": "59a979ad76e1c895",
-   "descartado": "cifra «170496» que no está en el texto oficial"
+   "descartado": "cifra «170496» que no está en el texto oficial",
+   "intentos": 1
   },
   "C-9cf38176c4175542": {
    "huella": "b5d19e71cf21e137",
@@ -127,7 +134,10 @@
   },
   "BOE-A-2026-19695": {
    "huella": "1b1b353ecb092b86",
-   "descartado": "titular de 111 caracteres"
+   "titular": "Agricultura suprime una oficina de asistencia en registros de la Agencia de Información Alimentaria",
+   "entradilla": "Elimina formalmente la oficina de asistencia en materia de registros de este organismo autónomo.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19749": {
    "huella": "5f8c36c60730b638",
@@ -145,11 +155,17 @@
   },
   "BOE-A-2026-19751": {
    "huella": "2b3a4f5a5a6a2caa",
-   "descartado": "titular de 114 caracteres"
+   "titular": "Trabajo publica el convenio colectivo estatal de artes gráficas y sectores afines",
+   "entradilla": "Registra y ordena la publicación del nuevo marco laboral con vigencia hasta el 31 de diciembre de 2026.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19752": {
    "huella": "5606297e3cc3c9f9",
-   "descartado": "titular de 113 caracteres"
+   "titular": "Vivienda convoca el Premio Nacional de Arquitectura dotado con 60.000 euros",
+   "entradilla": "Abre el plazo de presentación para galardonar la trayectoria o la obra de arquitectos en la edición correspondiente al año 2025.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19753": {
    "huella": "9ad76a1dfbe5ee9b",
@@ -181,7 +197,10 @@
   },
   "BOE-A-2026-19757": {
    "huella": "aec795269f6e5216",
-   "descartado": "titular de 115 caracteres"
+   "titular": "Asturias inicia la declaración como bien de interés cultural del yacimiento de Os Castros en Taramundi",
+   "entradilla": "Incoa el expediente para proteger como zona arqueológica este yacimiento y el vinculado de A Veiga de Escouredo.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19758": {
    "huella": "5be2d45b4621b58a",
@@ -192,7 +211,10 @@
   },
   "BOE-A-2026-19761": {
    "huella": "839d077037b1adef",
-   "descartado": "titular de 112 caracteres"
+   "titular": "La Universidad Alfonso X el Sabio modifica su máster en análisis de datos masivos",
+   "entradilla": "Actualiza el plan de estudios del Máster Universitario en Análisis de Datos Masivos para los Negocios.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "C-60fd9a2669ea399d": {
    "huella": "eec864dae1869121",
@@ -217,7 +239,10 @@
   },
   "BOE-A-2026-19629": {
    "huella": "a40efd9460ffd208",
-   "descartado": "titular de 120 caracteres"
+   "titular": "Ciencia oficializa nuevos títulos de máster universitarios inscritos en el registro",
+   "entradilla": "Publica el acuerdo del Consejo de Ministros que reconoce el carácter oficial de diversos títulos de posgrado.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19634": {
    "huella": "aaa8521a7120f9b8",
@@ -228,7 +253,10 @@
   },
   "BOE-A-2026-19674": {
    "huella": "faba40e79eb10a01",
-   "descartado": "titular de 115 caracteres"
+   "titular": "El Consejo General del Poder Judicial publica el reparto de ponencias en el Tribunal Supremo",
+   "entradilla": "Da a luz el acuerdo de la Sala de Gobierno con la distribución de asuntos para las Vocalías Delegadas.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   },
   "BOE-A-2026-19675": {
    "huella": "e7846d5a201e9c5c",
@@ -250,9 +278,215 @@
    "entradilla": "Se comunica la apertura de un plazo de nueve días para la personación de los interesados ante el Tribunal Superior de Justicia.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19678": {
+   "huella": "d122ea9e372112d1",
+   "titular": "El Ministerio del Interior revoca la utilidad pública de una asociación",
+   "entradilla": "Publica la resolución que retira esta condición legal a una entidad inscrita en el registro correspondiente.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19679": {
+   "huella": "41bd837ffaebf089",
+   "titular": "Interior integra a la Policía Local de Pedro Abad en el sistema contra la violencia de género",
+   "entradilla": "Firma un convenio con el Ayuntamiento para incorporar el cuerpo municipal al Sistema de Seguimiento Integral en casos de violencia machista.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19680": {
+   "huella": "604e9f94eb87331f",
+   "titular": "Transportes corrige errores en la convocatoria de exámenes para patrón de embarcaciones de recreo",
+   "entradilla": "Modifica aspectos puntuales del temario y las fechas de la segunda convocatoria para la obtención del título profesional.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19681": {
+   "huella": "9a5c8844c0a8d4d1",
+   "titular": "Transportes aprueba la modificación de usos portuarios en el Puerto de Avilés",
+   "entradilla": "Modifica de forma sustancial la delimitación de espacios y desafecta determinados terrenos del dominio público portuario.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19682": {
+   "huella": "9639449b5f687498",
+   "titular": "Transportes y Hacienda modifican la emisión de cuatro series de sellos de correo",
+   "entradilla": "Actualizan la orden de puesta en circulación de los efectos postales dedicados a museos, mujeres pioneras, justicia y humor gráfico.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19683": {
+   "huella": "c72633f37938b3b7",
+   "titular": "Agricultura custodia material genético de la raza asnal catalana en el banco nacional",
+   "entradilla": "Scribe un convenio con la asociación de fomento para depositar y conservar muestras de animales de razas puras.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19684": {
+   "huella": "20ab99cc7d358d5a",
+   "descartado": "cifra «50» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19685": {
+   "huella": "a1736665b5152a04",
+   "titular": "La Universidad Menéndez Pelayo acuerda prácticas con ING Bank para estudiantes de posgrado",
+   "entradilla": "Permite la realización de prácticas académicas externas en la sucursal en España de la entidad bancaria.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19686": {
+   "huella": "3d1fc3c57ee1d14e",
+   "descartado": "cifra «21» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "C-f6afdcf0fb4aec13": {
+   "huella": "eab088c3a1f1d254",
+   "titular": "La Comisión de Vivienda del Congreso escucha a constructores, promotores y expertos en derecho",
+   "entradilla": "Comparecen representantes de la patronal de constructores, promotores y un profesor universitario en el marco parlamentario.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-10cc60fcbd166fcd": {
+   "huella": "7751b437a8551ece",
+   "titular": "La Comisión de Sanidad del Congreso recibe a organizaciones de pacientes y enfermedades raras",
+   "entradilla": "Escucha las demandas y planteamientos de portavoces de colectivos sanitarios y federaciones de pacientes.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-7b1d652b655e210d": {
+   "huella": "42319bc40cd05a6a",
+   "titular": "El Congreso publica la sesión plenaria en su diario oficial",
+   "entradilla": "Difunde la documentación oficial con los debates y acuerdos adoptados durante el pleno de la cámara.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-9e7ae7550b8faf34": {
+   "huella": "a444eb21f779508f",
+   "titular": "El Congreso publica los documentos oficiales de su actividad parlamentaria",
+   "entradilla": "Actualiza el boletín con nuevas iniciativas y expedientes registrados para su tramitación.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19523": {
+   "huella": "9a27c4dcc168b6da",
+   "titular": "La Autoridad Independiente de Protección del Informante cambia su dirección electrónica",
+   "entradilla": "Actualiza el enlace oficial de su sede electrónica para garantizar el acceso telemático de los ciudadanos.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19524": {
+   "huella": "0e9df04d53d6e349",
+   "titular": "Justicia regula la jornada laboral general y especial para su personal en la administración",
+   "entradilla": "Establece el cómputo anual de horas y las condiciones de trabajo específicas para el funcionariado judicial.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19525": {
+   "huella": "586684ef0540cbc1",
+   "titular": "Justicia fija el calendario y la jornada laboral para el Cuerpo de Letrados",
+   "entradilla": "Regula la duración anual del tiempo de trabajo y los regímenes de dedicación especial para este cuerpo superior.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19526": {
+   "huella": "da0fbaf68c75077f",
+   "titular": "Defensa modifica el currículo de formación para oficiales del Ejército de Tierra",
+   "entradilla": "Actualiza los planes de estudio para la integración en la escala de oficiales mediante la vía de ingreso con titulación previa.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19527": {
+   "huella": "1ceba02423fefbf1",
+   "titular": "Transición Ecológica fija el poder calorífico de combustibles fósiles en territorios no peninsulares",
+   "entradilla": "Establece los valores energéticos oficiales de la hulla, fueloil, diésel y gasoil para las liquidaciones del año 2025.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19590": {
+   "huella": "e16ebb64d948ea55",
+   "titular": "Patrimonio Nacional firma un convenio cultural con la Fundación ACS dotado con 35.000 euros",
+   "entradilla": "Establece un marco de colaboración para actividades educativas y culturales durante los próximos cinco años.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19591": {
+   "huella": "9ec37c894d85a390",
+   "titular": "Defensa y la Universidad de La Laguna acuerdan prácticas para estudiantes en Canarias",
+   "entradilla": "Facilita la realización de prácticas académicas externas en unidades militares del archipiélago.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19592": {
+   "huella": "dfc006377eb4471e",
+   "titular": "Defensa aprueba nuevas normas militares sobre tarjetas de autorización especial",
+   "entradilla": "Inlcuye la norma NME-3070/2026 en el catálogo oficial de aplicación en el ministerio y anula disposiciones anteriores.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19593": {
+   "huella": "8a50817db3d1714c",
+   "titular": "Hacienda extingue el convenio de colaboración catastral con el Ayuntamiento de Llanes",
+   "entradilla": "Publica la finalización oficial del acuerdo de gestión y colaboración que mantenía con el consistorio asturiano.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19594": {
+   "huella": "a4689a2138827e2c",
+   "titular": "Interior prorroga el convenio con Carfax para el intercambio de datos de vehículos",
+   "entradilla": "Extiende hasta octubre de 2027 el acuerdo de la Dirección General de Tráfico para mejorar la seguridad vial.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19595": {
+   "huella": "184add2e856f8cfa",
+   "titular": "Interior colabora con la Fundación Síndrome de Down de Madrid para prácticas formativas",
+   "entradilla": "Impulsa itinerarios de inserción laboral mediante un convenio con la secretaría de Estado de Seguridad.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19596": {
+   "huella": "ae94d13c8dd3fa42",
+   "titular": "Interior integra a la Policía Local de Castro del Río en el sistema contra la violencia de género",
+   "entradilla": "Firma un convenio para incorporar al municipio cordobés en la red de seguimiento integral de casos.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19597": {
+   "huella": "b230519b832644eb",
+   "titular": "Instituciones Penitenciarias acuerda con la Asociación Alucinos-La Salle trabajos en beneficio",
+   "entradilla": "Permite que condenados cumplan penas alternativas mediante programas de inserción y colaboración social.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19599": {
+   "huella": "42c40aebfdad394d",
+   "titular": "Interior y el Ayuntamiento de Cedillo del Condado firman un convenio de seguridad",
+   "entradilla": "Establece mecanismos de cooperación entre la Secretaría de Estado de Seguridad y el consistorio municipal.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19600": {
+   "huella": "59f15a3b23a41587",
+   "titular": "Educación regula el servicio de comedores escolares en centros de Melilla",
+   "entradilla": "Organiza la prestación de menús y el uso de instalaciones para el alumnado de colegios públicos de la ciudad autónoma.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19601": {
+   "huella": "c60bd508bc96a405",
+   "titular": "Educación canaliza ayudas de comedor con el Centro La Salle-El Carmen en Melilla",
+   "entradilla": "Formaliza la gestión de ayudas para el servicio de comedor escolar en el centro educativo hasta septiembre de 2027.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
+  },
+  "C-ed224aef25c518d3": {
+   "huella": "b83fd95641048b1a",
+   "titular": "El Congreso rechaza la reforma de la Ley de la Defensa Nacional propuesta por Vox",
+   "entradilla": "Tumba la toma en consideración de la iniciativa legislativa presentada por el grupo parlamentario, cerrando su tramitación.",
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-24"
   }
  },
  "uso": {
-  "2026-09-24": 1
+  "2026-09-24": 2
  }
 }
