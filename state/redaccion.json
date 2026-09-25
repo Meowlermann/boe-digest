@@ -2,15 +2,20 @@
  "esquema": 1,
  "piezas": {
   "BOE-A-2026-19762": {
-   "huella": "a814a70d71700a50",
-   "fuente": "4698f3dbacb850e7",
-   "titular": "Hacienda modifica los modelos y plazos del Impuesto Especial sobre el Carbón",
-   "entradilla": "La norma actualiza las condiciones para presentar la declaración-liquidación y el resumen anual de este impuesto, así como la colaboración de las entidades de depósito.",
+   "huella": "927aaefb5c4262a7",
+   "fuente": "754c59690f91dcd2",
+   "titular": "Hacienda introduce la autoliquidación rectificativa en el Impuesto sobre el Carbón",
+   "entradilla": "El Ministerio de Hacienda adapta el modelo 595 para permitir autoliquidaciones rectificativas del Impuesto Especial sobre el Carbón desde 2027.",
+   "claves": [
+    "La orden modifica el modelo 595 añadiendo un apartado para identificar la autoliquidación rectificativa, el justificante anterior y las causas.",
+    "El nuevo sistema se aplicará por primera vez a los periodos de liquidación que se inicien a partir del 1 de enero de 2027.",
+    "Se aprueba también el repertorio de claves para configurar el Código de Actividad del Carbón exigido en el registro territorial."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19823": {
-   "huella": "40fcde5d045fe499",
+   "huella": "bd47c54acd8b0405",
    "descartado": "cifra «12» que no está en el texto oficial",
    "intentos": 1,
    "titular": "Embajada de España en Ecuador e Indra Sistemas firman un convenio para la Fiesta Nacional de España",
@@ -20,15 +25,17 @@
    "fuente": "45dadfd3707d1687"
   },
   "BOE-A-2026-19824": {
-   "huella": "c8795e169260b7f6",
-   "fuente": "90a7eea85f270545",
+   "huella": "69f71a9ba61fc9a2",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "CaixaBank patrocinará la Fiesta Nacional en la Embajada de España en Egipto",
    "entradilla": "La entidad bancaria y la representación diplomática en el país firman el acuerdo de colaboración para la recepción oficial.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "90a7eea85f270545"
   },
   "BOE-A-2026-19825": {
-   "huella": "8de8bf889851c5d8",
+   "huella": "8c3e954dea17f15e",
    "descartado": "cifra «12» que no está en el texto oficial",
    "intentos": 1,
    "titular": "Embajada de España en México y BBVA firman un convenio para la Fiesta Nacional de España",
@@ -38,14 +45,16 @@
    "fuente": "6d61ce1259e40d5f"
   },
   "BOE-A-2026-19826": {
-   "huella": "6cd10f99c1ed3eec",
-   "descartado": "cifra «12» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Embajada de España en Costa Rica y Grupo Proval firman un convenio para la Fiesta Nacional de España",
-   "entradilla": "Se publica el convenio oficial entre la legación diplomática y la entidad para apoyar los actos de la Fiesta Nacional.",
+   "huella": "4f637dcbb105945e",
+   "fuente": "4f58a3a7603efeab",
+   "titular": "Grupo Proval patrocinará la recepción de la Fiesta Nacional en la Embajada en Costa Rica",
+   "entradilla": "La Embajada de España en Costa Rica y Grupo Proval firman un convenio para financiar los actos de la Fiesta Nacional.",
+   "claves": [
+    "El acuerdo concreta la participación económica de la empresa en la recepción oficial organizada en territorio costarricense.",
+    "La resolución se publica en el boletín oficial conforme a los requisitos de transparencia para los convenios institucionales."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24",
-   "fuente": "5f371bac6cd42328"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19827": {
    "huella": "8b741a9f0ea72cf9",
@@ -973,9 +982,206 @@
    "entradilla": "La Cámara baja difunde una nueva referencia parlamentaria dentro de su actividad legislativa.",
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-24"
+  },
+  "BOE-A-2026-19845": {
+   "huella": "e97aae55908d2d29",
+   "fuente": "0d53ac49340e7a2f",
+   "titular": "Las Cortes convalidan el decreto de medidas urgentes para la isla de La Palma",
+   "entradilla": "El Congreso valida el real decreto-ley con medidas fiscales y financieras para la recuperación socioeconómica de La Palma y la ejecución de inversiones.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19846": {
+   "huella": "6394734e4ff75854",
+   "fuente": "3163880c2ed466dc",
+   "titular": "El Gobierno reconoce como cotizados los años previos de ministros de culto evangélicos y adventistas",
+   "entradilla": "Los ministros de culto de FEREDE y adventistas podrán sumar a efectos de jubilación e incapacidad sus periodos de actividad anteriores a 1999 y 1987.",
+   "claves": [
+    "La norma regula el reconocimiento de los periodos de actividad previos a su integración en el Régimen General de la Seguridad Social, fijada el 1 de mayo de 1999 para FEREDE y el 1 de mayo de 1987 para los adventistas.",
+    "El cómputo sirve para acceder o mejorar la pensión de jubilación, así como para alcanzar el periodo mínimo de cotización en prestaciones de incapacidad permanente o muerte y supervivencia.",
+    "La condición de ministro de culto y el tiempo de actividad se acreditarán mediante una certificación expedida por la iglesia respectiva con la conformidad de la comisión permanente de FEREDE."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19847": {
+   "huella": "43ea4125a378ffa4",
+   "fuente": "36a1cdd6c51cb029",
+   "titular": "Interior crea un distintivo honorífico para los agentes que participaron en la seguridad del Papa",
+   "entradilla": "El Ministerio del Interior premia con un escudo honorífico a los miembros de las fuerzas de seguridad estatales, autonómicas y locales implicados en la visita del Papa.",
+   "claves": [
+    "El distintivo se concede a los miembros de las Fuerzas y Cuerpos de Seguridad del Estado, Mossos d'Esquadra y Policía Canaria con participación directa en el plan de seguridad.",
+    "También se otorga a policías locales de municipios como Madrid, Barcelona, Santa Cruz de Tenerife o Las Palmas de Gran Canaria, entre otros.",
+    "Los cuerpos policiales deben remitir los listados centralizados de los agentes propuestos a la Secretaría de Estado de Seguridad en el plazo de tres meses."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19848": {
+   "huella": "fc49096c5280a954",
+   "fuente": "6bd5c580a64f4d2b",
+   "titular": "Cabanillas del Campo acoge el Centro de Referencia Nacional de Construcciones Aeronáuticas",
+   "entradilla": "El Centro de Formación de Illescas se constituye como Centro de Referencia Nacional en el área de construcciones aeronáuticas en Castilla-La Mancha.",
+   "claves": [
+    "El centro se encuadra en la familia profesional de Fabricación Mecánica dentro del ámbito de la formación profesional.",
+    "Su creación se rige por lo dispuesto en el convenio suscrito entre el Ministerio de Educación y la Comunidad Autónoma de Castilla-La Mancha el 20 de mayo de 2026.",
+    "La norma especifica que la constitución de este centro no implicará ningún tipo de incremento del gasto público ni de personal."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19849": {
+   "huella": "f12f36cf07f12d73",
+   "descartado": "acaba en el número «2003» sin decir de qué",
+   "intentos": 1
+  },
+  "BOE-A-2026-19904": {
+   "huella": "0e08213777824632",
+   "fuente": "be15cbea66c5a376",
+   "titular": "Atribuyen a la Sección 23 de la Audiencia Provincial de Barcelona casos de violencia sobre la mujer",
+   "entradilla": "El Consejo General del Poder Judicial especializa de forma exclusiva y no excluyente a la Sección 23 de la Audiencia Provincial en violencia sobre la mujer.",
+   "claves": [
+    "La especialización de la Sección 23 de la Audiencia Provincial de Barcelona se produce en virtud de lo previsto en la Ley Orgánica del Poder Judicial.",
+    "La medida comenzará a producir efectos jurídicos y prácticos a partir del 31 de diciembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19905": {
+   "huella": "056356ad5f288a0a",
+   "fuente": "d2f577c79408b881",
+   "titular": "Abertis financiará la celebración de la Fiesta Nacional de España en la Embajada en Italia",
+   "entradilla": "La Embajada de España en Italia y Abertis Infraestructuras firman un convenio de colaboración para costear la recepción de la Fiesta Nacional.",
+   "claves": [
+    "El acuerdo se publica en cumplimiento de la Ley de Régimen Jurídico del Sector Público sobre transparencia en la colaboración entre administraciones y empresas.",
+    "Regula la aportación económica de la compañía privada para sufragar los actos conmemorativos organizados por la legación diplomática."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19906": {
+   "huella": "6ed6a61b6bd6f0e7",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19907": {
+   "huella": "7e85a1b9407672e0",
+   "fuente": "921fc0630cd3da9d",
+   "titular": "Iberia patrocinará la recepción de la Fiesta Nacional en la Embajada de España en Ecuador",
+   "entradilla": "La Embajada de España en Ecuador e Iberia firman un convenio de colaboración para financiar la celebración de la Fiesta Nacional.",
+   "claves": [
+    "El acuerdo detalla la cooperación económica de la aerolínea en los actos institucionales organizados por la legación diplomática.",
+    "Su publicación en el Boletín Oficial del Estado da cumplimiento a los requisitos de publicidad exigidos para los convenios públicos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19908": {
+   "huella": "5494562ba49fa109",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19909": {
+   "huella": "21f65b0aa05dab0a",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19910": {
+   "huella": "4aa0b976fb795913",
+   "fuente": "6761a7e3cfc2fb1b",
+   "titular": "NKE Austria patrocinará la Fiesta Nacional en la Embajada de España en Austria",
+   "entradilla": "La Embajada de España en Austria y la empresa NKE Austria firman un convenio para financiar la celebración de la festividad nacional.",
+   "claves": [
+    "El convenio establece la colaboración económica de la compañía industrial para el acto institucional en Viena.",
+    "Su divulgación en el BOE da cumplimiento al marco legal sobre transparencia de los convenios administrativos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19911": {
+   "huella": "73a7b72a22b5bbe3",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19912": {
+   "huella": "115d8e7052908000",
+   "descartado": "cifra «12» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-19913": {
+   "huella": "db4cbd07b60e8ceb",
+   "fuente": "ea2e0f2fdc68f2df",
+   "titular": "Airbus financiará la celebración de la Fiesta Nacional en la Embajada de España en Italia",
+   "entradilla": "La Embajada de España en Italia y Airbus Defence and Space firman un convenio para patrocinar la recepción de la Fiesta Nacional.",
+   "claves": [
+    "El convenio regula la contribución financiera de la empresa aeronáutica para los actos organizados por la legación.",
+    "Su publicación en el boletín oficial cumple con los requisitos de transparencia para los acuerdos con el sector privado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19914": {
+   "huella": "37a3dff32f0ec8f4",
+   "fuente": "a29a05fdfd5d60b3",
+   "titular": "El Gobierno concede la Gran Cruz del Mérito de la Guardia Civil al teniente general Melero",
+   "entradilla": "El Consejo de Ministros aprueba la concesión de la Gran Cruz de la Orden del Mérito de la Guardia Civil al teniente general Carlos Jesús Melero Claudio.",
+   "claves": [
+    "La condecoración se otorga a propuesta del ministro del Interior tras valorar los méritos del jefe de la Fuerza Terrestre.",
+    "El real decreto entra en vigor tras su aprobación por el Consejo de Ministros y su publicación oficial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-f48a20680df25fb1": {
+   "huella": "f79e805c8c64abdd",
+   "fuente": "046040023bb5da2f",
+   "titular": "El Grupo Mixto lleva al Pleno la reforma procesal civil y la ley de familias",
+   "entradilla": "El Congreso debate iniciativas sobre la eficiencia del servicio público de justicia, la ley de familias y medidas educativas del Grupo Mixto y VOX.",
+   "claves": [
+    "El orden del día incluye una proposición sobre la reforma de la Ley Orgánica de medidas en materia de eficiencia en el Servicio Publico de Justicia.",
+    "Se debaten también cuestiones relativas a la jubilación sin penalización, la variante sur ferroviaria y la Y vasca.",
+    "El Pleno aborda asimismo la aprobación de la ley de familias y las medidas para revertir los resultados del sistema educativo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-d210bc55a826149f": {
+   "huella": "b2e15c359f207617",
+   "fuente": "e0cfe7bd9f29ce5d",
+   "titular": "Publican la sesión del Diario de Sesiones del Congreso",
+   "entradilla": "Se difunde la publicación oficial de la sesión correspondiente al Diario de Sesiones del Congreso de los Diputados.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-eefd23ab42c080de": {
+   "huella": "a280350c07896de2",
+   "fuente": "fa236420f4a6433e",
+   "titular": "El Congreso tramita como proyecto de ley el decreto de apoyo social y económico a Ceuta",
+   "entradilla": "El decreto de medidas urgentes para Ceuta tras la crisis migratoria se tramita como proyecto de ley con plazo de enmiendas hasta el 5 de octubre.",
+   "claves": [
+    "La norma proviene del Real Decreto-ley 22/2026, convalidado por el Congreso el 16 de septiembre tras la entrada irregular de migrantes en julio.",
+    "La tramitación como proyecto de ley permite modificar el texto inicial mediante enmiendas presentadas ante la Comisión de Política Territorial hasta el 5 de octubre de 2026.",
+    "El procedimiento se tramita por la vía de urgencia, lo que reduce los plazos parlamentarios a la mitad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-792441bf72e10b5f": {
+   "huella": "0f7aa35ac2b35eee",
+   "fuente": "c1a4dd24e0eb156c",
+   "titular": "Entra en el Congreso una iniciativa sobre el ejercicio profesional de la criminología",
+   "entradilla": "La Cámara baja recibe la tramitación relativa al ejercicio profesional y el marco de la disciplina criminológica.",
+   "claves": [
+    "La iniciativa figura registrada bajo el expediente 122/000302 en las publicaciones oficiales del Congreso.",
+    "La criminología se define como disciplina científica interdisciplinar que estudia la delincuencia, las víctimas y el control social."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
   }
  },
  "uso": {
-  "2026-09-25": 1
+  "2026-09-25": 2
  }
 }
