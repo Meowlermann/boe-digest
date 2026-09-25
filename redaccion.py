@@ -56,7 +56,8 @@ MODELOS = [m for m in [os.environ.get("GEMINI_MODELO", "").strip()] if m] + [
 
 # Límites propios, muy por debajo de los del plan gratuito: son un cinturón de
 # seguridad contra un bucle o un reintento desbocado, no el techo real.
-MAX_PETICIONES_DIA = 6
+MAX_PETICIONES_DIA = 10
+MAX_PETICIONES_PASE = 3     # la edición se regenera varias veces al día
 # 25 y no 40: desde que cada pieza lleva el articulado (hasta ~4.000
 # caracteres) y se piden también los puntos clave, un lote de 40 tarda
 # demasiado en responder. Con 25 y seis peticiones sigue habiendo margen.
@@ -85,7 +86,7 @@ Ejemplos del estilo buscado (inventados, solo por el tono; no copies sus datos):
 - MAL: «Ministerio de Agricultura modifica Orden sobre modelos de solicitud de ayudas»
 - BIEN: «Los ganaderos podrán corregir su solicitud de ayuda sin esperar a que resuelva Agricultura»
 - MAL: «Embajada de España en Egipto y CaixaBank firman un convenio para la Fiesta Nacional»
-- BIEN: «CaixaBank patrocinará la recepción del 12 de Octubre en la Embajada de España en Egipto»
+- BIEN: «CaixaBank costeará la recepción de la Fiesta Nacional en la Embajada de España en Egipto»
 
 ENTRADILLA (una o dos frases, máximo 240 caracteres):
 - Qué cambia en la práctica y para quién. Sin repetir el titular.
@@ -99,7 +100,9 @@ PUNTOS CLAVE (campo "claves": de 2 a 4 frases, cada una de 60 a 220 caracteres):
 - Si el texto de la pieza no trae nada más que el título (por ejemplo, en muchas piezas de las Cortes), devuelve una lista vacía.
 
 REGLAS INQUEBRANTABLES:
-- Solo puedes usar hechos que estén en el texto de la pieza. No añadas nada que no esté.
+- Solo puedes usar hechos que estén en el texto de la pieza. No añadas nada que no esté, aunque lo sepas y sea cierto: ni la fecha de una festividad, ni la localidad donde está un centro, ni el cargo de una persona.
+- Todo lugar, persona, empresa u organismo que nombres tiene que aparecer escrito en el texto.
+- Si una pieza trae «rechazo_anterior», tu versión anterior se descartó por ese motivo: escribe una nueva que no lo repita.
 - No inventes cifras, fechas, nombres, lugares ni organismos.
 - No escribas ninguna cifra ni ningún año que no figure en el texto.
 - Si la pieza es un trámite menor (una corrección de errores, un cambio de nombre, un nombramiento rutinario), dilo con sobriedad: no lo infles.
@@ -208,6 +211,21 @@ def _numeros(texto: str) -> set[str]:
     return {re.sub(r"[.,]", "", n) for n in re.findall(r"\d[\d.,]*\d|\d", texto or "")}
 
 
+_GENERICOS = {"gobierno", "estado", "españa", "congreso", "senado", "cortes", "boe",
+              "ministerio", "ministra", "ministro", "consejo", "ministros", "real", "decreto",
+              "orden", "ley", "resolución", "convenio", "hacienda", "interior", "defensa",
+              "justicia", "sanidad", "trabajo", "educación", "cultura", "agricultura",
+              "transportes", "industria", "igualdad", "inclusión", "universidades",
+              "exteriores", "economía", "seguridad", "social", "tribunal", "supremo",
+              "constitucional", "generalitat", "junta", "xunta", "pleno", "comisión",
+              "diputados", "senadores", "cámara", "boletín", "oficial", "fiesta", "nacional"}
+
+
+def _sin_tildes(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", t) if unicodedata.category(c) != "Mn")
+
+
 def verificar(titular: str, entradilla: str, fuente: str, claves: list[str] | None = None) -> str:
     """Devuelve "" si la redacción se sostiene contra la fuente, o el motivo."""
     t = " ".join((titular or "").split()).strip(" .")
@@ -234,6 +252,21 @@ def verificar(titular: str, entradilla: str, fuente: str, claves: list[str] | No
     for mes in MESES:
         if re.search(rf"\b{mes}\b", todo.lower()) and mes not in fb:
             return f"mes «{mes}» que no está en el texto oficial"
+
+    # Nombres propios: todo lugar o entidad con mayúscula que no esté en la
+    # fuente es un invento. Se ignora la primera palabra de cada frase y un
+    # puñado de nombres genéricos que el redactor usa para abreviar
+    # («Hacienda» por «Ministerio de Hacienda» sí está en la fuente; «el
+    # Gobierno» no tiene por qué).
+    plano_fuente = _sin_tildes(fuente.lower())
+    for frase in re.split(r"(?<=[.:;])\s+|^", todo):
+        palabras = frase.split()
+        for w in palabras[1:]:
+            w2 = w.strip("«»\"'()[],.;:")
+            if (len(w2) >= 4 and w2[0].isupper() and not w2.isupper()
+                    and w2.lower() not in _GENERICOS
+                    and _sin_tildes(w2.lower()) not in plano_fuente):
+                return f"nombre «{w2}» que no está en el texto oficial"
 
     # Un titular que promete plazos tiene que darlos. Pasó: «Hacienda modifica
     # los modelos y plazos del impuesto sobre el carbón» sobre una orden que no
@@ -277,7 +310,9 @@ def _pedir(clave: str, lote: list[dict]) -> tuple[list[dict] | None, str]:
     cuerpo = {
         "systemInstruction": {"parts": [{"text": INSTRUCCIONES}]},
         "contents": [{"role": "user", "parts": [{"text": json.dumps(
-            [{"id": p["id"], "texto": p["fuente"]} for p in lote], ensure_ascii=False)}]}],
+            [dict({"id": p["id"], "texto": p["fuente"]},
+                  **({"rechazo_anterior": p["rechazo"]} if p.get("rechazo") else {}))
+             for p in lote], ensure_ascii=False)}]}],
         "generationConfig": {
             "temperature": 0.2,
             "responseMimeType": "application/json",
@@ -285,13 +320,22 @@ def _pedir(clave: str, lote: list[dict]) -> tuple[list[dict] | None, str]:
         },
     }
     for modelo in MODELOS:
-        try:
-            r = requests.post(API.format(modelo=modelo), json=cuerpo, timeout=240,
-                              headers={"x-goog-api-key": clave,
-                                       "Content-Type": "application/json"})
-        except Exception as exc:                              # noqa: BLE001
-            _log(f"{modelo}: sin respuesta ({exc})")
-            return None, modelo
+        # Un 503 de Google suele durar segundos. Antes de caer al modelo ligero
+        # (que se inventa más: puso «Cabanillas del Campo» donde el texto decía
+        # Illescas) se espera y se vuelve a probar el bueno dos veces.
+        for espera in (0, 20, 45):
+            if espera:
+                _log(f"{modelo}: reintento en {espera} s")
+                time.sleep(espera)
+            try:
+                r = requests.post(API.format(modelo=modelo), json=cuerpo, timeout=240,
+                                  headers={"x-goog-api-key": clave,
+                                           "Content-Type": "application/json"})
+            except Exception as exc:                          # noqa: BLE001
+                _log(f"{modelo}: sin respuesta ({exc})")
+                return None, modelo
+            if r.status_code not in (500, 502, 503, 504):
+                break
         if r.status_code == 404:
             _log(f"{modelo}: no existe o no está disponible, pruebo el siguiente")
             continue
@@ -348,62 +392,86 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
                "descartadas": 0, "peticiones": 0}
 
     if pendientes and clave and uso < MAX_PETICIONES_DIA:
-        lote = pendientes[:MAX_PIEZAS_POR_PETICION]
+        # Varias peticiones por pase si hace falta: la primera con lo pendiente
+        # y, si algo se descarta, una segunda con esas piezas y el motivo del
+        # rechazo, para que el modelo lo corrija en el mismo pase en vez de
+        # dejar el titular determinista hasta la ejecución siguiente.
         t0 = time.time()
-        resultados, modelo = _pedir(clave, lote)
-        estado["uso"] = {hoy: uso + 1}          # solo se guarda el día en curso
-        resumen["peticiones"] = 1
-        por_id = {p["id"]: p for p in lote}
-        for r in resultados or []:
-            p = por_id.get(str(r.get("id", "")))
-            if not p:
-                continue
-            titular = poner_articulo(" ".join((r.get("titular") or "").split()).strip(" ."))
-            entradilla = " ".join((r.get("entradilla") or "").split())
-            claves = [" ".join(str(c).split()) for c in (r.get("claves") or []) if str(c).strip()]
-            claves = [c if c.endswith((".", "»", ")")) else c + "." for c in claves][:4]
-            # Si se pasa de largo, se recorta por sintagma (la misma verja que la
-            # redacción determinista), no se tira: el modelo cuenta mal los
-            # caracteres, pero lo que dice suele ser bueno.
-            if recortar and len(titular) > 105:
-                titular = recortar(titular, 105)
-            motivo = verificar(titular, entradilla, p["fuente"], claves)
-            if not motivo and validar_titular:
-                motivo = validar_titular(titular.upper())
-            if motivo:
-                resumen["descartadas"] += 1
-                _log(f"descartado {p['id']}: {motivo} — «{titular}»")
-                # Se apunta igual, sin texto: así no se vuelve a pedir la misma
-                # pieza en cada pase y la cuota no se va en reintentos inútiles.
-                previo = piezas.get(p["id"], {})
-                intentos = previo.get("intentos", 0) + 1 if previo.get("huella") == p["huella"] else 1
-                # Un titular anterior solo se conserva si pasa las reglas de
-                # ahora: si lo que falla es precisamente lo que las reglas
-                # nuevas prohíben (prometer plazos que no se dan), se retira.
-                if previo.get("titular") and verificar(previo["titular"], previo.get("entradilla", ""),
-                                                       p["fuente"], previo.get("claves")):
-                    previo = {}
-                if previo.get("titular") and intentos >= 2:
-                    # Había uno bueno de la versión anterior: se conserva y se
-                    # marca como al día para no seguir pidiendo esta pieza.
-                    previo["huella"] = p["huella"]
-                    previo.setdefault("fuente", _huella_fuente(p["fuente"]))
+        cola = list(pendientes)
+        orden = {p["id"]: n for n, p in enumerate(pendientes)}
+        rechazos: dict = {}
+        reintentadas: set = set()
+        modelo = ""
+        while cola and uso < MAX_PETICIONES_DIA and resumen["peticiones"] < MAX_PETICIONES_PASE:
+            lote = cola[:MAX_PIEZAS_POR_PETICION]
+            cola = cola[MAX_PIEZAS_POR_PETICION:]
+            resultados, modelo = _pedir(clave, lote)
+            uso += 1
+            estado["uso"] = {hoy: uso}          # solo se guarda el día en curso
+            resumen["peticiones"] += 1
+            if resultados is None:
+                break                           # cuota o caída: no insistir
+            por_id = {p["id"]: p for p in lote}
+            for r in resultados or []:
+                p = por_id.get(str(r.get("id", "")))
+                if not p:
                     continue
-                entrada = {"huella": p["huella"], "descartado": motivo, "intentos": intentos}
-                if previo.get("titular"):
-                    entrada.update({k: previo[k] for k in ("titular", "entradilla", "claves",
-                                                            "modelo", "fecha")
-                                    if k in previo})
-                    entrada["fuente"] = previo.get("fuente", previo.get("huella"))
-                piezas[p["id"]] = entrada
-                continue
-            piezas[p["id"]] = {"huella": p["huella"], "fuente": _huella_fuente(p["fuente"]),
-                               "titular": titular, "entradilla": entradilla,
-                               "claves": claves, "modelo": modelo, "fecha": hoy}
-            resumen["redactadas"] += 1
+                titular = poner_articulo(" ".join((r.get("titular") or "").split()).strip(" ."))
+                entradilla = " ".join((r.get("entradilla") or "").split())
+                claves = [" ".join(str(c).split()) for c in (r.get("claves") or []) if str(c).strip()]
+                claves = [c if c.endswith((".", "»", ")")) else c + "." for c in claves][:4]
+                # Si se pasa de largo, se recorta por sintagma (la misma verja que la
+                # redacción determinista), no se tira: el modelo cuenta mal los
+                # caracteres, pero lo que dice suele ser bueno.
+                if recortar and len(titular) > 105:
+                    titular = recortar(titular, 105)
+                motivo = verificar(titular, entradilla, p["fuente"], claves)
+                if not motivo and validar_titular:
+                    motivo = validar_titular(titular.upper())
+                if motivo:
+                    resumen["descartadas"] += 1
+                    _log(f"descartado {p['id']}: {motivo} — «{titular}»")
+                    rechazos[p["id"]] = f"{motivo} — tu titular fue «{titular}»"
+                    # Se apunta igual, sin texto: así no se vuelve a pedir la misma
+                    # pieza en cada pase y la cuota no se va en reintentos inútiles.
+                    previo = piezas.get(p["id"], {})
+                    intentos = previo.get("intentos", 0) + 1 if previo.get("huella") == p["huella"] else 1
+                    # Un titular anterior solo se conserva si pasa las reglas de
+                    # ahora: si lo que falla es precisamente lo que las reglas
+                    # nuevas prohíben (prometer plazos que no se dan), se retira.
+                    if previo.get("titular") and verificar(previo["titular"], previo.get("entradilla", ""),
+                                                           p["fuente"], previo.get("claves")):
+                        previo = {}
+                    if previo.get("titular") and intentos >= 2:
+                        # Había uno bueno de la versión anterior: se conserva y se
+                        # marca como al día para no seguir pidiendo esta pieza.
+                        previo["huella"] = p["huella"]
+                        previo.setdefault("fuente", _huella_fuente(p["fuente"]))
+                        continue
+                    entrada = {"huella": p["huella"], "descartado": motivo, "intentos": intentos}
+                    if previo.get("titular"):
+                        entrada.update({k: previo[k] for k in ("titular", "entradilla", "claves",
+                                                                "modelo", "fecha")
+                                        if k in previo})
+                        entrada["fuente"] = previo.get("fuente", previo.get("huella"))
+                    piezas[p["id"]] = entrada
+                    continue
+                piezas[p["id"]] = {"huella": p["huella"], "fuente": _huella_fuente(p["fuente"]),
+                                   "titular": titular, "entradilla": entradilla,
+                                   "claves": claves, "modelo": modelo, "fecha": hoy}
+                resumen["redactadas"] += 1
+            # Las descartadas de este lote vuelven a la cola, una sola vez, con
+            # el motivo del rechazo delante.
+            for p in lote:
+                if p["id"] in rechazos and p["id"] not in reintentadas:
+                    reintentadas.add(p["id"])
+                    cola.append(dict(p, rechazo=rechazos[p["id"]]))
+            # Siempre por orden de actualidad: lo de hoy antes que el archivo,
+            # sea primer intento o reintento.
+            cola.sort(key=lambda x: orden.get(x["id"], 1 << 30))
         _log(f"{resumen['redactadas']} redactadas, {resumen['descartadas']} descartadas, "
-             f"{len(pendientes) - len(lote)} en cola — {modelo or 'sin modelo'}, "
-             f"{time.time() - t0:.1f} s")
+             f"{len(cola)} en cola — {modelo or 'sin modelo'}, {resumen['peticiones']} "
+             f"peticiones, {time.time() - t0:.1f} s")
         _guardar(estado)
     elif pendientes and not clave:
         _log("sin GEMINI_API_KEY: se publica con la redacción determinista")

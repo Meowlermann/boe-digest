@@ -65,6 +65,44 @@ GRUPO_CORTO = {largo: corto for largo, corto, _s, _c in GRUPOS}
 GRUPO_SLUG = {largo: slug for largo, _c, slug, _col in GRUPOS}
 GRUPO_COLOR = {largo: color for largo, _c, _s, color in GRUPOS}
 ORDEN_GRUPO = {largo: i for i, (largo, *_r) in enumerate(GRUPOS)}
+# Las votaciones nombran al grupo por su código; el censo, por su nombre.
+COD_GRUPO = {
+    "GEH Bildu": "Grupo Parlamentario Euskal Herria Bildu",
+    "GR": "Grupo Parlamentario Republicano",
+    "GSUMAR": "Grupo Parlamentario Plurinacional SUMAR",
+    "GPlu": "Grupo Parlamentario Plurinacional SUMAR",
+    "GS": "Grupo Parlamentario Socialista",
+    "GMx": "Grupo Parlamentario Mixto",
+    "GV (EAJ-PNV)": "Grupo Parlamentario Vasco (EAJ-PNV)",
+    "GJxCAT": "Grupo Parlamentario Junts per Catalunya",
+    "GP": "Grupo Parlamentario Popular en el Congreso",
+    "GVOX": "Grupo Parlamentario VOX",
+}
+
+
+def postura_grupos(g: dict) -> dict:
+    """{código de grupo: [S, N, A, X]} -> {código: letra mayoritaria}, solo
+    cuando al menos el 70 % de los que votaron lo hicieron igual."""
+    salida = {}
+    for cod, c in (g or {}).items():
+        emitidos = c[0] + c[1] + c[2]
+        if emitidos < 3:
+            continue
+        k = max(range(3), key=lambda i: c[i])
+        if c[k] / emitidos >= 0.7:
+            salida[cod] = "SNA"[k]
+    return salida
+
+
+def detalle_ordenado(estado: dict) -> list:
+    """Las votaciones con detalle, de la más reciente a la más antigua."""
+    det = estado.get("detalle") or {}
+    return sorted(({"url": u, **d} for u, d in det.items()),
+                  key=lambda d: (d["f"], d.get("s") or 0, d.get("n") or 0), reverse=True)
+
+
+def ancla_votacion(d: dict) -> str:
+    return f"v{d.get('s') or 0}-{d.get('n') or 0}"
 
 
 def _slug(nombre: str) -> str:
@@ -270,6 +308,110 @@ def _postura_del_grupo(votos: list) -> dict:
     return postura
 
 
+# ---------------------------------------------------------------------------
+# Detalle de cada votación: quién votó qué
+# ---------------------------------------------------------------------------
+#
+# Los contadores de arriba dicen cuántas veces vota cada uno a favor o en
+# contra, pero no QUÉ votó en CADA votación, que es lo que se quiere ver. Se
+# guarda el voto nominal de las últimas DETALLE_MAX votaciones en forma
+# compacta: una lista de nombres común y, por votación, una cadena con una
+# letra por diputado (S, N, A, X = no vota; «-» = no estaba en la Cámara).
+# Cuatrocientas votaciones ocupan unos 170 KB en vez de varios megas.
+
+DETALLE_MAX = 400
+VOTO_COD = {"si": "S", "no": "N", "abstencion": "A", "no_vota": "X"}
+COD_VOTO = {v: k for k, v in VOTO_COD.items()}
+
+
+def fecha_iso(f: str) -> str:
+    """«23/9/2026» -> «2026-09-23». Vacío si no se entiende."""
+    m = re.match(r"\s*(\d{1,2})/(\d{1,2})/(\d{4})", f or "")
+    return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}" if m else ""
+
+
+def guardar_detalle(estado: dict, url: str, d: dict) -> bool:
+    info = d.get("informacion") or {}
+    votos = d.get("votaciones") or []
+    fecha = fecha_iso(info.get("fecha") or "")
+    if not votos or not fecha:
+        return False
+    nombres = estado.setdefault("det_nombres", [])
+    indice = {n: i for i, n in enumerate(nombres)}
+    letras: dict = {}
+    grupos: dict = {}
+    for x in votos:
+        nombre = (x.get("diputado") or "").strip()
+        voto = VOTOS.get((x.get("voto") or "").strip(), "")
+        if not nombre or not voto:
+            continue
+        clave = clave_nombre(nombre)
+        if clave not in indice:
+            indice[clave] = len(nombres)
+            nombres.append(clave)
+        letras[indice[clave]] = VOTO_COD[voto]
+        g = (x.get("grupo") or "").strip()
+        cuenta = grupos.setdefault(g, [0, 0, 0, 0])
+        cuenta["SNAX".index(VOTO_COD[voto])] += 1
+    cadena = "".join(letras.get(i, "-") for i in range(len(nombres)))
+    tot = d.get("totales") or {}
+    estado.setdefault("detalle", {})[url] = {
+        "f": fecha,
+        "s": info.get("sesion"),
+        "n": info.get("numeroVotacion"),
+        "t": " ".join((info.get("titulo") or "").split())[:300],
+        "a": " ".join((info.get("textoExpediente") or "").split())[:600],
+        "sub": " ".join(" ".join(filter(None, [info.get("tituloSubGrupo"),
+                                              info.get("textoSubGrupo")])).split())[:300],
+        "tot": [tot.get("afavor"), tot.get("enContra"), tot.get("abstenciones"),
+                tot.get("noVotan")],
+        "asent": bool(tot.get("asentimiento") and str(tot.get("asentimiento")).lower()
+                      not in ("no", "false", "0")),
+        "g": grupos,
+        "v": cadena,
+    }
+    return True
+
+
+def _podar_detalle(estado: dict) -> None:
+    det = estado.get("detalle") or {}
+    if len(det) <= DETALLE_MAX:
+        return
+    orden = sorted(det.items(), key=lambda kv: (kv[1]["f"], kv[1].get("s") or 0,
+                                                kv[1].get("n") or 0), reverse=True)
+    estado["detalle"] = dict(orden[:DETALLE_MAX])
+
+
+def completar_detalle(get, log, estado: dict, presupuesto: int = 160) -> int:
+    """Las votaciones que ya se habían contado antes de guardar el detalle no
+    vuelven a pasar por acumular(). Aquí se piden otra vez, de la más reciente
+    a la más antigua, hasta tener el voto nominal de las últimas
+    DETALLE_MAX."""
+    det = estado.setdefault("detalle", {})
+    cand = []
+    for u in estado.get("vistas") or []:
+        m = re.search(r"/(\d{8})/Votacion(\d+)", u)
+        if m:
+            cand.append((m.group(1), int(m.group(2)), u))
+    cand.sort(reverse=True)
+    faltan = [u for _f, _n, u in cand[:DETALLE_MAX] if u not in det]
+    hechas = 0
+    for u in faltan[:presupuesto]:
+        r = get(u, tries=1)
+        if not r:
+            continue
+        try:
+            if guardar_detalle(estado, u, r.json()):
+                hechas += 1
+        except Exception:                                      # noqa: BLE001
+            continue
+    _podar_detalle(estado)
+    if faltan:
+        log(f"  detalle de votaciones: {hechas} recuperadas, "
+            f"{max(0, len(faltan) - presupuesto)} pendientes")
+    return hechas
+
+
 def acumular(estado: dict, votaciones: list, log) -> dict:
     """Suma las votaciones nuevas al estado. Idempotente: una votación ya
     contada no se vuelve a contar aunque se reprocese la misma sesión."""
@@ -329,6 +471,7 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
             })
             del p["ultimas"][14:]
 
+        guardar_detalle(estado, url, d)
         estado["recientes"].insert(0, {
             "fecha": (info.get("fecha") or "").strip(),
             "sesion": info.get("sesion"),
@@ -343,6 +486,12 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
         vistas.add(url)
         nuevas += 1
 
+    # «recientes» se ordena por fecha: la cosecha del histórico mete votaciones
+    # de 2023 después de las de ayer, y la lista acababa enseñando las viejas.
+    estado["recientes"].sort(key=lambda r: (fecha_iso(r.get("fecha", "")), r.get("sesion") or 0,
+                                            r.get("numero") or 0), reverse=True)
+    del estado["recientes"][60:]
+    _podar_detalle(estado)
     estado["vistas"] = sorted(vistas)[-20000:]
     if nuevas:
         log(f"  votaciones nuevas incorporadas: {nuevas}")
@@ -352,13 +501,39 @@ def acumular(estado: dict, votaciones: list, log) -> dict:
 def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
     """Una ficha por diputado, con lo que se sepa de cada fuente."""
     fichas = []
+    detalle = detalle_ordenado(estado)
+    nombres = {n: i for i, n in enumerate(estado.get("det_nombres") or [])}
+    posturas = [postura_grupos(d.get("g")) for d in detalle]
     for clave, base in censo_actual.items():
         v = (estado.get("personas") or {}).get(clave) or {}
         i = intervs.get(clave) or {}
         emitidos = v.get("si", 0) + v.get("no", 0) + v.get("abstencion", 0)
         sesiones_totales = len(estado.get("sesiones") or [])
         asistidas = len(v.get("sesiones") or [])
+        # Sus votos, votación a votación, del detalle nominal: ordenados por
+        # fecha (el acumulado antiguo iba por orden de cosecha y enseñaba 2023
+        # antes que la semana pasada) y con enlace a la votación.
+        ultimos = []
+        i_nom = nombres.get(clave)
+        if i_nom is not None:
+            cods = [c for c, largo in COD_GRUPO.items() if largo == base.get("grupo")]
+            for d, pg in zip(detalle, posturas):
+                cod_grupo = next((c for c in cods if c in (d.get("g") or {})), "")
+                letra = d["v"][i_nom] if i_nom < len(d["v"]) else "-"
+                if letra == "-":
+                    continue
+                ultimos.append({
+                    "fecha": d["f"], "asunto": d.get("a") or d.get("t") or "",
+                    "que": d.get("sub") or d.get("t") or "",
+                    "voto": COD_VOTO[letra],
+                    "grupo_voto": COD_VOTO.get(pg.get(cod_grupo, ""), ""),
+                    "con_su_grupo": letra == "X" or pg.get(cod_grupo) in (None, letra),
+                    "enlace": f"{d['f']}.html#{ancla_votacion(d)}",
+                })
+                if len(ultimos) >= 20:
+                    break
         ficha = dict(base)
+        ficha["clave"] = clave
         ficha.update({
             "sigla": SIGLAS.get(v.get("grupo", ""), base.get("partido", "")),
             "votaciones": v.get("votaciones", 0),
@@ -368,7 +543,7 @@ def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
             "disidencias": v.get("disidencias", 0),
             "sesiones_asistidas": asistidas,
             "sesiones_totales": sesiones_totales,
-            "ultimos_votos": v.get("ultimas", []),
+            "ultimos_votos": ultimos or v.get("ultimas", []),
             "intervenciones": i.get("total", 0),
             "organos": i.get("organos", {}),
             "ultimas_intervenciones": i.get("ultimas", []),
@@ -463,35 +638,13 @@ def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
 
     Cada escaño lleva el identificador de su diputado, que es lo que permite
     que al pasar el ratón salga su ficha sin volver a calcular nada."""
-    import math
-
     total = len(orden)
     if not total:
         return ""
-    r_int, r_ext = 0.42, 1.0
-    pesos = [r_int + (r_ext - r_int) * i / (filas - 1) for i in range(filas)]
-    suma = sum(pesos)
-    reparto = [max(1, round(total * w / suma)) for w in pesos]
-    while sum(reparto) > total:
-        reparto[reparto.index(max(reparto))] -= 1
-    while sum(reparto) < total:
-        reparto[reparto.index(min(reparto))] += 1
-
-    puntos = []
-    for radio, n in zip(pesos, reparto):
-        for k in range(n):
-            ang = math.pi * (1 - (k + 0.5) / n)
-            puntos.append((ang, radio))
-    puntos.sort(key=lambda p: (-p[0], p[1]))
-
     alto = ancho // 2 + 26
     cx, cy = ancho / 2, ancho / 2 + 6
-    escala = (ancho / 2) - 14
-    rp = max(2.4, escala / (filas * 3.4))
     circulos = []
-    for (ang, radio), f in zip(puntos, orden):
-        x = cx + math.cos(ang) * radio * escala
-        y = cy - math.sin(ang) * radio * escala
+    for (x, y, rp), f in zip(hemiciclo_puntos(total, ancho, filas), orden):
         color = GRUPO_COLOR.get(f.get("grupo", ""), "#8d8d8d")
         corto = GRUPO_CORTO.get(f.get("grupo", ""), "")
         nombre = (f.get("natural") or "").replace("&", "&amp;").replace("<", "&lt;")
@@ -508,3 +661,30 @@ def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
             f'<text x="{cx:.0f}" y="{cy + 4:.0f}" text-anchor="middle" '
             f'class="hemi-pie">escaños</text>'
             + "".join(circulos) + '</svg>')
+
+
+def hemiciclo_puntos(total: int, ancho: int = 720, filas: int = 11) -> list:
+    """Coordenadas (x, y, radio) de cada escaño, de izquierda a derecha."""
+    import math
+
+    r_int, r_ext = 0.42, 1.0
+    pesos = [r_int + (r_ext - r_int) * i / (filas - 1) for i in range(filas)]
+    suma = sum(pesos)
+    reparto = [max(1, round(total * w / suma)) for w in pesos]
+    while sum(reparto) > total:
+        reparto[reparto.index(max(reparto))] -= 1
+    while sum(reparto) < total:
+        reparto[reparto.index(min(reparto))] += 1
+
+    puntos = []
+    for radio, n in zip(pesos, reparto):
+        for k in range(n):
+            ang = math.pi * (1 - (k + 0.5) / n)
+            puntos.append((ang, radio))
+    puntos.sort(key=lambda p: (-p[0], p[1]))
+
+    escala = (ancho / 2) - 14
+    cx, cy = ancho / 2, ancho / 2 + 6
+    rp = max(2.4, escala / (filas * 3.4))
+    return [(cx + math.cos(ang) * radio * escala, cy - math.sin(ang) * radio * escala, rp)
+            for ang, radio in puntos]

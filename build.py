@@ -454,7 +454,9 @@ VERBOS = [
     (r"^crean?\b", "NACE"),
     (r"^regulan?\b", "NUEVAS REGLAS PARA"),
     (r"^modifican?\b", "CAMBIA"),
-    (r"^conceden?\b", "DINERO PÚBLICO PARA"),
+    # «Concede» a secas no es dinero: casi siempre es una condecoración. Las
+    # ayudas y subvenciones tienen su propia regla (_subvencion), que va antes.
+    (r"^conceden?\b", "SE CONCEDE"),
     (r"^convocan?\b", "CONVOCATORIA ABIERTA:"),
     (r"^publican?\b", "SE PUBLICA"),
     (r"^apruebae?n?\b|^aprueban?\b", "APROBADO:"),
@@ -744,14 +746,41 @@ def materia_redaccion(texto: str, titulo: str = "", limite: int = 3800) -> str:
     dispositivo = lineas[ini:] if ini is not None else lineas
     # Hasta los anexos o la firma
     fin = next((i for i, l in enumerate(dispositivo)
-                if re.match(r"(?:ANEXO\b|Madrid,\s*\d|Dado en\b)", l)), None)
+                if re.match(r"(?:ANEXO\b|Madrid,\s*\d|Dado en\b|Palacio de)", l)), None)
     firma_vigor = ""
+    resto = []
     if fin is not None:
+        resto = dispositivo[fin:]
         dispositivo = dispositivo[:fin]
-    dispositivo = [l for l in dispositivo if not re.match(r"En su virtud", l, re.I)]
-    # Encabezado del artículo que repite el título y frases puente: fuera.
+    # Solo fuera las frases puente. Lo que repite el título se queda: en una
+    # convalidación o un acuerdo del CGPJ el dispositivo ES el título, y
+    # quitarlo dejaba al redactor sin nada más que la firma.
     dispositivo = [l for l in dispositivo
-                   if not (_repite_titulo(l, titulo) and len(l) > 60) and not _PUENTE.search(l)]
+                   if not re.match(r"En su virtud", l, re.I) and not _PUENTE.search(l)]
+
+    # Cuando la resolución solo «publica» un convenio o un acuerdo, lo que hay
+    # que contar está en el anexo: quién paga, cuánto y para qué. Sin él, el
+    # redactor rellenaba con lo que sabía de fuera («el 12 de Octubre»).
+    anexo_util: list[str] = []
+    publica = re.search(r"figura como anexo|se publica como anexo|que se transcribe|"
+                        r"cuyo texto (?:figura|se inserta)", "\n".join(dispositivo), re.I) or \
+        re.search(r"se publica (?:el|la) (?:Convenio|Acuerdo|Adenda|Protocolo)", titulo, re.I)
+    if publica and resto:
+        i_anexo = next((i for i, l in enumerate(resto) if re.match(r"ANEXO\b", l)), None)
+        if i_anexo is not None:
+            cuerpo_anexo = resto[i_anexo + 1:]
+            # Se salta la comparecencia («REUNIDOS», «De una parte…»): nombres
+            # y cargos de quienes firman, que no son la noticia.
+            # Primero las cláusulas (objeto, aportación, importe); si no hay,
+            # la exposición de motivos del convenio.
+            ini_a = next((i for i, l in enumerate(cuerpo_anexo)
+                          if re.match(r"(?:CL[ÁA]USULAS|ESTIPULACIONES|ACUERDAN)\b", l)), None)
+            if ini_a is None:
+                ini_a = next((i for i, l in enumerate(cuerpo_anexo)
+                              if re.match(r"(?:EXPONEN|MANIFIESTAN)\b", l)), 0)
+            anexo_util = [l for l in cuerpo_anexo[ini_a:]
+                          if not re.match(r"(?:Y en prueba de conformidad|Firmado|"
+                                          r"En (?:prueba|testimonio) de)", l, re.I)]
 
     # Se puntúa cada párrafo del preámbulo: los que hablan de ESTA norma pesan
     # más que los antecedentes («La Ley 13/2023… introdujo…»). Se eligen los
@@ -768,6 +797,10 @@ def materia_redaccion(texto: str, titulo: str = "", limite: int = 3800) -> str:
         candidatos = limpios[-2:]
 
     disp_txt = "\n".join(dispositivo)
+    if anexo_util:
+        # El preámbulo de estas resoluciones es pura liturgia: el espacio es
+        # para el convenio.
+        disp_txt += "\nANEXO (texto publicado):\n" + "\n".join(anexo_util)
     presupuesto_pre = max(900, limite - min(len(disp_txt), limite - 900))
     elegidos, total = [], 0
     for i, l, _ in sorted(candidatos, key=lambda c: (-c[2], c[0])):
@@ -1185,6 +1218,26 @@ def _convalidacion(m, t):
            f"EL CONGRESO {verbo} UN DECRETO-LEY"
 
 
+@_regla_titular(r"se concede (?:la|el)\s+((?:Gran Cruz|Cruz|Medalla|Placa|Encomienda|Collar)[^,]{3,90}?)"
+                r"\s+(?:a|al|a la)\s+(.+)$")
+def _condecoracion(m, t):
+    """«se concede la Gran Cruz de la Orden del Mérito de la Guardia Civil al
+    Teniente General … don Carlos Jesús Melero Claudio» -> quién la recibe."""
+    distincion = _limpiar(m.group(1))
+    quien = m.group(2)
+    nombre = re.search(r"\b(?:don|doña|D\.|D\.ª)\s+([A-ZÁÉÍÓÚÑ][\wáéíóúñü.\- ]{3,60}?)\s*\.?$",
+                       quien.strip())
+    destino = nombre.group(1) if nombre else cerrar(_limpiar(quien), 40)
+    return f"{distincion.upper()} PARA {destino.upper()}"
+
+
+@_regla_titular(r"se crea como\s+(Centro de Referencia Nacional[^,]*?)\s+(el|la)\s+"
+                r"((?:Centro|Instituto|Escuela)[^,]{3,70})")
+def _centro_referencia(m, t):
+    return (f"{m.group(2).upper()} {m.group(3).upper()}, NUEVO "
+            f"{cerrar(m.group(1), 70).upper()}")
+
+
 @_regla_titular(r"concesión directa de (?:una |)(?:subvención|subvenciones|ayudas?)")
 def _subvencion(m, t):
     quien = _entidad(t)
@@ -1496,11 +1549,20 @@ def titular_valido(h: str) -> str:
         return "menos de cinco palabras"
     if _limpio(pal[-1]) in _COLGANTES:
         return f"acaba en «{pal[-1]}», que pide complemento"
-    if re.fullmatch(r"\d+|" + "|".join(_CARDINALES), _limpio(pal[-1])):
+    # Un año tras preposición («… cotizados antes de 2003») es un dato cerrado;
+    # un número suelto («… EL CONVENIO 12») no.
+    anio_ok = (re.fullmatch(r"(?:19|20)\d\d", _limpio(pal[-1])) and len(pal) > 1
+               and _limpio(pal[-2]).lower() in {"de", "en", "desde", "hasta", "del", "año"})
+    if not anio_ok and re.fullmatch(r"\d+|" + "|".join(_CARDINALES), _limpio(pal[-1])):
         return f"acaba en el número «{pal[-1]}» sin decir de qué"
     if "…" in h or h.endswith("..."):
         return "acaba en puntos suspensivos"
-    if "," in h and len(h.rpartition(",")[2].split()) == 1:
+    # «…, SA», «…, SL», «…, SAU»: forma jurídica de la empresa, no una frase
+    # cortada.
+    if ("," in h and len(h.rpartition(",")[2].split()) == 1
+            and not re.fullmatch(r"S\.?\s?A\.?U?\.?|S\.?L\.?U?\.?|SLP|SCCL|S\.?COOP\.?|"
+                                 r"GMBH|SPA|SRL|LTD|INC|AG|SE|NV|BV|SAS",
+                                 h.rpartition(",")[2].strip().upper())):
         return "acaba en una cláusula de una sola palabra"
     if h.rstrip().endswith(":"):
         return "acaba en dos puntos sin contenido"
@@ -1664,6 +1726,7 @@ def articulo_deterministico(e: dict) -> dict:
         # articulado. No se publica tal cual; sirve para que el titular y los
         # puntos clave salgan de la norma y no solo de su título.
         "materia": materia_redaccion(texto, titulo),
+        "materia_v": MATERIA_VERSION,
         "dept": quien,
         "ref": e.get("ident") or e.get("seccion") or "",
         "url": e.get("url", ""),
@@ -3085,6 +3148,7 @@ def render_nav() -> str:
         f'<li class="pilar" data-pilar="parlamento">'
         f'<a class="pilar-b" href="/diputados/" aria-haspopup="true" aria-expanded="false">{_ICO["parl"]}<span>Parlamento</span></a>'
         f'<div class="panel"><p class="panel-t">Así vota y así trabaja cada diputado</p><ul class="panel-l">'
+        + enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado")
         + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
         + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
@@ -3224,7 +3288,13 @@ def render_parlamento_ssr() -> tuple[bool, str]:
     hemi = re.sub(r"<title>.*?</title>", "", hemi, flags=re.S)
     hemi = hemi.replace('id="hemiciclo"', 'aria-hidden="true"', 1)
 
+    try:
+        ultimas = (DATOS_DIR / "ultimas-votaciones.html").read_text(encoding="utf-8")
+    except Exception:                                         # noqa: BLE001
+        ultimas = ""
     return False, (
+        (f'<div class="portada-vt"><h3 class="rotulo">Lo último que se ha votado</h3>{ultimas}</div>'
+         if ultimas else "") +
         f'<div class="stats">{cifras}</div>'
         f'<div class="portada-hemi"><a href="diputados/" '
         f'aria-label="Ver la ficha de cada diputado">{hemi}</a></div>'
@@ -3849,6 +3919,10 @@ def _pct(n, total):
     return f"{round(100 * n / total)} %" if total else "—"
 
 
+CONGRESO_ESTADO: dict = {}      # lo deja cosechar_congreso() para las votaciones
+VOTACIONES_DIR = ROOT / "votaciones"
+
+
 def cosechar_congreso() -> list:
     """Censo, intervenciones y votaciones del Congreso, acumuladas en state/.
 
@@ -3890,6 +3964,15 @@ def cosechar_congreso() -> list:
         estado = cd.acumular(estado, cd.cosechar_historico(get, log, estado), log)
     except Exception as exc:                                  # noqa: BLE001
         log(f"  no se pudo cosechar el histórico: {exc}")
+
+    # El voto nominal de las últimas votaciones, para poder enseñar quién votó
+    # qué en cada una (no solo los totales por persona).
+    try:
+        cd.completar_detalle(get, log, estado)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  no se pudo completar el detalle de votaciones: {exc}")
+    CONGRESO_ESTADO.clear()
+    CONGRESO_ESTADO.update(estado)
 
     # Las intervenciones son un volcado de decenas de megas: no se guarda
     # entero, solo el resumen por persona que cabe en el repositorio.
@@ -4017,6 +4100,286 @@ def _fecha_int(f: str) -> str:
     return f"{m.group(3)}{m.group(2)}{m.group(1)}" if m else ""
 
 
+# ---------------------------------------------------------------------------
+# Votaciones: quién votó qué, votación a votación
+# ---------------------------------------------------------------------------
+
+VOTO_TXT = {"S": "Sí", "N": "No", "A": "Abstención", "X": "No vota"}
+VOTO_CLASE = {"S": "si", "N": "no", "A": "abs", "X": "nv"}
+
+
+def _resultado_votacion(d: dict) -> tuple[str, str]:
+    """(clase, texto). Mayoría simple salvo en la votación de conjunto de una
+    ley orgánica, que pide 176 síes (artículo 81 de la Constitución)."""
+    si, no = (d.get("tot") or [0, 0])[:2]
+    si, no = si or 0, no or 0
+    if d.get("asent"):
+        return "aprobada", "Aprobada por asentimiento"
+    texto = " ".join([d.get("t", ""), d.get("a", ""), d.get("sub", "")]).lower()
+    if "orgánica" in texto and "conjunto" in texto:
+        return (("aprobada", "Aprobada: supera los 176 síes que pide una ley orgánica")
+                if si >= 176 else
+                ("rechazada", "Rechazada: no llega a los 176 síes que pide una ley orgánica"))
+    if si > no:
+        return "aprobada", "Aprobada"
+    if si == no:
+        return "empate", "Empate"
+    return "rechazada", "Rechazada"
+
+
+def _barra_votos(c: list, total: int | None = None) -> str:
+    """Barra apilada Sí / No / Abstención / No vota, en proporción."""
+    c = [x or 0 for x in (c or [0, 0, 0, 0])[:4]]
+    total = total or sum(c) or 1
+    trozos = "".join(
+        f'<i class="vb-{VOTO_CLASE[k]}" style="width:{100 * n / total:.2f}%"></i>'
+        for k, n in zip("SNAX", c) if n)
+    return f'<span class="vbarra" aria-hidden="true">{trozos}</span>'
+
+
+def _tarjeta_votacion(d: dict, cd, fichas_por_clave: dict, nombres: list,
+                      compacta: bool = False) -> str:
+    """Una votación: qué se votaba, el resultado, qué votó cada grupo y quién
+    se apartó del suyo. Todo servido en HTML; el hemiciclo lo dibuja el
+    script encima, si carga."""
+    clase, veredicto = _resultado_votacion(d)
+    tot = [x or 0 for x in (d.get("tot") or [0, 0, 0, 0])]
+    asunto = d.get("a") or d.get("t") or "Votación"
+    tipo = d.get("t") if d.get("a") and d.get("t") != d.get("a") else ""
+    ancla = cd.ancla_votacion(d)
+    cifras = (f'<span class="vt-c vt-si"><b>{tot[0]}</b> sí</span>'
+              f'<span class="vt-c vt-no"><b>{tot[1]}</b> no</span>'
+              f'<span class="vt-c vt-abs"><b>{tot[2]}</b> abst.</span>'
+              f'<span class="vt-c vt-nv"><b>{tot[3]}</b> no votan</span>')
+    cab = (f'<p class="vt-kicker">Votación {esc_html(d.get("n") or "")}'
+           + (f' · {esc_html(tipo)}' if tipo else "") + '</p>'
+           f'<h3 class="vt-h">{esc_html(asunto)}</h3>'
+           + (f'<p class="vt-sub">{esc_html(d["sub"])}</p>' if d.get("sub") else ""))
+    if compacta:
+        return (f'<li class="vt-fila"><a href="{esc_attr(d["f"])}.html#{ancla}">'
+                f'<span class="vt-res {clase}">{esc_html(veredicto.split(":")[0])}</span>'
+                f'<span class="vt-fila-t">{esc_html(asunto)}'
+                + (f' <em>{esc_html(d["sub"])}</em>' if d.get("sub") else "") + '</span>'
+                f'{_barra_votos(tot)}<span class="vt-fila-n">{tot[0]}–{tot[1]}–{tot[2]}</span>'
+                f'</a></li>')
+
+    # Qué votó cada grupo, en el orden del hemiciclo
+    pg = cd.postura_grupos(d.get("g"))
+    filas = []
+    orden_cod = sorted((d.get("g") or {}).keys(),
+                       key=lambda c: cd.ORDEN_GRUPO.get(cd.COD_GRUPO.get(c, ""), 99))
+    for cod in orden_cod:
+        c = d["g"][cod]
+        largo = cd.COD_GRUPO.get(cod, "")
+        corto = cd.GRUPO_CORTO.get(largo, cod)
+        color = cd.GRUPO_COLOR.get(largo, "#8d8d8d")
+        mayor = VOTO_TXT.get(pg.get(cod, ""), "Dividido")
+        clase_m = VOTO_CLASE.get(pg.get(cod, ""), "div")
+        filas.append(
+            f'<li><span class="vg-g"><i style="background:{color}"></i>{esc_html(corto)}</span>'
+            f'<span class="vg-v vv-{clase_m}">{esc_html(mayor)}</span>'
+            f'{_barra_votos(c)}'
+            f'<span class="vg-n">{c[0]} sí · {c[1]} no · {c[2]} abst.'
+            + (f' · {c[3]} no votan' if c[3] else "") + '</span></li>')
+
+    # Nombres por sentido del voto, y quién se apartó de su grupo
+    por_voto: dict = {"S": [], "N": [], "A": [], "X": []}
+    disidentes = []
+    for i, letra in enumerate(d.get("v") or ""):
+        if letra == "-" or i >= len(nombres):
+            continue
+        f = fichas_por_clave.get(nombres[i])
+        if not f:
+            continue
+        por_voto[letra].append(f)
+        cods = [k for k, v in cd.COD_GRUPO.items() if v == f.get("grupo")]
+        postura = next((pg[k] for k in cods if k in pg), None)
+        if letra in "SNA" and postura and postura != letra:
+            disidentes.append((f, letra, postura))
+
+    def _nombre(f):
+        corto = cd.GRUPO_CORTO.get(f.get("grupo", ""), "")
+        return (f'<a href="../diputados/{esc_attr(f["slug"])}.html">{esc_html(f["natural"])}</a>'
+                f'<span class="ref">{esc_html(corto)}</span>')
+
+    disid = ""
+    if disidentes:
+        disid = ('<p class="vt-disid"><b>Votaron distinto que su grupo:</b> ' + "; ".join(
+            f'<a href="../diputados/{esc_attr(f["slug"])}.html">{esc_html(f["natural"])}</a> '
+            f'({esc_html(cd.GRUPO_CORTO.get(f.get("grupo", ""), ""))}: votó '
+            f'{VOTO_TXT[l].lower()}, su grupo {VOTO_TXT[p].lower()})'
+            for f, l, p in disidentes[:12])
+            + (f' y {len(disidentes) - 12} más' if len(disidentes) > 12 else "") + '.</p>')
+
+    return (
+        f'<article class="votacion" id="{ancla}" data-v="{esc_attr(ancla)}">'
+        f'<header class="vt-cab">{cab}</header>'
+        f'<div class="vt-resumen"><span class="vt-res {clase}">{esc_html(veredicto)}</span>'
+        f'<span class="vt-cifras">{cifras}</span></div>'
+        f'{_barra_votos(tot)}'
+        f'<div class="vt-cuerpo"><div class="vt-mio" hidden></div>'
+        f'<div class="vt-hemi" aria-hidden="true"></div>'
+        f'<ul class="vt-grupos">{"".join(filas)}</ul></div>'
+        f'{disid}'
+        f'<details class="vt-nombres"><summary>Quién votó qué, uno a uno</summary>'
+        f'<div class="vn"></div></details>'
+        f'<p class="vt-fuente"><a class="srclink" href="{esc_attr(d["url"])}" target="_blank" '
+        f'rel="noopener">Datos oficiales de esta votación ↗</a></p>'
+        f'</article>')
+
+
+def renderizar_votaciones(fichas: list) -> list:
+    """/votaciones/: un índice por sesiones y una página por día de pleno con
+    cada votación desplegada. Lo que se quería ver claro: qué votó cada
+    diputado en cada votación, no solo sus totales."""
+    if not TEMPLATE_NORMA.exists() or not CONGRESO_ESTADO.get("detalle"):
+        return []
+    import congreso_datos as cd
+    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    hoy = dt.date.today().isoformat()
+    detalle = cd.detalle_ordenado(CONGRESO_ESTADO)
+    nombres = CONGRESO_ESTADO.get("det_nombres") or []
+    por_clave = {f.get("clave"): f for f in fichas if f.get("clave")}
+
+    # Asientos del hemiciclo, en el orden de la página de diputados, para que
+    # el script pinte cada votación sin recalcular la geometría.
+    orden = cd.orden_hemiciclo(fichas)
+    puntos = cd.hemiciclo_puntos(len(orden))
+    asientos = [[round(x, 1), round(y, 1), round(r, 1), f["slug"], f["natural"],
+                 cd.GRUPO_CORTO.get(f.get("grupo", ""), ""),
+                 cd.GRUPO_COLOR.get(f.get("grupo", ""), "#8d8d8d")]
+                for (x, y, r), f in zip(puntos, orden)]
+    idx_nombre = {n: i for i, n in enumerate(nombres)}
+    pos_asiento = [idx_nombre.get(f.get("clave")) for f in orden]
+
+    def _cadena_hemi(d):
+        v = d.get("v") or ""
+        return "".join(v[i] if i is not None and i < len(v) else "-" for i in pos_asiento)
+
+    dias: dict = {}
+    for d in detalle:
+        dias.setdefault(d["f"], []).append(d)
+    salidas = []
+    VOTACIONES_DIR.mkdir(exist_ok=True)
+    buscador = (
+        '<div class="vt-buscar"><label for="vt-quien">¿Qué votó tu diputado?</label>'
+        '<input id="vt-quien" list="vt-lista" placeholder="Escribe un nombre…" autocomplete="off">'
+        '<datalist id="vt-lista">'
+        + "".join(f'<option value="{esc_attr(f["natural"])}">' for f in
+                  sorted(fichas, key=lambda f: f.get("natural", "")))
+        + '</datalist><button type="button" id="vt-borrar" hidden>Quitar</button></div>')
+    leyenda = ('<p class="vt-leyenda"><span><i class="vb-si"></i>Sí</span>'
+               '<span><i class="vb-no"></i>No</span><span><i class="vb-abs"></i>Abstención</span>'
+               '<span><i class="vb-nv"></i>No vota</span></p>')
+    fechas = sorted(dias, reverse=True)
+    for n, fecha in enumerate(fechas):
+        lista = sorted(dias[fecha], key=lambda d: (d.get("s") or 0, d.get("n") or 0))
+        datos = {"asientos": asientos,
+                 "votos": {cd.ancla_votacion(d): _cadena_hemi(d) for d in lista}}
+        tarjetas = "".join(_tarjeta_votacion(d, cd, por_clave, nombres) for d in lista)
+        vecinos = []
+        if n + 1 < len(fechas):
+            vecinos.append(f'<a class="srclink" href="{fechas[n + 1]}.html">← Pleno anterior '
+                           f'({esc_html(fmt_date_es(fechas[n + 1]))})</a>')
+        if n > 0:
+            vecinos.append(f'<a class="srclink" href="{fechas[n - 1]}.html">Pleno siguiente '
+                           f'({esc_html(fmt_date_es(fechas[n - 1]))}) →</a>')
+        aprobadas = sum(1 for d in lista if _resultado_votacion(d)[0] == "aprobada")
+        datos_json = json.dumps(datos, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        cuerpo = (
+            f'{buscador}{leyenda}'
+            f'<div class="votaciones">{tarjetas}</div>'
+            f'<p class="vt-vecinos">{" · ".join(vecinos)}</p>'
+            f'<script type="application/json" id="vt-datos">'
+            f'{datos_json}'
+            f'</script><script src="/assets/votaciones.js" defer></script>')
+        url = f"{SITE_URL}votaciones/{fecha}.html"
+        _pagina_suelta(plantilla, VOTACIONES_DIR, f"{fecha}.html", {
+            "TITLE": esc_html(f"Votaciones del Congreso del {fmt_date_es(fecha)}: quién votó qué"
+                              " | La Tercera Cámara"),
+            "META_DESC": esc_attr(
+                f"Las {len(lista)} votaciones del Pleno del Congreso del {fmt_date_es(fecha)}: "
+                f"resultado, qué votó cada grupo y cada diputado, y quién se apartó de su grupo."),
+            "CANONICAL": url,
+            "JSONLD": jsonld_script([{"@type": "WebPage", "url": url, "inLanguage": "es-ES",
+                                      "dateModified": hoy,
+                                      "name": f"Votaciones del Congreso del {fmt_date_es(fecha)}"}]),
+            "EDITION_DATE": esc_html(fmt_date_es(fecha)),
+            "MIGA": ('<a href="../">Portada</a> › <a href="../diputados/">Parlamento</a> › '
+                     '<a href="./">Votaciones</a> › '
+                     f'<span aria-current="page">{esc_html(fmt_date_es(fecha))}</span>'),
+            "KICKER": "Votaciones del Pleno",
+            "HEADLINE": esc_html(f"Qué se votó el {fmt_date_es(fecha)} y quién votó qué"),
+            "STANDFIRST": esc_html(
+                f"{len(lista)} votaciones en el Pleno del Congreso, {aprobadas} aprobadas. "
+                "Para cada una: el resultado, lo que votó cada grupo, quién se apartó del suyo "
+                "y el voto de cada diputado, escaño a escaño."),
+            "FICHA": (f"<dt>Votaciones</dt><dd>{len(lista)}</dd>"
+                      f"<dt>Aprobadas</dt><dd>{aprobadas}</dd>"
+                      f"<dt>Rechazadas</dt><dd>{len(lista) - aprobadas}</dd>"),
+            "CUERPO": cuerpo,
+            "FUENTE": ("Fuente: datos abiertos de votaciones del Congreso de los Diputados. "
+                       "El orden de los escaños dentro de cada grupo es alfabético, no el real."),
+            "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+        })
+        salidas.append({"url": url, "lastmod": hoy})
+
+    # Índice: cada pleno con sus votaciones en una línea
+    secciones = []
+    for fecha in fechas:
+        lista = sorted(dias[fecha], key=lambda d: (d.get("s") or 0, d.get("n") or 0))
+        secciones.append(
+            f'<h2 class="rotulo"><a href="{fecha}.html">{esc_html(fmt_date_es(fecha))}</a>'
+            f' <span class="ref">{len(lista)} votaciones</span></h2>'
+            f'<ul class="vt-filas">'
+            + "".join(_tarjeta_votacion(d, cd, por_clave, nombres, compacta=True) for d in lista)
+            + '</ul>')
+    url = f"{SITE_URL}votaciones/"
+    ultima = fechas[0] if fechas else hoy
+    _pagina_suelta(plantilla, VOTACIONES_DIR, "index.html", {
+        "TITLE": "Votaciones del Congreso: qué se vota y quién vota qué | La Tercera Cámara",
+        "META_DESC": esc_attr("Cada votación del Pleno del Congreso: resultado, voto de cada "
+                              "grupo y de cada diputado, y quién se aparta de su grupo."),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": "Votaciones del Congreso",
+                                  "url": url, "inLanguage": "es-ES", "dateModified": hoy}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+        "MIGA": ('<a href="../">Portada</a> › <a href="../diputados/">Parlamento</a> › '
+                 '<span aria-current="page">Votaciones</span>'),
+        "KICKER": "Parlamento",
+        "HEADLINE": "Qué se vota en el Congreso y quién vota qué",
+        "STANDFIRST": ("Todas las votaciones del Pleno, de la más reciente a la más antigua. "
+                       "Entra en cualquier día para ver el voto de cada diputado."),
+        "FICHA": (f"<dt>Último pleno</dt><dd>{esc_html(fmt_date_es(ultima))}</dd>"
+                  f"<dt>Votaciones</dt><dd>{len(detalle)}</dd>"
+                  f"<dt>Plenos</dt><dd>{len(fechas)}</dd>"),
+        "CUERPO": leyenda + "".join(secciones),
+        "FUENTE": "Fuente: datos abiertos de votaciones del Congreso de los Diputados.",
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    salidas.append({"url": url, "lastmod": hoy})
+
+    # Para la portada y la página de diputados: el último pleno, en corto.
+    if fechas:
+        lista = sorted(dias[fechas[0]], key=lambda d: (d.get("s") or 0, d.get("n") or 0))
+        # Primero las más reñidas: son las que cuentan algo.
+        destacadas = sorted(lista, key=lambda d: abs((d["tot"][0] or 0) - (d["tot"][1] or 0)))[:5]
+        frag = (f'<p class="vt-ultimo">Último pleno con votaciones: '
+                f'<a href="/votaciones/{fechas[0]}.html">{esc_html(fmt_date_es(fechas[0]))}</a> · '
+                f'{len(lista)} votaciones. Las más ajustadas:</p>'
+                f'<ul class="vt-filas">'
+                + "".join(_tarjeta_votacion(d, cd, por_clave, nombres, compacta=True)
+                          .replace(f'href="{d["f"]}.html', f'href="/votaciones/{d["f"]}.html')
+                          for d in destacadas)
+                + f'</ul><p><a class="srclink" href="/votaciones/{fechas[0]}.html">Ver qué votó '
+                  f'cada diputado →</a> · <a class="srclink" href="/votaciones/">Todas las '
+                  f'votaciones</a></p>')
+        DATOS_DIR.mkdir(exist_ok=True)
+        (DATOS_DIR / "ultimas-votaciones.html").write_text(frag, encoding="utf-8")
+    log(f"votaciones/: {len(fechas)} plenos, {len(detalle)} votaciones")
+    return salidas
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -4075,14 +4438,32 @@ def renderizar_diputados(fichas: list) -> list:
                               + '</span></li>')
             cuerpo.append("</ul>")
         if f["ultimos_votos"]:
-            cuerpo.append('<h2 class="rotulo">Últimos votos</h2><ul class="indice">')
-            etiqueta = {"si": "A favor", "no": "En contra",
-                        "abstencion": "Abstención", "no_vota": "No votó"}
+            etiqueta = {"si": "Sí", "no": "No", "abstencion": "Abstención", "no_vota": "No vota"}
+            clase = {"si": "si", "no": "no", "abstencion": "abs", "no_vota": "nv"}
+            cuerpo.append('<h2 class="rotulo" id="votos">Cómo ha votado</h2>'
+                          '<p class="vt-leyenda-dip">Sus últimas votaciones en el Pleno, de la más '
+                          'reciente a la más antigua. En rojo, cuando votó distinto que su grupo.</p>'
+                          '<ul class="votos-dip">')
             for v in f["ultimos_votos"]:
-                coda = "" if v.get("con_su_grupo", True) else " · distinto a su grupo"
-                cuerpo.append(f'<li>{esc_html(v["asunto"])}<span class="ref">'
-                              f'{esc_html(v["fecha"])} · {etiqueta.get(v["voto"], v["voto"])}'
-                              f'{coda}</span></li>')
+                distinto = not v.get("con_su_grupo", True)
+                asunto = esc_html(v.get("asunto") or "Votación")
+                destino = (v.get("enlace") or "").replace(".html#", ".html?d=" + f["slug"] + "#")
+                enlace = (f'<a href="../votaciones/{esc_attr(destino)}">{asunto}</a>'
+                          if destino else asunto)
+                que = (f'<span class="vd-que">{esc_html(v["que"])}</span>'
+                       if v.get("que") and v.get("que") != v.get("asunto") else "")
+                grupo = (f'<span class="vd-grupo">Su grupo votó '
+                         f'{etiqueta.get(v.get("grupo_voto"), "").lower()}</span>'
+                         if distinto and v.get("grupo_voto") else "")
+                fecha = v.get("fecha", "")
+                fecha_txt = (f"{fecha[8:10]}/{fecha[5:7]}/{fecha[0:4]}"
+                             if re.fullmatch(r"\d{4}-\d{2}-\d{2}", fecha) else fecha)
+                cuerpo.append(
+                    f'<li class="{"vd-distinto" if distinto else ""}">'
+                    f'<span class="vd-voto vv-{clase.get(v["voto"], "nv")}">'
+                    f'{etiqueta.get(v["voto"], v["voto"])}</span>'
+                    f'<span class="vd-txt">{enlace}{que}{grupo}</span>'
+                    f'<span class="vd-fecha">{esc_html(fecha_txt)}</span></li>')
             cuerpo.append("</ul>")
         if not cuerpo:
             cuerpo = ["<p>Todavía no hay actividad registrada de este diputado en las "
@@ -4198,6 +4579,10 @@ def renderizar_diputados(fichas: list) -> list:
         f'<span class="ref">{conteo.get(largo, 0)}</span></a></li>'
         for largo, corto, slug, color in cd.GRUPOS if conteo.get(largo))
 
+    try:
+        ultimas_vt = (DATOS_DIR / "ultimas-votaciones.html").read_text(encoding="utf-8")
+    except Exception:                                         # noqa: BLE001
+        ultimas_vt = ""
     # El SVG y la leyenda ya van servidos; el <div> de la app y el script solo
     # añaden la capa interactiva encima. Si el script no carga, lo de debajo
     # sigue siendo una página completa.
@@ -4207,6 +4592,8 @@ def renderizar_diputados(fichas: list) -> list:
         f'<p class="hemi-nota">Pasa el ratón por cualquier escaño para ver quién lo ocupa. '
         f'Dentro de cada grupo el orden es alfabético: el Congreso no publica el plano '
         f'de asientos, así que ninguna silla del dibujo es la de nadie en concreto.</p>'
+        + (f'<h2 class="rotulo" id="votaciones">Lo último que se ha votado</h2>{ultimas_vt}'
+           if ultimas_vt else "") +
         f'<h2 class="rotulo" id="activos">Los que más intervienen</h2>'
         f'<ul class="rejilla-dip">{"".join(_tarjeta_diputado(f) for f in activos)}</ul>'
         f'<h2 class="rotulo" id="grupos">Por grupo parlamentario</h2>'
@@ -4432,7 +4819,8 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
         + lista([("/", "Edición de hoy", ""), ("/ediciones/", "Archivo de ediciones", len(ediciones))]
                 + ediciones)
         + '<h2 class="rotulo">Parlamento</h2>'
-        + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or "")])
+        + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
+                 ("/votaciones/", "Votaciones del Pleno: quién votó qué", "")])
         + '<h3 class="rotulo-sub">Por grupo</h3>' + lista(grupos)
         + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
         + '<h2 class="rotulo">Consultar</h2>'
@@ -4560,6 +4948,7 @@ def renderizar() -> None:
     try:
         fichas_dip = cosechar_congreso()
         extras += renderizar_diputados(fichas_dip)
+        extras += renderizar_votaciones(fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
         log(f"diputados/: no se pudo generar ({exc})")
 
@@ -4593,6 +4982,12 @@ def renderizar() -> None:
     log(f"indexnow.json: {len(urls)} URLs para notificar")
 
 
+# Sube cuando cambie lo que materia_redaccion() extrae: las piezas ya
+# publicadas se vuelven a leer (40 por pase) y Gemini las redacta de nuevo.
+# v2: anexo de los convenios; no se quita lo que repite el título.
+MATERIA_VERSION = 2
+
+
 def completar_materia(maximo: int = 40) -> int:
     """Pone al día las piezas publicadas antes de que existiera «materia».
 
@@ -4616,13 +5011,14 @@ def completar_materia(maximo: int = 40) -> int:
             if hechas >= maximo:
                 break
             ref, titulo = s.get("ref", ""), s.get("titulo_oficial", "")
-            if "materia" in s or not re.fullmatch(r"BOE-[A-Z]-\d{4}-\d+", ref) or not titulo:
+            if s.get("materia_v") == MATERIA_VERSION or not re.fullmatch(r"BOE-[A-Z]-\d{4}-\d+", ref) or not titulo:
                 continue
             hechas += 1
             texto = texto_disposicion(ref)
             if not texto:
                 continue                     # se reintenta en otro pase
             s["materia"] = materia_redaccion(texto, titulo)
+            s["materia_v"] = MATERIA_VERSION
             nuevos = datos_clave(texto)
             datos = s.setdefault("datos", {})
             for k in ("vigor", "aplica_desde"):
@@ -4659,7 +5055,7 @@ def main() -> None:
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
-                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR):
+                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
