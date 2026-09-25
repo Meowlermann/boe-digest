@@ -1,10 +1,10 @@
 {
-  "inicio": "2026-09-24T17:43:50.386384+00:00",
+  "inicio": "2026-09-25T05:40:23.515703+00:00",
   "peticiones": [
     {
-      "url": "https://www.boe.es/boe/dias/2026/09/24/index.php",
+      "url": "https://www.boe.es/boe/dias/2026/09/25/index.php",
       "status": 200,
-      "bytes": 184968
+      "bytes": 173502
     },
     {
       "url": "https://www.congreso.es/ultimas-publicaciones-oficiales",
@@ -29,6 +29,86 @@
     {
       "url": "https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/senado/boletinesoficiales/index.html",
       "status": 403
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19845",
+      "status": 200,
+      "bytes": 15750
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19846",
+      "status": 200,
+      "bytes": 53637
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19847",
+      "status": 200,
+      "bytes": 22616
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19848",
+      "status": 200,
+      "bytes": 69431
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19849",
+      "status": 200,
+      "bytes": 45398
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19904",
+      "status": 200,
+      "bytes": 15913
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19905",
+      "status": 200,
+      "bytes": 31058
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19906",
+      "status": 200,
+      "bytes": 30939
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19907",
+      "status": 200,
+      "bytes": 30855
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19908",
+      "status": 200,
+      "bytes": 31005
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19909",
+      "status": 200,
+      "bytes": 30881
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19910",
+      "status": 200,
+      "bytes": 30769
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19911",
+      "status": 200,
+      "bytes": 31031
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19912",
+      "status": 200,
+      "bytes": 30935
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19913",
+      "status": 200,
+      "bytes": 31045
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19914",
+      "status": 200,
+      "bytes": 14670
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19762",
@@ -109,6 +189,126 @@
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19838",
       "status": 200,
       "bytes": 41672
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19695",
+      "status": 200,
+      "bytes": 26907
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19749",
+      "status": 200,
+      "bytes": 30986
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19750",
+      "status": 200,
+      "bytes": 56824
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19751",
+      "status": 200,
+      "bytes": 319580
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19752",
+      "status": 200,
+      "bytes": 27605
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19753",
+      "status": 200,
+      "bytes": 38784
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19754",
+      "status": 200,
+      "bytes": 15479
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19755",
+      "status": 200,
+      "bytes": 40816
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19756",
+      "status": 200,
+      "bytes": 20501
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19757",
+      "status": 200,
+      "bytes": 115810
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19758",
+      "status": 200,
+      "bytes": 26919
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19761",
+      "status": 200,
+      "bytes": 20423
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19628",
+      "status": 200,
+      "bytes": 49343
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19629",
+      "status": 200,
+      "bytes": 51126
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19634",
+      "status": 200,
+      "bytes": 333124
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19674",
+      "status": 200,
+      "bytes": 18415
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19675",
+      "status": 200,
+      "bytes": 64665
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19676",
+      "status": 200,
+      "bytes": 15705
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19677",
+      "status": 200,
+      "bytes": 15736
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19678",
+      "status": 200,
+      "bytes": 15261
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19679",
+      "status": 200,
+      "bytes": 37473
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19680",
+      "status": 200,
+      "bytes": 16934
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19681",
+      "status": 200,
+      "bytes": 168560
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19682",
+      "status": 200,
+      "bytes": 18320
     }
   ],
   "403": {
@@ -116,34 +316,30 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;9315d617&#46;1790271840&#46;852d4c38 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;d0cd817&#46;1790314833&#46;674f97 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#4"
   },
   "senado_fallback": [
+    467,
     466,
     465,
     464,
     463,
     462,
     461,
-    460,
-    459
+    460
   ],
   "resumen": {
-    "boe_entradas": 82,
+    "boe_entradas": 95,
     "congreso_docs": 3,
     "senado_docs": 0
   },
   "titulares_descartados": [
-    "CAMBIAN LAS REGLAS: LOS MODELOS, PLAZOS — acaba en una cláusula de una sola palabra",
-    "CAMBIA POR LA QUE SE APRUEBAN LOS MODELOS, PLAZOS — acaba en una cláusula de una sola palabra",
-    "MODIFICA POR LA QUE SE APRUEBAN LOS MODELOS, PLAZOS — acaba en una cláusula de una sola palabra",
-    "ACUERDO FIRMADO: ENTRE LA EMBAJADA DE ESPAÑA EN EGIPTO Y CAIXABANK, SA — acaba en una cláusula de una sola palabra",
-    "PUBLICA EL CONVENIO ENTRE LA EMBAJADA DE ESPAÑA EN EGIPTO Y CAIXABANK, SA — acaba en una cláusula de una sola palabra",
-    "ACUERDO FIRMADO: ENTRE LA EMBAJADA DE ESPAÑA EN MÉXICO Y BBVA MÉXICO, SA — acaba en una cláusula de una sola palabra",
-    "PUBLICA EL CONVENIO ENTRE LA EMBAJADA DE ESPAÑA EN MÉXICO Y BBVA MÉXICO, SA — acaba en una cláusula de una sola palabra",
-    "ACUERDO CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA, S.M.E — acaba en una cláusula de una sola palabra",
-    "ACUERDO FIRMADO: CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA — acaba en una cláusula de una sola palabra",
-    "PUBLICA EL CONVENIO CON LA EMPRESA NACIONAL DE RESIDUOS RADIACTIVOS, SA — acaba en una cláusula de una sola palabra"
+    "ACUERDO FIRMADO: ENTRE LA EMBAJADA DE ESPAÑA EN ECUADOR E IBERIA LAE, SA — acaba en una cláusula de una sola palabra",
+    "PUBLICA EL CONVENIO ENTRE LA EMBAJADA DE ESPAÑA EN ECUADOR E IBERIA LAE, SA — acaba en una cláusula de una sola palabra",
+    "ACUERDO FIRMADO: ENTRE LA EMBAJADA DE ESPAÑA EN ITALIA Y CAIXABANK, SA — acaba en una cláusula de una sola palabra",
+    "PUBLICA EL CONVENIO ENTRE LA EMBAJADA DE ESPAÑA EN ITALIA Y CAIXABANK, SA — acaba en una cláusula de una sola palabra",
+    "ACUERDO FIRMADO: ENTRE LA EMBAJADA DE ESPAÑA EN ITALIA Y SACYR, SA — acaba en una cláusula de una sola palabra",
+    "PUBLICA EL CONVENIO ENTRE LA EMBAJADA DE ESPAÑA EN ITALIA Y SACYR, SA — acaba en una cláusula de una sola palabra"
   ],
-  "fin": "2026-09-24T17:44:13.804465+00:00"
+  "fin": "2026-09-25T05:40:53.364297+00:00"
 }
