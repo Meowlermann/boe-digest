@@ -1075,3 +1075,126 @@ h1.display{
     display:block; position:fixed; inset:0; z-index:44; background:rgba(20,23,28,.32);
   }
 }
+
+/* ================================================================ VOTACIONES
+   Qué se votó y qué votó cada uno. Los colores del voto son fijos y no los de
+   la casa: verde sí, rojo no, ámbar abstención, gris no vota. */
+:root{ --v-si:#2f8a4e; --v-no:#c23b2e; --v-abs:#c98a0b; --v-nv:#a4a9ae; --v-fuera:transparent; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --v-si:#4fb874; --v-no:#e5685a; --v-abs:#e0a93a; --v-nv:#6b717a; } }
+:root[data-theme="dark"]{ --v-si:#4fb874; --v-no:#e5685a; --v-abs:#e0a93a; --v-nv:#6b717a; }
+
+.vbarra{ display:flex; height:8px; border-radius:4px; overflow:hidden; background:var(--surface-2);
+  min-width:60px; }
+.vbarra i{ display:block; height:100%; }
+.vb-si{ background:var(--v-si); } .vb-no{ background:var(--v-no); }
+.vb-abs{ background:var(--v-abs); } .vb-nv{ background:var(--v-nv); }
+.vv-si{ color:var(--v-si); } .vv-no{ color:var(--v-no); } .vv-abs{ color:var(--v-abs); }
+.vv-nv, .vv-div, .vv-fuera{ color:var(--ink-soft); }
+
+.vt-leyenda{ display:flex; flex-wrap:wrap; gap:14px; font:500 12px/1 'IBM Plex Mono',monospace;
+  color:var(--ink-soft); margin:6px 0 14px; }
+.vt-leyenda span{ display:inline-flex; align-items:center; gap:6px; }
+.vt-leyenda i{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+
+.vt-buscar{ position:sticky; top:52px; z-index:5; display:flex; flex-wrap:wrap; align-items:center;
+  gap:8px 10px; padding:10px 12px; margin:4px 0 8px; background:var(--surface);
+  border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow); }
+.vt-buscar label{ font-weight:600; font-size:14px; }
+.vt-buscar input{ flex:1 1 220px; min-width:0; font:inherit; font-size:15px; padding:8px 10px;
+  border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); }
+.vt-buscar button{ font:inherit; font-size:13px; padding:7px 10px; border-radius:8px;
+  border:1px solid var(--border); background:var(--surface-2); color:var(--ink); cursor:pointer; }
+
+.votaciones{ display:flex; flex-direction:column; gap:18px; }
+.votacion{ background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:16px; box-shadow:var(--shadow); scroll-margin-top:120px; }
+.votacion:target{ outline:2px solid var(--congreso); outline-offset:2px; }
+.vt-kicker{ margin:0 0 4px; font:600 11px/1.3 'IBM Plex Mono',monospace; text-transform:uppercase;
+  letter-spacing:.06em; color:var(--congreso); }
+.vt-h{ margin:0; font:600 17px/1.35 'Work Sans',sans-serif; color:var(--ink); text-transform:none; letter-spacing:0; }
+.vt-sub{ margin:4px 0 0; font-size:14px; color:var(--ink-soft); }
+.vt-resumen{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin:12px 0 8px; }
+.vt-res{ display:inline-block; font:700 12px/1 'Work Sans',sans-serif; text-transform:uppercase;
+  letter-spacing:.04em; padding:6px 9px; border-radius:6px; color:#fff; white-space:nowrap; }
+.vt-res.aprobada{ background:var(--v-si); } .vt-res.rechazada{ background:var(--v-no); }
+.vt-res.empate{ background:var(--v-abs); }
+.vt-cifras{ display:flex; flex-wrap:wrap; gap:4px 12px; font-size:14px; color:var(--ink-soft); }
+.vt-c b{ font-size:16px; } .vt-si b{ color:var(--v-si); } .vt-no b{ color:var(--v-no); }
+.vt-abs b{ color:var(--v-abs); }
+.votacion > .vbarra{ height:10px; }
+.vt-cuerpo{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:16px;
+  align-items:start; margin-top:14px; }
+.vt-hemi{ min-height:120px; }
+.vt-svg{ width:100%; height:auto; display:block; }
+.vs{ stroke:var(--surface); stroke-width:.8; cursor:pointer; }
+.vs-si{ fill:var(--v-si); } .vs-no{ fill:var(--v-no); } .vs-abs{ fill:var(--v-abs); }
+.vs-nv{ fill:var(--v-nv); } .vs-fuera{ fill:none; stroke:var(--border); }
+.vs:hover{ stroke:var(--ink); stroke-width:2; }
+.vs.yo{ stroke:var(--ink); stroke-width:3.5; }
+.vt-mio{ grid-column:1 / -1; font-size:15px; padding:8px 10px; border-radius:8px;
+  background:var(--surface-2); }
+.vt-mio b{ font-weight:700; }
+.vt-grupos{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px; }
+.vt-grupos li{ display:grid; grid-template-columns:78px 84px minmax(40px,1fr); gap:1px 8px;
+  align-items:center; font-size:13px; }
+.vg-g{ display:inline-flex; align-items:center; gap:6px; font-weight:600; }
+.vg-g i{ width:9px; height:9px; border-radius:50%; flex:none; }
+.vg-v{ font-weight:700; }
+.vg-n{ grid-column:3; font-size:11.5px; color:var(--ink-soft); }
+.vt-disid{ margin:12px 0 0; font-size:14px; line-height:1.55; padding:8px 10px;
+  border-left:3px solid var(--v-no); background:var(--surface-2); border-radius:0 8px 8px 0; }
+.vt-nombres{ margin-top:12px; }
+.vt-nombres summary{ cursor:pointer; font-weight:600; font-size:14px; color:var(--congreso); }
+.vn{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:10px; }
+.vn-t{ margin:0 0 6px; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.04em; }
+.vn-l{ list-style:none; margin:0; padding:0; font-size:13px; line-height:1.7; }
+.vn-l a{ color:var(--ink); text-decoration:none; }
+.vn-l a:hover{ text-decoration:underline; }
+.vn-l .ref{ margin-left:6px; font-size:11px; color:var(--ink-soft); }
+.vt-fuente{ margin:10px 0 0; font-size:12px; }
+.vt-vecinos{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin-top:18px; }
+
+.vt-tip{ position:absolute; z-index:50; width:180px; padding:8px 10px; border-radius:8px;
+  background:var(--ink); color:var(--bg); font-size:12.5px; line-height:1.35; pointer-events:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.25); }
+.vt-tip b{ display:block; font-size:13px; } .vt-tip span{ opacity:.75; margin-right:6px; }
+.vt-tip em{ font-style:normal; font-weight:700; }
+.vt-tip .vv-si{ color:#7ee2a0; } .vt-tip .vv-no{ color:#ff9a8d; } .vt-tip .vv-abs{ color:#ffd479; }
+
+/* Lista compacta: índice, portada, página de diputados */
+.vt-filas{ list-style:none; margin:0 0 18px; padding:0; display:flex; flex-direction:column; gap:2px; }
+.vt-fila a{ display:grid; grid-template-columns:auto minmax(0,1fr) 90px auto; gap:4px 10px;
+  align-items:center; padding:8px 6px; border-bottom:1px solid var(--border);
+  color:var(--ink); text-decoration:none; font-size:14px; }
+.vt-fila a:hover{ background:var(--surface-2); }
+.vt-fila .vt-res{ font-size:10.5px; padding:4px 6px; }
+.vt-fila-t{ line-height:1.35; }
+.vt-fila-t em{ display:block; font-style:normal; font-size:12px; color:var(--ink-soft); }
+.vt-fila-n{ font:500 12px/1 'IBM Plex Mono',monospace; color:var(--ink-soft); white-space:nowrap; }
+.vt-ultimo{ font-size:14px; color:var(--ink-soft); margin:0 0 6px; }
+.portada-vt{ margin-bottom:14px; }
+
+/* Ficha de diputado: cómo ha votado */
+.vt-leyenda-dip{ font-size:13.5px; color:var(--ink-soft); margin:0 0 8px; }
+.votos-dip{ list-style:none; margin:0; padding:0; }
+.votos-dip li{ display:grid; grid-template-columns:112px minmax(0,1fr) auto; gap:4px 12px;
+  align-items:start; padding:9px 0; border-bottom:1px solid var(--border); font-size:14px; }
+.votos-dip li.vd-distinto{ background:linear-gradient(90deg, color-mix(in srgb, var(--v-no) 10%, transparent), transparent 60%); }
+.vd-voto{ display:inline-block; text-align:center; font-weight:700; font-size:12px;
+  text-transform:uppercase; letter-spacing:.03em; padding:5px 6px; border-radius:6px;
+  border:1.5px solid currentColor; }
+.vd-txt a{ color:var(--ink); }
+.vd-que{ display:block; font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+.vd-grupo{ display:block; font-size:12.5px; font-weight:600; color:var(--v-no); margin-top:2px; }
+.vd-fecha{ font:500 12px/1.6 'IBM Plex Mono',monospace; color:var(--ink-soft); white-space:nowrap; }
+
+@media (max-width: 720px){
+  .vt-cuerpo{ grid-template-columns:1fr; }
+  .vt-buscar{ top:0; }
+  .vt-fila a{ grid-template-columns:auto minmax(0,1fr); }
+  .vt-fila .vbarra{ grid-column:1 / -1; }
+  .vt-fila-n{ display:none; }
+  .votos-dip li{ grid-template-columns:104px minmax(0,1fr); }
+  .vd-fecha{ grid-column:2; }
+}
