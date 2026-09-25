@@ -476,8 +476,15 @@
   },
   "BOE-A-2026-19679": {
    "huella": "f624a4b54ec3b266",
-   "descartado": "nombre «VioGén» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "843be55ed307b78a",
+   "titular": "Interior y el Ayuntamiento de Pedro Abad firman un convenio contra la violencia de género",
+   "entradilla": "El acuerdo incorpora al Cuerpo de Policía Local de Pedro Abad al Sistema de Seguimiento Integral de los casos de Violencia de Género.",
+   "claves": [
+    "El convenio permite la cooperación entre la Administración General del Estado y la entidad local en la protección de las víctimas de violencia de género.",
+    "Se facilita la incorporación de la Policía Local a la base de datos común para realizar una valoración del riesgo objetivo de sufrir nuevas agresiones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19680": {
    "huella": "1c791b69212891a7",
@@ -528,8 +535,9 @@
    "fecha": "2026-09-25"
   },
   "BOE-A-2026-19684": {
-   "huella": "070a3a9324999a82",
-   "fuente": "35a40387cc9f449a",
+   "huella": "3cfe4a771dcd215d",
+   "descartado": "cifra «50» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Economía publica los avales para apoyar la actividad económica en Ceuta",
    "entradilla": "El Ministerio de Economía publica el acuerdo del Consejo de Ministros que fija las condiciones de la línea de avales para la ciudad autónoma de Ceuta.",
    "claves": [
@@ -537,23 +545,25 @@
     "El texto íntegremante aprobado se adjunta como anexo a la resolución de la Secretaría de Estado de Economía y Apoyo a la Empresa."
    ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "fecha": "2026-09-25",
+   "fuente": "35a40387cc9f449a"
   },
   "BOE-A-2026-19685": {
-   "huella": "dd8b285067a83ebb",
-   "fuente": "66161455754f6d82",
-   "titular": "La UIMP y ING Bank firman un convenio de prácticas académicas externas",
-   "entradilla": "La Universidad Internacional Menéndez Pelayo y la sucursal en España de ING Bank suscriben un acuerdo para que estudiantes de postgrado realicen prácticas.",
+   "huella": "82956fe4cf0406a8",
+   "fuente": "7dde4eae7254f768",
+   "titular": "La Universidad Menéndez Pelayo e ING Bank firman un convenio de prácticas",
+   "entradilla": "Los estudiantes de postgrado de la UIMP podrán realizar prácticas académicas y proyectos de fin de máster en la sucursal de ING Bank en España.",
    "claves": [
-    "El convenio regula las prácticas académicas externas tanto curriculares como extracurriculares y los proyectos de fin de Máster.",
-    "El acuerdo fue suscrito formalmente el 9 de septiembre de 2026 tras su tramitación en el sector público estatal."
+    "El convenio regula la realización de prácticas curriculares y extracurriculares, además de proyectos de fin de máster, adaptadas al área de formación de los alumnos.",
+    "Pueden acogerse los estudiantes matriculados en la UIMP o en centros adscritos, así como alumnos de otras universidades en programas de movilidad."
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-25"
   },
   "BOE-A-2026-19686": {
-   "huella": "f6c339c7aea4a9aa",
-   "fuente": "2ce8b014a283b8df",
+   "huella": "d597e6230f937312",
+   "descartado": "cifra «21» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "El CSIC y la Fundación Ramón Areces impulsan proyectos de fotónica",
    "entradilla": "El Consejo Superior de Investigaciones Científicas publica el convenio con la Fundación Ramón Areces para desarrollar proyectos de metrología cuántica.",
    "claves": [
@@ -561,7 +571,8 @@
     "El convenio se suscribió formalmente el 11 de septiembre de 2026 en cumplimiento de la normativa de régimen jurídico del sector público."
    ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "fecha": "2026-09-25",
+   "fuente": "2ce8b014a283b8df"
   },
   "C-f6afdcf0fb4aec13": {
    "huella": "eab088c3a1f1d254",
@@ -592,124 +603,201 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19523": {
-   "huella": "ef6c712d6860cb0b",
-   "fuente": "843a64fafc8e630f",
-   "titular": "La Autoridad de Protección del Informante modifica su sede electrónica",
-   "entradilla": "La Autoridad Independiente de Protección del Informante actualiza la dirección web de su sede electrónica para homogeneizar su denominación institucional.",
+   "huella": "691fcbdadb059dd3",
+   "fuente": "497abd7435891295",
+   "titular": "La Autoridad Independiente de Protección del Informante cambia su dirección web",
+   "entradilla": "La AIPI modifica la dirección electrónica de su sede para homogeneizar la denominación y facilitar su identificación por la ciudadanía.",
    "claves": [
-    "La nueva dirección electrónica de referencia queda fijada en el dominio https://proteccioninformante.sede.gob.es.",
-    "La anterior dirección se mantendrá accesible temporalmente para garantizar la continuidad del servicio durante la transición."
+    "La nueva dirección de referencia de la sede electrónica de la Autoridad Independiente de Protección del Informante queda fijada en https://proteccioninformante.sede.gob.es.",
+    "La antigua dirección de acceso se mantendrá operativa temporalmente para garantizar la continuidad del servicio y facilitar la transición.",
+    "La resolución produce efectos desde el día siguiente al de su publicación en el Boletín Oficial del Estado."
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-25"
   },
   "BOE-A-2026-19524": {
    "huella": "b02e2a473b6da2e4",
-   "descartado": "cifra «35» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Justicia regula la jornada laboral general y especial para su personal en la administración",
-   "entradilla": "Establece el cómputo anual de horas y las condiciones de trabajo específicas para el funcionariado judicial.",
+   "fuente": "e089f9c95fce7787",
+   "titular": "Regulan la jornada de trabajo del personal al servicio de la Administración de Justicia",
+   "entradilla": "Se fija una duración de la jornada general de treinta y cinco horas semanales de promedio en cómputo anual para los funcionarios judiciales.",
+   "claves": [
+    "La jornada general de trabajo queda establecida en un promedio de treinta y cinco horas semanales de trabajo efectivo, equivalentes a 1.512 horas anuales.",
+    "Los calendarios laborales se aprobarán anualmente antes del 1 de enero por los órganos competentes del Ministerio y las comunidades autónomas con competencias asumidas.",
+    "Las festividades tradicionales aplicadas en una misma localidad no podrán superar un máximo de cinco días anuales."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24",
-   "fuente": "0e9df04d53d6e349"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19525": {
-   "huella": "586684ef0540cbc1",
-   "titular": "Justicia fija el calendario y la jornada laboral para el Cuerpo de Letrados",
-   "entradilla": "Regula la duración anual del tiempo de trabajo y los regímenes de dedicación especial para este cuerpo superior.",
+   "huella": "0d92ef02c205d432",
+   "fuente": "7c078dca98f5fb63",
+   "titular": "Regulan la jornada de trabajo anual para el Cuerpo de Letrados de la Justicia",
+   "entradilla": "Se establece una duración de treinta y cinco horas semanales de trabajo efectivo para los letrados de la Administración de Justicia.",
+   "claves": [
+    "La duración de la jornada general se fija en treinta y cinco horas semanales de trabajo efectivo de promedio en cómputo anual.",
+    "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes aprobará el calendario laboral antes del 1 de enero de cada año.",
+    "Las festividades tradicionales en la misma localidad no podrán superar un máximo de cinco días anuales."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19526": {
-   "huella": "da0fbaf68c75077f",
-   "titular": "Defensa modifica el currículo de formación para oficiales del Ejército de Tierra",
-   "entradilla": "Actualiza los planes de estudio para la integración en la escala de oficiales mediante la vía de ingreso con titulación previa.",
+   "huella": "5a08ae572a61b66a",
+   "fuente": "26661515b63e4bf0",
+   "titular": "Modifican el currículo de formación de oficiales del Cuerpo General del Ejército",
+   "entradilla": "Se actualiza el plan de estudios para incluir los módulos de la especialidad fundamental de Aviación del Ejército de Tierra en el ingreso con titulación.",
+   "claves": [
+    "Se incorporan los módulos de Instrucción y Adiestramiento, así como el de Formación Física y Orden Cerrado, correspondientes a la nueva especialidad fundamental de Aviación.",
+    "La orden ministerial entra en vigor el día siguiente al de su publicación en el Boletín Oficial del Estado."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19527": {
-   "huella": "1ceba02423fefbf1",
-   "titular": "Transición Ecológica fija el poder calorífico de combustibles fósiles en territorios no peninsulares",
-   "entradilla": "Establece los valores energéticos oficiales de la hulla, fueloil, diésel y gasoil para las liquidaciones del año 2025.",
+   "huella": "7bf2cbd3c1bb6638",
+   "fuente": "0d0a4af2d70df5d6",
+   "titular": "Fijan el poder calorífico inferior de combustibles en territorios no peninsulares",
+   "entradilla": "Se establecen los valores para la hulla, fuel oil, diésel oil y gasoil aplicables durante el ejercicio 2025 en las instalaciones de producción eléctrica.",
+   "claves": [
+    "La resolución aprueba los valores de poder calorífico inferior a efectos de liquidación y de despacho para los combustibles fósiles utilizados.",
+    "Los interesados podrán interponer un recurso de alzada ante la Secretaría de Estado de Energía en el plazo de un mes."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19590": {
-   "huella": "e16ebb64d948ea55",
-   "titular": "Patrimonio Nacional firma un convenio cultural con la Fundación ACS dotado con 35.000 euros",
-   "entradilla": "Establece un marco de colaboración para actividades educativas y culturales durante los próximos cinco años.",
+   "huella": "748ae143129c00ad",
+   "fuente": "4e023601f6895bc2",
+   "titular": "Patrimonio Nacional y la Fundación ACS renuevan su programa educativo Descubre los Reales Sitios",
+   "entradilla": "La Fundación ACS financiará con hasta 35.000 euros los talleres y visitas escolares para acercar la historia y la arquitectura de los palacios reales a los estudiantes.",
+   "claves": [
+    "El programa educativo ofrece visitas taller y visitas dinamizadas adaptadas al currículo escolar de cada etapa educativa utilizando los palacios reales como fuente histórica.",
+    "La Fundación ACS asume y financia el total de los gastos con un presupuesto máximo de treinta y cinco mil euros, con el IVA incluido, destinado en exclusiva al apoyo de este programa.",
+    "Patrimonio Nacional aporta la infraestructura y la logística necesaria para el desarrollo de los talleres, además de coordinar las actividades y promocionarlas en su página web."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19591": {
-   "huella": "9ec37c894d85a390",
-   "titular": "Defensa y la Universidad de La Laguna acuerdan prácticas para estudiantes en Canarias",
-   "entradilla": "Facilita la realización de prácticas académicas externas en unidades militares del archipiélago.",
+   "huella": "c5b0ca5aec1524fb",
+   "fuente": "d5e9604bf6eab9f5",
+   "titular": "Defensa y la Universidad de La Laguna firman un convenio de prácticas en Canarias",
+   "entradilla": "Estudiantes de Grado y Máster realizarán prácticas externas y trabajos de fin de estudios en unidades militares de Canarias.",
+   "claves": [
+    "El acuerdo facilita la realización de prácticas académicas externas curriculares en las unidades, centros y organismos del Ministerio de Defensa en Canarias.",
+    "Se establece un marco de cooperación educativa para la realización de Trabajos de Fin de Grado y de Máster."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19592": {
-   "huella": "dfc006377eb4471e",
-   "titular": "Defensa aprueba nuevas normas militares sobre tarjetas de autorización especial",
-   "entradilla": "Inlcuye la norma NME-3070/2026 en el catálogo oficial de aplicación en el ministerio y anula disposiciones anteriores.",
+   "huella": "fc11d5eb6fc61c94",
+   "fuente": "3b6aad452bed5871",
+   "titular": "Defensa aprueba una nueva norma militar para tarjetas de autorización especial",
+   "entradilla": "La Dirección General de Armamento y Material aprueba la especificación técnica militar y actualiza el catálogo general.",
+   "claves": [
+    "Se aprueba la Norma Militar Española NME-3070/2026 para la tarjeta de autorización especial en las Fuerzas Armadas y la Guardia Civil.",
+    "El Servicio de Normalización incluirá la nueva norma en el Catálogo General de la intranet para su aplicación en el Ministerio de Defensa."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19593": {
-   "huella": "8a50817db3d1714c",
-   "titular": "Hacienda extingue el convenio de colaboración catastral con el Ayuntamiento de Llanes",
-   "entradilla": "Publica la finalización oficial del acuerdo de gestión y colaboración que mantenía con el consistorio asturiano.",
+   "huella": "49ada004186bcd3d",
+   "fuente": "55aa9563e78553a3",
+   "titular": "El Catastro publica la extinción del convenio de colaboración con el Ayuntamiento de Llanes",
+   "entradilla": "Se oficializa la finalización del acuerdo en materia de gestión catastral suscrito en su día entre ambas administraciones.",
+   "claves": [
+    "El convenio de colaboración en materia de gestión catastral fue denunciado el pasado 31 de agosto de 2026 tras haber sido suscrito originariamente en octubre de 2002."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19594": {
-   "huella": "a4689a2138827e2c",
-   "titular": "Interior prorroga el convenio con Carfax para el intercambio de datos de vehículos",
-   "entradilla": "Extiende hasta octubre de 2027 el acuerdo de la Dirección General de Tráfico para mejorar la seguridad vial.",
+   "huella": "be1b306f2c48c81f",
+   "fuente": "9c858d751a610d0e",
+   "titular": "Tráfico y Carfax prorrogan un año su convenio para el intercambio de datos",
+   "entradilla": "La Jefatura Central de Tráfico y la empresa de historial de vehículos extienden su colaboración para favorecer la seguridad vial.",
+   "claves": [
+    "La prórroga del convenio tendrá vigencia desde el 27 de octubre de 2026 hasta el 26 de octubre de 2027.",
+    "El acuerdo busca continuar el intercambio de datos de vehículos para mejorar la seguridad vial y reducir el fraude."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19595": {
-   "huella": "184add2e856f8cfa",
-   "titular": "Interior colabora con la Fundación Síndrome de Down de Madrid para prácticas formativas",
-   "entradilla": "Impulsa itinerarios de inserción laboral mediante un convenio con la secretaría de Estado de Seguridad.",
+   "huella": "79ff15c0762d8433",
+   "fuente": "eac53880f5bc7c2f",
+   "titular": "Interior y Down Madrid firman un convenio para prácticas de inserción laboral",
+   "entradilla": "El acuerdo permite a personas con discapacidad intelectual realizar prácticas formativas en las dependencias del CITCO.",
+   "claves": [
+    "Se establecen fórmulas de colaboración para el desarrollo de itinerarios de inserción laboral y prácticas formativas adaptadas a los perfiles de los alumnos.",
+    "Se constituye una Comisión Mixta de Seguimiento para determinar el número de alumnos participantes, el calendario y la duración de las prácticas."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19596": {
-   "huella": "ae94d13c8dd3fa42",
-   "titular": "Interior integra a la Policía Local de Castro del Río en el sistema contra la violencia de género",
-   "entradilla": "Firma un convenio para incorporar al municipio cordobés en la red de seguimiento integral de casos.",
+   "huella": "90daaa8a9416fef0",
+   "fuente": "9da24d90eb4c7a82",
+   "titular": "Interior y el Ayuntamiento de Castro del Río firman un convenio contra la violencia de género",
+   "entradilla": "La Policía Local de Castro del Río se incorpora al Sistema de Seguimiento Integral en los casos de violencia de género.",
+   "claves": [
+    "El acuerdo refuerza la coordinación operativa entre las administraciones del Estado y las entidades locales para la protección de las víctimas.",
+    "Se facilita el acceso a la base de datos común de las fuerzas de seguridad para valorar de forma objetiva el riesgo de nuevas agresiones."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19597": {
-   "huella": "b230519b832644eb",
-   "titular": "Instituciones Penitenciarias acuerda con la Asociación Alucinos-La Salle trabajos en beneficio",
-   "entradilla": "Permite que condenados cumplan penas alternativas mediante programas de inserción y colaboración social.",
+   "huella": "e2cd0c0780d9b94b",
+   "fuente": "6d35a32961756b59",
+   "titular": "Instituciones Penitenciarias y Alucinos-La Salle firman un convenio de penas",
+   "entradilla": "La asociación colaborará en la ejecución de penas de trabajos en beneficio de la comunidad impuestas por los tribunales.",
+   "claves": [
+    "El acuerdo permite cumplir las penas de cooperación no retribuida en actividades de utilidad pública gestionadas por la entidad.",
+    "La ejecución de estas medidas se realiza bajo la supervisión de la Secretaría General de Instituciones Penitenciarias del Ministerio del Interior."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19599": {
-   "huella": "42c40aebfdad394d",
+   "huella": "98515ccd11299622",
+   "fuente": "18d1f8bc9aa7d474",
    "titular": "Interior y el Ayuntamiento de Cedillo del Condado firman un convenio de seguridad",
-   "entradilla": "Establece mecanismos de cooperación entre la Secretaría de Estado de Seguridad y el consistorio municipal.",
+   "entradilla": "Se establece un marco de colaboración y coordinación operativa entre la Guardia Civil y la policía local en el municipio toledano.",
+   "claves": [
+    "El convenio fomenta la participación en el diseño y la evolución de las políticas de seguridad ciudadana a nivel local.",
+    "Se articulan mecanismos para garantizar una actuación conjunta y coordinada entre las Fuerzas y Cuerpos de Seguridad del Estado y los cuerpos locales."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19600": {
-   "huella": "59f15a3b23a41587",
-   "titular": "Educación regula el servicio de comedores escolares en centros de Melilla",
-   "entradilla": "Organiza la prestación de menús y el uso de instalaciones para el alumnado de colegios públicos de la ciudad autónoma.",
+   "huella": "18de67ce57613bed",
+   "fuente": "4a33df731db17ba9",
+   "titular": "Educación y Melilla acuerdan la gestión de comedores escolares en centros públicos",
+   "entradilla": "Se habilita el Centro de Día San Francisco para prestar el servicio de comedor del CEIP Mediterráneo y elaborar menús para el CEIP Hipódromo.",
+   "claves": [
+    "El Centro de Día ofrecerá un máximo de noventa servicios diarios de comedor para el alumnado becado del CEIP Mediterráneo durante al menos ciento sesenta y cinco días.",
+    "El centro elaborará también los menús destinados a los alumnos becados del colegio de educación infantil y primaria Hipódromo.",
+    "El servicio de comedor se ajustará a la normativa sobre seguridad alimentaria y nutrición para el fomento de una alimentación saludable en centros educativos."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19601": {
-   "huella": "c60bd508bc96a405",
-   "titular": "Educación canaliza ayudas de comedor con el Centro La Salle-El Carmen en Melilla",
-   "entradilla": "Formaliza la gestión de ayudas para el servicio de comedor escolar en el centro educativo hasta septiembre de 2027.",
+   "huella": "c3bf1cce37680a65",
+   "fuente": "68399dae3463406e",
+   "titular": "El centro La Salle-El Carmen colaborará en la gestión de ayudas de comedor en Melilla",
+   "entradilla": "El colegio concertado colaborará con el Ministerio de Educación en la ejecución de las ayudas de comedor para el curso 2026-2027.",
+   "claves": [
+    "La entidad colaboradora prestará el servicio de comedor al alumnado beneficiario sin recibir los fondos de forma previa a la distribución, según la Ley General de Subvenciones.",
+    "El centro se encarga de controlar la asistencia de los beneficiarios al comedor y de comunicar las posibles bajas o renuncias a la dirección provincial.",
+    "Los menús ofertados deberán cumplir con la normativa de seguridad alimentaria y nutrición en centros educativos."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "C-ed224aef25c518d3": {
    "huella": "b83fd95641048b1a",
@@ -726,116 +814,190 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19484": {
-   "huella": "93046a586e712354",
-   "titular": "Nuevos precios de venta para determinadas labores de tabaco en expendedurías",
-   "entradilla": "Hacienda publica las tarifas actualizadas para varias labores de tabaco en la red de Expendedurías de Tabaco y Timbre del área del Monopolio.",
+   "huella": "3e51c1513ad48d76",
+   "fuente": "fcd174ad9350d831",
+   "titular": "Hacienda fija los nuevos precios de venta de determinadas labores de tabaco",
+   "entradilla": "El Comisionado para el Mercado de Tabacos actualiza los precios de venta al público para diferentes labores de tabaco en las expendedurías autorizadas.",
+   "claves": [
+    "La resolución establece los precios de venta al público para cigarros, cigarrillos y picaduras en las expendedurías de la Península, Illes Balears, Ceuta y Melilla.",
+    "Los nuevos importes incluyen los diferentes tributos aplicables a cada tipo de labor de tabaco según la zona geográfica.",
+    "Esta modificación entra en vigor el mismo día de su publicación en el Boletín Oficial del Estado."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19485": {
-   "huella": "2b9e895dc351e9ef",
-   "titular": "Prorrogan los controles fronterizos para vuelos y barcos desde Italia",
-   "entradilla": "El Ministerio del Interior extiende los controles temporales en fronteras interiores para pasajeros procedentes de la República Italiana hasta el 7 de octubre de 2026.",
+   "huella": "a05e9c9fcb8157d0",
+   "fuente": "ee2abae4513a0ee1",
+   "titular": "Interior prorroga los controles fronterizos en vuelos y enlaces marítimos procedentes de Italia",
+   "entradilla": "El Ministerio del Interior extiende temporalmente los controles en las fronteras interiores españolas para personas llegadas desde la República Italiana.",
+   "claves": [
+    "La prórroga de los controles fronterizos en fronteras aéreas y marítimas surtirá efectos desde las 00:00 horas del 23 de septiembre hasta las 24:00 horas del 7 de octubre de 2026.",
+    "La medida se someterá a una evaluación permanente y quedará sin efecto antes de la fecha prevista si desaparecen o disminuyen las amenazas que motivaron su adopción.",
+    "La finalización del periodo establecido determinará el levantamiento automático de los controles sin necesidad de una resolución expresa."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19486": {
-   "huella": "61e0a967a893f635",
-   "titular": "Crea la Comisión Ministerial de Administración Digital en Educación",
-   "entradilla": "El Ministerio de Educación, Formación Profesional y Deportes constituye un nuevo órgano interno para gestionar su administración digital.",
+   "huella": "4a50386dd427b3ea",
+   "fuente": "719d9670112dcf1d",
+   "titular": "Educación crea la Comisión Ministerial de Administración Digital para coordinar sus recursos tecnológicos",
+   "entradilla": "El ministerio constituye este órgano colegiado adscrito a la Subsecretaría para impulsar la gobernanza digital y optimizar los servicios compartidos.",
+   "claves": [
+    "La nueva comisión actúa como órgano de enlace con la Agencia Estatal de Administración Digital y se extiende a todos los órganos y organismos públicos dependientes del departamento.",
+    "El órgano podrá actuar en Pleno y en Comisión Permanente para asegurar una actuación ágil y efectiva en el ámbito de la administración digital.",
+    "La Subsecretaría de Educación, Formación Profesional y Deportes asume la presidencia del Pleno de la comisión."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19504": {
-   "huella": "192bd3efb1497d59",
-   "titular": "Emplazan a los interesados en el recurso contencioso-administrativo 1630/2026",
-   "entradilla": "El Tribunal Superior de Justicia de Madrid abre un plazo de nueve días para que los afectados comparezcan en este procedimiento.",
+   "huella": "ef46e61bfab6279d",
+   "fuente": "f2055ae90668e520",
+   "titular": "Justicia emplaza a los interesados en el recurso sobre las pruebas del Cuerpo de Tramitación Procesal",
+   "entradilla": "Los afectados disponen de un plazo de nueve días para comparecer ante la Sala de lo Contencioso-Administrativo del Tribunal Superior de Justicia de Madrid.",
+   "claves": [
+    "El recurso contencioso-administrativo número 1630 de 2026 se interpuso ante la Sección Séptima del Tribunal Superior de Justicia de Madrid.",
+    "El procedimiento impugna la desestimación por silencio administrativo del recurso contra el acuerdo del Tribunal Calificador Único de 11 de mayo de 2026.",
+    "El litigio deriva de la modificación de la plantilla correctora definitiva del tercer ejercicio en las pruebas de acceso libre del cuerpo convocado por la Orden PJC/1437/2024."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19505": {
-   "huella": "fa92e16b3066c940",
-   "titular": "Convenio de prácticas entre la AIReF y la Universidad Complutense por 1.350 euros",
-   "entradilla": "Se publica el anexo económico para la incorporación de estudiantes en prácticas a la Autoridad Independiente de Responsabilidad Fiscal.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "d6bd89e8c9512358",
+   "descartado": "nombre «AIReF» que no está en el texto oficial",
+   "intentos": 1
   },
   "BOE-A-2026-19506": {
-   "huella": "f2067aff01d7052e",
-   "titular": "El Ejido incorpora su policía local al sistema de seguimiento de violencia de género",
-   "entradilla": "Interior y el Ayuntamiento de El Ejido firman un convenio para sumar a los agentes locales al sistema de protección contra la violencia machista.",
+   "huella": "e656ff51816001e8",
+   "fuente": "f2067aff01d7052e",
+   "titular": "El Ayuntamiento de El Ejido integra su Policía Local en el sistema de seguimiento de violencia de género",
+   "entradilla": "La Secretaría de Estado de Seguridad y el consistorio firman un convenio para coordinar la protección a las víctimas y prevenir nuevas agresiones.",
+   "claves": [
+    "El acuerdo permite incorporar a los Cuerpos de Policía Local de El Ejido al Sistema de Seguimiento Integral de los Casos de Violencia de Género.",
+    "La medida busca mejorar la eficacia en la protección de las víctimas mediante una base de datos común que facilita el seguimiento individualizado del riesgo.",
+    "El convenio se ampara en la colaboración entre la administración del Estado y las entidades locales establecida por la legislación de bases de régimen local."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19507": {
-   "huella": "b5ce57e872c1cfff",
-   "titular": "Aprobar el Documento de Regulación Aeroportuaria para el periodo 2027-2031",
-   "entradilla": "El Consejo de Ministros da luz verde al marco que regirá la actividad y tarifas de la red aeroportuaria española durante los próximos años.",
+   "huella": "9b0d1ec3d4a591db",
+   "fuente": "83c2b05dc29dca55",
+   "titular": "El Gobierno aprueba el Documento de Regulación Aeroportuaria para el periodo 2027-2031",
+   "entradilla": "El Consejo de Ministros da luz verde al DORA que fija las condiciones, tarifas e inversiones de la red aeroportuaria gestionada por Aena.",
+   "claves": [
+    "El Documento de Regulación Aeroportuaria establece las condiciones aplicables, estándares de calidad y previsiones de tráfico para el quinquenio 2027-2031.",
+    "Se requiere a Aena para que adopte las medidas necesarias para establecer y aprobar las tarifas aeroportuarias conforme al nuevo marco.",
+    "El acuerdo y el documento aprobado entran en aplicación a partir del día 1 de enero de 2027."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19508": {
-   "huella": "74ccbe7a78d1d41f",
-   "titular": "Modifican la titularidad de tramos de carreteras en la provincia de Almería",
-   "entradilla": "El Estado asume un tramo de la vía AL-5106 y cede otro de la AL-3106 a la Diputación Provincial de Almería.",
+   "huella": "bfb942caeefad472",
+   "fuente": "74ccbe7a78d1d41f",
+   "titular": "Transportes y la Diputación de Almería acuerdan el cambio de titularidad de dos tramos de carretera",
+   "entradilla": "El Estado asume un segmento de la vía AL-5106 mientras que la institución provincial recibe un tramo de la AL-3106 sin transferencia de capital entre ambas partes.",
+   "claves": [
+    "El tramo de la carretera AL-5106 comprendido entre los kilómetros 11+290 y 13+556 queda incluido dentro de la Red de Carreteras del Estado.",
+    "El tramo de la carretera AL-3106 entre los puntos kilométricos 4+000 y 5+400 se transfiere a favor de la Diputación Provincial de Almería.",
+    "El cambio de titularidad surtirá plenos efectos desde la entrada en vigor del real decreto y se formalizará mediante un acta de entrega en el plazo de un mes."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19509": {
-   "huella": "38697ad3ce551754",
-   "titular": "Convenio para Puntos de Atención al Emprendedor en Castilla y León",
-   "entradilla": "Industria y el organismo castellanoleonés de competitividad empresarial colaboran para integrar oficinas en la red CIRCE.",
+   "huella": "14b8aafddf138d62",
+   "fuente": "b51ce72a63de9c5e",
+   "titular": "Industria y Castilla y León colaboran para establecer Puntos de Atención al Emprendedor",
+   "entradilla": "El Ministerio de Industria y Turismo y el Instituto para la Competitividad Empresarial firman un convenio para integrar oficinas en la Red CIRCE.",
+   "claves": [
+    "El convenio facilita la creación de nuevas empresas mediante la prestación de servicios de información, tramitación telemática y asesoramiento.",
+    "Los Puntos de Atención al Emprendedor utilizarán el sistema CIRCE y el Programa de Ayuda a la Cumplimentación del Documento Único Electrónico.",
+    "El Ministerio de Industria y Turismo pondrá a disposición de las oficinas el soporte técnico y las herramientas de gestión empresarial necesarias."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19510": {
-   "huella": "d094c29d717eff65",
-   "titular": "Conceden el título de Fiesta de Interés Turístico Internacional a Alcalá de Henares",
-   "entradilla": "La festividad «Semana Cervantina» de Alcalá de Henares recibe el reconocimiento de interés turístico internacional.",
+   "huella": "437b15a3fa47db16",
+   "fuente": "d094c29d717eff65",
+   "titular": "Turismo concede el título de Fiesta de Interés Turístico Internacional a la Semana Cervantina de Alcalá",
+   "entradilla": "La festividad celebrada en la Comunidad de Madrid obtiene este reconocimiento oficial tras la resolución de la Secretaría de Estado de Turismo.",
+   "claves": [
+    "La resolución pone fin a la vía administrativa y detalla los plazos y recursos legales disponibles para los interesados que deseen oponerse a la decisión.",
+    "Se puede interponer un recurso potestativo de reposición ante el mismo órgano en el plazo de un mes contado a partir del día siguiente al de la notificación.",
+    "También cabe la opción de presentar un recurso contencioso-administrativo en el plazo de dos meses ante el órgano jurisdiccional competente."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19511": {
-   "huella": "28be5e7c83aea3a5",
-   "titular": "Declaran Fiesta de Interés Turístico Nacional a «La Vendimia» de Jumilla",
-   "entradilla": "La localidad murciana de Jumilla obtiene la distinción nacional para su tradicional celebración de la vendimia.",
+   "huella": "62077cad4c2c09ca",
+   "fuente": "28be5e7c83aea3a5",
+   "titular": "El Ministerio de Industria concede el título de Fiesta de Interés Turístico Nacional a La Vendimia",
+   "entradilla": "La festividad del municipio murciano de Jumilla obtiene este reconocimiento oficial tras la resolución de la Secretaría de Estado de Turismo.",
+   "claves": [
+    "La resolución otorga la distinción honorífica a la celebración conocida como La Vendimia en Jumilla, Murcia.",
+    "El reconocimiento se publica en el epígrafe de fiestas de interés turístico del Ministerio de Industria y Turismo."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19512": {
-   "huella": "82c1f8f0c9d6e308",
-   "titular": "Cancelan la Sociedad Agraria de Transformación Segria Levante",
-   "entradilla": "Agricultura decreta la anulación y cancelación registral de esta sociedad agraria de transformación.",
+   "huella": "ea2a055c5f161a10",
+   "fuente": "82c1f8f0c9d6e308",
+   "titular": "Agricultura cancela la Sociedad Agraria de Transformación Segria Levante",
+   "entradilla": "La Dirección General de Alimentación ordena la cancelación registral de la entidad agraria y detalla los plazos para recurrir la decisión.",
+   "claves": [
+    "La resolución determina la baja y cancelación registral de la SAT número 10017 en el registro general correspondiente.",
+    "Contra esta resolución cabe interponer recurso de reposición en el plazo de un mes o acudir a la vía contencioso-administrativa en el plazo de dos meses."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19513": {
-   "huella": "a15d234a3c5cf227",
+   "huella": "4293cde0d7c78b75",
+   "descartado": "nombre «Ambas» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Confederación Hidrográfica del Guadalquivir y Ayuntamiento de Bonares firman convenio de 1.040.000 euros",
    "entradilla": "Se publica el convenio para la redacción del proyecto, ejecución, entrega y mantenimiento de las conexiones de varios núcleos a la red de abastecimiento.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "a15d234a3c5cf227"
   },
   "BOE-A-2026-19514": {
-   "huella": "c9394ed5fde5a387",
+   "huella": "931c763866dc0fb6",
+   "descartado": "nombre «Samuel» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Declaran Bien de Interés Cultural la Casa Mudéjar de Córdoba",
    "entradilla": "Cultura otorga la máxima protección patrimonial con la categoría de monumento a este inmueble histórico cordobés.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "c9394ed5fde5a387"
   },
   "BOE-A-2026-19515": {
-   "huella": "4ce7197ddec28b3b",
+   "huella": "73bbf161ff56cf3e",
+   "descartado": "nombre «Montemadrid» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Convenio de 12.000 euros para la creación interdisciplinar en el Festival Ídem",
    "entradilla": "El Ministerio de Cultura apoya la profesionalización artística en el Festival Ídem junto a la Fundación Monte de Madrid.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "4ce7197ddec28b3b"
   },
   "BOE-A-2026-19516": {
-   "huella": "3045479eed94f624",
+   "huella": "9605ba28b54a51c4",
+   "descartado": "nombre «Ambas» que no está en el texto oficial",
+   "intentos": 1,
    "titular": "Convenio de 3.000 euros para el Certamen Universitario de Investigación Arquímedes",
    "entradilla": "Universidades y el CSIC impulsan conjuntamente la edición del certamen científico hasta finales de diciembre de 2026.",
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-24",
+   "fuente": "3045479eed94f624"
   },
   "C-6f56c2ad35a5eb26": {
    "huella": "0454f3b222474889",
@@ -866,18 +1028,28 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19419": {
-   "huella": "458cae2005e1c61f",
-   "titular": "Congreso de los Diputados publica la derogación del real decreto-ley sobre grupos de interés",
-   "entradilla": "Se ordena la publicación del acuerdo de derogación del Real Decreto-ley 21/2026, de 25 de agosto, de transparencia e integridad.",
+   "huella": "6794a2c58eb2bfd4",
+   "fuente": "458cae2005e1c61f",
+   "titular": "El Congreso publica la derogación del decreto ley sobre transparencia de los grupos de interés",
+   "entradilla": "La cámara baja ordena la publicación oficial del acuerdo por el que queda sin efecto el real decreto-ley regulador de las actividades de los lobbies.",
+   "claves": [
+    "El Congreso de los Diputados publica el acuerdo de derogación del Real Decreto-ley dictado sobre transparencia e integridad.",
+    "La resolución se inserta en la sección de disposiciones generales del Boletín Oficial del Estado."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19420": {
-   "huella": "d9af45dec2aa0e42",
-   "titular": "Congreso de los Diputados publica la convalidación de las medidas urgentes para Ceuta",
-   "entradilla": "Se ordena la publicación del acuerdo que convalida el Real Decreto-ley 22/2026, de 1 de septiembre, de apoyo social y económico a la ciudad.",
+   "huella": "e0dd8e7ae8b01b97",
+   "fuente": "d9af45dec2aa0e42",
+   "titular": "El Congreso publica la convalidación del decreto de medidas de apoyo a la ciudad de Ceuta",
+   "entradilla": "La cámara baja da validez oficial al real decreto-ley que aprueba medidas urgentes de carácter social y económico para la ciudad autónoma.",
+   "claves": [
+    "El acuerdo de convalidación del real decreto-ley sobre medidas para Ceuta se publica en la sección de disposiciones generales del Boletín Oficial del Estado.",
+    "La norma mantiene vigentes las medidas urgentes de carácter social y económico aprobadas para el territorio."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-25"
   },
   "BOE-A-2026-19421": {
    "huella": "f2e38c90ab6ab9c4",
@@ -1449,26 +1621,115 @@
   },
   "C-5ce8c0f36b90eafe": {
    "huella": "ee06cf3c183ae85e",
-   "descartado": "titular de 0 caracteres",
-   "intentos": 1
+   "fuente": "eab088c3a1f1d254",
+   "titular": "La Comisión de Vivienda escucha a representantes de constructores y promotores",
+   "entradilla": "La Comisión de Vivienda y Agenda Urbana convoca a la patronal de constructores, a la asociación de promotores y a un experto en derecho administrativo.",
+   "claves": [
+    "Comparecen la presidenta de la Asociación Nacional de Constructores Independientes, el director gerente de la Asociación de Promotores Constructores de España y un profesor de Derecho Administrativo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
   },
   "C-099962ada7fdd949": {
    "huella": "0f5a7b35c9849ac0",
-   "descartado": "titular de 0 caracteres",
-   "intentos": 1
+   "fuente": "7751b437a8551ece",
+   "titular": "La Comisión de Sanidad recibe a representantes de pacientes y enfermedades raras",
+   "entradilla": "La Comisión de Sanidad del Congreso escucha las intervenciones de colectivos de pacientes y de la federación española de enfermedades raras.",
+   "claves": [
+    "Comparecen la coordinadora de ayudas al movimiento asociativo de la Federación Española de Enfermedades Raras, la presidenta de la Plataforma de Organizaciones de Pacientes y el presidente del Foro Español de Pacientes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
   },
   "C-2238c52b8d8b0e85": {
    "huella": "233fb401d5ad1b54",
-   "descartado": "titular de 0 caracteres",
-   "intentos": 1
+   "fuente": "42319bc40cd05a6a",
+   "titular": "Publicación del Diario de Sesiones del Pleno del Congreso de los Diputados",
+   "entradilla": "El Congreso publica la documentación oficial relativa a la sesión del Pleno en su boletín oficial.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
   },
   "C-68f1193e175af8a0": {
    "huella": "2669e8aa611340ec",
-   "descartado": "titular de 0 caracteres",
-   "intentos": 1
+   "fuente": "a444eb21f779508f",
+   "titular": "Publicación oficial de la documentación de las sesiones del Congreso",
+   "entradilla": "El Congreso de los Diputados difunde las publicaciones oficiales correspondientes a la actividad de las sesiones plenarias.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-d2635e1812ba3396": {
+   "huella": "f266e1cbce903adf",
+   "fuente": "b83fd95641048b1a",
+   "titular": "El Pleno del Congreso rechaza la toma en consideración de la ley de Vox",
+   "entradilla": "La Cámara baja tumba la proposición de ley orgánica para modificar la legislación sobre la defensa nacional presentada por el grupo parlamentario Vox.",
+   "claves": [
+    "La iniciativa legislativa, registrada inicialmente en octubre de 2023, pretendía modificar la Ley Orgánica de la Defensa Nacional.",
+    "Al rechazarse la toma en consideración, el expediente queda cerrado de forma definitiva y el texto no llega a tramitarse ni enmendarse."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-0414cef5c5490a17": {
+   "huella": "75680769811a0ff1",
+   "fuente": "64564e1ffd4337ab",
+   "titular": "El Congreso tumba la proposición de ley de Sumar para modificar la ley del derecho a la vivienda",
+   "entradilla": "El Pleno del Congreso rechaza la toma en consideración de la reforma presentada por Sumar, por lo que el expediente queda cerrado y la norma no llega a tramitarse.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-2a56026ff56f7178": {
+   "huella": "c558a32a173c2674",
+   "fuente": "0454f3b222474889",
+   "titular": "Vox lleva al Pleno del Congreso la defensa nacional y otras cuatro iniciativas",
+   "entradilla": "El orden del día de la sesión plenaria incluye la proposición sobre la ley de defensa nacional, vivienda, Cuba y la situación en Ceuta.",
+   "claves": [
+    "El Pleno debate una norma orgánica para modificar la ley de defensa nacional y una proposición sobre la ley de vivienda.",
+    "Se contemplan iniciativas relativas a las medidas de Estados Unidos contra Cuba, los planes del Gobierno frente al encarecimiento de la vida y la seguridad en Ceuta."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-f127a3ff24b5db91": {
+   "huella": "4e2ef41ea2e59764",
+   "fuente": "99b0a7b5b80bb0e4",
+   "titular": "La Comisión de Derechos Sociales y Consumo escucha a los representantes de CECU y Fundación Vinjoy",
+   "entradilla": "La comisión parlamentaria recibe las aportaciones de los directores de ambas entidades para abordar desafíos en su ámbito.",
+   "claves": [
+    "Comparece el director de la Federación de Consumidores y Usuarios, Sánchez Carpio, para aportar su experiencia a la comisión.",
+    "Interviene también el director-gerente de la Fundación Vinjoy, Rivas Fernández, para ofrecer su conocimiento y orientación."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-b99b55d8ecc5db42": {
+   "huella": "9641355beb47c9f0",
+   "fuente": "a1f28aab2f175e09",
+   "titular": "El Congreso abre hasta el 6 de octubre el plazo de enmiendas al Estatuto Marco del personal de salud",
+   "entradilla": "La Comisión de Sanidad tramita con competencia legislativa plena el proyecto presentado por el Gobierno para el Sistema Nacional de Salud.",
+   "claves": [
+    "El Estatuto Marco del personal estatutario de los servicios de salud se tramita en el Congreso de los Diputados.",
+    "Los grupos parlamentarios tienen de plazo hasta el 6 de octubre de 2026 para registrar sus enmiendas al texto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
+  },
+  "C-ff6e16dea2b18e72": {
+   "huella": "280bfbbb04738e13",
+   "fuente": "00fa0d60124b12cf",
+   "titular": "El Congreso tramita como proyecto de ley el decreto de medidas urgentes de protección laboral",
+   "entradilla": "La cámara baja fija el 28 de septiembre como fecha límite para presentar enmiendas al texto convalidado por el procedimiento de urgencia.",
+   "claves": [
+    "El Real Decreto-ley fue convalidado por el Congreso y se tramita por el procedimiento de urgencia como proyecto de ley en la Comisión de Trabajo.",
+    "El plazo para registrar enmiendas finaliza el 28 de septiembre de 2026, abriendo la posibilidad de modificar el contenido aprobado inicialmente."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-25"
   }
  },
  "uso": {
-  "2026-09-25": 5
+  "2026-09-25": 8
  }
 }
