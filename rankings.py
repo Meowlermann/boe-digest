@@ -120,6 +120,7 @@ def filas_personas(estado: dict, fichas: list, etiquetas: dict) -> list:
             "nombre": f.get("natural") or f.get("nombre", ""),
             "slug": f.get("slug", ""),
             "grupo": corto_grupo(f.get("grupo", "")),
+            "color": cd.GRUPO_COLOR.get(f.get("grupo", ""), "#8d8d8d"),
             "circ": f.get("circunscripcion", ""),
             "votaciones": vot,
             "no_vota": p.get("no_vota", 0),
@@ -225,6 +226,15 @@ class Pintor:
         return (f'<a href="../diputados/{self.attr(f["slug"])}.html">{self.esc(f["nombre"])}</a>'
                 f'{etiqueta}')
 
+    def celda_nombre(self, f: dict) -> tuple:
+        """Nombre con el fondo teñido del color de su grupo: la tabla se lee
+        de un vistazo por bloques sin tener que mirar la columna del grupo."""
+        return (self.nombre(f), None, f.get("color") or "#8d8d8d")
+
+    def celda_grupo(self, corto: str, color: str) -> str:
+        return (f'<span class="rk-g"><i style="background:{self.attr(color)}"></i>'
+                f'{self.esc(corto)}</span>')
+
     def tabla(self, cabeceras: list, filas: list, numericas: set = frozenset()) -> str:
         """Tabla estática. Las columnas numéricas llevan data-n con el valor
         crudo para que el script de ordenar no dependa del formato."""
@@ -235,10 +245,15 @@ class Pintor:
         for fila in filas:
             celdas = []
             for i, celda in enumerate(fila):
-                html, valor = celda if isinstance(celda, tuple) else (celda, None)
+                if not isinstance(celda, tuple):
+                    celda = (celda, None)
+                html, valor = celda[0], celda[1]
+                color = celda[2] if len(celda) > 2 else None
                 dn = f' data-n="{valor}"' if valor is not None else ""
-                cl = ' class="num"' if i in numericas else ""
-                celdas.append(f"<td{cl}{dn}>{html}</td>")
+                clases = (["num"] if i in numericas else []) + (["rk-nom"] if color else [])
+                cl = f' class="{" ".join(clases)}"' if clases else ""
+                st = f' style="--g:{self.attr(color)}"' if color else ""
+                celdas.append(f"<td{cl}{st}{dn}>{html}</td>")
             cuerpo.append("<tr>" + "".join(celdas) + "</tr>")
         return (f'<div class="rk-tabla"><table class="rk ordenable"><thead><tr>{th}</tr></thead>'
                 f'<tbody>{"".join(cuerpo)}</tbody></table></div>')
@@ -305,7 +320,7 @@ def _pag_participacion(P: Pintor, filas: list, pie: str, lastmod: str):
     def tabla(lista, desde=1):
         return P.tabla(
             ["#", "Diputado", "Grupo", "Participación", "Votaciones", "No vota"],
-            [[(str(desde + i), desde + i), P.nombre(f), P.esc(f["grupo"]),
+            [[(str(desde + i), desde + i), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]),
               (pct(f["participacion"]), round(f["participacion"], 5)),
               (str(f["votaciones"]), f["votaciones"]), (str(f["no_vota"]), f["no_vota"])]
              for i, f in enumerate(lista)], numericas={0, 3, 4, 5})
@@ -340,13 +355,13 @@ def _pag_disidencia(P: Pintor, filas: list, cohesion: list, vent: dict, pie: str
     orden = sorted(validas, key=lambda f: (-f["disidencia"], f["nombre"]))
     t_pers = P.tabla(
         ["#", "Diputado", "Grupo", "Contra su grupo", "Votos distintos", "Votaciones"],
-        [[(str(i + 1), i + 1), P.nombre(f), P.esc(f["grupo"]),
+        [[(str(i + 1), i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]),
           (pct(f["disidencia"]), round(f["disidencia"], 5)),
           (str(f["disidencias"]), f["disidencias"]), (str(f["votaciones"]), f["votaciones"])]
          for i, f in enumerate(orden)], numericas={0, 3, 4, 5})
     t_grupos = P.tabla(
         ["Grupo", "Cohesión media", "Votaciones analizadas"],
-        [[P.esc(c["grupo"]), (pct(c["cohesion"]), round(c["cohesion"], 5)),
+        [[P.celda_grupo(c["grupo"], cd.GRUPO_COLOR.get(c["largo"], "#8d8d8d")), (pct(c["cohesion"]), round(c["cohesion"], 5)),
           (str(c["n"]), c["n"])] for c in cohesion], numericas={1, 2})
     ventana = _texto_ventana(P, vent)
     cuerpo = (
@@ -385,7 +400,7 @@ def _pag_intervenciones(P: Pintor, filas: list, pie: str, lastmod: str):
 
     t = P.tabla(
         ["#", "Diputado", "Grupo", "Intervenciones", "Dónde (órganos principales)"],
-        [[(str(i + 1), i + 1), P.nombre(f), P.esc(f["grupo"]),
+        [[(str(i + 1), i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]),
           (str(f["intervenciones"]), f["intervenciones"]),
           f'<span class="rk-org">{desglose(f["organos"])}</span>']
          for i, f in enumerate(orden)], numericas={0, 3})
@@ -424,7 +439,8 @@ def _pag_afinidad(P: Pintor, grupos: list, coinc: dict, vent: dict, pie: str, la
                           f'{P.esc(pct(v))}</td>')
             if grupos.index(a) < grupos.index(b):
                 pares.append((v, a, b, si, n))
-        filas.append(f'<tr><th scope="row">{P.esc(cd.GRUPO_CORTO.get(a, a))}</th>'
+        filas.append(f'<tr><th scope="row">'
+                     f'{P.celda_grupo(cd.GRUPO_CORTO.get(a, a), cd.GRUPO_COLOR.get(a, "#8d8d8d"))}</th>'
                      f'{"".join(celdas)}</tr>')
     matriz = (f'<div class="rk-tabla"><table class="rk rk-matriz"><thead><tr><th></th>{cab}'
               f'</tr></thead><tbody>{"".join(filas)}</tbody></table></div>')
@@ -616,21 +632,21 @@ def generar(fichas: list, estado: dict, herramientas: dict) -> list:
     menos = list(reversed(orden))
     tops["participacion.html"] = _top(
         P, ["#", "Diputado", "Grupo", "Participación"],
-        [[str(i + 1), P.nombre(f), P.esc(f["grupo"]), pct(f["participacion"])]
+        [[str(i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]), pct(f["participacion"])]
          for i, f in enumerate(menos)], {0, 3})
 
     s, orden = _pag_disidencia(P, filas, cohesion_grupos(estado), vent, pie, lastmod)
     salidas.append(s)
     tops["disidencia.html"] = _top(
         P, ["#", "Diputado", "Grupo", "Contra su grupo"],
-        [[str(i + 1), P.nombre(f), P.esc(f["grupo"]), pct(f["disidencia"])]
+        [[str(i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]), pct(f["disidencia"])]
          for i, f in enumerate(orden)], {0, 3})
 
     s, orden = _pag_intervenciones(P, filas, pie, lastmod)
     salidas.append(s)
     tops["intervenciones.html"] = _top(
         P, ["#", "Diputado", "Grupo", "Intervenciones"],
-        [[str(i + 1), P.nombre(f), P.esc(f["grupo"]), str(f["intervenciones"])]
+        [[str(i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]), str(f["intervenciones"])]
          for i, f in enumerate(orden)], {0, 3})
 
     grupos, coinc = matriz_afinidad(estado)
