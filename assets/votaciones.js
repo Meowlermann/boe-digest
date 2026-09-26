@@ -16,7 +16,15 @@
   if (!nodo) return;
   var datos;
   try { datos = JSON.parse(nodo.textContent); } catch (e) { return; }
-  var A = datos.asientos || [], V = datos.votos || {};
+  var V = datos.votos || {};
+  // Los asientos son comunes a todas las páginas y van en un fichero aparte
+  // que queda en caché: cada página solo trae su cadena de votos.
+  fetch("/datos/asientos.json")
+    .then(function (r) { return r.json(); })
+    .then(function (j) { arrancar(j.asientos || []); })
+    .catch(function () {});
+
+  function arrancar(A) {
   var NS = "http://www.w3.org/2000/svg";
   var TXT = { S: "Sí", N: "No", A: "Abstención", X: "No vota", "-": "No estaba en la Cámara" };
   var CL = { S: "si", N: "no", A: "abs", X: "nv", "-": "fuera" };
@@ -91,6 +99,21 @@
     arts.forEach(dibujar);
   }
 
+  /* ------------------------------------------------------------ compartir */
+  [].forEach.call(document.querySelectorAll(".vt-compartir"), function (b) {
+    b.hidden = false;
+    b.addEventListener("click", function () {
+      var url = b.dataset.url, t = b.dataset.t + " — qué votó cada diputado";
+      if (navigator.share) { navigator.share({ title: t, url: url }).catch(function () {}); return; }
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () {
+          b.textContent = "Enlace copiado";
+          setTimeout(function () { b.textContent = "Compartir"; }, 2000);
+        });
+      }
+    });
+  });
+
   /* ------------------------------------------- quién votó qué, uno a uno */
   // La lista nominal se monta al abrirla: servida en HTML, un pleno de
   // sesenta votaciones pesaba varios megas.
@@ -156,6 +179,12 @@
 
   var caja = document.getElementById("vt-quien");
   var borrar = document.getElementById("vt-borrar");
+  var lista = document.getElementById("vt-lista");
+  if (lista && !lista.firstChild) {
+    A.slice().sort(function (a, b) { return a[4].localeCompare(b[4], "es"); }).forEach(function (a) {
+      var o = document.createElement("option"); o.value = a[4]; lista.appendChild(o);
+    });
+  }
   if (caja) {
     var porNombre = {};
     A.forEach(function (a) { porNombre[a[4].toLowerCase()] = a[3]; });
@@ -171,5 +200,6 @@
       caja.value = A[porSlug[inicial]][4];
       elegir(inicial);
     }
+  }
   }
 })();

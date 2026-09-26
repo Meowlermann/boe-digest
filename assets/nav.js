@@ -36,6 +36,7 @@
   /* ---------------------------------------------------------- estás aquí */
   var ruta = location.pathname;
   var seccion =
+    /^\/votaciones\//.test(ruta) ? "votaciones" :
     /^\/(diputados)\//.test(ruta) ? "parlamento" :
     /^\/(buscar|normas|temas|plazos|mapa)\//.test(ruta) ? "consultar" :
     "hoy";
@@ -69,6 +70,7 @@
 
   pilares.forEach(function (p) {
     var b = p.querySelector(".pilar-b");
+    if (!p.querySelector(".panel")) return;       // enlace directo, sin panel
     b.addEventListener("click", function (e) {
       // En táctil no hay «pasar el ratón»: el primer toque abre el panel y el
       // segundo, ya abierto, sigue el enlace a la portada de la sección.
@@ -197,6 +199,20 @@
       caja.value = ""; pintar(); caja.blur(); cerrarTodo();
     }
   });
+
+  /* ------------------------------------- portada: ¿qué votó tu diputado? */
+  // Sin script el formulario lleva al buscador con el nombre; con script, si
+  // el nombre es de un diputado, directamente a sus votos.
+  var fvt = document.querySelector(".vtb-f");
+  if (fvt) {
+    fvt.addEventListener("submit", function (e) {
+      var q = (fvt.querySelector("input").value || "").trim().toLowerCase();
+      var op = [].find.call(fvt.querySelectorAll("option"), function (o) {
+        return o.value.toLowerCase() === q;
+      });
+      if (op) { e.preventDefault(); location.href = "/diputados/" + op.dataset.s + ".html#votos"; }
+    });
+  }
 
   /* ---------------------------------------------------------- atajos */
   document.addEventListener("keydown", function (e) {
