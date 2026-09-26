@@ -528,7 +528,7 @@ def fusionar(censo_actual: dict, estado: dict, intervs: dict) -> list:
                     "voto": COD_VOTO[letra],
                     "grupo_voto": COD_VOTO.get(pg.get(cod_grupo, ""), ""),
                     "con_su_grupo": letra == "X" or pg.get(cod_grupo) in (None, letra),
-                    "enlace": f"{d['f']}.html#{ancla_votacion(d)}",
+                    "enlace": f"{d['f']}-v{d.get('s') or 0}-{d.get('n') or 0}.html",
                 })
                 if len(ultimos) >= 20:
                     break

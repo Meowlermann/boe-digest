@@ -3114,6 +3114,7 @@ _ICO = {
     "parl": _svg('<path d="M3 20a9 9 0 0 1 18 0"/><path d="M7 20a5 5 0 0 1 10 0"/><path d="M2 20h20"/>'),
     "cons": _svg('<path d="M4 5h16M4 12h16M4 19h10"/>'),
     "bus": _svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+    "vot": _svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'),
 }
 
 
@@ -3154,6 +3155,11 @@ def render_nav() -> str:
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
         + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
 
+        # Votaciones va suelta, sin panel: es la sección que más se entiende
+        # de un vistazo y la que más se comparte, así que merece un clic.
+        f'<li class="pilar pilar-directo" data-pilar="votaciones">'
+        f'<a class="pilar-b" href="/votaciones/">{_ICO["vot"]}<span>Votaciones</span></a></li>'
+
         f'<li class="pilar" data-pilar="consultar">'
         f'<a class="pilar-b" href="/mapa/" aria-haspopup="true" aria-expanded="false">{_ICO["cons"]}<span>Consultar</span></a>'
         f'<div class="panel panel-ancho"><p class="panel-t">Encontrar cualquier cosa</p><ul class="panel-l">'
@@ -3178,6 +3184,7 @@ def render_nav() -> str:
         '<nav class="tabbar" aria-label="Navegación principal">'
         f'<a href="/" data-pilar="hoy">{_ICO["hoy"]}<span>Hoy</span></a>'
         f'<a href="/diputados/" data-pilar="parlamento" data-abre="parlamento">{_ICO["parl"]}<span>Parlamento</span></a>'
+        f'<a href="/votaciones/" data-pilar="votaciones">{_ICO["vot"]}<span>Votos</span></a>'
         f'<a href="/buscar/" data-abre="buscar">{_ICO["bus"]}<span>Buscar</span></a>'
         f'<a href="/mapa/" data-pilar="consultar" data-abre="consultar">{_ICO["cons"]}<span>Consultar</span></a>'
         '</nav>')
@@ -3302,6 +3309,13 @@ def render_parlamento_ssr() -> tuple[bool, str]:
         f'<ul class="rejilla-dip portada-dip">{filas}</ul>')
 
 
+def _leer_fragmento(nombre: str) -> str:
+    try:
+        return (DATOS_DIR / nombre).read_text(encoding="utf-8")
+    except Exception:                                         # noqa: BLE001
+        return ""
+
+
 def renderizar_index(dias: list[dict]) -> None:
     """Portada: escaparate, no archivo.
 
@@ -3341,6 +3355,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "FECHA_HOY": esc_html(fmt_date_es(day0["id"])),
         "PARLAMENTO_HIDDEN": "hidden" if parl_hidden else "",
         "PARLAMENTO": parl_html,
+        "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     OUTPUT.write_text(html, encoding="utf-8")
@@ -4127,6 +4142,11 @@ def _resultado_votacion(d: dict) -> tuple[str, str]:
     return "rechazada", "Rechazada"
 
 
+def pagina_votacion(d: dict, cd=None) -> str:
+    """Nombre del fichero de la página propia de una votación."""
+    return f"{d['f']}-v{d.get('s') or 0}-{d.get('n') or 0}.html"
+
+
 def _barra_votos(c: list, total: int | None = None) -> str:
     """Barra apilada Sí / No / Abstención / No vota, en proporción."""
     c = [x or 0 for x in (c or [0, 0, 0, 0])[:4]]
@@ -4223,8 +4243,12 @@ def _tarjeta_votacion(d: dict, cd, fichas_por_clave: dict, nombres: list,
         f'{disid}'
         f'<details class="vt-nombres"><summary>Quién votó qué, uno a uno</summary>'
         f'<div class="vn"></div></details>'
-        f'<p class="vt-fuente"><a class="srclink" href="{esc_attr(d["url"])}" target="_blank" '
-        f'rel="noopener">Datos oficiales de esta votación ↗</a></p>'
+        f'<p class="vt-fuente"><a class="srclink vt-enlace" href="{esc_attr(pagina_votacion(d))}">'
+        f'Enlace a esta votación</a> · <button type="button" class="vt-compartir" '
+        f'data-url="{esc_attr(SITE_URL + "votaciones/" + pagina_votacion(d))}" '
+        f'data-t="{esc_attr(cerrar(asunto, 90))}" hidden>Compartir</button>'
+        f'<a class="srclink" href="{esc_attr(d["url"])}" target="_blank" '
+        f'rel="noopener">Datos oficiales ↗</a></p>'
         f'</article>')
 
 
@@ -4261,21 +4285,25 @@ def renderizar_votaciones(fichas: list) -> list:
         dias.setdefault(d["f"], []).append(d)
     salidas = []
     VOTACIONES_DIR.mkdir(exist_ok=True)
+    # Los asientos (posición, nombre, grupo) son iguales en todas las páginas:
+    # van en un solo fichero que el navegador guarda en caché, y cada página
+    # solo lleva su cadena de votos.
+    DATOS_DIR.mkdir(exist_ok=True)
+    (DATOS_DIR / "asientos.json").write_text(
+        json.dumps({"asientos": asientos}, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
     buscador = (
         '<div class="vt-buscar"><label for="vt-quien">¿Qué votó tu diputado?</label>'
         '<input id="vt-quien" list="vt-lista" placeholder="Escribe un nombre…" autocomplete="off">'
-        '<datalist id="vt-lista">'
-        + "".join(f'<option value="{esc_attr(f["natural"])}">' for f in
-                  sorted(fichas, key=lambda f: f.get("natural", "")))
-        + '</datalist><button type="button" id="vt-borrar" hidden>Quitar</button></div>')
+        '<datalist id="vt-lista"></datalist>'
+        '<button type="button" id="vt-borrar" hidden>Quitar</button></div>')
     leyenda = ('<p class="vt-leyenda"><span><i class="vb-si"></i>Sí</span>'
                '<span><i class="vb-no"></i>No</span><span><i class="vb-abs"></i>Abstención</span>'
                '<span><i class="vb-nv"></i>No vota</span></p>')
     fechas = sorted(dias, reverse=True)
     for n, fecha in enumerate(fechas):
         lista = sorted(dias[fecha], key=lambda d: (d.get("s") or 0, d.get("n") or 0))
-        datos = {"asientos": asientos,
-                 "votos": {cd.ancla_votacion(d): _cadena_hemi(d) for d in lista}}
+        datos = {"votos": {cd.ancla_votacion(d): _cadena_hemi(d) for d in lista}}
         tarjetas = "".join(_tarjeta_votacion(d, cd, por_clave, nombres) for d in lista)
         vecinos = []
         if n + 1 < len(fechas):
@@ -4302,7 +4330,7 @@ def renderizar_votaciones(fichas: list) -> list:
                 f"resultado, qué votó cada grupo y cada diputado, y quién se apartó de su grupo."),
             "CANONICAL": url,
             "JSONLD": jsonld_script([{"@type": "WebPage", "url": url, "inLanguage": "es-ES",
-                                      "dateModified": hoy,
+                                      "dateModified": fecha,
                                       "name": f"Votaciones del Congreso del {fmt_date_es(fecha)}"}]),
             "EDITION_DATE": esc_html(fmt_date_es(fecha)),
             "MIGA": ('<a href="../">Portada</a> › <a href="../diputados/">Parlamento</a> › '
@@ -4322,7 +4350,52 @@ def renderizar_votaciones(fichas: list) -> list:
                        "El orden de los escaños dentro de cada grupo es alfabético, no el real."),
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
-        salidas.append({"url": url, "lastmod": hoy})
+        salidas.append({"url": url, "lastmod": fecha})
+
+        # Una página por votación: es lo que se busca («qué votó el PNV en la
+        # ley X») y lo que se comparte. Mismo contenido que la tarjeta del día,
+        # con su propio título y dirección.
+        for d in lista:
+            nombre = pagina_votacion(d, cd)
+            asunto = d.get("a") or d.get("t") or "Votación"
+            clase, veredicto = _resultado_votacion(d)
+            tot = [x or 0 for x in (d.get("tot") or [0, 0, 0, 0])]
+            datos_uno = {"votos": {cd.ancla_votacion(d): _cadena_hemi(d)}}
+            json_uno = json.dumps(datos_uno, ensure_ascii=False,
+                                  separators=(",", ":")).replace("</", "<\\/")
+            url_v = f"{SITE_URL}votaciones/{nombre}"
+            _pagina_suelta(plantilla, VOTACIONES_DIR, nombre, {
+                "TITLE": esc_html(f"{cerrar(asunto, 64)}"
+                                  + (f" ({cerrar(d['sub'], 34)})" if d.get("sub") else "")
+                                  + ": qué votó cada diputado | La Tercera Cámara"),
+                "META_DESC": esc_attr(
+                    f"{veredicto} con {tot[0]} síes, {tot[1]} noes y {tot[2]} abstenciones "
+                    f"({fmt_date_es(fecha)}). Qué votó cada grupo y cada diputado, y quién "
+                    f"se apartó de su grupo."),
+                "CANONICAL": url_v,
+                "JSONLD": jsonld_script([{"@type": "WebPage", "url": url_v, "inLanguage": "es-ES",
+                                          "dateModified": fecha, "name": asunto}]),
+                "EDITION_DATE": esc_html(fmt_date_es(fecha)),
+                "MIGA": ('<a href="../">Portada</a> › <a href="./">Votaciones</a> › '
+                         f'<a href="{fecha}.html">{esc_html(fmt_date_es(fecha))}</a> › '
+                         f'<span aria-current="page">Votación {esc_html(d.get("n") or "")}</span>'),
+                "KICKER": f"Votación del Pleno · {esc_html(fmt_date_es(fecha))}",
+                "HEADLINE": esc_html(cerrar(asunto, 100)),
+                "STANDFIRST": esc_html(f"{veredicto}: {tot[0]} sí, {tot[1]} no, {tot[2]} abstenciones"
+                                       f" y {tot[3]} no votan."),
+                "FICHA": (f"<dt>Fecha</dt><dd>{esc_html(fmt_date_es(fecha))}</dd>"
+                          f"<dt>Sesión</dt><dd>{esc_html(d.get('s') or '')}</dd>"
+                          f"<dt>Votación</dt><dd>{esc_html(d.get('n') or '')}</dd>"),
+                "CUERPO": (buscador + leyenda
+                           + _tarjeta_votacion(d, cd, por_clave, nombres)
+                           + f'<p class="vt-vecinos"><a class="srclink" href="{fecha}.html">'
+                             f'Todas las votaciones de ese pleno →</a></p>'
+                           + f'<script type="application/json" id="vt-datos">{json_uno}</script>'
+                           + '<script src="/assets/votaciones.js" defer></script>'),
+                "FUENTE": ("Fuente: datos abiertos de votaciones del Congreso de los Diputados."),
+                "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+            })
+            salidas.append({"url": url_v, "lastmod": fecha})
 
     # Índice: cada pleno con sus votaciones en una línea
     secciones = []
@@ -4376,6 +4449,44 @@ def renderizar_votaciones(fichas: list) -> list:
                   f'votaciones</a></p>')
         DATOS_DIR.mkdir(exist_ok=True)
         (DATOS_DIR / "ultimas-votaciones.html").write_text(frag, encoding="utf-8")
+
+        # Escaparate en lo alto de la portada: la votación más ajustada del
+        # último pleno, pintada escaño a escaño, y la pregunta que engancha.
+        estrella = destacadas[0]
+        clase, veredicto = _resultado_votacion(estrella)
+        tot = [x or 0 for x in (estrella.get("tot") or [0, 0, 0, 0])]
+        cad = _cadena_hemi(estrella)
+        circ = "".join(
+            f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{r:.1f}" class="vs-{VOTO_CLASE.get(cad[i], "fuera") if i < len(cad) else "fuera"}"/>'
+            for i, (x, y, r, *_rest) in enumerate(asientos))
+        opciones = "".join(f'<option value="{esc_attr(f["natural"])}" data-s="{esc_attr(f["slug"])}">'
+                           for f in sorted(fichas, key=lambda f: f.get("natural", "")))
+        banner = (
+            f'<section class="vt-banner" aria-labelledby="vtb-h">'
+            f'<div class="vtb-txt">'
+            f'<p class="vtb-k">{_ICO["vot"]} Votaciones del Congreso · pleno del '
+            f'{esc_html(fmt_date_es(fechas[0]))}</p>'
+            f'<h2 id="vtb-h" class="vtb-h">¿Qué votó tu diputado?</h2>'
+            f'<p class="vtb-d">{len(lista)} votaciones en el último pleno. La más ajustada: '
+            f'<a href="/votaciones/{pagina_votacion(estrella, cd)}">'
+            f'{esc_html(cerrar(estrella.get("a") or estrella.get("t") or "", 110))}</a> '
+            f'<span class="vt-res {clase}">{esc_html(veredicto.split(":")[0])}</span> '
+            f'<span class="vtb-n">{tot[0]} sí · {tot[1]} no · {tot[2]} abst.</span></p>'
+            f'<form class="vtb-f" action="/buscar/" method="get" role="search">'
+            f'<input name="q" list="vtb-lista" placeholder="Escribe su nombre…" '
+            f'aria-label="Nombre del diputado" autocomplete="off">'
+            f'<datalist id="vtb-lista">{opciones}</datalist>'
+            f'<button type="submit">Ver cómo vota</button></form>'
+            f'<p class="vtb-mas"><a href="/votaciones/{fechas[0]}.html">Todas las votaciones '
+            f'del pleno →</a></p></div>'
+            f'<a class="vtb-hemi" href="/votaciones/{pagina_votacion(estrella, cd)}" '
+            f'aria-label="Ver la votación escaño a escaño">'
+            f'<svg viewBox="0 0 720 386" aria-hidden="true">{circ}</svg>'
+            f'<span class="vt-leyenda"><span><i class="vb-si"></i>Sí</span>'
+            f'<span><i class="vb-no"></i>No</span><span><i class="vb-abs"></i>Abst.</span>'
+            f'<span><i class="vb-nv"></i>No vota</span></span></a>'
+            f'</section>')
+        (DATOS_DIR / "votaciones-banner.html").write_text(banner, encoding="utf-8")
     log(f"votaciones/: {len(fechas)} plenos, {len(detalle)} votaciones")
     return salidas
 
@@ -4426,17 +4537,6 @@ def renderizar_diputados(fichas: list) -> list:
         if metricas:
             cuerpo.append('<h2 class="rotulo">Su actividad en cifras</h2>'
                           '<div class="metricas">' + "".join(metricas) + "</div>")
-        if f["ultimas_intervenciones"]:
-            cuerpo.append('<h2 class="rotulo">Últimas intervenciones</h2><ul class="indice">')
-            for i in f["ultimas_intervenciones"]:
-                enlace = (f'<a href="{esc_attr(i["video"])}" rel="nofollow noopener" '
-                          f'target="_blank">{esc_html(i["asunto"] or "Intervención")}</a>'
-                          if i.get("video") else esc_html(i["asunto"] or "Intervención"))
-                cuerpo.append(f'<li>{enlace}<span class="ref">'
-                              f'{esc_html(i["fecha"])} · {esc_html(i["organo"])}'
-                              + (f' · {esc_html(i["fase"])}' if i.get("fase") else "")
-                              + '</span></li>')
-            cuerpo.append("</ul>")
         if f["ultimos_votos"]:
             etiqueta = {"si": "Sí", "no": "No", "abstencion": "Abstención", "no_vota": "No vota"}
             clase = {"si": "si", "no": "no", "abstencion": "abs", "no_vota": "nv"}
@@ -4447,7 +4547,7 @@ def renderizar_diputados(fichas: list) -> list:
             for v in f["ultimos_votos"]:
                 distinto = not v.get("con_su_grupo", True)
                 asunto = esc_html(v.get("asunto") or "Votación")
-                destino = (v.get("enlace") or "").replace(".html#", ".html?d=" + f["slug"] + "#")
+                destino = (v.get("enlace") + "?d=" + f["slug"]) if v.get("enlace") else ""
                 enlace = (f'<a href="../votaciones/{esc_attr(destino)}">{asunto}</a>'
                           if destino else asunto)
                 que = (f'<span class="vd-que">{esc_html(v["que"])}</span>'
@@ -4464,6 +4564,17 @@ def renderizar_diputados(fichas: list) -> list:
                     f'{etiqueta.get(v["voto"], v["voto"])}</span>'
                     f'<span class="vd-txt">{enlace}{que}{grupo}</span>'
                     f'<span class="vd-fecha">{esc_html(fecha_txt)}</span></li>')
+            cuerpo.append("</ul>")
+        if f["ultimas_intervenciones"]:
+            cuerpo.append('<h2 class="rotulo">Últimas intervenciones</h2><ul class="indice">')
+            for i in f["ultimas_intervenciones"]:
+                enlace = (f'<a href="{esc_attr(i["video"])}" rel="nofollow noopener" '
+                          f'target="_blank">{esc_html(i["asunto"] or "Intervención")}</a>'
+                          if i.get("video") else esc_html(i["asunto"] or "Intervención"))
+                cuerpo.append(f'<li>{enlace}<span class="ref">'
+                              f'{esc_html(i["fecha"])} · {esc_html(i["organo"])}'
+                              + (f' · {esc_html(i["fase"])}' if i.get("fase") else "")
+                              + '</span></li>')
             cuerpo.append("</ul>")
         if not cuerpo:
             cuerpo = ["<p>Todavía no hay actividad registrada de este diputado en las "
