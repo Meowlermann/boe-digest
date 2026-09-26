@@ -124,7 +124,7 @@ function Controles({ grupos, estado, set, conteos, total, fechaSesion }) {
   );
 }
 
-function Hemiciclo({ datos }) {
+function Hemiciclo({ datos, compacto = false, base = "" }) {
   const [estado, setEstado] = useState({ q: "", grupo: "", marca: "" });
   const [activo, setActivo] = useState(null);
   const [pos, setPos] = useState({ x: 0, y: 0, abajo: false });
@@ -210,7 +210,7 @@ function Hemiciclo({ datos }) {
     };
     const pulsar = (e) => {
       const c = e.target.closest(".escano");
-      if (c) location.href = c.getAttribute("data-d") + ".html";
+      if (c) location.href = base + c.getAttribute("data-d") + ".html";
     };
 
     svg.addEventListener("mouseover", entrar);
@@ -229,7 +229,7 @@ function Hemiciclo({ datos }) {
       svg.removeEventListener("focusout", salir);
       svg.removeEventListener("click", pulsar);
     };
-  }, [porSlug]);
+  }, [porSlug, base]);
 
   const lista = useMemo(
     () =>
@@ -242,14 +242,14 @@ function Hemiciclo({ datos }) {
 
   return (
     <div className="hemi-interactivo" ref={caja}>
-      <Controles
+      {!compacto && <Controles
         grupos={Object.assign(datos.grupos, { totalGlobal: datos.diputados.length })}
         estado={estado}
         set={setEstado}
         conteos={conteos}
         total={destacados.size}
         fechaSesion={datos.fechaUltimaSesion}
-      />
+      />}
       <Ficha d={activo} x={pos.x} y={pos.y} abajo={pos.abajo} />
       {filtrando && (
         <ul className="rejilla-dip hemi-resultados">
@@ -287,7 +287,10 @@ async function arrancar() {
     datos.fechaUltimaSesion = u
       ? `${u.slice(6, 8)}/${u.slice(4, 6)}/${u.slice(0, 4)}`
       : "";
-    render(<Hemiciclo datos={datos} />, raiz);
+    // En portada (data-compacto) solo la ficha al pasar el ratón: los
+    // filtros viven en la página de diputados.
+    render(<Hemiciclo datos={datos} compacto={"compacto" in raiz.dataset}
+                      base={raiz.dataset.base || ""} />, raiz);
   } catch (e) {
     // Sin datos no se monta nada: el hemiciclo del servidor se queda como está.
     console.warn("No se pudo cargar el parlamento interactivo:", e);
