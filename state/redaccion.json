@@ -1308,7 +1308,7 @@
   "BOE-A-2026-19330": {
    "huella": "0ed25e126483330c",
    "descartado": "acaba en el número «2026» sin decir de qué",
-   "intentos": 1
+   "intentos": 3
   },
   "BOE-A-2026-19331": {
    "huella": "ea4a0772b60576b5",
@@ -1350,67 +1350,117 @@
    "fecha": "2026-09-26"
   },
   "BOE-A-2026-19388": {
-   "huella": "432cea88064b0afc",
-   "titular": "Ministerio de Defensa y universidades de ingeniería firman convenio para actividades en operaciones",
-   "entradilla": "Se publica el acuerdo para colaborar conjuntamente con ingenierías agroalimentarias y forestales en zonas de operaciones.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "b7d7d008ffb3e8af",
+   "fuente": "80b99c42697e12ce",
+   "titular": "Defensa y las universidades agroalimentarias colaborarán en zonas de operaciones",
+   "entradilla": "El Ministerio de Defensa y la Conferencia de Centros Universitarios de Ingenierías Agroalimentarias y Forestales firman un convenio para realizar actividades académicas y de investigación.",
+   "claves": [
+    "El acuerdo constituye la segunda fase del programa ALMAZARA, que fue suscrito originalmente el 25 de febrero de 2021.",
+    "El Mando de Operaciones seleccionará las zonas de operaciones adecuadas y coordinará las fechas, transportes y apoyos necesarios.",
+    "Las actividades de investigación, desarrollo y asesoría buscan favorecer la cooperación entre la población civil y los contingentes militares."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19389": {
-   "huella": "b10a1759587ce559",
-   "titular": "Ministerio de Defensa y Universidad San Pablo-CEU acuerdan prácticas académicas externas",
-   "entradilla": "Se publica el convenio de cooperación educativa para facilitar la realización de prácticas de estudiantes en el ministerio.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "bf79830f61def969",
+   "fuente": "7870326742f903b8",
+   "titular": "Defensa y la Universidad San Pablo-CEU acuerdan un programa de prácticas externas",
+   "entradilla": "Los estudiantes de grado y máster oficial de la institución educativa podrán realizar prácticas formativas en el ámbito del Ministerio de Defensa para completar su formación académica.",
+   "claves": [
+    "El convenio de cooperación educativa da cumplimiento a la normativa que exige un acuerdo formal para el desarrollo de prácticas externas.",
+    "La iniciativa se enmarca en el fomento de la cultura de seguridad nacional y de defensa promovido por el Gobierno."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19390": {
-   "huella": "4f2ac36df7ed4e38",
-   "titular": "Hacienda prorroga el convenio con el Campo de Gibraltar y el Ayuntamiento de Algeciras",
-   "entradilla": "Se publica la adenda para mantener la financiación de inversiones previstas en el municipio algecireño.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "9378041ee374faa8",
+   "fuente": "29b255f80eeb3fcb",
+   "titular": "Hacienda prorroga la financiación de inversiones en el Campo de Gibraltar",
+   "entradilla": "El Ministerio de Hacienda, la Mancomunidad de Municipios del Campo de Gibraltar y el Ayuntamiento de Algeciras firman una adenda para ampliar el convenio de inversión de 2025.",
+   "claves": [
+    "La adenda prorroga el convenio firmado el 27 de octubre de 2025 entre las tres administraciones públicas.",
+    "Estas actuaciones se ejecutan en el marco del Plan Integral para el Campo de Gibraltar, aprobado por el Consejo de Ministros en 2018."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19395": {
-   "huella": "15286f8b2a291acc",
-   "titular": "Secretaría General de Pesca distribuye el sobrante de capturas de anchoa en el caladero norte",
-   "entradilla": "Fija el reparto del volumen máximo de capturas sobrantes de anchoa para los buques de cerco del Cantábrico y Noroeste.",
+   "huella": "bde1cb71ac228fb3",
+   "fuente": "f2efaf900a3ff41a",
+   "titular": "La Secretaría General de Pesca distribuye un sobrante de anchoa en el caladero Cantábrico y Noroeste",
+   "entradilla": "Se reparten 795.545 kilogramos procedentes del sobrante de buques de xeito, racú, piobardeira y barcos no agrupados.",
+   "claves": [
+    "La cantidad distribuida asciende exactamente a 795.545 kg entre los grupos de buques de cerco en el Cantábrico y Noroeste.",
+    "El reparto toma como referencia la fecha de 31 de agosto de 2026 según los criterios de la Orden APA/377/2026.",
+    "La resolución surte efectos desde el día siguiente al de su publicación en el Boletín Oficial del Estado."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19396": {
-   "huella": "b0490009d0fb4e6e",
-   "titular": "Ministerio de Política Territorial publica el acuerdo bilateral sobre policías locales de Cantabria",
-   "entradilla": "Se da a conocer el pacto de la comisión mixta en relación con la ley autonómica de coordinación de policías locales cántabras.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "daded9fddb179967",
+   "fuente": "e1ab7edab32fcd42",
+   "titular": "El Gobierno y Cantabria negocian discrepancias sobre la ley de policías locales",
+   "entradilla": "La Comisión Bilateral de Cooperación abre un proceso de negociación y constituye un grupo de trabajo para resolver las diferencias en torno a la reforma de la norma autonómica.",
+   "claves": [
+    "Las discrepancias se centran en el artículo único de la Ley de Cantabria 7/2026, que modifica la ley de coordinación de policías locales.",
+    "Se ha designado un grupo de trabajo específico para proponer una solución de consenso a la Comisión Bilateral.",
+    "El acuerdo de inicio de negociaciones será comunicado al Tribunal Constitucional y publicado en los boletines oficiales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19397": {
-   "huella": "386cbe92ebe37843",
-   "titular": "Ministerio de Política Territorial publica el acuerdo sobre transporte marítimo de Cantabria",
-   "entradilla": "Se difunde el entendimiento de la comisión bilateral respecto a la normativa autonómica de ordenación del transporte marítimo.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "b05f38a7136271d5",
+   "fuente": "6d1fc8c5e4afe9bf",
+   "titular": "El Estado y Cantabria abren negociaciones por la ley de transporte marítimo",
+   "entradilla": "La Comisión Bilateral de Cooperación busca solucionar de mutuo acuerdo las discrepancias surgidas en torno a una docena de artículos y disposiciones de la nueva norma cántabra.",
+   "claves": [
+    "Las negociaciones afectan a los artículos 1, 2, 4, 6, 7, 11, 13, 14, 17, 28 y 29, además de dos disposiciones de la ley autonómica.",
+    "Un grupo de trabajo técnico será el encargado de formular una propuesta de acuerdo para resolver la controversia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19399": {
-   "huella": "b4acb7089a79789d",
-   "titular": "Gobierno y Baleares publican acuerdo sobre la ley balear de aceleración de proyectos estratégicos",
-   "entradilla": "Se da publicidad al acuerdo adoptado en la comisión bilateral de cooperación en relación con las medidas urgentes autonómicas.",
+   "huella": "6ed6bbc51f9a7ee7",
+   "fuente": "6cf21582a65f3905",
+   "titular": "El Estado y la Illes Balears negocian discrepancias sobre la ley de medidas urgentes",
+   "entradilla": "La Comisión Bilateral de Cooperación abre negociaciones para resolver diferencias sobre la Ley 4/2026 de la comunidad autónoma.",
+   "claves": [
+    "Las discrepancias se centran en la disposición final trigésimo novena y la disposición final sexagésimo sexta de la norma autonómica.",
+    "Se designa un grupo de trabajo específico para proponer una solución conjunta a la Comisión Bilateral.",
+    "El acuerdo se comunica formalmente al Tribunal Constitucional y se publica en los boletines oficiales correspondientes."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19400": {
-   "huella": "0528e729083f6c49",
-   "titular": "Gobierno y Baleares publican acuerdo sobre el decreto balear de medidas por la crisis económica",
-   "entradilla": "Se publica el entendimiento en el seno de la comisión bilateral respecto al decreto de medidas urgentes frente a los efectos internacionales.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "ba04239078fa6c29",
+   "fuente": "bea0196a5996bf4f",
+   "titular": "Baleares modificará su ley de tributos cedidos tras pactar con el Gobierno",
+   "entradilla": "La Comisión Bilateral de Cooperación cierra la controversia sobre el decreto ley de medidas contra la crisis de Oriente Medio tras acordar un cambio en el tratamiento fiscal de las ayudas.",
+   "claves": [
+    "El Gobierno balear se compromete a promover un cambio legislativo en el texto refundido de las disposiciones legales en materia de tributos cedidos.",
+    "La nueva redacción establecerá que las subvenciones o ayudas reguladas no formarán parte de los rendimientos de actividades económicas del contribuyente.",
+    "Con este acuerdo, ambas administraciones consideran resueltas las discrepancias y concluida la controversia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19402": {
-   "huella": "5a14b62d3078866a",
-   "titular": "Ministerio de Política Territorial corrige errores en subvenciones por emergencias de protección civil",
-   "entradilla": "Se enmienda la asignación de ayudas para recuperar infraestructuras dañadas por incendios y emergencias declaradas graves.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "5e116df129589f71",
+   "fuente": "55400eb34fabba04",
+   "titular": "Política Territorial corrige errores en las ayudas por incendios de 2025",
+   "entradilla": "Una resolución rectifica los datos de presupuesto e importe asignado a un proyecto de recuperación de infraestructuras municipales y red viaria dañado por emergencias en 2025.",
+   "claves": [
+    "La corrección afecta a la relación de proyectos financiados del anexo I de la resolución publicada el pasado 4 de agosto de 2026.",
+    "El plazo para el proyecto afectado se computará a partir del día siguiente al de la publicación de esta rectificación en el BOE."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "C-eec15f0e103dfde2": {
    "huella": "2230d853e2ee47eb",
@@ -2061,8 +2111,15 @@
   },
   "C-f25b967a7dd9d9c1": {
    "huella": "ff73afb630517866",
-   "descartado": "nombre «Publicado» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "769f64e6608cabfb",
+   "titular": "El Congreso publica las comparecencias previstas de Sánchez Carpio y el director de la Fundación Vinjoy",
+   "entradilla": "El Diario de Sesiones registra la aportación de experiencia de los usuarios y de la Fundación Vinjoy en la comisión.",
+   "claves": [
+    "El Congreso incluye en el Diario de Sesiones la comparecencia de Sánchez Carpio para aportar su experiencia en la comisión.",
+    "También se registra la intervención del director-gerente de la Fundación Vinjoy (Rivas Fernández) para abordar desafíos en su ámbito."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
   },
   "C-fe5e4bb8fc2714a3": {
    "huella": "43af875609faf5a3",
@@ -2081,9 +2138,72 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-09-26"
+  },
+  "C-0f87ce47f4d501ee": {
+   "huella": "6ab57432c9607e79",
+   "fuente": "2230d853e2ee47eb",
+   "titular": "La comisión del apagón interroga a los directivos de Red Eléctrica y UNEF",
+   "entradilla": "Concepción Sánchez Pérez y Donoso Alonso comparecen ante el Congreso para explicar las causas del corte de suministro eléctrico ocurrido el 28 de abril de 2025.",
+   "claves": [
+    "La oposición cuestionó la gestión de Red Eléctrica para garantizar el equilibrio y el suministro del sistema durante el incidente.",
+    "La compareciente defendió la complejidad sistémica frente a las acusaciones de responsabilidad individual de los grupos parlamentarios.",
+    "La sesión estuvo presidida por la diputada Idoia Sagastizabal y contó con la intervención de portavoces de VOX, PP, EH Bildu y PSOE."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "C-4f7ec4e6b8d00b54": {
+   "huella": "188351d99a7dbb33",
+   "fuente": "8cc77a4d24eff9d2",
+   "titular": "La oposición exige explicaciones al Gobierno sobre Ceuta y el Canal de Navarra",
+   "entradilla": "El Congreso registra cuatro interpelaciones urgentes dirigidas a los ministerios de Interior, Transición Ecológica y otros departamentos sobre seguridad, infraestructuras y coste de la vida.",
+   "claves": [
+    "El Partido Popular y VOX han registrado sendas iniciativas dirigidas al Ministerio del Interior para abordar la situación en Ceuta.",
+    "El Grupo Mixto interpelará al Ministerio para la Transición Ecológica sobre el Canal de Navarra y presentará otra iniciativa sobre el encarecimiento de la vida."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "C-fbea74c914260489": {
+   "huella": "e5b100628e488ecb",
+   "fuente": "4de25d8a3db293ab",
+   "titular": "El Senado tramita por la vía de urgencia la nacionalidad para los saharauis",
+   "entradilla": "La proposición de ley para conceder la nacionalidad española a los nacidos en el Sáhara Occidental bajo administración española reduce a la mitad sus plazos de tramitación ordinarios.",
+   "claves": [
+    "La declaración de urgencia de la iniciativa parlamentaria establece el límite para presentar enmiendas el próximo 23 de septiembre.",
+    "La propuesta busca beneficiar a las personas nacidas en el territorio del Sáhara Occidental cuando este se encontraba bajo administración de España."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "C-2553378455d8852f": {
+   "huella": "18cb8a433273f409",
+   "fuente": "3483c6e16a383f52",
+   "titular": "Tres asesores de la Presidencia del Senado pasan a la Vicepresidencia Primera con efectos de septiembre",
+   "entradilla": "El personal eventual cambia de adscripción a propuesta del vicepresidente Javier Ignacio Maroto Aranzábal.",
+   "claves": [
+    "Piedad García-Ballesteros Maroto, Juan González-Ripoll Cereijo y José Alberto García García cesan en la Presidencia el 14 de septiembre.",
+    "Los tres son nombrados en la Vicepresidencia Primera con efectos del día 15 de septiembre.",
+    "El mismo boletín recoge el nombramiento de Ángela Martínez Pradas como asistente para los senadores del Grupo Parlamentario Socialista."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-77afe5462e50b6da": {
+   "huella": "b105310faf9b2936",
+   "fuente": "7755885f4942f3e9",
+   "titular": "El Senado tramita el tratado de protección de información con Australia y el protocolo del Guadiana",
+   "entradilla": "La Cámara alta examina la cooperación en defensa con Australia, el caudal del río Guadiana y la UNESCO.",
+   "claves": [
+    "El acuerdo con Australia regula la protección mutua de información clasificada entre ambos países.",
+    "Se tramita también un protocolo con Portugal sobre el régimen de caudales del río Guadiana.",
+    "La Fundación Tres Culturas del Mediterráneo es designada como centro de categoría 2 de la UNESCO."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
   }
  },
  "uso": {
-  "2026-09-26": 4
+  "2026-09-26": 6
  }
 }

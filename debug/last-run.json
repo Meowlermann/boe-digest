@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-26T06:41:01.658971+00:00",
+  "inicio": "2026-09-26T10:10:00.200842+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/boe/dias/2026/09/26/index.php",
@@ -114,26 +114,6 @@
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19999",
       "status": 200,
       "bytes": 20501
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19397",
-      "status": 200,
-      "bytes": 16465
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19399",
-      "status": 200,
-      "bytes": 17151
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19400",
-      "status": 200,
-      "bytes": 18184
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-19402",
-      "status": 200,
-      "bytes": 20918
     }
   ],
   "403": {
@@ -141,7 +121,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;851c1602&#46;1790404870&#46;8fd653c1 <P>https&#58;&#47;&#47;errors&#46;edgesuite"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;senado&#46;es&#47;web&#47;actividadparlamentaria&#47;publicacionesoficiales&#47;senado&#47;boletinesoficiales&#47;index&#46;html\" on this server.<P> Reference&#32;&#35;18&#46;886bdc17&#46;1790417407&#46;db4d395 <P>https&#58;&#47;&#47;errors&#46;edgesuite&"
   },
   "senado_fallback": [
     467,
@@ -158,5 +138,5 @@
     "congreso_docs": 4,
     "senado_docs": 0
   },
-  "fin": "2026-09-26T06:41:23.738944+00:00"
+  "fin": "2026-09-26T10:10:19.647300+00:00"
 }
