@@ -55,6 +55,7 @@ DATOS_DIR = ROOT / "datos"
 PLAZOS_DIR = ROOT / "plazos"
 BUSCAR_DIR = ROOT / "buscar"
 MAPA_DIR = ROOT / "mapa"
+RANKINGS_DIR = ROOT / "rankings"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -3151,6 +3152,7 @@ def render_nav() -> str:
         f'<div class="panel"><p class="panel-t">Así vota y así trabaja cada diputado</p><ul class="panel-l">'
         + enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado")
         + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
+        + enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos")
         + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
         + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
@@ -4491,6 +4493,24 @@ def renderizar_votaciones(fichas: list) -> list:
     return salidas
 
 
+def renderizar_rankings(fichas_dip: list) -> list:
+    """/rankings/: clasificaciones de diputados y grupos. El cálculo vive en
+    rankings.py; aquí solo se le pasan las utilidades de página del sitio para
+    que use la misma plantilla, el mismo escape y el mismo sitemap."""
+    if not TEMPLATE_NORMA.exists() or not CONGRESO_ESTADO.get("personas"):
+        return []
+    import rankings
+    salidas = rankings.generar(fichas_dip, CONGRESO_ESTADO, {
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "slug_txt": _slug_txt, "pagina_votacion": pagina_votacion,
+        "carpeta": RANKINGS_DIR,
+    })
+    log(f"rankings/: {len(salidas)} páginas")
+    return salidas
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -4931,7 +4951,8 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
                 + ediciones)
         + '<h2 class="rotulo">Parlamento</h2>'
         + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
-                 ("/votaciones/", "Votaciones del Pleno: quién votó qué", "")])
+                 ("/votaciones/", "Votaciones del Pleno: quién votó qué", ""),
+                 ("/rankings/", "Rankings de diputados y grupos", "")])
         + '<h3 class="rotulo-sub">Por grupo</h3>' + lista(grupos)
         + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
         + '<h2 class="rotulo">Consultar</h2>'
@@ -5060,6 +5081,11 @@ def renderizar() -> None:
         fichas_dip = cosechar_congreso()
         extras += renderizar_diputados(fichas_dip)
         extras += renderizar_votaciones(fichas_dip)
+        # Los rankings son un añadido: si fallan, la edición sale igual.
+        try:
+            extras += renderizar_rankings(fichas_dip)
+        except Exception as exc:                              # noqa: BLE001
+            log(f"rankings/: no se pudo generar ({exc})")
     except Exception as exc:                                  # noqa: BLE001
         log(f"diputados/: no se pudo generar ({exc})")
 
@@ -5166,7 +5192,8 @@ def main() -> None:
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
-                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR):
+                NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
+                RANKINGS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
