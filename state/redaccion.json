@@ -2201,9 +2201,159 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-26"
+  },
+  "C-af9ef7dadec98609": {
+   "huella": "370c8e7ab7513782",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-d13e69605aa238c4": {
+   "huella": "4695fc0f737a70e2",
+   "fuente": "5ce32576b7a0ebe7",
+   "titular": "Santiago Abascal pregunta a Pedro Sánchez sobre Marruecos",
+   "entradilla": "Vox interroga al presidente del Gobierno en la sesión de control sobre supuestos chantajes relacionados con información sobre corrupción.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-a4c56992a5a5b818": {
+   "huella": "809375fafb1ec1b7",
+   "fuente": "46ddbf97d1696eb9",
+   "titular": "Gabriel Rufián pregunta a Pedro Sánchez por la legislatura",
+   "entradilla": "El diputado de ERC plantea al presidente del Gobierno cómo afronta el periodo restante del mandato.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-ec2c70c281bfdc23": {
+   "huella": "e5e998eac9528d32",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-06a21fbb12699713": {
+   "huella": "379fc88f97409ec8",
+   "fuente": "8a798827dafb1db9",
+   "titular": "Jaime de Olano interroga a Carlos Cuerpo sobre las familias españolas",
+   "entradilla": "El diputado del PP pregunta al ministro de Economía si el Gobierno se preocupa de verdad por la situación de las familias.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-6c5dd24a71ded67e": {
+   "huella": "1f897faf45f604b6",
+   "fuente": "d76d80e84445d6bd",
+   "titular": "Sofía Acedo pregunta a Yolanda Díaz por la crisis de Ceuta",
+   "entradilla": "La diputada popular pide a la vicepresidenta segunda su valoración sobre la situación vivida en la ciudad autónoma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-4ed6b73571f9c83e": {
+   "huella": "afe694d6874d169c",
+   "fuente": "c62885f673d4543f",
+   "titular": "Oskar Matute pregunta a Yolanda Díaz por la reforma del despido",
+   "entradilla": "EH Bildu interroga a la ministra de Trabajo sobre los planes del Gobierno para recuperar indemnizaciones justas.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-dbe423a076fbdc17": {
+   "huella": "0b0ac77105bd4c15",
+   "fuente": "0b4971d01e5f0e53",
+   "titular": "Juan Bravo pregunta a Félix Bolaños sobre la normalidad en Ceuta",
+   "entradilla": "El diputado del PP interroga al ministro de la Presidencia acerca de la recuperación de la normalidad en la ciudad.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-29b8fa62625aadf5": {
+   "huella": "e1a78871222b9b76",
+   "fuente": "8533d3456667e314",
+   "titular": "Cristina Valido pregunta a Hacienda por los acuerdos con Canarias",
+   "entradilla": "La diputada del grupo mixto cuestiona el grado de cumplimiento de los pactos alcanzados con el presidente canario.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-d58a9c9187e572c9": {
+   "huella": "51fc7b37a98f5dfc",
+   "fuente": "ffeb5bc5969447c9",
+   "titular": "Miguel Tellado interroga a Fernando Grande-Marlaska por su gestión",
+   "entradilla": "El portavoz del PP en el Congreso pregunta al ministro del Interior si considera que ha estado a la altura de su cargo.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-8cfb064ffb8a33b0": {
+   "huella": "1d0945a18deda801",
+   "fuente": "87c0bafb3cc96cea",
+   "titular": "Ana Belén Vázquez pregunta al ministro del Interior por su diligencia",
+   "entradilla": "La diputada del PP cuestiona la actuación de Fernando Grande-Marlaska al frente del Ministerio del Interior.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-f3a53740397749e9": {
+   "huella": "6219a85ce8552eb7",
+   "descartado": "nombre «Ceuta» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-a9af71dfcacbf0db": {
+   "huella": "68f533d94293f5af",
+   "fuente": "8ecc35a128c0b145",
+   "titular": "Alberto Ibáñez pregunta a Interior por agresiones a periodistas",
+   "entradilla": "Sumar interroga al ministro sobre las consecuencias democráticas de impedir informar a los reporteros con pasividad policial.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-f4213dc20a07536d": {
+   "huella": "5196ee68a6d065ee",
+   "fuente": "10dd81b0c2bd980e",
+   "titular": "Marta Madrenas interroga a Fernando Grande-Marlaska sobre la policía",
+   "entradilla": "La diputada de Junts pregunta al ministro del Interior si ejerce un control efectivo sobre los cuerpos policiales.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-f2b002c7286b4702": {
+   "huella": "ec1eb9622754bdc3",
+   "fuente": "884d138f71466699",
+   "titular": "Jaime de los Santos pregunta a Educación por los alumnos de Ceuta",
+   "entradilla": "El diputado del PP interroga a la ministra sobre la garantía de los derechos educativos en la ciudad autónoma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-8417aeeabf566b4e": {
+   "huella": "9577ac3d0fb82b29",
+   "fuente": "0b1232e66ba9c1c1",
+   "titular": "Carmen Fúnez interroga a la ministra de Sanidad sobre Ceuta",
+   "entradilla": "La representante del PP pregunta a Mónica García si su departamento actuó con todo lo necesario durante la crisis.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-7f9f88506a28779d": {
+   "huella": "d1ed4dea9d55870d",
+   "fuente": "eea7ee94e56da692",
+   "titular": "Joseba Andoni Agirretxea pregunta a Sanidad por el Estatuto Marco",
+   "entradilla": "El diputado del PNV cuestiona a la ministra Mónica García sobre la responsabilidad de aprobar este marco para el personal.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
+  },
+  "C-08b1dab9a9932e3f": {
+   "huella": "37aa8c6a47c9c5c1",
+   "fuente": "74ba99c85bb2dc0e",
+   "titular": "Patricia Rodríguez pregunta a Igualdad por la seguridad en Ceuta",
+   "entradilla": "La diputada del PP interroga a la ministra Ana Redondo sobre si las mujeres se encuentran seguras en la ciudad autónoma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-26"
   }
  },
  "uso": {
-  "2026-09-26": 6
+  "2026-09-26": 8
  }
 }
