@@ -37,7 +37,7 @@
   var ruta = location.pathname;
   var seccion =
     /^\/votaciones\//.test(ruta) ? "votaciones" :
-    /^\/(diputados)\//.test(ruta) ? "parlamento" :
+    /^\/(diputados|rankings)\//.test(ruta) ? "parlamento" :
     /^\/(buscar|normas|temas|plazos|mapa)\//.test(ruta) ? "consultar" :
     "hoy";
   pilares.forEach(function (p) {
