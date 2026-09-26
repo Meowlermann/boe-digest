@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo se calculan los rankings del Congreso | La Tercera Cámara</title>
+<meta name="description" content="Fórmulas, umbrales, ventanas de datos y fuentes de los rankings de diputados y grupos de La Tercera Cámara.">
+<link rel="canonical" href="https://terceracamara.es/rankings/metodologia.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%23c81e2c'/%3E%3Ctext x='50' y='72' font-size='64' text-anchor='middle' fill='white' font-family='Arial Black,Arial,sans-serif' font-weight='900'%3EB%3C/text%3E%3C/svg%3E">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#c81e2c">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="La Tercera Cámara">
+<meta property="og:title" content="Cómo se calculan los rankings del Congreso | La Tercera Cámara">
+<meta property="og:description" content="Fórmulas, umbrales, ventanas de datos y fuentes de los rankings de diputados y grupos de La Tercera Cámara.">
+<meta property="og:url" content="https://terceracamara.es/rankings/metodologia.html">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cómo se calculan los rankings del Congreso | La Tercera Cámara">
+<meta name="twitter:description" content="Fórmulas, umbrales, ventanas de datos y fuentes de los rankings de diputados y grupos de La Tercera Cámara.">
+<link rel="alternate" type="application/rss+xml" title="La Tercera Cámara" href="../feed.xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","url":"https://terceracamara.es/rankings/metodologia.html","name":"Cómo se calculan los rankings del Congreso","inLanguage":"es-ES","dateModified":"2026-09-23"}]}</script>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  :root{ padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+  html{ color-scheme: light dark; }
+  body{ margin:0; font:14px/1.5 system-ui, sans-serif; }
+  img{ max-width:100%; }
+  [hidden]{ display:none !important; }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="masthead-row">
+      <div class="brand"><a href="../" style="text-decoration:none;color:inherit"><div class="title1">LA TERCERA<span>CÁMARA</span></div></a></div>
+      <div class="edition-date">Datos hasta la sesión 200 (miércoles, 23 de septiembre de 2026)</div>
+    </div>
+  </header>
+  <nav class="nav" aria-label="Secciones"><div class="nav-in"><a class="nav-marca" href="/" aria-label="La Tercera Cámara, portada">LTC</a><ul class="nav-pilares"><li class="pilar" data-pilar="hoy"><a class="pilar-b" href="/" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>Hoy</span></a><div class="panel"><p class="panel-t">El día a día del Estado</p><ul class="panel-l"><li><a href="/"><b>Edición de hoy</b><span>El BOE y las Cortes del día, explicados</span></a></li><li><a href="/#h-boe"><b>El BOE de hoy</b><span>Lo que se publica y a quién afecta</span></a></li><li><a href="/#h-cortes"><b>Las Cortes hoy</b><span>Qué registran, preguntan y votan</span></a></li><li><a href="/ediciones/"><b>Archivo de ediciones</b><span>Todos los días publicados</span></a></li><li><a href="/feed.xml"><b>Suscribirse por RSS</b><span>Cada edición, en tu lector</span></a></li></ul></div></li><li class="pilar" data-pilar="parlamento"><a class="pilar-b" href="/diputados/" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20a9 9 0 0 1 18 0"/><path d="M7 20a5 5 0 0 1 10 0"/><path d="M2 20h20"/></svg><span>Parlamento</span></a><div class="panel"><p class="panel-t">Así vota y así trabaja cada diputado</p><ul class="panel-l"><li><a href="/votaciones/"><b>Votaciones</b><span>Qué se votó y qué votó cada diputado</span></a></li><li><a href="/diputados/"><b>El hemiciclo</b><span>Los 350 escaños, uno a uno</span></a></li><li><a href="/rankings/"><b>Rankings</b><span>Participación, disidencia, afinidad entre grupos</span></a></li><li><a href="/diputados/#activos"><b>Quién interviene más</b><span>Presencia en el pleno y en comisión</span></a></li><li><a href="/diputados/#circunscripciones"><b>Por circunscripción</b><span>Los diputados de tu provincia</span></a></li></ul><p class="panel-t">Por grupo</p><div class="chips-n"><a class="chip-n" href="/diputados/grupo-bildu.html"><i style="background:#5aa02c"></i>EH Bildu</a><a class="chip-n" href="/diputados/grupo-erc.html"><i style="background:#d4a017"></i>ERC</a><a class="chip-n" href="/diputados/grupo-sumar.html"><i style="background:#c4267b"></i>Sumar</a><a class="chip-n" href="/diputados/grupo-psoe.html"><i style="background:#c8352f"></i>PSOE</a><a class="chip-n" href="/diputados/grupo-mixto.html"><i style="background:#8d8d8d"></i>Mixto</a><a class="chip-n" href="/diputados/grupo-pnv.html"><i style="background:#1f7a5a"></i>PNV</a><a class="chip-n" href="/diputados/grupo-junts.html"><i style="background:#2a9d9b"></i>Junts</a><a class="chip-n" href="/diputados/grupo-pp.html"><i style="background:#2b5fa8"></i>PP</a><a class="chip-n" href="/diputados/grupo-vox.html"><i style="background:#4d8b2f"></i>Vox</a></div></div></li><li class="pilar pilar-directo" data-pilar="votaciones"><a class="pilar-b" href="/votaciones/"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span>Votaciones</span></a></li><li class="pilar" data-pilar="consultar"><a class="pilar-b" href="/mapa/" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg><span>Consultar</span></a><div class="panel panel-ancho"><p class="panel-t">Encontrar cualquier cosa</p><ul class="panel-l"><li><a href="/buscar/"><b>Buscador</b><span>Normas, diputados y materias a la vez</span></a></li><li><a href="/normas/"><b>Normas, una a una</b><span>Una ficha por disposición del BOE</span></a></li><li><a href="/plazos/"><b>Plazos que vencen</b><span>Lo que aún se puede recurrir o solicitar</span></a></li><li><a href="/temas/"><b>Todas las materias</b><span>El BOE ordenado por asunto</span></a></li><li><a href="/mapa/"><b>Todo el sitio</b><span>Cada sección y cada página, en un solo lugar</span></a></li></ul><p class="panel-t">Materias</p><div class="chips-n"><a class="chip-n" href="/temas/subvenciones.html">Subvenciones y ayudas</a><a class="chip-n" href="/temas/fiscal.html">Fiscal y tributario</a><a class="chip-n" href="/temas/laboral.html">Laboral y empleo</a><a class="chip-n" href="/temas/seguridad-social.html">Seguridad Social y pensiones</a><a class="chip-n" href="/temas/mercantil.html">Mercantil y contable</a><a class="chip-n" href="/temas/contratacion.html">Contratación pública</a><a class="chip-n" href="/temas/convenios.html">Convenios y colaboración</a><a class="chip-n" href="/temas/administracion.html">Administración y función pública</a><a class="chip-n" href="/temas/energia.html">Energía</a><a class="chip-n" href="/temas/vivienda.html">Vivienda y urbanismo</a><a class="chip-n" href="/temas/sanidad.html">Sanidad</a><a class="chip-n" href="/temas/educacion.html">Educación</a><a class="chip-n" href="/temas/transporte.html">Transporte e infraestructuras</a><a class="chip-n" href="/temas/agricultura.html">Agricultura, pesca y alimentación</a><a class="chip-n" href="/temas/medioambiente.html">Medio ambiente</a><a class="chip-n" href="/temas/justicia.html">Justicia e interior</a><a class="chip-n" href="/temas/cultura.html">Cultura y patrimonio</a></div></div></li></ul><form class="nav-buscar" action="/buscar/" method="get" role="search"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" name="q" autocomplete="off" spellcheck="false" placeholder="Buscar normas, diputados, materias…" aria-label="Buscar en La Tercera Cámara"><kbd aria-hidden="true">/</kbd><div class="nav-res" role="listbox" hidden></div></form></div></nav><nav class="tabbar" aria-label="Navegación principal"><a href="/" data-pilar="hoy"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>Hoy</span></a><a href="/diputados/" data-pilar="parlamento" data-abre="parlamento"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20a9 9 0 0 1 18 0"/><path d="M7 20a5 5 0 0 1 10 0"/><path d="M2 20h20"/></svg><span>Parlamento</span></a><a href="/votaciones/" data-pilar="votaciones"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span>Votos</span></a><a href="/buscar/" data-abre="buscar"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Buscar</span></a><a href="/mapa/" data-pilar="consultar" data-abre="consultar"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg><span>Consultar</span></a></nav>
+
+  <nav class="miga" aria-label="Ruta"><a href="../">Portada</a> › <a href="../diputados/">Parlamento</a> › <a href="./">Rankings</a> › <span aria-current="page">Metodología de los rankings</span></nav>
+
+  <article class="norma">
+    <p class="rotulo">Rankings del Congreso</p>
+    <h1 class="display">Metodología de los rankings</h1>
+    <p class="entradilla">Qué se cuenta, cómo y con qué datos.</p>
+    <dl class="ficha"><dt>Datos</dt><dd>Datos hasta la sesión 200 (miércoles, 23 de septiembre de 2026)</dd></dl>
+    <div class="cuerpo">
+<h2 class="rotulo">Fuente</h2>
+<p>Datos abiertos del Congreso de los Diputados: censo de diputados, votaciones del Pleno
+(el acta nominal de cada votación) e intervenciones. Se descargan a diario y se acumulan.
+Solo aparecen los diputados en activo, que son los que tienen ficha en este sitio.</p>
+<h2 class="rotulo">Dos alcances distintos</h2>
+<p>Participación, disidencia individual e intervenciones usan contadores de <b>toda la
+legislatura</b>. Cohesión de los grupos, afinidad y votaciones ajustadas necesitan saber qué
+votó cada grupo en cada votación, y ese detalle se guarda solo para <b>las últimas 400 votaciones, del jueves, 26 de marzo de 2026 al miércoles, 23 de septiembre de 2026</b>.
+Cada tabla dice cuál usa.</p>
+<h2 class="rotulo">Fórmulas</h2>
+<p><b>Participación</b> = 1 − («no vota» ÷ votaciones en que figura el diputado). «No vota»
+es lo que consta en el acta del Congreso; figura tanto si el diputado estaba presente sin
+votar como si estaba ausente. Umbral: 200 votaciones, para que las altas
+recientes no aparezcan con porcentajes poco representativos.</p>
+<p><b>Postura de un grupo</b>: existe cuando al menos el 70 % de sus votos emitidos (sí, no,
+abstención) coinciden. Si no llega, el grupo está dividido en esa votación y no se le
+atribuye postura.</p>
+<p><b>Voto contra el propio grupo</b>: el diputado vota sí, no o abstención y su grupo tenía
+una postura distinta. «No vota» nunca cuenta como voto en contra. Se expresa sobre el total
+de votaciones en que figura.</p>
+<p><b>Cohesión de un grupo</b>: en cada votación, votos emitidos del grupo que coinciden con
+su sentido más votado ÷ votos emitidos del grupo; media de todas las votaciones de la
+ventana en que el grupo emitió al menos tres votos.</p>
+<p><b>Afinidad entre dos grupos</b>: votaciones en que las posturas de ambos coinciden ÷
+votaciones en que los dos tuvieron postura.</p>
+<p><b>Margen de una votación</b>: |síes − noes|. Las votaciones por asentimiento no tienen
+recuento y no entran.</p>
+<p><b>Participación por circunscripción</b>: media simple de la participación de sus
+diputados que superan el umbral.</p>
+<h2 class="rotulo">Etiquetas de cargo</h2>
+<p>La Presidencia del Gobierno, los ministros y la Presidencia de la Cámara votan menos por
+razón de su cargo, y hay diputados de baja o suspendidos. No se les excluye: aparecen en las
+tablas con una etiqueta visible. La lista se revisa a mano y se publica tal cual.
+Etiquetas en uso: Presidencia de la Cámara, miembro del Gobierno.</p>
+<h2 class="rotulo">Qué no mide</h2>
+<p>Ninguna de estas cifras valora el trabajo de un diputado: no mide el trabajo en ponencias,
+la preparación de iniciativas ni la duración o el contenido de las intervenciones. Son
+recuentos sobre publicaciones oficiales, calculados igual para todos los grupos.</p><script>
+document.querySelectorAll("table.ordenable th").forEach(function(th){
+  var i=th.cellIndex;th.tabIndex=0;th.style.cursor="pointer";
+  function ordenar(){var t=th.closest("table"),b=t.tBodies[0],f=[].slice.call(b.rows),
+    asc=th.dataset.o!=="a";th.dataset.o=asc?"a":"d";
+    f.sort(function(x,y){var a=x.cells[i],c=y.cells[i],
+      va=a.dataset.n!==undefined?+a.dataset.n:a.textContent.trim(),
+      vc=c.dataset.n!==undefined?+c.dataset.n:c.textContent.trim();
+      var r=typeof va==="number"?va-vc:String(va).localeCompare(vc,"es");return asc?r:-r;});
+    f.forEach(function(r){b.appendChild(r);});}
+  th.addEventListener("click",ordenar);
+  th.addEventListener("keydown",function(e){if(e.key==="Enter")ordenar();});
+});
+</script></div>
+    <p class="fuente">Fuente: datos abiertos del Congreso de los Diputados. <a class="srclink" href="metodologia.html">Cómo se calcula</a>.</p>
+  </article>
+
+  <section class="view relacionadas" hidden>
+    <h2 class="rotulo">Del mismo día</h2>
+    <ul class="indice"></ul>
+  </section>
+
+  <footer>
+    La Tercera Cámara — el BOE, el Congreso y el Senado bajo control ciudadano.<br>
+    Titulares y entradillas redactados con ayuda de IA a partir del texto oficial, con verificación automática de cifras y fechas. El título oficial siempre está a un clic.<br>
+    Fuentes: boe.es · congreso.es · senado.es. No es asesoramiento legal ni fiscal.<br>
+    <a class="srclink" href="../">Portada</a> · <a class="srclink" href="../buscar/">Buscador</a> · <a class="srclink" href="../ediciones/">Archivo</a> · <a class="srclink" href="../normas/">Normas</a> · <a class="srclink" href="../temas/">Materias</a> · <a class="srclink" href="../plazos/">Plazos</a> · <a class="srclink" href="../diputados/">Diputados</a> · <a class="srclink" href="../feed.xml">RSS</a> · <a class="srclink" href="../sitemap.xml">Mapa del sitio</a>
+  </footer>
+</div>
+<!-- Analítica: GoatCounter. Sin cookies, sin identificadores persistentes y
+     sin perfilado, así que no necesita banner de consentimiento. Cuenta
+     páginas vistas y referentes, nada más. Va con `async` y al final del
+     documento: si el script tarda o no carga, la página ya está leída.
+     El código del sitio es público por diseño — viaja en la URL del script
+     en cada visita — así que no es un secreto y va aquí a la vista. -->
+<script data-goatcounter="https://xavisigales.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+<script src="/assets/nav.js" defer></script>
+</body>
+</html>
