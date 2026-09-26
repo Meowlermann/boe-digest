@@ -1,6 +1,6 @@
 {
-  "_nota": "Etiquetas visibles en los rankings. Clave = clave_nombre del censo (apellidos y nombre en minúsculas, sin tildes ni signos, como en state/congreso.json). Revisar a mano: cargos a fecha de la última revisión. Las claves que empiezan por _ se ignoran.",
-  "_revisado": "pendiente de revisión",
+  "_nota": "Etiquetas visibles en los rankings. Clave = clave_nombre del censo (apellidos y nombre en minúsculas, sin tildes ni signos). Solo hace falta para diputados en activo: los ministros que renunciaron al escaño no aparecen en los rankings. Las claves que empiezan por _ se ignoran.",
+  "_revisado": "2026-09-26, contra la composición del Gobierno en lamoncloa.gob.es y el censo del Congreso. De los 23 miembros del Gobierno, solo 4 tienen hoy escaño.",
   "sanchez perez castejon pedro": "miembro del Gobierno",
   "diaz perez yolanda": "miembro del Gobierno",
   "bolanos garcia felix": "miembro del Gobierno",
