@@ -536,17 +536,16 @@
   },
   "BOE-A-2026-19684": {
    "huella": "3cfe4a771dcd215d",
-   "descartado": "cifra «50» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Economía publica los avales para apoyar la actividad económica en Ceuta",
-   "entradilla": "El Ministerio de Economía publica el acuerdo del Consejo de Ministros que fija las condiciones de la línea de avales para la ciudad autónoma de Ceuta.",
+   "fuente": "d563df38278fe095",
+   "titular": "El Gobierno avalará con 50.000.000 de euros a las empresas y autónomos de Ceuta",
+   "entradilla": "El Consejo de Ministros aprueba las condiciones de la línea de avales destinada a cubrir necesidades de liquidez, inversiones y mantenimiento de la actividad económica en la ciudad autónoma de Ceuta.",
    "claves": [
-    "La medida se ampara en el Real Decreto-ley de medidas urgentes de apoyo social y económico a la ciudad de Ceuta.",
-    "El texto íntegremante aprobado se adjunta como anexo a la resolución de la Secretaría de Estado de Economía y Apoyo a la Empresa."
+    "La línea de avales del Ministerio de Economía, Comercio y Empresa ascenderá a un importe de 50.000.000 de euros y será gestionada por el Instituto de Crédito Oficial.",
+    "Los avales cubrirán el capital principal impagado por el cliente, quedando excluidos los intereses ordinarios, de demora y otros conceptos de reclamación.",
+    "La medida busca apoyar la recuperación, adaptación o relanzamiento de la actividad de empresas y trabajadores autónomos que operen en Ceuta."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25",
-   "fuente": "35a40387cc9f449a"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19685": {
    "huella": "82956fe4cf0406a8",
@@ -562,17 +561,16 @@
   },
   "BOE-A-2026-19686": {
    "huella": "d597e6230f937312",
-   "descartado": "cifra «21» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "El CSIC y la Fundación Ramón Areces impulsan proyectos de fotónica",
-   "entradilla": "El Consejo Superior de Investigaciones Científicas publica el convenio con la Fundación Ramón Areces para desarrollar proyectos de metrología cuántica.",
+   "fuente": "1fb8b47d81a68abe",
+   "titular": "La Fundación Ramón Areces aporta 2.100.000 euros al CSIC para proyectos cuánticos",
+   "entradilla": "El CSIC y la Fundación Ramón Areces firman un convenio para poner en marcha un laboratorio de fotónica y metrología y desarrollar una cátedra de óptica cuántica para tecnologías cuánticas.",
    "claves": [
-    "El acuerdo financia el Laboratorio de Fotónica y Metrología Cuántica y la cátedra de óptica cuántica QuARC-CSIC.",
-    "El convenio se suscribió formalmente el 11 de septiembre de 2026 en cumplimiento de la normativa de régimen jurídico del sector público."
+    "La Fundación Ramón Areces realizará una aportación económica de 2.100.000 euros para financiar la ejecución de los dos proyectos científicos.",
+    "El primer pago de 700.000 euros se realizará en el plazo de un mes desde la inscripción del convenio, destinando 500.000 euros al laboratorio y 200.000 euros a la cátedra.",
+    "Los dos pagos restantes, de 700.000 euros cada uno, se efectuarán transcurridos un año y medio, y tres años, respectivamente, tras la entrega de las memorias por el CSIC."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25",
-   "fuente": "2ce8b014a283b8df"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "C-f6afdcf0fb4aec13": {
    "huella": "eab088c3a1f1d254",
@@ -867,21 +865,28 @@
   },
   "BOE-A-2026-19505": {
    "huella": "d6bd89e8c9512358",
-   "descartado": "nombre «AIReF» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "060798413837623b",
+   "titular": "La Autoridad de Responsabilidad Fiscal incorpora a un estudiante de la Complutense",
+   "entradilla": "Don Juan Francisco Flores Franco se incorpora como alumno en prácticas tras la renuncia de la anterior beneficiaria de la beca de formación en Relaciones Institucionales e Internacionales.",
+   "claves": [
+    "El nuevo alumno en prácticas iniciará su actividad el 1 de octubre de 2026 y finalizará el 31 de agosto de 2027.",
+    "La incorporación se produce tras la renuncia de doña Ndeye Arame Sali, alumna de la Universidad de Zaragoza que había obtenido la beca inicialmente.",
+    "El acuerdo se formaliza como el anexo III al convenio de colaboración entre la Autoridad Independiente de Responsabilidad Fiscal y la Universidad Complutense de Madrid."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19506": {
-   "huella": "e656ff51816001e8",
-   "fuente": "f2067aff01d7052e",
-   "titular": "El Ayuntamiento de El Ejido integra su Policía Local en el sistema de seguimiento de violencia de género",
-   "entradilla": "La Secretaría de Estado de Seguridad y el consistorio firman un convenio para coordinar la protección a las víctimas y prevenir nuevas agresiones.",
+   "huella": "9fa615f845a439af",
+   "fuente": "9684a19f76b6406f",
+   "titular": "La Policía de El Ejido se une al sistema de seguimiento de la violencia de género",
+   "entradilla": "El Ayuntamiento de El Ejido y la Secretaría de Estado de Seguridad acuerdan coordinar sus actuaciones para mejorar la protección de las víctimas y realizar un seguimiento individualizado de su situación.",
    "claves": [
-    "El acuerdo permite incorporar a los Cuerpos de Policía Local de El Ejido al Sistema de Seguimiento Integral de los Casos de Violencia de Género.",
-    "La medida busca mejorar la eficacia en la protección de las víctimas mediante una base de datos común que facilita el seguimiento individualizado del riesgo.",
-    "El convenio se ampara en la colaboración entre la administración del Estado y las entidades locales establecida por la legislación de bases de régimen local."
+    "El convenio permite integrar a la Policía Local en la base de datos común de las Fuerzas y Cuerpos de Seguridad para valorar el riesgo de nuevas agresiones.",
+    "La medida desarrolla los artículos de la Ley de Medidas de Protección Integral contra la Violencia de Género para prevenir y evitar riesgos de agresión."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19507": {
    "huella": "9b0d1ec3d4a591db",
@@ -897,17 +902,17 @@
    "fecha": "2026-09-25"
   },
   "BOE-A-2026-19508": {
-   "huella": "bfb942caeefad472",
-   "fuente": "74ccbe7a78d1d41f",
-   "titular": "Transportes y la Diputación de Almería acuerdan el cambio de titularidad de dos tramos de carretera",
-   "entradilla": "El Estado asume un segmento de la vía AL-5106 mientras que la institución provincial recibe un tramo de la AL-3106 sin transferencia de capital entre ambas partes.",
+   "huella": "76ee81f3632f7628",
+   "fuente": "8ca749349d5a0a01",
+   "titular": "El Ministerio de Transportes y la Diputación de Almería intercambian dos carreteras",
+   "entradilla": "El Gobierno aprueba el cambio de titularidad de un tramo de la carretera AL-5106 a favor del Ministerio de Transportes y de un tramo de la AL-3106 a favor de la Diputación de Almería.",
    "claves": [
-    "El tramo de la carretera AL-5106 comprendido entre los kilómetros 11+290 y 13+556 queda incluido dentro de la Red de Carreteras del Estado.",
-    "El tramo de la carretera AL-3106 entre los puntos kilométricos 4+000 y 5+400 se transfiere a favor de la Diputación Provincial de Almería.",
-    "El cambio de titularidad surtirá plenos efectos desde la entrada en vigor del real decreto y se formalizará mediante un acta de entrega en el plazo de un mes."
+    "El tramo de la AL-3106, entre los kilómetros 4+000 y 5+400, queda excluido de la Red de Carreteras del Estado y pasa a ser de titularidad provincial.",
+    "El tramo de la AL-5106, entre los kilómetros 11+290 y 13+556, se incluye en la Red de Carreteras del Estado bajo la gestión del Ministerio.",
+    "El cambio de titularidad no conlleva ninguna transferencia de capital entre las administraciones y se formalizará en un acta de entrega en el plazo de un mes."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19509": {
    "huella": "14b8aafddf138d62",
@@ -923,81 +928,91 @@
    "fecha": "2026-09-25"
   },
   "BOE-A-2026-19510": {
-   "huella": "437b15a3fa47db16",
-   "fuente": "d094c29d717eff65",
-   "titular": "Turismo concede el título de Fiesta de Interés Turístico Internacional a la Semana Cervantina de Alcalá",
-   "entradilla": "La festividad celebrada en la Comunidad de Madrid obtiene este reconocimiento oficial tras la resolución de la Secretaría de Estado de Turismo.",
+   "huella": "dcff17a17726179b",
+   "fuente": "485d68fc011ce3f2",
+   "titular": "Alcalá de Henares logra el título de interés internacional para su Semana Cervantina",
+   "entradilla": "La Secretaría de Estado de Turismo concede el título de Fiesta de Interés Turístico Internacional a la «Semana Cervantina» de Alcalá de Henares, en la Comunidad de Madrid.",
    "claves": [
-    "La resolución pone fin a la vía administrativa y detalla los plazos y recursos legales disponibles para los interesados que deseen oponerse a la decisión.",
-    "Se puede interponer un recurso potestativo de reposición ante el mismo órgano en el plazo de un mes contado a partir del día siguiente al de la notificación.",
-    "También cabe la opción de presentar un recurso contencioso-administrativo en el plazo de dos meses ante el órgano jurisdiccional competente."
+    "La declaración se otorga de conformidad con la regulación de fiestas de interés turístico nacional e internacional de la Secretaría de Estado de Turismo.",
+    "Contra esta resolución, que pone fin a la vía administrativa, se puede interponer un recurso de reposición en un mes o un recurso contencioso-administrativo en dos meses."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19511": {
-   "huella": "62077cad4c2c09ca",
-   "fuente": "28be5e7c83aea3a5",
-   "titular": "El Ministerio de Industria concede el título de Fiesta de Interés Turístico Nacional a La Vendimia",
-   "entradilla": "La festividad del municipio murciano de Jumilla obtiene este reconocimiento oficial tras la resolución de la Secretaría de Estado de Turismo.",
+   "huella": "87415446bb097217",
+   "fuente": "0d877795769dd555",
+   "titular": "La fiesta de La Vendimia de Jumilla es declarada de Interés Turístico Nacional",
+   "entradilla": "La Secretaría de Estado de Turismo concede el título de Fiesta de Interés Turístico Nacional a la fiesta de «La Vendimia» de Jumilla, en Murcia.",
    "claves": [
-    "La resolución otorga la distinción honorífica a la celebración conocida como La Vendimia en Jumilla, Murcia.",
-    "El reconocimiento se publica en el epígrafe de fiestas de interés turístico del Ministerio de Industria y Turismo."
+    "La concesión se realiza de acuerdo con la orden ministerial que regula la declaración de fiestas de interés turístico nacional e internacional.",
+    "Los interesados disponen de un plazo de un mes para interponer un recurso de reposición o de dos meses para acudir a la vía contencioso-administrativa."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19512": {
-   "huella": "ea2a055c5f161a10",
-   "fuente": "82c1f8f0c9d6e308",
-   "titular": "Agricultura cancela la Sociedad Agraria de Transformación Segria Levante",
-   "entradilla": "La Dirección General de Alimentación ordena la cancelación registral de la entidad agraria y detalla los plazos para recurrir la decisión.",
+   "huella": "0c2d6e7f0a124c09",
+   "fuente": "fb4ea215f77bf60f",
+   "titular": "El Ministerio de Agricultura cancela la sociedad agraria Segria Levante",
+   "entradilla": "La Dirección General de Alimentación acuerda la cancelación registral de la Sociedad Agraria de Transformación n.º 10017 «Segria Levante» en el Registro General de estas entidades.",
    "claves": [
-    "La resolución determina la baja y cancelación registral de la SAT número 10017 en el registro general correspondiente.",
-    "Contra esta resolución cabe interponer recurso de reposición en el plazo de un mes o acudir a la vía contencioso-administrativa en el plazo de dos meses."
+    "La resolución de cancelación registral pone fin a la vía administrativa y se dicta a propuesta de la Subdirección General de Competitividad de la Cadena Alimentaria.",
+    "Contra la decisión cabe interponer recurso de reposición en el plazo de un mes o recurso contencioso-administrativo en el plazo de dos meses."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19513": {
-   "huella": "4293cde0d7c78b75",
-   "descartado": "nombre «Ambas» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Confederación Hidrográfica del Guadalquivir y Ayuntamiento de Bonares firman convenio de 1.040.000 euros",
-   "entradilla": "Se publica el convenio para la redacción del proyecto, ejecución, entrega y mantenimiento de las conexiones de varios núcleos a la red de abastecimiento.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24",
-   "fuente": "a15d234a3c5cf227"
+   "huella": "f805699114a8023b",
+   "fuente": "b78fa81445917887",
+   "titular": "La Confederación del Guadalquivir y Bonares conectan varios núcleos a la red de agua",
+   "entradilla": "Un nuevo convenio establece la colaboración para redactar el proyecto, ejecutar las obras y mantener la conexión de diversas zonas urbanas con la red de abastecimiento del municipio.",
+   "claves": [
+    "El acuerdo ha sido suscrito entre la Confederación Hidrográfica del Guadalquivir y el Ayuntamiento de Bonares.",
+    "La actuación contempla la redacción del proyecto, la ejecución de las obras y la posterior entrega y mantenimiento de las instalaciones."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19514": {
-   "huella": "931c763866dc0fb6",
-   "descartado": "nombre «Samuel» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Declaran Bien de Interés Cultural la Casa Mudéjar de Córdoba",
-   "entradilla": "Cultura otorga la máxima protección patrimonial con la categoría de monumento a este inmueble histórico cordobés.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24",
-   "fuente": "c9394ed5fde5a387"
+   "huella": "e6f160c86e8af4ee",
+   "fuente": "e4e191b418eec3fa",
+   "titular": "El Gobierno declara Bien de Interés Cultural la Casa Mudéjar de Córdoba",
+   "entradilla": "El Ministerio de Cultura declara monumento protegido a este inmueble de Córdoba, actual sede del consorcio Casa Árabe y ejemplo de la organización espacial y el legado musulmán.",
+   "claves": [
+    "La Casa Mudéjar, ubicada en la calle Samuel de los Santos Gener, cuenta con una superficie construida de 1.339,82 metros cuadrados organizada en torno a cuatro patios y cinco casas.",
+    "La declaración protege elementos históricos como el torreón, el auditorio, las fuentes de los patios, los capiteles omeyas y los zócalos de pinturas mudéjares.",
+    "El entorno de protección del monumento queda delimitado por la propia parcela catastral del edificio, al estar ya integrado en el Conjunto Histórico de Córdoba."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19515": {
-   "huella": "73bbf161ff56cf3e",
-   "descartado": "nombre «Montemadrid» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Convenio de 12.000 euros para la creación interdisciplinar en el Festival Ídem",
-   "entradilla": "El Ministerio de Cultura apoya la profesionalización artística en el Festival Ídem junto a la Fundación Monte de Madrid.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24",
-   "fuente": "4ce7197ddec28b3b"
+   "huella": "fb79ceade512c273",
+   "fuente": "a4442ea054b1bc14",
+   "titular": "Cultura aporta 12.000 euros al Festival Ídem para impulsar la creación artística",
+   "entradilla": "El Ministerio de Cultura y la Fundación Montemadrid colaboran en el fomento de la creación interdisciplinar contemporánea en el marco de este festival celebrado en La Casa Encendida de Madrid.",
+   "claves": [
+    "El Ministerio de Cultura aportará un máximo de 12.000 euros para financiar las acciones programadas, que incluyen el espacio de trabajo e investigación Experimenta Madrid.",
+    "El programa Experimenta Madrid reunirá a entre 10 y 15 artistas y jóvenes creadores seleccionados mediante una convocatoria pública abierta.",
+    "Los creadores consolidados Iara Solano y Olga de Soto desarrollarán propuestas de investigación teórico-prácticas y mentorizarán a los jóvenes seleccionados."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19516": {
-   "huella": "9605ba28b54a51c4",
-   "descartado": "nombre «Ambas» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Convenio de 3.000 euros para el Certamen Universitario de Investigación Arquímedes",
-   "entradilla": "Universidades y el CSIC impulsan conjuntamente la edición del certamen científico hasta finales de diciembre de 2026.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24",
-   "fuente": "3045479eed94f624"
+   "huella": "9d3c7a1dd368e8e9",
+   "fuente": "5903390343c9464b",
+   "titular": "El Ministerio de Ciencia y el CSIC colaboran en el XXI Certamen Arquímedes",
+   "entradilla": "Un convenio regula la cooperación para promover la investigación en el ámbito universitario a través de este certamen, facilitando estancias de investigación en centros del CSIC durante 2026.",
+   "claves": [
+    "El Ministerio de Ciencia, Innovación y Universidades concede tres premios en especie para realizar estancias de investigación en centros del CSIC.",
+    "El CSIC se compromete a que las personas beneficiarias realicen las estancias en 2026, incluyendo los gastos de viaje y alojamiento.",
+    "El Ministerio aporta un premio de 3.000 euros a la mejor memoria evaluada por el CSIC de entre las presentadas por los beneficiarios."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "C-6f56c2ad35a5eb26": {
    "huella": "0454f3b222474889",
@@ -1028,124 +1043,200 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19419": {
-   "huella": "6794a2c58eb2bfd4",
-   "fuente": "458cae2005e1c61f",
-   "titular": "El Congreso publica la derogación del decreto ley sobre transparencia de los grupos de interés",
-   "entradilla": "La cámara baja ordena la publicación oficial del acuerdo por el que queda sin efecto el real decreto-ley regulador de las actividades de los lobbies.",
-   "claves": [
-    "El Congreso de los Diputados publica el acuerdo de derogación del Real Decreto-ley dictado sobre transparencia e integridad.",
-    "La resolución se inserta en la sección de disposiciones generales del Boletín Oficial del Estado."
-   ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "huella": "fb7d39f523b01269",
+   "fuente": "4b5788e0d3e6d03a",
+   "titular": "El Congreso deroga el decreto de transparencia de los grupos de interés",
+   "entradilla": "El Congreso de los Diputados ordena la publicación del acuerdo de derogación del Real Decreto-ley 21/2026, de 25 de agosto, que regulaba la actividad de los grupos de interés.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19420": {
-   "huella": "e0dd8e7ae8b01b97",
-   "fuente": "d9af45dec2aa0e42",
-   "titular": "El Congreso publica la convalidación del decreto de medidas de apoyo a la ciudad de Ceuta",
-   "entradilla": "La cámara baja da validez oficial al real decreto-ley que aprueba medidas urgentes de carácter social y económico para la ciudad autónoma.",
-   "claves": [
-    "El acuerdo de convalidación del real decreto-ley sobre medidas para Ceuta se publica en la sección de disposiciones generales del Boletín Oficial del Estado.",
-    "La norma mantiene vigentes las medidas urgentes de carácter social y económico aprobadas para el territorio."
-   ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-25"
+   "huella": "5f10e30040a1ef7a",
+   "fuente": "32f65932b19c6dfe",
+   "titular": "El Congreso convalida el decreto de medidas urgentes de apoyo a Ceuta",
+   "entradilla": "El Congreso de los Diputados acuerda convalidar el Real Decreto-ley 22/2026, de 1 de septiembre, que aprueba medidas urgentes de carácter social y económico para la ciudad autónoma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19421": {
-   "huella": "f2e38c90ab6ab9c4",
-   "titular": "Ministerio de la Presidencia regula comités médicos para mutualistas de la Mutualidad General Judicial",
-   "entradilla": "Se establecen la composición y funciones del comité de tratamientos con hormona de crecimiento y del comité de protonterapia.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "d419a3d5607b0ef0",
+   "fuente": "7c6e66a9b325d7ad",
+   "titular": "Justicia crea dos comités para evaluar tratamientos de los mutualistas de MUGEJU",
+   "entradilla": "El Ministerio regula la composición y funciones del Comité Asesor de la Hormona de Crecimiento y del Comité Interdisciplinar de Protonterapia dentro de la Mutualidad General Judicial.",
+   "claves": [
+    "Los nuevos órganos colegiados valorarán los tratamientos médicos del colectivo de mutualistas que recibe asistencia sanitaria a través de entidades de seguro concertadas.",
+    "Cada comité estará presidido por un representante de MUGEJU con titulación sanitaria y contará con un coordinador del área de asistencia sanitaria y farmacia.",
+    "Los vocales serán facultativos especialistas en endocrinología, nefrología, oncología médica u oncología radioterápica, nombrados por el responsable de asistencia de la mutualidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19422": {
-   "huella": "a8b1875e09c97a64",
-   "titular": "Gobierno concede una subvención directa a Canarias para abaratar el riego agrícola con agua desalada",
-   "entradilla": "El real decreto regula la ayuda para paliar el sobrecoste de la desalación y extracción de pozos, y modifica otra ayuda en Castilla-La Mancha.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "bed8781fc2c5b73a",
+   "fuente": "480537e590c290ea",
+   "titular": "El Gobierno subvenciona a Canarias para abaratar el agua de riego agrícola",
+   "entradilla": "El Real Decreto regula una ayuda directa a Canarias para compensar el sobrecoste de la desalación, regeneración y extracción de agua, y amplía el plazo de obras hidráulicas en Castilla-La Mancha.",
+   "claves": [
+    "La subvención a Canarias financiará ayudas en concurrencia competitiva para abaratar la desalación, la producción de aguas regeneradas y la extracción de pozos o galerías.",
+    "Para calcular las ayudas se tendrán en cuenta los costes incurridos por los agricultores en la obtención de agua para riego durante el periodo de referencia del programa.",
+    "La norma también modifica el plazo de ejecución de las obras de mejora socioeconómica en los municipios colindantes con los embalses de Entrepeñas y Buendía."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19423": {
-   "huella": "ccd0f62caec4a23f",
-   "titular": "Ministerio de Economía determina la tipología y clasificación de los fondos de pensiones",
-   "entradilla": "Una orden ministerial fija los criterios de clasificación de los fondos de pensiones en función de su política de inversión.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "f30db554f2a1b031",
+   "fuente": "0b8b844b2169a161",
+   "titular": "Economía clasifica los fondos de pensiones según su política de inversión",
+   "entradilla": "El Ministerio de Economía, Comercio y Empresa aprueba una orden para agrupar los fondos con características similares, facilitando la comparación por parte de los partícipes.",
+   "claves": [
+    "La clasificación se determinará por el contenido de la declaración de principios de la política de inversión del fondo y no por la composición de su cartera.",
+    "Para el cómputo de los porcentajes de inversión se tendrá en cuenta la exposición total del fondo, sumando las inversiones de contado y de derivados.",
+    "Las inversiones alternativas se clasificarán como renta fija si tienen pagos definidos en cantidad y tiempo, y como renta variable en caso contrario."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19424": {
-   "huella": "6ffcbc710c44e68e",
-   "titular": "Ministerio de Economía modifica modelos contables y estadísticos para aseguradoras",
-   "entradilla": "Se actualizan los modelos de información cuantitativa para la supervisión y estadísticas de las entidades aseguradoras y reaseguradoras.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "1aba7d36dc5b25bf",
+   "fuente": "7de147ccd1e01164",
+   "titular": "Economía actualiza los modelos de información sobre compromisos por pensiones",
+   "entradilla": "El Gobierno modifica la normativa para actualizar los modelos de información estadística sobre los compromisos por pensiones instrumentados mediante contratos de seguro.",
+   "claves": [
+    "Las aseguradoras y mutualidades de previsión social deberán remitir modelos de información cuantitativa trimestral y anualmente a la Dirección General de Seguros y Fondos de Pensiones.",
+    "La remisión de los modelos trimestrales de los anexos I, II y VII deberá realizarse en un plazo máximo de cinco semanas desde el fin del trimestre.",
+    "Los modelos anuales de los anexos III, IV y VIII tendrán un plazo máximo de envío de dieciséis semanas a partir del cierre del ejercicio."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19425": {
-   "huella": "0abf29f71fdf71b3",
-   "titular": "CNMC establece la metodología para retribuir las instalaciones de transporte y gas natural licuado",
-   "entradilla": "La circular fija el sistema para determinar los ingresos de las redes de transporte de gas natural y plantas de gas natural licuado.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "77fa7c4d72ddc7d2",
+   "fuente": "b2b04c8b49aab9ca",
+   "titular": "La CNMC fija la retribución del transporte de gas y de las plantas de gas licuado",
+   "entradilla": "Una nueva circular de la Comisión Nacional de los Mercados y la Competencia establece la metodología retributiva para estas infraestructuras gasistas, aplicable a partir del 1 de octubre de 2026.",
+   "claves": [
+    "La metodología busca asegurar la recuperación de las inversiones realizadas por los titulares dentro de su vida útil y permitir una rentabilidad razonable.",
+    "Se definen los valores unitarios de referencia para la inversión y para la operación y mantenimiento anual de las instalaciones de transporte y regasificación.",
+    "La norma se aplicará a gasoductos, instalaciones de transporte primario a alta presión, plantas de regasificación y de licuefacción de gas natural."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19426": {
-   "huella": "782e29d41ca38e8b",
-   "descartado": "acaba en el número «2032» sin decir de qué",
-   "intentos": 1
+   "huella": "a9189907aaac16c7",
+   "fuente": "a906c0bde286425b",
+   "titular": "La CNMC aprueba la tasa de retribución del sector gasista para el periodo 2027-2032",
+   "entradilla": "La Comisión Nacional de los Mercados y la Competencia fija las tasas de rentabilidad financiera para el transporte, regasificación, gestión técnica y el alquiler de contadores de gas natural.",
+   "claves": [
+    "La tasa de retribución financiera para el transporte, regasificación y gestión técnica del sistema de gas natural se establece en el 6,46 %.",
+    "Para las actividades de distribución vinculadas a la fijación del precio de alquiler de contadores de gas, la tasa de retribución será del 6,87 %.",
+    "La tasa WACC nominal después de impuestos se fija en el 4,85 % para transporte y regasificación, y en el 5,15 % para el alquiler de contadores."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19427": {
-   "huella": "d8cfa4f3cbe25053",
-   "titular": "CNMC establece la metodología de retribución para la distribución de gas natural",
-   "entradilla": "La circular regula los criterios y el cálculo de los ingresos correspondientes a la actividad de distribución de gas natural.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "ef7ca3794e42597b",
+   "fuente": "69bf233e1ecc6b13",
+   "titular": "La CNMC aprueba la nueva metodología de retribución de la distribución de gas",
+   "entradilla": "La Comisión Nacional de los Mercados y la Competencia establece el método para calcular la retribución anual de las distribuidoras de gas natural, aplicable desde el 1 de octubre de 2026.",
+   "claves": [
+    "La retribución por desarrollo de mercado se vinculará a los nuevos puntos de suministro y a la energía suministrada anualmente respecto a los valores de 2020.",
+    "En la retribución por desarrollo de mercado cesa el incentivo a la gasificación de municipios.",
+    "Los parámetros de la metodología se fijarán para periodos regulatorios de seis años y no se aplicarán fórmulas de actualización automática durante su vigencia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19428": {
-   "huella": "b093938b67d341c5",
-   "titular": "Comunidad Autónoma de Extremadura adapta su normativa sobre Cámaras de Comercio y comercio ambulante",
-   "entradilla": "Un decreto-ley introduce medidas urgentes para adecuar la legislación autonómica a la estatal y facilitar el ejercicio del comercio ambulante.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "12fd2c030cf59fcb",
+   "fuente": "4848b21ce6651bee",
+   "titular": "Extremadura adapta las Cámaras de Comercio e impulsa la venta ambulante",
+   "entradilla": "Un decreto-ley modifica la regulación de las Cámaras Oficiales de Comercio, Industria y Servicios de Extremadura y establece el régimen de autorización para el ejercicio del comercio ambulante.",
+   "claves": [
+    "La duración del mandato en las Cámaras de Comercio de Extremadura será de cuatro años, con posibilidad de reelección.",
+    "Las personas jurídicas votarán mediante representante con poder suficiente, mientras que los trabajadores por cuenta propia lo harán personalmente.",
+    "La venta ambulante o no sedentaria estará sujeta a autorización administrativa por razones de interés general, como la escasez de suelo o la sanidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19429": {
-   "huella": "f7aabf868a9f3ac8",
-   "titular": "Comunidad Autónoma de Extremadura aprueba medidas urgentes de urbanismo para impulsar la vivienda",
-   "entradilla": "El decreto-ley establece actuaciones para agilizar la aprobación del planeamiento urbanístico y su ejecución orientada a la promoción de viviendas.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "805d9bd2cfa7f36f",
+   "fuente": "eb19aa49916fdbdb",
+   "titular": "Extremadura agiliza el planeamiento urbanístico para impulsar la vivienda protegida",
+   "entradilla": "El decreto-ley introduce medidas de simplificación administrativa y regula los Proyectos Estratégicos para Vivienda Asequible con el fin de agilizar la urbanización y edificación residencial.",
+   "claves": [
+    "Se crea la figura de los Proyectos Estratégicos para Vivienda Asequible, que fusiona en una única tramitación la ordenación, ejecución y urbanización.",
+    "Se regula una prima de edificabilidad excepcional para fomentar la implantación de viviendas acogidas a algún régimen de protección pública.",
+    "El suelo residencial del patrimonio público apto para vivienda protegida podrá enajenarse mediante concurso sin superar el precio máximo de repercusión."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19466": {
-   "huella": "8d6e0fa37b90ae4e",
-   "titular": "Ministerio de Hacienda fija los índices de precios de materiales y mano de obra para contratos públicos",
-   "entradilla": "Establece los índices del primer trimestre de 2026 para revisar precios en contratos de administraciones públicas, armamento y transporte.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "eb3396c77d42fb83",
+   "fuente": "20466f12b8406d68",
+   "titular": "Hacienda aprueba los índices de precios para revisar contratos públicos",
+   "entradilla": "El Ministerio de Hacienda publica los índices de precios de mano de obra, materiales, fabricación de armamento y transporte de viajeros por carretera correspondientes al primer trimestre de 2026.",
+   "claves": [
+    "Los índices aprobados son aplicables a la revisión de precios de los contratos de las Administraciones Públicas.",
+    "La orden incluye índices específicos para suministros de fabricación de armamento y equipamiento, así como para componentes de transporte de viajeros por carretera."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19467": {
-   "huella": "8cb949f649990757",
-   "titular": "Ministerio de Hacienda prorroga el convenio con el Campo de Gibraltar y el Ayuntamiento de Los Barrios",
-   "entradilla": "Se publica la adenda de prórroga para mantener la financiación de inversiones en este municipio gaditano.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "7adfaafd27798c43",
+   "fuente": "4719ee48488f3956",
+   "titular": "Hacienda prorroga el convenio de inversión con el Campo de Gibraltar y Los Barrios",
+   "entradilla": "La Secretaría de Estado de Hacienda publica la adenda de prórroga del convenio destinado a financiar inversiones en ejecución del Plan Integral para el Campo de Gibraltar.",
+   "claves": [
+    "La adenda prorroga el convenio suscrito originalmente el 27 de octubre de 2025 entre el Ministerio de Hacienda, la Mancomunidad de Municipios del Campo de Gibraltar y el Ayuntamiento de Los Barrios.",
+    "Las actuaciones se enmarcan en la ejecución del Acuerdo de Consejo de Ministros de 16 de noviembre de 2018, que aprobó el Plan Integral para el Campo de Gibraltar."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19470": {
-   "huella": "9019a5c7fc2dc7b7",
-   "titular": "Intervención General de la Administración del Estado publica la ejecución presupuestaria de julio",
-   "entradilla": "Se difunden las operaciones de ejecución del Presupuesto del Estado, sus modificaciones y las operaciones de tesorería del mes de julio de 2026.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "fbf267e48a97573c",
+   "fuente": "f80627e92039ab79",
+   "titular": "La Intervención General publica la ejecución del Presupuesto del Estado de julio",
+   "entradilla": "La Intervención General de la Administración del Estado hace públicas las operaciones de ejecución presupuestaria, sus modificaciones y las operaciones de Tesorería del mes de julio de 2026.",
+   "claves": [
+    "La publicación se realiza en aplicación de lo dispuesto en el artículo 136 de la Ley General Presupuestaria."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19471": {
-   "huella": "582619ff8473f3e8",
-   "titular": "Ministerio del Interior publica la lista de admitidos y excluidos para vigilantes de seguridad",
-   "entradilla": "Se da a conocer la relación de aspirantes admitidos y excluidos para las pruebas de selección de vigilante de seguridad, explosivos y escolta.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "11665d601e38e8bb",
+   "fuente": "89af5a1624dabae5",
+   "titular": "Interior publica la lista de admitidos para las pruebas de vigilante de seguridad",
+   "entradilla": "La Secretaría de Estado de Seguridad aprueba la relación de personas admitidas y excluidas para las pruebas de selección de vigilante de seguridad, vigilante de explosivos y escolta privado.",
+   "claves": [
+    "Los aspirantes disponen de un plazo de diez días hábiles para subsanar defectos o formular reclamaciones contra la lista de excluidos.",
+    "Las reclamaciones se enviarán por correo electrónico y las subsanaciones se realizarán exclusivamente de forma telemática en el portal del aspirante.",
+    "Las instancias que figuren como 'no tramitadas' por falta de firma electrónica o pago telemático se consideran insubsanables."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19472": {
-   "huella": "27129e680dca2dd6",
-   "titular": "Ministerio para la Transición Ecológica modifica el convenio con la Universidad de Huelva",
-   "entradilla": "Se publica la adenda para el desarrollo del Programa Campus Rural de prácticas universitarias en el medio rural.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "21c9d2b82d884ddc",
+   "fuente": "6858b7177eb47e75",
+   "titular": "La Universidad de Huelva amplía a 65 los meses de prácticas de Campus Rural",
+   "entradilla": "Una adenda modifica el convenio entre el Ministerio para la Transición Ecológica y la Universidad de Huelva para incrementar la duración total de las prácticas universitarias en el medio rural.",
+   "claves": [
+    "La duración total de las prácticas del programa Campus Rural se incrementa de los 45 meses iniciales a un máximo de 65 meses.",
+    "El Ministerio para la Transición Ecológica aportará un máximo de 77.930,78 euros, lo que representa el 90 % del presupuesto total.",
+    "La Universidad de Huelva asumirá el 10 % restante de la financiación del programa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "C-1052fdb85a9e2305": {
    "huella": "271b63b07adf4d0d",
@@ -1176,51 +1267,87 @@
    "fecha": "2026-09-24"
   },
   "BOE-A-2026-19327": {
-   "huella": "7a24abac2dbff576",
-   "titular": "Ministerio de la Presidencia regula el Comité de Inversiones Estratégicas y sus proyectos",
-   "entradilla": "El real decreto desarrolla los criterios y procedimientos para declarar y tramitar proyectos estratégicos de inversión.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "96cfc92e7ecbf779",
+   "fuente": "f84ac1d7f27e3443",
+   "titular": "El Gobierno regula el Comité de Inversiones Estratégicas y sus proyectos",
+   "entradilla": "Un real decreto establece la estructura del Comité de Inversiones Estratégicas y los requisitos para declarar una iniciativa empresarial como Proyecto Estratégico de Inversión en España.",
+   "claves": [
+    "Podrán declararse estratégicos los proyectos de inversión o reinversión en España para mejorar capacidades tecnológicas, científicas o productivas.",
+    "Quedan excluidas la adquisición de acciones o participaciones, las ampliaciones y reducciones de capital y las modificaciones estructurales de sociedades.",
+    "Los promotores deben estar al corriente de sus obligaciones tributarias y de Seguridad Social, y no estar declarados insolventes o en concurso de acreedores."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19328": {
-   "huella": "6524795b598e790e",
-   "titular": "Gobierno regula subvenciones directas para inversiones en municipios del Campo de Gibraltar",
-   "entradilla": "El real decreto establece la concesión directa de fondos destinados a financiar proyectos locales en la comarca gaditana.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "24ac4c252880d33a",
+   "fuente": "d7421a1065c64e93",
+   "titular": "Hacienda concede subvenciones directas para inversiones en el Campo de Gibraltar",
+   "entradilla": "El Gobierno aprueba la concesión directa de subvenciones destinadas a financiar infraestructuras públicas asociadas al ciclo del agua, gestión de residuos y equipamientos municipales en la comarca.",
+   "claves": [
+    "La entidad beneficiaria de la subvención será la Mancomunidad de Municipios del Campo de Gibraltar.",
+    "La concesión se instrumentará mediante convenios entre el Ministerio de Hacienda, la Mancomunidad y cada uno de los Ayuntamientos que la componen.",
+    "Las ayudas financiarán inversiones en infraestructuras del ciclo integral del agua, gestión de residuos urbanos, equipamientos y digitalización."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19329": {
-   "huella": "bdeceddc99a04b33",
-   "titular": "Ministerio para la Transición Ecológica crea un mercado de capacidad eléctrico en la península",
-   "entradilla": "La orden ministerial establece un nuevo mecanismo para garantizar la seguridad del suministro en el sistema eléctrico peninsular.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "23f5195f54015951",
+   "fuente": "99cffecaf20bee99",
+   "titular": "El Gobierno crea un mercado de capacidad en el sistema eléctrico peninsular",
+   "entradilla": "Una orden ministerial establece este mecanismo de capacidad para resolver problemas de cobertura y garantizar la seguridad del suministro eléctrico en la península.",
+   "claves": [
+    "Podrán participar productores de energía, titulares de almacenamiento, consumidores finales y sujetos que presten servicios de agregación de demanda o producción.",
+    "La orden regula los requisitos para ser proveedor del servicio, las condiciones de prestación, los procedimientos de subasta y el régimen retributivo.",
+    "La norma será de aplicación también al operador del sistema, Red Eléctrica de España, S.A., y a la Comisión Nacional de los Mercados y la Competencia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19330": {
-   "huella": "0ba22c4172877ffd",
+   "huella": "0ed25e126483330c",
    "descartado": "acaba en el número «2026» sin decir de qué",
    "intentos": 1
   },
   "BOE-A-2026-19331": {
-   "huella": "dfae49d6459b413e",
-   "titular": "Generalitat Valenciana publica la ley de medidas fiscales, financieras y administrativas",
-   "entradilla": "El texto normativo incluye cambios en materia tributaria, de gestión administrativa y de organización interna de la Generalitat.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "ea4a0772b60576b5",
+   "fuente": "9c86e7072a95cd25",
+   "titular": "La Comunitat Valenciana aprueba su ley de medidas fiscales y de gestión",
+   "entradilla": "La norma introduce exenciones en tasas de enseñanzas artísticas superiores y modifica las cuotas de servicios administrativos en educación no universitaria y espectáculos.",
+   "claves": [
+    "Se exime del pago de tasas en enseñanzas artísticas superiores a familias numerosas o monoparentales de categoría especial y a personas con discapacidad igual o superior al 33 %.",
+    "También se benefician de la exención las víctimas de violencia sobre la mujer, las víctimas de bandas armadas y terroristas, y quienes obtengan matrícula de honor en bachillerato.",
+    "La exención se aplica asimismo a alumnos en situación de exclusión social o que hayan estado sujetos al sistema de protección de menores en los tres años previos a la mayoría de edad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19386": {
-   "huella": "67f482f172fbbc97",
-   "titular": "Centro de Estudios Políticos y Constitucionales y Universidad Autónoma elaboran informe de justicia",
-   "entradilla": "Se publica el convenio para la elaboración y difusión conjunta del informe sobre la justicia administrativa de 2026.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "7019b5ad7850b5f0",
+   "fuente": "7f8088416fbb3561",
+   "titular": "El CEPC y la Autónoma de Madrid elaborarán el Informe sobre Justicia Administrativa",
+   "entradilla": "Un convenio regula la colaboración entre ambas instituciones para redactar y publicar en abierto este informe, que incluirá un análisis del procedimiento de protección de derechos fundamentales.",
+   "claves": [
+    "El informe será elaborado por el Centro de Investigación sobre Justicia Administrativa de la Universidad Autónoma de Madrid durante el año 2026.",
+    "El documento analizará diversos parámetros de funcionamiento de la Justicia Administrativa con datos relativos al año 2025.",
+    "Una vez finalizado, el informe se publicará en abierto en la web del centro de investigación y se podrá acceder a él desde la página del CEPC."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19387": {
-   "huella": "06ca77df1f3257f7",
-   "titular": "Instituto Nacional de Técnica Aeroespacial constituye sus mesas de contratación y diálogo competitivo",
-   "entradilla": "Se fijan formalmente con carácter permanente los órganos de contratación y consulta técnica del organismo de defensa.",
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-09-24"
+   "huella": "565c136280cbba2e",
+   "fuente": "7d85d5767932d423",
+   "titular": "El INTA constituye con carácter permanente su Mesa de Contratación",
+   "entradilla": "El Instituto Nacional de Técnica Aeroespacial regula la composición y funciones de este órgano permanente y de la Mesa de Diálogo Competitivo para sus procesos de adjudicación.",
+   "claves": [
+    "La presidencia de la Mesa de Contratación corresponderá al director del Departamento de Asuntos Económicos del INTA.",
+    "La mesa contará con vocalías del Cuerpo Jurídico Militar, del Cuerpo Militar de Intervención y representantes de las Subdirecciones Generales.",
+    "En los casos de diálogo competitivo o asociación para la innovación, la mesa permanente sumará tres personas especialmente cualificadas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   },
   "BOE-A-2026-19388": {
    "huella": "432cea88064b0afc",
@@ -1727,9 +1854,236 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-25"
+  },
+  "BOE-A-2026-19942": {
+   "huella": "145b93bf696a76f1",
+   "fuente": "6a55c551eef2e946",
+   "titular": "Hacienda publica los nuevos precios del tabaco en la Península y las Baleares",
+   "entradilla": "El Comisionado para el Mercado de Tabacos actualiza las tarifas de venta al público de cigarros, cigarritos y picaduras de pipa en las expendedurías autorizadas.",
+   "claves": [
+    "Los nuevos precios de venta al público incluyen los diferentes tributos y se aplican a cigarros, cigarritos y picaduras de pipa.",
+    "Las tarifas oficiales han sido propuestas por los fabricantes e importadores y entran en vigor el mismo día de su publicación en el BOE."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19943": {
+   "huella": "860ba75cd0a33602",
+   "fuente": "9c12905a7d2e0496",
+   "titular": "Los pimientos de Padrón importados se someterán a controles de calidad comercial",
+   "entradilla": "El Ministerio de Economía actualiza las normas de inspección comercial para adaptarlas a los reglamentos europeos, detallando qué productos procedentes de terceros países deben ser revisados.",
+   "claves": [
+    "La nueva norma incorpora los pimientos de tipo Padrón a la lista de productos de importación sometidos a inspección y control de calidad.",
+    "La medida responde a la normativa europea, que clasifica a esta variedad como un tipo de pimiento dulce que puede tener un sabor picante.",
+    "El listado de control de importaciones procedentes de terceros países también incluye carnes de ave, huevos frescos de gallina y tomates."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19984": {
+   "huella": "33b358448f8e13be",
+   "fuente": "0cac634161a44500",
+   "titular": "Seat y Cupra costearán con 3.550 euros la Fiesta Nacional en la Embajada en Austria",
+   "entradilla": "La empresa Porsche Austria asumirá mediante una aportación en especie el coste de suministros o servicios para la celebración oficial del próximo 12 de octubre de 2026 en Viena.",
+   "claves": [
+    "La aportación en especie de la compañía automovilística tiene un valor estimado de 3.550 euros, por lo que el evento no tendrá coste para la Embajada.",
+    "A cambio, la delegación diplomática difundirá la participación de la marca mediante agradecimientos y la inclusión de su logotipo en el material gráfico."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19985": {
+   "huella": "e5bf3529c3f40753",
+   "fuente": "9ef0c949f10caa4a",
+   "titular": "Codere aportará 2.440 euros para la Fiesta Nacional en la Embajada en Italia",
+   "entradilla": "La filial italiana de la empresa de juego asume el coste de diversos suministros y servicios para la recepción oficial que tendrá lugar en Roma el próximo 8 de octubre de 2026.",
+   "claves": [
+    "La aportación en especie tiene un valor estimado de 2.440 euros, lo que exime a la Embajada de España en Roma de realizar gasto alguno para el evento.",
+    "La Embajada se compromete a promocionar la marca mediante el uso de su logotipo en invitaciones, programas, redes sociales y en el lugar del acto."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19986": {
+   "huella": "ef4ded6e01c83384",
+   "fuente": "3336272df467d93e",
+   "titular": "Indra aportará 2.000 euros para la Fiesta Nacional en la Embajada en Senegal",
+   "entradilla": "La multinacional tecnológica financiará mediante suministros o servicios la celebración oficial del 12 de octubre de 2026 en la delegación diplomática de Dakar.",
+   "claves": [
+    "La aportación en especie de Indra Sistemas tiene un valor estimado de 2.000 euros y evitará cualquier coste para las arcas de la Embajada.",
+    "La delegación española agradecerá el patrocinio incluyendo el logotipo de la empresa en el material gráfico, invitaciones, web y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19987": {
+   "huella": "8ec2b15bba5007e0",
+   "fuente": "f78368ca995b338e",
+   "titular": "Indra aportará 2.000 euros en metálico para la Fiesta Nacional en Sudáfrica",
+   "entradilla": "La empresa tecnológica firma un acuerdo con la Embajada de España en Pretoria para financiar la celebración oficial que tendrá lugar el próximo 9 de octubre de 2026.",
+   "claves": [
+    "A diferencia de otros patrocinios en especie, Indra realizará en este caso una aportación económica en metálico de 2.000 euros.",
+    "El convenio no supondrá ningún coste para la Embajada, que difundirá la colaboración de la empresa en los soportes publicitarios del evento."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19988": {
+   "huella": "72054cfe35c013c9",
+   "fuente": "0df50f7fae675e59",
+   "titular": "Hacienda y Loterías del Estado prorrogan su acuerdo de intercambio de información",
+   "entradilla": "La Agencia Tributaria y la Sociedad Estatal Loterías y Apuestas del Estado modifican y extienden su convenio de colaboración para el suministro mutuo de datos.",
+   "claves": [
+    "La Agencia Tributaria y la sociedad estatal firmaron la adenda de modificación y prórroga el pasado 9 de septiembre de 2026.",
+    "El acuerdo regula las condiciones en las que ambas entidades comparten datos y suministro de información."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19989": {
+   "huella": "4aab3e39c05e1695",
+   "fuente": "feece158605da086",
+   "titular": "La Guardia Civil y la Policía Local coordinarán su seguridad en Fuente del Maestre",
+   "entradilla": "El Ministerio del Interior y el ayuntamiento firman un convenio para establecer un Plan Global de Colaboración que mejore la coordinación operativa de sus cuerpos policiales en el municipio.",
+   "claves": [
+    "El acuerdo, firmado el 3 de septiembre de 2026, busca diseñar y ejecutar de forma conjunta las políticas de seguridad ciudadana en la localidad.",
+    "La colaboración se articulará a través de la Junta Local de Seguridad, que establecerá los procedimientos de actuación de las fuerzas de seguridad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19991": {
+   "huella": "5cb45f9c8f12525e",
+   "fuente": "10b095e69d389e75",
+   "titular": "La Policía de Espejo se une al sistema de seguimiento de la violencia de género",
+   "entradilla": "El Ayuntamiento de Espejo y la Secretaría de Estado de Seguridad firman un convenio para coordinar la protección de las víctimas y realizar un seguimiento individualizado de su situación de riesgo.",
+   "claves": [
+    "El acuerdo permite integrar a la Policía Local en la base de datos común de las Fuerzas y Cuerpos de Seguridad para valorar el riesgo de nuevas agresiones.",
+    "El objetivo es mejorar la coordinación entre la Administración General del Estado y la entidad local para prevenir y evitar riesgos de violencia de género."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19992": {
+   "huella": "c23a88dd3b798fba",
+   "fuente": "e8755a40275aabc4",
+   "titular": "Red Eléctrica recibe autorización para construir la nueva subestación de Sagunto",
+   "entradilla": "El Ministerio para la Transición Ecológica autoriza de forma previa y aprueba la construcción de la instalación Saguntum de 400 kilovoltios en la provincia de Valencia.",
+   "claves": [
+    "La nueva subestación Saguntum 400 kV contará con cinco nuevas posiciones y un banco de autotransformadores con una potencia nominal de 600 MVA.",
+    "La resolución acepta el desistimiento de la solicitud de declaración de utilidad pública que había presentado Red Eléctrica de España."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19994": {
+   "huella": "f3490ade584e0f8d",
+   "fuente": "bc8af0cb94d1c642",
+   "titular": "Redexis inyectará biometano en el gasoducto Segovia Norte en Carbonero el Mayor",
+   "entradilla": "El Gobierno autoriza a Redexis Infraestructuras la construcción y declara de utilidad pública las instalaciones para conectar la inyección de biometano en la provincia de Segovia.",
+   "claves": [
+    "La nueva instalación se ubicará en Carbonero el Mayor y permitirá vehicular un caudal máximo de biometano de 2.775 metros cúbicos por hora.",
+    "La conexión se realizará directamente en carga en el punto kilométrico 26+840 del gasoducto existente, con una presión de operación de 80 bar.",
+    "La resolución incluye la declaración de utilidad pública de las obras, que contarán con una canalización de acero de cuatro pulgadas de diámetro."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19995": {
+   "huella": "7e55232c706ebbf0",
+   "fuente": "6461e6978b17e39f",
+   "titular": "La Fundación Iberdrola aportará 300.000 euros al año para restaurar obras del Prado",
+   "entradilla": "El Museo Nacional del Prado y la Fundación Iberdrola España firman un convenio de colaboración de cuatro años de duración para financiar el programa de restauración de la pinacoteca.",
+   "claves": [
+    "La Fundación Iberdrola aportará 300.000 euros anuales en calidad de Protector del Museo para sufragar los proyectos de restauración acordados.",
+    "El convenio tendrá una vigencia inicial de cuatro años, prorrogable por un periodo máximo de otros cuatro años adicionales si ambas partes lo acuerdan."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19996": {
+   "huella": "84f363f5e2b2c0f2",
+   "fuente": "5729d08c2ea70c5e",
+   "titular": "Igualdad y las feministas de Rota organizarán un congreso sobre sesgos en la IA",
+   "entradilla": "El Ministerio de Igualdad firma un convenio con la Asociación Mujeres Feministas de Rota para celebrar el V Congreso Feminista, centrado en el impacto de la inteligencia artificial y las redes sociales.",
+   "claves": [
+    "El encuentro abordará la inteligencia artificial, las redes sociales y el sesgo de género, promoviendo la formación y sensibilización en igualdad.",
+    "La asociación organizadora, nacida en 2018 en Rota, cuenta con socias en Andalucía, Madrid, Comunidad Valenciana, Baleares, Aragón, Cataluña y Canarias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19997": {
+   "huella": "c250816f611adcd3",
+   "fuente": "70b1bffab8adc806",
+   "titular": "El Gobierno y SEDISA impulsarán el uso de la inteligencia artificial en la sanidad",
+   "entradilla": "La Secretaría de Estado de Digitalización y la Sociedad Española de Directivos de la Salud colaborarán para integrar tecnologías digitales y de inteligencia artificial en la gestión y asistencia sanitaria.",
+   "claves": [
+    "El acuerdo busca difundir buenas prácticas de inteligencia artificial en salud bajo criterios de sostenibilidad, ética y equidad.",
+    "Se desarrollará un marco común de evaluación para proyectos de inteligencia artificial médica a través del Observatorio de IA de SEDISA.",
+    "Ambas entidades colaborarán en la consolidación del Espacio Nacional de Datos de Salud y en la implementación del Espacio Europeo de Datos Sanitarios."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19998": {
+   "huella": "e7c62c2109e7a744",
+   "fuente": "4c6ecd1c30ca0113",
+   "titular": "El Ministerio convoca a los interesados en el recurso de secretarios-interventores",
+   "entradilla": "Las personas interesadas en el recurso interpuesto por doña Lourdes Polo Cuartero disponen de un plazo de nueve días para personarse ante la Sala de lo Contencioso-Administrativo de la Audiencia Nacional.",
+   "claves": [
+    "El recurso contencioso-administrativo se dirige contra la Orden TDF/168/2026, de 2 de marzo, que nombra personal funcionario de carrera en la subescala de Secretaría-Intervención.",
+    "El plazo de nueve días para personarse en los autos comenzará a contar desde el día siguiente al de la publicación de esta resolución en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-19999": {
+   "huella": "4bbf772714fd4b31",
+   "fuente": "6831f2ee1e2ac618",
+   "titular": "El Banco de España difunde los cambios oficiales del euro del 25 de septiembre",
+   "entradilla": "El Banco de España hace públicos los tipos de cambio de la divisa europea correspondientes al 25 de septiembre de 2026, según los datos facilitados por el Banco Central Europeo.",
+   "claves": [
+    "Las cotizaciones publicadas tienen la consideración de cambios oficiales de acuerdo con la ley sobre la introducción del euro.",
+    "Los valores corresponden a la negociación del 25 de septiembre de 2026 y son de aplicación para las operaciones financieras pertinentes."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "C-55ba3072dd64078b": {
+   "huella": "7effbe0eac648747",
+   "fuente": "271b63b07adf4d0d",
+   "titular": "El Congreso publica el diario de sesiones con el acatamiento de nuevos diputados",
+   "entradilla": "Se registra la publicación oficial del Diario de Sesiones del Congreso de los Diputados correspondiente a la sesión plenaria.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "C-f25b967a7dd9d9c1": {
+   "huella": "ff73afb630517866",
+   "descartado": "nombre «Publicado» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "C-fe5e4bb8fc2714a3": {
+   "huella": "43af875609faf5a3",
+   "fuente": "25fb8a105389495c",
+   "titular": "La Comisión de Sanidad tramitará el Estatuto Marco del personal de salud",
+   "entradilla": "La Mesa del Congreso encomienda la aprobación del Proyecto de Ley del Estatuto Marco del personal estatutario de los servicios de salud a la Comisión de Sanidad con competencia legislativa plena.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
+  },
+  "C-8c14caa9a3467ef3": {
+   "huella": "25a230c333c2d527",
+   "fuente": "92dd03af5c8c09de",
+   "titular": "El Congreso debate el decreto de protección laboral frente a incendios forestales",
+   "entradilla": "El Congreso de los Diputados somete a debate y votación de totalidad el Real Decreto-ley 20/2026 de medidas urgentes de protección laboral y social frente a los incendios forestales.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-26"
   }
  },
  "uso": {
-  "2026-09-25": 8
+  "2026-09-26": 3
  }
 }
