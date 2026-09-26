@@ -180,25 +180,46 @@ def censo(get, log) -> dict:
     return salida
 
 
-def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
-    """Recuento de intervenciones por orador, con las últimas en detalle.
+# El volcado de intervenciones pesa decenas de megas y lo necesitan dos
+# consumidores en la misma ejecución: las fichas de diputados y las preguntas
+# orales de «Las Cortes hoy». Se descarga una vez y se guarda aquí.
+_FILAS_INTERVENCIONES: list | None = None
 
-    El volcado es de la legislatura entera y pesa decenas de megas: se lee una
-    vez y se reduce aquí a lo que cabe en el repositorio."""
+
+def descargar_intervenciones(get, log) -> list:
+    """Las filas de IntervencionesCronologicamente, una sola descarga por
+    ejecución. Lista vacía si el portal no responde."""
+    global _FILAS_INTERVENCIONES
+    if _FILAS_INTERVENCIONES is not None:
+        return _FILAS_INTERVENCIONES
+    _FILAS_INTERVENCIONES = []
     r = get(PAG_INTERVENCIONES, tries=2)
     if not r:
-        return {}
+        return []
     url = _elegir(_urls_json(r.text), "IntervencionesCronologicamente")
     if not url:
         log("  no aparece el fichero de intervenciones")
-        return {}
+        return []
     d = get(url, tries=2)
     if not d:
-        return {}
+        return []
     try:
         filas = d.json()
     except Exception as exc:                                   # noqa: BLE001
         log(f"  intervenciones ilegibles: {exc}")
+        return []
+    _FILAS_INTERVENCIONES = filas if isinstance(filas, list) else []
+    return _FILAS_INTERVENCIONES
+
+
+def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
+    """Recuento de intervenciones por orador, con las últimas en detalle.
+
+    El volcado es de la legislatura entera y pesa decenas de megas: se lee una
+    vez (descargar_intervenciones) y se reduce aquí a lo que cabe en el
+    repositorio."""
+    filas = descargar_intervenciones(get, log)
+    if not filas:
         return {}
 
     por_persona: dict = {}
@@ -228,6 +249,82 @@ def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
         p["ultimas"] = sorted(p["ultimas"], key=_clave, reverse=True)[:limite_por_persona]
     log(f"  intervenciones: {len(filas)} de {len(por_persona)} oradores")
     return por_persona
+
+
+# ---------------------------------------------------------------------------
+# Preguntas orales de control en el Pleno
+# ---------------------------------------------------------------------------
+#
+# Campos del volcado usados aquí, comprobados en el JSON real
+# (IntervencionesCronologicamente, septiembre de 2026):
+#   TIPOINICIATIVA   «Pregunta oral en Pleno.»
+#   NUMEXPEDIENTE    «180/001139/0000» (una iniciativa = una pregunta)
+#   AUTOR            «Núñez Feijóo, Alberto (GP) » (quien la registra)
+#   OBJETOINICIATIVA el texto literal de la pregunta
+#   SESION           «09/09/2026»
+#   ORGANO           «Pleno»
+#   ORADOR / CARGOORADOR  cada intervención: el diputado («Diputado»,
+#                    «Diputada») y quien contesta («Presidente del Gobierno»,
+#                    «Ministra de Defensa»…)
+#   INICIOINTERVENCION «09:03», para ordenar
+#   ENLACEDIFERIDO   vídeo de la intervención en app.congreso.es
+# La pregunta y sus réplicas son varias filas con el mismo expediente: aquí
+# se juntan en una sola pieza.
+
+def _fecha_ddmmaaaa(f: str) -> str:
+    m = re.match(r"\s*(\d{1,2})/(\d{1,2})/(\d{4})", f or "")
+    return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}" if m else ""
+
+
+def _grupo_de(texto: str) -> str:
+    """«Núñez Feijóo, Alberto (GP)» -> «GP»."""
+    m = re.search(r"\(([^()]+)\)\s*$", (texto or "").strip())
+    return m.group(1).strip() if m else ""
+
+
+def preguntas_orales(filas: list, censo: dict | None = None) -> dict:
+    """Las preguntas orales de la sesión de control más reciente del Pleno.
+
+    Devuelve {"fecha": "AAAA-MM-DD", "preguntas": [...]}, con las preguntas en
+    el orden en que se formularon. Vacío si el volcado no trae ninguna."""
+    censo = censo or {}
+    orales = [f for f in filas
+              if (f.get("TIPOINICIATIVA") or "").startswith("Pregunta oral en Pleno")
+              and (f.get("ORGANO") or "").strip() == "Pleno"]
+    fechas = {_fecha_ddmmaaaa(f.get("SESION", "")) for f in orales} - {""}
+    if not fechas:
+        return {}
+    ultima = max(fechas)
+    por_exp: dict = {}
+    for f in orales:
+        if _fecha_ddmmaaaa(f.get("SESION", "")) != ultima:
+            continue
+        por_exp.setdefault((f.get("NUMEXPEDIENTE") or "").strip(), []).append(f)
+
+    preguntas = []
+    for exp, grupo_filas in por_exp.items():
+        grupo_filas.sort(key=lambda f: (f.get("INICIOINTERVENCION") or ""))
+        autor = " ".join((grupo_filas[0].get("AUTOR") or "").split())
+        nombre_autor = re.sub(r"\s*\([^)]*\)\s*$", "", autor)
+        # Quien contesta: la primera intervención que no es de un diputado.
+        contesta = next((f for f in grupo_filas
+                         if not (f.get("CARGOORADOR") or "").strip().startswith("Diputad")), None)
+        base = censo.get(clave_nombre(nombre_autor)) or {}
+        preguntas.append({
+            "expediente": exp,
+            "autor": nombre_autor,
+            "autor_natural": base.get("natural") or nombre_natural(nombre_autor),
+            "slug": base.get("slug", ""),
+            "grupo": _grupo_de(autor),
+            "texto": " ".join((grupo_filas[0].get("OBJETOINICIATIVA") or "").split()),
+            "contesta": re.sub(r"\s*\([^)]*\)\s*$", "",
+                               " ".join((contesta or {}).get("ORADOR", "").split())),
+            "cargo": " ".join((contesta or {}).get("CARGOORADOR", "").split()),
+            "video": (grupo_filas[0].get("ENLACEDIFERIDO") or "").strip(),
+            "hora": (grupo_filas[0].get("INICIOINTERVENCION") or "").strip(),
+        })
+    preguntas.sort(key=lambda p: p["hora"])
+    return {"fecha": ultima, "preguntas": preguntas}
 
 
 # El calendario del portal navega por GET: con targetDate se puede pedir

@@ -56,6 +56,7 @@ PLAZOS_DIR = ROOT / "plazos"
 BUSCAR_DIR = ROOT / "buscar"
 MAPA_DIR = ROOT / "mapa"
 RANKINGS_DIR = ROOT / "rankings"
+PREGUNTAS_DIR = ROOT / "preguntas"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -100,6 +101,30 @@ DIAG: dict = {"inicio": dt.datetime.now(dt.timezone.utc).isoformat(), "peticione
 
 def log(msg: str) -> None:
     print(f"[build] {msg}", flush=True)
+
+
+def post(url: str, data: dict, tries: int = 2) -> requests.Response | None:
+    """POST tolerante, para el buscador de iniciativas del Congreso (el listado
+    de preguntas escritas solo se sirve por POST). Mismo trato que get()."""
+    host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
+    if host in _BLOQUEADOS:
+        return None
+    s = sesion_para(url)
+    for intento in range(1, tries + 1):
+        try:
+            r = s.post(url, data=data, timeout=REQUEST_TIMEOUT)
+            if r.status_code == 200:
+                DIAG["peticiones"].append({"url": url, "status": 200, "bytes": len(r.content)})
+                return r
+            log(f"  {r.status_code} en POST {url}")
+            if r.status_code in (403, 404, 410):
+                break
+        except Exception as exc:                              # noqa: BLE001
+            log(f"  error en POST {url}: {exc}")
+        if intento < tries:
+            time.sleep(2 * intento)
+    DIAG["peticiones"].append({"url": url, "status": "fallo POST"})
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -292,46 +317,6 @@ def pdf_text(url: str, referer: str | None = None, max_chars: int = 120_000) -> 
     except Exception as exc:                                  # noqa: BLE001
         log(f"  no se pudo leer el PDF {url}: {exc}")
         return ""
-
-
-def fetch_congreso() -> list[dict]:
-    docs: list[dict] = []
-    idx = "https://www.congreso.es/ultimas-publicaciones-oficiales"
-    r = get(idx)
-    if not r:
-        log("Congreso: no se pudo abrir la página de publicaciones")
-        return docs
-
-    soup = BeautifulSoup(r.text, "html.parser")
-    candidatos, vistos = [], set()
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        if ".PDF" not in href.upper():
-            continue
-        full = href if href.startswith("http") else f"https://www.congreso.es{href}"
-        if full in vistos:
-            continue
-        vistos.add(full)
-        nombre = full.rsplit("/", 1)[-1]
-        up = full.upper()
-        if "/DS/" in up or nombre.upper().startswith("DSCD"):
-            tipo = "Diario de Sesiones"
-        elif "/BOCG/" in up:
-            tipo = "BOCG"
-        else:
-            continue
-        candidatos.append({"tipo": tipo, "url": full, "nombre": nombre,
-                           "chamber_hint": "congreso"})
-
-    log(f"Congreso: {len(candidatos)} publicaciones detectadas")
-    ds = [d for d in candidatos if d["tipo"] == "Diario de Sesiones"][:2]
-    bocg = [d for d in candidatos if d["tipo"] == "BOCG"][:2]
-    for d in ds + bocg:
-        d["texto"] = pdf_text(d["url"], referer=idx)
-        log(f"  {d['nombre']}: {len(d['texto'])} caracteres")
-        if d["texto"]:
-            docs.append(d)
-    return docs
 
 
 SENADO_IDX = ("https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/"
@@ -1869,7 +1854,13 @@ qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que
     }
 
 
-def redactar_cortes(docs: list[dict], anterior: dict | None) -> dict:
+def redactar_cortes(congreso: dict, senado: list[dict], anterior: dict | None) -> dict:
+    """«Las Cortes hoy»: preguntas orales y escritas del Congreso (ya
+    redactadas en cortes_congreso) y, si el Senado responde, sus boletines.
+
+    Aquí ya no hay modelo: antes el Diario de Sesiones y el BOCG se resumían
+    con un LLM, y el resultado era difícil de verificar. Ahora todo sale de
+    plantillas sobre datos oficiales, y lo que va entre comillas es literal."""
     base = {
         "congreso": (anterior or {}).get("congreso", {
             "presidenta": "Francina Armengol Socias",
@@ -1879,14 +1870,14 @@ def redactar_cortes(docs: list[dict], anterior: dict | None) -> dict:
             "presidente": "Pedro Rollán",
             "legislatura": "XV Legislatura (2023– )",
             "sede": "Bailén, 3, Madrid"}),
-        "scoreboard": None,
-        "feed": [],
+        "scoreboard": congreso.get("scoreboard"),
+        "feed": list(congreso.get("feed") or []),
     }
 
     # Transparencia de cobertura: en una auditoría, saber qué fuente no respondió
     # forma parte de la información.
-    hay_congreso = any(d["chamber_hint"] == "congreso" for d in docs) if docs else False
-    hay_senado = any(d["chamber_hint"] == "senado" for d in docs) if docs else False
+    hay_congreso = bool(base["feed"])
+    hay_senado = bool(senado)
     if hay_congreso and hay_senado:
         nota = "Congreso y Senado han respondido; la edición cubre las dos cámaras."
     elif hay_congreso:
@@ -1894,62 +1885,22 @@ def redactar_cortes(docs: list[dict], anterior: dict | None) -> dict:
                 "peticiones automatizadas, así que hoy su actividad no está cubierta. "
                 "Lo decimos en vez de disimularlo.")
     elif hay_senado:
-        nota = ("El Senado ha respondido. El Congreso no ha devuelto publicaciones hoy, "
-                "así que su actividad no está cubierta en esta edición.")
+        nota = ("El Senado ha respondido. Las fuentes del Congreso no han devuelto datos "
+                "hoy, así que su actividad no está cubierta en esta edición.")
     else:
-        nota = ("Ninguna de las dos cámaras ha devuelto publicaciones legibles hoy.")
+        nota = "Ninguna de las dos cámaras ha devuelto datos legibles hoy."
     base["coverage"] = {"congreso": hay_congreso, "senado": hay_senado, "nota": nota}
 
-    if not docs:
+    if not hay_congreso and not hay_senado:
         base["constructionNote"] = (
-            "Hoy no se pudo descargar ninguna publicación oficial legible del Congreso ni "
-            "del Senado. Antes que rellenar con ruido, lo decimos: volvemos mañana.")
+            "Hoy no se pudo leer ningún dato oficial del Congreso ni del Senado. Antes que "
+            "rellenar con ruido, lo decimos: volvemos mañana.")
         return base
 
-    if llm_disponible():
-        material = "".join(
-            f"\n\n=== {d['nombre']} ({d['tipo']}) — fuente: {d['url']} ===\n"
-            + d.get("texto", "")[:26000] for d in docs)
-        prompt = f"""Material oficial de las Cortes publicado hoy:
-{material}
-
-Escribe entre 3 y 6 artículos de AUDITORÍA PÚBLICA sobre lo que hacen sus señorías. JSON:
-{{"feed":[{{"chamber":"congreso|senado","type":"Pleno|Comisión|Comisión de investigación|
-Interpelaciones urgentes|Preguntas escritas|Tramitación legislativa|Administración de la Cámara",
-"date":"DD mmm AAAA","headline":"TITULAR mordaz pero fiel","standfirst":"entradilla",
-"quote":{{"text":"cita LITERAL","author":"nombre y cargo"}},
-"body":["p1","p2","p3 que empieza por 'Auditoría del día:'"],
-"source":{{"label":"documento","url":"url del PDF"}}}}],
-"scoreboard":{{"note":"qué se ha contado","rows":[{{"g":"grupo","n":2}}]}}}}
-
-Baja al detalle: nombres y apellidos, grupo parlamentario, expediente, ministerio. "quote"
-es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre todos."""
-        resp = llm(prompt)
-        if resp and isinstance(resp.get("feed"), list) and resp["feed"]:
-            base["feed"] = resp["feed"]
-            if isinstance(resp.get("scoreboard"), dict):
-                base["scoreboard"] = resp["scoreboard"]
-            log(f"Cortes: {len(base['feed'])} artículos redactados con modelo")
-            return base
-
-    # Diagnóstico: una muestra del texto extraído de cada documento. Sin esto
-    # el parser de Cortes se escribe a ciegas, y un boletín parlamentario no se
-    # parece a nada que uno pueda imaginar desde fuera.
-    try:
-        DEBUG_DIR.mkdir(exist_ok=True)
-        (DEBUG_DIR / "cortes-muestra.json").write_text(json.dumps(
-            [{"nombre": d.get("nombre"), "tipo": d.get("tipo"), "url": d.get("url"),
-              "caracteres": len(d.get("texto", "")),
-              "muestra": d.get("texto", "")[:6000]} for d in docs],
-            ensure_ascii=False, indent=1), encoding="utf-8")
-    except Exception as exc:                                  # noqa: BLE001
-        log(f"  no se pudo escribir la muestra de Cortes: {exc}")
-
-    log("Cortes: lectura estructurada de los boletines")
+    # Boletines del Senado, con la lectura estructurada de siempre.
     hoy = dt.date.today()
     fecha_txt = f"{hoy.day} {MES_ABBR[hoy.month-1].lower()} {hoy.year}"
-    for d in docs:
-        camara = d.get("chamber_hint", "congreso")
+    for d in senado:
         try:
             datos = parsear_cortes(d.get("nombre", ""), d.get("tipo", ""), d.get("texto", ""))
             titulo, entradilla = titular_cortes(datos)
@@ -1958,16 +1909,13 @@ es opcional y SOLO si la frase aparece literalmente. Reparte la mordacidad entre
             datos, titulo, entradilla = {}, "", ""
         if not titulo:
             continue          # antes que publicar un nombre de fichero, no se publica
-
-        cuerpo = cuerpo_cortes(datos, d)
-
         base["feed"].append({
-            "chamber": camara,
+            "chamber": d.get("chamber_hint", "senado"),
             "type": d["tipo"],
             "date": datos.get("fecha") or fecha_txt,
             "headline": titulo,
             "standfirst": entradilla,
-            "body": cuerpo,
+            "body": cuerpo_cortes(datos, d),
             "source": {"label": d["nombre"], "url": d["url"]},
         })
     return base
@@ -2666,6 +2614,10 @@ def render_cortes_feed_ssr(day: dict) -> str:
         if f.get("source"):
             fuente = (f'<a class="srclink" href="{esc_attr(f["source"].get("url"))}" '
                       f'target="_blank" rel="noopener">{esc_html(f["source"].get("label"))} ↗</a>')
+        # Enlaces propios (la ficha del diputado que pregunta), si los hay.
+        for enl in f.get("links") or []:
+            fuente += (f' <a class="srclink" href="{esc_attr(enl.get("url"))}">'
+                       f'{esc_html(enl.get("label"))}</a>')
         out.append(
             f'<article id="cortes-{n}" class="acard" style="--cc:var(--{cc});--ccsoft:var(--{cc}-soft)">'
             f'<div class="row1"><span class="tag-cc">{icono(cc)}{esc_html(CHAMBER_LABEL[cc])}</span>'
@@ -3053,15 +3005,46 @@ def render_ssr_fragments(day: dict, dias: list[dict] | None = None) -> dict:
 # Construcción y renderizado
 # ---------------------------------------------------------------------------
 
+def cortes_congreso(fecha: dt.date) -> dict:
+    """Lo que «Las Cortes hoy» cuenta del Congreso: preguntas orales de la
+    última sesión de control y preguntas con respuesta escrita (contestadas
+    hoy y pendientes). Todo determinista: plantillas sobre datos oficiales, sin
+    modelo. Si una de las dos fuentes falla, se publica la otra."""
+    import congreso_datos as cd
+    import preguntas as pq
+    feed: list = []
+    scoreboard = None
+    censo = {}
+    try:
+        censo = json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8")).get("censo") or {}
+    except Exception:                                         # noqa: BLE001
+        pass
+    try:
+        filas = cd.descargar_intervenciones(get, log)
+        orales = pq.feed_orales(filas, censo, fecha.isoformat(), fmt_date_es, SITE_URL)
+        feed += orales
+        log(f"Cortes: {len(orales)} piezas de preguntas orales")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"Cortes: preguntas orales no disponibles ({exc})")
+    try:
+        pq.actualizar_escritas(get, post, log)
+        escritas, scoreboard = pq.feed_escritas(pq.cargar_escritas(), fmt_date_es, SITE_URL)
+        feed += escritas
+        log(f"Cortes: {len(escritas)} piezas de preguntas escritas")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"Cortes: preguntas escritas no disponibles ({exc})")
+    return {"feed": feed, "scoreboard": scoreboard}
+
+
 def construir_dia(fecha: dt.date) -> dict | None:
     log(f"=== Edición del {fecha.isoformat()} ===")
     boe_raw = fetch_boe(fecha)
-    congreso = fetch_congreso()
+    congreso = cortes_congreso(fecha)
     senado = fetch_senado()
 
     DIAG["resumen"] = {
         "boe_entradas": len(boe_raw["entradas"]) if boe_raw else 0,
-        "congreso_docs": len(congreso),
+        "congreso_piezas": len(congreso["feed"]),
         "senado_docs": len(senado),
     }
 
@@ -3073,7 +3056,7 @@ def construir_dia(fecha: dt.date) -> dict | None:
         except Exception:                                     # noqa: BLE001
             pass
 
-    if not boe_raw and not congreso and not senado:
+    if not boe_raw and not congreso["feed"] and not senado:
         log("No se obtuvo NINGUNA fuente. No se escribe edición.")
         return None
 
@@ -3084,7 +3067,7 @@ def construir_dia(fecha: dt.date) -> dict | None:
             "numero": "", "fecha": "", "sourceUrl": "",
             "counts": {"fiscal": 0, "laboral": 0, "mercantil": 0, "otros": 0},
             "extra": "Hoy no se pudo leer el sumario del BOE.", "stories": []},
-        "cortes": redactar_cortes(congreso + senado, anterior),
+        "cortes": redactar_cortes(congreso, senado, anterior),
     }
     return fusionar_curado(dia)
 
@@ -3153,6 +3136,7 @@ def render_nav() -> str:
         + enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado")
         + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
         + enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos")
+        + enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
         + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
         + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
@@ -4493,6 +4477,23 @@ def renderizar_votaciones(fichas: list) -> list:
     return salidas
 
 
+def renderizar_preguntas() -> list:
+    """/preguntas/: preguntas escritas al Gobierno (respuestas, registradas,
+    pendientes, por grupo) y su metodología. Lee el estado que deja
+    preguntas.actualizar_escritas() al construir la edición."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import preguntas as pq
+    salidas = pq.generar_paginas({
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "carpeta": PREGUNTAS_DIR,
+    })
+    log(f"preguntas/: {len(salidas)} páginas")
+    return salidas
+
+
 def renderizar_rankings(fichas_dip: list) -> list:
     """/rankings/: clasificaciones de diputados y grupos. El cálculo vive en
     rankings.py; aquí solo se le pasan las utilidades de página del sitio para
@@ -4527,6 +4528,14 @@ def renderizar_diputados(fichas: list) -> list:
     plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
     hoy = dt.date.today().isoformat()
     salidas = []
+
+    # Preguntas escritas de cada diputado, para su sección #preguntas.
+    try:
+        import preguntas as pq
+        resumen_preguntas = pq.resumen_diputados(pq.cargar_escritas())
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  preguntas escritas no disponibles para las fichas ({exc})")
+        pq, resumen_preguntas = None, {}
 
     # --- ficha individual -------------------------------------------------
     for f in fichas:
@@ -4596,6 +4605,10 @@ def renderizar_diputados(fichas: list) -> list:
                               + (f' · {esc_html(i["fase"])}' if i.get("fase") else "")
                               + '</span></li>')
             cuerpo.append("</ul>")
+        seccion_preguntas = pq.seccion_diputado(resumen_preguntas.get(f.get("clave")),
+                                                esc_html, fmt_date_es) if pq else ""
+        if seccion_preguntas:
+            cuerpo.append(seccion_preguntas)
         if not cuerpo:
             cuerpo = ["<p>Todavía no hay actividad registrada de este diputado en las "
                       "series que publicamos.</p>"]
@@ -4952,7 +4965,8 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
         + '<h2 class="rotulo">Parlamento</h2>'
         + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
                  ("/votaciones/", "Votaciones del Pleno: quién votó qué", ""),
-                 ("/rankings/", "Rankings de diputados y grupos", "")])
+                 ("/rankings/", "Rankings de diputados y grupos", ""),
+                 ("/preguntas/", "Preguntas escritas al Gobierno", "")])
         + '<h3 class="rotulo-sub">Por grupo</h3>' + lista(grupos)
         + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
         + '<h2 class="rotulo">Consultar</h2>'
@@ -5088,6 +5102,11 @@ def renderizar() -> None:
             log(f"rankings/: no se pudo generar ({exc})")
     except Exception as exc:                                  # noqa: BLE001
         log(f"diputados/: no se pudo generar ({exc})")
+    # Preguntas al Gobierno: igual, un fallo aquí no tumba la edición.
+    try:
+        extras += renderizar_preguntas()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"preguntas/: no se pudo generar ({exc})")
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(dias)
@@ -5193,7 +5212,7 @@ def main() -> None:
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
-                RANKINGS_DIR):
+                RANKINGS_DIR, PREGUNTAS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if not args.render:
