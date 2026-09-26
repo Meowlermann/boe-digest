@@ -3288,12 +3288,10 @@ def render_parlamento_ssr() -> tuple[bool, str]:
            f"la del {fecha}." if fecha and hablaron else
            "Recuentos sobre las publicaciones oficiales del Congreso, sin adjetivos.")
 
-    # En portada el hemiciclo es un dibujo, no una interfaz: no hay capa
-    # interactiva que lea los slugs ni tooltips que mostrar. Quitarlos ahorra
-    # unos 25 KB en la página más visitada del sitio.
-    hemi = re.sub(r'\s*data-d="[^"]*"', "", hemi)
+    # Los <title> se quitan (la ficha la pinta el script) pero los data-d se
+    # quedan: son los que permiten ver quién ocupa cada escaño al pasar el
+    # ratón, igual que en la página de diputados.
     hemi = re.sub(r"<title>.*?</title>", "", hemi, flags=re.S)
-    hemi = hemi.replace('id="hemiciclo"', 'aria-hidden="true"', 1)
 
     try:
         ultimas = (DATOS_DIR / "ultimas-votaciones.html").read_text(encoding="utf-8")
@@ -3303,8 +3301,10 @@ def render_parlamento_ssr() -> tuple[bool, str]:
         (f'<div class="portada-vt"><h3 class="rotulo">Lo último que se ha votado</h3>{ultimas}</div>'
          if ultimas else "") +
         f'<div class="stats">{cifras}</div>'
-        f'<div class="portada-hemi"><a href="diputados/" '
-        f'aria-label="Ver la ficha de cada diputado">{hemi}</a></div>'
+        f'<div class="portada-hemi">{hemi}'
+        f'<div id="hemiciclo-app" data-src="datos/parlamento.json" data-base="diputados/" '
+        f'data-compacto></div></div>'
+        f'<script src="assets/parlamento.js" defer></script>'
         f'<p class="aside-note">{esc_html(pie)}</p>'
         f'<ul class="rejilla-dip portada-dip">{filas}</ul>')
 
