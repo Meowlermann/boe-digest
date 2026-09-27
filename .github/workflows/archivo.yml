@@ -6,11 +6,6 @@ name: Archivo histórico
 # completar el tramo. Las ediciones de archivo son deterministas: sin LLM
 # (no se pasa ninguna clave) y sin datos de las Cortes.
 on:
-  # TEMPORAL, solo para la prueba en la rama: GitHub no ofrece «Run workflow»
-  # para un workflow que aún no está en main. Se quita antes de fusionar. Pasada 2.
-  push:
-    branches: [nombramientos]
-    paths: [".github/workflows/archivo.yml"]
   workflow_dispatch:
     inputs:
       desde:
@@ -59,10 +54,10 @@ jobs:
 
       - name: Construir las ediciones de archivo
         env:
-          DESDE: ${{ inputs.desde || '2026-09-01' }}
-          HASTA: ${{ inputs.hasta || '2026-09-10' }}
-          LOTE: ${{ inputs.lote || '5' }}
-          MODO: ${{ inputs.modo || 'nombramientos' }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+          LOTE: ${{ inputs.lote }}
+          MODO: ${{ inputs.modo }}
         run: |
           if [ "$MODO" = "nombramientos" ]; then
             # Solo el estado de nombramientos: ni data/ ni las ediciones.
