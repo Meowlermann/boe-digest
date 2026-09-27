@@ -68,7 +68,7 @@ RE_RANGO = re.compile(r"^(Real Decreto-ley|Real Decreto|Decreto|Orden|Resolució
 
 # Quién firma: «Resolución de 1 de septiembre de 2026, de la Universidad de
 # Murcia, por la que…». Útil cuando el departamento es genérico (UNIVERSIDADES).
-RE_EMISOR = re.compile(r"^[^,]+?,\s+(?:de\s+la|de\s+los|de\s+las|del|de)\s+(?!\d)(?P<emisor>[^,]+?),\s+por\s+(?:el|la)\s+que\b")
+RE_EMISOR = re.compile(r"^[^,]+?,\s+(?:conjunta\s+)?(?:de\s+la|de\s+los|de\s+las|del|de)\s+(?!\d)(?P<emisor>[^,]+?),\s+por\s+(?:el|la)\s+que\b")
 
 # Lo que va detrás de «por el/la que»: el acto en sí.
 RE_ACTO = re.compile(r"\bpor\s+(?:el|la)\s+que\s+(?:,[^,]*,\s*)?(?P<acto>.+)$", re.S)
