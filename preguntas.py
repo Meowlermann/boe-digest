@@ -304,6 +304,12 @@ def actualizar_escritas(get, post, log) -> dict:
 
 # ------------------------------------------------------------------ cálculos
 
+def datos_completos(e: dict) -> bool:
+    """¿Está ya el año entero en el estado? Hasta entonces, contar pendientes
+    o comparar diputados daría cifras que se quedan cortas: mejor no
+    publicarlas que publicar algo que engañe."""
+    return bool((e.get("listado") or {}).get("completo"))
+
 def pendientes_vencidas(e: dict, hoy: str | None = None) -> list:
     """Publicadas, sin contestación registrada y con el plazo vencido. Plazo:
     el que publica el Congreso en la ficha; si no aparece, 20 días hábiles
@@ -388,8 +394,6 @@ def piezas_orales(ses: dict, fmt_date_es, site_url: str) -> list:
         cuerpo.append(f'Contesta: {cd.nombre_natural(p["contesta"])}, {p["cargo"]}.'
                       if p["contesta"] else
                       "El volcado del Congreso no registra contestación del Gobierno.")
-        if p["video"]:
-            cuerpo.append(f'Ver en vídeo: {p["video"]}')
         enlaces = []
         if p.get("slug"):
             enlaces.append({"label": f'Ficha de {p["autor_natural"]}',
@@ -411,41 +415,33 @@ def piezas_orales(ses: dict, fmt_date_es, site_url: str) -> list:
     return piezas
 
 
-def aviso_sin_sesion(ultima: dict, fmt_date_es, site_url: str) -> dict:
-    fecha_txt = _fecha_larga(ultima["fecha"], fmt_date_es)
-    ed = ultima.get("edicion", "")
-    return {
-        "chamber": "congreso",
-        "type": "Preguntas orales",
-        "date": fecha_txt,
-        "headline": f"Sin sesión de control nueva desde el {fecha_txt}",
-        "standfirst": ("El volcado de intervenciones del Congreso no trae ninguna sesión de "
-                       "control posterior. Las preguntas de esa sesión ya se publicaron."),
-        "body": [f"La última sesión de control publicada es la del {fecha_txt}, en la edición "
-                 f"del {_fecha_larga(ed, fmt_date_es)}.",
-                 "El Congreso publica las intervenciones con algunos días de retraso."],
-        "source": {"label": f"Edición del {_fecha_larga(ed, fmt_date_es)}",
-                   "url": f"{site_url}ediciones/{ed}.html#cortes-1"},
-    }
-
-
-def feed_orales(filas: list, censo: dict, hoy: str, fmt_date_es, site_url: str) -> list:
+def feed_orales(filas: list, censo: dict, hoy: str, fmt_date_es,
+                site_url: str) -> tuple[list, str]:
     """Piezas de preguntas orales para la edición de hoy, sin republicar como
-    nueva una sesión que ya salió en una edición anterior."""
+    nueva una sesión que ya salió en una edición anterior.
+
+    Devuelve (piezas, aviso). Sin sesión nueva no hay pieza: una tarjeta que
+    solo dice «no hay nada» no le sirve a nadie. El aviso va en una línea, en
+    la nota de cobertura."""
     ses = cd.preguntas_orales(filas, censo)
     estado = _cargar(ESTADO_ORALES, {"publicadas": {}, "ultima": None})
+    ult = estado.get("ultima")
     if not ses:
-        ult = estado.get("ultima")
-        return [aviso_sin_sesion(ult, fmt_date_es, site_url)] if ult else []
+        return [], (_texto_aviso(ult, fmt_date_es) if ult else "")
     publicada_en = estado["publicadas"].get(ses["fecha"])
     if publicada_en and publicada_en != hoy:
-        return [aviso_sin_sesion({"fecha": ses["fecha"], "edicion": publicada_en},
-                                 fmt_date_es, site_url)]
+        return [], _texto_aviso({"fecha": ses["fecha"], "edicion": publicada_en}, fmt_date_es)
     estado["publicadas"][ses["fecha"]] = hoy
     estado["ultima"] = {"fecha": ses["fecha"], "edicion": hoy,
                         "expedientes": [p["expediente"] for p in ses["preguntas"]]}
     _guardar(ESTADO_ORALES, estado)
-    return piezas_orales(ses, fmt_date_es, site_url)
+    return piezas_orales(ses, fmt_date_es, site_url), ""
+
+
+def _texto_aviso(ultima: dict, fmt_date_es) -> str:
+    return (f"Sin sesión de control nueva desde el {_fecha_larga(ultima['fecha'], fmt_date_es)}; "
+            f"sus preguntas salieron en la edición del "
+            f"{_fecha_larga(ultima.get('edicion', ''), fmt_date_es)}.")
 
 
 def feed_escritas(e: dict, fmt_date_es, site_url: str) -> tuple[list, dict | None]:
@@ -487,7 +483,7 @@ def feed_escritas(e: dict, fmt_date_es, site_url: str) -> tuple[list, dict | Non
             "source": {"label": "Todas las preguntas", "url": f"{site_url}preguntas/"},
         })
 
-    vencidas = pendientes_vencidas(e, hoy)
+    vencidas = pendientes_vencidas(e, hoy) if datos_completos(e) else []
     if vencidas:
         mas_antigua = vencidas[0][1]
         piezas.append({
@@ -525,6 +521,8 @@ def resumen_diputados(e: dict) -> dict:
     """{clave_nombre: {"total", "contestadas", "media_dias", "ultimas": [...]}}
     para la sección #preguntas de cada ficha."""
     salida: dict = {}
+    if not datos_completos(e):
+        return salida
     for exp, v in e.get("exp", {}).items():
         for autor in v.get("a") or []:
             s = salida.setdefault(cd.clave_nombre(autor),
@@ -565,7 +563,7 @@ def seccion_diputado(resumen: dict | None, esc, fmt_date_es) -> str:
 def generar_paginas(h: dict) -> list:
     """/preguntas/index.html, una página por grupo y la metodología."""
     e = cargar_escritas()
-    if not e["exp"]:
+    if not e["exp"] or not datos_completos(e):
         return []
     esc, attr, fecha = h["esc_html"], h["esc_attr"], h["fmt_date_es"]
     carpeta, site = h["carpeta"], h["site_url"]

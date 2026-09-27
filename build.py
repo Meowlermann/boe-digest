@@ -1876,7 +1876,8 @@ def redactar_cortes(congreso: dict, senado: list[dict], anterior: dict | None) -
 
     # Transparencia de cobertura: en una auditoría, saber qué fuente no respondió
     # forma parte de la información.
-    hay_congreso = bool(base["feed"])
+    # Un aviso de «sin sesión nueva» también es que el Congreso ha respondido.
+    hay_congreso = bool(base["feed"]) or bool(congreso.get("aviso"))
     hay_senado = bool(senado)
     if hay_congreso and hay_senado:
         nota = "Congreso y Senado han respondido; la edición cubre las dos cámaras."
@@ -1889,6 +1890,8 @@ def redactar_cortes(congreso: dict, senado: list[dict], anterior: dict | None) -
                 "hoy, así que su actividad no está cubierta en esta edición.")
     else:
         nota = "Ninguna de las dos cámaras ha devuelto datos legibles hoy."
+    if congreso.get("aviso"):
+        nota += " " + congreso["aviso"]
     base["coverage"] = {"congreso": hay_congreso, "senado": hay_senado, "nota": nota}
 
     if not hay_congreso and not hay_senado:
@@ -3014,6 +3017,7 @@ def cortes_congreso(fecha: dt.date) -> dict:
     import preguntas as pq
     feed: list = []
     scoreboard = None
+    aviso = ""
     censo = {}
     try:
         censo = json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8")).get("censo") or {}
@@ -3021,7 +3025,7 @@ def cortes_congreso(fecha: dt.date) -> dict:
         pass
     try:
         filas = cd.descargar_intervenciones(get, log)
-        orales = pq.feed_orales(filas, censo, fecha.isoformat(), fmt_date_es, SITE_URL)
+        orales, aviso = pq.feed_orales(filas, censo, fecha.isoformat(), fmt_date_es, SITE_URL)
         feed += orales
         log(f"Cortes: {len(orales)} piezas de preguntas orales")
     except Exception as exc:                                  # noqa: BLE001
@@ -3033,7 +3037,7 @@ def cortes_congreso(fecha: dt.date) -> dict:
         log(f"Cortes: {len(escritas)} piezas de preguntas escritas")
     except Exception as exc:                                  # noqa: BLE001
         log(f"Cortes: preguntas escritas no disponibles ({exc})")
-    return {"feed": feed, "scoreboard": scoreboard}
+    return {"feed": feed, "scoreboard": scoreboard, "aviso": aviso}
 
 
 def construir_dia(fecha: dt.date) -> dict | None:
