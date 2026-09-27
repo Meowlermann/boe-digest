@@ -57,6 +57,8 @@ BUSCAR_DIR = ROOT / "buscar"
 MAPA_DIR = ROOT / "mapa"
 RANKINGS_DIR = ROOT / "rankings"
 PREGUNTAS_DIR = ROOT / "preguntas"
+PERSONAS_DIR = ROOT / "personas"
+NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -153,7 +155,8 @@ def sesion_para(url: str) -> requests.Session:
 _BLOQUEADOS: set[str] = set()
 
 
-def get(url: str, tries: int = 3, referer: str | None = None) -> requests.Response | None:
+def get(url: str, tries: int = 3, referer: str | None = None,
+        headers: dict | None = None) -> requests.Response | None:
     """GET tolerante. Devuelve None en vez de reventar, y anota el diagnóstico."""
     host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
     if host in _BLOQUEADOS:
@@ -164,8 +167,10 @@ def get(url: str, tries: int = 3, referer: str | None = None) -> requests.Respon
     ultimo = None
     for intento in range(1, tries + 1):
         try:
-            headers = {"Referer": referer} if referer else {}
-            r = s.get(url, timeout=REQUEST_TIMEOUT, headers=headers, allow_redirects=True)
+            cab = dict(headers or {})
+            if referer:
+                cab["Referer"] = referer
+            r = s.get(url, timeout=REQUEST_TIMEOUT, headers=cab, allow_redirects=True)
             ultimo = r.status_code
             if r.status_code == 200:
                 DIAG["peticiones"].append({"url": url, "status": 200, "bytes": len(r.content)})
@@ -1807,7 +1812,43 @@ def llm(prompt: str, max_tokens: int = 4000) -> dict | None:
 # Composición de la edición
 # ---------------------------------------------------------------------------
 
-def redactar_boe(boe: dict, determinista: bool = False) -> dict:
+def recuento_resto(entradas: list, sustantivas: list, nombramientos: list | None) -> str:
+    """Qué hay en lo que no se desarrolla, contado de verdad por sección. Antes
+    decía «las otras N son nombramientos, oposiciones y anuncios» a ojo."""
+    ids = {id(e) for e in sustantivas}
+    resto = [e for e in entradas if id(e) not in ids]
+    sec = lambda e: e.get("seccion") or ""
+    personal_a = sum(1 for e in resto if re.match(r"II\.\s*Autoridades.*?-\s*A\b", sec(e)))
+    oposiciones = sum(1 for e in resto if re.match(r"II\.\s*Autoridades.*?-\s*B\b", sec(e)))
+    anuncios = sum(1 for e in resto if sec(e).startswith("V."))
+    otras = len(resto) - personal_a - oposiciones - anuncios
+    def n(x, s, p):
+        return f"{x} {s if x == 1 else p}"
+    partes = []
+    if nombramientos is not None:
+        # Los nombramientos con nombre salen de la II.A (y alguno de la II.B):
+        # se restan de su sección para no contarlos dos veces.
+        nom = len(nombramientos)
+        if nom:
+            partes.append(n(nom, "nombramiento o cese con nombre y apellidos (más abajo)",
+                            "nombramientos y ceses con nombre y apellidos (más abajo)"))
+        personal_a = max(0, personal_a - nom)
+    if personal_a:
+        partes.append(n(personal_a, "movimiento de personal", "movimientos de personal"))
+    if oposiciones:
+        partes.append(n(oposiciones, "de oposiciones y concursos", "de oposiciones y concursos"))
+    if anuncios:
+        partes.append(n(anuncios, "anuncio", "anuncios"))
+    if otras:
+        partes.append(n(otras, "disposición más", "disposiciones más"))
+    if not partes:
+        return ""
+    lista = ", ".join(partes[:-1]) + " y " + partes[-1] if len(partes) > 1 else partes[0]
+    return f"Del resto: {lista}."
+
+
+def redactar_boe(boe: dict, determinista: bool = False,
+                 nombramientos: list | None = None) -> dict:
     """`determinista=True` fuerza la redacción sin modelo aunque haya clave:
     es lo que usa el archivo histórico, donde no se admite ningún LLM."""
     entradas = boe["entradas"]
@@ -1866,7 +1907,7 @@ qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que
     d = boe["fecha_boe"]
     extra = (f"El sumario completo {'de ese día' if determinista else 'de hoy'} trae {len(entradas)} disposiciones; aquí están "
              f"desarrolladas las {len(sustantivas)} con alcance general."
-             + (f" Las otras {otras} son nombramientos, oposiciones y anuncios." if otras > 0 else ""))
+             + (" " + recuento_resto(entradas, sustantivas, nombramientos) if otras > 0 else ""))
     return {
         "numero": boe.get("numero", ""),
         "fecha": f"{d.day} de {MESES[d.month-1]} de {d.year}",
@@ -2580,8 +2621,46 @@ def render_boe_note_ssr(day: dict) -> str:
     if b.get("sourceUrl"):
         enlace = (f' <a class="srclink" href="{esc_attr(b["sourceUrl"])}" target="_blank" '
                   f'rel="noopener">Ver el sumario oficial ↗</a>')
+    if b.get("fechaISO") and _hay_nombramientos(b["fechaISO"]):
+        enlace = (' <a class="srclink" href="#nombramientos">Ver los nombramientos y ceses ↓</a>'
+                  + enlace)
     return (f'<b>BOE núm. {esc_html(b.get("numero",""))}</b> · {esc_html(b.get("fecha",""))}. '
             f'{esc_html(b.get("extra",""))}{enlace}')
+
+
+_NOMBRAMIENTOS_DIA: dict | None = None
+
+
+def _hay_nombramientos(fecha_iso: str) -> bool:
+    return bool(render_nombramientos_ssr_regs(fecha_iso))
+
+
+def render_nombramientos_ssr_regs(fecha_iso: str) -> list:
+    """Registros de un día, con el estado leído una sola vez por ejecución."""
+    global _NOMBRAMIENTOS_DIA
+    if _NOMBRAMIENTOS_DIA is None:
+        _NOMBRAMIENTOS_DIA = {}
+        try:
+            import nombramientos as nb
+            for k, v in nb.cargar()["registros"].items():
+                _NOMBRAMIENTOS_DIA.setdefault(v.get("fecha"), []).append({"id": k, **v})
+        except Exception as exc:                              # noqa: BLE001
+            log(f"nombramientos: estado ilegible ({exc})")
+    return _NOMBRAMIENTOS_DIA.get(fecha_iso) or []
+
+
+def render_nombramientos_ssr(day: dict) -> str:
+    """El bloque «Nombramientos y ceses» de una edición, dentro del BOE. Vacío
+    si ese BOE no trae ninguno con nombre (y entonces no aparece)."""
+    f = (day.get("boe") or {}).get("fechaISO") or ""
+    if not f or not render_nombramientos_ssr_regs(f):
+        return ""
+    try:
+        import nombramientos as nb
+        return nb.bloque_edicion(f, {"esc_html": esc_html, "esc_attr": esc_attr})
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"nombramientos: bloque no generado ({exc})")
+        return ""
 
 
 def render_chamber_cards_ssr(day: dict) -> str:
@@ -3029,6 +3108,7 @@ def render_ssr_fragments(day: dict, dias: list[dict] | None = None) -> dict:
         "BOE_STATS": render_boe_stats_ssr(day),
         "BOE_GRID": render_boe_grid_ssr(day),
         "BOE_NOTE": render_boe_note_ssr(day),
+        "NOMBRAMIENTOS": render_nombramientos_ssr(day),
         "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
         "COVERAGE_NOTE": cov_html,
         "CHAMBER_CARDS": render_chamber_cards_ssr(day),
@@ -3077,9 +3157,31 @@ def cortes_congreso(fecha: dt.date) -> dict:
     return {"feed": feed, "scoreboard": scoreboard, "aviso": aviso}
 
 
+def capturar_nombramientos(boe_raw: dict | None) -> list | None:
+    """Nombramientos y ceses del sumario, guardados en state/nombramientos.json
+    ANTES de que redactar_boe() descarte la sección II. Un fallo aquí no puede
+    tumbar la edición: se anota y se sigue sin ellos (None, no lista vacía,
+    para que la nota del BOE no diga «0 nombramientos» cuando no lo sabe)."""
+    if not boe_raw:
+        return None
+    try:
+        import nombramientos as nb
+        regs, fuente = nb.de_un_dia(boe_raw["fecha_boe"], get, log, boe_raw.get("entradas"))
+        if fuente == "ninguna":
+            return None
+        nb.incorporar(regs, boe_raw["fecha_boe"], fuente)
+        DIAG["nombramientos"] = {"fecha": boe_raw["fecha_boe"].isoformat(), "fuente": fuente,
+                                 "incluidos": len(regs), "descartes": nb.extraer.ultimos_descartes}
+        return regs
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"nombramientos: no se pudieron capturar ({exc})")
+        return None
+
+
 def construir_dia(fecha: dt.date) -> dict | None:
     log(f"=== Edición del {fecha.isoformat()} ===")
     boe_raw = fetch_boe(fecha)
+    nombres = capturar_nombramientos(boe_raw)
     congreso = cortes_congreso(fecha)
     senado = fetch_senado()
 
@@ -3104,7 +3206,7 @@ def construir_dia(fecha: dt.date) -> dict | None:
     dia = {
         "id": fecha.isoformat(),
         "label": f"{fecha.day} {MES_ABBR[fecha.month-1]}",
-        "boe": redactar_boe(boe_raw) if boe_raw else {
+        "boe": redactar_boe(boe_raw, nombramientos=nombres) if boe_raw else {
             "numero": "", "fecha": "", "sourceUrl": "",
             "counts": {"fiscal": 0, "laboral": 0, "mercantil": 0, "otros": 0},
             "extra": "Hoy no se pudo leer el sumario del BOE.", "stories": []},
@@ -3147,10 +3249,11 @@ def construir_dia_archivo(fecha: dt.date) -> dict | None:
     boe_raw = fetch_boe(fecha, retroceder=False)
     if not boe_raw or boe_raw["fecha_boe"] != fecha:
         return None
+    nombres = capturar_nombramientos(boe_raw)
     return {
         "id": fecha.isoformat(),
         "label": f"{fecha.day} {MES_ABBR[fecha.month-1]}",
-        "boe": redactar_boe(boe_raw, determinista=True),
+        "boe": redactar_boe(boe_raw, determinista=True, nombramientos=nombres),
         "cortes": cortes_de_archivo(),
         "archivo": True,
     }
@@ -3264,6 +3367,7 @@ def render_nav() -> str:
         + enlace("/buscar/", "Buscador", "Normas, diputados y materias a la vez")
         + enlace("/normas/", "Normas, una a una", "Una ficha por disposición del BOE")
         + enlace("/plazos/", "Plazos que vencen", "Lo que aún se puede recurrir o solicitar")
+        + enlace("/nombramientos/", "Nombramientos y ceses", "Quién entra y quién sale de cada cargo público")
         + enlace("/temas/", "Todas las materias", "El BOE ordenado por asunto")
         + enlace("/mapa/", "Todo el sitio", "Cada sección y cada página, en un solo lugar")
         + f'</ul><p class="panel-t">Materias</p><div class="chips-n">{materias}</div></div></li>')
@@ -3442,6 +3546,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "BOE_DESTACADOS": render_boe_destacados_ssr(day0, permalink),
         "BOE_RESTO": render_boe_resto_ssr(day0, permalink),
         "BOE_NOTE": render_boe_note_ssr(day0),
+        "NOMBRAMIENTOS": render_nombramientos_ssr(day0),
         "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
         "COVERAGE_NOTE": cov_html,
         "CHAMBER_CARDS": render_chamber_cards_ssr(day0),
@@ -4696,6 +4801,27 @@ def renderizar_preguntas() -> list:
     return salidas
 
 
+def renderizar_nombramientos(fichas_dip: list | None = None) -> list:
+    """/personas/ y /nombramientos/, desde state/nombramientos.json. El cálculo y
+    las páginas viven en nombramientos.py; aquí se le pasan las utilidades del
+    sitio, como a preguntas.py y rankings.py."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import congreso_datos as cd
+    import nombramientos as nb
+    diputados = {cd.clave_nombre(f.get("natural") or cd.nombre_natural(f.get("nombre", ""))): f["slug"]
+                 for f in fichas_dip or [] if f.get("slug")}
+    salidas = nb.generar_paginas({
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "carpeta_personas": PERSONAS_DIR,
+        "carpeta_nombramientos": NOMBRAMIENTOS_DIR, "diputados": diputados, "log": log,
+    })
+    log(f"nombramientos: {len(salidas)} páginas")
+    return salidas
+
+
 def renderizar_rankings(fichas_dip: list) -> list:
     """/rankings/: clasificaciones de diputados y grupos. El cálculo vive en
     rankings.py; aquí solo se le pasan las utilidades de página del sitio para
@@ -5173,7 +5299,9 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
         + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
         + '<h2 class="rotulo">Consultar</h2>'
         + lista([("/buscar/", "Buscador", ""), ("/normas/", "Todas las normas, una a una", n_normas),
-                 ("/plazos/", "Plazos que vencen", ""), ("/temas/", "Todas las materias", len(materias))])
+                 ("/plazos/", "Plazos que vencen", ""), ("/temas/", "Todas las materias", len(materias)),
+                 ("/nombramientos/", "Nombramientos y ceses del BOE", ""),
+                 ("/personas/", "Personas nombradas y cesadas, de la A a la Z", "")])
         + '<h3 class="rotulo-sub">Materias</h3>' + lista(materias)
         + '<h2 class="rotulo">Datos abiertos</h2>'
         + lista([("/feed.xml", "Feed RSS de ediciones", ""),
@@ -5368,6 +5496,11 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         extras += renderizar_preguntas()
     except Exception as exc:                                  # noqa: BLE001
         log(f"preguntas/: no se pudo generar ({exc})")
+    # Nombramientos y ceses: lo mismo.
+    try:
+        extras += renderizar_nombramientos(fichas_dip)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"nombramientos/: no se pudo generar ({exc})")
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(sorted(a_pintar, key=lambda d: d["id"], reverse=True))
@@ -5474,14 +5607,31 @@ def main() -> None:
                     "de la primera edición que ya hay en data/)")
     ap.add_argument("--lote", type=int, default=30,
                     help="máximo de ediciones nuevas por ejecución (30)")
+    # Reprocesado de nombramientos: solo state/nombramientos.json.
+    ap.add_argument("--nombramientos-desde", help="primera fecha a reprocesar (AAAA-MM-DD)")
+    ap.add_argument("--nombramientos-hasta", help="última fecha (por defecto, ayer)")
     args = ap.parse_args()
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
-                RANKINGS_DIR, PREGUNTAS_DIR):
+                RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR):
         carpeta.mkdir(exist_ok=True)
+
+    if args.nombramientos_desde:
+        # Las ediciones ya publicadas no tienen los nombramientos: se relee el
+        # sumario de cada día y SOLO se actualiza el estado. Ni data/ ni las
+        # ediciones: esas páginas se pintarán en la próxima edición diaria.
+        import nombramientos as nb
+        desde = dt.date.fromisoformat(args.nombramientos_desde)
+        hasta = (dt.date.fromisoformat(args.nombramientos_hasta) if args.nombramientos_hasta
+                 else dt.date.today() - dt.timedelta(days=1))
+        DIAG["nombramientos_reproceso"] = nb.reprocesar(desde, hasta, get, log, pausa=1.5)
+        DIAG["fin"] = dt.datetime.now(dt.timezone.utc).isoformat()
+        (DEBUG_DIR / "nombramientos-last-run.json").write_text(
+            json.dumps(DIAG, ensure_ascii=False, indent=2), encoding="utf-8")
+        return
 
     if args.archivo_desde or args.archivo_hasta:
         existentes = sorted(p.stem for p in DATA_DIR.glob("*.json")
