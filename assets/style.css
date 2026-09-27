@@ -1261,3 +1261,12 @@ table.ordenable th[data-o="a"]::after{ content:" ▲"; } table.ordenable th[data
 table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .rk-g{ display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
 .rk-g i{ width:9px; height:9px; border-radius:50%; flex:none; }
+
+/* Nombramientos y ceses: bloque compacto dentro del BOE de la edición. */
+.nombramientos{ margin:22px 0 8px; padding:14px 16px; border:1px solid var(--line, rgba(127,127,127,.35)); border-left:4px solid var(--ink); border-radius:4px; background:var(--surface); }
+.nombramientos .nb-t{ font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin:0 0 4px; }
+.nombramientos .nb-tit{ font-family:'Oswald',sans-serif; font-weight:600; font-size:clamp(17px,2.4vw,21px); line-height:1.2; margin:0 0 10px; }
+.nombramientos .nb-l{ list-style:none; margin:0; padding:0; max-height:420px; overflow:auto; }
+.nombramientos .nb-l li{ padding:6px 0; border-top:1px dashed var(--line, rgba(127,127,127,.3)); font-size:14px; line-height:1.45; overflow-wrap:anywhere; }
+.nombramientos .nb-l li:first-child{ border-top:0; }
+.nombramientos .ref{ color:var(--ink-soft); font-size:12.5px; }
