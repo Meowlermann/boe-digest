@@ -442,7 +442,7 @@ NOTA_HOMONIMOS = ("Registros agrupados por nombre tal como aparece en el BOE; pu
                   "corresponder a personas distintas con el mismo nombre.")
 NOTA_DATOS = ("Los datos proceden de disposiciones oficiales publicadas en el Boletín Oficial "
               "del Estado y se limitan a cargos y puestos públicos. Para solicitar su "
-              "rectificación o retirada, escribe a xavisigales94@gmail.com.")
+              "rectificación o retirada, escribe a <EMAIL_DE_CONTACTO>.")
 
 ETIQUETA_TIPO = {"nombramiento": "Nombramiento", "cese": "Cese", "otro": "Otra situación"}
 
