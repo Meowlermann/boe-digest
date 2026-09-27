@@ -7,7 +7,7 @@ name: Archivo histórico
 # (no se pasa ninguna clave) y sin datos de las Cortes.
 on:
   # TEMPORAL, solo para la prueba en la rama: GitHub no ofrece «Run workflow»
-  # para un workflow que aún no está en main. Se quita antes de la PR.
+  # para un workflow que aún no está en main. Se quita antes de la PR. Pasada 2.
   push:
     branches: [archivo-historico]
     paths: [".github/workflows/archivo.yml"]
