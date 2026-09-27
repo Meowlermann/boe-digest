@@ -194,6 +194,10 @@ def _piezas(dias: list[dict]):
     """Todas las piezas publicables, de la más reciente a la más antigua, con su
     identificador estable, su texto fuente y el objeto a modificar."""
     for day in sorted(dias, key=lambda d: d["id"], reverse=True):
+        # Las ediciones de archivo son deterministas por diseño: ni se piden ni
+        # se reescriben con el modelo.
+        if day.get("archivo"):
+            continue
         for s in (day.get("boe", {}) or {}).get("stories") or []:
             ref = s.get("ref")
             if ref and s.get("titulo_oficial"):
@@ -363,7 +367,7 @@ def _pedir(clave: str, lote: list[dict]) -> tuple[list[dict] | None, str]:
 
 # ------------------------------------------------------------------ interfaz
 
-def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
+def aplicar(dias: list[dict], validar_titular=None, recortar=None, pedir: bool = True) -> dict:
     """Pone la mejor redacción disponible en cada pieza, en memoria.
 
     Los data/*.json no se tocan: siguen siendo la versión determinista y la
@@ -391,7 +395,7 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
     resumen = {"pendientes": len(pendientes), "redactadas": 0,
                "descartadas": 0, "peticiones": 0}
 
-    if pendientes and clave and uso < MAX_PETICIONES_DIA:
+    if pendientes and clave and pedir and uso < MAX_PETICIONES_DIA:
         # Varias peticiones por pase si hace falta: la primera con lo pendiente
         # y, si algo se descarta, una segunda con esas piezas y el motivo del
         # rechazo, para que el modelo lo corrija en el mismo pase en vez de
@@ -473,6 +477,8 @@ def aplicar(dias: list[dict], validar_titular=None, recortar=None) -> dict:
              f"{len(cola)} en cola — {modelo or 'sin modelo'}, {resumen['peticiones']} "
              f"peticiones, {time.time() - t0:.1f} s")
         _guardar(estado)
+    elif pendientes and not pedir:
+        _log("pase de archivo: no se pide nada al modelo, solo se aplica la caché")
     elif pendientes and not clave:
         _log("sin GEMINI_API_KEY: se publica con la redacción determinista")
     elif pendientes:
