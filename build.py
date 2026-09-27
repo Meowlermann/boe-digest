@@ -220,9 +220,12 @@ def clave_dedup(titulo: str) -> str:
     return re.sub(r"[^a-z0-9]", "", titulo.lower())[:120]
 
 
-def fetch_boe(fecha: dt.date) -> dict | None:
-    """Sumario del BOE. Prueba la fecha dada y hasta 3 días hacia atrás."""
-    for delta in range(0, 4):
+def fetch_boe(fecha: dt.date, retroceder: bool = True) -> dict | None:
+    """Sumario del BOE. Prueba la fecha dada y hasta 3 días hacia atrás.
+
+    Con retroceder=False solo la fecha pedida: el archivo no puede rellenar
+    un domingo con el BOE del sábado, que ya tiene su propia edición."""
+    for delta in range(0, 4 if retroceder else 1):
         d = fecha - dt.timedelta(days=delta)
         url = f"https://www.boe.es/boe/dias/{d.year}/{d.month:02d}/{d.day:02d}/index.php"
         log(f"BOE: probando {url}")
@@ -561,10 +564,17 @@ MESES_RE = ("enero|febrero|marzo|abril|mayo|junio|julio|agosto|"
             "septiembre|octubre|noviembre|diciembre")
 
 
+# Pausa entre peticiones a boe.es. En la edición diaria son una docena y no
+# hace falta; al rellenar el archivo son cientos seguidas y sí.
+_PAUSA_BOE = 0.0
+
+
 def texto_disposicion(ident: str) -> str:
     """Texto íntegro de una disposición, desde su versión consolidada en HTML."""
     if not re.fullmatch(r"BOE-[A-Z]-\d{4}-\d+", ident or ""):
         return ""
+    if _PAUSA_BOE:
+        time.sleep(_PAUSA_BOE)
     r = get(BOE_TXT.format(ident=ident), tries=2)
     if not r:
         return ""
@@ -1782,14 +1792,16 @@ def llm(prompt: str, max_tokens: int = 4000) -> dict | None:
 # Composición de la edición
 # ---------------------------------------------------------------------------
 
-def redactar_boe(boe: dict) -> dict:
+def redactar_boe(boe: dict, determinista: bool = False) -> dict:
+    """`determinista=True` fuerza la redacción sin modelo aunque haya clave:
+    es lo que usa el archivo histórico, donde no se admite ningún LLM."""
     entradas = boe["entradas"]
     sustantivas = [e for e in entradas if e["seccion"].startswith(("I.", "III."))] or entradas
     sustantivas = sustantivas[:16]
     otras = len(entradas) - len(sustantivas)
 
     articulos: list[dict] = []
-    if llm_disponible():
+    if llm_disponible() and not determinista:
         material = "\n".join(
             f"- [{e.get('seccion','')}] [{e.get('dept','')} / {e.get('epigrafe','')}] "
             f"{e['titulo']} ({e.get('ident','')})" for e in sustantivas)
@@ -1837,7 +1849,7 @@ qué importa, incluido el mecanismo jurídico. No inventes importes ni datos que
         counts[cat] += 1
 
     d = boe["fecha_boe"]
-    extra = (f"El sumario completo de hoy trae {len(entradas)} disposiciones; aquí están "
+    extra = (f"El sumario completo {'de ese día' if determinista else 'de hoy'} trae {len(entradas)} disposiciones; aquí están "
              f"desarrolladas las {len(sustantivas)} con alcance general."
              + (f" Las otras {otras} son nombramientos, oposiciones y anuncios." if otras > 0 else ""))
     return {
@@ -2853,6 +2865,10 @@ def fecha_boe_iso(day: dict) -> str:
 
 def build_title(day: dict, edicion: bool = False) -> str:
     fecha = fmt_date_es(day["id"])
+    if edicion and day.get("archivo"):
+        d = dt.date.fromisoformat(day["id"])
+        return (f"BOE del {d.day} de {MESES[d.month-1]} de {d.year}: lo que se publicó "
+                f"y a quién afecta")
     if edicion:
         return f"Edición del {fecha} — La Tercera Cámara"
     return f"La Tercera Cámara — {fecha}"
@@ -2868,6 +2884,12 @@ def build_meta_description(day: dict) -> str:
     m = len((day.get("cortes", {}) or {}).get("feed") or [])
     d = dt.date.fromisoformat(day["id"])
     fecha_corta = f"{d.day} de {MESES[d.month-1]}"
+    if day.get("archivo"):
+        lead = lead_story(day)
+        gancho = primera_mayuscula(recortar(objeto_de(titulo_oficial_de(lead)), 70)) if lead else ""
+        base = (f"El BOE del {fecha_corta} de {d.year} explicado: {n} disposiciones con su "
+                f"dato clave y enlace al texto oficial.")
+        return recortar(f"{base} {gancho}".strip(), 155)
 
     lead = lead_story(day)
     gancho = ""
@@ -3074,6 +3096,77 @@ def construir_dia(fecha: dt.date) -> dict | None:
         "cortes": redactar_cortes(congreso, senado, anterior),
     }
     return fusionar_curado(dia)
+
+
+# ---------------------------------------------------------------------------
+# Archivo histórico
+# ---------------------------------------------------------------------------
+#
+# Una edición de archivo es SOLO el BOE de su fecha. construir_dia() mezcla
+# el BOE con lo que el Congreso publica hoy (preguntas, votaciones, estado del
+# Senado): usarlo para el 12 de marzo metería la actividad de hoy en una fecha
+# pasada. Por eso aquí no se toca ninguna fuente de Cortes, ni ningún modelo.
+
+NOTA_ARCHIVO = "Edición de archivo: solo incluye el BOE de esta fecha."
+
+
+def cortes_de_archivo() -> dict:
+    """Una sección de Cortes vacía pero con el mismo esquema que la de una
+    edición normal: así todas las funciones render_* sirven sin cambios."""
+    return {
+        "congreso": {"presidenta": "Francina Armengol Socias",
+                     "legislatura": "XV Legislatura (2023– )",
+                     "sede": "Plaza de las Cortes, 1, Madrid"},
+        "senado": {"presidente": "Pedro Rollán",
+                   "legislatura": "XV Legislatura (2023– )",
+                   "sede": "Bailén, 3, Madrid"},
+        "scoreboard": None,
+        "feed": [],
+        "coverage": {"congreso": False, "senado": False, "nota": NOTA_ARCHIVO},
+    }
+
+
+def construir_dia_archivo(fecha: dt.date) -> dict | None:
+    """El BOE de `fecha`, redactado sin modelo, o None si ese día no hubo BOE
+    (los domingos, normalmente). No retrocede a días anteriores."""
+    boe_raw = fetch_boe(fecha, retroceder=False)
+    if not boe_raw or boe_raw["fecha_boe"] != fecha:
+        return None
+    return {
+        "id": fecha.isoformat(),
+        "label": f"{fecha.day} {MES_ABBR[fecha.month-1]}",
+        "boe": redactar_boe(boe_raw, determinista=True),
+        "cortes": cortes_de_archivo(),
+        "archivo": True,
+    }
+
+
+def rellenar_archivo(desde: dt.date, hasta: dt.date, lote: int = 30,
+                     pausa: float = 1.5) -> list[str]:
+    """Escribe ediciones de archivo de `desde` a `hasta`, en orden, hasta un
+    máximo de `lote` nuevas. Nunca pisa una edición existente: cada ejecución
+    es acotada y se puede reanudar con los mismos parámetros."""
+    global _PAUSA_BOE
+    _PAUSA_BOE = 1.0
+    nuevas: list[str] = []
+    d = desde
+    while d <= hasta and len(nuevas) < lote:
+        destino = DATA_DIR / f"{d.isoformat()}.json"
+        if destino.exists():
+            d += dt.timedelta(days=1)
+            continue
+        dia = construir_dia_archivo(d)
+        if dia:
+            destino.write_text(json.dumps(dia, ensure_ascii=False, indent=2), encoding="utf-8")
+            nuevas.append(dia["id"])
+            log(f"archivo: escrito data/{dia['id']}.json "
+                f"({len(dia['boe']['stories'])} piezas)")
+        else:
+            log(f"archivo: {d.isoformat()} sin BOE, se salta")
+        time.sleep(pausa)          # respeto a la web del BOE entre días
+        d += dt.timedelta(days=1)
+    log(f"archivo: {len(nuevas)} ediciones nuevas entre {desde} y {hasta}")
+    return nuevas
 
 
 
@@ -3348,7 +3441,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
-    OUTPUT.write_text(html, encoding="utf-8")
+    escribir_si_cambia(OUTPUT, html)
     log(f"index.html generado ({len(html)} bytes, sin JavaScript)")
 
 
@@ -3375,6 +3468,18 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
         page_url = f"{SITE_URL}ediciones/{ident}.html"
         try:
             frag = render_ssr_fragments(day)
+            if day.get("archivo"):
+                # En el archivo no hay actividad de Cortes de ese día: en vez
+                # de una sección vacía, un aviso con lo que sí está al día.
+                frag["CORTES_HIDDEN"] = "hidden"
+                frag["ARCHIVO_AVISO"] = (
+                    '<section class="view"><p class="aside-note"><b>Edición de archivo.</b> '
+                    'Incluye solo el BOE de este día. Lo que votan y preguntan los diputados '
+                    'está en <a class="srclink" href="/votaciones/">Votaciones</a> y en '
+                    '<a class="srclink" href="/preguntas/">Preguntas al Gobierno</a>.</p></section>')
+            else:
+                frag["CORTES_HIDDEN"] = ""
+                frag["ARCHIVO_AVISO"] = ""
             frag["TITLE"] = esc_html(build_title(day, edicion=True))
             frag["META_DESC"] = esc_attr(build_meta_description(day))
             frag["CANONICAL"] = page_url
@@ -3401,7 +3506,10 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
         anterior_html = destino.read_text(encoding="utf-8") if destino.exists() else None
         if anterior_html != html:
             destino.write_text(html, encoding="utf-8")
-            manifiesto_nuevo[ident] = hoy
+            # Una edición de archivo no «cambia» por reenlazarla con la
+            # siguiente: su lastmod es su fecha, estable, para que el sitemap
+            # no diga cada día que cientos de páginas son nuevas.
+            manifiesto_nuevo[ident] = ident if day.get("archivo") else hoy
             cambiadas.append(page_url)
         else:
             manifiesto_nuevo.setdefault(ident, ident)
@@ -3417,55 +3525,95 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
     return entradas
 
 
-def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> None:
-    """ediciones/index.html — el índice del archivo.
+def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
+    """ediciones/index.html y una página por mes (ediciones/AAAA-MM.html).
 
-    GitHub Pages no sirve listados de directorio: sin esta página, /ediciones/
+    GitHub Pages no sirve listados de directorio: sin estas páginas, /ediciones/
     devuelve un 404 y las ediciones que salen de la ventana de render se quedan
-    sin ningún enlace que las alcance."""
+    sin ningún enlace que las alcance. Con el archivo histórico son cientos de
+    ediciones, así que el índice lleva un índice de meses y el mes más reciente,
+    y cada mes su propia página. Devuelve las páginas de mes para el sitemap."""
     titulares = {}
     for d in dias:
         lead = lead_story(d)
         if lead and lead.get("headline"):
             titulares[d["id"]] = lead["headline"]
 
-    filas, mes_actual = [], None
+    por_mes: dict[str, list[dict]] = {}
     for e in sorted(entradas, key=lambda x: x["id"], reverse=True):
-        f = dt.date.fromisoformat(e["id"])
-        mes = f"{MESES[f.month-1]} de {f.year}"
-        if mes != mes_actual:
-            if mes_actual is not None:
-                filas.append("</ul>")
-            filas.append(f"<h2>{esc_html(mes[:1].upper() + mes[1:])}</h2><ul class=\"archivo\">")
-            mes_actual = mes
-        titular = titulares.get(e["id"], "")
-        extra = f' — <span class="arch-tit">{esc_html(recortar(titular, 90))}</span>' if titular else ""
-        filas.append(f'<li><a href="{e["id"]}.html">{esc_html(fmt_date_es(e["id"]))}</a>{extra}</li>')
-    if mes_actual is not None:
-        filas.append("</ul>")
+        por_mes.setdefault(e["id"][:7], []).append(e)
 
+    def nombre_mes(clave: str) -> str:
+        a, m = clave.split("-")
+        t = f"{MESES[int(m) - 1]} de {a}"
+        return t[:1].upper() + t[1:]
+
+    def lista(clave: str) -> str:
+        filas = [f'<h2>{esc_html(nombre_mes(clave))}</h2><ul class="archivo">']
+        for e in por_mes[clave]:
+            titular = titulares.get(e["id"], "")
+            extra = f' — <span class="arch-tit">{esc_html(recortar(titular, 90))}</span>' if titular else ""
+            filas.append(f'<li><a href="{e["id"]}.html">{esc_html(fmt_date_es(e["id"]))}</a>{extra}</li>')
+        filas.append("</ul>")
+        return "\n".join(filas)
+
+    meses = sorted(por_mes, reverse=True)
+    indice_meses = ""
+    if meses:
+        items = "".join(
+            f'<li><a href="{m}.html">{esc_html(nombre_mes(m))}</a> '
+            f'<span class="ref">{len(por_mes[m])} ediciones</span></li>' for m in meses)
+        indice_meses = f'<h2>Por meses</h2><ul class="archivo archivo-meses">{items}</ul>'
+
+    def jsonld(nombre, url, partes):
+        return jsonld_script([{
+            "@type": "CollectionPage", "name": nombre, "url": url, "inLanguage": "es-ES",
+            "isPartOf": {"@type": "WebSite", "url": SITE_URL},
+            "hasPart": [{"@type": "WebPage", "url": e["url"],
+                         "name": f"Edición del {fmt_date_es(e['id'])}"} for e in partes[:50]],
+        }])
+
+    plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE, el Congreso y el Senado, cada una con su enlace permanente.")
     frag = {
         "TITLE": esc_html("Archivo de ediciones — La Tercera Cámara"),
         "META_DESC": esc_attr(recortar(desc, 155)),
         "CANONICAL": f"{SITE_URL}ediciones/",
-        "TOTAL": str(len(entradas)),
-        "LISTA": "\n".join(filas),
-        "JSONLD": jsonld_script([{
-            "@type": "CollectionPage",
-            "name": "Archivo de ediciones — La Tercera Cámara",
-            "url": f"{SITE_URL}ediciones/",
-            "inLanguage": "es-ES",
-            "isPartOf": {"@type": "WebSite", "url": SITE_URL},
-            "hasPart": [{"@type": "WebPage", "url": e["url"],
-                         "name": f"Edición del {fmt_date_es(e['id'])}"}
-                        for e in sorted(entradas, key=lambda x: x["id"], reverse=True)[:50]],
-        }]),
+        "H1": "Archivo de ediciones",
+        "TOTAL": f"{len(entradas)} ediciones publicadas",
+        "LISTA": indice_meses + ("\n" + lista(meses[0]) if meses else ""),
+        "JSONLD": jsonld("Archivo de ediciones — La Tercera Cámara", f"{SITE_URL}ediciones/",
+                         sorted(entradas, key=lambda x: x["id"], reverse=True)),
     }
-    html = _replace_placeholders(TEMPLATE_ARCHIVO.read_text(encoding="utf-8"), frag)
-    (EDICIONES_DIR / "index.html").write_text(html, encoding="utf-8")
-    log(f"ediciones/index.html generado con {len(entradas)} entradas")
+    escribir_si_cambia(EDICIONES_DIR / "index.html", _replace_placeholders(plantilla, frag))
+
+    paginas = []
+    for i, m in enumerate(meses):
+        nav = []
+        if i + 1 < len(meses):
+            nav.append(f'<a class="srclink" href="{meses[i + 1]}.html">← {esc_html(nombre_mes(meses[i + 1]))}</a>')
+        nav.append('<a class="srclink" href="./">Todos los meses</a>')
+        if i > 0:
+            nav.append(f'<a class="srclink" href="{meses[i - 1]}.html">{esc_html(nombre_mes(meses[i - 1]))} →</a>')
+        titulo = f"Ediciones de {nombre_mes(m).lower()}: el BOE día a día"
+        d_mes = (f"Las {len(por_mes[m])} ediciones de La Tercera Cámara de {nombre_mes(m).lower()}: "
+                 "qué publicó el BOE cada día y a quién afecta, con enlace al texto oficial.")
+        url = f"{SITE_URL}ediciones/{m}.html"
+        frag_m = {
+            "TITLE": esc_html(f"{titulo} — La Tercera Cámara"),
+            "META_DESC": esc_attr(recortar(d_mes, 155)),
+            "CANONICAL": url,
+            "H1": esc_html(f"Ediciones de {nombre_mes(m).lower()}"),
+            "TOTAL": f"{len(por_mes[m])} ediciones este mes",
+            "LISTA": f'<p class="aside-note">{" · ".join(nav)}</p>\n' + lista(m),
+            "JSONLD": jsonld(titulo, url, por_mes[m]),
+        }
+        escribir_si_cambia(EDICIONES_DIR / f"{m}.html", _replace_placeholders(plantilla, frag_m))
+        # lastmod estable: la edición más reciente del mes.
+        paginas.append({"url": url, "lastmod": por_mes[m][0]["id"]})
+    log(f"ediciones/: índice con {len(entradas)} entradas y {len(meses)} páginas de mes")
+    return paginas
 
 
 RE_REF_BOE = re.compile(r"^BOE-[A-Z]-\d{4}-\d+$")
@@ -3553,6 +3701,21 @@ def jsonld_for_norma(s: dict, day: dict, page_url: str) -> str:
     return jsonld_script([articulo, miga])
 
 
+def indice_normas(todos: list[dict]) -> list[dict]:
+    """Todas las fichas de norma publicadas, para el sitemap, sin pintar
+    ninguna. Antes el sitemap solo llevaba las de la ventana de render y una
+    norma de hace dos meses desaparecía de él aunque su página siguiera ahí."""
+    vistas, salida = set(), []
+    for day in sorted(todos, key=lambda d: d["id"]):
+        for s_ in (day.get("boe", {}) or {}).get("stories") or []:
+            ref = ref_norma(s_)
+            if ref and ref not in vistas and (NORMAS_DIR / f"{ref}.html").exists():
+                vistas.add(ref)
+                salida.append({"url": f"{SITE_URL}normas/{ref}.html", "lastmod": day["id"],
+                               "id": ref})
+    return salida
+
+
 def renderizar_normas(dias: list[dict]) -> list[dict]:
     """Una página por disposición del BOE.
 
@@ -3608,8 +3771,7 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
                 log(f"  normas/{ref}.html NO generada: {exc}")
                 continue
             destino = NORMAS_DIR / f"{ref}.html"
-            if not destino.exists() or destino.read_text(encoding="utf-8") != html:
-                destino.write_text(html, encoding="utf-8")
+            if escribir_si_cambia(destino, html):
                 escritas += 1
             fichas.append({"url": page_url, "lastmod": day["id"], "id": ref})
 
@@ -3651,8 +3813,7 @@ def _indice_normas(dias: list[dict], plantilla: str) -> None:
         "FICHA": "", "CUERPO": cuerpo, "FUENTE": "Fuente: Boletín Oficial del Estado.",
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     }
-    (NORMAS_DIR / "index.html").write_text(_replace_placeholders(plantilla, frag),
-                                           encoding="utf-8")
+    escribir_si_cambia(NORMAS_DIR / "index.html", _replace_placeholders(plantilla, frag))
 
 
 MES_NUM = {m.lower(): i + 1 for i, m in enumerate(MESES)}
@@ -3759,11 +3920,25 @@ def _slug_txt(t: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-")[:50] or "sin-nombre"
 
 
+def escribir_si_cambia(ruta: pathlib.Path, texto: str) -> bool:
+    """Escribe solo si el contenido es distinto. Git ya ignora los ficheros
+    idénticos, pero así tampoco se toca el disco ni la fecha de modificación,
+    y queda claro en el log cuántas páginas cambian de verdad en cada pase."""
+    try:
+        if ruta.exists() and ruta.read_text(encoding="utf-8") == texto:
+            return False
+    except Exception:                                         # noqa: BLE001
+        pass
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(texto, encoding="utf-8")
+    return True
+
+
 def _pagina_suelta(plantilla: str, carpeta: pathlib.Path, nombre: str, frag: dict) -> None:
     """Todas las páginas auxiliares comparten la plantilla de ficha: un diseño,
     un sitio donde tocarlo."""
     carpeta.mkdir(exist_ok=True)
-    (carpeta / nombre).write_text(_replace_placeholders(plantilla, frag), encoding="utf-8")
+    escribir_si_cambia(carpeta / nombre, _replace_placeholders(plantilla, frag))
 
 
 def renderizar_plazos(dias: list) -> list:
@@ -3928,7 +4103,7 @@ CONGRESO_ESTADO: dict = {}      # lo deja cosechar_congreso() para las votacione
 VOTACIONES_DIR = ROOT / "votaciones"
 
 
-def cosechar_congreso() -> list:
+def cosechar_congreso(sin_red: bool = False) -> list:
     """Censo, intervenciones y votaciones del Congreso, acumuladas en state/.
 
     Se hace aquí y no en construir_dia porque no es información de una edición:
@@ -3955,6 +4130,14 @@ def cosechar_congreso() -> list:
         if estado:
             log("  formato de estado antiguo: se reinicia el acumulado de votaciones")
         estado = {"esquema": ESQUEMA}
+
+    if sin_red:
+        # Pase de archivo: las fichas se rehacen con lo que ya hay en state/,
+        # sin descargar nada. El archivo es BOE y nada más.
+        censo = estado.get("censo") or {}
+        CONGRESO_ESTADO.clear()
+        CONGRESO_ESTADO.update(estado)
+        return cd.fusionar(censo, estado, estado.get("intervenciones") or {}) if censo else []
 
     log("Congreso: datos abiertos de diputados, intervenciones y votaciones")
     censo = cd.censo(get, log) or estado.get("censo") or {}
@@ -4438,7 +4621,7 @@ def renderizar_votaciones(fichas: list) -> list:
                   f'cada diputado →</a> · <a class="srclink" href="/votaciones/">Todas las '
                   f'votaciones</a></p>')
         DATOS_DIR.mkdir(exist_ok=True)
-        (DATOS_DIR / "ultimas-votaciones.html").write_text(frag, encoding="utf-8")
+        escribir_si_cambia(DATOS_DIR / "ultimas-votaciones.html", frag)
 
         # Escaparate en lo alto de la portada: la votación más ajustada del
         # último pleno, pintada escaño a escaño, y la pregunta que engancha.
@@ -4476,7 +4659,7 @@ def renderizar_votaciones(fichas: list) -> list:
             f'<span><i class="vb-no"></i>No</span><span><i class="vb-abs"></i>Abst.</span>'
             f'<span><i class="vb-nv"></i>No vota</span></span></a>'
             f'</section>')
-        (DATOS_DIR / "votaciones-banner.html").write_text(banner, encoding="utf-8")
+        escribir_si_cambia(DATOS_DIR / "votaciones-banner.html", banner)
     log(f"votaciones/: {len(fechas)} plenos, {len(detalle)} votaciones")
     return salidas
 
@@ -4711,7 +4894,7 @@ def renderizar_diputados(fichas: list) -> list:
     # La portada lo reutiliza tal cual: dibujarlo dos veces sería tener dos
     # geometrías que se separan en cuanto se toque una.
     DATOS_DIR.mkdir(exist_ok=True)
-    (DATOS_DIR / "hemiciclo.svg").write_text(hemi, encoding="utf-8")
+    escribir_si_cambia(DATOS_DIR / "hemiciclo.svg", hemi)
     _datos_parlamento(orden, cd)
     leyenda = "".join(
         f'<li><a href="grupo-{slug}.html"><i style="background:{color}"></i>'
@@ -5030,11 +5213,41 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
         # reescribe lo publicado, lo corrige con otra disposición.
         urls.append(f"  <url>\n    <loc>{f['url']}</loc>\n    <lastmod>{f['lastmod']}</lastmod>\n"
                     f"    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
-    (ROOT / "sitemap.xml").write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        + "\n".join(urls) + "\n</urlset>\n", encoding="utf-8")
-    log(f"sitemap.xml generado con {len(urls)} URLs")
+    cabecera = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+    # El protocolo pone el tope en 50.000 URLs o 50 MB por fichero. Con margen:
+    # por encima de 45.000 URLs o 45 MB se parte en sitemap-N.xml y sitemap.xml
+    # pasa a ser un índice de sitemaps (la URL que conocen los buscadores no cambia).
+    MAX_URLS, MAX_BYTES = 45_000, 45 * 1024 * 1024
+    trozos, actual, peso = [], [], len(cabecera) + 20
+    for u in urls:
+        t = len(u.encode("utf-8")) + 1
+        if actual and (len(actual) >= MAX_URLS or peso + t > MAX_BYTES):
+            trozos.append(actual)
+            actual, peso = [], len(cabecera) + 20
+        actual.append(u)
+        peso += t
+    trozos.append(actual)
+    viejos = {p.name for p in ROOT.glob("sitemap-*.xml")}
+    if len(trozos) == 1:
+        escribir_si_cambia(ROOT / "sitemap.xml", cabecera + "\n".join(urls) + "\n</urlset>\n")
+        nuevos = set()
+    else:
+        nuevos, indice = set(), []
+        for n, trozo in enumerate(trozos, 1):
+            nombre = f"sitemap-{n}.xml"
+            nuevos.add(nombre)
+            escribir_si_cambia(ROOT / nombre, cabecera + "\n".join(trozo) + "\n</urlset>\n")
+            ult = max(re.findall(r"<lastmod>([^<]+)</lastmod>", "".join(trozo)) or [hoy])
+            indice.append(f"  <sitemap>\n    <loc>{SITE_URL}{nombre}</loc>\n"
+                          f"    <lastmod>{ult}</lastmod>\n  </sitemap>")
+        escribir_si_cambia(ROOT / "sitemap.xml",
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + "\n".join(indice) + "\n</sitemapindex>\n")
+    for sobra in viejos - nuevos:
+        (ROOT / sobra).unlink()
+    log(f"sitemap.xml generado con {len(urls)} URLs en {len(trozos)} fichero(s)")
 
 
 def renderizar_feed(dias: list[dict]) -> None:
@@ -5067,26 +5280,55 @@ def renderizar_feed(dias: list[dict]) -> None:
         "  <language>es-es</language>\n"
         f'  <atom:link href="{SITE_URL}feed.xml" rel="self" type="application/rss+xml"/>\n'
         + "\n".join(items) + "\n</channel></rss>\n")
-    FEED_FILE.write_text(canal, encoding="utf-8")
+    escribir_si_cambia(FEED_FILE, canal)
     log(f"feed.xml generado con {len(items)} ediciones")
 
 
-def renderizar() -> None:
+def cargar_dias(limite: int | None = MAX_DAYS) -> list[dict]:
+    """Ediciones de data/, de la más reciente a la más antigua (por fecha, que
+    es el nombre del fichero; nunca por orden de escritura: el archivo
+    histórico escribe días de marzo después que los de septiembre)."""
     dias = []
-    for f in sorted(DATA_DIR.glob("*.json"), reverse=True)[:MAX_DAYS]:
+    ficheros = sorted(DATA_DIR.glob("*.json"), reverse=True)
+    for f in ficheros[:limite] if limite else ficheros:
         try:
             dias.append(json.loads(f.read_text(encoding="utf-8")))
         except Exception as exc:                              # noqa: BLE001
             log(f"  {f.name} ilegible: {exc}")
+    return dias
+
+
+def renderizar(archivo_ids: list[str] | None = None) -> None:
+    """Genera el sitio.
+
+    `dias` es la ventana de las últimas MAX_DAYS ediciones: portada, RSS,
+    buscador y redacción con Gemini. `todos` son todas las ediciones: archivo,
+    materias, plazos y sitemap. Las páginas de edición y de norma se pintan
+    para la ventana y, en un pase de archivo, también para los días nuevos y
+    sus vecinos (para que los enlaces «anterior/siguiente» queden cosidos)."""
+    dias = cargar_dias()
     if not dias:
         log("No hay datos que renderizar.")
         sys.exit(1)
-
+    todos = cargar_dias(None)
+    en_archivo = archivo_ids is not None
     # Redacción con Gemini: capa encima de la determinista. Si falla por lo que
     # sea, la edición sale con los titulares de siempre.
+    # En un pase de archivo no se pide nada a Gemini: solo se aplica lo que ya
+    # está en caché, para no cambiar los titulares de las ediciones normales.
+    extra_ids = set()
+    if en_archivo:
+        ids = [d["id"] for d in todos]
+        for ident in archivo_ids:
+            if ident in ids:
+                i = ids.index(ident)
+                extra_ids.update(ids[max(0, i - 1):i + 2])
+    ventana = {d["id"] for d in dias}
+    a_pintar = dias + [d for d in todos if d["id"] in extra_ids and d["id"] not in ventana]
     try:
         import redaccion
-        DIAG["redaccion"] = redaccion.aplicar(dias, titular_valido, cerrar)
+        DIAG["redaccion"] = redaccion.aplicar(a_pintar, titular_valido, cerrar,
+                                              pedir=not en_archivo)
         log(f"redacción IA: {DIAG['redaccion']}")
     except Exception as exc:                                  # noqa: BLE001
         log(f"redacción IA no disponible en este pase ({exc})")
@@ -5096,7 +5338,7 @@ def renderizar() -> None:
     fichas_dip: list = []
     extras: list = []
     try:
-        fichas_dip = cosechar_congreso()
+        fichas_dip = cosechar_congreso(sin_red=en_archivo)
         extras += renderizar_diputados(fichas_dip)
         extras += renderizar_votaciones(fichas_dip)
         # Los rankings son un añadido: si fallan, la edición sale igual.
@@ -5113,17 +5355,18 @@ def renderizar() -> None:
         log(f"preguntas/: no se pudo generar ({exc})")
 
     renderizar_index(dias)
-    entradas = renderizar_ediciones(dias)
-    fichas = renderizar_normas(dias)
-    extras += renderizar_temas(dias) + renderizar_plazos(dias)
+    entradas = renderizar_ediciones(sorted(a_pintar, key=lambda d: d["id"], reverse=True))
+    renderizar_normas(a_pintar)
+    fichas = indice_normas(todos)
+    extras += renderizar_temas(todos) + renderizar_plazos(todos)
     try:
         extras += renderizar_buscador(dias, fichas_dip)
         extras += renderizar_mapa(dias, fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
         log(f"buscar/: no se pudo generar ({exc})")
-    renderizar_archivo(entradas, dias)
+    extras += renderizar_archivo(entradas, todos)
     renderizar_sitemap(entradas, fichas + extras)
-    renderizar_feed(dias)
+    renderizar_feed([d for d in dias if not d.get("archivo")])
 
     # Portada y archivo cambian cada día; las ediciones, solo las que se han
     # regenerado de verdad. Se avisa de esas, no de las 300 del archivo.
@@ -5210,6 +5453,12 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--render", action="store_true")
     ap.add_argument("--date")
+    # Archivo histórico: rellena ediciones pasadas solo con el BOE, sin LLM.
+    ap.add_argument("--archivo-desde", help="primera fecha del archivo (AAAA-MM-DD)")
+    ap.add_argument("--archivo-hasta", help="última fecha (por defecto, la víspera "
+                    "de la primera edición que ya hay en data/)")
+    ap.add_argument("--lote", type=int, default=30,
+                    help="máximo de ediciones nuevas por ejecución (30)")
     args = ap.parse_args()
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
@@ -5218,6 +5467,32 @@ def main() -> None:
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
                 RANKINGS_DIR, PREGUNTAS_DIR):
         carpeta.mkdir(exist_ok=True)
+
+    if args.archivo_desde or args.archivo_hasta:
+        existentes = sorted(p.stem for p in DATA_DIR.glob("*.json")
+                            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem))
+        desde = dt.date.fromisoformat(args.archivo_desde or "2026-01-01")
+        if args.archivo_hasta:
+            hasta = dt.date.fromisoformat(args.archivo_hasta)
+        elif existentes:
+            hasta = dt.date.fromisoformat(existentes[0]) - dt.timedelta(days=1)
+        else:
+            hasta = dt.date.today() - dt.timedelta(days=1)
+        # Nunca la edición de hoy: esa es cosa de la edición diaria.
+        hasta = min(hasta, dt.date.today() - dt.timedelta(days=1))
+        DIAG["archivo"] = {"desde": desde.isoformat(), "hasta": hasta.isoformat(),
+                           "lote": args.lote}
+        nuevas = rellenar_archivo(desde, hasta, lote=max(1, args.lote)) if desde <= hasta else []
+        DIAG["archivo"]["nuevas"] = nuevas
+        log(f"archivo: {len(nuevas)} ediciones nuevas entre {desde} y {hasta}")
+        DIAG["fin"] = dt.datetime.now(dt.timezone.utc).isoformat()
+        # Solo si ha habido ediciones nuevas: una ejecución repetida que no
+        # añade nada no debe dejar ni un commit (el log queda en Actions).
+        if nuevas:
+            (DEBUG_DIR / "archivo-last-run.json").write_text(
+                json.dumps(DIAG, ensure_ascii=False, indent=2), encoding="utf-8")
+        renderizar(archivo_ids=nuevas)
+        return
 
     if not args.render:
         fecha = dt.date.fromisoformat(args.date) if args.date else dt.date.today()
