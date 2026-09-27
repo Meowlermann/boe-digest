@@ -234,11 +234,22 @@ def fetch_boe(fecha: dt.date, retroceder: bool = True) -> dict | None:
             continue
 
         soup = BeautifulSoup(r.text, "html.parser")
+        soups = [soup]
+        if not retroceder:
+            # Un día puede tener más de un número (ordinario y extraordinario).
+            # index.php enseña el último y enlaza los demás como index.php?d=N;
+            # el archivo los junta todos, el ordinario primero.
+            otros = sorted({a["href"] for a in soup.find_all("a", href=True)
+                            if re.fullmatch(r"index\.php\?d=\d+", a["href"])})
+            for href in otros:
+                r2 = get(url.rsplit("/", 1)[0] + "/" + href, tries=2)
+                if r2:
+                    soups.insert(0, BeautifulSoup(r2.text, "html.parser"))
         entradas: list[dict] = []
         vistos: set[str] = set()
         seccion = departamento = epigrafe = ""
 
-        for el in soup.find_all(["h2", "h3", "h4", "h5", "li"]):
+        for el in (e for sp in soups for e in sp.find_all(["h2", "h3", "h4", "h5", "li"])):
             txt = " ".join(el.get_text(" ", strip=True).split())
             if not txt:
                 continue
@@ -287,10 +298,14 @@ def fetch_boe(fecha: dt.date, retroceder: bool = True) -> dict | None:
             })
 
         num = ""
-        cab = soup.get_text(" ", strip=True)[:3000]
+        cab = soups[0].get_text(" ", strip=True)[:3000]
         m = re.search(r"[Nn]úm(?:ero)?\.?\s*(\d+)", cab)
         if m:
             num = m.group(1)
+        if len(soups) > 1:
+            # Varios números el mismo día: se cita el ordinario, el más bajo.
+            nums = re.findall(r"[Nn]úm(?:ero)?\.?\s*(\d+)", cab)
+            num = str(min(map(int, nums))) if nums else num
 
         log(f"BOE: {len(entradas)} disposiciones únicas para {d.isoformat()}")
         if entradas:
