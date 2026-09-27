@@ -61,6 +61,8 @@ PAGINAS = [
      "Las votaciones con menos diferencia entre síes y noes."),
     ("provincias.html", "Participación por circunscripción",
      "La participación media de los diputados de cada provincia."),
+    ("preguntas.html", "Preguntas escritas registradas",
+     "Quién firma más preguntas con respuesta escrita al Gobierno en el último año."),
 ]
 
 
@@ -528,6 +530,52 @@ def _pag_provincias(P: Pintor, provs: list, pie: str, lastmod: str):
         lastmod), provs
 
 
+def _hay_preguntas() -> bool:
+    try:
+        import preguntas as pq
+        return pq.datos_completos(pq.cargar_escritas())
+    except Exception:                                          # noqa: BLE001
+        return False
+
+
+def _pag_preguntas(P: Pintor, filas: list, pie: str, lastmod: str):
+    """Preguntas escritas firmadas por cada diputado en el último año, con
+    cuántas tienen contestación. Sale del estado de preguntas.py; si aún no
+    hay datos, la página explica que se están recopilando."""
+    try:
+        import preguntas as pq
+        resumen = pq.resumen_diputados(pq.cargar_escritas())
+    except Exception:                                          # noqa: BLE001
+        resumen = {}
+    con = [(f, resumen.get(f["clave"]) or {}) for f in filas]
+    orden = sorted([x for x in con if x[1].get("total")],
+                   key=lambda x: (-x[1]["total"], x[0]["nombre"]))
+    t = P.tabla(
+        ["#", "Diputado", "Grupo", "Preguntas", "Con contestación", "Días medios"],
+        [[(str(i + 1), i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]),
+          (str(r["total"]), r["total"]), (str(r["contestadas"]), r["contestadas"]),
+          (str(r["media_dias"]) if r.get("media_dias") is not None else "—",
+           r.get("media_dias") or 0)]
+         for i, (f, r) in enumerate(orden)], numericas={0, 3, 4, 5})
+    cuerpo = ('<p class="rk-nota">Preguntas con respuesta escrita presentadas en los últimos '
+              'doce meses; una pregunta firmada por varios diputados cuenta para cada uno. '
+              '«Días medios»: días naturales entre la publicación en el BOCG y la contestación '
+              'registrada. <a class="srclink" href="../preguntas/metodologia.html">Cómo se '
+              'cuentan</a>.</p>' + (t if orden else
+              '<p class="rk-nota">Los datos se están recopilando.</p>'))
+    url = f"{P.site}rankings/preguntas.html"
+    return P.escribir(
+        "preguntas.html", "Diputados que más preguntas escritas hacen al Gobierno",
+        "Ranking de preguntas con respuesta escrita registradas por cada diputado en el "
+        "Congreso en el último año, con cuántas han sido contestadas.",
+        "Preguntas escritas registradas",
+        "Cuántas preguntas con respuesta escrita firma cada diputado.", cuerpo, pie,
+        [P.itemlist(url, "Diputados con más preguntas escritas",
+                    [(f["nombre"], f'{P.site}diputados/{f["slug"]}.html')
+                     for f, _r in orden[:50]])],
+        lastmod), orden
+
+
 def _texto_ventana(P: Pintor, vent: dict) -> str:
     if not vent["n"]:
         return "las votaciones disponibles"
@@ -587,6 +635,8 @@ recuentos sobre publicaciones oficiales, calculados igual para todos los grupos.
 def _pag_indice(P: Pintor, tops: dict, vent: dict, pie: str, lastmod: str):
     bloques = []
     for fichero, titulo, desc in PAGINAS:
+        if fichero not in tops:
+            continue                       # página que hoy no se publica
         filas = tops.get(fichero, "")
         bloques.append(
             f'<section class="rk-bloque"><h2 class="rotulo"><a href="{fichero}">'
@@ -604,7 +654,7 @@ def _pag_indice(P: Pintor, tops: dict, vent: dict, pie: str, lastmod: str):
         "Clasificaciones de diputados y grupos calculadas con los datos abiertos del "
         "Congreso. Mismo criterio para todos.", cuerpo, pie,
         [P.itemlist(url, "Rankings del Congreso",
-                    [(t, f"{url}{f}") for f, t, _d in PAGINAS])],
+                    [(t, f"{url}{f}") for f, t, _d in PAGINAS if f in tops])],
         lastmod)
 
 
@@ -674,6 +724,17 @@ def generar(fichas: list, estado: dict, herramientas: dict) -> list:
         P, ["#", "Circunscripción", "Participación media"],
         [[str(i + 1), f'<a href="../diputados/provincia-{P.attr(P.slug_txt(r["circ"]))}.html">'
           f'{P.esc(r["circ"])}</a>', pct(r["media"])] for i, r in enumerate(provs)], {0, 2})
+
+    # Solo con datos: mientras se recopila el año de preguntas escritas, una
+    # tabla a medias no sirve para comparar a nadie.
+    s, orden_pq = _pag_preguntas(P, filas, pie, lastmod) if _hay_preguntas() else (None, [])
+    if s:
+        salidas.append(s)
+    if orden_pq:
+        tops["preguntas.html"] = _top(
+        P, ["#", "Diputado", "Grupo", "Preguntas"],
+            [[str(i + 1), P.celda_nombre(f), P.celda_grupo(f["grupo"], f["color"]), str(r["total"])]
+             for i, (f, r) in enumerate(orden_pq)], {0, 3})
 
     salidas.append(_pag_metodologia(P, vent, etiquetas, pie, lastmod))
     salidas.append(_pag_indice(P, tops, vent, pie, lastmod))
