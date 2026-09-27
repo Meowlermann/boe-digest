@@ -6,6 +6,11 @@ name: Archivo histórico
 # completar el tramo. Las ediciones de archivo son deterministas: sin LLM
 # (no se pasa ninguna clave) y sin datos de las Cortes.
 on:
+  # TEMPORAL, solo para la prueba en la rama: GitHub no ofrece «Run workflow»
+  # para un workflow que aún no está en main. Se quita antes de la PR.
+  push:
+    branches: [archivo-historico]
+    paths: [".github/workflows/archivo.yml"]
   workflow_dispatch:
     inputs:
       desde:
@@ -48,9 +53,9 @@ jobs:
 
       - name: Construir las ediciones de archivo
         env:
-          DESDE: ${{ inputs.desde }}
-          HASTA: ${{ inputs.hasta }}
-          LOTE: ${{ inputs.lote }}
+          DESDE: ${{ inputs.desde || '2026-09-01' }}
+          HASTA: ${{ inputs.hasta || (github.event_name == 'push' && '2026-09-10' || '') }}
+          LOTE: ${{ inputs.lote || '5' }}
         run: |
           ARGS="--archivo-desde $DESDE --lote $LOTE"
           if [ -n "$HASTA" ]; then ARGS="$ARGS --archivo-hasta $HASTA"; fi
