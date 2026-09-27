@@ -6,6 +6,11 @@ name: Archivo histórico
 # completar el tramo. Las ediciones de archivo son deterministas: sin LLM
 # (no se pasa ninguna clave) y sin datos de las Cortes.
 on:
+  # TEMPORAL, solo para la prueba en la rama: GitHub no ofrece «Run workflow»
+  # para un workflow que aún no está en main. Se quita antes de fusionar.
+  push:
+    branches: [nombramientos]
+    paths: [".github/workflows/archivo.yml"]
   workflow_dispatch:
     inputs:
       desde:
@@ -20,6 +25,12 @@ on:
         description: "Máximo de ediciones nuevas en esta ejecución"
         required: true
         default: "30"
+      modo:
+        description: "ediciones: rellena el archivo · nombramientos: solo relee la sección II y actualiza state/nombramientos.json"
+        required: true
+        type: choice
+        options: [ediciones, nombramientos]
+        default: ediciones
 
 permissions:
   contents: write
@@ -48,12 +59,19 @@ jobs:
 
       - name: Construir las ediciones de archivo
         env:
-          DESDE: ${{ inputs.desde }}
-          HASTA: ${{ inputs.hasta }}
-          LOTE: ${{ inputs.lote }}
+          DESDE: ${{ inputs.desde || '2026-09-01' }}
+          HASTA: ${{ inputs.hasta || '2026-09-10' }}
+          LOTE: ${{ inputs.lote || '5' }}
+          MODO: ${{ inputs.modo || 'nombramientos' }}
         run: |
-          ARGS="--archivo-desde $DESDE --lote $LOTE"
-          if [ -n "$HASTA" ]; then ARGS="$ARGS --archivo-hasta $HASTA"; fi
+          if [ "$MODO" = "nombramientos" ]; then
+            # Solo el estado de nombramientos: ni data/ ni las ediciones.
+            ARGS="--nombramientos-desde $DESDE"
+            if [ -n "$HASTA" ]; then ARGS="$ARGS --nombramientos-hasta $HASTA"; fi
+          else
+            ARGS="--archivo-desde $DESDE --lote $LOTE"
+            if [ -n "$HASTA" ]; then ARGS="$ARGS --archivo-hasta $HASTA"; fi
+          fi
           python build.py $ARGS
 
       - name: Publicar si hay cambios
@@ -63,13 +81,13 @@ jobs:
           git config user.name "BOE Digest bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # git add falla con 'pathspec did not match' si una carpeta no existe todavía
-          mkdir -p data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas datos buscar mapa assets
-          git add -A data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas datos buscar mapa assets index.html 'sitemap*.xml' feed.xml
+          mkdir -p data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas personas nombramientos datos buscar mapa assets
+          git add -A data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas personas nombramientos datos buscar mapa assets index.html 'sitemap*.xml' feed.xml
           if git diff --staged --quiet; then
             echo "Sin cambios: no se publica nada."
             echo "publicado=no" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Archivo: ediciones de ${{ inputs.desde }} a ${{ inputs.hasta || 'la primera publicada' }}"
+            git commit -m "Archivo (${{ inputs.modo || 'ediciones' }}): de ${{ inputs.desde }} a ${{ inputs.hasta || 'la primera publicada' }}"
             git push
             echo "publicado=si" >> "$GITHUB_OUTPUT"
           fi
