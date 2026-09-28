@@ -12,6 +12,8 @@ const CLASES = [
   ["", "Todo"],
   ["norma", "Normas"],
   ["cortes", "Cortes"],
+  ["iniciativa", "Leyes en tramitación"],
+  ["votacion", "Votaciones"],
   ["diputado", "Diputados"],
   ["tema", "Materias"],
   ["edicion", "Ediciones"],
@@ -20,6 +22,8 @@ const CLASES = [
 const ETIQUETA = {
   norma: "Norma del BOE",
   cortes: "Cortes",
+  iniciativa: "Iniciativa",
+  votacion: "Votación",
   diputado: "Diputado",
   tema: "Materia",
   plazo: "Plazo",
