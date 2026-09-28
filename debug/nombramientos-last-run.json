@@ -1,458 +1,463 @@
 {
-  "inicio": "2026-09-28T20:00:41.724728+00:00",
+  "inicio": "2026-09-28T20:05:22.977794+00:00",
   "peticiones": [
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260101",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260401",
       "status": 200,
-      "bytes": 193247
+      "bytes": 402714
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260102",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260402",
       "status": 200,
-      "bytes": 150033
+      "bytes": 188812
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260103",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260403",
       "status": 200,
-      "bytes": 215889
+      "bytes": 119313
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260104",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260404",
+      "status": 200,
+      "bytes": 153324
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260405",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260105",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260406",
       "status": 200,
-      "bytes": 269082
+      "bytes": 585544
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260106",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260407",
       "status": 200,
-      "bytes": 96147
+      "bytes": 305466
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260107",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260408",
       "status": 200,
-      "bytes": 64704
+      "bytes": 191603
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260108",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260409",
       "status": 200,
-      "bytes": 169899
+      "bytes": 220737
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260109",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260410",
       "status": 200,
-      "bytes": 188080
+      "bytes": 226090
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260110",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260411",
       "status": 200,
-      "bytes": 208686
+      "bytes": 280423
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260111",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260412",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260112",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260413",
       "status": 200,
-      "bytes": 215773
+      "bytes": 365112
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260113",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260414",
       "status": 200,
-      "bytes": 324074
+      "bytes": 333731
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260114",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260415",
       "status": 200,
-      "bytes": 187106
+      "bytes": 262214
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260115",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260416",
       "status": 200,
-      "bytes": 251155
+      "bytes": 237317
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260116",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260417",
       "status": 200,
-      "bytes": 204933
+      "bytes": 274370
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260117",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260418",
       "status": 200,
-      "bytes": 356567
+      "bytes": 495294
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260118",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260419",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260119",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260420",
       "status": 200,
-      "bytes": 410924
+      "bytes": 325910
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260120",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260421",
       "status": 200,
-      "bytes": 343720
+      "bytes": 345641
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260121",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260422",
       "status": 200,
-      "bytes": 254671
+      "bytes": 247711
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260122",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260423",
       "status": 200,
-      "bytes": 231687
+      "bytes": 306570
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260123",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260424",
       "status": 200,
-      "bytes": 283318
+      "bytes": 267126
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260124",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260425",
       "status": 200,
-      "bytes": 564090
+      "bytes": 343719
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260125",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260426",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260126",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260427",
       "status": 200,
-      "bytes": 384795
+      "bytes": 395707
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260127",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260428",
       "status": 200,
-      "bytes": 303395
+      "bytes": 357397
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260128",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260429",
       "status": 200,
-      "bytes": 161838
+      "bytes": 257877
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260129",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260430",
       "status": 200,
-      "bytes": 222882
+      "bytes": 269413
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260130",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260501",
       "status": 200,
-      "bytes": 262275
+      "bytes": 152155
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260131",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260502",
       "status": 200,
-      "bytes": 447669
+      "bytes": 342334
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260201",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260503",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260202",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260504",
       "status": 200,
-      "bytes": 401855
+      "bytes": 388021
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260203",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260505",
       "status": 200,
-      "bytes": 289554
+      "bytes": 392477
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260204",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260506",
       "status": 200,
-      "bytes": 220407
+      "bytes": 290524
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260205",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260507",
       "status": 200,
-      "bytes": 309438
+      "bytes": 268560
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260206",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260508",
       "status": 200,
-      "bytes": 285181
+      "bytes": 325960
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260207",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260509",
       "status": 200,
-      "bytes": 410192
+      "bytes": 423130
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260208",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260510",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260209",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260511",
       "status": 200,
-      "bytes": 366958
+      "bytes": 373561
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260210",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260512",
       "status": 200,
-      "bytes": 308705
+      "bytes": 380526
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260211",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260513",
       "status": 200,
-      "bytes": 319900
+      "bytes": 368222
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260212",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260514",
       "status": 200,
-      "bytes": 270806
+      "bytes": 260165
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260213",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260515",
       "status": 200,
-      "bytes": 291718
+      "bytes": 186624
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260214",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260516",
       "status": 200,
-      "bytes": 477186
+      "bytes": 397978
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260215",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260517",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260216",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260518",
       "status": 200,
-      "bytes": 416662
+      "bytes": 360153
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260217",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260519",
       "status": 200,
-      "bytes": 347431
+      "bytes": 379474
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260218",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260520",
       "status": 200,
-      "bytes": 254482
+      "bytes": 266438
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260219",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260521",
       "status": 200,
-      "bytes": 266616
+      "bytes": 381163
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260220",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260522",
       "status": 200,
-      "bytes": 250949
+      "bytes": 251131
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260221",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260523",
       "status": 200,
-      "bytes": 417563
+      "bytes": 505885
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260222",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260524",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260223",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260525",
       "status": 200,
-      "bytes": 480272
+      "bytes": 442752
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260224",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260526",
       "status": 200,
-      "bytes": 271942
+      "bytes": 334300
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260225",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260527",
       "status": 200,
-      "bytes": 277633
+      "bytes": 252340
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260226",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260528",
       "status": 200,
-      "bytes": 361176
+      "bytes": 303394
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260227",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260529",
       "status": 200,
-      "bytes": 387643
+      "bytes": 283497
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260228",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260530",
       "status": 200,
-      "bytes": 408934
+      "bytes": 424362
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260301",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260531",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260302",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260601",
       "status": 200,
-      "bytes": 519925
+      "bytes": 409021
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260303",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260602",
       "status": 200,
-      "bytes": 340642
+      "bytes": 353057
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260304",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260603",
       "status": 200,
-      "bytes": 235618
+      "bytes": 317937
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260305",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260604",
       "status": 200,
-      "bytes": 285097
+      "bytes": 349786
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260306",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260605",
       "status": 200,
-      "bytes": 307281
+      "bytes": 499708
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260307",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260606",
       "status": 200,
-      "bytes": 407894
+      "bytes": 431532
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260308",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260607",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260309",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260608",
       "status": 200,
-      "bytes": 393468
+      "bytes": 422535
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260310",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260609",
       "status": 200,
-      "bytes": 306738
+      "bytes": 325678
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260311",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260610",
       "status": 200,
-      "bytes": 260525
+      "bytes": 284657
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260312",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260611",
       "status": 200,
-      "bytes": 407244
+      "bytes": 332634
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260313",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260612",
       "status": 200,
-      "bytes": 354531
+      "bytes": 338588
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260314",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260613",
       "status": 200,
-      "bytes": 430430
+      "bytes": 462028
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260315",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260614",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260316",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260615",
       "status": 200,
-      "bytes": 375521
+      "bytes": 460985
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260317",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260616",
       "status": 200,
-      "bytes": 349172
+      "bytes": 348357
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260318",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260617",
       "status": 200,
-      "bytes": 250383
+      "bytes": 313684
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260319",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260618",
       "status": 200,
-      "bytes": 283229
+      "bytes": 342702
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260320",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260619",
       "status": 200,
-      "bytes": 248528
+      "bytes": 295172
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260321",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260620",
       "status": 200,
-      "bytes": 434402
+      "bytes": 387707
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260322",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260621",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260323",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260622",
       "status": 200,
-      "bytes": 443885
+      "bytes": 369473
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260324",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260623",
       "status": 200,
-      "bytes": 302252
+      "bytes": 319223
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260325",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260624",
       "status": 200,
-      "bytes": 304042
+      "bytes": 327489
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260326",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260625",
       "status": 200,
-      "bytes": 254035
+      "bytes": 366723
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260327",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260626",
       "status": 200,
-      "bytes": 303935
+      "bytes": 231739
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260328",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260627",
       "status": 200,
-      "bytes": 386432
+      "bytes": 394698
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260329",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260628",
       "status": 404
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260330",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260629",
       "status": 200,
-      "bytes": 288308
+      "bytes": 320698
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260331",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260630",
       "status": 200,
-      "bytes": 247992
+      "bytes": 422344
     }
   ],
   "nombramientos_reproceso": {
-    "dias": 77,
-    "incluidos": 500,
+    "dias": 78,
+    "incluidos": 504,
     "sin_boe": 13,
     "descartes": {
-      "nombre sin patrón reconocido": 104,
-      "sin nombre propio": 540,
-      "II.B: sin nombre propio": 2571,
-      "corrección de errores": 4,
-      "lista de personas en el PDF": 1,
-      "ingreso como funcionario de carrera": 15,
+      "nombre sin patrón reconocido": 94,
+      "sin nombre propio": 632,
+      "II.B: sin nombre propio": 2811,
+      "ingreso como funcionario de carrera": 16,
+      "pérdida de la condición de funcionario": 4,
+      "corrección de errores": 5,
       "convocatoria o concurso resuelto": 1
     },
     "duplicados": 0
   },
-  "fin": "2026-09-28T20:04:05.238904+00:00"
+  "fin": "2026-09-28T20:08:33.728103+00:00"
 }
