@@ -2201,9 +2201,369 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-26"
+  },
+  "BOE-A-2026-20004": {
+   "huella": "e178dc6cf6585684",
+   "fuente": "9c2d7d22e2b635d1",
+   "titular": "El Consejo de Ministros fija los módulos de subvención para las Oficinas de Justicia municipales",
+   "entradilla": "El Gobierno aprueba la distribución de créditos de los Presupuestos para financiar los gastos de funcionamiento de las oficinas judiciales en cinco comunidades autónomas.",
+   "claves": [
+    "Las subvenciones a los ayuntamientos se calculan en función de la población de derecho de cada municipio según tramos específicos.",
+    "Los municipios integrados en agrupaciones de secretarías perciben el 50 por ciento de la cantidad por habitante, mientras que el otro 50 por ciento se asigna al municipio sede.",
+    "La medida se aplica a los ayuntamientos de las comunidades autónomas de Illes Balears, Castilla y León, Castilla-La Mancha, Extremadura y Región de Murcia."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20074": {
+   "huella": "b1b49211d831b822",
+   "fuente": "7eaec155b9c9161e",
+   "titular": "El Gobierno concede el Collar de la Orden de Isabel la Católica a Emmanuel Macron",
+   "entradilla": "El Consejo de Ministros aprueba la concesión de esta condecoración al Presidente de la República Francesa a propuesta del Ministerio de Asuntos Exteriores.",
+   "claves": [
+    "El real decreto se aprueba a propuesta del ministro de Asuntos Exteriores, Unión Europea y Cooperación, José Manuel Albares Bueno.",
+    "La decisión se adopta previa deliberación del Consejo de Ministros en su reunión del día 22 de septiembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20075": {
+   "huella": "07c70873ecde7013",
+   "fuente": "9746453e81054702",
+   "titular": "Conceden la Gran Cruz de la Orden de Isabel la Católica a Brigitte Marie-Claude Macron",
+   "entradilla": "El Consejo de Ministros aprueba la concesión de la Gran Cruz de la Orden de Isabel la Católica a la esposa del Presidente de la República Francesa.",
+   "claves": [
+    "El Ministerio de Asuntos Exteriores, Unión Europea y Cooperación impulsa la concesión de esta condecoración honorífica.",
+    "La medida se adopta tras la deliberación del Consejo de Ministros celebrada el 22 de septiembre de 2026.",
+    "El real decreto cuenta con la firma del rey Felipe VI y el refrendo del ministro José Manuel Albares Bueno."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20076": {
+   "huella": "56d953e5cfc3a99b",
+   "fuente": "d49a44ffcbdcf40d",
+   "titular": "Conceden la Gran Cruz de la Orden de Isabel la Católica a Jean-Noël Barrot",
+   "entradilla": "El Gobierno otorga esta distinción honorífica al Ministro de Europa y Asuntos Exteriores de la República Francesa.",
+   "claves": [
+    "La propuesta parte del Ministerio de Asuntos Exteriores, Unión Europea y Cooperación y cuenta con el aval del Consejo de Ministros del 22 de septiembre de 2026.",
+    "El reconocimiento oficial se formaliza mediante un real decreto firmado por el rey Felipe VI."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20077": {
+   "huella": "986b48a0b8860d5a",
+   "descartado": "nombre «República» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "BOE-A-2026-20078": {
+   "huella": "157a2df494613d26",
+   "fuente": "b8e9b2c61e09392e",
+   "titular": "Mapfre financiará servicios para la Fiesta Nacional en la Embajada de España en Ecuador",
+   "entradilla": "La aseguradora colabora mediante una aportación en especie valorada en 750 dólares para la recepción que tendrá lugar el próximo 12 de octubre en Quito.",
+   "claves": [
+    "La aportación de Mapfre consiste en la contratación por su cuenta de suministros o servicios por un valor estimado de setecientos cincuenta dólares estadounidenses.",
+    "El convenio no genera ningún coste económico para la Embajada de España.",
+    "La Embajada se compromete a difundir la participación de la empresa e incluir su logotipo en el material gráfico e institucional del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20079": {
+   "huella": "07b2865957c71c42",
+   "fuente": "d49390523806c1cf",
+   "titular": "Chakray Consulting financiará la Fiesta Nacional de España en la Embajada en Tanzania",
+   "entradilla": "La empresa aporta una cantidad económica en metálico para la celebración del evento institucional previsto para el 16 de octubre en Dar es Salaam.",
+   "claves": [
+    "Chakray Consulting Limited efectúa una aportación económica en metálico por importe de cuatrocientos dólares estadounidenses.",
+    "El convenio se suscribe para la celebración de la Fiesta Nacional de España que tendrá lugar el 16 de octubre de 2026.",
+    "La Embajada certificará la aportación en un plazo máximo de treinta días para que la empresa pueda acogerse a los incentivos fiscales al mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20080": {
+   "huella": "b78dd89f2c06e564",
+   "fuente": "16ac18b90e5f378a",
+   "titular": "Kalito’s Way Group costeará suministros para la Fiesta Nacional en Tanzania",
+   "entradilla": "La compañía colabora con la Embajada de España en Dar es Salaam mediante una aportación en especie valorada en diez millones de chelines tanzanos.",
+   "claves": [
+    "La aportación consiste en la contratación por cuenta de la empresa de suministros o servicios por un valor estimado de 10.000.000 TZS.",
+    "La celebración de la Fiesta Nacional de España está prevista para el próximo 10 de octubre de 2026.",
+    "La Embajada difundirá la participación de la entidad e incluirá su logotipo en las invitaciones, programas y soportes digitales del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20081": {
+   "huella": "aa7fe950d257b24b",
+   "fuente": "551b7535745c4717",
+   "titular": "Tooku Garments financiará la recepción de la Fiesta Nacional en la Embajada en Tanzania",
+   "entradilla": "La empresa textil colabora con una aportación económica en metálico para el evento institucional que se celebrará el 16 de octubre en Dar es Salaam.",
+   "claves": [
+    "La aportación económica asciende a dos millones de chelines tanzanos en metálico.",
+    "El acuerdo no conlleva coste alguno para la Embajada de España en Tanzania.",
+    "La Embajada emitirá la certificación de la aportación en un plazo máximo de treinta días a efectos de los beneficios fiscales por mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20082": {
+   "huella": "0abae69183d9435d",
+   "fuente": "06e6851c7523f9fb",
+   "titular": "World 2 Meet Travel colaborará en la Fiesta Nacional de la Embajada de España en Tanzania",
+   "entradilla": "La empresa turística efectúa una aportación económica para la celebración del evento que tendrá lugar el próximo 16 de octubre en Dar es Salaam.",
+   "claves": [
+    "World 2 Meet Travel aporta una cantidad económica en metálico por importe de dos mil quinientos euros.",
+    "El convenio no genera ningún gasto ni coste para la Embajada de España.",
+    "La Embajada difundirá la colaboración de la empresa en sus canales oficiales y en los materiales gráficos del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20083": {
+   "huella": "8a134e65618e8f16",
+   "fuente": "f0486a4359b8ce2c",
+   "titular": "Applied Technology financiará suministros para la Fiesta Nacional de España en Tanzania",
+   "entradilla": "La entidad colabora con la Embajada en Dar es Salaam mediante una aportación en especie para la recepción del 16 de octubre.",
+   "claves": [
+    "La aportación en especie consiste en la contratación de suministros o servicios por un valor estimado de 3.147.629 chelines tanzanos.",
+    "La actividad está programada para el próximo 16 de octubre de 2026 en Dar es Salaam.",
+    "La Embajada agradecerá la contribución e incluirá el logotipo de la empresa en los soportes de difusión y publicidad del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20084": {
+   "huella": "d797d383cbd26f94",
+   "fuente": "7b2684a7dd35e7aa",
+   "titular": "Tens Injection Pump Services financiará la Fiesta Nacional en la Embajada en Tanzania",
+   "entradilla": "La compañía colabora mediante una aportación económica en metálico para la recepción oficial que se celebrará el 16 de octubre en Dar es Salaam.",
+   "claves": [
+    "La empresa efectúa una aportación económica en metálico por importe de setecientos dólares estadounidenses.",
+    "El convenio se rige por la normativa de régimen fiscal de entidades sin fines lucrativos y de incentivos al mecenazgo.",
+    "La Embajada entregará a la entidad la certificación acreditativa en un plazo máximo de treinta días tras la realización del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20085": {
+   "huella": "0bc0af34e02ce5e4",
+   "fuente": "487636b74cad4dda",
+   "titular": "Typsa Group aportará fondos para la Fiesta Nacional de España en la Embajada en Tanzania",
+   "entradilla": "La empresa de ingeniería colabora económicamente en la organización de la recepción oficial que tendrá lugar el 16 de octubre en Dar es Salaam.",
+   "claves": [
+    "Typsa Group efectúa una aportación económica en metálico por importe de quinientos dólares estadounidenses.",
+    "El acuerdo formaliza la cooperación mutua sin acarrear ningún coste presupuestario para la Embajada.",
+    "Ambas partes se autorizan el uso recíproco de sus logotipos y marcas para la difusión y gestión del convenio."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20086": {
+   "huella": "0095ac6b909fd03b",
+   "fuente": "325178fdb0fd88c5",
+   "titular": "CaixaBank costeará servicios para la Fiesta Nacional en la Embajada de España en Colombia",
+   "entradilla": "La oficina de representación de la entidad financiera en el país latinoamericano colabora con una aportación en especie valorada en cinco millones de pesos.",
+   "claves": [
+    "La aportación de CaixaBank consiste en la contratación de suministros o servicios por un valor estimado de cinco millones de pesos colombianos.",
+    "El evento conmemorativo se celebrará en Bogotá el próximo 14 de octubre de 2026.",
+    "La Embajada de España difundirá la participación de la entidad bancaria en sus soportes comerciales y publicitarios."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20087": {
+   "huella": "d99848a7133dd23b",
+   "fuente": "548a1c9ea72ecf13",
+   "titular": "CAF aportará fondos para la celebración de la Fiesta Nacional en la Embajada en Serbia",
+   "entradilla": "La compañía ferroviaria colabora con la legación diplomática mediante una aportación económica en metálico para el evento previsto en Belgrado.",
+   "claves": [
+    "Construcciones y Auxiliar de Ferrocarriles efectúa una aportación económica en metálico por importe de tres mil euros.",
+    "La recepción de la Fiesta Nacional de España está fijada para el 9 de octubre de 2026 en Belgrado.",
+    "La Embajada emitirá la certificación acreditativa de la aportación en un plazo máximo de treinta días para su desgravación fiscal."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "BOE-A-2026-20088": {
+   "huella": "51e6f4c19b17bf02",
+   "fuente": "6b80a10473b15af6",
+   "titular": "Aqualia Georgia financiará la recepción de la Fiesta Nacional en la Embajada en Turquía",
+   "entradilla": "La empresa colabora con la legación diplomática en Ankara mediante una aportación económica en metálico para el evento institucional.",
+   "claves": [
+    "Aqualia Georgia efectúa una aportación económica en metálico por importe de dos mil quinientos euros.",
+    "La celebración de la Fiesta Nacional de España tendrá lugar en Ankara el próximo 12 de octubre de 2026.",
+    "El convenio no genera ningún tipo de coste económico para la Embajada de España."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-af9ef7dadec98609": {
+   "huella": "0c881ea63f4889f9",
+   "fuente": "6badd0b192b26422",
+   "titular": "Alberto Núñez Feijóo pregunta al Presidente del Gobierno por la previsión para la legislatura",
+   "entradilla": "El diputado dirige una pregunta oral al Presidente del Gobierno en el Pleno del Congreso sobre el mantenimiento de la actividad política hasta el final del mandato.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-d13e69605aa238c4": {
+   "huella": "6693c4884c33b14e",
+   "fuente": "fc0e83c88770f965",
+   "titular": "Santiago Abascal interroga al Presidente del Gobierno sobre supuestos chantajes de Marruecos",
+   "entradilla": "El diputado de Vox pregunta en el Pleno del Congreso al Presidente del Gobierno sobre información que poseería Marruecos relativa a su entorno familiar.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-a4c56992a5a5b818": {
+   "huella": "5bfc706c82a6acc5",
+   "fuente": "ca1a3bb28a7be742",
+   "titular": "Gabriel Rufián pregunta al Presidente del Gobierno por el desarrollo de la legislatura",
+   "entradilla": "El representante de ERC interviene en la sesión de control al Gobierno en el Pleno del Congreso del 9 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-ec2c70c281bfdc23": {
+   "huella": "68dd91109b97c345",
+   "fuente": "1b58221aa249cd48",
+   "titular": "Ester Muñoz de la Iglesia interroga al Ministro de Economía en la sesión de control",
+   "entradilla": "La diputada dirige una pregunta oral al Vicepresidente Primero y Ministro de Economía, Comercio y Empresa en el Pleno del Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-06a21fbb12699713": {
+   "huella": "10024fc246086fd8",
+   "fuente": "b9d319bb23e4bf88",
+   "titular": "Jaime Eduardo de Olano pregunta al Ministro de Economía sobre la situación de las familias",
+   "entradilla": "El diputado formula una pregunta oral al Vicepresidente Primero y Ministro de Economía, Comercio y Empresa durante la sesión de control en el Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-6c5dd24a71ded67e": {
+   "huella": "1ee35ac366ef8665",
+   "fuente": "a2cd7a12d21109f3",
+   "titular": "Sofía Acedo pregunta a la Ministra de Trabajo por su valoración de la crisis de Ceuta",
+   "entradilla": "La diputada interroga a la Vicepresidenta Segunda y Ministra de Trabajo y Economía Social en el Pleno del Congreso acerca de los acontecimientos en Ceuta.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-4ed6b73571f9c83e": {
+   "huella": "3c583cb08b679a21",
+   "fuente": "8dccf17b8b05c267",
+   "titular": "Oskar Matute pregunta a la Ministra de Trabajo por la reforma del despido",
+   "entradilla": "El representante de EH Bildu interroga a Yolanda Díaz sobre las indemnizaciones laborales durante la sesión de control en el Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-dbe423a076fbdc17": {
+   "huella": "b8d656dc129441b8",
+   "fuente": "d55b579419a50deb",
+   "titular": "Juan Bravo interroga al Ministro de la Presidencia sobre la normalidad institucional en Ceuta",
+   "entradilla": "El diputado dirige una pregunta oral al titular de Presidencia, Justicia y Relaciones con las Cortes durante la sesión de control en el Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-29b8fa62625aadf5": {
+   "huella": "2eae04ff7308c0fc",
+   "fuente": "4fcbd00e8c10b4dc",
+   "titular": "Cristina Valido pregunta al Ministro de Hacienda por los acuerdos con el Gobierno canario",
+   "entradilla": "La diputada del grupo mixto interroga al titular de Hacienda en el Congreso sobre el cumplimiento de los compromisos adquiridos con Fernando Clavijo.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-d58a9c9187e572c9": {
+   "huella": "3fa8891a9cc4adee",
+   "fuente": "937fd84d13bc1e64",
+   "titular": "Miguel Tellado interroga al Ministro del Interior en la sesión de control del Congreso",
+   "entradilla": "El diputado formula una pregunta oral al titular de Interior, Fernando Grande-Marlaska Gómez, durante el Pleno de la Cámara baja.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-8cfb064ffb8a33b0": {
+   "huella": "e77e60422dc246a9",
+   "fuente": "b203f7be2a75b0eb",
+   "titular": "Ana Belén Vázquez pregunta al Ministro del Interior por su actuación en la gestión",
+   "entradilla": "La diputada dirige una cuestión al ministro Fernando Grande-Marlaska Gómez en el Pleno del Congreso relativo al desempeño de sus funciones.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-f3a53740397749e9": {
+   "huella": "3ce039bd08110d19",
+   "fuente": "ad4b8545636cc089",
+   "titular": "Vox pregunta a Grande-Marlaska por qué ha «traicionado a los ceutíes»",
+   "entradilla": "María José Rodríguez de Millán Parro, de Vox, formulará esta pregunta al ministro del Interior, Fernando Grande-Marlaska Gómez, en la sesión de control del Pleno del Congreso del miércoles 9 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-28"
+  },
+  "C-a9af71dfcacbf0db": {
+   "huella": "f07891a03d93ade1",
+   "fuente": "c1c10744c0095d0b",
+   "titular": "Alberto Ibáñez pregunta al Ministro del Interior por agresiones a periodistas en el Congreso",
+   "entradilla": "El diputado de Sumar interroga al titular de Interior acerca de la actuación policial ante incidentes contra profesionales de la información.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-f4213dc20a07536d": {
+   "huella": "c1759f427acd254c",
+   "fuente": "f1be4e1b65dff747",
+   "titular": "Marta Madrenas interroga al Ministro del Interior sobre el control de las fuerzas de seguridad",
+   "entradilla": "La diputada de Junts formula una pregunta oral al ministro Fernando Grande-Marlaska Gómez durante el Pleno de la Cámara baja.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-f2b002c7286b4702": {
+   "huella": "c6e2fb4f1f1d34d8",
+   "fuente": "7e1d6a5451643fa0",
+   "titular": "Jaime Miguel De los Santos pregunta a la Ministra de Educación por los alumnos de Ceuta",
+   "entradilla": "El diputado interroga a la titular de Educación, Formación Profesional y Deporte sobre la garantía de los derechos educativos en la ciudad autónoma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-8417aeeabf566b4e": {
+   "huella": "9461d6ebd2b6d5b6",
+   "fuente": "ee24acd9346f24c2",
+   "titular": "Carmen Fúnez pregunta a la Ministra de Sanidad por la gestión ministerial en Ceuta",
+   "entradilla": "La diputada dirige una pregunta oral a la titular de Sanidad en el Pleno del Congreso acerca de las medidas adoptadas durante la crisis.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-7f9f88506a28779d": {
+   "huella": "ba55521f7c08ec56",
+   "fuente": "0b48eacdb3e5aa80",
+   "titular": "Joseba Andoni Agirretxea interroga a la Ministra de Sanidad sobre el Estatuto Marco",
+   "entradilla": "El diputado pregunta a la titular de Sanidad en el Congreso acerca de la responsabilidad en la tramitación del Estatuto Marco para el personal sanitario.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
+  },
+  "C-08b1dab9a9932e3f": {
+   "huella": "e95c464631ba6ab4",
+   "fuente": "ad2cb3264987ac21",
+   "titular": "Patricia Rodríguez pregunta a la Ministra de Igualdad por la seguridad de las mujeres en Ceuta",
+   "entradilla": "La diputada formula una pregunta oral a la ministra de Igualdad, Ana María del Carmen Redondo García, en la sesión de control del Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-28"
   }
  },
  "uso": {
-  "2026-09-26": 6
+  "2026-09-28": 3
  }
 }
