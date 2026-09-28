@@ -12,7 +12,12 @@ const CLASES = [
   ["", "Todo"],
   ["norma", "Normas"],
   ["cortes", "Cortes"],
+  ["iniciativa", "Leyes en tramitación"],
+  ["votacion", "Votaciones"],
+  ["pregunta", "Preguntas"],
   ["diputado", "Diputados"],
+  ["persona", "Personas"],
+  ["nombramiento", "Nombramientos"],
   ["tema", "Materias"],
   ["edicion", "Ediciones"],
 ];
@@ -20,7 +25,12 @@ const CLASES = [
 const ETIQUETA = {
   norma: "Norma del BOE",
   cortes: "Cortes",
+  iniciativa: "Iniciativa",
+  votacion: "Votación",
+  pregunta: "Pregunta",
   diputado: "Diputado",
+  persona: "Persona",
+  nombramiento: "Nombramiento",
   tema: "Materia",
   plazo: "Plazo",
   edicion: "Edición",
@@ -97,10 +107,16 @@ function Marca({ texto, terminos }) {
   return <>{partes}</>;
 }
 
+/* Las preguntas escritas no tienen página propia: enlazan a la ficha del
+ * Congreso, con URL absoluta. El resto son rutas del sitio. */
+function enlace(u) {
+  return /^https?:/.test(u) ? u : "../" + u;
+}
+
 function Resultado({ item, terminos, activo }) {
   return (
     <li className={"res" + (activo ? " res-activo" : "")}>
-      <a href={"../" + item.u}>
+      <a href={enlace(item.u)}>
         <span className={"res-clase res-" + item.k}>{ETIQUETA[item.k] || item.k}</span>
         <span className="res-titulo"><Marca texto={item.t} terminos={terminos} /></span>
         {item.s ? (
@@ -191,7 +207,7 @@ function Buscador({ datos }) {
       setActivo((i) => Math.max(i - 1, 0));
     } else if (ev.key === "Enter") {
       ev.preventDefault();
-      location.href = "../" + resultados[activo].u;
+      location.href = enlace(resultados[activo].u);
     }
   };
 
@@ -259,9 +275,27 @@ function Buscador({ datos }) {
 
 const raiz = document.getElementById("buscador-app");
 if (raiz) {
-  fetch(raiz.dataset.src)
-    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-    .then((datos) => render(<Buscador datos={datos} />, raiz))
+  /* El índice va partido por tipos (datos/indice-<tipo>.json) y indice.json
+   * solo los lista. Primero se cargan normas, iniciativas y diputados, que es
+   * lo que más se busca, y se pinta; el resto llega detrás y se añade. Si
+   * indice.json aún trae «items» (formato antiguo), se usa tal cual. */
+  const base = new URL(raiz.dataset.src, location.href);
+  const json = (u) => fetch(new URL(u, base)).then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
+  let todos = [];
+  const pintar = () => render(<Buscador datos={{ items: todos }} />, raiz);
+  json(base)
+    .then((m) => {
+      if (m.items) { todos = m.items; pintar(); return; }
+      const tipos = m.tipos || [];
+      const principal = (t) => (m.principales || []).includes(t.k);
+      const lote = (ts) => Promise.all(
+        ts.flatMap((t) => t.ficheros.map((f) => json(f).then((d) => d.items || []).catch(() => [])))
+      ).then((partes) => { todos = todos.concat(...partes); });
+      return lote(tipos.filter(principal)).then(() => {
+        pintar();
+        return lote(tipos.filter((t) => !principal(t))).then(pintar);
+      });
+    })
     .catch(() => {
       /* Si el índice no carga, la página sigue teniendo el formulario de
        * respaldo y la lista de lo más reciente: no se queda en blanco. */
