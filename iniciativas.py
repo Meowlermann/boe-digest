@@ -166,7 +166,9 @@ todas cada mismo misma mismos mismas sino pero porque pues ya no si le les nos s
 deberan puede pueden sera siendo sido tiene tienen presente presentes primero segundo tercero
 articulo articulos apartado apartados parrafo letra disposicion disposiciones adicional transitoria
 final derogatoria ley leyes organica proposicion proyecto texto redaccion modifica modificacion
-queda quedan redactado redactada siguiente siguientes siguiente numero punto""".split())
+queda quedan redactado redactada siguiente siguientes siguiente numero punto
+cve bocg pag num serie generales oficial cortes congreso diputados senado boletin
+enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre""".split())
 _MUERTOS = {"boletin oficial", "cortes generales", "congreso diputados", "grupo parlamentario",
             "mesa camara", "diario sesiones", "oficial estado", "entrada vigor", "boletin cortes",
             "serie proposiciones", "diputados serie", "palacio congreso", "portavoz grupo",
@@ -178,7 +180,9 @@ def terminos(texto: str, maximo: int = 12) -> list[str]:
     fórmulas de cualquier ley («entrada en vigor», «Boletín Oficial»…)."""
     palabras = re.findall(r"[a-záéíóúñü]+", (texto or "").lower())
     utiles = [(w, _norm(w)) for w in palabras]
-    utiles = [(w, n) for w, n in utiles if len(n) > 2 and n not in _VACIAS]
+    # Más de tres letras: fuera artículos sueltos y los restos de palabras que
+    # el PDF parte cuando no sabe leer un acento («aut noma», «mat ria»).
+    utiles = [(w, n) for w, n in utiles if len(n) > 3 and n not in _VACIAS]
     cuenta: dict = {}
     forma: dict = {}
     for (w1, n1), (w2, n2) in zip(utiles, utiles[1:]):
@@ -191,7 +195,18 @@ def terminos(texto: str, maximo: int = 12) -> list[str]:
     return [forma[k] for k, _n in top[:maximo]]
 
 
-def completar_terminos(e: dict, pdf_text, log, maximo: int = 120) -> int:
+def kw_limpios(v: dict) -> list[str]:
+    """Los términos guardados, pasados otra vez por el filtro actual: si el
+    filtro mejora, no hace falta volver a descargar los PDF."""
+    salida = []
+    for t in v.get("kw") or []:
+        ns = _norm(t).split()
+        if len(ns) == 2 and all(len(n) > 3 and n not in _VACIAS for n in ns) and " ".join(ns) not in _MUERTOS:
+            salida.append(t)
+    return salida
+
+
+def completar_terminos(e: dict, pdf_text, log, maximo: int = 400) -> int:
     """Lee el primer boletín de cada iniciativa que aún no tenga términos. Por
     tandas: la primera vez son cientos de PDF, y cada edición completa unos
     pocos. Lo más reciente primero, que es lo que se busca."""
@@ -450,7 +465,7 @@ def generar_paginas(h: dict) -> list:
               '<a class="srclink" href="/iniciativas/metodologia.html">Cómo se hace</a>.')
 
     def fila(exp, v, extra=""):
-        return (f'<li><a href="/iniciativas/{attr(slug(exp))}.html">{esc(nucleo(v["o"]) or v["o"])}</a>'
+        return (f'<li><a href="/iniciativas/{attr(slug(exp))}.html">{esc(v["o"].rstrip("."))}</a>'
                 f'<span class="ref">{esc(tipo_corto(v["t"]))} · {esc(grupo_corto(v["a"]))} · '
                 f'{esc(exp)}{extra}</span></li>')
 
@@ -481,7 +496,7 @@ def generar_paginas(h: dict) -> list:
                         + (f'<p><a class="srclink" href="/{attr(ruta_norma)}">Ficha de la norma en La Tercera Cámara →</a></p>' if ruta_norma else "")
                         + (f'<p><a class="srclink" href="{attr(ley["pdf"])}" target="_blank" rel="noopener">Texto de la ley ↗</a></p>' if ley.get("pdf") else ""))
         relacionadas = "".join(
-            f'<li><a href="/iniciativas/{attr(slug(r))}.html">{esc(nucleo(ini[r]["o"]))}</a>'
+            f'<li><a href="/iniciativas/{attr(slug(r))}.html">{esc(ini[r]["o"].rstrip("."))}</a>'
             f'<span class="ref">{esc(r)}</span></li>' for r in v.get("rel") or [] if r in ini and r != exp)
         bocg = "".join(f'<li><a href="{attr(u)}" target="_blank" rel="noopener">{esc(u.rsplit("/", 1)[-1])}</a></li>'
                        for u in v.get("bocg") or [])
@@ -490,7 +505,7 @@ def generar_paginas(h: dict) -> list:
             f'<h2 class="rotulo">Situación</h2><p><b>{esc(estado)}</b></p>'
             + (f'<h2 class="rotulo">De qué habla el texto</h2><p class="rk-nota">Las expresiones que más '
                f'se repiten en el texto publicado en el Boletín de las Cortes: '
-               f'{esc(", ".join(v["kw"]))}.</p>' if v.get("kw") else "")
+               f'{esc(", ".join(kw_limpios(v)))}.</p>' if kw_limpios(v) else "")
             + (f'<h2 class="rotulo">Plazos</h2><ul class="indice">{plazos_html}</ul>' if plazos_html else "")
             + f'<h2 class="rotulo">Tramitación</h2><ol class="indice">{pasos_html}</ol>'
             + ley_html
@@ -677,5 +692,5 @@ def entradas_buscador(entrada, e: dict | None = None) -> list:
         out.append(entrada(v["o"], f"{tipo_corto(v['t'])} · {grupo_corto(v['a'])} · {estado}",
                            f"iniciativas/{slug(exp)}.html", "iniciativa",
                            max(fechas) if fechas else (v.get("fp") or ""),
-                           f"{exp} {v['a']} {' '.join(v.get('kw') or [])}", largo=320))
+                           f"{exp} {v['a']} {' '.join(kw_limpios(v))}", largo=320))
     return out
