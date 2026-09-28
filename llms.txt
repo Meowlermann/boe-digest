@@ -23,6 +23,14 @@ Repositorio (código y datos en bruto): https://github.com/Meowlermann/boe-diges
 - /feed.xml — feed RSS 2.0 con las últimas ediciones.
 - /data/AAAA-MM-DD.json — datos estructurados en bruto de cada edición
   (mismo contenido que se renderiza en la página, en JSON).
+- /seguimiento/ — qué se tramita, cómo se vota y qué se pregunta.
+- /tramitacion/ — una página por proyecto o proposición de ley (y por real
+  decreto-ley votado) con su estado, hitos, plazos de enmiendas,
+  votaciones y ley resultante; /tramitacion/metodologia.html explica los
+  estados y sus límites.
+- /datos/indice.json — lista de los ficheros del índice del buscador,
+  uno por tipo (/datos/indice-<tipo>.json, partido por año si pasa de
+  1 MB), con su número de entradas y su tamaño.
 
 ## Qué se puede citar y cómo
 

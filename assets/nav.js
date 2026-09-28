@@ -37,6 +37,7 @@
   var ruta = location.pathname;
   var seccion =
     /^\/votaciones\//.test(ruta) ? "votaciones" :
+    /^\/(seguimiento|tramitacion)\//.test(ruta) ? "seguimiento" :
     /^\/(diputados|rankings)\//.test(ruta) ? "parlamento" :
     /^\/(buscar|normas|temas|plazos|mapa)\//.test(ruta) ? "consultar" :
     "hoy";
@@ -119,26 +120,42 @@
   var res = buscador.querySelector(".nav-res");
   var indice = null, cargando = null, activo = -1, visibles = [];
 
-  var ETIQ = { norma: "Norma", cortes: "Cortes", diputado: "Diputado",
+  var ETIQ = { norma: "Norma", cortes: "Cortes", diputado: "Diputado", iniciativa: "Iniciativa", votacion: "Votación",
+               pregunta: "Pregunta", persona: "Persona", nombramiento: "Nombramiento",
                tema: "Materia", edicion: "Edición", plazo: "Plazo" };
 
   function plano(t) {
     return (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   }
+  function leer(u) {
+    return fetch(u).then(function (r) { return r.ok ? r.json() : { items: [] }; })
+      .catch(function () { return { items: [] }; });
+  }
+  function sumar(d) {
+    indice = (indice || []).concat((d.items || []).map(function (e) {
+      e._t = plano(e.t); e._s = plano(e.s); e._x = plano(e.x);
+      return e;
+    }));
+  }
+  // indice.json solo lista los tipos y sus ficheros: primero se traen los
+  // principales (normas, iniciativas, diputados) y se pinta; el resto, detrás.
+  function lote(tipos) {
+    var fs = [];
+    tipos.forEach(function (t) { (t.ficheros || []).forEach(function (f) { fs.push(leer("/datos/" + f)); }); });
+    return Promise.all(fs).then(function (ds) { ds.forEach(sumar); pintar(); });
+  }
   function cargar() {
     if (indice || cargando) return cargando;
-    cargando = fetch("/datos/indice.json")
-      .then(function (r) { return r.ok ? r.json() : { items: [] }; })
-      .then(function (d) {
-        indice = (d.items || []).map(function (e) {
-          e._t = plano(e.t); e._s = plano(e.s); e._x = plano(e.x);
-          return e;
-        });
-        pintar();
-      })
-      .catch(function () { indice = []; });
+    cargando = leer("/datos/indice.json").then(function (m) {
+      if (m.items) { sumar(m); pintar(); return; }
+      var tipos = m.tipos || [], pr = m.principales || [];
+      return lote(tipos.filter(function (t) { return pr.indexOf(t.k) >= 0; })).then(function () {
+        return lote(tipos.filter(function (t) { return pr.indexOf(t.k) < 0; }));
+      });
+    }).catch(function () { indice = indice || []; });
     return cargando;
   }
+  function enlace(u) { return /^https?:/.test(u) ? u : "/" + u; }
   function puntuar(it, ts) {
     var total = 0;
     for (var i = 0; i < ts.length; i++) {
@@ -171,7 +188,7 @@
     visibles = r.slice(0, 8).map(function (x) { return x[1]; });
     var q = encodeURIComponent(caja.value.trim());
     res.innerHTML = (visibles.length ? visibles.map(function (it, n) {
-      return '<a class="nav-res-i" role="option" id="nr' + n + '" href="/' + esc(it.u) + '">' +
+      return '<a class="nav-res-i" role="option" id="nr' + n + '" href="' + esc(enlace(it.u)) + '">' +
         '<em>' + (ETIQ[it.k] || it.k) + '</em><b>' + esc(it.t) + '</b>' +
         (it.s ? '<span>' + esc(it.s) + '</span>' : '') + '</a>';
     }).join("") : '<p class="nav-res-n">Nada con esas palabras.</p>') +
@@ -194,7 +211,7 @@
     else if (e.key === "ArrowUp") { e.preventDefault(); marcar(activo - 1); }
     else if (e.key === "Enter" && activo >= 0 && visibles[activo]) {
       e.preventDefault();
-      location.href = "/" + visibles[activo].u;
+      location.href = enlace(visibles[activo].u);
     } else if (e.key === "Escape") {
       caja.value = ""; pintar(); caja.blur(); cerrarTodo();
     }

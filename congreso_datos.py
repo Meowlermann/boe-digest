@@ -137,6 +137,30 @@ def _urls_json(html: str) -> list:
     return [u if u.startswith("http") else CONGRESO + u for u in RE_JSON.findall(html or "")]
 
 
+# Ficha de una iniciativa en el buscador del Congreso («mostrarDetalle»). La
+# usan las preguntas escritas y el seguimiento de la tramitación: el HTML se
+# sirve sin cookies y trae lo que los datos abiertos no siempre tienen.
+BUSCADOR_INICIATIVAS = f"{CONGRESO}/es/busqueda-de-iniciativas"
+FICHA_INICIATIVA = (BUSCADOR_INICIATIVAS + "?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal"
+                    "&p_p_mode=view&_iniciativas_mode=mostrarDetalle"
+                    "&_iniciativas_legislatura={leg}&_iniciativas_id={exp}")
+# Entre petición y petición al buscador: es una web pública, no una API.
+PAUSA_BUSCADOR = 1.0
+
+
+def ficha_iniciativa_url(exp: str, leg: str = "XV") -> str:
+    """«122/000231» -> URL de su ficha oficial."""
+    m = re.match(r"(\d{3}/\d{6})", exp or "")
+    return FICHA_INICIATIVA.format(leg=leg, exp=(m.group(1) if m else exp or "").replace("/", "%2F"))
+
+
+def texto_html(html: str) -> str:
+    """El texto visible de una ficha, en una línea: sin scripts ni estilos."""
+    html = re.sub(r"<script[\s\S]*?</script>", " ", html or "")
+    html = re.sub(r"<style[\s\S]*?</style>", " ", html)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+
+
 def _elegir(urls: list, nombre: str) -> str:
     return next((u for u in urls if nombre.lower() in u.lower()), "")
 

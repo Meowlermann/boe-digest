@@ -59,6 +59,8 @@ RANKINGS_DIR = ROOT / "rankings"
 PREGUNTAS_DIR = ROOT / "preguntas"
 PERSONAS_DIR = ROOT / "personas"
 NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
+TRAMITACION_DIR = ROOT / "tramitacion"
+SEGUIMIENTO_DIR = ROOT / "seguimiento"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -3154,6 +3156,20 @@ def cortes_congreso(fecha: dt.date) -> dict:
         log(f"Cortes: {len(escritas)} piezas de preguntas escritas")
     except Exception as exc:                                  # noqa: BLE001
         log(f"Cortes: preguntas escritas no disponibles ({exc})")
+    # Seguimiento legislativo: iniciativas nuevas y cambios de fase de hoy.
+    try:
+        import tramitacion as tr
+        try:
+            detalle = cd.detalle_ordenado(json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8")))
+        except Exception:                                     # noqa: BLE001
+            detalle = []
+        estado_tr, anterior_tr = tr.actualizar(get, log, detalle)
+        tr.completar_terminos(estado_tr, pdf_text, log)
+        tramites = tr.feed(estado_tr, anterior_tr, dt.date.today().isoformat(), fmt_date_es, SITE_URL)
+        feed += tramites
+        log(f"Cortes: {len(tramites)} piezas de tramitación")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"Cortes: seguimiento legislativo no disponible ({exc})")
     return {"feed": feed, "scoreboard": scoreboard, "aviso": aviso}
 
 
@@ -3314,6 +3330,7 @@ _ICO = {
     "cons": _svg('<path d="M4 5h16M4 12h16M4 19h10"/>'),
     "bus": _svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
     "vot": _svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'),
+    "seg": _svg('<circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M7 12h3M14 12h3"/>'),
 }
 
 
@@ -3360,7 +3377,9 @@ def render_nav() -> str:
         f'<li class="pilar" data-pilar="parlamento">'
         f'<a class="pilar-b" href="/diputados/" aria-haspopup="true" aria-expanded="false">{_ICO["parl"]}<span>Parlamento</span></a>'
         f'<div class="panel"><p class="panel-t">Así vota y así trabaja cada diputado</p><ul class="panel-l">'
+        + enlace("/seguimiento/", "Seguimiento", "Qué se tramita, cómo se vota y qué se pregunta")
         + enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado")
+        + enlace("/tramitacion/", "Leyes en tramitación", "Qué se tramita, en qué fase y con qué plazos")
         + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
         + enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos")
         + (enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
@@ -3374,10 +3393,14 @@ def render_nav() -> str:
         f'<li class="pilar pilar-directo" data-pilar="votaciones">'
         f'<a class="pilar-b" href="/votaciones/">{_ICO["vot"]}<span>Votaciones</span></a></li>'
 
+        # Seguimiento también va suelto: su portada ya reparte en tres bloques.
+        f'<li class="pilar pilar-directo" data-pilar="seguimiento">'
+        f'<a class="pilar-b" href="/seguimiento/">{_ICO["seg"]}<span>Seguimiento</span></a></li>'
+
         f'<li class="pilar" data-pilar="consultar">'
         f'<a class="pilar-b" href="/mapa/" aria-haspopup="true" aria-expanded="false">{_ICO["cons"]}<span>Consultar</span></a>'
         f'<div class="panel panel-ancho"><p class="panel-t">Encontrar cualquier cosa</p><ul class="panel-l">'
-        + enlace("/buscar/", "Buscador", "Normas, diputados y materias a la vez")
+        + enlace("/buscar/", "Buscador", "Normas, leyes, votaciones, preguntas y diputados")
         + enlace("/normas/", "Normas, una a una", "Una ficha por disposición del BOE")
         + enlace("/plazos/", "Plazos que vencen", "Lo que aún se puede recurrir o solicitar")
         + enlace("/nombramientos/", "Nombramientos y ceses", "Quién entra y quién sale de cada cargo público")
@@ -4835,6 +4858,135 @@ def renderizar_nombramientos(fichas_dip: list | None = None) -> list:
     return salidas
 
 
+def renderizar_tramitacion(todos: list) -> list:
+    """/tramitacion/: en qué punto está cada proyecto y proposición de ley. Los
+    datos los deja tramitacion.actualizar() al construir la edición; aquí solo
+    se pintan, con las votaciones y las normas que ya tiene el sitio.
+    Devuelve [{"url", "lastmod"}] con lastmod = fecha del último hito."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import congreso_datos as cd
+    import tramitacion as tr
+    normas_por_ley = {}
+    for day in todos:
+        for s in (day.get("boe", {}) or {}).get("stories") or []:
+            m = re.match(r"(Ley(?: Orgánica)? \d+/\d{4})", titulo_oficial_de(s) or "")
+            if m and ref_norma(s):
+                normas_por_ley.setdefault(m.group(1), f"normas/{ref_norma(s)}.html")
+    salidas = tr.generar_paginas({
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "carpeta": TRAMITACION_DIR, "log": log,
+        "detalle": cd.detalle_ordenado(CONGRESO_ESTADO) if CONGRESO_ESTADO else [],
+        "pagina_votacion": pagina_votacion, "normas_por_ley": normas_por_ley,
+    })
+    log(f"tramitacion/: {len(salidas)} páginas")
+    return salidas
+
+
+def novedades_preguntas(dias: list, n: int = 5) -> list:
+    """(fecha, texto, enlace) de las últimas preguntas: las orales que ya salen
+    en las ediciones y las escritas contestadas o registradas."""
+    filas = []
+    for day in dias:
+        for it in (day.get("cortes", {}) or {}).get("feed") or []:
+            if (it.get("type") or "").startswith("Pregunta"):
+                filas.append((day["id"], it.get("headline", ""), f"/ediciones/{day['id']}.html"))
+    try:
+        import preguntas as pq
+        for exp, v in (pq.cargar_escritas().get("exp") or {}).items():
+            f = v.get("c") or v.get("pr")
+            if f and v.get("t"):
+                filas.append((f, ("Contestada: " if v.get("c") else "Registrada: ") + v["t"].rstrip("."),
+                              pq.url_ficha(exp)))
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"seguimiento/: preguntas escritas no disponibles ({exc})")
+    return sorted(filas, key=lambda x: x[0], reverse=True)[:n]
+
+
+def renderizar_seguimiento(dias: list) -> list:
+    """/seguimiento/: la puerta de entrada a lo que pasa en el Congreso, en tres
+    bloques con las cinco últimas novedades de cada uno."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import congreso_datos as cd
+    import tramitacion as tr
+    hoy = dt.date.today().isoformat()
+
+    def recortar(t, n=150):
+        t = " ".join((t or "").split())
+        return t if len(t) <= n else t[:n].rsplit(" ", 1)[0] + "…"
+
+    def bloque(titulo, entradilla, filas, mas, mas_txt):
+        items = "".join(
+            f'<li><a href="{esc_attr(u if u.startswith(("http", "/")) else "/" + u)}"'
+            + (' target="_blank" rel="noopener"' if u.startswith("http") else "")
+            + f'>{esc_html(recortar(t))}</a><span class="ref">{esc_html(fmt_date_es(f))}</span></li>'
+            for f, t, u in filas)
+        return (f'<h2 class="rotulo">{esc_html(titulo)}</h2><p>{esc_html(entradilla)}</p>'
+                + (f'<ul class="indice">{items}</ul>' if items else '<p class="ref">Sin novedades todavía.</p>')
+                + f'<p><a class="srclink" href="{mas}">{esc_html(mas_txt)} →</a></p>')
+
+    e = tr.cargar()
+    nov_tr = tr.novedades(e, 5)
+    detalle = cd.detalle_ordenado(CONGRESO_ESTADO) if CONGRESO_ESTADO else []
+    # Un asunto con varias votaciones (enmiendas, conjunto) sale una vez.
+    nov_vot, vistos = [], set()
+    for d in detalle:
+        asunto = d.get("a") or d.get("t") or "Votación"
+        if (d["f"], asunto) in vistos:
+            continue
+        vistos.add((d["f"], asunto))
+        nov_vot.append((d["f"], asunto, f"votaciones/{pagina_votacion(d)}"))
+        if len(nov_vot) == 5:
+            break
+    nov_pre = novedades_preguntas(dias, 5)
+    fechas = [x[0] for x in nov_tr + nov_vot + nov_pre if x[0]]
+    lastmod = max(fechas) if fechas else hoy
+    cuenta: dict = {}
+    for v in (e.get("ini") or {}).values():
+        cuenta[v["est"]] = cuenta.get(v["est"], 0) + 1
+    abiertas = sum(n for k, n in cuenta.items() if k in tr.ABIERTOS)
+    try:
+        import preguntas as pq
+        n_escritas = len(pq.cargar_escritas().get("exp") or {})
+    except Exception:                                         # noqa: BLE001
+        n_escritas = 0
+    ficha = (f"<dt>En tramitación</dt><dd>{abiertas} iniciativas</dd>"
+             f"<dt>Aprobadas</dt><dd>{cuenta.get('aprobada', 0)} leyes</dd>"
+             f"<dt>Votaciones</dt><dd>{len(detalle)} en el Pleno</dd>"
+             + (f"<dt>Preguntas escritas</dt><dd>{n_escritas} registradas</dd>" if n_escritas else ""))
+    cuerpo = (
+        bloque("Qué se tramita",
+               f"{abiertas} proyectos y proposiciones de ley siguen abiertos en el Congreso. "
+               "Los últimos pasos:", nov_tr, "/tramitacion/", "Todas las iniciativas, por estado")
+        + bloque("Cómo se vota", "Las últimas votaciones del Pleno, con el voto de cada diputado:",
+                 nov_vot, "/votaciones/", "Todas las votaciones")
+        + bloque("Qué se pregunta", "Las últimas preguntas al Gobierno, orales y escritas:",
+                 nov_pre, "/preguntas/" if preguntas_publicadas() else "/diputados/",
+                 "Preguntas al Gobierno" if preguntas_publicadas() else "Los diputados, uno a uno"))
+    url = f"{SITE_URL}seguimiento/"
+    titulo = "Seguimiento del Congreso: qué se tramita, cómo se vota y qué se pregunta"
+    desc = ("Las leyes en tramitación, las votaciones del Pleno y las preguntas al Gobierno, "
+            "con datos oficiales del Congreso actualizados cada día.")
+    _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), SEGUIMIENTO_DIR, "index.html", {
+        "TITLE": esc_html(f"{titulo} | La Tercera Cámara"), "META_DESC": esc_attr(desc[:155]),
+        "CANONICAL": url,
+        "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": titulo, "url": url,
+                                  "description": desc, "inLanguage": "es-ES",
+                                  "dateModified": lastmod}]),
+        "EDITION_DATE": esc_html(f"Datos al {fmt_date_es(lastmod)}"),
+        "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Seguimiento</span>',
+        "KICKER": "Seguimiento", "HEADLINE": "Qué se tramita, cómo se vota y qué se pregunta",
+        "STANDFIRST": esc_html(desc), "FICHA": ficha, "CUERPO": cuerpo,
+        "FUENTE": 'Fuente: datos abiertos del Congreso de los Diputados.',
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })
+    log(f"seguimiento/: {len(nov_tr)} + {len(nov_vot)} + {len(nov_pre)} novedades")
+    return [{"url": url, "lastmod": lastmod}]
+
+
 def renderizar_rankings(fichas_dip: list) -> list:
     """/rankings/: clasificaciones de diputados y grupos. El cálculo vive en
     rankings.py; aquí solo se le pasan las utilidades de página del sitio para
@@ -5117,7 +5269,7 @@ def renderizar_diputados(fichas: list) -> list:
     return salidas
 
 
-def _entrada_indice(titulo, sub, url, clase, fecha="", extra=""):
+def _entrada_indice(titulo, sub, url, clase, fecha="", extra="", largo=90):
     """Una fila del índice del buscador. Campos de una letra porque esto viaja
     por la red entero: con quinientas normas, cada nombre de campo largo son
     kilobytes que el lector paga sin ver nada a cambio."""
@@ -5128,7 +5280,59 @@ def _entrada_indice(titulo, sub, url, clase, fecha="", extra=""):
         corte = t[:n].rsplit(" ", 1)[0]
         return (corte or t[:n]).rstrip(" ,;:") + "…"
     return {"t": cortar(titulo, 140), "s": cortar(sub, 120),
-            "u": url, "k": clase, "d": fecha, "x": " ".join((extra or "").split())[:90]}
+            "u": url, "k": clase, "d": fecha, "x": " ".join((extra or "").split())[:largo]}
+
+
+INDICE_PRINCIPALES = ("norma", "iniciativa", "diputado")   # lo primero que se carga
+INDICE_MAX_BYTES = 1_000_000
+
+
+def escribir_indice(items: list, hoy: str) -> dict:
+    """El índice partido: un datos/indice-<tipo>.json por tipo (por año si pasa
+    de 1 MB) y un datos/indice.json ligero que solo los lista, con cuántas
+    entradas y cuántos bytes tiene cada uno. Así el navegador trae primero lo
+    que más se busca y el resto detrás, y ningún fichero crece sin límite."""
+    def volcar(obj):
+        return json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
+
+    DATOS_DIR.mkdir(exist_ok=True)
+    por_tipo: dict = {}
+    for e in items:
+        por_tipo.setdefault(e["k"], []).append(e)
+    tipos, escritos = [], set()
+    for k in sorted(por_tipo, key=lambda k: (k not in INDICE_PRINCIPALES, k)):
+        filas = por_tipo[k]
+        partes = {f"indice-{k}.json": filas}
+        # Por año si no cabe en uno; y si un año tampoco cabe, ese año por meses.
+        if len(volcar({"k": k, "items": filas}).encode()) > INDICE_MAX_BYTES:
+            partes = {}
+            for e in filas:
+                partes.setdefault(f"indice-{k}-{(e.get('d') or '')[:4] or 'sin-fecha'}.json", []).append(e)
+            for nombre in list(partes):
+                if len(volcar({"k": k, "items": partes[nombre]}).encode()) > INDICE_MAX_BYTES:
+                    for e in partes.pop(nombre):
+                        mes = (e.get("d") or "")[5:7]
+                        partes.setdefault(nombre[:-5] + (f"-{mes}" if mes else "") + ".json", []).append(e)
+        ficheros, peso = [], 0
+        for nombre, fs in sorted(partes.items()):
+            texto = volcar({"k": k, "actualizado": hoy, "n": len(fs), "items": fs})
+            if len(texto.encode()) > INDICE_MAX_BYTES:
+                log(f"buscar/: {nombre} pasa de 1 MB ({len(texto.encode())} bytes)")
+            escribir_si_cambia(DATOS_DIR / nombre, texto)
+            escritos.add(nombre)
+            ficheros.append(nombre)
+            peso += len(texto.encode())
+        tipos.append({"k": k, "n": len(filas), "bytes": peso, "ficheros": ficheros})
+    # Los ficheros de tipos o años que ya no existen no se quedan colgando.
+    for viejo in DATOS_DIR.glob("indice-*.json"):
+        if viejo.name not in escritos:
+            viejo.unlink()
+    manifiesto = {"actualizado": hoy, "n": len(items), "principales": list(INDICE_PRINCIPALES),
+                  "tipos": tipos}
+    escribir_si_cambia(DATOS_DIR / "indice.json", volcar(manifiesto))
+    log("buscar/: índice " + ", ".join(f"{t['k']} {t['n']} ({t['bytes'] // 1024} KB)" for t in tipos))
+    DIAG["indice"] = tipos
+    return manifiesto
 
 
 def renderizar_buscador(dias: list, fichas_dip: list) -> list:
@@ -5163,10 +5367,48 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         # el subtítulo útil es el standfirst, que ya resume la sesión.
         for it in (day.get("cortes", {}) or {}).get("feed") or []:
             fuente = (it.get("source") or {}).get("label") or ""
+            clase = "pregunta" if (it.get("type") or "").startswith("Pregunta") else "cortes"
             idx.append(_entrada_indice(
                 it.get("headline", ""), it.get("standfirst", ""),
-                f"ediciones/{day['id']}.html", "cortes", day["id"],
+                f"ediciones/{day['id']}.html", clase, day["id"],
                 f'{it.get("chamber", "")} {it.get("type", "")} {fuente}'))
+
+    # Iniciativas legislativas: lo que se tramita, con los términos que más
+    # se repiten en su texto para que se encuentre por el nombre popular.
+    try:
+        import tramitacion as tr
+        idx += tr.entradas_buscador(_entrada_indice)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: iniciativas no indexadas ({exc})")
+    # Votaciones del Pleno: el asunto votado, con su página propia.
+    try:
+        import congreso_datos as cd
+        for d in cd.detalle_ordenado(CONGRESO_ESTADO):
+            idx.append(_entrada_indice(d.get("a") or d.get("t") or "Votación",
+                                       f'{d.get("t") or "Votación"} · {fmt_date_es(d["f"])}',
+                                       f"votaciones/{pagina_votacion(d)}", "votacion", d["f"]))
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: votaciones no indexadas ({exc})")
+
+    # Preguntas escritas: no tienen página propia, van a la ficha del Congreso.
+    try:
+        import congreso_datos as cd
+        import preguntas as pq
+        for exp, v in (pq.cargar_escritas().get("exp") or {}).items():
+            if not v.get("t"):
+                continue
+            autores = ", ".join(cd.nombre_natural(re.sub(r"<[^>]+>", " ", a)) for a in (v.get("a") or [])[:2])
+            estado = f"contestada el {fmt_date_es(v['c'])}" if v.get("c") else "sin contestar"
+            idx.append(_entrada_indice(v["t"], f"Pregunta escrita de {autores} · {estado}",
+                                       pq.url_ficha(exp), "pregunta", v.get("pr") or "", exp))
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: preguntas escritas no indexadas ({exc})")
+    # Personas y nombramientos del BOE.
+    try:
+        import nombramientos as nb
+        idx += nb.entradas_buscador(_entrada_indice)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: nombramientos no indexados ({exc})")
 
     # Diputados: el nombre propio es la consulta más natural que existe.
     for f in fichas_dip or []:
@@ -5196,10 +5438,7 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         vistos.add(clave)
         limpio.append(e)
 
-    DATOS_DIR.mkdir(exist_ok=True)
-    (DATOS_DIR / "indice.json").write_text(json.dumps(
-        {"actualizado": hoy, "n": len(limpio), "items": limpio},
-        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    escribir_indice(limpio, hoy)
 
     # La página. Sin JavaScript sigue siendo útil: lleva los enlaces a las
     # secciones y un formulario que delega en el buscador de Google acotado
@@ -5211,7 +5450,7 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         f'<dt>{esc_html(ETIQUETA_CLASE.get(k, k))}</dt><dd>{v}</dd>'
         for k, v in sorted(por_clase.items(), key=lambda kv: -kv[1]))
     recientes = "".join(
-        f'<li><a href="../{esc_attr(e["u"])}">{esc_html(e["t"])}</a>'
+        f'<li><a href="{esc_attr(e["u"] if e["u"].startswith("http") else "../" + e["u"])}">{esc_html(e["t"])}</a>'
         f'<span class="ref">{esc_html(ETIQUETA_CLASE.get(e["k"], e["k"]))}'
         + (f' · {esc_html(fmt_date_es(e["d"]))}' if e["d"] else "") + '</span></li>'
         for e in limpio[:40])
@@ -5247,8 +5486,8 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         "MIGA": '<a href="../">Portada</a> › <span aria-current="page">Buscador</span>',
         "KICKER": "Buscador",
         "HEADLINE": "Todo el sitio en una sola caja",
-        "STANDFIRST": ("Normas del BOE, actividad de las Cortes, los 350 diputados, las materias "
-                       "y los plazos abiertos. Se busca en el navegador: ni se registra la "
+        "STANDFIRST": ("Normas del BOE, leyes en tramitación, votaciones del Pleno, actividad de "
+                       "las Cortes, los 350 diputados y las materias. Se busca en el navegador: ni se registra la "
                        "consulta ni sale de tu ordenador."),
         "FICHA": resumen,
         "CUERPO": cuerpo,
@@ -5260,7 +5499,10 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
 
 
 ETIQUETA_CLASE = {"norma": "Norma del BOE", "cortes": "Cortes", "diputado": "Diputado",
-                  "tema": "Materia", "plazo": "Plazo", "edicion": "Edición"}
+                  "tema": "Materia", "plazo": "Plazo", "edicion": "Edición",
+                  "iniciativa": "Iniciativa legislativa", "votacion": "Votación",
+                  "pregunta": "Pregunta al Gobierno", "persona": "Persona",
+                  "nombramiento": "Nombramiento o cese"}
 
 
 
@@ -5306,6 +5548,11 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
         + '<h2 class="rotulo">Parlamento</h2>'
         + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
                  ("/votaciones/", "Votaciones del Pleno: quién votó qué", ""),
+                 ("/seguimiento/", "Seguimiento: qué se tramita, cómo se vota y qué se pregunta", ""),
+                 ("/tramitacion/", "Leyes en tramitación: en qué punto está cada iniciativa", ""),
+                 ("/tramitacion/estado-aprobada.html", "Leyes aprobadas en la legislatura", ""),
+                 ("/tramitacion/ampliaciones.html", "Plazos de enmiendas más ampliados", ""),
+                 ("/tramitacion/antiguedad.html", "Iniciativas que más tiempo llevan en tramitación", ""),
                  ("/rankings/", "Rankings de diputados y grupos", "")]
                 + ([("/preguntas/", "Preguntas escritas al Gobierno", "")]
                    if preguntas_publicadas() else []))
@@ -5515,6 +5762,15 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         extras += renderizar_nombramientos(fichas_dip)
     except Exception as exc:                                  # noqa: BLE001
         log(f"nombramientos/: no se pudo generar ({exc})")
+    # Seguimiento legislativo: lo mismo, cada parte con su propio try.
+    try:
+        extras += renderizar_tramitacion(todos)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"tramitacion/: no se pudo generar ({exc})")
+    try:
+        extras += renderizar_seguimiento(dias)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"seguimiento/: no se pudo generar ({exc})")
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(sorted(a_pintar, key=lambda d: d["id"], reverse=True))
@@ -5630,7 +5886,7 @@ def main() -> None:
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
-                RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR):
+                RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if args.nombramientos_desde:

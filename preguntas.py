@@ -101,7 +101,8 @@ def dias_habiles(desde: str | None, hasta: str | None) -> int | None:
 
 
 def url_ficha(exp: str) -> str:
-    return DETALLE.format(exp=exp.replace("/", "%2F"))
+    # El formato vive en congreso_datos: lo comparte con el seguimiento legislativo.
+    return cd.ficha_iniciativa_url(exp)
 
 
 def autores_de(texto: str) -> list:
@@ -112,9 +113,7 @@ def autores_de(texto: str) -> list:
 
 
 def _texto_html(html: str) -> str:
-    html = re.sub(r"<script[\s\S]*?</script>", " ", html)
-    html = re.sub(r"<style[\s\S]*?</style>", " ", html)
-    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+    return cd.texto_html(html)
 
 
 def parsear_ficha(html: str) -> dict:
