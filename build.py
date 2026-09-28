@@ -3106,6 +3106,18 @@ _ICO = {
 }
 
 
+def preguntas_publicadas() -> bool:
+    """¿Hay páginas en /preguntas/? Solo cuando el estado ya cubre el año
+    entero (preguntas.datos_completos); hasta entonces no se generan, y
+    enlazarlas desde el menú o el mapa llevaba a un 404."""
+    try:
+        import preguntas as pq
+        e = pq.cargar_escritas()
+        return bool(e.get("exp")) and pq.datos_completos(e)
+    except Exception:                                         # noqa: BLE001
+        return False
+
+
 def render_nav() -> str:
     global _NAV_HTML
     if _NAV_HTML:
@@ -3140,7 +3152,8 @@ def render_nav() -> str:
         + enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado")
         + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
         + enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos")
-        + enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
+        + (enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
+           if preguntas_publicadas() else "")
         + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
         + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
@@ -4969,8 +4982,9 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
         + '<h2 class="rotulo">Parlamento</h2>'
         + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
                  ("/votaciones/", "Votaciones del Pleno: quién votó qué", ""),
-                 ("/rankings/", "Rankings de diputados y grupos", ""),
-                 ("/preguntas/", "Preguntas escritas al Gobierno", "")])
+                 ("/rankings/", "Rankings de diputados y grupos", "")]
+                + ([("/preguntas/", "Preguntas escritas al Gobierno", "")]
+                   if preguntas_publicadas() else []))
         + '<h3 class="rotulo-sub">Por grupo</h3>' + lista(grupos)
         + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
         + '<h2 class="rotulo">Consultar</h2>'
