@@ -624,8 +624,16 @@ def feed(e: dict, anterior: dict, hoy: str, fmt_date_es, site_url: str) -> list:
               + ([f"Otras {len(ampliados)} iniciativas tienen un plazo ampliado que vence esta semana; "
                   "la lista de las que más ampliaciones acumulan está en tramitacion/ampliaciones.html."]
                  if ampliados else []), "")
+    # Una segunda ejecución el mismo día no repite nada, pero tampoco puede
+    # vaciar la edición: rehace data/<hoy>.json desde cero, así que se
+    # devuelven también las piezas que ya salieron hoy.
+    previas = e.get("piezas_hoy") or {}
+    if previas.get("fecha") == hoy:
+        piezas = previas.get("piezas", []) + piezas
+    piezas = piezas[:MAX_PIEZAS]
+    e["piezas_hoy"] = {"fecha": hoy, "piezas": piezas}
     guardar(e)
-    return piezas[:MAX_PIEZAS]
+    return piezas
 
 
 def novedades(e: dict | None = None, n: int = 5) -> list[tuple[str, str, str]]:
