@@ -119,7 +119,7 @@
   var res = buscador.querySelector(".nav-res");
   var indice = null, cargando = null, activo = -1, visibles = [];
 
-  var ETIQ = { norma: "Norma", cortes: "Cortes", diputado: "Diputado",
+  var ETIQ = { norma: "Norma", cortes: "Cortes", diputado: "Diputado", iniciativa: "Iniciativa", votacion: "Votación",
                tema: "Materia", edicion: "Edición", plazo: "Plazo" };
 
   function plano(t) {
