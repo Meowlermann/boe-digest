@@ -480,7 +480,11 @@ def feed_escritas(e: dict, fmt_date_es, site_url: str) -> tuple[list, dict | Non
             "standfirst": "Aquí van las que más tardaron; el resto, en la sección de preguntas.",
             "body": [f"{len(contestadas)} preguntas escritas han pasado hoy a tener "
                      "contestación registrada en su ficha oficial."],
-            "source": {"label": "Todas las preguntas", "url": f"{site_url}preguntas/"},
+            # /preguntas/ solo existe con el año completo en el estado.
+            "source": ({"label": "Todas las preguntas", "url": f"{site_url}preguntas/"}
+                       if datos_completos(e) else
+                       {"label": "Buscador de iniciativas del Congreso",
+                        "url": "https://www.congreso.es/es/busqueda-de-iniciativas"}),
         })
 
     vencidas = pendientes_vencidas(e, hoy) if datos_completos(e) else []
