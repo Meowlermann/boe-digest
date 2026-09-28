@@ -501,6 +501,40 @@ def duracion(dias: int) -> str:
     return f"{anios} años" + (f" y {resto} meses" if resto else "")
 
 
+def slugs_personas(por_persona: dict) -> dict:
+    """Un slug por clave de persona. Si dos claves distintas dan el mismo slug
+    (pasa muy poco: el slug se corta a 70 caracteres), la segunda lleva sufijo."""
+    slugs, usados = {}, set()
+    for clave in sorted(por_persona):
+        s = base = slug_persona(por_persona[clave][0]["persona"])
+        n = 2
+        while s in usados:
+            s, n = f"{base}-{n}", n + 1
+        usados.add(s)
+        slugs[clave] = s
+    return slugs
+
+
+def entradas_buscador(entrada) -> list:
+    """Filas del buscador: una por persona (k «persona») y una por registro
+    (k «nombramiento»), las dos hacia la página de la persona."""
+    regs = [{"id": k, **v} for k, v in cargar()["registros"].items()]
+    por_persona: dict = {}
+    for r in sorted(regs, key=lambda r: r["fecha"]):
+        por_persona.setdefault(r["clave"], []).append(r)
+    slugs = slugs_personas(por_persona)
+    filas = []
+    for clave, rs in por_persona.items():
+        u = f"personas/{slugs[clave]}.html"
+        ult = rs[-1]
+        filas.append(entrada(ult["persona"], f"{etiqueta(ult)}: {ult['cargo']} · {ult['organo']}",
+                             u, "persona", ult["fecha"], " ".join(r["cargo"] for r in rs)))
+        for r in rs:
+            filas.append(entrada(f"{etiqueta(r)}: {r['persona']}", f"{r['cargo']} · {r['organo']}",
+                                 u, "nombramiento", r["fecha"], f"{r['id']} {r.get('emisor') or ''}"))
+    return filas
+
+
 def generar_paginas(h: dict) -> list:
     """/personas/ y /nombramientos/. `h` trae las utilidades de build.py
     (escape, plantilla, fechas…) para no importarlo desde aquí."""
@@ -523,16 +557,7 @@ def generar_paginas(h: dict) -> list:
     for r in regs:
         por_organo.setdefault(r["organo"] or "Sin órgano", []).append(r)
 
-    # Un slug por clave de persona. Si dos claves distintas dan el mismo slug
-    # (pasa muy poco: el slug se corta a 70 caracteres), la segunda lleva sufijo.
-    slugs, usados = {}, set()
-    for clave in sorted(por_persona):
-        s = base = slug_persona(por_persona[clave][0]["persona"])
-        n = 2
-        while s in usados:
-            s, n = f"{base}-{n}", n + 1
-        usados.add(s)
-        slugs[clave] = s
+    slugs = slugs_personas(por_persona)
 
     def enlace_persona(r, prefijo="../personas/"):
         return f'<a href="{prefijo}{attr(slugs[r["clave"]])}.html">{esc(r["persona"])}</a>'
