@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-09-29T11:20:30.798483+00:00",
+  "inicio": "2026-09-29T11:26:00.971557+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260901",
@@ -54,26 +54,20 @@
   "reproceso": {
     "provincias": {
       "dias": 9,
-      "incluidos": 68,
+      "incluidos": 69,
       "sin_boe": 1,
-      "descartes": {
-        "ambiguo sin contexto: Burgos": 1,
-        "ambiguo sin contexto: Navarra": 2,
-        "ambiguo sin contexto: Valencia": 1
-      },
-      "registros": 68,
+      "descartes": {},
+      "registros": 69,
       "por_categoria": {
-        "convenio": 32,
+        "convenio": 34,
         "patrimonio": 4,
         "otras": 20,
         "infraestructuras": 3,
-        "interes-general": 1,
-        "medio-ambiente": 6,
-        "zona-afectada": 1,
-        "subvencion": 1
+        "subvencion": 2,
+        "medio-ambiente": 6
       },
-      "bytes": 28467
+      "bytes": 28931
     }
   },
-  "fin": "2026-09-29T11:20:50.099664+00:00"
+  "fin": "2026-09-29T11:26:22.177752+00:00"
 }
