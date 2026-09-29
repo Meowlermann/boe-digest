@@ -1325,25 +1325,35 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .mp-filtros button[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--surface); }
 .mp-nota{ margin:10px 0 6px; font-size:13px; color:var(--ink-soft); }
 .mp-nota span, .mp-leyenda{ display:none; }
-.mp[data-m="preg"] [data-para="preg"], .mp[data-m="boe"] [data-para="boe"], .mp[data-m="dip"] [data-para="dip"]{ display:revert; }
-.mp[data-m] .mp-leyenda[data-para]{ display:none; }
-.mp[data-m="preg"] .mp-leyenda[data-para="preg"], .mp[data-m="boe"] .mp-leyenda[data-para="boe"],
-.mp[data-m="dip"] .mp-leyenda[data-para="dip"]{ display:flex; }
+.mp[data-nivel="prov"][data-m="preg"] [data-para="prov-preg"], .mp[data-nivel="prov"][data-m="boe"] [data-para="prov-boe"], .mp[data-nivel="prov"][data-m="dip"] [data-para="prov-dip"], .mp[data-nivel="ccaa"][data-m="preg"] [data-para="ccaa-preg"], .mp[data-nivel="ccaa"][data-m="boe"] [data-para="ccaa-boe"], .mp[data-nivel="ccaa"][data-m="dip"] [data-para="ccaa-dip"]{ display:revert; }
+.mp[data-nivel="prov"][data-m="preg"] .mp-leyenda[data-para="prov-preg"], .mp[data-nivel="prov"][data-m="boe"] .mp-leyenda[data-para="prov-boe"], .mp[data-nivel="prov"][data-m="dip"] .mp-leyenda[data-para="prov-dip"], .mp[data-nivel="ccaa"][data-m="preg"] .mp-leyenda[data-para="ccaa-preg"], .mp[data-nivel="ccaa"][data-m="boe"] .mp-leyenda[data-para="ccaa-boe"], .mp[data-nivel="ccaa"][data-m="dip"] .mp-leyenda[data-para="ccaa-dip"]{ display:flex; }
+.mp-controles{ display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; }
+.mp-nivel{ padding-left:18px; border-left:1px solid var(--border); }
+@media (max-width:560px){ .mp-nivel{ padding-left:0; border-left:0; } }
 .mp-lienzo{ position:relative; }
 .mp svg{ display:block; width:100%; height:auto; }
-.mp-prov path, .mp-prov circle{ fill:var(--mp-0); stroke:var(--mp-borde); stroke-width:.8; transition:fill .15s; }
+.mp-prov{ --b:var(--mp-0); --f:var(--b); }
+.mp-prov path, .mp-prov circle{ fill:var(--f); stroke:var(--mp-borde); stroke-width:.8; transition:fill .15s; }
 .mp-prov circle{ stroke-width:1.5; }
 .mp-prov text{ font:500 11px 'Work Sans',sans-serif; fill:var(--ink-soft); }
 .mp-prov:hover path, .mp-prov:hover circle, .mp-prov:focus-visible path, .mp-prov:focus-visible circle{
   stroke:var(--ink); stroke-width:2; }
 .mp-prov:focus{ outline:none; }
+/* Por comunidades: sin fronteras de provincia, que la comunidad se lea entera. */
+.mp[data-nivel="ccaa"] .mp-prov path,
+.mp[data-nivel="ccaa"] .mp-prov:is(:hover,:focus-visible) path{ stroke:var(--f); stroke-width:.8; }
+.mp[data-nivel="ccaa"] .mp-ccaa{ stroke:var(--mp-borde); stroke-width:1.4; stroke-opacity:1; }
+/* Al señalar una provincia o comunidad, el resto se aclara hacia el fondo. */
+.mp.hay-sel .mp-prov:not(.sel){ --f:color-mix(in srgb, var(--b) 40%, var(--surface)); }
+.mp[data-nivel="prov"].hay-sel .mp-prov:not(.sel){ --f:color-mix(in srgb, var(--b) 65%, var(--surface)); }
+.mp.hay-sel .mp-prov:not(.sel) text{ opacity:.5; }
 .mp-ccaa{ fill:none; stroke:var(--ink-soft); stroke-width:.9; stroke-opacity:.55; pointer-events:none; }
 .mp-marco{ fill:none; stroke:var(--border); stroke-width:1; }
-.mp[data-m="preg"] [data-q-preg="1"] :is(path,circle), .mp[data-m="boe"] [data-q-boe="1"] :is(path,circle), .mp[data-m="dip"] [data-q-dip="1"] :is(path,circle){ fill:var(--mp-1); }
-.mp[data-m="preg"] [data-q-preg="2"] :is(path,circle), .mp[data-m="boe"] [data-q-boe="2"] :is(path,circle), .mp[data-m="dip"] [data-q-dip="2"] :is(path,circle){ fill:var(--mp-2); }
-.mp[data-m="preg"] [data-q-preg="3"] :is(path,circle), .mp[data-m="boe"] [data-q-boe="3"] :is(path,circle), .mp[data-m="dip"] [data-q-dip="3"] :is(path,circle){ fill:var(--mp-3); }
-.mp[data-m="preg"] [data-q-preg="4"] :is(path,circle), .mp[data-m="boe"] [data-q-boe="4"] :is(path,circle), .mp[data-m="dip"] [data-q-dip="4"] :is(path,circle){ fill:var(--mp-4); }
-.mp[data-m="preg"] [data-q-preg="5"] :is(path,circle), .mp[data-m="boe"] [data-q-boe="5"] :is(path,circle), .mp[data-m="dip"] [data-q-dip="5"] :is(path,circle){ fill:var(--mp-5); }
+.mp-prov[data-q="1"]{ --b:var(--mp-1); }
+.mp-prov[data-q="2"]{ --b:var(--mp-2); }
+.mp-prov[data-q="3"]{ --b:var(--mp-3); }
+.mp-prov[data-q="4"]{ --b:var(--mp-4); }
+.mp-prov[data-q="5"]{ --b:var(--mp-5); }
 .mp-leyenda{ list-style:none; margin:10px 0 0; padding:0; gap:4px 14px; flex-wrap:wrap;
   font:500 12px 'IBM Plex Mono',monospace; color:var(--ink-soft); }
 .mp-leyenda li{ display:flex; align-items:center; gap:6px; }
