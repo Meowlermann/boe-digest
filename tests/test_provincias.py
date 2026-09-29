@@ -149,5 +149,21 @@ class TestMenciones(unittest.TestCase):
         self.assertEqual(pv.nivel_mapa(4, rangos), pv.nivel_mapa(5, rangos))
 
 
+    def test_agregados_ccaa(self):
+        # La unión no cuenta dos veces lo que nombra dos provincias de la misma comunidad.
+        res = [{"p": {"slug": "alicante-alacant", "ccaa": "comunitat-valenciana"}, "diputados": 12,
+                "preg_ids": {"184/1", "184/2"}, "boe_ids": {"A"}},
+               {"p": {"slug": "valencia-valencia", "ccaa": "comunitat-valenciana"}, "diputados": 16,
+                "preg_ids": {"184/2", "184/3"}, "boe_ids": {"A", "B"}},
+               {"p": {"slug": "madrid", "ccaa": "madrid"}, "diputados": 37,
+                "preg_ids": set(), "boe_ids": {"C"}}]
+        ag = pv.agregados_ccaa(res, {"comunitat-valenciana": {"184/9"}}, {"madrid": {"C", "D"}})
+        self.assertEqual(ag["comunitat-valenciana"]["dip"], 28)
+        self.assertEqual(ag["comunitat-valenciana"]["preg"], 4)
+        self.assertEqual(ag["comunitat-valenciana"]["boe"], 2)
+        self.assertEqual(ag["madrid"]["boe"], 2)
+        self.assertEqual(ag["madrid"]["provincias"], ["madrid"])
+
+
 if __name__ == "__main__":
     unittest.main()
