@@ -2,10 +2,15 @@ name = "terceracamara-disparador"
 main = "index.js"
 compatibility_date = "2026-09-23"
 
-# Cloudflare interpreta los cron en UTC, igual que GitHub.
-#   05:40 UTC = 07:40 en España en verano / 06:40 en invierno
+# Cloudflare interpreta los cron en UTC, igual que GitHub. Hora de España
+# en verano / en invierno:
+#   05:40 UTC = 07:40 / 06:40  — el BOE del día
 #   06:40 UTC = 08:40 / 07:40  — segundo intento por si el primero falla
-# El workflow es idempotente: si la edición del día ya está hecha, la segunda
-# ejecución no cambia nada y no hace commit.
+#   12:40 UTC = 14:40 / 13:40  — mediodía: preguntas y tramitación
+#   19:40 UTC = 21:40 / 20:40  — noche: votaciones del pleno de la tarde
+# Nunca más tarde de las 22:00 UTC: build.py fecha la edición con el día UTC
+# del runner, y pasada la medianoche UTC abriría la edición de mañana.
+# Una segunda ejecución el mismo día rehace la edición de hoy sin duplicar
+# piezas (preguntas, tramitación y Gemini guardan lo ya publicado en state/).
 [triggers]
-crons = ["40 5 * * *", "40 6 * * *"]
+crons = ["40 5 * * *", "40 6 * * *", "40 12 * * *", "40 19 * * *"]
