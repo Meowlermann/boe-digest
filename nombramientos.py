@@ -32,14 +32,12 @@ import datetime as dt
 import json
 import pathlib
 import re
-import time
 import unicodedata
 
 import congreso_datos as cd
 
 RAIZ = pathlib.Path(__file__).resolve().parent
 ESTADO = RAIZ / "state" / "nombramientos.json"
-API_SUMARIO = "https://www.boe.es/datosabiertos/api/boe/sumario/{aaaammdd}"
 VERSION = 1
 
 # Días del índice /nombramientos/ y de la lista de «recientes».
@@ -267,48 +265,10 @@ extraer.ultimos_descartes = {}
 
 def sumario_api(fecha: dt.date, get, log=print) -> list[dict] | None:
     """Las entradas de la sección II del sumario, leídas de la API de datos
-    abiertos. None si la API no responde (y entonces se usa el HTML)."""
-    r = get(API_SUMARIO.format(aaaammdd=fecha.strftime("%Y%m%d")), tries=2,
-            headers={"Accept": "application/json"})
-    if not r:
-        return None
-    try:
-        datos = r.json()["data"]["sumario"]
-    except Exception as exc:                                  # noqa: BLE001
-        log(f"nombramientos: la API del BOE no devolvió JSON legible ({exc})")
-        return None
-
-    def lista(x):
-        return x if isinstance(x, list) else ([x] if x else [])
-
-    entradas = []
-    for diario in lista(datos.get("diario")):
-        for sec in lista(diario.get("seccion")):
-            if sec.get("codigo") not in ("2A", "2B"):
-                continue
-            for dep in lista(sec.get("departamento")):
-                # Los elementos pueden colgar del departamento o de un epígrafe.
-                grupos = [(ep.get("nombre", ""), lista(ep.get("item")))
-                          for ep in lista(dep.get("epigrafe"))]
-                grupos.append(("", lista(dep.get("item"))))
-                for epigrafe, items in grupos:
-                    for it in items:
-                        pdf = it.get("url_pdf") or {}
-                        try:
-                            paginas = int(pdf.get("pagina_final")) - int(pdf.get("pagina_inicial")) + 1
-                        except (TypeError, ValueError):
-                            paginas = 0
-                        entradas.append({
-                            "codigo": sec.get("codigo"),
-                            "seccion": sec.get("nombre", ""),
-                            "dept": dep.get("nombre", ""),
-                            "epigrafe": epigrafe,
-                            "titulo": it.get("titulo", ""),
-                            "ident": it.get("identificador", ""),
-                            "url": it.get("url_html") or "",
-                            "paginas": paginas,
-                        })
-    return entradas
+    abiertos. None si la API no responde (y entonces se usa el HTML). La
+    lectura vive en reproceso.py, que la comparte con otros extractores."""
+    import reproceso
+    return reproceso.sumario_api(fecha, get, log, SECCIONES)
 
 
 def de_un_dia(fecha: dt.date, get, log=print, entradas_html: list | None = None) -> tuple[list, str]:
@@ -363,35 +323,31 @@ def del_dia(fecha: str) -> list[dict]:
                   key=lambda r: r["id"])
 
 
-def reprocesar(desde: dt.date, hasta: dt.date, get, log=print, pausa: float = 1.5) -> dict:
-    """Recorre el sumario de cada día y SOLO actualiza state/nombramientos.json.
-    No toca data/ ni las ediciones: es para rellenar el histórico."""
-    totales = {"dias": 0, "incluidos": 0, "sin_boe": 0, "descartes": {}}
-    d = desde
-    while d <= hasta:
-        entradas = sumario_api(d, get, log)
-        if entradas is None:
-            log(f"nombramientos {d}: sin sumario (domingo, festivo o API caída)")
-            totales["sin_boe"] += 1
-        else:
-            regs = extraer(entradas, d, log)
-            incorporar(regs, d, "api")
-            totales["dias"] += 1
-            totales["incluidos"] += len(regs)
-            for k, v in extraer.ultimos_descartes.items():
-                totales["descartes"][k] = totales["descartes"].get(k, 0) + v
-        time.sleep(pausa)
-        d += dt.timedelta(days=1)
+# Secciones de la API que usa este extractor en el reprocesado común.
+SECCIONES = ("2A", "2B")
+
+
+def procesar_dia(entradas: list[dict], fecha, fuente: str, log=print) -> tuple[int, dict]:
+    """Lo que llama reproceso.reprocesar() con el sumario de cada día."""
+    regs = extraer(entradas, fecha, log)
+    incorporar(regs, fecha, fuente)
+    return len(regs), dict(extraer.ultimos_descartes)
+
+
+def resumen_reproceso() -> dict:
+    """Tras reprocesar: cuántos registros hay y si el mismo acto aparece con
+    dos identificadores distintos (el índice por identificador ya impide
+    duplicar uno mismo)."""
     e = cargar()
-    # El índice por identificador ya impide duplicar un mismo acto; esto mira
-    # además si el mismo acto aparece con dos identificadores distintos.
     firmas = [(v["fecha"], v["clave"], v["tipo"], _norm(v["cargo"])) for v in e["registros"].values()]
-    totales["duplicados"] = len(firmas) - len(set(firmas))
-    log(f"nombramientos: reprocesado {desde} → {hasta}: {totales['dias']} días leídos, "
-        f"{totales['sin_boe']} sin sumario, {totales['incluidos']} incluidos; "
-        f"descartes {totales['descartes']}; estado con {len(firmas)} registros, "
-        f"{totales['duplicados']} con el mismo acto repetido")
-    return totales
+    return {"registros": len(firmas), "duplicados": len(firmas) - len(set(firmas))}
+
+
+def reprocesar(desde: dt.date, hasta: dt.date, get, log=print, pausa: float = 1.5) -> dict:
+    """Solo nombramientos, con el reprocesado común. Se mantiene para no romper
+    quien lo llame así; build.py ya usa reproceso.reprocesar()."""
+    import reproceso
+    return reproceso.reprocesar(desde, hasta, get, log, pausa, ["nombramientos"])["nombramientos"]
 
 
 # ------------------------------------------------------------------ recuentos
