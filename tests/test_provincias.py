@@ -43,6 +43,7 @@ CASOS = [
     ("Cuenca Hidrográfica del Segura: normas de explotación.", set(), set()),
     ("Parador de Cuenca: obras de rehabilitación.", {"cuenca"}, set()),
     ("Vía verde a su paso por Zamora.", {"zamora"}, set()),
+    ("Declara la villa de Espinosa de los Monteros (Burgos) bien de interés cultural.", {"burgos"}, set()),
     ("Pregunta sobre la estación de tren en Valencia.", {"valencia-valencia"}, set()),
     # --- comunidades autónomas: a la comunidad, no a cada provincia
     ("Ayudas a Castilla y León por los incendios forestales.", set(), {"castilla-y-leon"}),
@@ -75,6 +76,10 @@ CATEGORIAS = [
     ("Orden por la que se declaran de interés general las obras de la presa de Almería.",
      "interes-general"),
     ("Resolución por la que se publica la relación de puestos de trabajo de Sevilla.", "otras"),
+    ("Resolución de la Autoridad Portuaria de Pasaia por la que se publica la Adenda del Convenio "
+     "de ocupación temporal con la Diputación Foral de Gipuzkoa.", "convenio"),
+    ("Real Decreto por el que se regula la concesión directa de subvenciones para actuaciones de "
+     "interés general en Ceuta y Melilla.", "subvencion"),
 ]
 
 
