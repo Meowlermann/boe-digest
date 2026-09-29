@@ -18,7 +18,8 @@ Mejor quedarse corto que asignar mal. Por eso:
   - Se exige mayúscula inicial (o el título entero en mayúsculas): «cuenca
     hidrográfica» o «granada» en minúscula no son Cuenca ni Granada.
   - Los nombres ambiguos (apellidos, bancos, ciudades de otros países) solo
-    cuentan con contexto: «en X», «de X», «provincia de X», «a su paso por X».
+    cuentan con contexto: «en X», «de X», «provincia de X», «a su paso por X»
+    o entre paréntesis detrás de un municipio, «Espinosa de los Monteros (Burgos)».
     Aun así se descartan detrás de «don/doña» y en unas pocas expresiones
     fijas (Banco Santander, Teruel Existe…). Ver AMBIGUOS y NEGATIVOS.
   - Las comunidades autónomas se buscan antes que las provincias y se tapan:
@@ -50,7 +51,7 @@ AMBIGUOS = {
     "Burgos", "Lugo", "Zamora", "Avila", "Segovia", "Salamanca", "Cordoba", "Valencia",
     "Cuenca", "Navarra", "Guadalajara", "Sevilla", "Palma", "Oviedo", "Madrid",
 }
-CONTEXTO = r"(?:\b(?:en|de|del)\s+|\bprovincia\s+de\s+|\ba\s+su\s+paso\s+por\s+)$"
+CONTEXTO = r"(?:\b(?:en|de|del)\s+|\bprovincia\s+de\s+|\ba\s+su\s+paso\s+por\s+|\(\s*)$"
 # Aunque haya contexto: una persona («don José de León») o una marca.
 PERSONA = re.compile(r"\b(?:don|dona|d\.|dna\.)\s+(?:\S+\s+){0,3}(?:de\s+)?$", re.I)
 NEGATIVOS = [r"Banco\s+(?:de\s+)?Santander", r"Teruel\s+Existe", r"Soria\s+Ya",
@@ -61,16 +62,21 @@ NEGATIVOS = [r"Banco\s+(?:de\s+)?Santander", r"Teruel\s+Existe", r"Soria\s+Ya",
 # Categorías del BOE, en orden de prioridad: la primera que encaja se queda.
 # Se deducen de palabras del título (sin tildes, en minúscula).
 CATEGORIAS = [
+    # «Temporal» o «incendio» a secas no bastan: salen en «ocupación temporal»
+    # o en convenios de prevención. Hace falta la zona, el daño o el fenómeno.
     ("zona-afectada", "Zona afectada o catástrofe",
-     r"zona afectada|emergencia de proteccion civil|catastrofe|\bdana\b|incendio|inundacion|"
-     r"temporal|terremoto|erupcion|sequia|danos? (?:causados|ocasionados)"),
+     r"zona afectada|emergencia de proteccion civil|catastrofe|\bdana\b|borrasca|"
+     r"temporal de (?:lluvia|viento|nieve|mar)|terremoto|seism|erupcion volcanica|"
+     r"danos? (?:causados|ocasionados|producidos)"),
+    # La subvención directa va antes que el interés general: un real decreto de
+    # concesión directa «para actuaciones de interés general» es una subvención.
+    ("subvencion", "Subvención nominativa o directa",
+     r"subvencion(?:es)? (?:directa|nominativa)|concesion directa|subvencion(?:es)? .{0,40}"
+     r"(?:real decreto|excepcional)|ayudas? directas?"),
     ("interes-general", "Obra o actuación de interés general",
      r"interes general|obras? de emergencia|actuaciones? de emergencia"),
     ("convenio", "Convenio con la comunidad autónoma o una entidad local",
      r"\bconvenio\b|\badenda\b|protocolo general de actuacion"),
-    ("subvencion", "Subvención nominativa o directa",
-     r"subvencion(?:es)? (?:directa|nominativa)|concesion directa|subvencion(?:es)? .{0,40}"
-     r"(?:real decreto|excepcional)|ayudas? directas?"),
     ("patrimonio", "Bien de interés cultural o patrimonio",
      r"bien(?:es)? de interes cultural|patrimonio (?:historico|cultural|mundial|de la humanidad)|"
      r"conjunto historico|zona arqueologica|sitio historico|monumento"),
@@ -650,7 +656,7 @@ def generar_paginas(h: dict) -> list:
         'añadan a mano. Se busca palabra por palabra, sin distinguir tildes y exigiendo mayúscula inicial: '
         '«cuenca hidrográfica» no es Cuenca.</p><p>Los nombres que también son apellidos, empresas o '
         f'lugares de otros países ({esc(amb)}) solo cuentan con contexto: «en X», «de X», «provincia de X» '
-        'o «a su paso por X», y nunca detrás de «don» o «doña». Tampoco cuentan dentro de expresiones fijas '
+        'o «a su paso por X», o entre paréntesis detrás de un municipio, y nunca detrás de «don» o «doña». Tampoco cuentan dentro de expresiones fijas '
         'como Banco Santander o Teruel Existe. Las comunidades autónomas se buscan antes: «Castilla y León» '
         'no es León y «Comunitat Valenciana» no es Valencia. Una mención de una comunidad con varias '
         'provincias va al apartado «De tu comunidad autónoma», no a cada provincia; en las uniprovinciales '
