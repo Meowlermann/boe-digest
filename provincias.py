@@ -365,6 +365,167 @@ def _en_rango(fechas: list) -> tuple[str, str]:
     return (fs[0], fs[-1]) if fs else ("", "")
 
 
+# ---------------------------------------------------------------------------
+# Mapa del índice
+# ---------------------------------------------------------------------------
+#
+# Coropletas de una sola tinta: cada provincia se pinta por uno de tres
+# recuentos (preguntas y BOE de los últimos VENTANA_INDICE días, diputados).
+# Cero va en gris neutro, sin tinta. Los cortes son por rangos de la
+# distribución de ese recuento entre las provincias que no tienen cero, así
+# que cada tono agrupa provincias parecidas. El color lo pone el CSS según el
+# atributo data-m del contenedor: sin JavaScript se ve el mapa de preguntas y
+# cada provincia sigue siendo un enlace a su página.
+
+MAPA_FICHERO = ROOT / "geo" / "provincias.json"
+MAPA_METRICAS = [("preg", "preguntas_90", "Preguntas al Gobierno"),
+                 ("boe", "boe_90", "En el BOE"),
+                 ("dip", "diputados", "Diputados")]
+MAPA_NIVELES = 5
+
+
+def cortes_mapa(valores: list[int], niveles: int = MAPA_NIVELES) -> list[tuple[int, int]]:
+    """Rangos [desde, hasta] de cada nivel, por cuantiles de los valores
+    positivos. Nunca repite un rango ni deja uno vacío: con pocos valores
+    distintos salen menos niveles."""
+    pos = sorted(v for v in valores if v > 0)
+    if not pos:
+        return []
+    distintos = sorted(set(pos))
+    if len(distintos) <= niveles:
+        return [(v, v) for v in distintos]
+    techos = []
+    for i in range(1, niveles + 1):
+        techo = pos[min(len(pos) - 1, round(i * len(pos) / niveles) - 1)]
+        if not techos or techo > techos[-1]:
+            techos.append(techo)
+    rangos, desde = [], pos[0]
+    for techo in techos:
+        rangos.append((desde, techo))
+        desde = next((v for v in distintos if v > techo), techo + 1)
+    return rangos
+
+
+def nivel_mapa(v: int, rangos: list[tuple[int, int]]) -> int:
+    """0 para cero; 1..n según el rango en que cae."""
+    if v <= 0:
+        return 0
+    for i, (_a, b) in enumerate(rangos, 1):
+        if v <= b:
+            return i
+    return len(rangos)
+
+
+def mapa_html(resumen: list, ref: dict, esc, attr) -> str:
+    """El mapa entero (SVG en línea, leyendas, selector y el script del
+    tooltip). Si falta la geometría, cadena vacía y el índice queda como
+    estaba: la lista siempre está debajo."""
+    try:
+        geo = json.loads(MAPA_FICHERO.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    rangos = {m: cortes_mapa([r[campo] for r in resumen]) for m, campo, _e in MAPA_METRICAS}
+    formas = []
+    for r in sorted(resumen, key=lambda r: r["p"]["slug"]):
+        p = r["p"]
+        d = geo["provincias"].get(p["slug"])
+        if not d:
+            continue
+        niveles = " ".join(f'data-q-{m}="{nivel_mapa(r[campo], rangos[m])}"'
+                           for m, campo, _e in MAPA_METRICAS)
+        etiqueta = (f'{p["nombre"]}: {r["diputados"]} diputados, {r["preguntas_90"]} preguntas '
+                    f'y {r["boe_90"]} disposiciones del BOE en {VENTANA_INDICE} días')
+        forma = f'<path d="{d}"/>'
+        if p["slug"] in ("ceuta", "melilla"):
+            # Demasiado pequeñas para verse o para acertarles: un punto encima.
+            x, y = geo["centros"][p["slug"]]
+            forma += (f'<circle cx="{x}" cy="{y}" r="6"/>'
+                      f'<text x="{x + 10}" y="{y + 4}">{esc(p["nombre"])}</text>')
+        formas.append(
+            f'<a href="{attr(p["slug"])}.html" class="mp-prov" aria-label="{attr(etiqueta)}" '
+            f'data-n="{attr(p["nombre"])}" data-c="{attr(ref["ccaa"][p["ccaa"]]["nombre"])}" '
+            f'data-dip="{r["diputados"]}" data-preg="{r["preguntas_90"]}" data-boe="{r["boe_90"]}" '
+            f'{niveles}>{forma}</a>')
+
+    def leyenda(m, etiqueta):
+        rs = rangos[m]
+        celdas = ['<li><i class="mp-q0"></i>0</li>'] + [
+            f'<li><i class="mp-q{i}"></i>{a if a == b else f"{a}–{b}"}</li>'
+            for i, (a, b) in enumerate(rs, 1)]
+        return (f'<ul class="mp-leyenda" data-para="{m}" aria-label="{attr(etiqueta)}">'
+                + "".join(celdas) + '</ul>')
+
+    botones = "".join(
+        f'<button type="button" data-m="{m}" aria-pressed="{"true" if i == 0 else "false"}">'
+        f'{esc(e)}</button>' for i, (m, _c, e) in enumerate(MAPA_METRICAS))
+    notas = {"preg": f"Preguntas al Gobierno que nombran la provincia en su título, últimos {VENTANA_INDICE} días.",
+             "boe": f"Disposiciones de las secciones I y III del BOE que la nombran, últimos {VENTANA_INDICE} días.",
+             "dip": "Escaños en el Congreso por circunscripción."}
+    return (
+        '<figure class="mp" data-m="preg">'
+        f'<div class="mp-filtros" role="group" aria-label="Qué se pinta en el mapa">{botones}</div>'
+        '<p class="mp-nota">' + "".join(
+            f'<span data-para="{m}">{esc(n)}</span>' for m, n in notas.items()) + '</p>'
+        f'<div class="mp-lienzo"><svg viewBox="{geo["viewBox"]}" role="group" '
+        'aria-label="Mapa de España por provincias; cada provincia enlaza a su página">'
+        f'<path class="mp-marco" d="{geo["marco"]}"/>'
+        + _rotulo_canarias(geo["marco"])
+        + "".join(formas)
+        + f'<path class="mp-ccaa" d="{geo["ccaa"]}"/>'
+        '</svg><div class="mp-tip" hidden></div></div>'
+        + "".join(leyenda(m, e) for m, _c, e in MAPA_METRICAS)
+        + f'<figcaption>Pasa por encima para ver las cifras; haz clic para abrir la provincia. '
+          f'Límites: {esc(geo.get("fuente", "IGN"))}.</figcaption>'
+        '</figure>' + MAPA_JS)
+
+
+def _rotulo_canarias(marco: str) -> str:
+    """«Canarias» en la esquina del recuadro (marco = «Mx,yH…»)."""
+    m = re.match(r"M([\d.]+),([\d.]+)", marco or "")
+    if not m:
+        return ""
+    return (f'<text class="mp-rotulo" x="{float(m.group(1)) + 8}" '
+            f'y="{float(m.group(2)) + 16}">Canarias</text>')
+
+
+MAPA_JS = """<script>
+(function () {
+  var fig = document.querySelector('.mp'); if (!fig) return;
+  var tip = fig.querySelector('.mp-tip'), lienzo = fig.querySelector('.mp-lienzo');
+  fig.querySelectorAll('.mp-filtros button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      fig.setAttribute('data-m', b.dataset.m);
+      fig.querySelectorAll('.mp-filtros button').forEach(function (o) {
+        o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    });
+  });
+  function linea(n, uno, varios) { return '<b>' + n + '</b> ' + (n == 1 ? uno : varios); }
+  function mostrar(a, x, y, subir) {
+    var d = a.dataset, m = fig.getAttribute('data-m');
+    tip.innerHTML = '<strong>' + d.n + '</strong><span class="mp-tip-c">' + d.c + '</span>' +
+      '<span' + (m === 'preg' ? ' class="on"' : '') + '>' + linea(d.preg, 'pregunta', 'preguntas') + '</span>' +
+      '<span' + (m === 'boe' ? ' class="on"' : '') + '>' + linea(d.boe, 'disposición del BOE', 'disposiciones del BOE') + '</span>' +
+      '<span' + (m === 'dip' ? ' class="on"' : '') + '>' + linea(d.dip, 'diputado', 'diputados') + '</span>';
+    tip.hidden = false;
+    var r = lienzo.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = x - r.left + 14, top = y - r.top + 14;
+    if (left + w > r.width) left = x - r.left - w - 14;
+    if (top + h > r.height) top = y - r.top - h - 14;
+    tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, top) + 'px';
+    var ccaa = a.parentNode.querySelector('.mp-ccaa');
+    if (subir && a.nextElementSibling !== ccaa) a.parentNode.insertBefore(a, ccaa);
+  }
+  fig.querySelectorAll('.mp-prov').forEach(function (a) {
+    a.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') mostrar(a, e.clientX, e.clientY, true); });
+    a.addEventListener('pointerleave', function () { tip.hidden = true; });
+    a.addEventListener('focus', function () { var b = a.getBoundingClientRect(); mostrar(a, b.left + b.width / 2, b.top + b.height / 2); });
+    a.addEventListener('blur', function () { tip.hidden = true; });
+  });
+})();
+</script>"""
+
+
+
 def generar_paginas(h: dict) -> list:
     """/provincias/<slug>.html, el índice por comunidad y la metodología.
 
@@ -619,7 +780,9 @@ def generar_paginas(h: dict) -> list:
     for r in resumen:
         por_ccaa.setdefault(r["p"]["ccaa"], []).append(r)
     cuerpo = (f'<p>Una página por circunscripción: sus diputados, lo que se pregunta y se tramita '
-              f'sobre ella y lo que publica el BOE. Las cifras cuentan los últimos {VENTANA_INDICE} días.</p>')
+              f'sobre ella y lo que publica el BOE. Las cifras cuentan los últimos {VENTANA_INDICE} días.</p>'
+              + mapa_html(resumen, ref, esc, attr)
+              + '<h2 class="rotulo" id="lista">Todas las provincias</h2>')
     for c in sorted(por_ccaa, key=lambda c: ref["ccaa"][c]["nombre"]):
         cuerpo += (f'<h2 class="rotulo-sub">{esc(ref["ccaa"][c]["nombre"])}</h2><ul class="indice">' + "".join(
             f'<li><a href="{attr(r["p"]["slug"])}.html">{esc(r["p"]["nombre"])}</a>'
