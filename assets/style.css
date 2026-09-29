@@ -402,6 +402,18 @@ blockquote.pull p{ font-family:'Lora',Georgia,serif; }
 .miga span[aria-current]{opacity:.6}
 .norma{max-width:44rem;margin:0 auto 28px}
 .norma h1.display{font-size:clamp(26px,5.4vw,46px);line-height:1.02;margin:4px 0 12px}
+/* ---------------------------------------------------------- titulares largos
+   Un título oficial de ley puede pasar de sesenta palabras: en el cuerpo y las
+   mayúsculas del titular de portada ocupaba más de una pantalla. Por encima de
+   80 caracteres (build.TITULAR_LARGO) va en minúscula y más pequeño. */
+h1.display.display-largo,
+.norma h1.display.display-largo{
+  text-transform:none;font-size:clamp(22px,3.4vw,30px);line-height:1.2;letter-spacing:0;
+  text-wrap:pretty}
+.titulo-oficial{font:400 14px/1.55 Lora,Georgia,serif;margin:0 0 18px;padding:10px 12px;
+  border-left:3px solid var(--border);color:var(--ink-soft)}
+.titulo-oficial span{display:block;font:600 11px/1.4 'IBM Plex Mono',monospace;
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .norma .entradilla{font:400 17px/1.55 Lora,Georgia,serif;margin:0 0 18px;opacity:.9}
 .ficha{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0 0 22px;
   padding:14px 16px;border:1px solid color-mix(in srgb,currentColor 18%,transparent);

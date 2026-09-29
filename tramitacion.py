@@ -541,6 +541,42 @@ def votaciones_de(v: dict, detalle: list) -> list:
 
 # ---------------------------------------------------------- «Las Cortes hoy»
 
+# Dónde se puede cortar un título oficial sin cambiar lo que dice: lo que
+# viene detrás es la segunda parte de una ley «ómnibus» o el origen del texto.
+_CORTES = (r",\s+y\s+por\s+(?:el|la)\s+que\s", r",\s+por\s+(?:el|la)\s+que\s+se\s+modifica",
+           r"\s+\(procedente\s", r",\s+y\s+se\s", r";\s")
+MAX_CORTO = 150
+
+
+def titulo_corto(exp: str, t: str, maximo: int = MAX_CORTO) -> str:
+    """El titular de una iniciativa. Primero el escrito a mano en
+    curated/nombres_populares.json; si no hay, el oficial cortado en la primera
+    subordinada que añade otra materia («, y por el que se modifica…»); si aún
+    es largo, en la última coma o «y» antes de `maximo`. El título oficial
+    completo se sigue mostrando en la página."""
+    try:
+        import nombres
+        mano = nombres.corto(exp)
+        if mano:
+            return mano
+    except Exception:                                         # noqa: BLE001
+        pass
+    t = _txt(t).rstrip(".")
+    fin = min((m.start() for rx in _CORTES for m in [re.search(rx, t)] if m and m.start() > 30),
+              default=len(t))
+    t = t[:fin].rstrip(" ,;")
+    if len(t) <= maximo:
+        return t
+    # Se corta en una coma, pero nunca en las de una fecha («8/2015, de 30 de
+    # octubre, …»): el lector se quedaría sin saber qué se modifica.
+    def buena(m):
+        antes, despues = t[:m.start()], t[m.end():]
+        return (m.start() > 40 and not re.match(r"de \d{1,2} de ", despues)
+                and not re.search(r"\bde \d{1,2} de [a-z]+$", antes))
+    m = max((m.start() for m in re.finditer(r",\s", t[:maximo]) if buena(m)), default=0)
+    return (t[:m] if m else t[:maximo].rsplit(" ", 1)[0]).rstrip(" ,;") + "…"
+
+
 def _cita(t: str, n: int = 120) -> str:
     t = _txt(t).rstrip(".")
     return t if len(t) <= n else t[:n].rsplit(" ", 1)[0] + "…"
@@ -687,7 +723,7 @@ def generar_paginas(h: dict) -> list:
         return m + f'<span aria-current="page">{esc(partes[-1] if partes else "Tramitación")}</span>'
 
     def fila(exp, v, extra=""):
-        return (f'<li><a href="/tramitacion/{attr(slug(exp))}.html">{esc(v["t"].rstrip("."))}</a>'
+        return (f'<li><a href="/tramitacion/{attr(slug(exp))}.html">{esc(titulo_corto(exp, v["t"]))}</a>'
                 f'<span class="ref">{esc(ETIQUETA[v["est"]])} · {esc(tipo_corto(v["tipo"]))} · '
                 f'{esc(grupo_corto(v["a"]))} · {esc(exp)}{extra}</span></li>')
 
@@ -772,15 +808,20 @@ def generar_paginas(h: dict) -> list:
                  + (f"<dt>Comisión</dt><dd>{esc(v['com'])}</dd>" if v.get("com") else "")
                  + (f"<dt>Procedimiento</dt><dd>{esc(v['trt'])}</dd>" if v.get("trt") else "")
                  + (f"<dt>Ponentes</dt><dd>{esc(v['pon'])}</dd>" if v.get("pon") else ""))
-        titulo_corto = _cita(v["t"], 90)
+        corto = titulo_corto(exp, v["t"])
+        if corto != _txt(v["t"]).rstrip("."):
+            # El titular es el corto; el oficial va entero, en letra normal,
+            # para citar y buscar.
+            cuerpo = (f'<p class="titulo-oficial"><span>Título oficial</span>{esc(_txt(v["t"]))}</p>'
+                      + cuerpo)
         ld = {"@type": "Legislation", "name": v["t"], "legislationIdentifier": exp,
               "url": f"{site}tramitacion/{slug(exp)}.html", "inLanguage": "es-ES",
               "legislationJurisdiction": "ES"}
         if v.get("fp"):
             ld["legislationDate"] = v["fp"]
-        pagina(f"{slug(exp)}.html", f"{titulo_corto}: en qué punto está su tramitación",
+        pagina(f"{slug(exp)}.html", f"{_cita(corto, 90)}: en qué punto está su tramitación",
                f"{v['t']} Estado: {ETIQUETA[v['est']].lower()}. Presentada por {v['a']}.",
-               v["t"], tipo_corto(v["tipo"]),
+               corto, tipo_corto(v["tipo"]),
                f"{ETIQUETA[v['est']]}. Presentada por {v['a']}"
                + (f" el {fecha(v['fp'])}." if v.get("fp") else "."),
                ficha, cuerpo, lm, miga(exp), [ld])
@@ -910,7 +951,14 @@ def generar_paginas(h: dict) -> list:
 def entradas_buscador(entrada, e: dict | None = None) -> list:
     """Filas del índice del buscador: título, estado, autor y términos."""
     e = e or cargar()
-    return [entrada(v["t"], f"{ETIQUETA[v['est']]} · {tipo_corto(v['tipo'])} · {grupo_corto(v['a'])}",
+    filas = []
+    for exp, v in (e.get("ini") or {}).items():
+        f = entrada(titulo_corto(exp, v["t"]),
+                    f"{ETIQUETA[v['est']]} · {tipo_corto(v['tipo'])} · {grupo_corto(v['a'])}",
                     f"tramitacion/{slug(exp)}.html", "iniciativa", ultima_fecha(v),
                     f"{exp} {v['a']} {' '.join(kw_limpios(v)[:20])}", largo=420)
-            for exp, v in (e.get("ini") or {}).items()]
+        # El título oficial entero y los términos, solo para casar nombres
+        # populares en build.py; no viaja al índice.
+        f["_texto"] = f"{v['t']} {' '.join(v.get('kw') or [])}"
+        filas.append(f)
+    return filas

@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import io
+import html as html_mod
 import json
 import os
 import pathlib
@@ -3456,11 +3457,20 @@ def render_nav() -> str:
         '</nav>')
     return _NAV_HTML
 
+TITULAR_LARGO = 80
+
+
 def _replace_placeholders(html: str, frag: dict) -> str:
     # La navegación es la misma en todas las páginas: se pone aquí para que
     # ninguna plantilla ni ningún generador de páginas pueda olvidarla.
     if "__SSR_NAV__" in html:
         html = html.replace("__SSR_NAV__", render_nav())
+    # Un titular largo (un título oficial de ley, un asunto votado) no puede ir
+    # en el cuerpo y las mayúsculas del de portada: se le pone una clase para
+    # que vaya en letra normal y más pequeña. El umbral es de caracteres vistos.
+    titular = frag.get("HEADLINE")
+    if titular and len(html_mod.unescape(re.sub(r"<[^>]+>", "", titular))) > TITULAR_LARGO:
+        html = html.replace('<h1 class="display">', '<h1 class="display display-largo">', 1)
     for clave, valor in frag.items():
         html = html.replace(f"__SSR_{clave}__", valor)
     # Red de seguridad: un marcador sin sustituir (una plantilla editada, una
@@ -5483,6 +5493,7 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
                     s.get("headline", ""), primera_mayuscula(oficial),
                     f"normas/{ref}.html", "norma", day["id"],
                     s.get("ref", "") + " " + (s.get("dept") or "")))
+                idx[-1]["_texto"] = oficial or ""
             else:
                 idx.append(_entrada_indice(
                     s.get("headline", ""), primera_mayuscula(oficial),
@@ -5559,6 +5570,21 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         idx.append(_entrada_indice(f'Edición del {fmt_date_es(day["id"])}',
                                    "Todo lo publicado ese día",
                                    f'ediciones/{day["id"]}.html', "edicion", day["id"]))
+
+    # Nombres populares (curated/nombres_populares.json): se añaden al texto
+    # buscable de las entradas que contienen las palabras oficiales, para que
+    # «Verifactu» encuentre lo que el BOE llama «sistemas informáticos de
+    # facturación». «_texto» (el título oficial entero) solo sirve para esto.
+    try:
+        import nombres
+        for e in idx:
+            extra = nombres.alias_para(" ".join([e.get("_texto", ""), e["t"], e["s"], e["x"]]))
+            if extra:
+                e["x"] = (e["x"] + " " + " ".join(extra)).strip()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: nombres populares no aplicados ({exc})")
+    for e in idx:
+        e.pop("_texto", None)
 
     # Deduplicar por URL+titular: una norma citada dos días no es dos resultados.
     vistos, limpio = set(), []
