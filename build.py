@@ -2583,6 +2583,8 @@ def _entero(v) -> int:
 
 
 def render_boe_stats_ssr(day: dict) -> str:
+    if not (day.get("boe", {}) or {}).get("stories"):
+        return ""          # sin BOE propio: cuatro ceros no informan de nada
     c = day.get("boe", {}).get("counts") or {}
     orden = ["fiscal", "laboral", "mercantil", "otros"]
     maximo = max(1, *(_entero(c.get(k)) for k in orden))
@@ -2628,6 +2630,13 @@ def render_boe_note_ssr(day: dict) -> str:
     if b.get("fechaISO") and _hay_nombramientos(b["fechaISO"]):
         enlace = (' <a class="srclink" href="#nombramientos">Ver los nombramientos y ceses ↓</a>'
                   + enlace)
+    if not b.get("numero"):
+        # Edición sin sumario propio (domingo, o aún no publicado): sin «BOE
+        # núm.» vacío, y con enlace a la edición que sí lo tiene.
+        if b.get("ultimo"):
+            enlace = (f' <a class="srclink" href="/ediciones/{esc_attr(b["ultimo"])}.html">'
+                      f'Ver la edición del {esc_html(fmt_date_es(b["ultimo"]))} →</a>')
+        return f'{esc_html(b.get("extra",""))}{enlace}'
     return (f'<b>BOE núm. {esc_html(b.get("numero",""))}</b> · {esc_html(b.get("fecha",""))}. '
             f'{esc_html(b.get("extra",""))}{enlace}')
 
@@ -3213,6 +3222,21 @@ def capturar_provincias(boe_raw: dict | None) -> None:
         log(f"provincias: no se pudieron capturar ({exc})")
 
 
+def boe_vacio(fecha: dt.date, ultimo: dt.date | None) -> dict:
+    """Sección BOE de una edición sin sumario propio. `ultimo` es la fecha del
+    sumario más reciente, que tiene su edición: se enlaza, no se copia."""
+    if ultimo:
+        motivo = ("El BOE no se publica los domingos." if fecha.weekday() == 6
+                  else "El BOE de hoy aún no está publicado.")
+        extra = f"{motivo} El último es el del {fmt_date_es(ultimo.isoformat())}."
+    else:
+        extra = "Hoy no se pudo leer el sumario del BOE."
+    return {"numero": "", "fecha": "", "fechaISO": "", "sourceUrl": "",
+            "counts": {"fiscal": 0, "laboral": 0, "mercantil": 0, "otros": 0},
+            "extra": extra, "stories": [],
+            **({"ultimo": ultimo.isoformat()} if ultimo else {})}
+
+
 def construir_dia(fecha: dt.date) -> dict | None:
     log(f"=== Edición del {fecha.isoformat()} ===")
     boe_raw = fetch_boe(fecha)
@@ -3235,6 +3259,16 @@ def construir_dia(fecha: dt.date) -> dict | None:
         except Exception:                                     # noqa: BLE001
             pass
 
+    # fetch_boe retrocede hasta tres días si el sumario de hoy no existe (el
+    # BOE no sale los domingos, o aún no se ha publicado). Ese sumario ya tiene
+    # su propia edición: repetirlo aquí duplicaba cada disposición en materias,
+    # plazos, el archivo y el buscador. La edición de hoy va sin BOE y lo dice.
+    # Nombramientos y provincias ya se han capturado arriba: son idempotentes.
+    boe_ajeno = None
+    if boe_raw and boe_raw["fecha_boe"] != fecha:
+        boe_ajeno, boe_raw = boe_raw["fecha_boe"], None
+        log(f"BOE: el último sumario es del {boe_ajeno}; la edición de hoy va sin BOE")
+
     if not boe_raw and not congreso["feed"] and not senado:
         log("No se obtuvo NINGUNA fuente. No se escribe edición.")
         return None
@@ -3242,10 +3276,7 @@ def construir_dia(fecha: dt.date) -> dict | None:
     dia = {
         "id": fecha.isoformat(),
         "label": f"{fecha.day} {MES_ABBR[fecha.month-1]}",
-        "boe": redactar_boe(boe_raw, nombramientos=nombres) if boe_raw else {
-            "numero": "", "fecha": "", "sourceUrl": "",
-            "counts": {"fiscal": 0, "laboral": 0, "mercantil": 0, "otros": 0},
-            "extra": "Hoy no se pudo leer el sumario del BOE.", "stories": []},
+        "boe": redactar_boe(boe_raw, nombramientos=nombres) if boe_raw else boe_vacio(fecha, boe_ajeno),
         "cortes": redactar_cortes(congreso, senado, anterior),
     }
     return fusionar_curado(dia)
