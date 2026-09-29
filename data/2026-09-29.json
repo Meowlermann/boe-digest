@@ -305,21 +305,21 @@
     "scoreboard": null,
     "feed": [
       {
-        "chamber": "congreso",
-        "type": "Tramitación",
-        "date": "martes, 29 de septiembre de 2026",
-        "headline": "3 PLAZOS DE ENMIENDAS TERMINAN ANTES DEL MARTES, 6 DE OCTUBRE DE 2026",
-        "standfirst": "Hasta esa fecha los grupos pueden presentar enmiendas a estas iniciativas.",
         "body": [
           "«Proyecto de Ley por la que se aprueban medidas urgentes de carácter social y económico de apoyo a la ciudad de Ceuta (procedente del Real…» (121/000114): hasta el lunes, 5 de octubre de 2026.",
           "«Proyecto de Ley del Estatuto Marco del personal estatutario de los servicios de salud» (121/000112): hasta el martes, 6 de octubre de 2026.",
           "«Proposición de Ley sobre el reconocimiento de la profesión de biólogo y trabajador social como profesión sanitaria» (122/000297): hasta el martes, 6 de octubre de 2026.",
           "Otras 154 iniciativas tienen un plazo ampliado que vence esta semana; la lista de las que más ampliaciones acumulan está en tramitacion/ampliaciones.html."
         ],
+        "chamber": "congreso",
+        "date": "martes, 29 de septiembre de 2026",
+        "headline": "3 PLAZOS DE ENMIENDAS TERMINAN ANTES DEL MARTES, 6 DE OCTUBRE DE 2026",
         "source": {
           "label": "Qué se tramita",
           "url": "https://terceracamara.es/tramitacion/"
-        }
+        },
+        "standfirst": "Hasta esa fecha los grupos pueden presentar enmiendas a estas iniciativas.",
+        "type": "Tramitación"
       }
     ],
     "coverage": {
