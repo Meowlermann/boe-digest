@@ -1486,3 +1486,4 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .ix-peso i{ display:block; height:100%; background:var(--ink); }
 @media (prefers-reduced-motion: reduce){ .ix-fila, .ix-losa{ transition:none; } .ix-fila:hover, .ix-losa:hover{ transform:none; } }
 @media (max-width:720px){ .ix-filtro{ top:0; } }
+.stats:empty{ display:none; }
