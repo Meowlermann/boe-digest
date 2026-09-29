@@ -1,0 +1,33 @@
+name: Diagnóstico Senado
+
+# Solo a mano. Comprueba qué URL del Senado responden desde un servidor de
+# GitHub Actions con un User-Agent honesto, sin reintentos ni rodeos. No
+# publica nada: la tabla queda en el resumen del job y el JSON como artefacto.
+on:
+  workflow_dispatch:
+  # Mientras el workflow no esté en main no se puede lanzar a mano desde la
+  # web: se lanza también al subir cambios suyos a esta rama.
+  push:
+    branches: [senado-remoto]
+    paths: [".github/workflows/senado-diagnostico.yml", "scripts/senado_diagnostico.py"]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Probar las URL del Senado
+        run: python scripts/senado_diagnostico.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: senado-diagnostico
+          path: debug/senado-diagnostico.json
