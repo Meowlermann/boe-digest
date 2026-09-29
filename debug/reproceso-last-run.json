@@ -1,0 +1,79 @@
+{
+  "inicio": "2026-09-29T11:20:30.798483+00:00",
+  "peticiones": [
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260901",
+      "status": 200,
+      "bytes": 266020
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260902",
+      "status": 200,
+      "bytes": 212707
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260903",
+      "status": 200,
+      "bytes": 221538
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260904",
+      "status": 200,
+      "bytes": 188014
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260905",
+      "status": 200,
+      "bytes": 374919
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260906",
+      "status": 404
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260907",
+      "status": 200,
+      "bytes": 316794
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260908",
+      "status": 200,
+      "bytes": 308617
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260909",
+      "status": 200,
+      "bytes": 236411
+    },
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20260910",
+      "status": 200,
+      "bytes": 264283
+    }
+  ],
+  "reproceso": {
+    "provincias": {
+      "dias": 9,
+      "incluidos": 68,
+      "sin_boe": 1,
+      "descartes": {
+        "ambiguo sin contexto: Burgos": 1,
+        "ambiguo sin contexto: Navarra": 2,
+        "ambiguo sin contexto: Valencia": 1
+      },
+      "registros": 68,
+      "por_categoria": {
+        "convenio": 32,
+        "patrimonio": 4,
+        "otras": 20,
+        "infraestructuras": 3,
+        "interes-general": 1,
+        "medio-ambiente": 6,
+        "zona-afectada": 1,
+        "subvencion": 1
+      },
+      "bytes": 28467
+    }
+  },
+  "fin": "2026-09-29T11:20:50.099664+00:00"
+}
