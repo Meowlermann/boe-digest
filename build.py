@@ -61,6 +61,7 @@ PERSONAS_DIR = ROOT / "personas"
 NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
 TRAMITACION_DIR = ROOT / "tramitacion"
 SEGUIMIENTO_DIR = ROOT / "seguimiento"
+PROVINCIAS_DIR = ROOT / "provincias"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -3194,10 +3195,28 @@ def capturar_nombramientos(boe_raw: dict | None) -> list | None:
         return None
 
 
+def capturar_provincias(boe_raw: dict | None) -> None:
+    """Disposiciones de las secciones I y III con impacto territorial, a
+    state/provincias.json. Como capturar_nombramientos(): se hace con el
+    sumario completo antes de que redactar_boe() se quede solo con lo que
+    desarrolla, y un fallo aquí no tumba la edición."""
+    if not boe_raw:
+        return
+    try:
+        import provincias as pv
+        regs = pv.extraer(boe_raw.get("entradas") or [], boe_raw["fecha_boe"], log)
+        pv.incorporar(regs, boe_raw["fecha_boe"], "html")
+        DIAG["provincias"] = {"fecha": boe_raw["fecha_boe"].isoformat(), "incluidos": len(regs),
+                              "descartes": pv.extraer.ultimos_descartes}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"provincias: no se pudieron capturar ({exc})")
+
+
 def construir_dia(fecha: dt.date) -> dict | None:
     log(f"=== Edición del {fecha.isoformat()} ===")
     boe_raw = fetch_boe(fecha)
     nombres = capturar_nombramientos(boe_raw)
+    capturar_provincias(boe_raw)
     congreso = cortes_congreso(fecha)
     senado = fetch_senado()
 
@@ -3266,6 +3285,7 @@ def construir_dia_archivo(fecha: dt.date) -> dict | None:
     if not boe_raw or boe_raw["fecha_boe"] != fecha:
         return None
     nombres = capturar_nombramientos(boe_raw)
+    capturar_provincias(boe_raw)
     return {
         "id": fecha.isoformat(),
         "label": f"{fecha.day} {MES_ABBR[fecha.month-1]}",
@@ -3273,6 +3293,13 @@ def construir_dia_archivo(fecha: dt.date) -> dict | None:
         "cortes": cortes_de_archivo(),
         "archivo": True,
     }
+
+
+def _es_edicion_archivo(ruta: pathlib.Path) -> bool:
+    try:
+        return bool(json.loads(ruta.read_text(encoding="utf-8")).get("archivo"))
+    except Exception:                                         # noqa: BLE001
+        return False
 
 
 def rellenar_archivo(desde: dt.date, hasta: dt.date, lote: int = 30,
@@ -3385,6 +3412,7 @@ def render_nav() -> str:
         + (enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
            if preguntas_publicadas() else "")
         + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
+        + enlace("/provincias/", "Tu provincia", "Sus diputados, qué se pregunta sobre ella y qué publica el BOE")
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
         + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
 
@@ -4353,6 +4381,21 @@ def _barra(n, total, etiqueta):
             f'<div class="metrica-pie">{n} de {total}</div></div>')
 
 
+_NOMBRES_PROVINCIA: dict = {}
+
+
+def nombre_provincia(slug: str, por_defecto: str = "") -> str:
+    """El nombre de la provincia como se escribe («A Coruña», no «Coruña (A)»),
+    de curated/provincias.json. Si falta la referencia, lo que se pase."""
+    if not _NOMBRES_PROVINCIA:
+        try:
+            import provincias as pv
+            _NOMBRES_PROVINCIA.update({p["slug"]: p["nombre"] for p in pv.cargar_referencia()["provincias"]})
+        except Exception:                                     # noqa: BLE001
+            pass
+    return _NOMBRES_PROVINCIA.get(slug, por_defecto)
+
+
 def _tarjeta_diputado(f, prefijo=""):
     sigla = f.get("sigla") or f.get("partido") or ""
     emitidos = f.get("si", 0) + f.get("no", 0) + f.get("abstencion", 0)
@@ -4885,6 +4928,79 @@ def renderizar_tramitacion(todos: list) -> list:
     return salidas
 
 
+def orales_de_ediciones(dias: list) -> list:
+    """Las preguntas orales tal como salen en las ediciones: texto, autor,
+    quién contesta, fecha de la sesión y edición donde se publicaron."""
+    salida = []
+    for day in dias:
+        for it in (day.get("cortes", {}) or {}).get("feed") or []:
+            if it.get("type") != "Pregunta oral":
+                continue
+            quote = it.get("quote") or {}
+            contesta = next((b[len("Contesta: "):].rstrip(".") for b in it.get("body") or []
+                             if b.startswith("Contesta: ")), "")
+            slug = next((l["url"].rsplit("/", 1)[-1][:-5] for l in it.get("links") or []
+                         if "/diputados/" in (l.get("url") or "")), "")
+            salida.append({"texto": quote.get("text") or it.get("headline", ""),
+                           "autor": quote.get("author", ""),
+                           "destinatario": f"contesta {contesta}" if contesta else "",
+                           "slug": slug, "fecha": day["id"], "edicion": day["id"]})
+    return salida
+
+
+def renderizar_provincias(fichas_dip: list, dias: list) -> list:
+    """/provincias/: una página por circunscripción con sus diputados, lo que se
+    pregunta y se tramita sobre ella, cómo votan y qué publica el BOE. Las
+    cifras de diputados son las de /rankings/ (rankings.filas_personas y
+    rankings.medias), no otro cálculo. Devuelve [{"url", "lastmod"}] con el
+    lastmod del dato más reciente de cada provincia."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import congreso_datos as cd
+    import nombramientos as nb
+    import preguntas as pq
+    import provincias as pv
+    import rankings as rk
+    import tramitacion as tr
+    etiquetas = rk.cargar_etiquetas()
+    filas = rk.filas_personas(CONGRESO_ESTADO, fichas_dip or [], etiquetas)
+    regs_nb = [{"id": k, **v} for k, v in nb.cargar()["registros"].items()]
+    por_persona: dict = {}
+    for r in regs_nb:
+        por_persona.setdefault(r["clave"], []).append(r)
+    ref = pv.cargar_referencia()
+    cuenta_ccaa: dict = {}
+    for pr in ref["provincias"]:
+        cuenta_ccaa[pr["ccaa"]] = cuenta_ccaa.get(pr["ccaa"], 0) + 1
+    salidas = pv.generar_paginas({
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "carpeta": PROVINCIAS_DIR, "slug_txt": _slug_txt,
+        "fichas": fichas_dip or [], "filas": filas, "etiquetas": etiquetas,
+        "participacion_provincias": rk.participacion_provincias(filas),
+        "medias_nacionales": rk.medias(filas), "pct": rk.pct, "umbral": rk.UMBRAL_VOTACIONES,
+        "escritas": pq.cargar_escritas().get("exp") or {}, "orales": orales_de_ediciones(dias),
+        "clave_nombre": cd.clave_nombre, "nombre_natural": cd.nombre_natural,
+        "grupo_corto": pq.grupo_corto, "dias": pq._dias, "url_ficha": pq.url_ficha,
+        "iniciativas": tr.cargar().get("ini") or {}, "ultima_fecha": tr.ultima_fecha,
+        "slug_ini": tr.slug, "etiqueta_estado": tr.ETIQUETA, "votaciones_de": tr.votaciones_de,
+        "detalle": cd.detalle_ordenado(CONGRESO_ESTADO) if CONGRESO_ESTADO else [],
+        "det_nombres": CONGRESO_ESTADO.get("det_nombres") or [], "cod_voto": cd.COD_VOTO,
+        "ventana": rk.ventana_detalle(CONGRESO_ESTADO), "pagina_votacion": pagina_votacion,
+        "nombramientos": regs_nb, "slug_persona": nb.slugs_personas(por_persona),
+        "etiqueta_nb": nb.etiqueta,
+        "uniprovinciales": {c for c, n in cuenta_ccaa.items() if n == 1},
+    })
+    cob: dict = {}
+    for r in pv.generar_paginas.resumen:
+        for b in r["bloques"]:
+            cob[b] = cob.get(b, 0) + 1
+    DIAG["provincias_bloques"] = cob
+    log(f"provincias/: {len(salidas)} páginas; provincias con cada bloque: {cob}")
+    return salidas
+
+
 def novedades_preguntas(dias: list, n: int = 5) -> list:
     """(fecha, texto, enlace) de las últimas preguntas: las orales que ya salen
     en las ediciones y las escritas contestadas o registradas."""
@@ -4965,7 +5081,10 @@ def renderizar_seguimiento(dias: list) -> list:
                  nov_vot, "/votaciones/", "Todas las votaciones")
         + bloque("Qué se pregunta", "Las últimas preguntas al Gobierno, orales y escritas:",
                  nov_pre, "/preguntas/" if preguntas_publicadas() else "/diputados/",
-                 "Preguntas al Gobierno" if preguntas_publicadas() else "Los diputados, uno a uno"))
+                 "Preguntas al Gobierno" if preguntas_publicadas() else "Los diputados, uno a uno")
+        + '<h2 class="rotulo">Tu provincia</h2><p>Lo mismo, provincia a provincia: sus diputados, lo '
+          'que se pregunta y se tramita sobre ella y lo que publica el BOE.</p>'
+          '<p><a class="srclink" href="/provincias/">Elegir provincia →</a></p>')
     url = f"{SITE_URL}seguimiento/"
     titulo = "Seguimiento del Congreso: qué se tramita, cómo se vota y qué se pregunta"
     desc = ("Las leyes en tramitación, las votaciones del Pleno y las preguntas al Gobierno, "
@@ -5112,8 +5231,11 @@ def renderizar_diputados(fichas: list) -> list:
             rel.append(f'<a class="srclink" href="grupo-{esc_attr(gslug)}.html">'
                        f'Todo el grupo {esc_html(cd.GRUPO_CORTO.get(f["grupo"], ""))}</a>')
         if f["circunscripcion"]:
-            rel.append(f'<a class="srclink" href="provincia-{esc_attr(_slug_txt(f["circunscripcion"]))}.html">'
+            ps_dip = _slug_txt(f["circunscripcion"])
+            rel.append(f'<a class="srclink" href="provincia-{esc_attr(ps_dip)}.html">'
                        f'Diputados por {esc_html(f["circunscripcion"])}</a>')
+            rel.append(f'<a class="srclink" href="../provincias/{esc_attr(ps_dip)}.html">'
+                       f'Todo sobre {esc_html(nombre_provincia(ps_dip, f["circunscripcion"]))}</a>')
 
         _pagina_suelta(plantilla, DIPUTADOS_DIR, f"{f['slug']}.html", {
             "TITLE": esc_html(f"{f['natural']} — cómo vota y qué hace | La Tercera Cámara"),
@@ -5191,7 +5313,10 @@ def renderizar_diputados(fichas: list) -> list:
             f'<span aria-current="page">{esc_html(prov)}</span>',
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
-            f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>"))
+            f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
+            cuerpo_extra=(f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+                          f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
+                          f'tramita, cómo votan y qué publica el BOE →</a></p>')))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
@@ -5283,7 +5408,7 @@ def _entrada_indice(titulo, sub, url, clase, fecha="", extra="", largo=90):
             "u": url, "k": clase, "d": fecha, "x": " ".join((extra or "").split())[:largo]}
 
 
-INDICE_PRINCIPALES = ("norma", "iniciativa", "diputado")   # lo primero que se carga
+INDICE_PRINCIPALES = ("norma", "iniciativa", "diputado", "provincia")   # lo primero que se carga
 INDICE_MAX_BYTES = 1_000_000
 
 
@@ -5403,6 +5528,12 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
                                        pq.url_ficha(exp), "pregunta", v.get("pr") or "", exp))
     except Exception as exc:                                  # noqa: BLE001
         log(f"buscar/: preguntas escritas no indexadas ({exc})")
+    # Las 52 provincias, con sus variantes para que «Gerona» encuentre Girona.
+    try:
+        import provincias as pv
+        idx += pv.entradas_buscador(_entrada_indice)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"buscar/: provincias no indexadas ({exc})")
     # Personas y nombramientos del BOE.
     try:
         import nombramientos as nb
@@ -5502,7 +5633,7 @@ ETIQUETA_CLASE = {"norma": "Norma del BOE", "cortes": "Cortes", "diputado": "Dip
                   "tema": "Materia", "plazo": "Plazo", "edicion": "Edición",
                   "iniciativa": "Iniciativa legislativa", "votacion": "Votación",
                   "pregunta": "Pregunta al Gobierno", "persona": "Persona",
-                  "nombramiento": "Nombramiento o cese"}
+                  "nombramiento": "Nombramiento o cese", "provincia": "Provincia"}
 
 
 
@@ -5549,6 +5680,8 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
         + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
                  ("/votaciones/", "Votaciones del Pleno: quién votó qué", ""),
                  ("/seguimiento/", "Seguimiento: qué se tramita, cómo se vota y qué se pregunta", ""),
+                 ("/provincias/", "Tu provincia en las Cortes y en el BOE", ""),
+                 ("/provincias/metodologia.html", "Cómo se hacen las páginas de provincia", ""),
                  ("/tramitacion/", "Leyes en tramitación: en qué punto está cada iniciativa", ""),
                  ("/tramitacion/estado-aprobada.html", "Leyes aprobadas en la legislatura", ""),
                  ("/tramitacion/ampliaciones.html", "Plazos de enmiendas más ampliados", ""),
@@ -5771,6 +5904,11 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         extras += renderizar_seguimiento(dias)
     except Exception as exc:                                  # noqa: BLE001
         log(f"seguimiento/: no se pudo generar ({exc})")
+    # Tu provincia: su propio try, como el resto.
+    try:
+        extras += renderizar_provincias(fichas_dip, todos)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"provincias/: no se pudo generar ({exc})")
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(sorted(a_pintar, key=lambda d: d["id"], reverse=True))
@@ -5877,35 +6015,54 @@ def main() -> None:
                     "de la primera edición que ya hay en data/)")
     ap.add_argument("--lote", type=int, default=30,
                     help="máximo de ediciones nuevas por ejecución (30)")
-    # Reprocesado de nombramientos: solo state/nombramientos.json.
-    ap.add_argument("--nombramientos-desde", help="primera fecha a reprocesar (AAAA-MM-DD)")
-    ap.add_argument("--nombramientos-hasta", help="última fecha (por defecto, ayer)")
+    # Reprocesado del histórico del BOE: solo los ficheros de state/ de los
+    # extractores pedidos, con una sola descarga de sumario por día.
+    ap.add_argument("--reprocesar-desde", help="primera fecha a reprocesar (AAAA-MM-DD)")
+    ap.add_argument("--reprocesar-hasta", help="última fecha (por defecto, ayer)")
+    ap.add_argument("--extractores", default="nombramientos",
+                    help="extractores separados por comas: nombramientos,provincias")
+    # Alias de antes, para no romper archivo.yml ni a quien los use a mano.
+    ap.add_argument("--nombramientos-desde", help="alias de --reprocesar-desde con nombramientos")
+    ap.add_argument("--nombramientos-hasta", help="alias de --reprocesar-hasta")
     args = ap.parse_args()
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
-                RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR):
+                RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR):
         carpeta.mkdir(exist_ok=True)
 
-    if args.nombramientos_desde:
-        # Las ediciones ya publicadas no tienen los nombramientos: se relee el
+    if args.nombramientos_desde and not args.reprocesar_desde:
+        args.reprocesar_desde, args.extractores = args.nombramientos_desde, "nombramientos"
+        args.reprocesar_hasta = args.reprocesar_hasta or args.nombramientos_hasta
+    if args.reprocesar_desde:
+        # Las ediciones ya publicadas no tienen estos datos: se relee el
         # sumario de cada día y SOLO se actualiza el estado. Ni data/ ni las
         # ediciones: esas páginas se pintarán en la próxima edición diaria.
-        import nombramientos as nb
-        desde = dt.date.fromisoformat(args.nombramientos_desde)
-        hasta = (dt.date.fromisoformat(args.nombramientos_hasta) if args.nombramientos_hasta
+        import reproceso
+        extractores = [x.strip() for x in args.extractores.split(",") if x.strip()]
+        desconocidos = [x for x in extractores if x not in reproceso.EXTRACTORES]
+        if desconocidos:
+            raise SystemExit(f"extractores desconocidos: {desconocidos}; "
+                             f"los válidos son {list(reproceso.EXTRACTORES)}")
+        desde = dt.date.fromisoformat(args.reprocesar_desde)
+        hasta = (dt.date.fromisoformat(args.reprocesar_hasta) if args.reprocesar_hasta
                  else dt.date.today() - dt.timedelta(days=1))
-        DIAG["nombramientos_reproceso"] = nb.reprocesar(desde, hasta, get, log, pausa=1.5)
+        DIAG["reproceso"] = reproceso.reprocesar(desde, hasta, get, log, pausa=1.5,
+                                                 extractores=extractores)
         DIAG["fin"] = dt.datetime.now(dt.timezone.utc).isoformat()
-        (DEBUG_DIR / "nombramientos-last-run.json").write_text(
+        (DEBUG_DIR / "reproceso-last-run.json").write_text(
             json.dumps(DIAG, ensure_ascii=False, indent=2), encoding="utf-8")
         return
 
     if args.archivo_desde or args.archivo_hasta:
+        # La víspera de la primera edición DIARIA: las de archivo no cuentan,
+        # porque si no, tras el primer lote el tope quedaría antes de «desde»
+        # y relanzar con los mismos parámetros no haría nada.
         existentes = sorted(p.stem for p in DATA_DIR.glob("*.json")
-                            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem))
+                            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem)
+                            and not _es_edicion_archivo(p))
         desde = dt.date.fromisoformat(args.archivo_desde or "2026-01-01")
         if args.archivo_hasta:
             hasta = dt.date.fromisoformat(args.archivo_hasta)

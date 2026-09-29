@@ -203,6 +203,18 @@ def participacion_provincias(filas: list) -> list:
     return sorted(salida, key=lambda r: (-r["media"], r["circ"]))
 
 
+def medias(filas: list) -> dict:
+    """Medias simples nacionales de participación, disidencia e intervenciones,
+    con el mismo filtro que las tablas (al menos UMBRAL_VOTACIONES). Las usa
+    la página de cada provincia para compararse con el conjunto."""
+    validas = [f for f in filas if f["participacion"] is not None and f["votaciones"] >= UMBRAL_VOTACIONES]
+    n = len(validas)
+    return {"n": n,
+            "participacion": sum(f["participacion"] for f in validas) / n if n else None,
+            "disidencia": sum(f["disidencia"] for f in validas) / n if n else None,
+            "intervenciones": sum(f["intervenciones"] for f in filas) / len(filas) if filas else 0}
+
+
 # ------------------------------------------------------------------ HTML
 
 class Pintor:
@@ -507,7 +519,7 @@ def _pag_provincias(P: Pintor, provs: list, pie: str, lastmod: str):
     t = P.tabla(
         ["#", "Circunscripción", "Participación media", "Diputados"],
         [[(str(i + 1), i + 1),
-          f'<a href="../diputados/provincia-{P.attr(P.slug_txt(r["circ"]))}.html">'
+          f'<a href="../provincias/{P.attr(P.slug_txt(r["circ"]))}.html">'
           f'{P.esc(r["circ"])}</a>',
           (pct(r["media"]), round(r["media"], 5)), (str(r["n"]), r["n"])]
          for i, r in enumerate(provs)], numericas={0, 2, 3})
@@ -525,7 +537,7 @@ def _pag_provincias(P: Pintor, provs: list, pie: str, lastmod: str):
         "La participación media en las votaciones de los diputados elegidos en cada "
         "provincia.", cuerpo, pie,
         [P.itemlist(url, "Circunscripciones por participación media",
-                    [(r["circ"], f'{P.site}diputados/provincia-{P.slug_txt(r["circ"])}.html')
+                    [(r["circ"], f'{P.site}provincias/{P.slug_txt(r["circ"])}.html')
                      for r in provs])],
         lastmod), provs
 
