@@ -1,0 +1,669 @@
+{
+ "_nota": "Referencia territorial de La Tercera Cámara, mantenida a mano. Una entrada por circunscripción del Congreso; el slug es el mismo que el de diputados/provincia-<slug>.html (build._slug_txt de la circunscripción). «variantes» son otros nombres de la provincia, bilingües o tradicionales, y sus islas o ciudades principales cuando se citan sin la provincia. «localidades» se rellena a mano con municipios relevantes; empieza vacía. Las ambigüedades (nombres que también son apellidos o están en otros países) se tratan en provincias.py.",
+ "ccaa": {
+  "andalucia": {
+   "nombre": "Andalucía",
+   "variantes": [
+    "Andalucía",
+    "Junta de Andalucía"
+   ]
+  },
+  "aragon": {
+   "nombre": "Aragón",
+   "variantes": [
+    "Aragón"
+   ]
+  },
+  "principado-de-asturias": {
+   "nombre": "Principado de Asturias",
+   "variantes": [
+    "Principado de Asturias"
+   ]
+  },
+  "illes-balears": {
+   "nombre": "Illes Balears",
+   "variantes": [
+    "Illes Balears",
+    "Islas Baleares",
+    "Comunidad Autónoma de las Illes Balears"
+   ]
+  },
+  "canarias": {
+   "nombre": "Canarias",
+   "variantes": [
+    "Canarias",
+    "Comunidad Autónoma de Canarias"
+   ]
+  },
+  "cantabria": {
+   "nombre": "Cantabria",
+   "variantes": [
+    "Cantabria",
+    "Comunidad Autónoma de Cantabria"
+   ]
+  },
+  "castilla-y-leon": {
+   "nombre": "Castilla y León",
+   "variantes": [
+    "Castilla y León",
+    "Junta de Castilla y León"
+   ]
+  },
+  "castilla-la-mancha": {
+   "nombre": "Castilla-La Mancha",
+   "variantes": [
+    "Castilla-La Mancha",
+    "Castilla La Mancha"
+   ]
+  },
+  "cataluna": {
+   "nombre": "Cataluña",
+   "variantes": [
+    "Cataluña",
+    "Catalunya",
+    "Generalitat de Catalunya"
+   ]
+  },
+  "comunitat-valenciana": {
+   "nombre": "Comunitat Valenciana",
+   "variantes": [
+    "Comunitat Valenciana",
+    "Comunidad Valenciana",
+    "Generalitat Valenciana"
+   ]
+  },
+  "extremadura": {
+   "nombre": "Extremadura",
+   "variantes": [
+    "Extremadura",
+    "Junta de Extremadura"
+   ]
+  },
+  "galicia": {
+   "nombre": "Galicia",
+   "variantes": [
+    "Galicia",
+    "Xunta de Galicia"
+   ]
+  },
+  "comunidad-de-madrid": {
+   "nombre": "Comunidad de Madrid",
+   "variantes": [
+    "Comunidad de Madrid"
+   ]
+  },
+  "region-de-murcia": {
+   "nombre": "Región de Murcia",
+   "variantes": [
+    "Región de Murcia",
+    "Comunidad Autónoma de la Región de Murcia"
+   ]
+  },
+  "comunidad-foral-de-navarra": {
+   "nombre": "Comunidad Foral de Navarra",
+   "variantes": [
+    "Comunidad Foral de Navarra"
+   ]
+  },
+  "pais-vasco": {
+   "nombre": "País Vasco",
+   "variantes": [
+    "País Vasco",
+    "Euskadi",
+    "Comunidad Autónoma del País Vasco"
+   ]
+  },
+  "la-rioja": {
+   "nombre": "La Rioja",
+   "variantes": [
+    "Comunidad Autónoma de La Rioja"
+   ]
+  },
+  "ceuta": {
+   "nombre": "Ceuta",
+   "variantes": [
+    "Ciudad de Ceuta",
+    "Ciudad Autónoma de Ceuta"
+   ]
+  },
+  "melilla": {
+   "nombre": "Melilla",
+   "variantes": [
+    "Ciudad de Melilla",
+    "Ciudad Autónoma de Melilla"
+   ]
+  }
+ },
+ "provincias": [
+  {
+   "slug": "albacete",
+   "circunscripcion": "Albacete",
+   "nombre": "Albacete",
+   "variantes": [],
+   "capital": "Albacete",
+   "ccaa": "castilla-la-mancha",
+   "localidades": []
+  },
+  {
+   "slug": "alicante-alacant",
+   "circunscripcion": "Alicante/Alacant",
+   "nombre": "Alicante/Alacant",
+   "variantes": [
+    "Alicante",
+    "Alacant"
+   ],
+   "capital": "Alicante",
+   "ccaa": "comunitat-valenciana",
+   "localidades": []
+  },
+  {
+   "slug": "almeria",
+   "circunscripcion": "Almería",
+   "nombre": "Almería",
+   "variantes": [],
+   "capital": "Almería",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "araba-alava",
+   "circunscripcion": "Araba/Álava",
+   "nombre": "Araba/Álava",
+   "variantes": [
+    "Álava",
+    "Araba",
+    "Vitoria",
+    "Gasteiz"
+   ],
+   "capital": "Vitoria-Gasteiz",
+   "ccaa": "pais-vasco",
+   "localidades": []
+  },
+  {
+   "slug": "asturias",
+   "circunscripcion": "Asturias",
+   "nombre": "Asturias",
+   "variantes": [
+    "Principado de Asturias"
+   ],
+   "capital": "Oviedo",
+   "ccaa": "principado-de-asturias",
+   "localidades": []
+  },
+  {
+   "slug": "avila",
+   "circunscripcion": "Ávila",
+   "nombre": "Ávila",
+   "variantes": [],
+   "capital": "Ávila",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "badajoz",
+   "circunscripcion": "Badajoz",
+   "nombre": "Badajoz",
+   "variantes": [],
+   "capital": "Badajoz",
+   "ccaa": "extremadura",
+   "localidades": []
+  },
+  {
+   "slug": "balears-illes",
+   "circunscripcion": "Balears (Illes)",
+   "nombre": "Illes Balears",
+   "variantes": [
+    "Illes Balears",
+    "Islas Baleares",
+    "Baleares",
+    "Balears",
+    "Mallorca",
+    "Menorca",
+    "Ibiza",
+    "Eivissa",
+    "Formentera",
+    "Palma de Mallorca"
+   ],
+   "capital": "Palma",
+   "ccaa": "illes-balears",
+   "localidades": []
+  },
+  {
+   "slug": "barcelona",
+   "circunscripcion": "Barcelona",
+   "nombre": "Barcelona",
+   "variantes": [],
+   "capital": "Barcelona",
+   "ccaa": "cataluna",
+   "localidades": []
+  },
+  {
+   "slug": "bizkaia",
+   "circunscripcion": "Bizkaia",
+   "nombre": "Bizkaia",
+   "variantes": [
+    "Vizcaya",
+    "Bilbo"
+   ],
+   "capital": "Bilbao",
+   "ccaa": "pais-vasco",
+   "localidades": []
+  },
+  {
+   "slug": "burgos",
+   "circunscripcion": "Burgos",
+   "nombre": "Burgos",
+   "variantes": [],
+   "capital": "Burgos",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "caceres",
+   "circunscripcion": "Cáceres",
+   "nombre": "Cáceres",
+   "variantes": [],
+   "capital": "Cáceres",
+   "ccaa": "extremadura",
+   "localidades": []
+  },
+  {
+   "slug": "cadiz",
+   "circunscripcion": "Cádiz",
+   "nombre": "Cádiz",
+   "variantes": [],
+   "capital": "Cádiz",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "cantabria",
+   "circunscripcion": "Cantabria",
+   "nombre": "Cantabria",
+   "variantes": [],
+   "capital": "Santander",
+   "ccaa": "cantabria",
+   "localidades": []
+  },
+  {
+   "slug": "castellon-castello",
+   "circunscripcion": "Castellón/Castelló",
+   "nombre": "Castellón/Castelló",
+   "variantes": [
+    "Castellón",
+    "Castelló",
+    "Castelló de la Plana"
+   ],
+   "capital": "Castellón de la Plana",
+   "ccaa": "comunitat-valenciana",
+   "localidades": []
+  },
+  {
+   "slug": "ceuta",
+   "circunscripcion": "Ceuta",
+   "nombre": "Ceuta",
+   "variantes": [],
+   "capital": "Ceuta",
+   "ccaa": "ceuta",
+   "localidades": []
+  },
+  {
+   "slug": "ciudad-real",
+   "circunscripcion": "Ciudad Real",
+   "nombre": "Ciudad Real",
+   "variantes": [],
+   "capital": "Ciudad Real",
+   "ccaa": "castilla-la-mancha",
+   "localidades": []
+  },
+  {
+   "slug": "cordoba",
+   "circunscripcion": "Córdoba",
+   "nombre": "Córdoba",
+   "variantes": [],
+   "capital": "Córdoba",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "coruna-a",
+   "circunscripcion": "Coruña (A)",
+   "nombre": "A Coruña",
+   "variantes": [
+    "A Coruña",
+    "La Coruña",
+    "Coruña"
+   ],
+   "capital": "A Coruña",
+   "ccaa": "galicia",
+   "localidades": []
+  },
+  {
+   "slug": "cuenca",
+   "circunscripcion": "Cuenca",
+   "nombre": "Cuenca",
+   "variantes": [],
+   "capital": "Cuenca",
+   "ccaa": "castilla-la-mancha",
+   "localidades": []
+  },
+  {
+   "slug": "gipuzkoa",
+   "circunscripcion": "Gipuzkoa",
+   "nombre": "Gipuzkoa",
+   "variantes": [
+    "Guipúzcoa",
+    "Donostia",
+    "San Sebastián"
+   ],
+   "capital": "Donostia/San Sebastián",
+   "ccaa": "pais-vasco",
+   "localidades": []
+  },
+  {
+   "slug": "girona",
+   "circunscripcion": "Girona",
+   "nombre": "Girona",
+   "variantes": [
+    "Gerona"
+   ],
+   "capital": "Girona",
+   "ccaa": "cataluna",
+   "localidades": []
+  },
+  {
+   "slug": "granada",
+   "circunscripcion": "Granada",
+   "nombre": "Granada",
+   "variantes": [],
+   "capital": "Granada",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "guadalajara",
+   "circunscripcion": "Guadalajara",
+   "nombre": "Guadalajara",
+   "variantes": [],
+   "capital": "Guadalajara",
+   "ccaa": "castilla-la-mancha",
+   "localidades": []
+  },
+  {
+   "slug": "huelva",
+   "circunscripcion": "Huelva",
+   "nombre": "Huelva",
+   "variantes": [],
+   "capital": "Huelva",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "huesca",
+   "circunscripcion": "Huesca",
+   "nombre": "Huesca",
+   "variantes": [],
+   "capital": "Huesca",
+   "ccaa": "aragon",
+   "localidades": []
+  },
+  {
+   "slug": "jaen",
+   "circunscripcion": "Jaén",
+   "nombre": "Jaén",
+   "variantes": [],
+   "capital": "Jaén",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "leon",
+   "circunscripcion": "León",
+   "nombre": "León",
+   "variantes": [],
+   "capital": "León",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "lleida",
+   "circunscripcion": "Lleida",
+   "nombre": "Lleida",
+   "variantes": [
+    "Lérida"
+   ],
+   "capital": "Lleida",
+   "ccaa": "cataluna",
+   "localidades": []
+  },
+  {
+   "slug": "lugo",
+   "circunscripcion": "Lugo",
+   "nombre": "Lugo",
+   "variantes": [],
+   "capital": "Lugo",
+   "ccaa": "galicia",
+   "localidades": []
+  },
+  {
+   "slug": "madrid",
+   "circunscripcion": "Madrid",
+   "nombre": "Madrid",
+   "variantes": [],
+   "capital": "Madrid",
+   "ccaa": "comunidad-de-madrid",
+   "localidades": []
+  },
+  {
+   "slug": "malaga",
+   "circunscripcion": "Málaga",
+   "nombre": "Málaga",
+   "variantes": [],
+   "capital": "Málaga",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "melilla",
+   "circunscripcion": "Melilla",
+   "nombre": "Melilla",
+   "variantes": [],
+   "capital": "Melilla",
+   "ccaa": "melilla",
+   "localidades": []
+  },
+  {
+   "slug": "murcia",
+   "circunscripcion": "Murcia",
+   "nombre": "Murcia",
+   "variantes": [],
+   "capital": "Murcia",
+   "ccaa": "region-de-murcia",
+   "localidades": []
+  },
+  {
+   "slug": "navarra",
+   "circunscripcion": "Navarra",
+   "nombre": "Navarra",
+   "variantes": [
+    "Nafarroa",
+    "Pamplona",
+    "Iruña"
+   ],
+   "capital": "Pamplona/Iruña",
+   "ccaa": "comunidad-foral-de-navarra",
+   "localidades": []
+  },
+  {
+   "slug": "ourense",
+   "circunscripcion": "Ourense",
+   "nombre": "Ourense",
+   "variantes": [
+    "Orense"
+   ],
+   "capital": "Ourense",
+   "ccaa": "galicia",
+   "localidades": []
+  },
+  {
+   "slug": "palencia",
+   "circunscripcion": "Palencia",
+   "nombre": "Palencia",
+   "variantes": [],
+   "capital": "Palencia",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "palmas-las",
+   "circunscripcion": "Palmas (Las)",
+   "nombre": "Las Palmas",
+   "variantes": [
+    "Las Palmas",
+    "Gran Canaria",
+    "Lanzarote",
+    "Fuerteventura"
+   ],
+   "capital": "Las Palmas de Gran Canaria",
+   "ccaa": "canarias",
+   "localidades": []
+  },
+  {
+   "slug": "pontevedra",
+   "circunscripcion": "Pontevedra",
+   "nombre": "Pontevedra",
+   "variantes": [],
+   "capital": "Pontevedra",
+   "ccaa": "galicia",
+   "localidades": []
+  },
+  {
+   "slug": "rioja-la",
+   "circunscripcion": "Rioja (La)",
+   "nombre": "La Rioja",
+   "variantes": [
+    "La Rioja"
+   ],
+   "capital": "Logroño",
+   "ccaa": "la-rioja",
+   "localidades": []
+  },
+  {
+   "slug": "s-c-tenerife",
+   "circunscripcion": "S/C Tenerife",
+   "nombre": "Santa Cruz de Tenerife",
+   "variantes": [
+    "Santa Cruz de Tenerife",
+    "Tenerife",
+    "La Palma",
+    "La Gomera",
+    "El Hierro"
+   ],
+   "capital": "Santa Cruz de Tenerife",
+   "ccaa": "canarias",
+   "localidades": []
+  },
+  {
+   "slug": "salamanca",
+   "circunscripcion": "Salamanca",
+   "nombre": "Salamanca",
+   "variantes": [],
+   "capital": "Salamanca",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "segovia",
+   "circunscripcion": "Segovia",
+   "nombre": "Segovia",
+   "variantes": [],
+   "capital": "Segovia",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "sevilla",
+   "circunscripcion": "Sevilla",
+   "nombre": "Sevilla",
+   "variantes": [],
+   "capital": "Sevilla",
+   "ccaa": "andalucia",
+   "localidades": []
+  },
+  {
+   "slug": "soria",
+   "circunscripcion": "Soria",
+   "nombre": "Soria",
+   "variantes": [],
+   "capital": "Soria",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "tarragona",
+   "circunscripcion": "Tarragona",
+   "nombre": "Tarragona",
+   "variantes": [],
+   "capital": "Tarragona",
+   "ccaa": "cataluna",
+   "localidades": []
+  },
+  {
+   "slug": "teruel",
+   "circunscripcion": "Teruel",
+   "nombre": "Teruel",
+   "variantes": [],
+   "capital": "Teruel",
+   "ccaa": "aragon",
+   "localidades": []
+  },
+  {
+   "slug": "toledo",
+   "circunscripcion": "Toledo",
+   "nombre": "Toledo",
+   "variantes": [],
+   "capital": "Toledo",
+   "ccaa": "castilla-la-mancha",
+   "localidades": []
+  },
+  {
+   "slug": "valencia-valencia",
+   "circunscripcion": "Valencia/València",
+   "nombre": "Valencia/València",
+   "variantes": [
+    "Valencia",
+    "València"
+   ],
+   "capital": "Valencia",
+   "ccaa": "comunitat-valenciana",
+   "localidades": []
+  },
+  {
+   "slug": "valladolid",
+   "circunscripcion": "Valladolid",
+   "nombre": "Valladolid",
+   "variantes": [],
+   "capital": "Valladolid",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "zamora",
+   "circunscripcion": "Zamora",
+   "nombre": "Zamora",
+   "variantes": [],
+   "capital": "Zamora",
+   "ccaa": "castilla-y-leon",
+   "localidades": []
+  },
+  {
+   "slug": "zaragoza",
+   "circunscripcion": "Zaragoza",
+   "nombre": "Zaragoza",
+   "variantes": [],
+   "capital": "Zaragoza",
+   "ccaa": "aragon",
+   "localidades": []
+  }
+ ]
+}

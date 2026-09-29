@@ -1289,3 +1289,8 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .tr-fases li{padding:.25rem .5rem;border:1px solid var(--border);border-radius:3px;color:var(--ink-soft)}
 .tr-fases li.hecha{background:var(--otros-soft)}
 .tr-fases li.actual{background:var(--congreso);border-color:var(--congreso);color:#fff;font-weight:700}
+
+/* ------------------------------------------------------------- Tu provincia */
+.indice li.propia{border-left:3px solid var(--congreso);padding-left:.6rem}
+.destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
+.tabla-ancha{overflow-x:auto;max-width:100%}

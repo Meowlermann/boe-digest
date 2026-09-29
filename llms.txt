@@ -28,6 +28,9 @@ Repositorio (código y datos en bruto): https://github.com/Meowlermann/boe-diges
   decreto-ley votado) con su estado, hitos, plazos de enmiendas,
   votaciones y ley resultante; /tramitacion/metodologia.html explica los
   estados y sus límites.
+- /provincias/ — una página por circunscripción (52): sus diputados, las
+  preguntas y las iniciativas que la nombran, cómo votaron y lo que publica
+  el BOE sobre ella; /provincias/metodologia.html explica cómo se asignan.
 - /datos/indice.json — lista de los ficheros del índice del buscador,
   uno por tipo (/datos/indice-<tipo>.json, partido por año si pasa de
   1 MB), con su número de entradas y su tamaño.

@@ -13,7 +13,7 @@ on:
         required: true
         default: "2026-01-01"
       hasta:
-        description: "Última fecha (AAAA-MM-DD). Vacío: la víspera de la primera edición ya publicada"
+        description: "Última fecha (AAAA-MM-DD). Vacío: la víspera de la primera edición diaria ya publicada"
         required: false
         default: ""
       lote:
@@ -21,11 +21,15 @@ on:
         required: true
         default: "30"
       modo:
-        description: "ediciones: rellena el archivo · nombramientos: solo relee la sección II y actualiza state/nombramientos.json"
+        description: "ediciones: rellena el archivo · reprocesar: relee los sumarios y actualiza solo state/ con los extractores de abajo · nombramientos: como reprocesar con extractores=nombramientos"
         required: true
         type: choice
-        options: [ediciones, nombramientos]
+        options: [ediciones, reprocesar, nombramientos]
         default: ediciones
+      extractores:
+        description: "Solo en modo reprocesar: nombramientos, provincias o nombramientos,provincias (una descarga por día para todos)"
+        required: false
+        default: "nombramientos,provincias"
 
 permissions:
   contents: write
@@ -58,11 +62,16 @@ jobs:
           HASTA: ${{ inputs.hasta }}
           LOTE: ${{ inputs.lote }}
           MODO: ${{ inputs.modo }}
+          EXTRACTORES: ${{ inputs.extractores }}
         run: |
           if [ "$MODO" = "nombramientos" ]; then
             # Solo el estado de nombramientos: ni data/ ni las ediciones.
             ARGS="--nombramientos-desde $DESDE"
             if [ -n "$HASTA" ]; then ARGS="$ARGS --nombramientos-hasta $HASTA"; fi
+          elif [ "$MODO" = "reprocesar" ]; then
+            # Solo state/ de los extractores pedidos; pausa de 1,5 s entre días.
+            ARGS="--reprocesar-desde $DESDE --extractores ${EXTRACTORES:-nombramientos,provincias}"
+            if [ -n "$HASTA" ]; then ARGS="$ARGS --reprocesar-hasta $HASTA"; fi
           else
             ARGS="--archivo-desde $DESDE --lote $LOTE"
             if [ -n "$HASTA" ]; then ARGS="$ARGS --archivo-hasta $HASTA"; fi
@@ -76,8 +85,8 @@ jobs:
           git config user.name "BOE Digest bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # git add falla con 'pathspec did not match' si una carpeta no existe todavía
-          mkdir -p data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas personas nombramientos tramitacion seguimiento datos buscar mapa assets
-          git add -A data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas personas nombramientos tramitacion seguimiento datos buscar mapa assets index.html 'sitemap*.xml' feed.xml
+          mkdir -p data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas personas nombramientos tramitacion seguimiento provincias datos buscar mapa assets
+          git add -A data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas personas nombramientos tramitacion seguimiento provincias datos buscar mapa assets index.html 'sitemap*.xml' feed.xml
           if git diff --staged --quiet; then
             echo "Sin cambios: no se publica nada."
             echo "publicado=no" >> "$GITHUB_OUTPUT"

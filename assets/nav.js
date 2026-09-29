@@ -38,6 +38,7 @@
   var seccion =
     /^\/votaciones\//.test(ruta) ? "votaciones" :
     /^\/(seguimiento|tramitacion)\//.test(ruta) ? "seguimiento" :
+    /^\/provincias\//.test(ruta) ? "parlamento" :
     /^\/(diputados|rankings)\//.test(ruta) ? "parlamento" :
     /^\/(buscar|normas|temas|plazos|mapa)\//.test(ruta) ? "consultar" :
     "hoy";
@@ -121,7 +122,7 @@
   var indice = null, cargando = null, activo = -1, visibles = [];
 
   var ETIQ = { norma: "Norma", cortes: "Cortes", diputado: "Diputado", iniciativa: "Iniciativa", votacion: "Votación",
-               pregunta: "Pregunta", persona: "Persona", nombramiento: "Nombramiento",
+               pregunta: "Pregunta", persona: "Persona", nombramiento: "Nombramiento", provincia: "Provincia",
                tema: "Materia", edicion: "Edición", plazo: "Plazo" };
 
   function plano(t) {
