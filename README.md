@@ -201,6 +201,7 @@ debug/last-run.json         diagnóstico de la última ejecución
 state/senado.json           último boletín del Senado leído, para estimar el siguiente
 state/ediciones.json        fecha de última modificación real de cada edición
 docs/                       notas del proyecto
+geo/provincias.json         contornos de las provincias para el mapa de /provincias/ (estático, IGN)
 index.html                  generado por build.py — no editar a mano
 ediciones/AAAA-MM-DD.html   generado por build.py — página propia por edición
 ediciones/index.html        generado por build.py — índice del archivo

@@ -127,5 +127,43 @@ class TestMenciones(unittest.TestCase):
         self.assertEqual(regs[1]["cat"], "patrimonio")
 
 
+    def test_mapa_geometria(self):
+        # Una forma por circunscripción de la referencia, ni una más ni una menos.
+        import json
+        geo = json.loads(pv.MAPA_FICHERO.read_text(encoding="utf-8"))
+        slugs = {p["slug"] for p in pv.cargar_referencia()["provincias"]}
+        self.assertEqual(set(geo["provincias"]), slugs)
+        self.assertTrue({"ceuta", "melilla"} <= set(geo["centros"]))
+
+    def test_cortes_mapa(self):
+        self.assertEqual(pv.cortes_mapa([0, 0]), [])
+        self.assertEqual(pv.cortes_mapa([0, 3, 3, 4]), [(3, 3), (4, 4)])
+        rangos = pv.cortes_mapa([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
+        self.assertEqual(len(rangos), 5)
+        self.assertEqual(rangos[0][0], 1)
+        self.assertEqual(rangos[-1][1], 55)
+        for (_a, b), (c, _d) in zip(rangos, rangos[1:]):
+            self.assertLess(b, c)                      # sin solapes
+        self.assertEqual(pv.nivel_mapa(0, rangos), 0)
+        self.assertEqual(pv.nivel_mapa(55, rangos), 5)
+        self.assertEqual(pv.nivel_mapa(4, rangos), pv.nivel_mapa(5, rangos))
+
+
+    def test_agregados_ccaa(self):
+        # La unión no cuenta dos veces lo que nombra dos provincias de la misma comunidad.
+        res = [{"p": {"slug": "alicante-alacant", "ccaa": "comunitat-valenciana"}, "diputados": 12,
+                "preg_ids": {"184/1", "184/2"}, "boe_ids": {"A"}},
+               {"p": {"slug": "valencia-valencia", "ccaa": "comunitat-valenciana"}, "diputados": 16,
+                "preg_ids": {"184/2", "184/3"}, "boe_ids": {"A", "B"}},
+               {"p": {"slug": "madrid", "ccaa": "madrid"}, "diputados": 37,
+                "preg_ids": set(), "boe_ids": {"C"}}]
+        ag = pv.agregados_ccaa(res, {"comunitat-valenciana": {"184/9"}}, {"madrid": {"C", "D"}})
+        self.assertEqual(ag["comunitat-valenciana"]["dip"], 28)
+        self.assertEqual(ag["comunitat-valenciana"]["preg"], 4)
+        self.assertEqual(ag["comunitat-valenciana"]["boe"], 2)
+        self.assertEqual(ag["madrid"]["boe"], 2)
+        self.assertEqual(ag["madrid"]["provincias"], ["madrid"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1306,3 +1306,69 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .indice li.propia{border-left:3px solid var(--congreso);padding-left:.6rem}
 .destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
 .tabla-ancha{overflow-x:auto;max-width:100%}
+
+/* ---------- Mapa de provincias (/provincias/) ---------- */
+/* Una sola tinta, de claro a oscuro; el cero va en gris sin tinta. En modo
+   oscuro la rampa se invierte: lo que más pesa es lo más luminoso. */
+:root{ --mp-0:#e6e8df; --mp-1:#f0bfb6; --mp-2:#e9a197; --mp-3:#d9695d; --mp-4:#b52a2a; --mp-5:#6e1212;
+       --mp-borde:#ffffff; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --mp-0:#262a32; --mp-1:#683833; --mp-2:#9b4a43; --mp-3:#d15c53; --mp-4:#f6857a; --mp-5:#ffc3bc;
+  --mp-borde:#1a1d24; } }
+:root[data-theme="dark"]{ --mp-0:#262a32; --mp-1:#683833; --mp-2:#9b4a43; --mp-3:#d15c53; --mp-4:#f6857a; --mp-5:#ffc3bc;
+  --mp-borde:#1a1d24; }
+.mp{ margin:18px 0 28px; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:12px; }
+.mp-filtros{ display:flex; flex-wrap:wrap; gap:6px; }
+.mp-filtros button{ font:600 13px/1 'Work Sans',sans-serif; padding:8px 12px; border-radius:999px;
+  border:1px solid var(--border); background:transparent; color:var(--ink); cursor:pointer; }
+.mp-filtros button:hover{ border-color:var(--ink-soft); }
+.mp-filtros button[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--surface); }
+.mp-nota{ margin:10px 0 6px; font-size:13px; color:var(--ink-soft); }
+.mp-nota span, .mp-leyenda{ display:none; }
+.mp[data-nivel="prov"][data-m="preg"] [data-para="prov-preg"], .mp[data-nivel="prov"][data-m="boe"] [data-para="prov-boe"], .mp[data-nivel="prov"][data-m="dip"] [data-para="prov-dip"], .mp[data-nivel="ccaa"][data-m="preg"] [data-para="ccaa-preg"], .mp[data-nivel="ccaa"][data-m="boe"] [data-para="ccaa-boe"], .mp[data-nivel="ccaa"][data-m="dip"] [data-para="ccaa-dip"]{ display:revert; }
+.mp[data-nivel="prov"][data-m="preg"] .mp-leyenda[data-para="prov-preg"], .mp[data-nivel="prov"][data-m="boe"] .mp-leyenda[data-para="prov-boe"], .mp[data-nivel="prov"][data-m="dip"] .mp-leyenda[data-para="prov-dip"], .mp[data-nivel="ccaa"][data-m="preg"] .mp-leyenda[data-para="ccaa-preg"], .mp[data-nivel="ccaa"][data-m="boe"] .mp-leyenda[data-para="ccaa-boe"], .mp[data-nivel="ccaa"][data-m="dip"] .mp-leyenda[data-para="ccaa-dip"]{ display:flex; }
+.mp-controles{ display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; }
+.mp-nivel{ padding-left:18px; border-left:1px solid var(--border); }
+@media (max-width:560px){ .mp-nivel{ padding-left:0; border-left:0; } }
+.mp-lienzo{ position:relative; }
+.mp svg{ display:block; width:100%; height:auto; }
+.mp-prov{ --b:var(--mp-0); --f:var(--b); }
+.mp-prov path, .mp-prov circle{ fill:var(--f); stroke:var(--mp-borde); stroke-width:.8; transition:fill .15s; }
+.mp-prov circle{ stroke-width:1.5; }
+.mp-prov text{ font:500 11px 'Work Sans',sans-serif; fill:var(--ink-soft); }
+.mp-prov:hover path, .mp-prov:hover circle, .mp-prov:focus-visible path, .mp-prov:focus-visible circle{
+  stroke:var(--ink); stroke-width:2; }
+.mp-prov:focus{ outline:none; }
+/* Por comunidades: sin fronteras de provincia, que la comunidad se lea entera. */
+.mp[data-nivel="ccaa"] .mp-prov path,
+.mp[data-nivel="ccaa"] .mp-prov:is(:hover,:focus-visible) path{ stroke:var(--f); stroke-width:.8; }
+.mp[data-nivel="ccaa"] .mp-ccaa{ stroke:var(--mp-borde); stroke-width:1.4; stroke-opacity:1; }
+/* Al señalar una provincia o comunidad, el resto se aclara hacia el fondo. */
+.mp.hay-sel .mp-prov:not(.sel){ --f:color-mix(in srgb, var(--b) 40%, var(--surface)); }
+.mp[data-nivel="prov"].hay-sel .mp-prov:not(.sel){ --f:color-mix(in srgb, var(--b) 65%, var(--surface)); }
+.mp.hay-sel .mp-prov:not(.sel) text{ opacity:.5; }
+.mp-ccaa{ fill:none; stroke:var(--ink-soft); stroke-width:.9; stroke-opacity:.55; pointer-events:none; }
+.mp-marco{ fill:none; stroke:var(--border); stroke-width:1; }
+.mp-prov[data-q="1"]{ --b:var(--mp-1); }
+.mp-prov[data-q="2"]{ --b:var(--mp-2); }
+.mp-prov[data-q="3"]{ --b:var(--mp-3); }
+.mp-prov[data-q="4"]{ --b:var(--mp-4); }
+.mp-prov[data-q="5"]{ --b:var(--mp-5); }
+.mp-leyenda{ list-style:none; margin:10px 0 0; padding:0; gap:4px 14px; flex-wrap:wrap;
+  font:500 12px 'IBM Plex Mono',monospace; color:var(--ink-soft); }
+.mp-leyenda li{ display:flex; align-items:center; gap:6px; }
+.mp-leyenda i{ width:14px; height:14px; border-radius:3px; display:inline-block; }
+.mp-leyenda .mp-q0{ background:var(--mp-0); } .mp-leyenda .mp-q1{ background:var(--mp-1); }
+.mp-leyenda .mp-q2{ background:var(--mp-2); } .mp-leyenda .mp-q3{ background:var(--mp-3); }
+.mp-leyenda .mp-q4{ background:var(--mp-4); } .mp-leyenda .mp-q5{ background:var(--mp-5); }
+.mp-tip{ position:absolute; z-index:5; pointer-events:none; min-width:170px; max-width:240px; padding:10px 12px;
+  background:var(--surface); color:var(--ink); border:1px solid var(--border); border-radius:8px;
+  box-shadow:var(--shadow); font-size:13px; line-height:1.35; }
+.mp-tip strong{ display:block; font-family:'Oswald','Arial Narrow',sans-serif; font-size:16px; font-weight:600; }
+.mp-tip span{ display:block; color:var(--ink-soft); }
+.mp-tip .mp-tip-c{ font-size:12px; margin-bottom:6px; }
+.mp-tip span.on{ color:var(--ink); }
+.mp-tip b{ font-variant-numeric:tabular-nums; color:var(--ink); }
+.mp figcaption{ margin-top:10px; font-size:12px; color:var(--ink-soft); }
+@media (forced-colors: active){ .mp-prov path, .mp-prov circle{ stroke:CanvasText; } }
+.mp-rotulo{ font:500 11px "Work Sans",sans-serif; fill:var(--ink-soft); pointer-events:none; }
