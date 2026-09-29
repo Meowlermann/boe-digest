@@ -370,17 +370,18 @@ def _en_rango(fechas: list) -> tuple[str, str]:
 # ---------------------------------------------------------------------------
 #
 # Coropletas de una sola tinta: cada provincia se pinta por uno de tres
-# recuentos (preguntas y BOE de los últimos VENTANA_INDICE días, diputados).
-# Cero va en gris neutro, sin tinta. Los cortes son por rangos de la
-# distribución de ese recuento entre las provincias que no tienen cero, así
-# que cada tono agrupa provincias parecidas. El color lo pone el CSS según el
-# atributo data-m del contenedor: sin JavaScript se ve el mapa de preguntas y
-# cada provincia sigue siendo un enlace a su página.
+# recuentos (preguntas y BOE de los últimos VENTANA_INDICE días, diputados),
+# a nivel de provincia o de comunidad autónoma. Cero va en gris neutro, sin
+# tinta. Los cortes son por rangos de la distribución de ese recuento entre
+# las unidades que no tienen cero, así que cada tono agrupa unidades
+# parecidas. En la vista por comunidades no hay geometría nueva: cada
+# provincia se pinta con el valor de su comunidad y se borran las fronteras
+# internas. Sin JavaScript se ve el mapa de preguntas por provincia y cada
+# provincia sigue siendo un enlace a su página.
 
 MAPA_FICHERO = ROOT / "geo" / "provincias.json"
-MAPA_METRICAS = [("preg", "preguntas_90", "Preguntas al Gobierno"),
-                 ("boe", "boe_90", "En el BOE"),
-                 ("dip", "diputados", "Diputados")]
+MAPA_METRICAS = [("preg", "Preguntas al Gobierno"), ("boe", "En el BOE"), ("dip", "Diputados")]
+MAPA_NIVELES_VISTA = [("prov", "Provincias"), ("ccaa", "Comunidades")]
 MAPA_NIVELES = 5
 
 
@@ -416,23 +417,53 @@ def nivel_mapa(v: int, rangos: list[tuple[int, int]]) -> int:
     return len(rangos)
 
 
-def mapa_html(resumen: list, ref: dict, esc, attr) -> str:
-    """El mapa entero (SVG en línea, leyendas, selector y el script del
+def agregados_ccaa(resumen: list, preg_ccaa: dict, boe_ccaa: dict) -> dict:
+    """Totales por comunidad: diputados sumados; preguntas y BOE como UNIÓN
+    de identificadores (lo de cualquiera de sus provincias más lo que nombra
+    la comunidad), para no contar dos veces una pregunta que nombra Alicante
+    y Valencia."""
+    ag: dict = {}
+    for r in resumen:
+        c = r["p"]["ccaa"]
+        a = ag.setdefault(c, {"dip": 0, "preg": set(), "boe": set(), "provincias": []})
+        a["dip"] += r["diputados"]
+        a["preg"] |= r.get("preg_ids", set())
+        a["boe"] |= r.get("boe_ids", set())
+        a["provincias"].append(r["p"]["slug"])
+    for c, a in ag.items():
+        a["preg"] = len(a["preg"] | preg_ccaa.get(c, set()))
+        a["boe"] = len(a["boe"] | boe_ccaa.get(c, set()))
+    return ag
+
+
+def mapa_html(resumen: list, ref: dict, esc, attr, ag: dict | None = None) -> str:
+    """El mapa entero (SVG en línea, selectores, leyendas y el script del
     tooltip). Si falta la geometría, cadena vacía y el índice queda como
     estaba: la lista siempre está debajo."""
     try:
         geo = json.loads(MAPA_FICHERO.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return ""
-    rangos = {m: cortes_mapa([r[campo] for r in resumen]) for m, campo, _e in MAPA_METRICAS}
+    ag = ag or {}
+    campos = {"preg": "preguntas_90", "boe": "boe_90", "dip": "diputados"}
+    rangos = {("prov", m): cortes_mapa([r[campos[m]] for r in resumen]) for m, _e in MAPA_METRICAS}
+    rangos.update({("ccaa", m): cortes_mapa([a[m] for a in ag.values()]) for m, _e in MAPA_METRICAS})
     formas = []
     for r in sorted(resumen, key=lambda r: r["p"]["slug"]):
         p = r["p"]
         d = geo["provincias"].get(p["slug"])
         if not d:
             continue
-        niveles = " ".join(f'data-q-{m}="{nivel_mapa(r[campo], rangos[m])}"'
-                           for m, campo, _e in MAPA_METRICAS)
+        c = p["ccaa"]
+        a = ag.get(c)
+        niveles = [f'data-q-prov-{m}="{nivel_mapa(r[campos[m]], rangos[("prov", m)])}"' for m, _e in MAPA_METRICAS]
+        if a:
+            niveles += [f'data-q-ccaa-{m}="{nivel_mapa(a[m], rangos[("ccaa", m)])}"' for m, _e in MAPA_METRICAS]
+            # Comunidad de una sola provincia: su página es la de la provincia.
+            destino = (f'{p["slug"]}.html' if len(a["provincias"]) == 1 else f'#ccaa-{c}')
+            niveles.append(f'data-cc="{attr(c)}" data-cn="{attr(ref["ccaa"][c]["nombre"])}" '
+                           f'data-cdip="{a["dip"]}" data-cpreg="{a["preg"]}" data-cboe="{a["boe"]}" '
+                           f'data-cnp="{len(a["provincias"])}" data-cdest="{attr(destino)}"')
         etiqueta = (f'{p["nombre"]}: {r["diputados"]} diputados, {r["preguntas_90"]} preguntas '
                     f'y {r["boe_90"]} disposiciones del BOE en {VENTANA_INDICE} días')
         forma = f'<path d="{d}"/>'
@@ -441,31 +472,42 @@ def mapa_html(resumen: list, ref: dict, esc, attr) -> str:
             x, y = geo["centros"][p["slug"]]
             forma += (f'<circle cx="{x}" cy="{y}" r="6"/>'
                       f'<text x="{x + 10}" y="{y + 4}">{esc(p["nombre"])}</text>')
+        q0 = nivel_mapa(r["preguntas_90"], rangos[("prov", "preg")])
         formas.append(
             f'<a href="{attr(p["slug"])}.html" class="mp-prov" aria-label="{attr(etiqueta)}" '
-            f'data-n="{attr(p["nombre"])}" data-c="{attr(ref["ccaa"][p["ccaa"]]["nombre"])}" '
+            f'data-n="{attr(p["nombre"])}" data-c="{attr(ref["ccaa"][c]["nombre"])}" '
             f'data-dip="{r["diputados"]}" data-preg="{r["preguntas_90"]}" data-boe="{r["boe_90"]}" '
-            f'{niveles}>{forma}</a>')
+            f'data-q="{q0}" {" ".join(niveles)}>{forma}</a>')
 
-    def leyenda(m, etiqueta):
-        rs = rangos[m]
+    def leyenda(nivel, m, etiqueta):
+        rs = rangos[(nivel, m)]
         celdas = ['<li><i class="mp-q0"></i>0</li>'] + [
             f'<li><i class="mp-q{i}"></i>{a if a == b else f"{a}–{b}"}</li>'
             for i, (a, b) in enumerate(rs, 1)]
-        return (f'<ul class="mp-leyenda" data-para="{m}" aria-label="{attr(etiqueta)}">'
+        return (f'<ul class="mp-leyenda" data-para="{nivel}-{m}" aria-label="{attr(etiqueta)}">'
                 + "".join(celdas) + '</ul>')
 
-    botones = "".join(
-        f'<button type="button" data-m="{m}" aria-pressed="{"true" if i == 0 else "false"}">'
-        f'{esc(e)}</button>' for i, (m, _c, e) in enumerate(MAPA_METRICAS))
-    notas = {"preg": f"Preguntas al Gobierno que nombran la provincia en su título, últimos {VENTANA_INDICE} días.",
-             "boe": f"Disposiciones de las secciones I y III del BOE que la nombran, últimos {VENTANA_INDICE} días.",
-             "dip": "Escaños en el Congreso por circunscripción."}
+    def grupo(clase, opciones, etiqueta):
+        return (f'<div class="mp-filtros {clase}" role="group" aria-label="{attr(etiqueta)}">' + "".join(
+            f'<button type="button" data-v="{v}" aria-pressed="{"true" if i == 0 else "false"}">'
+            f'{esc(e)}</button>' for i, (v, e) in enumerate(opciones)) + '</div>')
+
+    v = VENTANA_INDICE
+    notas = {
+        "prov-preg": f"Preguntas al Gobierno que nombran la provincia en su título, últimos {v} días.",
+        "prov-boe": f"Disposiciones de las secciones I y III del BOE que nombran la provincia, últimos {v} días.",
+        "prov-dip": "Escaños en el Congreso por circunscripción.",
+        "ccaa-preg": f"Preguntas que nombran la comunidad o alguna de sus provincias, sin contar dos veces la misma, últimos {v} días.",
+        "ccaa-boe": f"Disposiciones del BOE que nombran la comunidad o alguna de sus provincias, o que firma la comunidad, últimos {v} días.",
+        "ccaa-dip": "Escaños en el Congreso sumando sus circunscripciones.",
+    }
     return (
-        '<figure class="mp" data-m="preg">'
-        f'<div class="mp-filtros" role="group" aria-label="Qué se pinta en el mapa">{botones}</div>'
-        '<p class="mp-nota">' + "".join(
-            f'<span data-para="{m}">{esc(n)}</span>' for m, n in notas.items()) + '</p>'
+        '<figure class="mp" data-m="preg" data-nivel="prov">'
+        '<div class="mp-controles">'
+        + grupo("mp-metrica", MAPA_METRICAS, "Qué se pinta en el mapa")
+        + (grupo("mp-nivel", MAPA_NIVELES_VISTA, "Por provincias o por comunidades") if ag else "")
+        + '</div><p class="mp-nota">' + "".join(
+            f'<span data-para="{k}">{esc(n)}</span>' for k, n in notas.items()) + '</p>'
         f'<div class="mp-lienzo"><svg viewBox="{geo["viewBox"]}" role="group" '
         'aria-label="Mapa de España por provincias; cada provincia enlaza a su página">'
         f'<path class="mp-marco" d="{geo["marco"]}"/>'
@@ -473,9 +515,9 @@ def mapa_html(resumen: list, ref: dict, esc, attr) -> str:
         + "".join(formas)
         + f'<path class="mp-ccaa" d="{geo["ccaa"]}"/>'
         '</svg><div class="mp-tip" hidden></div></div>'
-        + "".join(leyenda(m, e) for m, _c, e in MAPA_METRICAS)
-        + f'<figcaption>Pasa por encima para ver las cifras; haz clic para abrir la provincia. '
-          f'Límites: {esc(geo.get("fuente", "IGN"))}.</figcaption>'
+        + "".join(leyenda(n, m, e) for n, _en in MAPA_NIVELES_VISTA for m, e in MAPA_METRICAS)
+        + f'<figcaption>Pasa por encima para ver las cifras; haz clic para abrir la provincia, o '
+          f'la comunidad en la lista de abajo. Límites: {esc(geo.get("fuente", "IGN"))}.</figcaption>'
         '</figure>' + MAPA_JS)
 
 
@@ -492,38 +534,82 @@ MAPA_JS = """<script>
 (function () {
   var fig = document.querySelector('.mp'); if (!fig) return;
   var tip = fig.querySelector('.mp-tip'), lienzo = fig.querySelector('.mp-lienzo');
-  fig.querySelectorAll('.mp-filtros button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      fig.setAttribute('data-m', b.dataset.m);
-      fig.querySelectorAll('.mp-filtros button').forEach(function (o) {
-        o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+  var provs = [].slice.call(fig.querySelectorAll('.mp-prov'));
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function pintar() {
+    var n = fig.getAttribute('data-nivel'), m = fig.getAttribute('data-m');
+    provs.forEach(function (a) { a.setAttribute('data-q', a.dataset['q' + cap(n) + cap(m)] || '0'); });
+  }
+  function grupo(sel, attr) {
+    fig.querySelectorAll(sel + ' button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        fig.setAttribute(attr, b.dataset.v);
+        fig.querySelectorAll(sel + ' button').forEach(function (o) {
+          o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+        pintar(); tip.hidden = true;
+      });
     });
-  });
-  function linea(n, uno, varios) { return '<b>' + n + '</b> ' + (n == 1 ? uno : varios); }
+  }
+  grupo('.mp-metrica', 'data-m'); grupo('.mp-nivel', 'data-nivel');
+  function linea(n, uno, varios, on) {
+    return '<span' + (on ? ' class="on"' : '') + '><b>' + n + '</b> ' + (n == 1 ? uno : varios) + '</span>';
+  }
+  function marcar(a) {
+    var cc = fig.getAttribute('data-nivel') === 'ccaa' ? a.dataset.cc : null;
+    fig.classList.add('hay-sel');
+    provs.forEach(function (o) { o.classList.toggle('sel', cc ? o.dataset.cc === cc : o === a); });
+  }
+  function soltar() { fig.classList.remove('hay-sel'); provs.forEach(function (o) { o.classList.remove('sel'); }); tip.hidden = true; }
   function mostrar(a, x, y, subir) {
-    var d = a.dataset, m = fig.getAttribute('data-m');
-    tip.innerHTML = '<strong>' + d.n + '</strong><span class="mp-tip-c">' + d.c + '</span>' +
-      '<span' + (m === 'preg' ? ' class="on"' : '') + '>' + linea(d.preg, 'pregunta', 'preguntas') + '</span>' +
-      '<span' + (m === 'boe' ? ' class="on"' : '') + '>' + linea(d.boe, 'disposición del BOE', 'disposiciones del BOE') + '</span>' +
-      '<span' + (m === 'dip' ? ' class="on"' : '') + '>' + linea(d.dip, 'diputado', 'diputados') + '</span>';
-    tip.hidden = false;
+    var d = a.dataset, m = fig.getAttribute('data-m'), cc = fig.getAttribute('data-nivel') === 'ccaa';
+    var t = cc ? { n: d.cn, c: d.cnp == 1 ? 'Comunidad uniprovincial' : d.cnp + ' provincias', preg: d.cpreg, boe: d.cboe, dip: d.cdip }
+               : { n: d.n, c: d.c, preg: d.preg, boe: d.boe, dip: d.dip };
+    tip.innerHTML = '<strong>' + t.n + '</strong><span class="mp-tip-c">' + t.c + '</span>' +
+      linea(t.preg, 'pregunta', 'preguntas', m === 'preg') +
+      linea(t.boe, 'disposición del BOE', 'disposiciones del BOE', m === 'boe') +
+      linea(t.dip, 'diputado', 'diputados', m === 'dip');
+    tip.hidden = false; marcar(a);
     var r = lienzo.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
     var left = x - r.left + 14, top = y - r.top + 14;
     if (left + w > r.width) left = x - r.left - w - 14;
     if (top + h > r.height) top = y - r.top - h - 14;
     tip.style.left = Math.max(0, left) + 'px'; tip.style.top = Math.max(0, top) + 'px';
     var ccaa = a.parentNode.querySelector('.mp-ccaa');
-    if (subir && a.nextElementSibling !== ccaa) a.parentNode.insertBefore(a, ccaa);
+    if (subir && !cc && a.nextElementSibling !== ccaa) a.parentNode.insertBefore(a, ccaa);
   }
-  fig.querySelectorAll('.mp-prov').forEach(function (a) {
+  provs.forEach(function (a) {
     a.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') mostrar(a, e.clientX, e.clientY, true); });
-    a.addEventListener('pointerleave', function () { tip.hidden = true; });
+    a.addEventListener('pointerleave', soltar);
     a.addEventListener('focus', function () { var b = a.getBoundingClientRect(); mostrar(a, b.left + b.width / 2, b.top + b.height / 2); });
-    a.addEventListener('blur', function () { tip.hidden = true; });
+    a.addEventListener('blur', soltar);
+    a.addEventListener('click', function (e) {
+      if (fig.getAttribute('data-nivel') !== 'ccaa' || !a.dataset.cdest) return;
+      e.preventDefault(); location.href = a.dataset.cdest;
+    });
   });
 })();
 </script>"""
 
+
+def _menciones_ccaa_90(h: dict, estado: dict) -> tuple[dict, dict]:
+    """Lo que nombra una comunidad (no una provincia) en los últimos
+    VENTANA_INDICE días: preguntas y disposiciones del BOE, por identificador."""
+    lim = (dt.date.today() - dt.timedelta(days=VENTANA_INDICE)).isoformat()
+    preg: dict = {}
+    for exp, v in (h["escritas"] or {}).items():
+        if (v.get("c") or v.get("pr") or "") >= lim:
+            for c in menciones_ccaa(v.get("t") or ""):
+                preg.setdefault(c, set()).add(exp)
+    for o in h["orales"] or []:
+        if o["fecha"] >= lim:
+            for c in menciones_ccaa(o["texto"]):
+                preg.setdefault(c, set()).add("o:" + o["fecha"] + o["texto"])
+    boe: dict = {}
+    for k, v in estado["registros"].items():
+        if v["fecha"] >= lim:
+            for c in v.get("ccaa", []):
+                boe.setdefault(c, set()).add(k)
+    return preg, boe
 
 
 def generar_paginas(h: dict) -> list:
@@ -772,8 +858,12 @@ def generar_paginas(h: dict) -> list:
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
         salidas.append({"url": url, "lastmod": lastmod})
+        lim = (dt.date.today() - dt.timedelta(days=VENTANA_INDICE)).isoformat()
+        preg_ids = ({exp for exp, v in escritas_por.get(slug, []) if (v.get("c") or v.get("pr") or "") >= lim}
+                    | {"o:" + o["fecha"] + o["texto"] for o in orales_por.get(slug, []) if o["fecha"] >= lim})
+        boe_ids = {r["id"] for r in propios if r["fecha"] >= lim}
         resumen.append({"p": p, "diputados": len(fichas), "preguntas_90": n_preg_90,
-                        "boe_90": n_boe_90, "bloques": [b.split('id="')[1].split('"')[0] for b in bloques]})
+                        "boe_90": n_boe_90, "preg_ids": preg_ids, "boe_ids": boe_ids, "bloques": [b.split('id="')[1].split('"')[0] for b in bloques]})
 
     # Índice por comunidad autónoma.
     por_ccaa: dict = {}
@@ -781,10 +871,10 @@ def generar_paginas(h: dict) -> list:
         por_ccaa.setdefault(r["p"]["ccaa"], []).append(r)
     cuerpo = (f'<p>Una página por circunscripción: sus diputados, lo que se pregunta y se tramita '
               f'sobre ella y lo que publica el BOE. Las cifras cuentan los últimos {VENTANA_INDICE} días.</p>'
-              + mapa_html(resumen, ref, esc, attr)
+              + mapa_html(resumen, ref, esc, attr, agregados_ccaa(resumen, *_menciones_ccaa_90(h, estado)))
               + '<h2 class="rotulo" id="lista">Todas las provincias</h2>')
     for c in sorted(por_ccaa, key=lambda c: ref["ccaa"][c]["nombre"]):
-        cuerpo += (f'<h2 class="rotulo-sub">{esc(ref["ccaa"][c]["nombre"])}</h2><ul class="indice">' + "".join(
+        cuerpo += (f'<h2 class="rotulo-sub" id="ccaa-{attr(c)}">{esc(ref["ccaa"][c]["nombre"])}</h2><ul class="indice">' + "".join(
             f'<li><a href="{attr(r["p"]["slug"])}.html">{esc(r["p"]["nombre"])}</a>'
             f'<span class="ref">{r["diputados"]} diputados · {r["preguntas_90"]} preguntas · '
             f'{r["boe_90"]} en el BOE</span></li>' for r in sorted(por_ccaa[c], key=lambda r: r["p"]["nombre"]))
