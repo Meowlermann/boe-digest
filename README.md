@@ -9,8 +9,11 @@ senadores. Se actualiza sola: nadie tiene que tocar nada cada día.
 
 Todo ocurre dentro de GitHub, sin servidores:
 
-1. Cada mañana, un workflow de GitHub Actions (`.github/workflows/daily.yml`) ejecuta
-   `build.py`.
+1. Tres veces al día (07:40, 14:40 y 21:40 en España), un Worker de Cloudflare
+   (`disparador/`) lanza el workflow `.github/workflows/daily.yml`, que ejecuta
+   `build.py`. El workflow conserva sus propios cron como respaldo. Cada pase rehace
+   la edición del día: por la mañana entra el BOE; a mediodía y por la noche, lo que
+   haya publicado el Congreso (preguntas, tramitación, votaciones).
 2. `build.py` descarga el sumario del BOE del día, las últimas publicaciones oficiales del
    Congreso (BOCG y Diarios de Sesiones) y el último boletín del Senado.
 3. Redacta los artículos y guarda la edición en `data/AAAA-MM-DD.json`.
