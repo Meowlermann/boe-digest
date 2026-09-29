@@ -1,0 +1,28 @@
+{
+ "_nota": "Nombres populares para el buscador y títulos cortos para las páginas, mantenidos a mano. «alias»: si una entrada del índice contiene TODAS las palabras de alguna de las frases de «si_contiene» (sin tildes, sin importar el orden), se le añaden «nombre» y «variantes» a su texto buscable. No se muestran en ninguna página: solo sirven para encontrar. «cortos»: título corto para una iniciativa (clave: expediente), que se usa en el titular en lugar del recorte automático; el título oficial completo sigue en la página. Sin adjetivos ni motes: descripciones neutras.",
+ "alias": [
+  {"nombre": "Verifactu", "variantes": ["VeriFactu", "Veri*factu", "Veri-factu"],
+   "si_contiene": ["sistemas informaticos facturacion", "registros facturacion", "Real Decreto 1007/2023", "programas informaticos procesos facturacion"]},
+  {"nombre": "factura electrónica", "variantes": ["factura electronica", "e-factura", "ley Crea y Crece"],
+   "si_contiene": ["facturacion electronica", "factura electronica", "Ley 18/2022"]},
+  {"nombre": "ley Begoña", "variantes": ["ley anti-lawfare", "lawfare"],
+   "si_contiene": ["acciones judiciales abusivas", "acusacion popular"]},
+  {"nombre": "ley de amnistía", "variantes": ["amnistia"],
+   "si_contiene": ["amnistia normalizacion institucional"]},
+  {"nombre": "ley mordaza", "variantes": ["seguridad ciudadana"],
+   "si_contiene": ["proteccion seguridad ciudadana", "Ley Organica 4/2015"]},
+  {"nombre": "ley de vivienda", "variantes": ["alquiler", "zonas tensionadas"],
+   "si_contiene": ["derecho vivienda", "Ley 12/2023"]},
+  {"nombre": "reducción de jornada", "variantes": ["jornada de 37,5 horas", "37,5 horas"],
+   "si_contiene": ["reduccion duracion maxima jornada"]},
+  {"nombre": "dana", "variantes": ["DANA", "riada"],
+   "si_contiene": ["depresion aislada niveles altos"]},
+  {"nombre": "okupación", "variantes": ["okupas", "ocupación ilegal"],
+   "si_contiene": ["ocupacion ilegal viviendas", "allanamiento morada"]},
+  {"nombre": "ley ELA", "variantes": ["esclerosis lateral amiotrofica"],
+   "si_contiene": ["esclerosis lateral amiotrofica"]}
+ ],
+ "cortos": {
+  "121/000082": "Proyecto de Ley de medidas urgentes para la inversión de entidades locales y comunidades autónomas, y de sistemas informáticos de facturación"
+ }
+}
