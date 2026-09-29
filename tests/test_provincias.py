@@ -127,5 +127,27 @@ class TestMenciones(unittest.TestCase):
         self.assertEqual(regs[1]["cat"], "patrimonio")
 
 
+    def test_mapa_geometria(self):
+        # Una forma por circunscripción de la referencia, ni una más ni una menos.
+        import json
+        geo = json.loads(pv.MAPA_FICHERO.read_text(encoding="utf-8"))
+        slugs = {p["slug"] for p in pv.cargar_referencia()["provincias"]}
+        self.assertEqual(set(geo["provincias"]), slugs)
+        self.assertTrue({"ceuta", "melilla"} <= set(geo["centros"]))
+
+    def test_cortes_mapa(self):
+        self.assertEqual(pv.cortes_mapa([0, 0]), [])
+        self.assertEqual(pv.cortes_mapa([0, 3, 3, 4]), [(3, 3), (4, 4)])
+        rangos = pv.cortes_mapa([0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
+        self.assertEqual(len(rangos), 5)
+        self.assertEqual(rangos[0][0], 1)
+        self.assertEqual(rangos[-1][1], 55)
+        for (_a, b), (c, _d) in zip(rangos, rangos[1:]):
+            self.assertLess(b, c)                      # sin solapes
+        self.assertEqual(pv.nivel_mapa(0, rangos), 0)
+        self.assertEqual(pv.nivel_mapa(55, rangos), 5)
+        self.assertEqual(pv.nivel_mapa(4, rangos), pv.nivel_mapa(5, rangos))
+
+
 if __name__ == "__main__":
     unittest.main()
