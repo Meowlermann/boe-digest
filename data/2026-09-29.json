@@ -302,7 +302,39 @@
       "legislatura": "XV Legislatura (2023– )",
       "sede": "Bailén, 3, Madrid"
     },
-    "scoreboard": null,
+    "scoreboard": {
+      "note": "Preguntas escritas registradas desde la última edición (349), por grupo de quien pregunta.",
+      "rows": [
+        {
+          "g": "PP",
+          "n": 157
+        },
+        {
+          "g": "Mixto",
+          "n": 114
+        },
+        {
+          "g": "Vox",
+          "n": 53
+        },
+        {
+          "g": "Sumar",
+          "n": 17
+        },
+        {
+          "g": "ERC",
+          "n": 4
+        },
+        {
+          "g": "PSOE",
+          "n": 3
+        },
+        {
+          "g": "GV (EAJ-PNV",
+          "n": 1
+        }
+      ]
+    },
     "feed": [
       {
         "body": [
