@@ -3977,16 +3977,43 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
 def _indice_normas(dias: list[dict], plantilla: str) -> None:
     """normas/index.html. GitHub Pages no lista directorios: sin esta página la
     carpeta devuelve 404 y el enlace del pie apunta a la nada."""
-    bloques = []
+    import indices as ix
+    bloques, vistas, cats, total = [], set(), {}, 0
     for day in sorted(dias, key=lambda d: d["id"], reverse=True):
-        filas = "".join(
-            f'<li><a href="{esc_attr(ref_norma(x))}.html">{esc_html(x.get("headline",""))}</a>'
-            f' <span class="ref">{esc_html(x.get("ref",""))}</span></li>'
-            for x in ((day.get("boe", {}) or {}).get("stories") or []) if ref_norma(x))
-        if filas:
-            bloques.append(f'<h2 class="rotulo">{esc_html(fmt_date_es(day["id"]))}</h2>'
-                           f'<ul class="indice">{filas}</ul>')
-    cuerpo = "".join(bloques) or "<p>Todavía no hay fichas publicadas.</p>"
+        # Una norma, una vez: la edición del domingo no la repite.
+        xs = []
+        for x in (day.get("boe", {}) or {}).get("stories") or []:
+            if ref_norma(x) and x["ref"] not in vistas:
+                vistas.add(x["ref"])
+                xs.append(x)
+        if not xs:
+            continue
+        html = ""
+        for g in ix.series(xs, lambda x: ix.firma_serie(titulo_oficial_de(x), x.get("dept", ""))):
+            c = g[0].get("cat", "otros")
+            cats[c] = cats.get(c, 0) + len(g)
+            total += len(g)
+            if len(g) > 1:
+                html += ix.fila_serie(g, lambda x: x.get("headline", ""), lambda x: f'{ref_norma(x)}.html',
+                                      lambda x: x.get("ref", ""), tipo=c, color=c,
+                                      meta_extra=ix.organo(g[0].get("dept", "")))
+                continue
+            x = g[0]
+            dept = ix.organo(x.get("dept", ""))
+            html += ix.fila(f'{ref_norma(x)}.html', x.get("headline", ""),
+                            [ix.etiqueta(CAT_LABEL.get(c, c), "ix-cat")]
+                            + ([f'<span>{esc_html(dept)}</span>'] if dept else [])
+                            + [f'<span class="ix-mono">{esc_html(x["ref"])}</span>'],
+                            tipo=c, color=c, clase="ix-norma",
+                            texto=ix.texto_filtro(x.get("headline", ""), dept, x["ref"]))
+        bloques.append(ix.grupo(fmt_date_es(fecha_boe_iso(day) or day["id"]), len(xs), html))
+    orden_c = sorted(cats.items(), key=lambda kv: -kv[1])
+    cuerpo = ((ix.cifras([(total, f"normas en {len(bloques)} días", True)]
+                         + [(n, CAT_LABEL.get(c, c), False) for c, n in orden_c[:3]])
+               + ix.barra_filtro([("*", "Todas", total, "")] + [(c, CAT_LABEL.get(c, c), n, c) for c, n in orden_c],
+                                 "Filtrar por palabra, ministerio o identificador BOE…")
+               + "".join(bloques) + ix.SCRIPT)
+              if bloques else "<p>Todavía no hay fichas publicadas.</p>")
     url = f"{SITE_URL}normas/"
     frag = {
         "TITLE": "Todas las normas del BOE, una a una | La Tercera Cámara",
@@ -4086,7 +4113,7 @@ def recolectar_plazos(dias: list) -> list:
                           "url": (f"{SITE_URL}normas/{s_['ref']}.html"
                                   if ref_norma(s_) else f"{SITE_URL}ediciones/{day['id']}.html"),
                           "fuente": s_.get("url", ""), "origen": "BOE",
-                          "dept": s_.get("dept", "")})
+                          "dept": s_.get("dept", ""), "pub": pub})
         for f in (day.get("cortes", {}) or {}).get("feed") or []:
             m = re.search(rf"hasta el (\d{{1,2}} de (?:{MESES_RE}) de \d{{4}})",
                           " ".join(f.get("body") or []), re.I)
@@ -4099,7 +4126,7 @@ def recolectar_plazos(dias: list) -> list:
                           "titular": f.get("headline", ""), "ref": f.get("source", {}).get("label", ""),
                           "url": f"{SITE_URL}ediciones/{day['id']}.html",
                           "fuente": f.get("source", {}).get("url", ""),
-                          "origen": "Congreso", "dept": ""})
+                          "origen": "Congreso", "dept": "", "pub": day["id"]})
     vistos, unicas = set(), []
     for f in sorted(filas, key=lambda x: (x["vence"], x["titular"])):
         k = (f["vence"], f["ref"])
@@ -4138,32 +4165,73 @@ def _pagina_suelta(plantilla: str, carpeta: pathlib.Path, nombre: str, frag: dic
 def renderizar_plazos(dias: list) -> list:
     if not TEMPLATE_NORMA.exists():
         return []
+    import indices as ix
     filas = recolectar_plazos(dias)
     hoy = dt.date.today()
-    bloques, grupo_actual = [], None
+    tramos = [("Hoy", 0, 0), ("Mañana", 1, 1), ("Esta semana", 2, 7),
+              ("Este mes", 8, 31), ("Más adelante", 32, 10**6)]
+    por_tramo = {n: [] for n, _a, _b in tramos}
     for f in filas[:300]:
-        v = dt.date.fromisoformat(f["vence"])
-        quedan = (v - hoy).days
-        grupo = ("Esta semana" if quedan <= 7 else
-                 "En dos semanas" if quedan <= 14 else
-                 "Este mes" if quedan <= 31 else "Más adelante")
-        if grupo != grupo_actual:
-            if grupo_actual is not None:
-                bloques.append("</ul>")
-            bloques.append(f'<h2 class="rotulo">{esc_html(grupo)}</h2><ul class="indice">')
-            grupo_actual = grupo
-        cuenta = ("vence hoy" if quedan == 0 else
-                  "vence mañana" if quedan == 1 else f"quedan {quedan} días")
-        bloques.append(
-            f'<li><a href="../{esc_attr(f["url"].replace(SITE_URL, ""))}">'
-            f'{esc_html(f["titular"])}</a> '
-            f'<span class="ref">{esc_html(f["clase"])} · {esc_html(fmt_date_es(f["vence"]))} '
-            f'· {esc_html(cuenta)}</span>'
-            + (f'<span class="nota">{esc_html(f["nota"])}</span>' if f.get("nota") else "")
-            + '</li>')
-    if grupo_actual is not None:
-        bloques.append("</ul>")
-    cuerpo = "".join(bloques) or "<p>Ahora mismo no hay ningún plazo abierto en las ediciones publicadas.</p>"
+        quedan = (dt.date.fromisoformat(f["vence"]) - hoy).days
+        for n, desde, hasta in tramos:
+            if desde <= quedan <= hasta:
+                por_tramo[n].append((quedan, f))
+                break
+    bloques, anclados = [], set()
+    for n, _a, _b in tramos:
+        xs = por_tramo[n]
+        if not xs:
+            continue
+        html = ""
+        for quedan, f in xs:
+            urg = "ix-u1" if quedan <= 1 else "ix-u2" if quedan <= 7 else ""
+            cuenta = ("<b>HOY</b>" if quedan == 0 else
+                      f'<b>{quedan}</b><small>{"día" if quedan == 1 else "días"}</small>')
+            barra = ""
+            if f.get("pub") and quedan > 1:
+                total = (dt.date.fromisoformat(f["vence"]) - dt.date.fromisoformat(f["pub"])).days or 1
+                hecho = min(100, max(2, (hoy - dt.date.fromisoformat(f["pub"])).days / total * 100))
+                barra = (f'<div class="ix-prog" role="img" aria-label="Transcurrido el {hecho:.0f} % '
+                         f'del plazo"><i style="width:{hecho:.0f}%"></i></div>')
+            dept = ix.organo(f.get("dept", ""))
+            ancla = "" if f["vence"] in anclados else f"v-{f['vence']}"
+            anclados.add(f["vence"])
+            html += ix.fila(
+                "../" + f["url"].replace(SITE_URL, ""), f["titular"],
+                [ix.etiqueta(f["clase"]), f'<span>vence el {esc_html(fmt_date_es(f["vence"]))}</span>']
+                + ([f'<span>{esc_html(dept)}</span>'] if dept else []),
+                tipo=f["clase"], texto=ix.texto_filtro(f["titular"], dept, f["clase"]),
+                clase=f"ix-plazo {urg}".strip(), ancla=ancla,
+                antes=f'<div class="ix-cuenta">{cuenta}</div>',
+                despues=barra + (f'<p class="ix-nota">{esc_html(f["nota"])}</p>' if f.get("nota") else ""))
+        bloques.append(ix.grupo(n, len(xs), html))
+    if bloques:
+        dias_h = 45
+        conteo = [0] * dias_h
+        for f in filas:
+            q = (dt.date.fromisoformat(f["vence"]) - hoy).days
+            if 0 <= q < dias_h:
+                conteo[q] += 1
+        fechas_h = [(hoy + dt.timedelta(days=i)) for i in range(dias_h)]
+        hist = ix.histograma(
+            conteo, [fmt_date_es(d.isoformat()) for d in fechas_h],
+            [f"v-{d.isoformat()}" for d in fechas_h], f"Vencimientos en los próximos {dias_h} días",
+            {i: f"{d.day} {MES_ABBR[d.month - 1].lower()}" for i, d in enumerate(fechas_h) if i % 7 == 0})
+        tipos: dict = {}
+        for f in filas:
+            tipos[f["clase"]] = tipos.get(f["clase"], 0) + 1
+        semana = sum(len(por_tramo[n]) for n in ("Hoy", "Mañana", "Esta semana"))
+        cuerpo = (ix.cifras([(len(por_tramo["Hoy"]) + len(por_tramo["Mañana"]), "vencen hoy o mañana", True),
+                             (semana, "en los próximos 7 días", False),
+                             (len(por_tramo["Este mes"]), "entre 8 y 31 días", False),
+                             (len(filas), "plazos abiertos", False)])
+                  + hist
+                  + ix.barra_filtro([("*", "Todos", len(filas), "")]
+                                    + [(k, k, v, "") for k, v in sorted(tipos.items(), key=lambda x: -x[1])],
+                                    "Filtrar plazos: «subvención», «Madrid», «recurso»…")
+                  + "".join(bloques) + ix.SCRIPT)
+    else:
+        cuerpo = "<p>Ahora mismo no hay ningún plazo abierto en las ediciones publicadas.</p>"
     url = f"{SITE_URL}plazos/"
     _pagina_suelta(TEMPLATE_NORMA.read_text(encoding="utf-8"), PLAZOS_DIR, "index.html", {
         "TITLE": "Plazos del BOE que vencen | La Tercera Cámara",
@@ -4181,10 +4249,9 @@ def renderizar_plazos(dias: list) -> list:
         "KICKER": "Agenda",
         "HEADLINE": "Plazos que vencen",
         "STANDFIRST": ("Lo que el BOE publica con fecha de caducidad —alegaciones, convocatorias, "
-                       "recursos, vigencias— y lo que el Congreso abre a enmiendas, en una sola "
-                       "lista y por orden de urgencia."),
-        "FICHA": ("<dt>Plazos abiertos</dt><dd>" + str(len(filas)) + "</dd>"
-                  "<dt>Actualizado</dt><dd>" + esc_html(fmt_date_es(hoy.isoformat())) + "</dd>"),
+                       "recursos, vigencias— y lo que el Congreso abre a enmiendas, por orden "
+                       "de urgencia."),
+        "FICHA": "",
         "CUERPO": cuerpo,
         "FUENTE": ("Aviso: el cómputo marcado como orientativo es de días naturales sobre la fecha "
                    "de publicación. El plazo que vale es el del texto oficial enlazado en cada "
@@ -4203,23 +4270,66 @@ def renderizar_temas(dias: list) -> list:
         return []
     plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
     hoy = dt.date.today().isoformat()
+    import indices as ix
     por_materia: dict = {}
+    vistas: set = set()
     for day in sorted(dias, key=lambda d: d["id"], reverse=True):
         for s_ in (day.get("boe", {}) or {}).get("stories") or []:
+            # Una disposición cuenta una vez aunque salga en dos ediciones.
+            clave = s_.get("ref") or s_.get("headline")
+            if clave in vistas:
+                continue
+            vistas.add(clave)
             for slug in materias_de(titulo_oficial_de(s_), s_.get("headline", "")):
                 por_materia.setdefault(slug, []).append((day, s_))
+    hoy_d = dt.date.today()
+    lunes = hoy_d - dt.timedelta(days=hoy_d.weekday())
+
+    def semanas(piezas, n=16):
+        cuenta = [0] * n
+        for d, _x in piezas:
+            f = dt.date.fromisoformat(fecha_boe_iso(d) or d["id"])
+            w = (lunes - (f - dt.timedelta(days=f.weekday()))).days // 7
+            if 0 <= w < n:
+                cuenta[n - 1 - w] += 1
+        return cuenta
+
+    def en_30(piezas):
+        lim = (hoy_d - dt.timedelta(days=30)).isoformat()
+        return sum(1 for d, _x in piezas if (fecha_boe_iso(d) or d["id"]) >= lim)
 
     salidas = []
     for slug, etiqueta, _ in MATERIAS:
         piezas = por_materia.get(slug, [])
         if not piezas:
             continue
-        filas = "".join(
-            f'<li><a href="{esc_attr("../normas/" + ref_norma(x) + ".html") if ref_norma(x) else esc_attr("../ediciones/" + d["id"] + ".html")}">'
-            f'{esc_html(x.get("headline",""))}</a>'
-            f'<span class="ref">{esc_html(fmt_date_es(d["id"]))}'
-            + (f' · {esc_html(recortar(x.get("dept",""), 60))}' if x.get("dept") else "")
-            + '</span></li>' for d, x in piezas[:150])
+        por_mes: dict = {}
+        for d, x in piezas[:150]:
+            por_mes.setdefault((fecha_boe_iso(d) or d["id"])[:7], []).append((d, x))
+        filas = ""
+        for mes, xs in por_mes.items():
+            anio, m = mes.split("-")
+            filas += ix.grupo(f"{MESES[int(m) - 1]} de {anio}", len(xs), "".join(
+                ix.fila(("../normas/" + ref_norma(x) + ".html") if ref_norma(x)
+                        else ("../ediciones/" + d["id"] + ".html"),
+                        x.get("headline", ""),
+                        [f'<span>{esc_html(fmt_date_es(fecha_boe_iso(d) or d["id"]))}</span>']
+                        + ([f'<span>{esc_html(ix.organo(x["dept"]))}</span>'] if x.get("dept") else [])
+                        + ([f'<span class="ix-mono">{esc_html(x["ref"])}</span>'] if ref_norma(x) else []),
+                        texto=ix.texto_filtro(x.get("headline", ""), ix.organo(x.get("dept", "")),
+                                              x.get("ref", "")),
+                        clase="ix-norma", color=x.get("cat", "otros"))
+                for d, x in xs))
+        organos: dict = {}
+        for _d, x in piezas:
+            if x.get("dept"):
+                organos[x["dept"]] = organos.get(x["dept"], 0) + 1
+        top = max(organos.items(), key=lambda kv: kv[1]) if organos else None
+        cuerpo_m = (ix.cifras([(len(piezas), "disposiciones", False), (en_30(piezas), "en los últimos 30 días", True)]
+                              + ([(top[1], ix.organo(top[0], 48) + ", el que más publica", False)] if top else []))
+                    + ix.barra_filtro([("*", "Todas", min(150, len(piezas)), "")],
+                                      f"Filtrar en {etiqueta.lower()}…")
+                    + filas + ix.SCRIPT)
         otras = "".join(
             f'<a class="srclink" href="{o}.html">{esc_html(MATERIA_LABEL[o])}</a> '
             for o, _e, _k in MATERIAS if o != slug and por_materia.get(o))
@@ -4247,20 +4357,38 @@ def renderizar_temas(dias: list) -> list:
             "HEADLINE": etiqueta,
             "STANDFIRST": (f"Todo lo que hemos recogido del BOE en esta materia, de lo más "
                            f"reciente a lo más antiguo."),
-            "FICHA": f"<dt>Disposiciones</dt><dd>{len(piezas)}</dd>",
-            "CUERPO": f'<ul class="indice">{filas}</ul>',
+            "FICHA": "",
+            "CUERPO": cuerpo_m,
             "FUENTE": "Fuente: Boletín Oficial del Estado.",
             "RELACIONADAS": f'<li>{otras}</li>' if otras else "",
             "RELACIONADAS_HIDDEN": "" if otras else "hidden",
         })
         salidas.append({"url": url, "lastmod": hoy, "slug": slug,
-                        "etiqueta": etiqueta, "n": len(piezas)})
+                        "etiqueta": etiqueta, "n": len(piezas),
+                        "semanas": semanas(piezas), "n30": en_30(piezas)})
 
     if salidas:
-        indice = "".join(
-            f'<li><a href="{esc_attr(x["slug"])}.html">{esc_html(x["etiqueta"])}</a>'
-            f'<span class="ref">{x["n"]} disposici{"ón" if x["n"] == 1 else "ones"}</span></li>'
-            for x in sorted(salidas, key=lambda x: -x["n"]))
+        mx = max(x["n"] for x in salidas) or 1
+        losas = ""
+        for x in sorted(salidas, key=lambda x: -x["n"]):
+            smx = max(x["semanas"]) or 1
+            barras = "".join(f'<i style="--h:{v / smx * 100:.0f}%" title="{v}"></i>' for v in x["semanas"])
+            losas += (f'<a class="ix-losa" href="{esc_attr(x["slug"])}.html">'
+                      f'<span class="ix-ln">{esc_html(x["etiqueta"])}</span>'
+                      f'<span class="ix-big">{x["n"]}</span>'
+                      f'<span class="ix-lsub">disposici{"ón" if x["n"] == 1 else "ones"} · '
+                      f'<b>{x["n30"]}</b> en 30 días</span>'
+                      f'<span class="ix-spark" role="img" aria-label="Disposiciones por semana, últimas '
+                      f'16 semanas: {", ".join(map(str, x["semanas"]))}">{barras}</span>'
+                      f'<span class="ix-peso"><i style="width:{x["n"] / mx * 100:.1f}%"></i></span></a>')
+        lider = max(salidas, key=lambda x: x["n"])
+        indice = (ix.cifras([(len(salidas), "materias", False),
+                             (len(vistas), "disposiciones clasificadas", False),
+                             (lider["n"], f'{lider["etiqueta"]}, la que más', True)])
+                  + '<p class="ix-leyenda">Barras: disposiciones por semana en las últimas 16 semanas; '
+                    'en <b>rojo</b>, la semana en curso, aún incompleta. Línea inferior: peso frente a '
+                    'la materia con más.</p>'
+                  + f'<div class="ix-losas">{losas}</div>')
         url = f"{SITE_URL}temas/"
         _pagina_suelta(plantilla, TEMAS_DIR, "index.html", {
             "TITLE": "El BOE por materias | La Tercera Cámara",
@@ -4276,8 +4404,8 @@ def renderizar_temas(dias: list) -> list:
             "STANDFIRST": ("Cada materia tiene su propia página con todo lo publicado en ella. "
                            "Una norma puede estar en varias: una subvención a la contratación "
                            "es subvención y es laboral."),
-            "FICHA": f"<dt>Materias con contenido</dt><dd>{len(salidas)}</dd>",
-            "CUERPO": f'<ul class="indice">{indice}</ul>',
+            "FICHA": "",
+            "CUERPO": indice,
             "FUENTE": "Fuente: Boletín Oficial del Estado.",
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
