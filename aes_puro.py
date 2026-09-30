@@ -13,7 +13,9 @@ descifrar. Una contestación de ~200 KB tarda menos de un segundo.
 activar() solo sustituye el proveedor de respaldo de pypdf, el que lanza el
 error. Si `cryptography` o `pycryptodome` están instalados, no toca nada.
 Las pruebas (tests/test_aes_puro.py) lo comparan con los vectores de FIPS-197
-y de NIST SP 800-38A.
+y de NIST SP 800-38A, y leen un PDF cifrado igual que los del Congreso con
+`cryptography` bloqueado. Probado con pypdf 3.17 y 6.19 (pypdf 6 pasa
+`strict=` a decrypt: se acepta y se ignora).
 """
 
 from __future__ import annotations
@@ -127,12 +129,12 @@ def _descifrar_bloque(dk: list, nr: int, bloque: bytes) -> bytes:
     return bytes(out)
 
 
-def ecb_descifrar(key: bytes, data: bytes) -> bytes:
+def ecb_descifrar(key: bytes, data: bytes, *args, **kwargs) -> bytes:
     dk, nr = _expandir(key)
     return b"".join(_descifrar_bloque(dk, nr, data[i:i + 16]) for i in range(0, len(data), 16))
 
 
-def cbc_descifrar(key: bytes, iv: bytes, data: bytes) -> bytes:
+def cbc_descifrar(key: bytes, iv: bytes, data: bytes, *args, **kwargs) -> bytes:
     """Sin quitar el relleno: eso lo hace quien llama, como en pypdf."""
     dk, nr = _expandir(key)
     salida = bytearray()
@@ -151,10 +153,11 @@ class CryptAES:
     def __init__(self, key: bytes) -> None:
         self.key = key
 
-    def encrypt(self, data: bytes) -> bytes:                  # pragma: no cover
+    def encrypt(self, data: bytes, *args, **kwargs) -> bytes:  # pragma: no cover
         raise NotImplementedError("aes_puro solo descifra")
 
-    def decrypt(self, data: bytes) -> bytes:
+    def decrypt(self, data: bytes, *args, **kwargs) -> bytes:
+        # pypdf 6 pasa además strict=…; se acepta y se ignora.
         iv, data = data[:16], data[16:]
         if not data:
             return data
