@@ -261,7 +261,9 @@ def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
             "organo": organo,
             "asunto": (f.get("OBJETOINICIATIVA") or "").strip()[:200],
             "fase": (f.get("FASE") or "").strip(),
-            "video": (f.get("ENLACEDIFERIDO") or "").strip(),
+            "video": (f.get("ENLACEDIFERIDO") or "").split()[0] if (f.get("ENLACEDIFERIDO") or "").split() else "",
+            # El expediente lleva a la ficha oficial, que sí abre el detalle.
+            "exp": (f.get("NUMEXPEDIENTE") or "").strip(),
         })
 
     def _clave(x):
@@ -344,7 +346,7 @@ def preguntas_orales(filas: list, censo: dict | None = None) -> dict:
             "contesta": re.sub(r"\s*\([^)]*\)\s*$", "",
                                " ".join((contesta or {}).get("ORADOR", "").split())),
             "cargo": " ".join((contesta or {}).get("CARGOORADOR", "").split()),
-            "video": (grupo_filas[0].get("ENLACEDIFERIDO") or "").strip(),
+            "video": ((grupo_filas[0].get("ENLACEDIFERIDO") or "").split() or [""])[0],
             "hora": (grupo_filas[0].get("INICIOINTERVENCION") or "").strip(),
         })
     preguntas.sort(key=lambda p: p["hora"])
