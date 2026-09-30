@@ -27,7 +27,9 @@ ya estaba en requirements.txt).
     pregunta en el buscador de iniciativas enlaza un PDF propio
     («Contestación», /l15p/e12/e_…_n_000.pdf) con la respuesta del Gobierno:
     una cabecera («RESPUESTA DEL GOBIERNO», expediente, autores), el texto
-    tras «RESPUESTA:» y el cierre «Madrid, 27 de agosto de 2026». Suele
+    tras «RESPUESTA:» y el cierre «Madrid, 27 de agosto de 2026». Los PDF van
+    cifrados con AES-128 (contraseña de usuario vacía): build.pdf_text activa
+    aes_puro para que pypdf los lea sin dependencias nuevas. Suele
     aparecer dos o tres semanas después de que la ficha registre la fecha de
     contestación, así que se reintenta cada pocos días.
 
@@ -61,6 +63,10 @@ MAX_PETICIONES_ESCRITAS = 80  # fichas + PDF de contestación
 REINTENTO_DIAS = 3          # días entre intentos de una contestación sin PDF
 LARGO_CITA = 400            # caracteres por cita oral
 LARGO_CITA_ESCRITA = 500
+# Versión de la lectura de PDF escritos. Las contestaciones anotadas como
+# «sin_texto» con una versión anterior se vuelven a intentar una vez.
+# 2: descifrado AES sin dependencias (aes_puro.py).
+EXTRACCION = 2
 # Una contestación que llega meses tarde no es noticia de portada: va a las
 # páginas, no al feed.
 NOTICIA_DIAS = 45
@@ -373,7 +379,10 @@ def actualizar_escritas(get, pdf_text, log, max_peticiones: int = MAX_PETICIONES
     e = pq.cargar_escritas()
     hoy = dt.date.today()
     hoy_s = hoy.isoformat()
-    cand = [(k, v) for k, v in e["exp"].items() if v.get("c") and not escrita(k)]
+    def falta(exp):
+        r = escrita(exp)
+        return not r or (r.get("sin_texto") and r.get("v", 1) < EXTRACCION)
+    cand = [(k, v) for k, v in e["exp"].items() if v.get("c") and falta(k)]
     # Orden: primero las que ya tienen el PDF localizado o el boletín de la
     # contestación en la ficha («cb»): su texto existe. Después, de la
     # contestación más antigua a la más reciente, porque el PDF tarda dos o
@@ -402,11 +411,17 @@ def actualizar_escritas(get, pdf_text, log, max_peticiones: int = MAX_PETICIONES
             time.sleep(cd.PAUSA_BUSCADOR)
         texto = pdf_text(url)
         peticiones += 1
+        if not texto:
+            # Descarga o lectura fallida (pdf_text ya lo anota en el log): se
+            # reintenta dentro de REINTENTO_DIAS, no se da por ilegible.
+            v["rt"] = hoy_s
+            sin_pdf += 1
+            continue
         datos = extraer_escrita(texto)
         almacen = cargar(v["c"][:4])
-        # También lo que no se puede leer queda anotado: sin esto se
-        # descargaría el mismo PDF escaneado cada día.
-        almacen["escritas"][exp] = {"c": v["c"], "pdf": url, "leida": hoy_s,
+        # Lo que tiene texto pero no el formato esperado (escaneado, otra
+        # plantilla) queda anotado: sin esto se descargaría cada día.
+        almacen["escritas"][exp] = {"c": v["c"], "pdf": url, "leida": hoy_s, "v": EXTRACCION,
                                     **(datos or {"sin_texto": True})}
         tocados.add(v["c"][:4])
         if datos:
@@ -416,7 +431,7 @@ def actualizar_escritas(get, pdf_text, log, max_peticiones: int = MAX_PETICIONES
         guardar(a)
     pq._guardar(pq.ESTADO_ESCRITAS, e)
     total = sum(len(cargar(a)["escritas"]) for a in anios())
-    log(f"respuestas escritas: {len(nuevos)} textos nuevos, {sin_pdf} fichas aún sin PDF, "
+    log(f"respuestas escritas: {len(nuevos)} textos nuevos, {sin_pdf} sin PDF o ilegibles, "
         f"{peticiones} peticiones, {total} en el archivo")
     return nuevos
 

@@ -332,6 +332,10 @@ def pdf_text(url: str, referer: str | None = None, max_chars: int = 120_000) -> 
     if not r:
         return ""
     try:
+        # Los PDF de contestaciones del Congreso van cifrados con AES y pypdf
+        # no los descifra sin `cryptography`: aes_puro lo hace sin dependencias.
+        import aes_puro
+        aes_puro.activar()
         from pypdf import PdfReader
         reader = PdfReader(io.BytesIO(r.content))
         partes, total = [], 0
