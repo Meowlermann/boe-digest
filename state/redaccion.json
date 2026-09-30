@@ -3510,9 +3510,23 @@
    "claves": [],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-30"
+  },
+  "C-24cb1fed1d9b1127": {
+   "huella": "1d9c3591ae5de7ca",
+   "fuente": "8c8d397a3224b5f9",
+   "titular": "Diez preguntas en el Congreso superan los veinte días hábiles sin contestación",
+   "entradilla": "Una decena de iniciativas parlamentarias del último año han rebasado la fecha límite establecida por la Cámara sin que conste una contestación, siendo Sumar el grupo con más cuestiones pendientes de resolución.",
+   "claves": [
+    "El recuento de preguntas del último año muestra que diez de ellas acumulan más de 20 días hábiles desde su publicación sin que se haya registrado ninguna contestación.",
+    "La iniciativa más antigua que permanece sin respuesta registrada fue publicada el lunes 29 de junio de 2026.",
+    "Por grupos parlamentarios, Sumar lidera las preguntas pendientes con cuatro, seguido por el PSOE con dos, mientras que Junts, PP, Vox y los diputados sin grupo tienen una cada uno.",
+    "El Congreso advierte de que la situación real podría variar debido a la existencia de prórrogas o a respuestas que todavía no se han reflejado en la ficha correspondiente."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
   }
  },
  "uso": {
-  "2026-09-30": 8
+  "2026-09-30": 9
  }
 }
