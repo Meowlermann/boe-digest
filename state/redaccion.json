@@ -3155,9 +3155,364 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-09-30"
+  },
+  "C-efef6b4c4187d76e": {
+   "huella": "7666e9d5b09cdde5",
+   "fuente": "8b3612fc6f3ffad7",
+   "titular": "José María Figaredo interroga al ministro Carlos Cuerpo sobre el empobrecimiento",
+   "entradilla": "El diputado de Vox José María Figaredo pregunta al ministro de Economía en el Pleno del Congreso cómo va a revertir el empobrecimiento de los españoles.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-7d13ababf38b1df9": {
+   "huella": "6b84ab247c4ecf7f",
+   "fuente": "97a7f3658c4fde3a",
+   "titular": "Mikel Otero pregunta a Economía por el impacto de la crisis energética en los ciudadanos",
+   "entradilla": "El diputado Mikel Otero, de EH Bildu, interpela al Gobierno en el Pleno del Congreso sobre las medidas ante la crisis energética.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-6cb3c7458f6f6115": {
+   "huella": "5ae07c1d569e11c4",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-00090b401c750031": {
+   "huella": "39c8a3cf04ffa93a",
+   "fuente": "75da7d48d76d5504",
+   "titular": "María José Rodríguez de Millán pregunta al ministro de la Presidencia hasta dónde piensa llegar",
+   "entradilla": "La diputada de Vox cuestiona a Félix Bolaños sobre los límites de la actuación del Gobierno durante la sesión de control.",
+   "claves": [
+    "Félix Bolaños señala la coincidencia entre esta pregunta y la formulada previamente por el grupo de la oposición.",
+    "María José Rodríguez de Millán alude a la situación judicial que afecta a la esposa del presidente del Gobierno."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-c064424c22c301ad": {
+   "huella": "01351d2a75dd8209",
+   "fuente": "9c98ac58abc4ac87",
+   "titular": "Juan Bravo interroga al ministro de Hacienda sobre el cumplimiento de sus obligaciones",
+   "entradilla": "El diputado popular Juan Bravo pregunta al titular de Hacienda, Arcadi España, en la sesión de control del Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-9d6be9b7981a438b": {
+   "huella": "58d949d935bf9918",
+   "fuente": "6c3dc0bdcd2d9ab1",
+   "titular": "Miguel Tellado pregunta al ministro del Interior si considera que Ceuta es una ciudad segura",
+   "entradilla": "El diputado Miguel Tellado interpeló a Fernando Grande-Marlaska en el Congreso sobre la seguridad en la ciudad autónoma.",
+   "claves": [
+    "Miguel Tellado critica la situación de la directora general de la Guardia Civil y reprocha la gestión del ministerio.",
+    "Fernando Grande-Marlaska defiende la labor de su departamento y pide argumentos en lugar de descalificaciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-c39a88094720bd1d": {
+   "huella": "4b6f9ba2bfa70e33",
+   "fuente": "54e40fc5ec3dce30",
+   "titular": "Ana Belén Vázquez interroga a Interior sobre la eficacia de la política de fronteras",
+   "entradilla": "La diputada del Partido Popular pregunta a Fernando Grande-Marlaska en el Pleno del Congreso acerca de la gestión fronteriza.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-56178939841edeb0": {
+   "huella": "376c080b4cad7178",
+   "fuente": "d384a1dadafa90ff",
+   "titular": "Alberto Catalán pregunta al ministro del Interior por qué no presenta su dimisión",
+   "entradilla": "El parlamentario Alberto Catalán emplaza a Fernando Grande-Marlaska a dimitir durante la sesión de control en el Congreso.",
+   "claves": [
+    "El ministro del Interior rechaza dimitir y defiende que su departamento trabaja para mejorar los indicadores de seguridad.",
+    "Alberto Catalán recuerda episodios como el cese del coronel Pérez de los Cobos y la gestión en Barbate."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-8ec6c66a32976c63": {
+   "huella": "6c7dde8fcd76e645",
+   "fuente": "8c4605259bebb912",
+   "titular": "Joseba Andoni Agirretxea pregunta a Agricultura por la flota de altura vasca",
+   "entradilla": "El diputado interroga al ministro Luis Planas en el Congreso sobre las medidas para garantizar la continuidad del sector pesquero.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-1625aa9230340cf2": {
+   "huella": "bb74c51fe53df349",
+   "fuente": "b526860cf7f292b4",
+   "titular": "Borja Sémper pregunta al ministro Ángel Víctor Torres acerca de su labor en el Gobierno",
+   "entradilla": "El diputado Borja Sémper interroga al ministro de Política Territorial en el Pleno sobre el ejercicio de sus funciones.",
+   "claves": [
+    "Ángel Víctor Torres defiende la actuación del Gobierno y sostiene que todas las devoluciones se realizan conforme a la ley.",
+    "Borja Sémper reprocha al presidente del Gobierno su agenda internacional frente a la situación en Ceuta."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-1673cdb799cac3fe": {
+   "huella": "2966d9d94a8d9e88",
+   "fuente": "6daa5ea4ba9a5bb9",
+   "titular": "Jaime de Olano pregunta al ministro de Política Territorial si el Gobierno está preparado",
+   "entradilla": "El diputado Jaime Eduardo de Olano dirige una pregunta oral al ministro Ángel Víctor Torres en el Congreso.",
+   "claves": [
+    "El debate incluye reproches mutuos sobre el uso de expresiones y descalificaciones en la Cámara.",
+    "Ángel Víctor Torres critica que la oposición recurra al insulto ante la falta de argumentos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-057ac13bf15cf59d": {
+   "huella": "ed84fda48ecb2ae7",
+   "fuente": "f1dbce65c28c5052",
+   "titular": "Etna Estrems pregunta a la ministra de Vivienda sobre el desbloqueo de la vivienda pública",
+   "entradilla": "La diputada de ERC interroga a Isabel Rodríguez en el Congreso acerca de las medidas para facilitar el acceso a la vivienda.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-a54b60f185f6a733": {
+   "huella": "c44b19a3d6c2b722",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-4352d19cd8211f9b": {
+   "huella": "35143cdf574af092",
+   "fuente": "b2e7afb6a5a31aef",
+   "titular": "Cayetana Gamarra interroga a la ministra de Defensa sobre su gestión al frente del departamento",
+   "entradilla": "La diputada Concepción Gamarra pregunta a Margarita Robles en el Pleno del Congreso si puede estar orgullosa de su labor.",
+   "claves": [
+    "Margarita Robles afirma sentirse orgullosa de su trabajo como ministra de Defensa y reclama respeto para la Cámara.",
+    "Concepción Gamarra recrimina a la ministra el veto a la comparecencia de la directora del CNI y la situación de los soldados."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-e0d047e7b7225215": {
+   "huella": "faf7358fa441343b",
+   "fuente": "9c3f06cf632da131",
+   "titular": "Sofía Acedo interroga a la ministra de Defensa sobre la situación de las fronteras",
+   "entradilla": "La diputada popular pregunta a Margarita Robles en el Pleno del Congreso acerca de las vías de acceso a España.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-b1f72f2cea9e64d6": {
+   "huella": "c9bab1c7d7b6c99f",
+   "fuente": "b1d45682abba6c4e",
+   "titular": "Agustín Conde interroga a Defensa sobre la verdad en la gestión de la seguridad",
+   "entradilla": "El diputado del Partido Popular dirige una pregunta a Margarita Robles en la sesión de control del Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-998ef09a01868d0e": {
+   "huella": "a05f232561d785c4",
+   "fuente": "2b70a15a461fc7d5",
+   "titular": "Isidre Gavin interroga a Defensa sobre la gestión eficiente de las crisis de seguridad",
+   "entradilla": "El diputado de Junts pregunta a Margarita Robles en el Pleno del Congreso acerca de la capacidad de respuesta del Gobierno.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-7380749bf1208ea1": {
+   "huella": "a4c655c3a4e381fe",
+   "fuente": "bf3b0710115f363e",
+   "titular": "Alberto Núñez Feijóo pregunta al presidente del Gobierno cómo gobernará la legislatura",
+   "entradilla": "El líder del Partido Popular interroga a Pedro Sánchez en el Congreso sobre el futuro político del mandato.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-777f0df2eda55d53": {
+   "huella": "027bf7f298bde7a2",
+   "fuente": "f8c9336b355b5f23",
+   "titular": "Santiago Abascal interroga al presidente del Gobierno sobre un posible chantaje de Marruecos",
+   "entradilla": "El diputado de Vox pregunta a Pedro Sánchez en el Pleno del Congreso acerca de presuntas informaciones sobre su familia.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-11ded376dd945730": {
+   "huella": "9690916ca63a0598",
+   "fuente": "8a227ecb9ac32ece",
+   "titular": "Gabriel Rufián interroga al presidente del Gobierno sobre cómo afronta el resto de legislatura",
+   "entradilla": "El diputado de ERC pregunta a Pedro Sánchez en el Congreso por los apoyos parlamentarios futuros.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-ba7e7e1ee44396ec": {
+   "huella": "9882e83c25fcb710",
+   "fuente": "1f21187820b84a9a",
+   "titular": "Ester Muñoz pregunta a Economía si el Gobierno piensa decir la verdad",
+   "entradilla": "La diputada popular interroga al vicepresidente Carlos Cuerpo en el Congreso en relación con la situación en Ceuta.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-6826ecd4b8467feb": {
+   "huella": "b1c7126e94395a86",
+   "fuente": "7a39c244c91ab086",
+   "titular": "Jaime de Olano pregunta al ministro de Economía por la preocupación gubernamental por las familias",
+   "entradilla": "El diputado Jaime Eduardo de Olano interroga al vicepresidente Carlos Cuerpo sobre la pérdida de poder adquisitivo.",
+   "claves": [
+    "Carlos Cuerpo defiende la gestión económica aportando datos sobre la evolución de la capacidad de compra de los hogares.",
+    "Jaime Eduardo de Olano rebate los argumentos citando informes de la OCDE y datos del CIS."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-a6ee9c4ef1978e27": {
+   "huella": "e19610bb8a06fcc0",
+   "fuente": "887d6b1bd819dde1",
+   "titular": "Sofía Acedo interroga a la ministra de Trabajo sobre su valoración de la crisis de Ceuta",
+   "entradilla": "La diputada Sofía Acedo pregunta a Yolanda Díaz en el Congreso acerca de la gestión de la crisis migratoria.",
+   "claves": [
+    "Yolanda Díaz califica la situación en Ceuta como una grave crisis humanitaria que exige la altura de todas las administraciones.",
+    "Sofía Acedo rechaza el término humanitario y reclama la expulsión de los migrantes llegados a la ciudad autónoma."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-04c31234bada5fca": {
+   "huella": "3a1b6143eb57484d",
+   "fuente": "4556cf0846801f7c",
+   "titular": "Oskar Matute pregunta a Trabajo si propondrá la reforma del despido",
+   "entradilla": "El diputado de EH Bildu interroga a la vicepresidenta Yolanda Díaz en el Congreso sobre indemnizaciones justas.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-5e24b7f19615e071": {
+   "huella": "b957dfd525534b91",
+   "fuente": "afe7f93786b7bdc1",
+   "titular": "Juan Bravo pregunta a la Presidencia si se ha recuperado la normalidad en Ceuta",
+   "entradilla": "El diputado popular interroga al ministro Félix Bolaños en el Pleno del Congreso sobre la situación en la ciudad autónoma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-f619690985114c13": {
+   "huella": "974d7d6a77d05026",
+   "fuente": "12d0ffdead5814ed",
+   "titular": "Cristina Valido pregunta al ministro de Hacienda por el cumplimiento de los acuerdos con Canarias",
+   "entradilla": "La diputada Cristina Valido interroga a Arcadi España sobre el grado de aplicación de la Agenda Canaria y los pactos con Fernando Clavijo.",
+   "claves": [
+    "Arcadi España destaca la existencia de una interlocución directa y permanente entre el Estado y el Gobierno canario.",
+    "Cristina Valido centra parte de su intervención en la utilización de los 600 millones de euros de superávit."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-5b3c2e15ed2e7d1c": {
+   "huella": "f0f9bd6d5ad83f7a",
+   "fuente": "516f5639581be927",
+   "titular": "Miguel Tellado pregunta al ministro del Interior si ha estado a la altura del cargo",
+   "entradilla": "El diputado Miguel Tellado cuestiona la gestión de Fernando Grande-Marlaska en una nueva pregunta sobre la situación de Ceuta.",
+   "claves": [
+    "El ministro del Interior defiende que su departamento trabaja para restablecer la normalidad en el plazo más corto posible.",
+    "Miguel Tellado critica las declaraciones previas del ministro y pone en duda la fiabilidad de las medidas adoptadas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-a70bb70b7031cdf5": {
+   "huella": "a349fcae0ce1b205",
+   "fuente": "3ce5090d9332d28d",
+   "titular": "Ana Belén Vázquez pregunta al ministro del Interior si actúa con la debida diligencia",
+   "entradilla": "La diputada Ana Belén Vázquez interroga a Fernando Grande-Marlaska sobre la prevención y respuesta ante la situación en Ceuta.",
+   "claves": [
+    "Fernando Grande-Marlaska afirma que existían informes previos sobre el incremento de la presión migratoria y que el ministerio se adaptó.",
+    "Ana Belén Vázquez acusa al ministro de atacar el trabajo policial para defender a Marruecos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-9fe81b3f6361067b": {
+   "huella": "5bce9f5e94e7271a",
+   "fuente": "85aec14c56bafe57",
+   "titular": "María José Rodríguez de Millán pregunta al ministro del Interior por los ceutíes",
+   "entradilla": "La diputada de Vox cuestiona a Fernando Grande-Marlaska sobre la seguridad y la situación de los habitantes de Ceuta.",
+   "claves": [
+    "El ministro del Interior asegura que los ceutíes son una prioridad absoluta y niega que hayan sido abandonados.",
+    "María José Rodríguez de Millán denuncia la inseguridad que aseguran sufrir los jóvenes en su día a día en la ciudad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-7c66f64c1e0498ac": {
+   "huella": "3458927728f75495",
+   "fuente": "03250154d809c5a5",
+   "titular": "Alberto Ibáñez pregunta al ministro del Interior por las agresiones a periodistas",
+   "entradilla": "El diputado Alberto Ibáñez interroga a Fernando Grande-Marlaska sobre las consecuencias democráticas del acoso a profesionales de la información.",
+   "claves": [
+    "Fernando Grande-Marlaska expresa su solidaridad con los profesionales de los medios que han sufrido acoso en manifestaciones.",
+    "El ministro reitera el compromiso de las fuerzas y cuerpos de seguridad del Estado con la labor informativa."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-4ec6eeba413b4331": {
+   "huella": "181d1bb4b39ae04f",
+   "fuente": "7f08f70b80a7b788",
+   "titular": "Marta Madrenas pregunta al ministro del Interior sobre el control de la policía",
+   "entradilla": "La diputada Marta Madrenas i Mir interpela al ministro del Interior, Fernando Grande-Marlaska, por actuaciones policiales en Elx y Alcorcón.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-1515243ca19ea1f5": {
+   "huella": "fa570518ac4ac754",
+   "fuente": "33a53bce09381d3e",
+   "titular": "Jaime de los Santos pregunta a la ministra de Educación por los derechos educativos en Ceuta",
+   "entradilla": "El diputado Jaime Miguel De los Santos interroga a Milagros Tolón sobre la garantía de la educación en la ciudad autónoma.",
+   "claves": [
+    "Milagros Tolón anuncia que las clases en Ceuta comenzaron con un 75 por ciento de asistencia y un inicio de curso seguro.",
+    "La ministra asegura que el ministerio trabajó desde el primer minuto con los docentes incorporados el 1 de septiembre."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-981b0f6a9efd7077": {
+   "huella": "299fb2bc78a94d16",
+   "fuente": "d8f80cc3348526f7",
+   "titular": "Carmen Fúnez pregunta a la ministra de Sanidad por la actuación ministerial en Ceuta",
+   "entradilla": "La diputada Carmen Fúnez interroga a Mónica García en el Congreso sobre la gestión sanitaria durante la crisis.",
+   "claves": [
+    "Mónica García defiende la actuación de su departamento y apela a la defensa de los derechos humanos frente a las críticas.",
+    "Carmen Fúnez reprocha a la ministra su actitud y afirma que los profesionales sanitarios necesitan una respuesta institucional firme."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-b647761274f14b5e": {
+   "huella": "c67e34f209172d09",
+   "fuente": "29126fbd23211626",
+   "titular": "Joseba Andoni Agirretxea pregunta a la ministra de Sanidad sobre el Estatuto Marco",
+   "entradilla": "El diputado Joseba Andoni Agirretxea interroga a Mónica García en el Pleno acerca de la tramitación de esta norma para el personal sanitario.",
+   "claves": [
+    "Mónica García señala que el informe emitido por Euskadi sobre el Estatuto Marco fue favorable al texto.",
+    "La ministra defiende que la propuesta cuenta con el respaldo necesario de las comunidades autónomas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-3d6cdcafedb0ba6c": {
+   "huella": "04cecc05dd8f55d5",
+   "fuente": "194f2ac1ef272dc1",
+   "titular": "Patricia Rodríguez Calleja interroga a la ministra de Igualdad sobre Ceuta",
+   "entradilla": "La diputada Patricia Rodríguez Calleja pregunta a la ministra de Igualdad, Ana María del Carmen Redondo García, sobre la seguridad de las mujeres en Ceuta.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
   }
  },
  "uso": {
-  "2026-09-30": 5
+  "2026-09-30": 8
  }
 }
