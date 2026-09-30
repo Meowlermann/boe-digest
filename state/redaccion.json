@@ -3141,9 +3141,23 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20384": {
+   "huella": "752842a090262a9f",
+   "fuente": "d191bfa78a8e3855",
+   "titular": "El Gobierno adapta los recursos del Estado para la seguridad nacional en Ceuta",
+   "entradilla": "El Gobierno modifica los medios estatales movilizados por la situación de interés para la seguridad nacional en Ceuta, detallando las funciones de ministerios como Defensa, Interior, Justicia, Hacienda y Exteriores.",
+   "claves": [
+    "El Ministerio de Defensa aportará capacidades humanas, logísticas, sanitarias, de transporte, vigilancia, alojamiento y comunicaciones para afrontar la crisis.",
+    "El Ministerio del Interior se encargará del control de fronteras, la seguridad ciudadana, la extranjería, la protección internacional y la prevención de la inmigración irregular.",
+    "El Ministerio de Asuntos Exteriores coordinará la acción exterior y la cooperación diplomática y consular con el Reino de Marruecos y otros terceros Estados.",
+    "Hacienda y la Agencia Tributaria aportarán recursos para el control aduanero y la prevención del contrabando, mientras que Justicia apoyará el funcionamiento de los tribunales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
   }
  },
  "uso": {
-  "2026-09-30": 4
+  "2026-09-30": 5
  }
 }
