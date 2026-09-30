@@ -140,6 +140,25 @@ class Escritas(unittest.TestCase):
         self.assertIsNone(rp.extraer_escrita("imagen escaneada"))
         self.assertIsNone(rp.extraer_escrita(""))
 
+    def test_palabras_partidas(self):
+        voc = {"colectivos", "la", "discapacidad", "en", "entorno", "torno", "principios",
+               "principio", "demás", "más", "de"}
+        casos = [
+            ("a cole ctivos vulnerables", "a colectivos vulnerables"),
+            ("que l a aplicación", "que la aplicación"),
+            ("e n la página", "en la página"),
+            ("Di scapacidad (CDPD)", "Discapacidad (CDPD)"),
+            ("desde principio s de 2025", "desde principios de 2025"),
+            ("Plan 2022 -2030", "Plan 2022-2030"),
+            # Dos palabras que juntas también existen: no se tocan.
+            ("en torno a", "en torno a"),
+            ("de más", "de más"),
+            # Sin la palabra entera en el vocabulario, tampoco.
+            ("un trozo raro", "un trozo raro"),
+        ]
+        for entrada, esperado in casos:
+            self.assertEqual(rp.reparar_partidas(entrada, voc), esperado, entrada)
+
     def test_enlace_contestacion(self):
         html = ('<ul class="documentos">\r\n\t<li>\r\n\t\t<a href="/l15p/e12/e_0124421_n_000.pdf" '
                 'target="_blank">Contestación</a>\r\n</li></ul>')
