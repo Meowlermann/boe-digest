@@ -45,7 +45,35 @@
       "legislatura": "XV Legislatura (2023– )",
       "sede": "Bailén, 3, Madrid"
     },
-    "scoreboard": null,
+    "scoreboard": {
+      "note": "Preguntas escritas con el plazo superado y sin contestación registrada, por grupo de quien pregunta.",
+      "rows": [
+        {
+          "g": "Sumar",
+          "n": 4
+        },
+        {
+          "g": "PSOE",
+          "n": 2
+        },
+        {
+          "g": "Junts",
+          "n": 1
+        },
+        {
+          "g": "PP",
+          "n": 1
+        },
+        {
+          "g": "Sin grupo",
+          "n": 1
+        },
+        {
+          "g": "Vox",
+          "n": 1
+        }
+      ]
+    },
     "feed": [
       {
         "chamber": "congreso",
@@ -500,6 +528,21 @@
           }
         ],
         "expediente": "180/001174/0000"
+      },
+      {
+        "chamber": "congreso",
+        "type": "Preguntas pendientes",
+        "date": "miércoles 30 de septiembre de 2026",
+        "headline": "10 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada",
+        "standfirst": "Recuento sobre las preguntas del último año con la fecha límite que publica el Congreso ya superada. Puede haber prórrogas o respuestas aún no reflejadas en la ficha.",
+        "body": [
+          "La más antigua se publicó el lunes 29 de junio de 2026.",
+          "Por grupo de quien pregunta: Sumar 4, PSOE 2, Junts 1, PP 1, Sin grupo 1, Vox 1."
+        ],
+        "source": {
+          "label": "Pendientes más antiguas",
+          "url": "https://terceracamara.es/preguntas/#pendientes"
+        }
       },
       {
         "body": [
