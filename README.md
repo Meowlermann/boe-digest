@@ -3,7 +3,10 @@
 Publicación diaria y automática sobre lo que publica el BOE y lo que hacen diputados y
 senadores. Se actualiza sola: nadie tiene que tocar nada cada día.
 
-**Web:** https://meowlermann.github.io/boe-digest/
+**Web:** https://terceracamara.es/
+
+> ¿Vas a tocar el código? Empieza por [ARQUITECTURA.md](ARQUITECTURA.md) (cómo está hecho)
+> y [AGENTS.md](AGENTS.md) (reglas de trabajo).
 
 ## Cómo funciona
 

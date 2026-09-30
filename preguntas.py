@@ -70,6 +70,7 @@ MAX_FICHAS = 300                # fichas de detalle
 VENTANA_DIAS = 365
 
 MAX_RESPUESTAS_EN_PORTADA = 6
+MAX_TEXTOS_EN_PORTADA = 4       # piezas «Lo que contesta el Gobierno» al día
 
 
 # ------------------------------------------------------------------ utilidades
@@ -149,6 +150,10 @@ def parsear_ficha(html: str) -> dict:
     d["lim"] = _iso(m.group(1)) if m else None
     m = re.search(r"Resultado tramitación\s+(.+?)\s+Tramitación seguida", t)
     d["res"] = m.group(1).strip()[:80] if m else None
+    # El PDF de la contestación, cuando ya se ha publicado (respuestas.py lo
+    # lee para citar la respuesta).
+    import respuestas as rp
+    d["cu"] = rp.enlace_contestacion(html)
     return d
 
 
@@ -282,6 +287,8 @@ def actualizar_escritas(get, post, log) -> dict:
                 v[k] = datos[k]
         for k in ("p", "c", "cb", "lim", "res"):
             v[k] = datos.get(k)
+        if datos.get("cu"):
+            v["cu"] = datos["cu"]
         v["rev"] = hoy
         leidas += 1
         if v.get("c") and vista_pendiente:
@@ -381,6 +388,33 @@ def _fecha_larga(iso: str, fmt_date_es) -> str:
     return fmt_date_es(iso).replace(",", "") if iso else ""
 
 
+def lineas_respuesta(exp: str, site_url: str) -> tuple[list, list]:
+    """(líneas del cuerpo, enlaces) con lo que se dijo en el Pleno: la
+    contestación, la réplica y la dúplica citadas del Diario de Sesiones, el
+    enlace a su página y a /sesiones/. Vacío si aún no está leído. Lo usan
+    las piezas nuevas y build.arreglar_fuentes() para las ya publicadas."""
+    import respuestas as rp
+    r = rp.oral(exp) or {}
+    if not r:
+        return [], []
+    quien = r.get("gob") or "El Gobierno"
+    lineas = []
+    if r.get("c1"):
+        lineas.append(f'Respuesta de {quien}: «{r["c1"]}»')
+    if r.get("r"):
+        lineas.append(f'Réplica de {r.get("a") or "quien pregunta"}: «{r["r"]}»')
+    if r.get("c2"):
+        lineas.append(f'Cierra {quien}: «{r["c2"]}»')
+    enlaces = []
+    if r.get("pdf"):
+        pag = re.search(r"#page=(\d+)", r["pdf"])
+        enlaces.append({"label": "Diario de Sesiones" + (f", pág. {pag.group(1)}" if pag else ""),
+                        "url": r["pdf"]})
+    enlaces.append({"label": "Toda la sesión de control",
+                    "url": f'{site_url}sesiones/{r["s"]}.html#{rp._exp10(exp).replace("/", "-")}'})
+    return lineas, enlaces
+
+
 def piezas_orales(ses: dict, fmt_date_es, site_url: str) -> list:
     fecha_txt = _fecha_larga(ses["fecha"], fmt_date_es)
     piezas = []
@@ -393,7 +427,9 @@ def piezas_orales(ses: dict, fmt_date_es, site_url: str) -> list:
         cuerpo.append(f'Contesta: {cd.nombre_natural(p["contesta"])}, {p["cargo"]}.'
                       if p["contesta"] else
                       "El volcado del Congreso no registra contestación del Gobierno.")
-        enlaces = []
+        # Lo que se dijo, citado del Diario de Sesiones (respuestas.py).
+        extra, enlaces = lineas_respuesta(p["expediente"], site_url)
+        cuerpo += extra
         if p.get("slug"):
             enlaces.append({"label": f'Ficha de {p["autor_natural"]}',
                             "url": f'{site_url}diputados/{p["slug"]}.html'})
@@ -447,10 +483,12 @@ def _texto_aviso(ultima: dict, fmt_date_es) -> str:
 def feed_escritas(e: dict, fmt_date_es, site_url: str) -> tuple[list, dict | None]:
     """Respuestas registradas hoy (las de más tardanza primero), el contador de
     pendientes y el marcador por grupo."""
+    import respuestas as rp
     piezas = []
     hoy = dt.date.today().isoformat()
     contestadas = contestadas_hoy(e, hoy)
     for exp, v in contestadas[:MAX_RESPUESTAS_EN_PORTADA]:
+        resp = rp.escrita(exp) or {}
         autor = (v.get("a") or ["—"])[0]
         grupo = ", ".join(grupo_corto(g) for g in v.get("g") or []) or "—"
         naturales = _dias(v.get("p"), v.get("c"))
@@ -468,9 +506,35 @@ def feed_escritas(e: dict, fmt_date_es, site_url: str) -> tuple[list, dict | Non
                      f"Título de la iniciativa: «{v.get('t', '')}»",
                      f"Entre la publicación en el BOCG y la contestación: {naturales} días "
                      f"naturales, unos {habiles} hábiles.",
+                     *([f"Respuesta del Gobierno: «{resp['cita']}»"] if resp.get("cita") else []),
                      "Las contestaciones escritas las remite el Gobierno en su conjunto; la "
                      "ficha oficial no indica qué ministerio la redacta."],
             "source": {"label": f"Ficha oficial de la pregunta {exp}", "url": url_ficha(exp)},
+            **({"links": [{"label": "Texto de la contestación (PDF)", "url": resp["pdf"]}]}
+               if resp.get("cita") else {}),
+        })
+    # El texto de la contestación llega al PDF semanas después de la fecha: se
+    # publica aparte, el día que se lee, si es reciente y no ha salido arriba.
+    ya = {exp for exp, _v in contestadas[:MAX_RESPUESTAS_EN_PORTADA]}
+    for exp, v, resp in [x for x in rp.escritas_para_portada(e, hoy)
+                         if x[0] not in ya][:MAX_TEXTOS_EN_PORTADA]:
+        autor = (v.get("a") or ["—"])[0]
+        grupo = ", ".join(grupo_corto(g) for g in v.get("g") or []) or "—"
+        piezas.append({
+            "chamber": "congreso",
+            "type": "Respuesta escrita",
+            "date": _fecha_larga(v.get("c"), fmt_date_es),
+            "headline": (f'LO QUE CONTESTA EL GOBIERNO A {_apellidos(autor)} ({grupo}): '
+                         f'«{_recortar(v.get("t", ""), 140)}»'),
+            "standfirst": (f"Pregunta {exp}. Contestación registrada el "
+                           f"{_fecha_larga(v.get('c'), fmt_date_es)}; su texto ya está publicado."),
+            "quote": {"text": resp["cita"], "author": "Respuesta del Gobierno"},
+            "body": [f"Pregunta de {cd.nombre_natural(autor)} ({grupo}).",
+                     f"Título de la iniciativa: «{v.get('t', '')}»",
+                     f"La respuesta completa tiene unas {resp.get('pal', 0)} palabras."],
+            "source": {"label": "Texto de la contestación (PDF)", "url": resp["pdf"]},
+            "links": [{"label": f"Ficha oficial de la pregunta {exp}", "url": url_ficha(exp)}],
+            "expediente": exp,
         })
     if len(contestadas) > len(piezas):
         piezas.append({
@@ -581,14 +645,20 @@ def generar_paginas(h: dict) -> list:
     vencidas = pendientes_vencidas(e, hoy)
     salidas = []
 
-    def fila(exp, v, extra=""):
+    import respuestas as rp
+
+    def fila(exp, v, extra="", con_cita=False):
+        resp = (rp.escrita(exp) or {}) if con_cita else {}
+        cita = (f'<blockquote class="pull"><p>«{esc(resp["cita"])}»</p><cite>Respuesta del '
+                f'Gobierno · <a href="{attr(resp["pdf"])}" target="_blank" rel="noopener">texto '
+                f'completo (PDF)</a></cite></blockquote>') if resp.get("cita") else ""
         autores = ", ".join(cd.nombre_natural(a) for a in (v.get("a") or [])[:3])
         if len(v.get("a") or []) > 3:
             autores += f" y {len(v['a']) - 3} más"
         grupo = ", ".join(grupo_corto(g) for g in v.get("g") or [])
         return (f'<li><a href="{attr(url_ficha(exp))}" target="_blank" rel="noopener">'
                 f'{esc(v.get("t") or exp)}</a><span class="ref">{esc(exp)} · {esc(autores)}'
-                f'{" (" + esc(grupo) + ")" if grupo else ""}{extra}</span></li>')
+                f'{" (" + esc(grupo) + ")" if grupo else ""}{extra}</span>{cita}</li>')
 
     def pagina(nombre, titulo, desc, h1, entradilla, cuerpo, jsonld_extra=()):
         url = f"{site}preguntas/{'' if nombre == 'index.html' else nombre}"
@@ -625,7 +695,7 @@ def generar_paginas(h: dict) -> list:
         f'<h2 class="rotulo" id="respuestas">Últimas contestaciones</h2>'
         f'<ul class="indice">' + "".join(
             fila(k, v, f' · contestada el {esc(fecha(v["c"]))} '
-                       f'({_dias(v.get("p"), v["c"])} días)') for k, v in contestadas[:40])
+                       f'({_dias(v.get("p"), v["c"])} días)', con_cita=True) for k, v in contestadas[:40])
         + '</ul><h2 class="rotulo" id="registradas">Últimas preguntas registradas</h2>'
         f'<ul class="indice">' + "".join(
             fila(k, v, f' · presentada el {esc(fecha(v["pr"]))}' if v.get("pr") else "")
@@ -674,6 +744,12 @@ pregunta junta en una pieza su formulación, la contestación y las réplicas.</
 Se usa su buscador de iniciativas (tipo 184, «Pregunta al Gobierno con respuesta escrita»): el
 listado da expediente, título, autor y fechas; la ficha de cada pregunta da la fecha de
 publicación en el BOCG, la de contestación del Gobierno y la fecha límite vigente.</p>
+<p><b>Texto de las contestaciones</b>: cuando el Congreso publica la contestación, la ficha
+enlaza su PDF. De ahí se citan las primeras frases de la respuesta, literales; «[…]» indica que
+sigue. El PDF suele aparecer dos o tres semanas después de la fecha de contestación, así que la
+cita puede llegar más tarde que la fecha. Las contestaciones escaneadas, sin texto, no se citan.
+Las respuestas orales de la sesión de control están en <a href="../sesiones/">Sesiones de
+control</a>.</p>
 <h2 class="rotulo">Plazo</h2>
 <p>Artículo 190.1 del Reglamento del Congreso: veinte días siguientes a la publicación,
 prorrogables otros veinte a petición motivada del Gobierno y por acuerdo de la Mesa. El artículo
