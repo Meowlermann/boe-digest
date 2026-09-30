@@ -365,8 +365,8 @@ def actualizar_escritas(get, pdf_text, log, max_peticiones: int = MAX_PETICIONES
     """Busca el texto de las contestaciones escritas que aún no lo tienen.
 
     Recorre las preguntas contestadas de state/preguntas_escritas.json sin
-    registro aquí: primero las que vimos contestarse (son noticia), después el
-    resto, de la contestación más reciente a la más antigua. Si la ficha aún
+    registro aquí: primero las que ya tienen PDF o boletín de contestación,
+    después el resto, de la contestación más antigua a la más reciente. Si la ficha aún
     no enlaza el PDF, se anota la fecha del intento («rt») y se vuelve dentro
     de REINTENTO_DIAS. Devuelve los expedientes con texto nuevo hoy."""
     import preguntas as pq
@@ -374,7 +374,14 @@ def actualizar_escritas(get, pdf_text, log, max_peticiones: int = MAX_PETICIONES
     hoy = dt.date.today()
     hoy_s = hoy.isoformat()
     cand = [(k, v) for k, v in e["exp"].items() if v.get("c") and not escrita(k)]
-    cand.sort(key=lambda kv: (bool(kv[1].get("vista_c")), kv[1]["c"]), reverse=True)
+    # Orden: primero las que ya tienen el PDF localizado o el boletín de la
+    # contestación en la ficha («cb»): su texto existe. Después, de la
+    # contestación más antigua a la más reciente, porque el PDF tarda dos o
+    # tres semanas en aparecer; empezar por las de ayer gastaba el
+    # presupuesto en fichas que aún no lo enlazan (comprobado: 80 de 80 el
+    # 30 de septiembre de 2026). Las recientes se reintentan cada
+    # REINTENTO_DIAS y entran en cuanto el PDF sale.
+    cand.sort(key=lambda kv: (not (kv[1].get("cu") or kv[1].get("cb")), kv[1]["c"]))
     peticiones, nuevos, sin_pdf, tocados = 0, [], 0, set()
     for exp, v in cand:
         if peticiones >= max_peticiones:
