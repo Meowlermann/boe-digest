@@ -102,6 +102,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `provincias.py` | Qué provincias nombra cada disposición (sección I y III) y cada pregunta; páginas por circunscripción. | `state/provincias.json` | `/provincias/` |
 | `rankings.py` | Clasificaciones de diputados y grupos sobre `state/congreso.json`. | — | `/rankings/` |
 | `nombres.py` | Nombres populares («Verifactu», «ley mordaza») y títulos cortos, desde `curated/nombres_populares.json`. Solo para el buscador y los títulos. | — | — |
+| `aes_puro.py` | Descifrado AES en Python puro para que pypdf lea los PDF cifrados sin añadir `cryptography`. Se activa en `build.pdf_text`. | — | — |
 | `indices.py` | Componentes HTML comunes de las páginas índice (cifras, filtro, filas). | — | — |
 | `reproceso.py` | Reprocesa el histórico del BOE con varios extractores y una descarga por día. Solo toca `state/`. | `state/nombramientos.json`, `state/provincias.json` | — |
 | `redaccion.py` | Capa Gemini: propone titular y entradilla, verifica cifras y fechas contra la fuente, cachea. Si no hay clave o cuota, no hace nada. | `state/redaccion.json` | — |
@@ -142,7 +143,7 @@ con los marcadores `TITLE`, `META_DESC`, `CANONICAL`, `JSONLD`, `EDITION_DATE`,
 | Congreso, votaciones | Calendario por `targetDate=dd/mm/aaaa` | Es la vía al histórico: no hay listado de directorios. |
 | Congreso, buscador de iniciativas | `POST filtrarListado` (JSON, 25 por página) y `GET mostrarDetalle` (HTML) | Pausa de `cd.PAUSA_BUSCADOR` entre peticiones y presupuesto por pase. La ficha enlaza el PDF «Contestación» cuando se publica. |
 | Congreso, Diario de Sesiones | `ENLACETEXTOINTEGRO` del volcado (HTML) y `ENLACEPDF` (PDF con `#page=N`) | Estructura documentada en `respuestas.py`. Una descarga por sesión. |
-| Congreso, contestaciones escritas | PDF `/l15p/e12/e_…_n_000.pdf` | Texto tras `RESPUESTA:` hasta `Madrid, dd de mes de aaaa`. Algunos son escaneados: se anotan `sin_texto` y no se reintentan. |
+| Congreso, contestaciones escritas | PDF `/l15p/e12/e_…_n_000.pdf` | Van cifrados con AES-128 y contraseña de usuario vacía; pypdf solo los abre con `aes_puro.activar()` (sin `cryptography`). Texto tras `RESPUESTA:` hasta `Madrid, dd de mes de aaaa`. Los que tienen texto pero no ese formato (escaneados) se anotan `sin_texto` y solo se reintentan si sube `EXTRACCION`; una descarga fallida se reintenta a los 3 días. |
 | Senado | — | Akamai devuelve 403 a las IP de centro de datos, también en los ficheros de datos abiertos (diagnóstico en la PR #8). **No se esquiva el bloqueo**: sin proxies, sin cabeceras falsas y sin relés. La cobertura lo declara. Vías legítimas: `senado_local.py` desde una conexión doméstica, `feed_append` manual o una autorización del Senado. |
 
 ## 6. Dónde vive cada dato (`state/`, `data/`, `curated/`)
@@ -179,12 +180,13 @@ Esquema de `state/respuestas/AAAA.json`:
       "pdf": "…DSCD-15-PL-207.PDF#page=32", "txt": "…mostrarTextoIntegro…" } },
   "escritas": { "184/041381": {
       "c": "2026-08-27", "pdf": "https://www.congreso.es/l15p/e12/e_0124421_n_000.pdf",
-      "leida": "2026-09-30", "cita": "Se informa, en relación con…", "pal": 312 } }
+      "leida": "2026-09-30", "v": 2, "cita": "Se informa, en relación con…", "pal": 312 } }
 }
 ```
 
-Una escrita sin texto extraíble se guarda con `"sin_texto": true` en lugar de
-`cita`/`pal`.
+Una escrita con texto pero sin el formato esperado se guarda con
+`"sin_texto": true` en lugar de `cita`/`pal`. `v` es la versión de la lectura
+(`respuestas.EXTRACCION`): al subirla, esas se vuelven a intentar.
 
 `curated/` es lo editado a mano: `AAAA-MM-DD.json` (se fusiona sobre la
 edición), `nombres_populares.json`, `provincias.json` (variantes y
