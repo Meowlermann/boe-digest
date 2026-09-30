@@ -806,18 +806,18 @@
         "expediente": "180/001174/0000"
       },
       {
-        "chamber": "congreso",
-        "type": "Tramitación",
-        "date": "miércoles, 30 de septiembre de 2026",
-        "headline": "NUEVA PROYECTO DE LEY: «PROYECTO DE LEY POR LA QUE SE ADOPTAN MEDIDAS FISCALES Y FINANCIERAS URGENTES QUE CONTRIBUYAN A LA RECONSTRUCCIÓN…»",
-        "standfirst": "Presentada por Gobierno el miércoles, 23 de septiembre de 2026.",
         "body": [
           "Expediente 121/000115. Situación: Comisión de Política Territorial · Publicación."
         ],
+        "chamber": "congreso",
+        "date": "miércoles, 30 de septiembre de 2026",
+        "headline": "NUEVA PROYECTO DE LEY: «PROYECTO DE LEY POR LA QUE SE ADOPTAN MEDIDAS FISCALES Y FINANCIERAS URGENTES QUE CONTRIBUYAN A LA RECONSTRUCCIÓN…»",
         "source": {
           "label": "Tramitación de 121/000115",
           "url": "https://terceracamara.es/tramitacion/121-000115.html"
-        }
+        },
+        "standfirst": "Presentada por Gobierno el miércoles, 23 de septiembre de 2026.",
+        "type": "Tramitación"
       }
     ],
     "coverage": {

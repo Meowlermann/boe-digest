@@ -2782,9 +2782,368 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-09-29"
+  },
+  "BOE-A-2026-20264": {
+   "huella": "d04f4122aa851679",
+   "fuente": "f15ee2525cbfecc1",
+   "titular": "El Gobierno fija los límites para devolver los anticipos de las ayudas de la DANA",
+   "entradilla": "La norma concreta qué perceptores de ayudas por la DANA deben devolver los anticipos según su renta y patrimonio en 2025.",
+   "claves": [
+    "Solo deberán devolver total o parcialmente los anticipos quienes tengan una base imponible general y del ahorro en el IRPF de 2025 superior a 42.000 euros.",
+    "También afectará a quienes no superen esa cifra pero su patrimonio neto en 2025 sea superior a 300.000 euros, sin contar la vivienda habitual salvo en lo que exceda de dicho valor.",
+    "La autoridad que concedió el anticipo determinará de oficio la procedencia del reintegro basándose en los datos de la Agencia Estatal de Administración Tributaria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20265": {
+   "huella": "049d2641e9fea197",
+   "fuente": "b514b7ebec57ee7f",
+   "titular": "El Gobierno limita al 35% el incremento de la materia prima en la tarifa de gas natural",
+   "entradilla": "La medida frena la subida de los costes del gas en la revisión de octubre de 2026 y establece un tope del 15% para enero de 2027.",
+   "claves": [
+    "El incremento del coste de la materia prima en la tarifa de último recurso de gas natural no podrá superar el 35 por ciento en la revisión de octubre de 2026.",
+    "En la revisión de enero de 2027, dicho incremento no podrá superar el 15 por ciento respecto al valor aplicado en octubre.",
+    "La diferencia entre el coste real y el valor limitado se recuperará mediante incrementos en las revisiones trimestrales posteriores a partir del 1 de enero de 2027."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20266": {
+   "huella": "12b6bb2e85737ecd",
+   "fuente": "2da087b427af7aaa",
+   "titular": "Las entidades inmobiliarias verán limitada la compra de viviendas baratas hasta 2028",
+   "entradilla": "El Real Decreto-ley 26/2026 restringe la adquisición de inmuebles residenciales a las personas jurídicas con objeto social inmobiliario cuando el precio sea inferior al setenta por ciento de su valor de tasación.",
+   "claves": [
+    "La limitación se aplicará desde la entrada en vigor de la norma hasta el 31 de diciembre de 2028 a toda entidad que incluya en su objeto social la adquisición de inmuebles.",
+    "La restricción afecta a la compra gratuita u onerosa por un precio inferior al setenta por ciento del valor de tasación de mercado, tanto en viviendas usadas como en edificios nuevos.",
+    "No se aplicará si las viviendas se destinan a alquiler social por cinco años, a fines sociosanitarios, a colectivos vulnerables o si la compradora se adhiere a un Código de Buenas Prácticas.",
+    "Quedan excluidas de la limitación las transmisiones elevadas a escritura pública antes de la entrada en vigor de la ley y las adquisiciones derivadas de ejecuciones judiciales o hipotecarias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20267": {
+   "huella": "c553f1e08f673d39",
+   "fuente": "9452f895a201e827",
+   "titular": "Actualizan los recursos ministeriales para la seguridad nacional en la ciudad de Ceuta",
+   "entradilla": "El Gobierno detalla las capacidades específicas de los ministerios movilizados para hacer frente a la crisis migratoria en Ceuta.",
+   "claves": [
+    "Se actualiza el real decreto que declaró la situación de interés para la seguridad nacional en la ciudad de Ceuta debido a la entrada irregular de personas migrantes.",
+    "El Ministerio de Asuntos Exteriores aporta recursos para la acción exterior y la cooperación diplomática y consular con el Reino de Marruecos y terceros Estados.",
+    "Los ministerios del Interior, Defensa, Hacienda, Presidencia y Transportes detallan sus capacidades operativas, logísticas, jurídicas y de control de fronteras."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20270": {
+   "huella": "9f1cde4e06f39584",
+   "fuente": "348e934c566d3cb2",
+   "titular": "Regulan los laboratorios nacionales de referencia en materia agroalimentaria",
+   "entradilla": "El Gobierno fija las funciones, la normativa y el mecanismo de designación de los laboratorios de referencia en la producción primaria.",
+   "claves": [
+    "La norma unifica la regulación y determina las funciones de los laboratorios nacionales en sanidad animal, vegetal, higiene de la producción primaria y genética molecular.",
+    "Se constituye la Mesa de Coordinación de Laboratorios de Sanidad Animal, Sanidad Vegetal, Higiene de la Producción Primaria y Genética Molecular Animal y Vegetal.",
+    "El Ministerio de Agricultura, Pesca y Alimentación podrá designar nuevos laboratorios o modificar los existentes mediante orden conjunta con otros ministerios competentes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20271": {
+   "huella": "da890b93db8c8526",
+   "fuente": "e3048e90e41c9918",
+   "titular": "Designan los laboratorios nacionales de referencia agroalimentaria y de sanidad",
+   "entradilla": "El Ministerio de la Presidencia publica la relación oficial de laboratorios encargados de los análisis sanitarios y de producción primaria.",
+   "claves": [
+    "Se designa al Laboratorio Central de Sanidad Animal de Santa Fe como centro de referencia para zoonosis, enfermedades parasitarias y patógenos en diversas especies.",
+    "La norma asigna competencias específicas en materia de higiene de la producción primaria y la investigación de residuos de sustancias farmacológicamente activas.",
+    "Los centros designados deben disponer de un sistema de garantía de la calidad que asegure resultados fiables en diagnósticos, ensayos y análisis."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20272": {
+   "huella": "199d5c264d60340d",
+   "fuente": "a3531f1a0106ca07",
+   "titular": "Modifican las órdenes sobre precios públicos y laboratorios agroalimentarios",
+   "entradilla": "Agricultura actualiza los precios de servicios de laboratorios y amplía las funciones del Laboratorio Central de Veterinaria de Algete.",
+   "claves": [
+    "Se modifica la orden de precios públicos por la realización de servicios de los laboratorios agroalimentarios en preparación de muestras, análisis y ensayos.",
+    "El Laboratorio Central de Veterinaria de Algete asume además funciones de laboratorio nacional de referencia en genética animal.",
+    "Se actualiza la denominación de la orden reguladora del laboratorio nacional de referencia en materia de análisis de fertilidad de suelos agrarios."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20355": {
+   "huella": "d71d4c48c503a1ff",
+   "fuente": "817bcf61a6970f9b",
+   "titular": "Imcd Tunisia financiará servicios para la Fiesta Nacional en la Embajada en Túnez",
+   "entradilla": "La empresa colaborará con 1.515,15 euros en especie para la recepción oficial del próximo 9 de octubre.",
+   "claves": [
+    "El convenio regula la participación de Imcd Tunisia en la celebración de la Fiesta Nacional de España prevista para el 9 de octubre de 2026.",
+    "La aportación económica en especie consiste en la contratación de suministros o servicios por un valor estimado de 1.515,15 euros.",
+    "La Embajada se compromete a difundir la participación de la empresa mediante la inclusión de su logotipo en materiales de difusión y web."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20356": {
+   "huella": "f5c54a5ea2599def",
+   "fuente": "1a5b12fe7a748a5f",
+   "titular": "La Cinquieme Saison costeará servicios para la Fiesta Nacional en la Embajada en Túnez",
+   "entradilla": "La entidad aportará 1.515,15 euros en especie para sufragar la celebración del próximo 9 de octubre.",
+   "claves": [
+    "La empresa La Cinquieme Saison colaborará en la celebración de la Fiesta Nacional de España del 9 de octubre de 2026 en la Embajada en Túnez.",
+    "La aportación consiste en una aportación económica en especie por valor estimado de 1.515,15 euros mediante la contratación de suministros o servicios.",
+    "La Embajada agradecerá la aportación incluyendo el logotipo de la empresa en invitaciones, web, redes sociales y material gráfico."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20357": {
+   "huella": "94d742fd61209b4e",
+   "fuente": "1a4031b28df4df62",
+   "titular": "AFR-IX Telecom aportará 2.000 euros para la Fiesta Nacional en la Embajada en Camerún",
+   "entradilla": "La empresa colaborará económicamente en la recepción oficial que se celebrará en Yaundé el 12 de octubre.",
+   "claves": [
+    "El convenio regula la participación de AFR-IX Telecom Cameroun SARL en la celebración de la Fiesta Nacional de España en Yaundé el 12 de octubre de 2026.",
+    "La empresa efectuará una aportación económica en metálico por importe de 2.000 euros, sin coste alguno para la Embajada.",
+    "La Embajada emitirá una certificación acreditativa de la aportación en un plazo máximo de treinta días tras la realización del evento para acogerse al mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20358": {
+   "huella": "525994aa233c699a",
+   "fuente": "75f0432193c232cc",
+   "titular": "Les Perles du Desert financiará servicios para la Fiesta Nacional en la Embajada en Túnez",
+   "entradilla": "La entidad colaborará con 606,06 euros en especie para la recepción oficial del 9 de octubre.",
+   "claves": [
+    "Les Perles du Desert colaborará en la celebración de la Fiesta Nacional de España en la Embajada en Túnez prevista para el 9 de octubre de 2026.",
+    "La aportación en especie asciende a un valor estimado de 606,06 euros mediante la contratación por cuenta propia de suministros o servicios.",
+    "La Embajada difundirá la colaboración incluyendo el logotipo de la entidad en su material gráfico, web y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20359": {
+   "huella": "f51f12d324b5e504",
+   "fuente": "2076a718464738db",
+   "titular": "Indra Sistemas aportará 1.500 euros para la Fiesta Nacional en la Embajada en Bulgaria",
+   "entradilla": "La tecnológica colaborará en la recepción oficial que se celebrará en Sofía el próximo 9 de octubre.",
+   "claves": [
+    "Indra Sistemas, SA financiará con una aportación económica en metálico de 1.500 euros la Fiesta Nacional de España en Sofía el 9 de octubre de 2026.",
+    "El convenio no supondrá coste económico alguno para la Embajada de España en Bulgaria.",
+    "La Embajada se compromete a agradecer la aportación y a incluir el logotipo de la empresa en las invitaciones, programas y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20360": {
+   "huella": "28f40c440a552bdf",
+   "fuente": "ac715b9a07814aa8",
+   "titular": "Airbus SAS costeará servicios para la Fiesta Nacional en la Embajada en Bélgica",
+   "entradilla": "La compañía aeronáutica colaborará con 5.000 euros en especie para el evento del 19 de octubre en Bruselas.",
+   "claves": [
+    "Airbus SAS aportará 5.000 euros en especie mediante la contratación de suministros o servicios para la celebración de la Fiesta Nacional en Bruselas el 19 de octubre de 2026.",
+    "El acuerdo no genera ningún coste para la Embajada de España en Bélgica.",
+    "La Embajada difundirá la colaboración de la empresa en el acto de inauguración y en los soportes publicitarios y digitales de la recepción."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20361": {
+   "huella": "f21e01782d831cb3",
+   "fuente": "07acb93979d00036",
+   "titular": "Gescrap Slovakia aportará 200 euros para la Fiesta Nacional en la Embajada en Eslovaquia",
+   "entradilla": "La empresa colaborará económicamente en la recepción oficial que tendrá lugar en Bratislava el 12 de octubre.",
+   "claves": [
+    "Gescrap Slovakia colaborará en la celebración de la Fiesta Nacional de España en Bratislava el 12 de octubre de 2026 mediante una aportación en metálico de 200 euros.",
+    "La Embajada de España en Eslovaquia no asumirá ningún coste económico derivado de la firma de este convenio.",
+    "La Embajada entregará una certificación acreditativa de la aportación en un plazo máximo de treinta días para los beneficios fiscales de mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20362": {
+   "huella": "10968fe9e8c787bc",
+   "fuente": "0324d7dc868000e4",
+   "titular": "La Fábrica Nacional de Moneda y la Universidad de Castilla-La Mancha publican el máster",
+   "entradilla": "Se publica el convenio para la segunda edición del título oficial de Máster en Grabado, Diseño Gráfico y Documentos de Valor.",
+   "claves": [
+    "El convenio regula la cooperación entre la Fábrica Nacional de Moneda y Timbre y la Universidad de Castilla-La Mancha para impartir la segunda edición del máster oficial.",
+    "El título cuenta con el carácter oficial acordado en Consejo de Ministros e inscrito en el Registro de Universidades, Centros y Títulos.",
+    "La colaboración se ampara en los fines de promoción y financiación de actividades culturales y docentes de la Escuela de Grabado y Diseño Gráfico."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "BOE-A-2026-20363": {
+   "huella": "647971fcc9fb6611",
+   "fuente": "abcee28199291fbf",
+   "titular": "Hacienda declara el incumplimiento de incentivos regionales a varias empresas",
+   "entradilla": "El Ministerio exige la devolución parcial o total de subvenciones y los intereses de demora por no cumplir las condiciones.",
+   "claves": [
+    "Se declara el incumplimiento de las condiciones de los incentivos regionales otorgados a las empresas relacionadas en el anexo de la orden.",
+    "Las empresas deberán reintegrar al Tesoro Público la cantidad percibida que exceda de la subvención procedente, junto con los intereses de demora correspondientes.",
+    "Los interesados pueden interponer recurso de reposición ante el Ministerio de Hacienda en el plazo de un mes o recurso contencioso-administrativo ante la Audiencia Nacional en dos meses."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-09-30"
+  },
+  "C-3091966eb5194b21": {
+   "huella": "6fc20b3c6cb016f3",
+   "fuente": "82c85c839601a3e0",
+   "titular": "Vox preguntará al ministro de Economía sobre cómo revertirá el empobrecimiento",
+   "entradilla": "El diputado de Vox José María Figaredo Álvarez-Sala formulará una pregunta oral al ministro de Economía, Comercio y Empresa, Carlos Cuerpo Caballero, en la sesión de control del Congreso del 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-104886a4b058157e": {
+   "huella": "be7769e169d36011",
+   "fuente": "5713eff1b7cd2bd1",
+   "titular": "EH Bildu interpelará al ministro de Economía por la crisis energética",
+   "entradilla": "El diputado Mikel Otero Gabirondo preguntará al ministro Carlos Cuerpo Caballero sobre las medidas ante la crisis energética y su impacto en la ciudadanía, en la sesión de control del 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-f05a1db7e43f23df": {
+   "huella": "c903905460c968b4",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-09c164fa67e7ba65": {
+   "huella": "6ff321546e35b97d",
+   "fuente": "e6d8607b7ead7852",
+   "titular": "Vox preguntará al ministro de la Presidencia hasta dónde piensa llegar el Gobierno",
+   "entradilla": "La diputada de Vox María José Rodríguez de Millán Parro interpelará al ministro Félix Bolaños García en la sesión de control del Pleno del Congreso convocada para el miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-b34a4918a6691268": {
+   "huella": "906cb375ada3f03e",
+   "fuente": "607d3700cd7a7d6b",
+   "titular": "El PP preguntará al ministro de Hacienda si cumple con sus obligaciones",
+   "entradilla": "El diputado popular Juan Bravo Baena formulará esta pregunta oral al ministro de Hacienda, Arcadi España García, en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-a71f1b5b81534798": {
+   "huella": "f045bedfffc6b278",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-d72b6f357960a776": {
+   "huella": "7dc36732556b737d",
+   "fuente": "8908a3f3dabb1eaf",
+   "titular": "El PP cuestionará al ministro del Interior sobre la eficacia en las fronteras",
+   "entradilla": "La diputada popular Ana Belén Vázquez Blanco preguntará al ministro Fernando Grande-Marlaska Gómez sobre su política de fronteras en la sesión de control del Pleno del Congreso del 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-7b89906570b3f133": {
+   "huella": "16491ea6f6636b4e",
+   "descartado": "nombre «Grupo» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-7c69ad862779e498": {
+   "huella": "b7934b4e1d44d022",
+   "fuente": "71c29be7760ddf99",
+   "titular": "EAJ-PNV preguntará al ministro de Agricultura por la flota de altura vasca",
+   "entradilla": "El diputado Joseba Andoni Agirretxea Urresti preguntará al ministro Luis Planas Puchades si se hace lo suficiente para garantizar la continuidad de la flota de altura vasca en la sesión de control del 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-69599d12f9b9e8f9": {
+   "huella": "39d3c15ccceab92e",
+   "fuente": "3c10e22077146811",
+   "titular": "El PP preguntará al ministro de Política Territorial a qué se dedica",
+   "entradilla": "El diputado popular Borja Sémper Pascual formulará esta pregunta oral al ministro Ángel Víctor Torres Pérez en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-6b4e8e648131410a": {
+   "huella": "3be466881830187b",
+   "fuente": "756de885d1353145",
+   "titular": "El PP preguntará al ministro de Política Territorial si el Gobierno está preparado",
+   "entradilla": "El diputado Jaime Eduardo de Olano Vela formulará una pregunta oral al ministro Ángel Víctor Torres Pérez en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-9804bab1a42bc998": {
+   "huella": "fe6778461a597228",
+   "fuente": "b74ccbc5170ab6fd",
+   "titular": "Etna Estrems Fayos (ERC) pregunta a la ministra de Vivienda por la vivienda pública",
+   "entradilla": "La diputada Etna Estrems Fayos, de ERC, formulará una pregunta oral a la ministra de Vivienda y Agenda Urbana, Isabel Rodríguez García, en el Pleno del Congreso del próximo miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-a026c083c4e9a6a5": {
+   "huella": "0df330794db1ba6c",
+   "fuente": "bc9b752f0a5fd50a",
+   "titular": "El PP preguntará a la ministra de Igualdad si hay mujeres de primera y de segunda",
+   "entradilla": "El diputado popular Jaime Miguel De los Santos González formulará esta pregunta oral a la ministra Ana María del Carmen Redondo García en la sesión de control del Pleno del Congreso del 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-058c615debb9619e": {
+   "huella": "702c463466a118fa",
+   "fuente": "f4ce7bb3a4d95c09",
+   "titular": "El PP preguntará a la ministra de Defensa si está orgullosa de su trabajo",
+   "entradilla": "La diputada popular Concepción Gamarra Ruiz-Clavijo formulará esta pregunta oral a la ministra Margarita Robles Fernández en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-d54ee7d5bb096f33": {
+   "huella": "792cc9a560024be7",
+   "fuente": "9cac724d4d7caca6",
+   "titular": "El PP preguntará a la ministra de Defensa si de verdad merece la pena su labor",
+   "entradilla": "La diputada popular Sofía Acedo Reyes formulará esta pregunta oral a la ministra Margarita Robles Fernández en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-e7c253fa3a89a775": {
+   "huella": "b53814b81ae5a6a7",
+   "fuente": "b9d896204aaf35a9",
+   "titular": "El PP preguntará a la ministra de Defensa si va a decir la verdad alguna vez",
+   "entradilla": "El diputado popular Agustín Conde Bajén formulará esta pregunta oral a la ministra Margarita Robles Fernández en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-723033844382f206": {
+   "huella": "0cd2329466408448",
+   "fuente": "35fdf9c2dfcd7afa",
+   "titular": "Junts preguntará a Defensa si el Gobierno garantiza una gestión eficiente de crisis",
+   "entradilla": "El diputado de Junts Isidre Gavin i Valls formulará esta pregunta oral a la ministra Margarita Robles Fernández en la sesión de control del Pleno del Congreso del miércoles 23 de septiembre de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
+  },
+  "C-fb7ef15cac9ba608": {
+   "huella": "34e366f0dd9d9740",
+   "fuente": "fa161ed3197051b9",
+   "titular": "El Gobierno presenta la ley de medidas fiscales y financieras para la reconstrucción",
+   "entradilla": "El Gobierno ha presentado en el Congreso un nuevo proyecto de ley que adopta medidas fiscales y financieras urgentes para contribuir a la reconstrucción, el cual inicia su tramitación en la Comisión de Política Territorial.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-09-30"
   }
  },
  "uso": {
-  "2026-09-30": 1
+  "2026-09-30": 4
  }
 }
