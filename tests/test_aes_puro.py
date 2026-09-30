@@ -4,6 +4,7 @@
 AES-256, un bloque) y NIST SP 800-38A F.2.2 (CBC-AES128, cuatro bloques).
 """
 import pathlib
+import subprocess
 import sys
 import unittest
 
@@ -45,6 +46,40 @@ class Vectores(unittest.TestCase):
         claro = a.cbc_descifrar(clave, iv, cifrado)
         self.assertEqual(claro[-1], 0x10)
         self.assertEqual(a.CryptAES(clave).decrypt(iv + cifrado), claro[:-16])
+
+
+RAIZ = pathlib.Path(__file__).resolve().parent.parent
+
+# Lee el PDF de prueba (AES-128, contraseña de usuario vacía, como las
+# contestaciones del Congreso) en un proceso donde `cryptography` y
+# `pycryptodome` no se pueden importar: así se comporta pypdf en Actions.
+LEER = f"""
+import io, sys
+for m in ("cryptography", "Crypto", "Cryptodome"):
+    sys.modules[m] = None
+sys.path.insert(0, {str(RAIZ)!r})
+from pypdf import PdfReader
+import aes_puro, respuestas
+datos = open({str(RAIZ / "tests" / "contestacion_cifrada_aes128.pdf")!r}, "rb").read()
+try:
+    PdfReader(io.BytesIO(datos)).pages[0].extract_text()
+    print("SIN_PARCHE_LEE")
+except Exception:
+    print("SIN_PARCHE_FALLA")
+print("ACTIVADO" if aes_puro.activar() else "NO_ACTIVADO")
+texto = PdfReader(io.BytesIO(datos)).pages[0].extract_text()
+print(respuestas.extraer_escrita(texto)["cita"])
+"""
+
+
+class PdfCifrado(unittest.TestCase):
+    def test_pypdf_sin_cryptography(self):
+        r = subprocess.run([sys.executable, "-W", "ignore", "-c", LEER],
+                           capture_output=True, text=True, timeout=120)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        lineas = r.stdout.splitlines()
+        self.assertEqual(lineas[:2], ["SIN_PARCHE_FALLA", "ACTIVADO"])
+        self.assertTrue(lineas[2].startswith("Se informa, en relación con la pregunta planteada"))
 
 
 if __name__ == "__main__":
