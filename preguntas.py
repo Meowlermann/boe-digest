@@ -747,7 +747,8 @@ publicación en el BOCG, la de contestación del Gobierno y la fecha límite vig
 <p><b>Texto de las contestaciones</b>: cuando el Congreso publica la contestación, la ficha
 enlaza su PDF. De ahí se citan las primeras frases de la respuesta, literales; «[…]» indica que
 sigue. El PDF suele aparecer dos o tres semanas después de la fecha de contestación, así que la
-cita puede llegar más tarde que la fecha. Las contestaciones escaneadas, sin texto, no se citan.
+cita puede llegar más tarde que la fecha. La extracción del PDF parte algunas palabras («cole
+ctivos»): solo se vuelven a juntar cuando la palabra entera existe y alguno de los trozos no. Las contestaciones escaneadas, sin texto, no se citan.
 Las respuestas orales de la sesión de control están en <a href="../sesiones/">Sesiones de
 control</a>.</p>
 <h2 class="rotulo">Plazo</h2>

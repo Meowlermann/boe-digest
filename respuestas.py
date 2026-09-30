@@ -347,6 +347,84 @@ def enlace_contestacion(html: str) -> str | None:
     return u if u.startswith("http") else cd.CONGRESO + u
 
 
+# --- palabras partidas por la extracción del PDF ------------------------------
+#
+# Los PDF de contestación van justificados y colocan cada glifo por separado:
+# al extraer el texto salen palabras partidas («cole ctivos», «Di scapacidad»,
+# «l a», «2022 -2025»). Con pdf.js pasa lo mismo, así que es el documento, no
+# pypdf. Para no publicar una cita con palabras rotas se juntan dos trozos
+# solo si la palabra entera aparece en el vocabulario del propio sitio (las
+# ediciones y el estado: decenas de miles de palabras del BOE y del Congreso)
+# y al menos uno de los trozos no es una palabra. Comprobado sobre 70
+# contestaciones reales el 30 de septiembre de 2026: 21 uniones, todas
+# correctas.
+
+_VOCABULARIO: set | None = None
+PALABRA = re.compile(r"[a-záéíóúüñ]+")
+LETRAS_QUE_SON_PALABRA = set("aeouy")
+# Si el trozo de la izquierda es una de estas, no se junta nunca: «en torno»,
+# «de más», «por que» son dos palabras aunque juntas también existan.
+FUNCIONALES = {"a", "al", "de", "del", "en", "el", "la", "lo", "los", "las", "un", "una",
+               "por", "para", "con", "sin", "se", "que", "y", "o", "u", "e", "su", "sus",
+               "no", "ni", "si", "mi", "tu", "le", "les", "me", "te", "nos", "es", "ha"}
+
+
+def vocabulario() -> set:
+    global _VOCABULARIO
+    if _VOCABULARIO is None:
+        _VOCABULARIO = set()
+        fuentes = list((ROOT / "data").glob("*.json")) + [
+            ROOT / "state" / n for n in ("tramitacion.json", "preguntas_escritas.json",
+                                         "nombramientos.json", "provincias.json")]
+        for f in fuentes:
+            try:
+                # Sin las secuencias de escape del JSON: «\\nla» no es «nla».
+                txt = re.sub(r"\\(?:u[0-9a-fA-F]{4}|.)", " ", f.read_text(encoding="utf-8"))
+                _VOCABULARIO.update(PALABRA.findall(txt.lower()))
+            except Exception:                                  # noqa: BLE001
+                pass
+    return _VOCABULARIO
+
+
+def _es_palabra(t: str, voc: set) -> bool:
+    return (t in LETRAS_QUE_SON_PALABRA) if len(t) == 1 else t in voc
+
+
+def reparar_partidas(texto: str, voc: set | None = None) -> str:
+    """«cole ctivos» -> «colectivos» si «colectivos» es palabra y «ctivos» no.
+    También «2022 -2025» -> «2022-2025». Nada más: ante la duda, se deja."""
+    # Solo el vocabulario del sitio: con las palabras del propio texto, los
+    # trozos («ctivos») pasarían por palabras y no se juntaría nada.
+    voc = vocabulario() if voc is None else voc
+    t = re.sub(r"(\d) -(\d)", r"\1-\2", texto)
+    toks = t.split(" ")
+    salida: list = []
+    i = 0
+    while i < len(toks):
+        a = toks[i]
+        if i + 1 < len(toks):
+            b = toks[i + 1]
+            ma = re.search(r"([A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)$", a)
+            mb = re.match(r"([a-záéíóúüñ]+)", b)
+            if ma and mb and ma.end() == len(a):
+                ia = ma.group(1).lower()
+                # El trozo de la izquierda tiene que ser el principio de una
+                # palabra (sin signos delante dentro del mismo trozo).
+                entero = ia + mb.group(1)
+                ib = mb.group(1)
+                # «e n la» -> «en la»: una letra suelta que no es palabra a la
+                # derecha se junta aunque la izquierda sea funcional.
+                suelta = len(ib) == 1 and ib not in LETRAS_QUE_SON_PALABRA
+                if ((ia not in FUNCIONALES or suelta) and entero in voc
+                        and not (_es_palabra(ia, voc) and _es_palabra(ib, voc))):
+                    salida.append(a + b)
+                    i += 2
+                    continue
+        salida.append(a)
+        i += 1
+    return " ".join(salida)
+
+
 def extraer_escrita(texto: str) -> dict | None:
     """{"cita", "pal"} del PDF de una contestación. None si el PDF no tiene
     texto extraíble (escaneado) o no sigue el formato."""
@@ -361,7 +439,7 @@ def extraer_escrita(texto: str) -> dict | None:
     # La cabecera se repite en cada página.
     cuerpo = re.sub(r"SECRETAR[ÍI]A DE ESTADO DE\s+RELACIONES CON LAS CORTES.{0,120}?"
                     r"CONSTITUCIONALES", " ", cuerpo, flags=re.S)
-    cuerpo = " ".join(cuerpo.split())
+    cuerpo = reparar_partidas(" ".join(cuerpo.split()))
     if len(cuerpo) < 20:
         return None
     return {"cita": cita(cuerpo, LARGO_CITA_ESCRITA), "pal": len(cuerpo.split())}
