@@ -3368,9 +3368,22 @@
    "huella": "5b608490f3b3a090",
    "descartado": "nombre «Once» que no está en el texto oficial",
    "intentos": 2
+  },
+  "C-a5b4b73cdbf10861": {
+   "huella": "b84b2e5e8336dc95",
+   "fuente": "b0ab2d095a0513f0",
+   "titular": "Trece preguntas en el Congreso llevan más de 20 días hábiles sin contestación",
+   "entradilla": "El recuento de las iniciativas del último año revela que se ha superado la fecha límite para responder a estas cuestiones, de las cuales la más antigua fue publicada el lunes 15 de junio de 2026.",
+   "claves": [
+    "Sumar es el grupo parlamentario con más preguntas pendientes de contestación, con un total de cinco, seguido por el PSOE con cuatro.",
+    "Los grupos de Junts, PP y Vox, así como quienes no tienen grupo, registran una pregunta cada uno que ya ha superado el límite establecido.",
+    "Existe la posibilidad de que se hayan concedido prórrogas o de que haya respuestas que todavía no aparezcan registradas en la ficha."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
   }
  },
  "uso": {
-  "2026-10-01": 2
+  "2026-10-01": 3
  }
 }
