@@ -3381,9 +3381,21 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-01"
+  },
+  "C-b0ef77e07207ae30": {
+   "huella": "f29049e6b33f8241",
+   "fuente": "aa2a47c8c32652a9",
+   "titular": "14 preguntas escritas en el Congreso superan los 20 días hábiles sin contestación",
+   "entradilla": "Estas iniciativas parlamentarias del último año ya han superado la fecha límite de contestación publicada por la Cámara, aunque podrían existir prórrogas o respuestas que aún no se han reflejado en su ficha oficial.",
+   "claves": [
+    "La iniciativa más antigua que permanece sin contestación registrada se publicó el lunes 15 de junio de 2026.",
+    "Por grupos parlamentarios, Sumar acumula 6 preguntas sin responder, el PSOE tiene 4, mientras que Junts, el PP, Vox y los diputados sin grupo registran una cada uno."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
   }
  },
  "uso": {
-  "2026-10-01": 3
+  "2026-10-01": 5
  }
 }
