@@ -31,6 +31,11 @@ Repositorio (código y datos en bruto): https://github.com/Meowlermann/boe-diges
 - /provincias/ — una página por circunscripción (52): sus diputados, las
   preguntas y las iniciativas que la nombran, cómo votaron y lo que publica
   el BOE sobre ella; /provincias/metodologia.html explica cómo se asignan.
+- /sesiones/ — una página por sesión de control del Pleno
+  (/sesiones/AAAA-MM-DD.html): cada pregunta oral al Gobierno, quién
+  contesta y citas literales del Diario de Sesiones (contestación, réplica
+  y dúplica), con enlace a la página del Diario; /sesiones/metodologia.html
+  explica qué se cita y qué se quita.
 - /datos/indice.json — lista de los ficheros del índice del buscador,
   uno por tipo (/datos/indice-<tipo>.json, partido por año si pasa de
   1 MB), con su número de entradas y su tamaño.

@@ -294,6 +294,8 @@ def intervenciones(get, log, limite_por_persona: int = 12) -> dict:
 #                    «Ministra de Defensa»…)
 #   INICIOINTERVENCION «09:03», para ordenar
 #   ENLACEDIFERIDO   vídeo de la intervención en app.congreso.es
+#   ENLACEPDF        el Diario de Sesiones en PDF, con #page=N
+#   ENLACETEXTOINTEGRO el mismo Diario en HTML (buscador de intervenciones)
 # La pregunta y sus réplicas son varias filas con el mismo expediente: aquí
 # se juntan en una sola pieza.
 
@@ -308,8 +310,9 @@ def _grupo_de(texto: str) -> str:
     return m.group(1).strip() if m else ""
 
 
-def preguntas_orales(filas: list, censo: dict | None = None) -> dict:
-    """Las preguntas orales de la sesión de control más reciente del Pleno.
+def preguntas_orales(filas: list, censo: dict | None = None, fecha: str | None = None) -> dict:
+    """Las preguntas orales de la sesión de control más reciente del Pleno, o
+    de la sesión `fecha` (AAAA-MM-DD) si se indica.
 
     Devuelve {"fecha": "AAAA-MM-DD", "preguntas": [...]}, con las preguntas en
     el orden en que se formularon. Vacío si el volcado no trae ninguna."""
@@ -320,7 +323,9 @@ def preguntas_orales(filas: list, censo: dict | None = None) -> dict:
     fechas = {_fecha_ddmmaaaa(f.get("SESION", "")) for f in orales} - {""}
     if not fechas:
         return {}
-    ultima = max(fechas)
+    ultima = fecha if fecha else max(fechas)
+    if ultima not in fechas:
+        return {}
     por_exp: dict = {}
     for f in orales:
         if _fecha_ddmmaaaa(f.get("SESION", "")) != ultima:
@@ -348,6 +353,10 @@ def preguntas_orales(filas: list, censo: dict | None = None) -> dict:
             "cargo": " ".join((contesta or {}).get("CARGOORADOR", "").split()),
             "video": ((grupo_filas[0].get("ENLACEDIFERIDO") or "").split() or [""])[0],
             "hora": (grupo_filas[0].get("INICIOINTERVENCION") or "").strip(),
+            # El Diario de Sesiones de la sesión: el PDF (con #page=N) y su
+            # texto íntegro en HTML, que es lo que lee respuestas.py.
+            "pdf": (grupo_filas[0].get("ENLACEPDF") or "").strip(),
+            "txt": (grupo_filas[0].get("ENLACETEXTOINTEGRO") or "").strip(),
         })
     preguntas.sort(key=lambda p: p["hora"])
     return {"fecha": ultima, "preguntas": preguntas}

@@ -58,6 +58,7 @@ BUSCAR_DIR = ROOT / "buscar"
 MAPA_DIR = ROOT / "mapa"
 RANKINGS_DIR = ROOT / "rankings"
 PREGUNTAS_DIR = ROOT / "preguntas"
+SESIONES_DIR = ROOT / "sesiones"
 PERSONAS_DIR = ROOT / "personas"
 NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
 TRAMITACION_DIR = ROOT / "tramitacion"
@@ -331,6 +332,10 @@ def pdf_text(url: str, referer: str | None = None, max_chars: int = 120_000) -> 
     if not r:
         return ""
     try:
+        # Los PDF de contestaciones del Congreso van cifrados con AES y pypdf
+        # no los descifra sin `cryptography`: aes_puro lo hace sin dependencias.
+        import aes_puro
+        aes_puro.activar()
         from pypdf import PdfReader
         reader = PdfReader(io.BytesIO(r.content))
         partes, total = [], 0
@@ -3155,6 +3160,13 @@ def cortes_congreso(fecha: dt.date) -> dict:
         pass
     try:
         filas = cd.descargar_intervenciones(get, log)
+        # Antes de redactar: las piezas citan la contestación del Diario de
+        # Sesiones si ya está leída. Un fallo aquí no quita las preguntas.
+        try:
+            import respuestas as rp
+            rp.actualizar_orales(filas, censo, get, log)
+        except Exception as exc:                              # noqa: BLE001
+            log(f"Cortes: respuestas orales no disponibles ({exc})")
         orales, aviso = pq.feed_orales(filas, censo, fecha.isoformat(), fmt_date_es, SITE_URL)
         feed += orales
         log(f"Cortes: {len(orales)} piezas de preguntas orales")
@@ -3162,6 +3174,11 @@ def cortes_congreso(fecha: dt.date) -> dict:
         log(f"Cortes: preguntas orales no disponibles ({exc})")
     try:
         pq.actualizar_escritas(get, post, log)
+        try:
+            import respuestas as rp
+            rp.actualizar_escritas(get, pdf_text, log)
+        except Exception as exc:                              # noqa: BLE001
+            log(f"Cortes: textos de respuestas escritas no disponibles ({exc})")
         escritas, scoreboard = pq.feed_escritas(pq.cargar_escritas(), fmt_date_es, SITE_URL)
         feed += escritas
         log(f"Cortes: {len(escritas)} piezas de preguntas escritas")
@@ -3443,6 +3460,8 @@ def render_nav() -> str:
         + enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos")
         + (enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
            if preguntas_publicadas() else "")
+        + (enlace("/sesiones/", "Sesiones de control", "Qué se pregunta al Gobierno en el Pleno y qué contesta")
+           if sesiones_publicadas() else "")
         + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
         + enlace("/provincias/", "Tu provincia", "Sus diputados, qué se pregunta sobre ella y qué publica el BOE")
         + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
@@ -5054,6 +5073,27 @@ def renderizar_preguntas() -> list:
     return salidas
 
 
+def renderizar_sesiones() -> list:
+    """/sesiones/: cada sesión de control con sus preguntas y las citas del
+    Diario de Sesiones. Lee state/respuestas/, que llena
+    respuestas.actualizar_orales() al construir la edición."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import respuestas as rp
+    salidas = rp.generar_paginas({
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "carpeta": SESIONES_DIR,
+    })
+    log(f"sesiones/: {len(salidas)} páginas")
+    return salidas
+
+
+def sesiones_publicadas() -> bool:
+    return (SESIONES_DIR / "index.html").exists()
+
+
 def renderizar_nombramientos(fichas_dip: list | None = None) -> list:
     """/personas/ y /nombramientos/, desde state/nombramientos.json. El cálculo y
     las páginas viven en nombramientos.py; aquí se le pasan las utilidades del
@@ -5183,6 +5223,10 @@ def novedades_preguntas(dias: list, n: int = 5) -> list:
         for it in (day.get("cortes", {}) or {}).get("feed") or []:
             if (it.get("type") or "").startswith("Pregunta"):
                 filas.append((day["id"], it.get("headline", ""), f"/ediciones/{day['id']}.html"))
+            # Las orales con su sesión ya en /sesiones/ llevan allí, a la pregunta.
+            for l in it.get("links") or []:
+                if "/sesiones/" in (l.get("url") or "") and filas and filas[-1][1] == it.get("headline", ""):
+                    filas[-1] = (filas[-1][0], filas[-1][1], "/" + l["url"].split(SITE_URL, 1)[-1].lstrip("/"))
     try:
         import preguntas as pq
         for exp, v in (pq.cargar_escritas().get("exp") or {}).items():
@@ -5254,8 +5298,10 @@ def renderizar_seguimiento(dias: list) -> list:
         + bloque("Cómo se vota", "Las últimas votaciones del Pleno, con el voto de cada diputado:",
                  nov_vot, "/votaciones/", "Todas las votaciones")
         + bloque("Qué se pregunta", "Las últimas preguntas al Gobierno, orales y escritas:",
-                 nov_pre, "/preguntas/" if preguntas_publicadas() else "/diputados/",
-                 "Preguntas al Gobierno" if preguntas_publicadas() else "Los diputados, uno a uno")
+                 nov_pre, "/preguntas/" if preguntas_publicadas() else
+                 ("/sesiones/" if sesiones_publicadas() else "/diputados/"),
+                 "Preguntas al Gobierno" if preguntas_publicadas() else
+                 ("Sesiones de control" if sesiones_publicadas() else "Los diputados, uno a uno"))
         + '<h2 class="rotulo">Tu provincia</h2><p>Lo mismo, provincia a provincia: sus diputados, lo '
           'que se pregunta y se tramita sobre ella y lo que publica el BOE.</p>'
           '<p><a class="srclink" href="/provincias/">Elegir provincia →</a></p>')
@@ -5881,7 +5927,10 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
                  ("/tramitacion/antiguedad.html", "Iniciativas que más tiempo llevan en tramitación", ""),
                  ("/rankings/", "Rankings de diputados y grupos", "")]
                 + ([("/preguntas/", "Preguntas escritas al Gobierno", "")]
-                   if preguntas_publicadas() else []))
+                   if preguntas_publicadas() else [])
+                + ([("/sesiones/", "Sesiones de control: preguntas orales y respuestas", ""),
+                    ("/sesiones/metodologia.html", "Cómo citamos las sesiones de control", "")]
+                   if sesiones_publicadas() else []))
         + '<h3 class="rotulo-sub">Por grupo</h3>' + lista(grupos)
         + '<h3 class="rotulo-sub">Por circunscripción</h3>' + lista(provs)
         + '<h2 class="rotulo">Consultar</h2>'
@@ -6024,7 +6073,9 @@ def votaciones_dia_congreso(d: dict) -> str:
 
 
 def arreglar_fuentes(dia: dict) -> dict:
-    """Las ediciones ya guardadas enlazaban las preguntas orales a «Ver en
+    """Arreglos de presentación sobre ediciones ya guardadas (no se toca data/).
+
+    Las ediciones ya guardadas enlazaban las preguntas orales a «Ver en
     vídeo» (app.congreso.es), que siempre acaba en la portada genérica del
     Archivo audiovisual; y a veces el dato traía dos direcciones pegadas. Al
     pintar se cambia por la ficha oficial de la pregunta, que sí lleva al
@@ -6036,6 +6087,21 @@ def arreglar_fuentes(dia: dict) -> dict:
             exp = cd.ficha_iniciativa_url(it["expediente"])
             it["source"] = {"label": f"Ficha oficial de la pregunta {it['expediente'].split('/0000')[0]}",
                             "url": exp}
+    # Las preguntas orales publicadas antes de leer el Diario de Sesiones
+    # ganan la contestación citada en cuanto está en state/respuestas/.
+    try:
+        import preguntas as pq
+        for it in (dia.get("cortes") or {}).get("feed") or []:
+            if it.get("type") != "Pregunta oral" or not it.get("expediente"):
+                continue
+            if any(str(b).startswith("Respuesta de ") for b in it.get("body") or []):
+                continue
+            lineas, enlaces = pq.lineas_respuesta(it["expediente"], SITE_URL)
+            if lineas or enlaces:
+                it["body"] = list(it.get("body") or []) + lineas
+                it["links"] = enlaces + list(it.get("links") or [])
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  respuestas orales al pintar: {exc}")
     return dia
 
 
@@ -6108,6 +6174,10 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         extras += renderizar_preguntas()
     except Exception as exc:                                  # noqa: BLE001
         log(f"preguntas/: no se pudo generar ({exc})")
+    try:
+        extras += renderizar_sesiones()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"sesiones/: no se pudo generar ({exc})")
     # Nombramientos y ceses: lo mismo.
     try:
         extras += renderizar_nombramientos(fichas_dip)
@@ -6252,7 +6322,7 @@ def main() -> None:
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
-                RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR):
+                RANKINGS_DIR, PREGUNTAS_DIR, SESIONES_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if args.repintar_ediciones:
