@@ -405,9 +405,10 @@ def piezas_orales(ses: dict, fmt_date_es, site_url: str) -> list:
             "standfirst": f"Sesión de control del {fecha_txt} · Pleno del Congreso",
             "quote": {"text": p["texto"], "author": f'{p["autor_natural"]} ({grupo})'},
             "body": cuerpo,
-            "source": ({"label": "Ver en vídeo", "url": p["video"]} if p["video"] else
-                       {"label": "Intervenciones del Congreso",
-                        "url": cd.PAG_INTERVENCIONES}),
+            # La ficha de la pregunta, no el vídeo: los enlaces de app.congreso.es
+            # acaban siempre en la portada genérica del Archivo audiovisual.
+            "source": {"label": f"Ficha oficial de la pregunta {p['expediente'].split('/0000')[0]}",
+                       "url": cd.ficha_iniciativa_url(p["expediente"])},
             "links": enlaces,
             "expediente": p["expediente"],
         })

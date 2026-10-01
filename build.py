@@ -3700,8 +3700,11 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
                 frag["ARCHIVO_AVISO"] = (
                     '<section class="view"><p class="aside-note"><b>Edición de archivo.</b> '
                     'Incluye solo el BOE de este día. Lo que votan y preguntan los diputados '
-                    'está en <a class="srclink" href="/votaciones/">Votaciones</a> y en '
-                    '<a class="srclink" href="/preguntas/">Preguntas al Gobierno</a>.</p></section>')
+                    'está en <a class="srclink" href="/votaciones/">Votaciones</a>'
+                    + (' y en <a class="srclink" href="/preguntas/">Preguntas al Gobierno</a>'
+                       if preguntas_publicadas() else
+                       ' y en <a class="srclink" href="/seguimiento/">Seguimiento</a>')
+                    + '.</p></section>')
             else:
                 frag["CORTES_HIDDEN"] = ""
                 frag["ARCHIVO_AVISO"] = ""
@@ -4788,8 +4791,10 @@ def _tarjeta_votacion(d: dict, cd, fichas_por_clave: dict, nombres: list,
         f'Enlace a esta votación</a> · <button type="button" class="vt-compartir" '
         f'data-url="{esc_attr(SITE_URL + "votaciones/" + pagina_votacion(d))}" '
         f'data-t="{esc_attr(cerrar(asunto, 90))}" hidden>Compartir</button>'
+        f'<a class="srclink" href="{esc_attr(votaciones_dia_congreso(d))}" target="_blank" '
+        f'rel="noopener">Votaciones de ese día en el Congreso ↗</a> · '
         f'<a class="srclink" href="{esc_attr(d["url"])}" target="_blank" '
-        f'rel="noopener">Datos oficiales ↗</a></p>'
+        f'rel="noopener">Datos (JSON) ↗</a></p>'
         f'</article>')
 
 
@@ -5378,9 +5383,12 @@ def renderizar_diputados(fichas: list) -> list:
         if f["ultimas_intervenciones"]:
             cuerpo.append('<h2 class="rotulo">Últimas intervenciones</h2><ul class="indice">')
             for i in f["ultimas_intervenciones"]:
-                enlace = (f'<a href="{esc_attr(i["video"])}" rel="nofollow noopener" '
+                # A la ficha oficial de la iniciativa (por expediente): el
+                # enlace de vídeo de app.congreso.es acaba siempre en la
+                # portada genérica del Archivo audiovisual.
+                enlace = (f'<a href="{esc_attr(cd.ficha_iniciativa_url(i["exp"]))}" rel="noopener" '
                           f'target="_blank">{esc_html(i["asunto"] or "Intervención")}</a>'
-                          if i.get("video") else esc_html(i["asunto"] or "Intervención"))
+                          if i.get("exp") else esc_html(i["asunto"] or "Intervención"))
                 cuerpo.append(f'<li>{enlace}<span class="ref">'
                               f'{esc_html(i["fecha"])} · {esc_html(i["organo"])}'
                               + (f' · {esc_html(i["fase"])}' if i.get("fase") else "")
@@ -6006,6 +6014,31 @@ def renderizar_feed(dias: list[dict]) -> None:
     log(f"feed.xml generado con {len(items)} ediciones")
 
 
+def votaciones_dia_congreso(d: dict) -> str:
+    """La página del Congreso con las votaciones de ese día: es la que ve un
+    lector; el JSON de cada votación queda como enlace secundario."""
+    import congreso_datos as cd
+    f = d.get("f") or ""
+    fecha = f"{f[8:10]}/{f[5:7]}/{f[:4]}" if len(f) == 10 else ""
+    return cd.VOT_DIA.format(leg="XV", fecha=fecha)
+
+
+def arreglar_fuentes(dia: dict) -> dict:
+    """Las ediciones ya guardadas enlazaban las preguntas orales a «Ver en
+    vídeo» (app.congreso.es), que siempre acaba en la portada genérica del
+    Archivo audiovisual; y a veces el dato traía dos direcciones pegadas. Al
+    pintar se cambia por la ficha oficial de la pregunta, que sí lleva al
+    detalle. No se toca data/: es un arreglo de presentación."""
+    import congreso_datos as cd
+    for it in (dia.get("cortes") or {}).get("feed") or []:
+        src = it.get("source") or {}
+        if "app.congreso.es/v1/" in (src.get("url") or "") and it.get("expediente"):
+            exp = cd.ficha_iniciativa_url(it["expediente"])
+            it["source"] = {"label": f"Ficha oficial de la pregunta {it['expediente'].split('/0000')[0]}",
+                            "url": exp}
+    return dia
+
+
 def cargar_dias(limite: int | None = MAX_DAYS) -> list[dict]:
     """Ediciones de data/, de la más reciente a la más antigua (por fecha, que
     es el nombre del fichero; nunca por orden de escritura: el archivo
@@ -6014,7 +6047,7 @@ def cargar_dias(limite: int | None = MAX_DAYS) -> list[dict]:
     ficheros = sorted(DATA_DIR.glob("*.json"), reverse=True)
     for f in ficheros[:limite] if limite else ficheros:
         try:
-            dias.append(json.loads(f.read_text(encoding="utf-8")))
+            dias.append(arreglar_fuentes(json.loads(f.read_text(encoding="utf-8"))))
         except Exception as exc:                              # noqa: BLE001
             log(f"  {f.name} ilegible: {exc}")
     return dias
@@ -6200,6 +6233,10 @@ def main() -> None:
                     "de la primera edición que ya hay en data/)")
     ap.add_argument("--lote", type=int, default=30,
                     help="máximo de ediciones nuevas por ejecución (30)")
+    # Repintado de todas las ediciones: tras cambiar la plantilla o los
+    # enlaces, las de archivo no se vuelven a pintar solas (solo la ventana).
+    ap.add_argument("--repintar-ediciones", action="store_true",
+                    help="vuelve a pintar todas las ediciones de data/ sin descargar nada")
     # Reprocesado del histórico del BOE: solo los ficheros de state/ de los
     # extractores pedidos, con una sola descarga de sumario por día.
     ap.add_argument("--reprocesar-desde", help="primera fecha a reprocesar (AAAA-MM-DD)")
@@ -6217,6 +6254,13 @@ def main() -> None:
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
                 RANKINGS_DIR, PREGUNTAS_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR):
         carpeta.mkdir(exist_ok=True)
+
+    if args.repintar_ediciones:
+        ids = sorted(p.stem for p in DATA_DIR.glob("*.json")
+                     if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem))
+        log(f"repintado: {len(ids)} ediciones")
+        renderizar(archivo_ids=ids)
+        return
 
     if args.nombramientos_desde and not args.reprocesar_desde:
         args.reprocesar_desde, args.extractores = args.nombramientos_desde, "nombramientos"

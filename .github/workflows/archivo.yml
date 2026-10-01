@@ -21,10 +21,10 @@ on:
         required: true
         default: "30"
       modo:
-        description: "ediciones: rellena el archivo · reprocesar: relee los sumarios y actualiza solo state/ con los extractores de abajo · nombramientos: como reprocesar con extractores=nombramientos"
+        description: "ediciones: rellena el archivo · repintar: vuelve a pintar todas las ediciones · reprocesar: relee los sumarios y actualiza solo state/ con los extractores de abajo · nombramientos: como reprocesar con extractores=nombramientos"
         required: true
         type: choice
-        options: [ediciones, reprocesar, nombramientos]
+        options: [ediciones, reprocesar, nombramientos, repintar]
         default: ediciones
       extractores:
         description: "Solo en modo reprocesar: nombramientos, provincias o nombramientos,provincias (una descarga por día para todos)"
@@ -64,7 +64,10 @@ jobs:
           MODO: ${{ inputs.modo }}
           EXTRACTORES: ${{ inputs.extractores }}
         run: |
-          if [ "$MODO" = "nombramientos" ]; then
+          if [ "$MODO" = "repintar" ]; then
+            # Vuelve a pintar todas las ediciones con el código actual; no descarga nada.
+            ARGS="--repintar-ediciones"
+          elif [ "$MODO" = "nombramientos" ]; then
             # Solo el estado de nombramientos: ni data/ ni las ediciones.
             ARGS="--nombramientos-desde $DESDE"
             if [ -n "$HASTA" ]; then ARGS="$ARGS --nombramientos-hasta $HASTA"; fi
