@@ -3405,9 +3405,448 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-01"
+  },
+  "C-efef6b4c4187d76e": {
+   "huella": "7666e9d5b09cdde5",
+   "fuente": "8b3612fc6f3ffad7",
+   "titular": "El ministro de Economía y Vox se enfrentan por la situación de las familias",
+   "entradilla": "El diputado de Vox José María Figaredo y el ministro de Economía, Carlos Cuerpo, protagonizan un tenso debate en el Congreso sobre el empobrecimiento de los ciudadanos y las acusaciones de corrupción al PSOE.",
+   "claves": [
+    "El diputado de Vox José María Figaredo preguntó al ministro cómo prevé revertir el empobrecimiento de los españoles.",
+    "El ministro de Economía, Carlos Cuerpo, pidió ceñirse a la pregunta registrada y afeó el funcionamiento de la sesión.",
+    "Figaredo acusó al ministro de cobardía por no responder sobre lo que calificó de corrupción terrorífica en el PSOE."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-7d13ababf38b1df9": {
+   "huella": "6b84ab247c4ecf7f",
+   "fuente": "97a7f3658c4fde3a",
+   "titular": "EH Bildu exige intervenir los precios de la luz ante la crisis energética",
+   "entradilla": "El diputado Mikel Otero reclama medidas inmediatas ante un precio de la electricidad que supera los 250 euros por megavatio hora, mientras el Gobierno apunta al impacto de la guerra de Irán.",
+   "claves": [
+    "El diputado de EH Bildu Mikel Otero alertó de que el precio del megavatio hora eléctrico supera los 250 euros.",
+    "Otero reclamó intervenir los precios de forma inmediata para abaratar las facturas de septiembre, que considera desmesuradas.",
+    "El ministro de Economía, Carlos Cuerpo, vinculó la volatilidad y el alza de costes energéticos a la guerra de Irán."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-6cb3c7458f6f6115": {
+   "huella": "5ae07c1d569e11c4",
+   "fuente": "22e92e28a7a614e8",
+   "titular": "El PP y Félix Bolaños chocan en el Congreso por la actuación de la justicia",
+   "entradilla": "La diputada popular Ester Muñoz acusa al Gobierno de soberbia y de intentar eliminar a jueces, mientras el ministro de Justicia pide dejar trabajar a los tribunales para esclarecer los hechos.",
+   "claves": [
+    "La diputada del PP Ester Muñoz acusó al ministro de soberbia y le reprochó declaraciones previas sobre Santos Cerdán o Aldama.",
+    "El ministro de Justicia, Félix Bolaños, defendió que se debe dejar trabajar a la justicia para que se esclarezcan los hechos.",
+    "Bolaños aseguró que quien tenga que pagar por cualquier responsabilidad penal o política lo acabará pagando."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-00090b401c750031": {
+   "huella": "39c8a3cf04ffa93a",
+   "fuente": "75da7d48d76d5504",
+   "titular": "Félix Bolaños propone a PP y Vox unificar sus preguntas en el Congreso",
+   "entradilla": "El ministro de Justicia sugiere que ambas formaciones formulen una única pregunta por economía procesal, mientras Vox le recrimina la situación judicial de la esposa del presidente del Gobierno.",
+   "claves": [
+    "La portavoz de Vox, María José Rodríguez de Millán, preguntó al ministro de Justicia hasta dónde piensa llegar el Gobierno.",
+    "Félix Bolaños propuso unificar las preguntas de PP y Vox al considerar que sus portavoces plantean exactamente lo mismo.",
+    "Rodríguez de Millán replicó que la esposa del presidente del Gobierno será la primera en sentarse ante un jurado popular."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-c064424c22c301ad": {
+   "huella": "01351d2a75dd8209",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-9d6be9b7981a438b": {
+   "huella": "58d949d935bf9918",
+   "fuente": "6c3dc0bdcd2d9ab1",
+   "titular": "El PP y el ministro del Interior se enfrentan por la seguridad en Ceuta",
+   "entradilla": "Miguel Tellado acusa al ministro de tener imputada a la directora de la Guardia Civil por presionar a agentes de la UCO, mientras Fernando Grande-Marlaska defiende su gestión de seguridad en la ciudad autónoma.",
+   "claves": [
+    "El portavoz del PP, Miguel Tellado, preguntó al ministro del Interior si considera que Ceuta es una ciudad segura.",
+    "Tellado afirmó que la directora general de la Guardia Civil está imputada por presionar a agentes que investigaban al PSOE.",
+    "El ministro Fernando Grande-Marlaska rechazó las descalificaciones y defendió el trabajo de su departamento en Ceuta."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-c39a88094720bd1d": {
+   "huella": "4b6f9ba2bfa70e33",
+   "fuente": "54e40fc5ec3dce30",
+   "titular": "El PP acusa a Interior de no defender la frontera de Ceuta",
+   "entradilla": "La diputada popular Ana Belén Vázquez critica la gestión fronteriza del Gobierno, mientras el ministro Fernando Grande-Marlaska defiende el Estado de derecho y recuerda causas judiciales del pasado.",
+   "claves": [
+    "La diputada del PP Ana Belén Vázquez afirmó que la política de fronteras del Gobierno consiste en no defenderlas.",
+    "El ministro del Interior, Fernando Grande-Marlaska, defendió su apoyo al imperio de la ley y a la democracia.",
+    "Grande-Marlaska aludió a la próxima sentencia sobre la cúpula de Interior del exministro Fernández Díaz."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-56178939841edeb0": {
+   "huella": "376c080b4cad7178",
+   "fuente": "d384a1dadafa90ff",
+   "titular": "Fernando Grande-Marlaska rechaza dimitir y defiende su gestión de seguridad",
+   "entradilla": "El ministro del Interior descarta dejar su cargo ante las críticas del diputado Alberto Catalán por el cese del coronel Pérez de los Cobos y el asesinato de dos guardias civiles en Barbate.",
+   "claves": [
+    "El diputado Alberto Catalán preguntó al ministro del Interior por qué no dimite de su cargo.",
+    "Catalán reprochó al ministro el castigo al coronel Pérez de los Cobos y su ausencia en el funeral de los guardias de Barbate.",
+    "Grande-Marlaska justificó su continuidad en el trabajo para mejorar los indicadores de seguridad y las condiciones policiales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-8ec6c66a32976c63": {
+   "huella": "6c7dde8fcd76e645",
+   "fuente": "8c4605259bebb912",
+   "titular": "El Gobierno defiende las ayudas aprobadas para la flota pesquera vasca",
+   "entradilla": "El diputado del PNV Joseba Agirretxea advierte de que la flota de Ondarroa está amarrada porque no compensa salir a faenar, mientras el ministro Luis Planas recuerda los decretos de ayuda al sector.",
+   "claves": [
+    "El diputado Joseba Agirretxea alertó de que la flota pesquera de Ondarroa está amarrada en puerto por falta de rentabilidad.",
+    "El ministro de Agricultura, Luis Planas, señaló que España cuenta con una flota de 8.324 buques pesqueros registrados.",
+    "Planas destacó que el Gobierno ha aprobado ayudas al sector mediante reales decretos leyes y seguirá trabajando en ello."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-1625aa9230340cf2": {
+   "huella": "bb74c51fe53df349",
+   "fuente": "b526860cf7f292b4",
+   "titular": "El PP y el Gobierno chocan por la gestión de los menores migrantes en Ceuta",
+   "entradilla": "Borja Sémper critica que el presidente del Gobierno visite Harvard en lugar de un colegio público ceutí, mientras el ministro Ángel Víctor Torres reprocha al PP haber votado en contra del reparto de menores.",
+   "claves": [
+    "El diputado del PP Borja Sémper criticó que el presidente del Gobierno viaje a Harvard en lugar de visitar Ceuta.",
+    "El ministro de Política Territorial, Ángel Víctor Torres, aseguró que todas las devoluciones se harán conforme a la ley.",
+    "Torres recordó que el PP votó en contra de reubicar a los menores de Ceuta por el resto del territorio español."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-1673cdb799cac3fe": {
+   "huella": "2966d9d94a8d9e88",
+   "fuente": "6daa5ea4ba9a5bb9",
+   "titular": "El PP y el ministro de Política Territorial cruzan reproches en el Congreso",
+   "entradilla": "El diputado Jaime de Olano y el ministro Ángel Víctor Torres debaten sobre el uso de descalificaciones y la situación institucional.",
+   "claves": [
+    "Jaime Eduardo de Olano pregunta al ministro de Política Territorial si el Gobierno está preparado.",
+    "El ministro Ángel Víctor Torres recrimina el uso de palabras malsonantes e insultos por parte de la oposición.",
+    "El debate incluye críticas cruzadas sobre el conocimiento y cumplimiento del Reglamento de la Cámara."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-057ac13bf15cf59d": {
+   "huella": "ed84fda48ecb2ae7",
+   "fuente": "f1dbce65c28c5052",
+   "titular": "ERC exige desbloquear la vivienda pública y critica la falta de reuniones",
+   "entradilla": "La diputada Etna Estrems denuncia que el Ministerio de Vivienda no ha recibido al Sindicat de Llogateres de Madrid, mientras la ministra Isabel Rodríguez defiende la lucha contra la especulación.",
+   "claves": [
+    "La diputada de ERC Etna Estrems advirtió de que la ciudadanía no puede pagar una vivienda, ni de alquiler ni de compra.",
+    "Estrems criticó que el Sindicat de Llogateres de Madrid no haya sido recibido por el Ministerio de Vivienda.",
+    "La ministra Isabel Rodríguez defendió la unión de la izquierda en la defensa del derecho a la vivienda y contra la especulación."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-a54b60f185f6a733": {
+   "huella": "c44b19a3d6c2b722",
+   "fuente": "848c0c4f2e6721b4",
+   "titular": "El PP y la ministra de Igualdad debaten sobre la seguridad de las mujeres en Ceuta",
+   "entradilla": "El diputado popular Jaime de los Santos afirma que las mujeres ceutíes sienten terror en las calles, mientras la ministra Ana Redondo asegura que se está reforzando la seguridad en la ciudad autónoma.",
+   "claves": [
+    "El diputado del PP Jaime de los Santos denunció que las mujeres y lesbianas de Ceuta tienen terror a pasear por la calle.",
+    "La ministra de Igualdad, Ana Redondo, reprochó al diputado haberse quedado dormido durante una comparecencia sobre Ceuta.",
+    "Redondo defendió que se está reforzando la seguridad en Ceuta y negó que existan ciudadanas de primera y de segunda."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-4352d19cd8211f9b": {
+   "huella": "35143cdf574af092",
+   "fuente": "b2e7afb6a5a31aef",
+   "titular": "El PP acusa a Defensa de vetar comparecencias y desproteger a los soldados",
+   "entradilla": "Concepción Gamarra y la ministra Margarita Robles discuten en el Pleno sobre la seguridad de los militares y la gestión del CNI.",
+   "claves": [
+    "Concepción Gamarra pregunta a la ministra de Defensa si puede estar orgullosa de su trabajo al frente del departamento.",
+    "La diputada del PP reprocha a la ministra el veto a la comparecencia de la directora del CNI en la Comisión de Secretos Oficiales.",
+    "Margarita Robles defiende su gestión y el orgullo por su labor en el Ministerio de Defensa frente a las acusaciones de la oposición."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-e0d047e7b7225215": {
+   "huella": "faf7358fa441343b",
+   "fuente": "9c3f06cf632da131",
+   "titular": "Sofía Acedo pregunta a Defensa por la situación en Ceuta y Chafarinas",
+   "entradilla": "La diputada del PP cuestiona a Margarita Robles sobre su gestión y la ministra reivindica el aumento de la inversión militar.",
+   "claves": [
+    "Sofía Acedo interpeló a la ministra de Defensa con la pregunta sobre si de verdad merece la pena continuar en el cargo.",
+    "La parlamentaria popular señala que los ceutíes y los militares sufren las consecuencias de la apertura de vías de acceso a España.",
+    "Margarita Robles responde que su gestión ha elevado la inversión hasta el 2% y defiende el apoyo a los militares desplegados."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-b1f72f2cea9e64d6": {
+   "huella": "c9bab1c7d7b6c99f",
+   "fuente": "b1d45682abba6c4e",
+   "titular": "El PP acusa a Margarita Robles de no actuar ante un asalto fronterizo en Ceuta",
+   "entradilla": "El diputado popular Agustín Conde afirma que la ministra de Defensa fue alertada de un asalto inminente y no hizo nada, mientras Robles se ofrece a comparecer ante la comisión de gastos reservados.",
+   "claves": [
+    "El diputado del PP Agustín Conde afirmó que los servicios de inteligencia informaron a la ministra de un asalto inminente en Ceuta.",
+    "Conde reprochó a Robles no haber actuado para defender la integridad territorial encomendada a las Fuerzas Armadas.",
+    "La ministra de Defensa, Margarita Robles, se mostró dispuesta a dar explicaciones ante la comisión de gastos reservados."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-998ef09a01868d0e": {
+   "huella": "a05f232561d785c4",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-7380749bf1208ea1": {
+   "huella": "a4c655c3a4e381fe",
+   "fuente": "bf3b0710115f363e",
+   "titular": "Alberto Núñez Feijóo y Pedro Sánchez debaten sobre educación y elecciones",
+   "entradilla": "El líder del PP califica de fracaso histórico los resultados del informe PISA en Ceuta y Melilla, mientras el presidente del Gobierno confirma que las próximas elecciones generales serán en 2027.",
+   "claves": [
+    "El líder del PP, Alberto Núñez Feijóo, afirmó que los peores resultados del informe PISA se dan en Ceuta y Melilla.",
+    "Feijóo calificó la ley educativa del Gobierno como el mayor de los fracasos de la historia democrática española.",
+    "El presidente Pedro Sánchez confirmó que las próximas elecciones generales se celebrarán en el año 2027."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-777f0df2eda55d53": {
+   "huella": "027bf7f298bde7a2",
+   "fuente": "f8c9336b355b5f23",
+   "titular": "Santiago Abascal acusa a Pedro Sánchez de ser chantajeado por Marruecos",
+   "entradilla": "El líder de Vox afirma que el país vecino dispone de información sobre la corrupción del presidente y su familia, mientras Sánchez le acusa de difundir bulos, desinformación y xenofobia.",
+   "claves": [
+    "El presidente de Vox, Santiago Abascal, preguntó a Pedro Sánchez si está siendo chantajeado por Marruecos.",
+    "Abascal acusó al presidente del Gobierno de haber traicionado, mentido y arruinado a los españoles durante los últimos ocho años.",
+    "Sánchez replicó acusando al líder de Vox de regodearse en la desinformación, los bulos, los insultos y la xenofobia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-11ded376dd945730": {
+   "huella": "9690916ca63a0598",
+   "fuente": "8a227ecb9ac32ece",
+   "titular": "Gabriel Rufián cuestiona la viabilidad de la mayoría parlamentaria del Gobierno",
+   "entradilla": "El portavoz de ERC duda de que al Ejecutivo le salgan los números para gobernar hasta 2027, mientras el presidente Pedro Sánchez defiende la necesidad de tramitar leyes clave para los jóvenes.",
+   "claves": [
+    "El diputado de ERC Gabriel Rufián dudó de la capacidad del Gobierno para sumar las mayorías necesarias en lo que queda de legislatura.",
+    "El presidente Pedro Sánchez destacó la obligación de tramitar proyectos de ley importantes tras conocerse el informe PISA de la OCDE.",
+    "Sánchez recordó que la actual mayoría progresista en el Congreso lleva gobernando más de ocho años."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-ba7e7e1ee44396ec": {
+   "huella": "9882e83c25fcb710",
+   "fuente": "1f21187820b84a9a",
+   "titular": "El PP interroga a Economía sobre la crisis de Ceuta y el vicepresidente responde",
+   "entradilla": "Ester Muñoz acusa al ministro Carlos Cuerpo de no contestar a sus preguntas y este defiende su visita a la ciudad autónoma.",
+   "claves": [
+    "Ester Muñoz de la Iglesia pregunta al vicepresidente primero y ministro de Economía si el Gobierno piensa decir la verdad.",
+    "La diputada popular reprocha al ministro que no conteste a sus cuestiones sobre la situación en Ceuta.",
+    "Carlos Cuerpo transmite el mensaje de vuelta a la normalidad y recuperación del optimismo trasladado por los ciudadanos ceutíes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-6826ecd4b8467feb": {
+   "huella": "b1c7126e94395a86",
+   "fuente": "7a39c244c91ab086",
+   "titular": "El PP denuncia ante Economía la pérdida de poder adquisitivo de las familias",
+   "entradilla": "Jaime de Olano aporta datos de la OCDE y del CIS para criticar la carestía, mientras Carlos Cuerpo defiende la evolución de la renta.",
+   "claves": [
+    "Jaime Eduardo de Olano pregunta al ministro de Economía si el Gobierno se preocupa realmente por las familias españolas.",
+    "El diputado del PP afirma que el poder adquisitivo de los salarios ha bajado un 2% desde 2021 según datos de la OCDE.",
+    "Carlos Cuerpo rebate los argumentos aportando cifras sobre la evolución de la capacidad de compra y la situación económica general."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-a6ee9c4ef1978e27": {
+   "huella": "e19610bb8a06fcc0",
+   "fuente": "887d6b1bd819dde1",
+   "titular": "Yolanda Díaz y el PP chocan por la calificación de la crisis migratoria en Ceuta",
+   "entradilla": "La vicepresidenta segunda califica la situación de crisis humanitaria tras la muerte de 141 personas, mientras la diputada popular Sofía Acedo la tacha de invasión y exige la expulsión de los migrantes a Marruecos.",
+   "claves": [
+    "La diputada del PP Sofía Acedo calificó la crisis de Ceuta como una invasión y exigió expulsar a todos los migrantes a Marruecos.",
+    "La vicepresidenta Yolanda Díaz defendió que se trata de la crisis humanitaria más grave de las últimas décadas.",
+    "Díaz detalló que 141 seres humanos han fallecido en el marco de esta crisis en la ciudad autónoma."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-04c31234bada5fca": {
+   "huella": "3a1b6143eb57484d",
+   "fuente": "4556cf0846801f7c",
+   "titular": "Yolanda Díaz confirma que el Gobierno trabaja en la reforma del despido",
+   "entradilla": "La ministra de Trabajo anuncia que una mesa de diálogo social aborda la modificación de las indemnizaciones por despido al considerar que actualmente es muy barato rescindir un contrato en España.",
+   "claves": [
+    "El diputado de EH Bildu Oskar Matute instó al Gobierno a reformar el despido de forma inmediata por justicia con los trabajadores.",
+    "La ministra de Trabajo, Yolanda Díaz, confirmó que existe una mesa de diálogo social trabajando activamente en esta reforma.",
+    "Díaz justificó la medida señalando que despedir en España es muy barato y que el país ha sido condenado por el CES."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-5e24b7f19615e071": {
+   "huella": "b957dfd525534b91",
+   "fuente": "afe7f93786b7bdc1",
+   "titular": "El PP exige la devolución de todos los migrantes que entraron en Ceuta en julio",
+   "entradilla": "El diputado Juan Bravo reclama el retorno de quienes accedieron de forma irregular los días 30 y 31 de julio, mientras el ministro Félix Bolaños admite que todavía no se ha recuperado la normalidad en la ciudad.",
+   "claves": [
+    "El diputado del PP Juan Bravo exigió el retorno de todas las personas que entraron irregularmente en Ceuta a finales de julio.",
+    "El ministro de la Presidencia, Félix Bolaños, reconoció que actualmente no existe normalidad todavía en la ciudad autónoma.",
+    "Bravo cuestionó al ministro sobre las relaciones con Marruecos y le pidió disculpas hacia los jueces."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-01"
+  },
+  "C-f619690985114c13": {
+   "huella": "974d7d6a77d05026",
+   "fuente": "12d0ffdead5814ed",
+   "titular": "Valido pregunta a Hacienda por el cumplimiento de los acuerdos con Canarias",
+   "entradilla": "La diputada Cristina Valido interpela al ministro sobre la Agenda Canaria y la utilización del superávit de 600 millones.",
+   "claves": [
+    "Cristina Valido pregunta al ministro de Hacienda por el grado de cumplimiento de los acuerdos alcanzados con el presidente canario Fernando Clavijo.",
+    "La diputada menciona el uso previsto de 600 millones de superávit para las islas.",
+    "Arcadi España responde destacando la interlocución permanente y directa entre el Estado y el Gobierno de Canarias."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-5b3c2e15ed2e7d1c": {
+   "huella": "f0f9bd6d5ad83f7a",
+   "fuente": "516f5639581be927",
+   "titular": "El PP arremete contra Interior por la gestión de la crisis y la relación con Marruecos",
+   "entradilla": "Miguel Tellado recrimina a Fernando Grande-Marlaska sus declaraciones sobre Marruecos y la falta de normalidad en Ceuta.",
+   "claves": [
+    "Miguel Tellado Filgueira pregunta al ministro del Interior si considera que ha estado a la altura de su cargo.",
+    "El diputado del PP recuerda las declaraciones del ministro del 1 de agosto sobre la fiabilidad de Marruecos y la reversión de la situación.",
+    "Fernando Grande-Marlaska defiende que el objetivo es volver a la normalidad con todos los medios necesarios y la colaboración con Marruecos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-a70bb70b7031cdf5": {
+   "huella": "a349fcae0ce1b205",
+   "fuente": "3ce5090d9332d28d",
+   "titular": "El PP recrimina a Interior la falta de diligencia ante la situación en Ceuta",
+   "entradilla": "Ana Belén Vázquez y Fernando Grande-Marlaska discuten en el Pleno sobre la presión migratoria y la protección a los ceutíes.",
+   "claves": [
+    "Ana Belén Vázquez Blanco pregunta al ministro del Interior si está actuando con la debida diligencia.",
+    "La diputada del PP califica los hechos en Ceuta como una invasión y acusa al titular de Interior de atacar a la policía y a la magistratura.",
+    "Fernando Grande-Marlaska afirma que su prioridad es dar protección a la sociedad ceutí y que existían informes previos sobre el incremento de la presión migratoria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-9fe81b3f6361067b": {
+   "huella": "5bce9f5e94e7271a",
+   "fuente": "85aec14c56bafe57",
+   "titular": "Vox acusa a Interior de abandonar a los ceutíes durante la crisis migratoria",
+   "entradilla": "María José Rodríguez de Millán denuncia la inseguridad en la ciudad autónoma y Grande-Marlaska rechaza el discurso belicista.",
+   "claves": [
+    "María José Rodríguez de Millán Parro pregunta al ministro del Interior por qué han traicionado a los ceutíes.",
+    "La representante de Vox afirma que los ciudadanos llevan cuarenta y un días soportando una situación de inseguridad y miedo.",
+    "Fernando Grande-Marlaska responde que los ceutíes están en el radar del Gobierno y que se han desplegado más policías y recursos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-7c66f64c1e0498ac": {
+   "huella": "3458927728f75495",
+   "fuente": "03250154d809c5a5",
+   "titular": "Sumar interpela a Interior por las agresiones a periodistas en manifestaciones",
+   "entradilla": "Alberto Ibáñez denuncia la pasividad policial ante el acoso a profesionales y Grande-Marlaska traslada su solidaridad.",
+   "claves": [
+    "Alberto Ibáñez Mezquita pregunta al ministro del Interior por las consecuencias democráticas de las agresiones e impedimentos a periodistas.",
+    "El diputado de Sumar menciona la existencia de listas de profesionales de la comunicación en concentraciones.",
+    "Fernando Grande-Marlaska manifiesta su solidaridad con los profesionales afectados y reitera el compromiso de las fuerzas de seguridad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-4ec6eeba413b4331": {
+   "huella": "181d1bb4b39ae04f",
+   "fuente": "7f08f70b80a7b788",
+   "titular": "Marta Madrenas pregunta a Interior por actuaciones policiales contra jóvenes",
+   "entradilla": "La diputada de Junts interroga al ministro sobre la actuación de la Policía Nacional con dos jóvenes en Elx y Alcorcón.",
+   "claves": [
+    "Marta Madrenas i Mir pregunta al ministro del Interior si tiene control sobre su policía durante la sesión de control del Congreso.",
+    "La diputada expone dos casos concretos de agresión a menores y jóvenes por parte de la Policía Nacional en Elx y Alcorcón.",
+    "Fernando Grande-Marlaska responde que ningún símbolo justifica una actuación que no sea acorde con la ley y pide contextualizar los hechos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-1515243ca19ea1f5": {
+   "huella": "fa570518ac4ac754",
+   "fuente": "33a53bce09381d3e",
+   "titular": "Educación defiende en el Congreso el inicio del curso escolar en Ceuta",
+   "entradilla": "Milagros Tolón responde al PP que las clases comenzaron con un 75% de asistencia y que los docentes se incorporaron el 1 de septiembre.",
+   "claves": [
+    "Jaime Miguel De los Santos González pregunta a la ministra de Educación si están garantizados los derechos educativos de los alumnos de Ceuta.",
+    "La ministra Milagros Tolón anuncia que las clases en Ceuta comenzaron con un 75% de asistencia.",
+    "La titular de Educación asegura que el ministerio trabajó desde el primer minuto para garantizar un inicio de curso seguro con los docentes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-981b0f6a9efd7077": {
+   "huella": "299fb2bc78a94d16",
+   "fuente": "d8f80cc3348526f7",
+   "titular": "El PP pregunta a Sanidad por la actuación ministerial durante la crisis de Ceuta",
+   "entradilla": "Carmen Fúnez critica la labor de Mónica García y la ministra defiende los derechos humanos y el trabajo con los profesionales.",
+   "claves": [
+    "Carmen Fúnez de Gregorio pregunta a la ministra de Sanidad si su departamento ha hecho todo lo necesario en la crisis de Ceuta.",
+    "La diputada popular reprocha a Mónica García estar alejada de los médicos y profesionales sanitarios.",
+    "Mónica García responde que nunca es suficiente cuando están en juego los derechos humanos y defiende la gestión de las vacunas y los recursos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-b647761274f14b5e": {
+   "huella": "c67e34f209172d09",
+   "fuente": "29126fbd23211626",
+   "titular": "El PNV pregunta a Sanidad por la aprobación del Estatuto Marco sanitario",
+   "entradilla": "Joseba Andoni Agirretxea interroga a Mónica García sobre el consenso en torno al texto para el personal sanitario.",
+   "claves": [
+    "Joseba Andoni Agirretxea Urresti pregunta a la ministra de Sanidad si le parece responsable aprobar el Estatuto Marco para el personal sanitario.",
+    "Mónica García responde que el informe remitido por Euskadi fue favorable al texto del Estatuto Marco.",
+    "La ministra de Sanidad subraya ante el representante del PNV que la norma cuenta con el respaldo y la conformidad de las administraciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
+  },
+  "C-3d6cdcafedb0ba6c": {
+   "huella": "04cecc05dd8f55d5",
+   "fuente": "194f2ac1ef272dc1",
+   "titular": "El PP pregunta a Igualdad por la seguridad de las mujeres en Ceuta",
+   "entradilla": "Patricia Rodríguez advierte de una situación de riesgo extremo y Ana Redondo acusa a la oposición de recurrir al insulto.",
+   "claves": [
+    "Patricia Rodríguez Calleja pregunta a la ministra de Igualdad si las mujeres están seguras en Ceuta.",
+    "La diputada popular sostiene que ofrecer recursos ordinarios ante una situación de riesgo extremo demuestra inacción por parte del ministerio.",
+    "Ana María del Carmen Redondo replica que su departamento se preocupa por la seguridad y lamenta que la respuesta de la oposición sea el insulto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
   }
  },
  "uso": {
-  "2026-10-01": 6
+  "2026-10-01": 9
  }
 }
