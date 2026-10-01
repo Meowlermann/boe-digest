@@ -3393,9 +3393,21 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-01"
+  },
+  "C-5b4ed62cb4d8ffb3": {
+   "huella": "8a8e4bf07e6cecf9",
+   "fuente": "8b06f928e76b9179",
+   "titular": "15 preguntas escritas en el Congreso superan el plazo de 20 días sin respuesta",
+   "entradilla": "El Congreso registra 15 preguntas escritas del último año que superan el plazo límite de 20 días hábiles sin haber recibido contestación.",
+   "claves": [
+    "La pregunta más antigua sin respuesta registrada se publicó el lunes 1 de junio de 2026.",
+    "Por grupos parlamentarios, Sumar acumula 7 preguntas pendientes, el PSOE 4, Junts 1, el PP 1, Vox 1 y el grupo de los no adscritos 1."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-01"
   }
  },
  "uso": {
-  "2026-10-01": 5
+  "2026-10-01": 6
  }
 }
