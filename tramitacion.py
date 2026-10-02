@@ -318,13 +318,237 @@ def kw_limpios(v: dict) -> list[str]:
     return salida
 
 
+# ------------------------------------------------ dónde está y por qué
+#
+# La etiqueta del estado («Toma en consideración») no dice si una iniciativa
+# avanza o lleva meses parada, ni de quién depende que se mueva. situacion()
+# lo explica con los datos oficiales: desde cuándo está en la fase actual y
+# qué tiene que pasar para salir de ella. Las reglas que se citan son del
+# Reglamento del Congreso (art. 126: criterio del Gobierno; art. 91:
+# ampliación de plazos por la Mesa) y de la Constitución (art. 90: plazos del
+# Senado).
+
+# A partir de aquí, una iniciativa en plazo de enmiendas se considera «en el
+# congelador»: la Mesa ha ampliado el plazo al menos estas veces y lleva al
+# menos estos días sin pasar a ponencia. Con ampliaciones semanales, unos
+# tres meses.
+CONGELADOR_AMP = 10
+CONGELADOR_DIAS = 90
+
+# Rótulos oficiales de la tramitación que no se entienden solos.
+NOTA_PASO = {
+    "Gobierno · Contestación": "plazo del Gobierno para dar su criterio sobre la proposición, art. 126 del Reglamento",
+    "Mesa del Congreso · Requerimiento de aclaración": "la Mesa pide al autor que aclare o corrija la iniciativa",
+    "Mesa del Congreso · Acuerdo subsiguiente a la toma en consideración": "la Mesa decide a qué comisión va y cómo se tramita",
+}
+
+
+def _dias_entre(a: str | None, b: str) -> int | None:
+    try:
+        return (dt.date.fromisoformat(b) - dt.date.fromisoformat(a)).days if a else None
+    except ValueError:
+        return None
+
+
+def congelada(v: dict, hoy: str | None = None) -> bool:
+    hoy = hoy or dt.date.today().isoformat()
+    if v.get("est") != "plazo-de-enmiendas" or (v.get("amp") or 0) < CONGELADOR_AMP:
+        return False
+    pasos = v.get("pasos") or []
+    desde = pasos[-1][1] if pasos else v.get("fp")
+    return (_dias_entre(desde, hoy) or 0) >= CONGELADOR_DIAS
+
+
+def situacion(v: dict, hoy: str | None = None) -> dict | None:
+    """{"titulo", "texto", "desde", "dias"} para las abiertas; None para las
+    cerradas, que ya lo dicen con su resultado."""
+    hoy = hoy or dt.date.today().isoformat()
+    est = v.get("est")
+    if est not in ABIERTOS:
+        return None
+    pasos = v.get("pasos") or []
+    ult = pasos[-1] if pasos else None
+    paso = ult[0] if ult else ""
+    desde = (ult[1] if ult else None) or v.get("fp")
+    dias = _dias_entre(desde, hoy)
+    cuanto = f" desde el {_fecha_txt(desde)} (hace {dias} días)" if desde and dias is not None else ""
+    amp = v.get("amp") or 0
+    if est == "presentada":
+        if paso == "Gobierno · Contestación":
+            plazo = next((p[0] for p in reversed(v.get("plazos") or []) if "criterio" in _norm(p[2] or "")), None)
+            return {"titulo": "Esperando el criterio del Gobierno",
+                    "texto": (f"El Gobierno tiene treinta días para decir si está de acuerdo con que se tramite"
+                              f"{' (hasta el ' + _fecha_txt(plazo) + ')' if plazo else ''}. Pasado ese plazo "
+                              "sin oposición expresa, la proposición puede incluirse en el orden del día del "
+                              "Pleno para su toma en consideración (art. 126 del Reglamento)."),
+                    "desde": desde, "dias": dias}
+        if "aclaraci" in _norm(paso):
+            return {"titulo": "La Mesa ha pedido una aclaración",
+                    "texto": f"La Mesa del Congreso ha pedido al autor que aclare o corrija la iniciativa{cuanto}. "
+                             "Hasta que lo haga, no se tramita.", "desde": desde, "dias": dias}
+        return {"titulo": "Recién presentada",
+                "texto": f"Registrada y pendiente de los primeros trámites de la Mesa{cuanto}.",
+                "desde": desde, "dias": dias}
+    if est == "toma-en-consideracion":
+        return {"titulo": "Pendiente de debate en el Pleno",
+                "texto": (f"Lista para el debate de toma en consideración{cuanto}: el plazo del Gobierno ya "
+                          "pasó. Falta que se incluya en el orden del día de un Pleno, que fija la Presidencia "
+                          "de acuerdo con la Junta de Portavoces; en la práctica, cada grupo decide cuándo "
+                          "lleva sus proposiciones dentro del cupo de iniciativas que le corresponde. Hasta "
+                          "entonces no avanza."),
+                "desde": desde, "dias": dias}
+    if est == "plazo-de-enmiendas":
+        if congelada(v, hoy):
+            return {"titulo": f"En el «congelador»: plazo de enmiendas ampliado {amp} veces",
+                    "texto": (f"{'Está' if (v.get('tipo') or '').startswith('Proyecto') else 'Ya se tomó en consideración y está'}"
+                              f" en plazo de enmiendas{cuanto}. La Mesa del "
+                              f"Congreso ha ampliado ese plazo {amp} veces, normalmente semana a semana (art. 91 "
+                              "del Reglamento). Mientras se siga ampliando, el texto no pasa a la ponencia y la "
+                              "tramitación no avanza: es lo que en el lenguaje parlamentario se llama "
+                              "«congelador»."),
+                    "desde": desde, "dias": dias, "congelada": True}
+        fe = v.get("fe")
+        return {"titulo": "En plazo de enmiendas",
+                "texto": (f"Los grupos pueden presentar enmiendas{' hasta el ' + _fecha_txt(fe) if fe else ''}"
+                          f"{'; el plazo se ha ampliado ' + str(amp) + (' vez' if amp == 1 else ' veces') if amp else ''}. "
+                          "Cuando se cierre, el texto pasa a la ponencia y a la comisión."),
+                "desde": desde, "dias": dias}
+    if est == "ponencia-comision":
+        donde = paso or (f"Comisión de {v['com']}" if v.get("com") else "la comisión")
+        return {"titulo": "En la comisión",
+                "texto": (f"{donde}{cuanto}. La ponencia estudia las enmiendas y redacta un informe; la "
+                          "comisión aprueba su dictamen, que va al Pleno, o directamente al Senado si la "
+                          "comisión tiene competencia legislativa plena."),
+                "desde": desde, "dias": dias}
+    if est == "pleno":
+        return {"titulo": "En el Pleno", "texto": f"{paso or 'Pleno'}{cuanto}.", "desde": desde, "dias": dias}
+    if est == "senado":
+        return {"titulo": "En el Senado",
+                "texto": (f"Aprobada por el Congreso y enviada al Senado{cuanto}. El Senado tiene dos meses "
+                          "para aprobarla, enmendarla o vetarla (veinte días naturales si es urgente; art. 90 "
+                          "de la Constitución). Si la enmienda o la veta, vuelve al Congreso."),
+                "desde": desde, "dias": dias}
+    return None
+
+
+def _fecha_txt(iso: str | None) -> str:
+    """«3 de septiembre de 2026»."""
+    try:
+        d = dt.date.fromisoformat(iso)
+    except (TypeError, ValueError):
+        return iso or ""
+    meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+             "septiembre", "octubre", "noviembre", "diciembre"]
+    return f"{d.day} de {meses[d.month - 1]} de {d.year}"
+
+
+# ------------------------------------------------- de qué trata el texto
+#
+# Las palabras más repetidas («impuesto sucesiones, base imponible…») no
+# decían de qué va una ley. Del mismo boletín se sacan dos cosas que sí lo
+# dicen, las dos literales:
+#   - «em»: la frase de la exposición de motivos en la que el autor explica
+#     qué hace el texto. Primero la del objeto («tiene por objeto…», «la
+#     presente ley modifica…»); si no hay, la que describe su estructura («La
+#     presente norma consta de 36 artículos…, mediante las cuales se
+#     configura…»); si tampoco, el arranque de la exposición. Se presenta
+#     como palabras del autor, no como resumen nuestro.
+#   - «art»: los títulos de los artículos y disposiciones («Artículo 4. Hecho
+#     imponible.», «Artículo único. Modificación de la Ley 37/1992…»). Los que
+#     van entre comillas son el texto que se modifica, no la estructura, y se
+#     saltan.
+# Formato comprobado en BOCG-15-B-335-1 (122/000283) el 2 de octubre de 2026.
+
+CONT_V = 1    # sube cuando cambia contenido(): obliga a releer los boletines
+LARGO_EM = 600
+MAX_ART = 14
+
+_OBJETO = re.compile(
+    r"(tiene (?:por|como) (?:objeto|finalidad)|el objeto de (?:esta|la presente)|"
+    r"(?:esta|la presente) (?:ley|norma|proposición(?: de ley)?|reforma) (?:pretende|persigue|"
+    r"propone|modifica|crea|regula|establece|introduce|incorpora))", re.I)
+_ESTRUCTURA = re.compile(r"\b(consta de|se estructura en|se compone de|se divide en|se articula en)\b", re.I)
+_CABECERA = re.compile(r"BOLET[ÍI]N OFICIAL\s+DE LAS CORTES GENERALES.{0,220}?P[áa]g\.\s*\d+", re.S)
+_TITULO_ART = re.compile(
+    r"(?<![«\"“])\b((?:Art[íi]culo (?:\d+(?: bis| ter)?|único|primero|segundo|tercero)|"
+    r"Disposici[óo]n (?:adicional|transitoria|derogatoria|final)(?: [a-záéíóú]+)?)\.\s+"
+    r"[A-ZÁÉÍÓÚÑ][^.«»]{2,140}\.)")
+
+
+def _plano(texto: str) -> str:
+    t = re.sub(r"(\w)-\n(\w)", r"\1\2", texto or "")
+    t = _CABECERA.sub(" ", t)
+    t = re.sub(r"cve:\s*\S+", " ", t)
+    t = " ".join(t.split())
+    try:
+        import respuestas as rp
+        t = rp.reparar_partidas(t)
+    except Exception:                                          # noqa: BLE001
+        pass
+    return t
+
+
+def _frases_desde(texto: str, pos: int, largo: int = LARGO_EM) -> str:
+    """Desde el principio de la frase que contiene `pos`, frases enteras hasta
+    `largo` caracteres; «[…]» si sigue."""
+    ini = max(texto.rfind(". ", 0, pos) + 2, 0) if texto.rfind(". ", 0, pos) >= 0 else 0
+    resto = texto[ini:]
+    frases = re.split(r"(?<=[.;])\s+(?=[A-ZÁÉÍÓÚÑ¿«])", resto)
+    salida = ""
+    for f in frases:
+        if salida and len(salida) + len(f) + 1 > largo:
+            break
+        salida = f"{salida} {f}".strip()
+        if len(salida) >= largo:
+            break
+    if len(salida) > largo + 200:
+        salida = salida[:largo].rsplit(" ", 1)[0].rstrip(" ,;:") + "…"
+    elif len(salida) < len(resto.strip()):
+        salida += " […]"
+    return salida
+
+
+def contenido(texto: str) -> dict:
+    """{"em": cita de la exposición de motivos, "art": [títulos], "n": total}.
+    Vacío si el boletín no tiene exposición de motivos reconocible."""
+    t = _plano(texto)
+    m = re.search(r"Exposici[óo]n de motivos", t, re.I)
+    if not m:
+        return {}
+    cuerpo_ini = re.search(r"(?<![«\"“])\bArt[íi]culo (?:1|primero|único)\.\s", t[m.end():])
+    fin = m.end() + cuerpo_ini.start() if cuerpo_ini else min(len(t), m.end() + 20_000)
+    em = t[m.end():fin]
+    # Los números romanos de las secciones («I», «V») no son texto.
+    em = re.sub(r"(^|\s)(?:I{1,3}|IV|VI{0,3}|IX|XI{0,3})\s+(?=[A-ZÁÉÍÓÚÑ])", " ", em).strip()
+    salida: dict = {}
+    for patron in (_OBJETO, _ESTRUCTURA):
+        mm = patron.search(em)
+        if mm:
+            salida["em"] = _frases_desde(em, mm.start())
+            break
+    if "em" not in salida and em:
+        salida["em"] = _frases_desde(em, 0)
+    titulos, vistos = [], set()
+    for mt in _TITULO_ART.finditer(t[fin:]):
+        tit = mt.group(1).strip()
+        clave = tit.split(".")[0].lower()
+        if clave in vistos:
+            continue
+        vistos.add(clave)
+        titulos.append(tit[:160])
+    salida["n"] = len(titulos)
+    salida["art"] = titulos[:MAX_ART]
+    return {k: v for k, v in salida.items() if v}
+
+
 def completar_terminos(e: dict, pdf_text, log, maximo: int = 400) -> int:
     """Lee el primer boletín de cada iniciativa que aún no tenga términos. Por
     tandas: la primera vez son cientos de PDF, y cada edición completa unos
     pocos. Lo más reciente primero, que es lo que se busca."""
     hechas = 0
     pendientes = sorted(((v.get("fp") or "", k) for k, v in (e.get("ini") or {}).items()
-                         if v.get("bocg") and (v.get("kw_src") != v["bocg"][0] or v.get("kw_v") != KW_V)),
+                         if v.get("bocg") and (v.get("kw_src") != v["bocg"][0] or v.get("kw_v") != KW_V
+                                               or v.get("cont_v") != CONT_V)),
                         reverse=True)
     for _f, k in pendientes[:maximo]:
         v = e["ini"][k]
@@ -335,9 +559,11 @@ def completar_terminos(e: dict, pdf_text, log, maximo: int = 400) -> int:
             continue
         if not texto:
             continue
-        v["kw"] = terminos(texto)
+        v["kw"] = terminos(texto)          # solo para el buscador
         v["kw_src"] = v["bocg"][0]
         v["kw_v"] = KW_V
+        v["cont"] = contenido(texto)
+        v["cont_v"] = CONT_V
         hechas += 1
     if hechas:
         guardar(e)
@@ -514,6 +740,8 @@ def actualizar(get, log, detalle: list | None = None) -> tuple[dict, dict]:
         antes = (e.get("ini") or {}).get(exp) or {}
         if antes.get("kw_src") and v.get("bocg") and antes["kw_src"] == v["bocg"][0]:
             v["kw"], v["kw_src"], v["kw_v"] = antes.get("kw") or [], antes["kw_src"], antes.get("kw_v")
+            if antes.get("cont_v"):
+                v["cont"], v["cont_v"] = antes.get("cont") or {}, antes["cont_v"]
     e["ini"] = nuevos
     e["actualizado"] = dt.date.today().isoformat()
     guardar(e)
@@ -750,14 +978,16 @@ def generar_paginas(h: dict) -> list:
         lm = ultima_fecha(v) or hoy
         hs = v.get("pasos") or []
         linea = "".join(
-            f'<li><b>{esc(p[0])}</b> <span class="ref">'
+            f'<li><b>{esc(p[0])}</b>'
+            + (f' <span class="tr-nota">({esc(NOTA_PASO[p[0]])})</span>' if p[0] in NOTA_PASO else "")
+            + ' <span class="ref">'
             + (f'{esc(fecha(p[1]))}' if p[1] else "")
             + (f' – {esc(fecha(p[2]))}' if p[2] else (" · en curso" if p[1] and v["est"] in ABIERTOS and i == len(hs) - 1 else ""))
             + '</span></li>' for i, p in enumerate(hs))
         plz = "".join(
             f'<li>{esc(p[2] or "Plazo")}: hasta el {esc(fecha(p[0]))}{(" a las " + esc(p[1])) if p[1] else ""}'
-            f' <span class="ref">{"abierto" if p[0] >= hoy else "vencido"}</span></li>'
-            for p in v.get("plazos") or [])
+            f' <span class="ref">{"abierto" if p[0] >= hoy else "terminado"}</span></li>'
+            for p in (v.get("plazos") or [])[-6:])
         enm = ""
         if v.get("fe"):
             enm = (f'<p>Fin del plazo de enmiendas: <b>{esc(fecha(v["fe"]))}</b>'
@@ -784,10 +1014,30 @@ def generar_paginas(h: dict) -> list:
                       f'<span class="ref">{esc(r)}</span></li>' for r in v.get("rel") or [] if r in ini and r != exp)
         bocg = "".join(f'<li><a href="{attr(u)}" target="_blank" rel="noopener">{esc(u.rsplit("/", 1)[-1])}</a></li>'
                        for u in v.get("bocg") or [])
-        kw = kw_limpios(v)[:12]
+        sit = situacion(v, hoy)
+        sit_html = ""
+        if sit:
+            sit_html = (f'<div class="tr-situacion{" tr-congelada" if sit.get("congelada") else ""}">'
+                        f'<p class="tr-sit-t">Dónde está ahora: {esc(sit["titulo"])}</p>'
+                        f'<p>{esc(sit["texto"])}</p></div>')
+        cont = v.get("cont") or {}
+        cont_html = ""
+        if cont.get("em") or cont.get("art"):
+            cont_html = '<h2 class="rotulo">De qué trata</h2>'
+            if cont.get("em"):
+                cont_html += (f'<blockquote class="pull"><p>«{esc(cont["em"])}»</p>'
+                              f'<cite>Exposición de motivos · {esc(v["a"])}</cite></blockquote>')
+            if cont.get("art"):
+                resto = (cont.get("n") or 0) - len(cont["art"])
+                cont_html += (f'<p class="rk-nota">Qué contiene el texto presentado:</p><ul class="indice">'
+                              + "".join(f'<li>{esc(a)}</li>' for a in cont["art"])
+                              + (f'<li class="ref">y {resto} más</li>' if resto > 0 else "") + '</ul>')
         cuerpo = (
-            f'<p class="tr-estado tr-{attr(v["est"])}">{esc(ETIQUETA[v["est"]])}</p>'
+            f'<p class="tr-estado tr-{attr(v["est"])}{" tr-congelada" if sit and sit.get("congelada") else ""}">'
+            f'{esc(ETIQUETA[v["est"]])}{" · congelador" if sit and sit.get("congelada") else ""}</p>'
             + fases(v["est"], v["tipo"])
+            + sit_html
+            + cont_html
             + (f'<p class="rk-nota">Situación oficial: {esc(v["sit"])}'
                + (f' · Resultado: {esc(resultado_texto(v))}' if v.get("cerrado") and resultado_texto(v) else "")
                + '</p>')
@@ -796,8 +1046,6 @@ def generar_paginas(h: dict) -> list:
             + (f'<h2 class="rotulo">Tramitación</h2><ol class="indice tr-linea">{linea}</ol>' if linea else "")
             + ley_html
             + (f'<h2 class="rotulo">Votaciones en el Pleno</h2><ul class="indice">{vots_html}</ul>' if vots_html else "")
-            + (f'<h2 class="rotulo">De qué habla el texto</h2><p class="rk-nota">Las expresiones que más se '
-               f'repiten en el texto publicado en el Boletín de las Cortes: {esc(", ".join(kw))}.</p>' if kw else "")
             + (f'<h2 class="rotulo">Iniciativas relacionadas</h2><ul class="indice">{rel}</ul>' if rel else "")
             + (f'<h2 class="rotulo">Publicaciones en el Boletín de las Cortes</h2><ul class="indice">{bocg}</ul>' if bocg else "")
             + (f'<p><a class="srclink" href="{attr(url_ficha(exp))}" target="_blank" rel="noopener">Ficha oficial en el Congreso ↗</a></p>' if url_ficha(exp) else ""))
@@ -869,8 +1117,10 @@ def generar_paginas(h: dict) -> list:
     pagina("ampliaciones.html", "Iniciativas con más ampliaciones del plazo de enmiendas | La Tercera Cámara",
            "Las iniciativas legislativas cuyo plazo de enmiendas se ha ampliado más veces.",
            "Más ampliaciones del plazo de enmiendas", "Tramitación",
-           "Cada ampliación la acuerda la Mesa del Congreso. Se cuentan las que figuran en los plazos oficiales.",
-           f"<dt>Con alguna ampliación</dt><dd>{len(amp)}</dd>",
+           ("Cada ampliación la acuerda la Mesa del Congreso. Mientras se amplía, el texto no pasa a la "
+            "ponencia: es el «congelador». Se cuentan las que figuran en los plazos oficiales."),
+           f"<dt>Con alguna ampliación</dt><dd>{len(amp)}</dd>"
+           f"<dt>En el congelador</dt><dd>{sum(1 for _n, _k, v in amp if congelada(v, hoy))}</dd>",
            '<ul class="indice">' + "".join(
                fila(k, v, f' · el plazo de enmiendas se ha ampliado {n} {"vez" if n == 1 else "veces"}')
                for n, k, v in amp[:100]) + "</ul>", lm_total, miga("Ampliaciones"),
@@ -905,9 +1155,10 @@ def generar_paginas(h: dict) -> list:
            "Cada proyecto y proposición de ley de la legislatura, y los reales decretos-ley votados: "
            "en qué estado está, qué plazos tiene y cómo acaba.",
            f"<dt>Iniciativas</dt><dd>{len(ini)}</dd><dt>Abiertas</dt><dd>{abiertas_n}</dd>"
+           f"<dt>En el congelador</dt><dd>{sum(1 for v in ini.values() if congelada(v, hoy))}</dd>"
            f"<dt>Leyes aprobadas</dt><dd>{len(e.get('leyes') or [])}</dd>",
            (f'<h2 class="rotulo">Por estado</h2><ul class="provincias">{resumen}</ul>'
-            f'<p class="aside-note"><a class="srclink" href="ampliaciones.html">Más ampliaciones del plazo de enmiendas</a> · '
+            f'<p class="aside-note"><a class="srclink" href="ampliaciones.html">En el congelador: más ampliaciones del plazo de enmiendas</a> · '
             f'<a class="srclink" href="antiguedad.html">Más tiempo en tramitación</a> · '
             f'<a class="srclink" href="metodologia.html">Cómo se hace</a></p>'
             f'<h2 class="rotulo">Últimos movimientos</h2><ul class="indice">{recientes}</ul>'
@@ -933,11 +1184,22 @@ def generar_paginas(h: dict) -> list:
             f'</tr></thead><tbody>{tabla}</tbody></table>'
             '<h2 class="rotulo">Plazo de enmiendas</h2><p>El fin del plazo es la fecha más tardía de los plazos '
             'de enmiendas publicados; las ampliaciones son los plazos cuyo texto oficial dice «ampliación».</p>'
+            f'<h2 class="rotulo">«Congelador»</h2><p>Se marca así una iniciativa en plazo de enmiendas cuyo plazo '
+            f'se ha ampliado al menos {CONGELADOR_AMP} veces y que lleva al menos {CONGELADOR_DIAS} días sin pasar a '
+            'la ponencia. Las ampliaciones las acuerda la Mesa del Congreso (art. 91 del Reglamento). Es un '
+            'recuento sobre los plazos oficiales, no una valoración de los motivos.</p>'
+            '<h2 class="rotulo">Dónde está ahora</h2><p>Cada ficha abierta explica la fase actual con los datos '
+            'oficiales: desde cuándo está en ella y qué tiene que pasar para salir. Las reglas que se citan son las '
+            'del Reglamento del Congreso y la Constitución.</p>'
+            '<h2 class="rotulo">De qué trata</h2><p>La cita es literal de la exposición de motivos del texto '
+            'publicado en el Boletín de las Cortes: la frase en la que el autor dice qué hace la iniciativa o cómo se '
+            'estructura. Son palabras del autor, no un resumen nuestro. Debajo, los títulos de sus artículos y '
+            'disposiciones, tal como aparecen en el texto presentado (no en el que se apruebe).</p>'
             '<h2 class="rotulo">Limitaciones</h2><p>Solo el Congreso: la tramitación en el Senado aparece como '
             'una fase, sin su detalle. Las votaciones se relacionan por el texto del asunto votado y solo en '
             'votaciones de carácter legislativo; si el tema no aparece entero, no se enlaza. La ley resultante '
-            'se casa por el título. No se resume ni se interpreta el contenido: el texto está en el Boletín de '
-            'las Cortes, enlazado en cada ficha.</p>'
+            'se casa por el título. No se resume ni se interpreta el contenido: se cita y el texto completo está '
+            'en el Boletín de las Cortes, enlazado en cada ficha.</p>'
             '<h2 class="rotulo">Contacto</h2><p>Para comunicar un error: '
             '<a class="srclink" href="mailto:datos@terceracamara.es">datos@terceracamara.es</a>.</p>'),
            e.get("actualizado") or hoy, miga("Metodología"),
