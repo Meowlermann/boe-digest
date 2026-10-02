@@ -343,7 +343,7 @@
       "rows": [
         {
           "g": "Sumar",
-          "n": 8
+          "n": 9
         },
         {
           "g": "PSOE",
@@ -360,14 +360,27 @@
         {
           "g": "Sin grupo",
           "n": 1
-        },
-        {
-          "g": "Vox",
-          "n": 1
         }
       ]
     },
     "feed": [
+      {
+        "chamber": "congreso",
+        "type": "Respuesta escrita",
+        "date": "jueves 1 de octubre de 2026",
+        "headline": "EL GOBIERNO CONTESTA A ASARTA CUEVAS (Vox) 65 DÍAS DESPUÉS: «Gasto final durante el período de vigencia del acuerdo marco anterior de sostenimiento de los aviones modelos T.18 (Falcon 900), T.22…»",
+        "standfirst": "Pregunta 184/041871, publicada el martes 28 de julio de 2026; contestación registrada el jueves 1 de octubre de 2026.",
+        "body": [
+          "Pregunta de Alberto Asarta Cuevas y 2 más (Vox).",
+          "Título de la iniciativa: «Gasto final durante el período de vigencia del acuerdo marco anterior de sostenimiento de los aviones modelos T.18 (Falcon 900), T.22 (Airbus 310) y T.20 (Cessna Citation V).»",
+          "Entre la publicación en el BOCG y la contestación: 65 días naturales, unos 23 hábiles.",
+          "Las contestaciones escritas las remite el Gobierno en su conjunto; la ficha oficial no indica qué ministerio la redacta."
+        ],
+        "source": {
+          "label": "Ficha oficial de la pregunta 184/041871",
+          "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F041871"
+        }
+      },
       {
         "chamber": "congreso",
         "type": "Preguntas pendientes",
@@ -375,8 +388,8 @@
         "headline": "16 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada",
         "standfirst": "Recuento sobre las preguntas del último año con la fecha límite que publica el Congreso ya superada. Puede haber prórrogas o respuestas aún no reflejadas en la ficha.",
         "body": [
-          "La más antigua se publicó el lunes 25 de mayo de 2026.",
-          "Por grupo de quien pregunta: Sumar 8, PSOE 4, Junts 1, PP 1, Sin grupo 1, Vox 1."
+          "La más antigua se publicó el martes 19 de mayo de 2026.",
+          "Por grupo de quien pregunta: Sumar 9, PSOE 4, Junts 1, PP 1, Sin grupo 1."
         ],
         "source": {
           "label": "Pendientes más antiguas",
