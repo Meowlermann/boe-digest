@@ -97,7 +97,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `congreso_datos.py` | Cliente de los datos abiertos del Congreso: censo de diputados, volcado de intervenciones, votaciones (con el histórico por `targetDate`), grupos y colores, URL de fichas. | `state/congreso.json` (vía build) | — |
 | `preguntas.py` | Preguntas al Gobierno: orales (volcado) y escritas (buscador de iniciativas, tipo 184). Plazos del art. 190 del Reglamento, pendientes, piezas del feed. | `state/preguntas_escritas.json`, `state/preguntas_orales.json` | `/preguntas/` (solo con el año completo en el estado) |
 | `respuestas.py` | Qué contesta el Gobierno. Orales: citas del Diario de Sesiones (contestación, réplica, dúplica). Escritas: cita del PDF de contestación. | `state/respuestas/AAAA.json` | `/sesiones/` |
-| `tramitacion.py` | Seguimiento de proyectos y proposiciones de ley: estados, plazos de enmiendas, ampliaciones, ley resultante. | `state/tramitacion.json` | `/tramitacion/` |
+| `tramitacion.py` | Seguimiento de proyectos y proposiciones de ley: estados, plazos de enmiendas, ampliaciones, ley resultante. `situacion()` explica en cada ficha dónde está y qué falta para que avance (incluido el «congelador»: plazo de enmiendas ampliado ≥ `CONGELADOR_AMP` veces durante ≥ `CONGELADOR_DIAS` días). `contenido()` saca del primer BOCG la frase de la exposición de motivos que dice qué hace el texto y los títulos de sus artículos. | `state/tramitacion.json` | `/tramitacion/` |
 | `nombramientos.py` | Nombramientos y ceses de la sección II.A del BOE. | `state/nombramientos.json` | `/personas/`, `/nombramientos/` |
 | `provincias.py` | Qué provincias nombra cada disposición (sección I y III) y cada pregunta; páginas por circunscripción. | `state/provincias.json` | `/provincias/` |
 | `rankings.py` | Clasificaciones de diputados y grupos sobre `state/congreso.json`. | — | `/rankings/` |
@@ -160,7 +160,7 @@ tienen el BOE.
 | `preguntas_escritas.json` | Un registro compacto por pregunta 184/ (título, autores, fechas, plazo, `cu` = PDF de contestación, `rt` = último intento) | `preguntas`, `respuestas` | ~6 MB | Ventana de 365 días (`VENTANA_DIAS`) |
 | `preguntas_orales.json` | Qué sesión salió en qué edición | `preguntas` | < 1 KB | — |
 | `respuestas/AAAA.json` | `orales` (por expediente 180/), `sesiones` (por fecha), `escritas` (por expediente 184/) | `respuestas` | ~1 MB/año estimado | Un fichero por año; solo citas, nunca textos completos ni PDF |
-| `tramitacion.json` | Iniciativas legislativas, hitos, piezas publicadas | `tramitacion` | ~1,5 MB | Solo la legislatura en curso |
+| `tramitacion.json` | Iniciativas legislativas, hitos, piezas publicadas; por iniciativa, `cont` (cita de la exposición de motivos y títulos de artículos, versión `cont_v`) y `kw` (términos, solo para el buscador) | `tramitacion` | ~1,5 MB | Solo la legislatura en curso |
 | `nombramientos.json` | Registros de nombramientos y ceses por día | `nombramientos`, `reproceso` | ~0,9 MB | — |
 | `provincias.json` | Disposiciones del BOE con provincia asignada | `provincias`, `reproceso` | ~1,5 MB | — |
 | `redaccion.json` | Caché de titulares Gemini y uso de cuota | `redaccion` | ~0,2 MB | — |
