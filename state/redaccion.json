@@ -4062,9 +4062,22 @@
    "huella": "60be55a523a3e9f2",
    "descartado": "acaba en el número «310» sin decir de qué",
    "intentos": 2
+  },
+  "C-8870aa8f199fa832": {
+   "huella": "65cd2b33691e09e4",
+   "fuente": "887b97bb3cba4591",
+   "titular": "Diecisiete preguntas escritas en el Congreso superan el plazo límite sin responder",
+   "entradilla": "Sumar y el PSOE acumulan la mayor parte de las iniciativas parlamentarias del último año que ya han superado la fecha límite de contestación, con una demora que se remonta en un caso a mayo de 2026.",
+   "claves": [
+    "Un total de 17 preguntas escritas formuladas en el último año acumulan más de 20 días hábiles desde su publicación sin que se haya registrado ninguna contestación.",
+    "Por grupos parlamentarios, Sumar lidera las preguntas pendientes con 10 iniciativas, seguido por el PSOE con 4, mientras que Junts, el PP y los diputados sin grupo tienen una cada uno.",
+    "La iniciativa sin contestar más antigua se publicó el martes 19 de mayo de 2026, aunque el recuento final podría variar por prórrogas o respuestas aún no reflejadas en la ficha."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-02"
   }
  },
  "uso": {
-  "2026-10-02": 4
+  "2026-10-02": 5
  }
 }
