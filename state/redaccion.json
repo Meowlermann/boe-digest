@@ -4075,9 +4075,33 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-02"
+  },
+  "BOE-A-2026-20526": {
+   "huella": "e4f770e94aa14ff4",
+   "fuente": "a4e18a59ae889436",
+   "titular": "El Congreso deroga el decreto de medidas urgentes para la vivienda asequible",
+   "entradilla": "El Congreso de los Diputados ha acordado derogar el Real Decreto-ley 26/2026, de 29 de septiembre, que establecía medidas urgentes para proteger la función social de la vivienda.",
+   "claves": [
+    "La derogación se acordó en la sesión del Congreso de los Diputados del 2 de octubre de 2026, de conformidad con la Constitución.",
+    "La norma derogada se había publicado en el Boletín Oficial del Estado el pasado 30 de septiembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-02"
+  },
+  "BOE-A-2026-20527": {
+   "huella": "32932253cb027adf",
+   "fuente": "89239f89c2db8332",
+   "titular": "El Congreso deroga el decreto para dar estabilidad a los alquileres de vivienda",
+   "entradilla": "El Congreso de los Diputados ha acordado derogar el Real Decreto-ley 27/2026, de 29 de septiembre, que buscaba reforzar la estabilidad de los contratos de arrendamiento de vivienda habitual.",
+   "claves": [
+    "El acuerdo de derogación fue adoptado por el Congreso de los Diputados en su sesión del 2 de octubre de 2026.",
+    "El decreto-ley afectado había sido publicado en el Boletín Oficial del Estado el 1 de octubre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-02"
   }
  },
  "uso": {
-  "2026-10-02": 5
+  "2026-10-02": 6
  }
 }
