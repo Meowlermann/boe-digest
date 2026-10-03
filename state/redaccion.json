@@ -4310,9 +4310,27 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-03"
+  },
+  "C-0b694e8b718c2cf4": {
+   "huella": "66c8cb8e5c580ffe",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-0320539ad5c24688": {
+   "huella": "8f21a5917542b9c2",
+   "fuente": "019db5eaa3486ea7",
+   "titular": "Veinte preguntas escritas al Gobierno acumulan más de 20 días hábiles de retraso",
+   "entradilla": "La iniciativa más antigua sin contestar se publicó el 14 de abril de 2026, en un recuento que afecta principalmente a cuestiones planteadas por los diputados de Sumar y del PSOE.",
+   "claves": [
+    "El recuento de preguntas del último año con la fecha límite superada muestra que Sumar tiene 13 iniciativas pendientes, el PSOE tiene 5, Junts tiene una y hay otra de un diputado sin grupo.",
+    "La normativa del Congreso establece un plazo de respuesta, pero el registro puede no reflejar aún prórrogas concedidas o contestaciones que todavía no se han incorporado a la ficha oficial.",
+    "La pregunta escrita más antigua que permanece sin una contestación registrada fue publicada en el boletín de la Cámara el martes 14 de abril de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-03"
   }
  },
  "uso": {
-  "2026-10-03": 4
+  "2026-10-03": 6
  }
 }
