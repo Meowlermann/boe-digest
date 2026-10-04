@@ -33,6 +33,7 @@ on:
 
 permissions:
   contents: write
+  issues: write             # para la incidencia «Salud de la edición»
 
 # El mismo grupo que la edición diaria: nunca publican a la vez ni se pisan
 # el commit.
@@ -81,6 +82,22 @@ jobs:
           fi
           python build.py $ARGS
 
+      # Salud de la edición: después de construir y antes de publicar. Informa,
+      # no bloquea: la edición se publica siempre, haya hallazgos o no.
+      - name: Salud de la edición
+        id: salud
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          export REPO_TAMANO_KB=$(gh api "repos/$GITHUB_REPOSITORY" --jq .size 2>/dev/null || true)
+          # Sin --fecha: revisa la última edición de data/. El informe va a
+          # RUNNER_TEMP y no a debug/: una ejecución de archivo que no añade
+          # ediciones no debe dejar ningún commit.
+          python tools/verificar.py --modo diario --salida "$RUNNER_TEMP/salud.json" \
+            --markdown "$RUNNER_TEMP/salud.md"
+
       - name: Publicar si hay cambios
         id: publicar
         if: always()
@@ -98,6 +115,16 @@ jobs:
             git push
             echo "publicado=si" >> "$GITHUB_OUTPUT"
           fi
+
+      # Con hallazgos graves abre (o comenta) la incidencia «Salud de la edición»;
+      # un día limpio la cierra. GitHub avisa por correo de las incidencias nuevas.
+      - name: Incidencia de salud
+        if: always() && steps.salud.outputs.graves != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: bash tools/incidencia_salud.sh "${{ steps.salud.outputs.graves }}" "$(date +%Y-%m-%d)" "$RUNNER_TEMP/salud.md"
 
       - name: Avisar a los buscadores (IndexNow)
         if: steps.publicar.outputs.publicado == 'si'

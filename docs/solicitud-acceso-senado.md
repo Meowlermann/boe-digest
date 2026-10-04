@@ -55,4 +55,19 @@ Muchas gracias por su tiempo.
 - **Si permiten el acceso identificado:** habrá que fijar un `User-Agent` propio y
   declarado (algo como `boe-digest/1.0 (+https://meowlermann.github.io/boe-digest/)`)
   en lugar del de navegador; se cambia en una constante de `build.py`.
-- **Si no contestan o lo deniegan:** se queda el recolector local, que ya funciona.
+- **Si no contestan o lo deniegan:** el Senado se queda fuera de la automatización.
+
+## Respuesta del Senado
+
+El Senado respondió que **no tiene API ni conexión para la reutilización automatizada**
+de sus datos (lo comunicó el mantenedor en octubre de 2026). En consecuencia:
+
+- `build.py` tiene `SENADO_ACTIVO = False` y no llama a `fetch_senado()`; la función se
+  conserva por si la situación cambia.
+- La nota de cobertura de cada edición dice: «El Senado no ofrece por ahora acceso
+  automatizado a sus datos, así que esta sección cubre solo el Congreso».
+- Se retiró `senado_local.py`, que exigía ejecutar en el equipo del mantenedor (contra
+  la regla de AGENTS.md) y ya no funcionaba.
+
+Si algún día ofrece una vía oficial, basta con adaptar `fetch_senado()` a ella y poner
+`SENADO_ACTIVO = True` en una PR.

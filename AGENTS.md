@@ -26,6 +26,11 @@ Son decisiones tomadas y no están abiertas a discusión en cada tarea.
 - **Las credenciales son del mantenedor.** Un agente no inicia sesión por él,
   no crea tokens ni pega secretos. Los secretos viven en Settings › Secrets
   del repositorio.
+- Las PR las fusiona el agente que las abre, solo cuando ci.yml está en verde
+  y la validación con datos reales (si aplica) está hecha. Nunca se fusiona con
+  el CI en rojo ni desactivándolo.
+- Si una comprobación de verificar.py da un falso positivo, se corrige la
+  comprobación en una PR, con un test que lo cubra; no se silencia.
 
 ## Reglas editoriales
 
@@ -52,6 +57,8 @@ Son decisiones tomadas y no están abiertas a discusión en cada tarea.
 - Documenta en el docstring del módulo el formato de la fuente tal como lo
   comprobaste, con la fecha, y los casos que no se cubren.
 - Añade pruebas sin red en `tests/` (`python -m unittest discover tests`).
+- Antes de abrir la PR: `python build.py --render --sin-red` y
+  `python tools/verificar.py --modo ci` (es lo que hace `ci.yml`).
 - Si cambias la arquitectura, actualiza ARQUITECTURA.md en la misma PR.
 
 ## Idioma

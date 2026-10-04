@@ -1,0 +1,63 @@
+name: Integración continua
+
+# Comprueba cada PR contra main antes de fusionar: que todo compila, que las
+# pruebas pasan, que el sitio se regenera entero sin red desde data/ y state/
+# y que el resultado pasa tools/verificar.py. Nunca hace commit ni push: lo que
+# genera el render se queda en la máquina del job.
+#
+# Render completo medido el 4 de octubre de 2026: unos 20 s en local y el job
+# entero (con la instalación) en torno a 2 min. El tope de 20 min deja margen
+# para que el sitio crezca y corta un render colgado.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      # El mismo Python y las mismas dependencias que daily.yml.
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Compilar
+        run: python -m compileall -q -x '(^|/)\.git/' .
+
+      - name: Pruebas
+        run: python -m unittest discover tests
+
+      - name: Regenerar el sitio sin red
+        run: |
+          INICIO=$(date +%s)
+          python build.py --render --sin-red
+          echo "Render completo sin red: $(( $(date +%s) - INICIO )) s" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Verificar el resultado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Tamaño real del repositorio (el checkout es superficial); si la API
+          # no responde, se mide solo lo descargado.
+          export REPO_TAMANO_KB=$(gh api "repos/$GITHUB_REPOSITORY" --jq .size 2>/dev/null || true)
+          # (a), (b), (c), (d) y (g) sobre el resultado; (e) y (f) sobre la
+          # edición más reciente de data/. Falla si hay algún hallazgo grave;
+          # los avisos van al resumen del job.
+          python tools/verificar.py --modo ci
