@@ -5,7 +5,8 @@ La Tercera Cámara — pipeline diario.
 Se ejecuta en GitHub Actions. Hace tres cosas:
 
   1. RECOLECTA   el sumario del BOE del día y las publicaciones oficiales
-                 del Congreso y del Senado (BOCG y Diarios de Sesiones).
+                 del Congreso (BOCG y Diarios de Sesiones). El Senado está
+                 fuera de la automatización: ver SENADO_ACTIVO.
   2. REDACTA     titulares y artículos. Si hay un modelo configurado (cualquier
                  proveedor compatible con la API de OpenAI) lo usa; si no, cae a
                  una redacción determinista que nunca inventa hechos.
@@ -22,6 +23,7 @@ Uso:
     python build.py              # recolecta el día de hoy y renderiza
     python build.py --render     # solo renderiza desde data/*.json
     python build.py --date 2026-09-17
+    python build.py --render --sin-red   # integración continua: sin ninguna petición HTTP
 """
 
 from __future__ import annotations
@@ -110,9 +112,45 @@ def log(msg: str) -> None:
     print(f"[build] {msg}", flush=True)
 
 
+# ---------------------------------------------------------------------------
+# Modo sin red (--sin-red): para la integración continua y las pruebas
+# ---------------------------------------------------------------------------
+#
+# Con --sin-red ninguna petición HTTP sale del proceso: get() y post() lanzan
+# SinRed antes de abrir sesión, y como red de seguridad se sustituye
+# requests.Session.request, que es por donde pasan también requests.get/post
+# de redaccion.py y de la capa LLM. Cada sección ya está en su try/except, así
+# que lo que dependa de red se salta con su log(), igual que ante un fallo.
+# Con --render --sin-red el sitio se regenera entero desde data/ y state/.
+
+SIN_RED = False
+
+
+class SinRed(RuntimeError):
+    """Se intentó una petición HTTP en modo --sin-red."""
+
+
+def _comprobar_red(url: str) -> None:
+    if SIN_RED:
+        raise SinRed(f"modo sin red: no se pide {url}")
+
+
+def activar_sin_red() -> None:
+    """Corta toda la red de este proceso. No tiene vuelta atrás."""
+    global SIN_RED
+    SIN_RED = True
+
+    def _bloqueada(self, method, url, *args, **kwargs):     # noqa: ANN001
+        raise SinRed(f"modo sin red: no se pide {method} {url}")
+
+    requests.sessions.Session.request = _bloqueada
+    log("modo sin red: cualquier petición HTTP lanzará SinRed")
+
+
 def post(url: str, data: dict, tries: int = 2) -> requests.Response | None:
     """POST tolerante, para el buscador de iniciativas del Congreso (el listado
     de preguntas escritas solo se sirve por POST). Mismo trato que get()."""
+    _comprobar_red(url)
     host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
     if host in _BLOQUEADOS:
         return None
@@ -143,6 +181,7 @@ _sesiones: dict[str, requests.Session] = {}
 
 def sesion_para(url: str) -> requests.Session:
     """Una sesión por dominio. La primera vez visita la home para coger cookies."""
+    _comprobar_red(url)
     host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
     if host in _sesiones:
         return _sesiones[host]
@@ -162,7 +201,10 @@ _BLOQUEADOS: set[str] = set()
 
 def get(url: str, tries: int = 3, referer: str | None = None,
         headers: dict | None = None) -> requests.Response | None:
-    """GET tolerante. Devuelve None en vez de reventar, y anota el diagnóstico."""
+    """GET tolerante. Devuelve None en vez de reventar, y anota el diagnóstico.
+
+    En modo --sin-red lanza SinRed (ver activar_sin_red)."""
+    _comprobar_red(url)
     host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
     if host in _BLOQUEADOS:
         # Ya nos ha denegado el acceso en esta ejecución: no insistimos.
@@ -350,6 +392,15 @@ def pdf_text(url: str, referer: str | None = None, max_chars: int = 120_000) -> 
         log(f"  no se pudo leer el PDF {url}: {exc}")
         return ""
 
+
+# El Senado contestó que no tiene API ni conexión para la reutilización
+# automatizada de sus datos (docs/solicitud-acceso-senado.md), y su web
+# devuelve 403 a las IP de GitHub Actions. Mientras sea False no se llama a
+# fetch_senado(): serían peticiones condenadas al 403. La función se conserva
+# para cuando cambie la situación.
+SENADO_ACTIVO = False
+NOTA_SENADO_INACTIVO = ("El Senado no ofrece por ahora acceso automatizado a sus datos, "
+                        "así que esta sección cubre solo el Congreso.")
 
 SENADO_IDX = ("https://www.senado.es/web/actividadparlamentaria/publicacionesoficiales/"
               "senado/boletinesoficiales/index.html")
@@ -1956,7 +2007,12 @@ def redactar_cortes(congreso: dict, senado: list[dict], anterior: dict | None) -
     # Un aviso de «sin sesión nueva» también es que el Congreso ha respondido.
     hay_congreso = bool(base["feed"]) or bool(congreso.get("aviso"))
     hay_senado = bool(senado)
-    if hay_congreso and hay_senado:
+    if not SENADO_ACTIVO:
+        # Nota fija y neutra: el Senado no está en la automatización.
+        nota = NOTA_SENADO_INACTIVO
+        if not hay_congreso:
+            nota += " Hoy las fuentes del Congreso no han devuelto datos legibles."
+    elif hay_congreso and hay_senado:
         nota = "Congreso y Senado han respondido; la edición cubre las dos cámaras."
     elif hay_congreso:
         nota = ("El Congreso ha respondido con normalidad. El Senado ha rechazado las "
@@ -1973,8 +2029,10 @@ def redactar_cortes(congreso: dict, senado: list[dict], anterior: dict | None) -
 
     if not hay_congreso and not hay_senado:
         base["constructionNote"] = (
-            "Hoy no se pudo leer ningún dato oficial del Congreso ni del Senado. Antes que "
-            "rellenar con ruido, lo decimos: volvemos mañana.")
+            ("Hoy no se pudo leer ningún dato oficial del Congreso. Antes que "
+             "rellenar con ruido, lo decimos: volvemos mañana.") if not SENADO_ACTIVO else
+            ("Hoy no se pudo leer ningún dato oficial del Congreso ni del Senado. Antes que "
+             "rellenar con ruido, lo decimos: volvemos mañana."))
         return base
 
     # Boletines del Senado, con la lectura estructurada de siempre.
@@ -3260,7 +3318,11 @@ def construir_dia(fecha: dt.date) -> dict | None:
     nombres = capturar_nombramientos(boe_raw)
     capturar_provincias(boe_raw)
     congreso = cortes_congreso(fecha)
-    senado = fetch_senado()
+    if SENADO_ACTIVO:
+        senado = fetch_senado()
+    else:
+        senado = []
+        log("Senado: fuera de la automatización (SENADO_ACTIVO = False)")
 
     DIAG["resumen"] = {
         "boe_entradas": len(boe_raw["entradas"]) if boe_raw else 0,
@@ -3537,8 +3599,8 @@ def _replace_placeholders(html: str, frag: dict) -> str:
 #
 # No sirve el mtime del fichero: actions/checkout deja todo con la hora del
 # checkout, así que cada día parecería que han cambiado las 300 ediciones. Y no
-# sirve la fecha de la edición: cuando senado_local.py añade el Senado a un día
-# ya publicado vía curated/, esa página CAMBIA y hay que decírselo al buscador.
+# sirve la fecha de la edición: cuando curated/ añade o corrige algo en un día
+# ya publicado, esa página CAMBIA y hay que decírselo al buscador.
 # Se lleva un registro propio: si el HTML generado difiere del que hay en disco,
 # esa edición se modificó hoy; si no, conserva su fecha anterior.
 
@@ -3822,7 +3884,7 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
 
     plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
-            f"diarias del BOE, el Congreso y el Senado, cada una con su enlace permanente.")
+            f"diarias del BOE y las Cortes, cada una con su enlace permanente.")
     frag = {
         "TITLE": esc_html("Archivo de ediciones — La Tercera Cámara"),
         "META_DESC": esc_attr(recortar(desc, 155)),
@@ -5637,7 +5699,7 @@ INDICE_MAX_BYTES = 1_000_000
 
 def escribir_indice(items: list, hoy: str) -> dict:
     """El índice partido: un datos/indice-<tipo>.json por tipo (por año si pasa
-    de 1 MB) y un datos/indice.json ligero que solo los lista, con cuántas
+    de 1 MB, y por mes o quincena si aun así no cabe) y un datos/indice.json ligero que solo los lista, con cuántas
     entradas y cuántos bytes tiene cada uno. Así el navegador trae primero lo
     que más se busca y el resto detrás, y ningún fichero crece sin límite."""
     def volcar(obj):
@@ -5661,6 +5723,14 @@ def escribir_indice(items: list, hoy: str) -> dict:
                     for e in partes.pop(nombre):
                         mes = (e.get("d") or "")[5:7]
                         partes.setdefault(nombre[:-5] + (f"-{mes}" if mes else "") + ".json", []).append(e)
+            # Y si un mes tampoco cabe (preguntas de febrero de 2026: 1,2 MB),
+            # ese mes por quincenas: -q1 (días 1 a 15) y -q2 (del 16 al final).
+            for nombre in list(partes):
+                if (re.search(r"-\d{4}-\d{2}\.json$", nombre)
+                        and len(volcar({"k": k, "items": partes[nombre]}).encode()) > INDICE_MAX_BYTES):
+                    for e in partes.pop(nombre):
+                        q = "q1" if (e.get("d") or "")[8:10] <= "15" else "q2"
+                        partes.setdefault(f"{nombre[:-5]}-{q}.json", []).append(e)
         ficheros, peso = [], 0
         for nombre, fs in sorted(partes.items()):
             texto = volcar({"k": k, "actualizado": hoy, "n": len(fs), "items": fs})
@@ -5979,7 +6049,7 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
             "    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>"]
     limite = (dt.date.today() - dt.timedelta(days=MAX_DAYS)).isoformat()
     for e in sorted(entradas, key=lambda x: x["id"], reverse=True):
-        # Dentro de la ventana todavía puede cambiar (curated/, senado_local.py);
+        # Dentro de la ventana todavía puede cambiar (curated/);
         # fuera de ella ya está cerrada, pero nunca "never": se corrigen erratas.
         freq = "weekly" if e["id"] >= limite else "monthly"
         urls.append(f"  <url>\n    <loc>{e['url']}</loc>\n    <lastmod>{e['lastmod']}</lastmod>\n"
@@ -6054,7 +6124,7 @@ def renderizar_feed(dias: list[dict]) -> None:
         '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>\n'
         "  <title>La Tercera Cámara</title>\n"
         f"  <link>{SITE_URL}</link>\n"
-        "  <description>Auditoría pública diaria del BOE, el Congreso y el Senado, "
+        "  <description>Auditoría pública diaria del BOE y el Congreso, "
         "con enlace a la fuente oficial.</description>\n"
         "  <language>es-es</language>\n"
         f'  <atom:link href="{SITE_URL}feed.xml" rel="self" type="application/rss+xml"/>\n'
@@ -6148,8 +6218,9 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
     a_pintar = dias + [d for d in todos if d["id"] in extra_ids and d["id"] not in ventana]
     try:
         import redaccion
+        # Sin red tampoco se pide nada a Gemini: solo se aplica la caché.
         DIAG["redaccion"] = redaccion.aplicar(a_pintar, titular_valido, cerrar,
-                                              pedir=not en_archivo)
+                                              pedir=not en_archivo and not SIN_RED)
         log(f"redacción IA: {DIAG['redaccion']}")
     except Exception as exc:                                  # noqa: BLE001
         log(f"redacción IA no disponible en este pase ({exc})")
@@ -6159,7 +6230,9 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
     fichas_dip: list = []
     extras: list = []
     try:
-        fichas_dip = cosechar_congreso(sin_red=en_archivo)
+        # cosechar_congreso descarga censo y votaciones: es recolección, aunque
+        # se llame desde aquí. En archivo y en --sin-red trabaja solo con state/.
+        fichas_dip = cosechar_congreso(sin_red=en_archivo or SIN_RED)
         extras += renderizar_diputados(fichas_dip)
         extras += renderizar_votaciones(fichas_dip)
         # Los rankings son un añadido: si fallan, la edición sale igual.
@@ -6316,13 +6389,25 @@ def main() -> None:
     # Alias de antes, para no romper archivo.yml ni a quien los use a mano.
     ap.add_argument("--nombramientos-desde", help="alias de --reprocesar-desde con nombramientos")
     ap.add_argument("--nombramientos-hasta", help="alias de --reprocesar-hasta")
+    # Integración continua y pruebas: ninguna petición HTTP. Con --render (o
+    # --repintar-ediciones) regenera el sitio desde data/ y state/.
+    ap.add_argument("--sin-red", action="store_true",
+                    help="no hace ninguna petición HTTP; solo con --render o --repintar-ediciones")
     args = ap.parse_args()
+
+    if args.sin_red:
+        if not (args.render or args.repintar_ediciones):
+            raise SystemExit("--sin-red solo sirve para pintar: úsalo con --render "
+                             "o --repintar-ediciones")
+        activar_sin_red()
 
     # Todas las carpetas del repositorio existen siempre: el paso de publicación del
     # workflow hace `git add` sobre ellas y falla si alguna no está creada.
+    # Es uno de los tres sitios de ARQUITECTURA.md §8 (tools/verificar.py lo comprueba).
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
-                RANKINGS_DIR, PREGUNTAS_DIR, SESIONES_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR):
+                RANKINGS_DIR, PREGUNTAS_DIR, SESIONES_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR,
+                BUSCAR_DIR, MAPA_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if args.repintar_ediciones:

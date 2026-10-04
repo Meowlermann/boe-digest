@@ -17,8 +17,9 @@ Todo ocurre dentro de GitHub, sin servidores:
    `build.py`. El workflow conserva sus propios cron como respaldo. Cada pase rehace
    la edición del día: por la mañana entra el BOE; a mediodía y por la noche, lo que
    haya publicado el Congreso (preguntas, tramitación, votaciones).
-2. `build.py` descarga el sumario del BOE del día, las últimas publicaciones oficiales del
-   Congreso (BOCG y Diarios de Sesiones) y el último boletín del Senado.
+2. `build.py` descarga el sumario del BOE del día y las últimas publicaciones oficiales del
+   Congreso (BOCG y Diarios de Sesiones). El Senado está fuera de la automatización (ver
+   más abajo).
 3. Redacta los artículos y guarda la edición en `data/AAAA-MM-DD.json`.
 4. Fusiona por encima lo que haya en `curated/` (ver más abajo), regenera `index.html` a
    partir de `template.html` y hace commit. GitHub Pages sirve el resultado.
@@ -65,24 +66,22 @@ Para **añadir** artículos sin reemplazar los que se hayan recolectado solos, s
 
 La edición fusionada queda marcada con `"curated": true`.
 
-## El Senado y el bloqueo de Akamai
+## El Senado, fuera de la automatización
 
 El Senado sirve su web detrás de Akamai y deniega en el borde las peticiones que llegan
-desde rangos de centro de datos. GitHub Actions recibe siempre un `403 Access Denied`,
-tanto en el índice como en los PDF, sin cookie ni challenge que se pueda satisfacer.
-No es un problema de cabeceras: desde una conexión doméstica los mismos documentos se
-descargan sin más.
+desde rangos de centro de datos: GitHub Actions recibe siempre un `403 Access Denied`.
+Se le preguntó por la vía formal (`docs/solicitud-acceso-senado.md`) y respondió que no
+tiene API ni conexión para la reutilización automatizada de sus datos.
 
 Consecuencias prácticas:
 
-- El pipeline detecta el bloqueo, deja de insistir durante esa ejecución (no tiene
-  sentido martillear un servidor que ya ha dicho que no) y lo declara en la web, en la
-  nota de cobertura del día.
-- Para incorporar el Senado hay un recolector que se ejecuta en tu equipo:
-  `senado_local.py`. Escribe `curated/AAAA-MM-DD.json` con la clave `feed_append`, que
-  se **añade** a los artículos del Congreso en lugar de reemplazarlos.
-- En `docs/solicitud-acceso-senado.md` hay un borrador de consulta al Senado por si se
-  prefiere resolverlo por la vía formal.
+- `build.py` tiene `SENADO_ACTIVO = False`: no se llama a `fetch_senado()` y no se gastan
+  peticiones condenadas al 403. La función se conserva para cuando cambie la situación.
+- La nota de cobertura lo dice cada día: «El Senado no ofrece por ahora acceso
+  automatizado a sus datos, así que esta sección cubre solo el Congreso».
+- El antiguo recolector local (`senado_local.py`) se retiró: estaba roto y exigía
+  ejecutar en el equipo del mantenedor. Una pieza suelta del Senado se puede añadir a
+  mano con `feed_append` en `curated/AAAA-MM-DD.json`.
 
 Deliberadamente **no** se usa un runner self-hosted de GitHub Actions: en un
 repositorio público, cualquiera que abra un pull request podría lograr ejecución de
@@ -131,9 +130,8 @@ el BOE del día todavía no está publicado.
 ### Fechas de modificación
 
 No se usa el mtime del fichero —`actions/checkout` deja todo con la hora del
-checkout— ni la fecha de la edición, porque cuando `senado_local.py` añade el
-Senado a un día ya publicado vía `curated/`, esa página cambia y hay que
-decírselo al buscador. `build.py` compara el HTML recién generado con el que hay
+checkout— ni la fecha de la edición, porque cuando `curated/` añade o corrige
+algo en un día ya publicado, esa página cambia y hay que decírselo al buscador. `build.py` compara el HTML recién generado con el que hay
 en disco y lleva el registro en `state/ediciones.json`.
 
 ### IndexNow
@@ -187,13 +185,15 @@ pip install -r requirements.txt
 python build.py            # recolecta el día de hoy y regenera index.html
 python build.py --render   # solo regenera el HTML desde data/
 python build.py --date 2026-09-17
+python build.py --render --sin-red   # sin ninguna petición HTTP, como en la integración continua
+python tools/verificar.py --modo ci  # comprobaciones de calidad sobre el resultado
 ```
 
 ## Estructura
 
 ```
 build.py                    pipeline: recolección, redacción, renderizado y SEO
-senado_local.py             recolector del Senado para ejecutar en tu equipo
+tools/verificar.py          comprobaciones de calidad (integración continua y salud diaria)
 template.html               plantilla de la portada (marcadores __DIGEST_DATA__, __SSR_*__)
 template_edicion.html       plantilla de cada página de archivo (ediciones/AAAA-MM-DD.html)
 template_archivo.html       plantilla del índice del archivo (ediciones/index.html)
@@ -201,7 +201,7 @@ assets/style.css            hoja de estilos compartida por portada y ediciones
 data/AAAA-MM-DD.json        una edición por día (regenerable)
 curated/AAAA-MM-DD.json     contenido escrito a mano, se fusiona por encima
 debug/last-run.json         diagnóstico de la última ejecución
-state/senado.json           último boletín del Senado leído, para estimar el siguiente
+state/senado.json           último boletín del Senado leído (sin uso mientras SENADO_ACTIVO = False)
 state/ediciones.json        fecha de última modificación real de cada edición
 docs/                       notas del proyecto
 geo/provincias.json         contornos de las provincias para el mapa de /provincias/ (estático, IGN)

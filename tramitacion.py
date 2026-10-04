@@ -31,6 +31,7 @@ expresiones más repetidas del texto publicado, para el buscador.
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import json
 import pathlib
 import re
@@ -255,7 +256,15 @@ def grupo_corto(autor: str) -> str:
 
 
 def slug_autor(autor: str) -> str:
-    return cd._slug(grupo_corto(autor) or "sin-autor")[:60]
+    """Slug de la página de un autor. Las autorías conjuntas largas se cortaban
+    a 60 caracteres y dos distintas acababan en la misma URL (sitemap con la
+    URL duplicada y una página pisando a la otra, octubre de 2026). Si hay que
+    cortar, se añade un resumen corto del nombre completo para distinguirlas."""
+    nombre = grupo_corto(autor) or "sin-autor"
+    base = cd._slug(nombre)
+    if len(base) <= 60:
+        return base
+    return base[:51].rstrip("-") + "-" + hashlib.sha1(nombre.encode("utf-8")).hexdigest()[:8]
 
 
 
