@@ -26,6 +26,7 @@ on:
 
 permissions:
   contents: write           # para hacer commit del index.html regenerado
+  issues: write             # para la incidencia «Salud de la edición»
 
 concurrency:
   group: edicion-diaria
@@ -59,6 +60,19 @@ jobs:
           GEMINI_MODELO: ${{ vars.GEMINI_MODELO }}
         run: python build.py
 
+      # Salud de la edición: después de construir y antes de publicar. Informa,
+      # no bloquea: la edición se publica siempre, haya hallazgos o no.
+      - name: Salud de la edición
+        id: salud
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          export REPO_TAMANO_KB=$(gh api "repos/$GITHUB_REPOSITORY" --jq .size 2>/dev/null || true)
+          python tools/verificar.py --modo diario --fecha "$(date +%Y-%m-%d)" \
+            --markdown "$RUNNER_TEMP/salud.md"
+
       - name: Publicar si hay cambios
         id: publicar
         if: always()          # el diagnóstico debe subirse aunque la construcción falle
@@ -76,6 +90,16 @@ jobs:
             git push
             echo "publicado=si" >> "$GITHUB_OUTPUT"
           fi
+
+      # Con hallazgos graves abre (o comenta) la incidencia «Salud de la edición»;
+      # un día limpio la cierra. GitHub avisa por correo de las incidencias nuevas.
+      - name: Incidencia de salud
+        if: always() && steps.salud.outputs.graves != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: bash tools/incidencia_salud.sh "${{ steps.salud.outputs.graves }}" "$(date +%Y-%m-%d)" "$RUNNER_TEMP/salud.md"
 
       - name: Avisar a los buscadores (IndexNow)
         # Bing, Yandex, Seznam, Naver, Yep e Internet Archive. No necesita cuenta:
