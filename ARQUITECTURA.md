@@ -11,12 +11,13 @@ explica el proyecto a quien lo usa; esto explica cómo está hecho.
 
 ## 1. Qué es, en una frase
 
-Un sitio estático (https://terceracamara.es/, GitHub Pages) que se regenera
-solo tres veces al día con lo que publican el BOE y el Congreso. El Senado
+Un sitio estático (https://terceracamara.es/, GitHub Pages, publicado como
+artefacto desde Actions) que se regenera solo tres veces al día con lo que
+publican el BOE y el Congreso. El Senado
 está fuera de la automatización (ver §5). Todo corre en
 GitHub Actions: no hay servidor, ni base de datos, ni API propia. La «base de
-datos» son ficheros JSON en `state/` y `data/`, versionados en el propio
-repositorio.
+datos» son ficheros JSON en `state/` y `data/`, versionados en la rama `datos`
+del propio repositorio (§8). `main` es el código.
 
 ## 2. Principios que explican casi todas las decisiones
 
@@ -49,7 +50,7 @@ repositorio.
 Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workflows/daily.yml
    07:40 · 14:40 · 21:40 (España)                         (cron propios solo de respaldo)
                                                                    │
-                                                          python build.py
+                                                 publicar.yml: datos.sh traer + python build.py
                                                                    │
   construir_dia(hoy) ───────────────────────────────────────────────┤
    ├─ fetch_boe()               sumario del BOE (API de datos abiertos)
@@ -80,10 +81,12 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
    ├─ renderizar_buscador / mapa
    └─ sitemap.xml, feed.xml, indexnow.json
             │
-  daily.yml: tools/verificar.py --modo diario → debug/salud.json (informa, no bloquea)
-           git add + commit «Edición del AAAA-MM-DD» + push → GitHub Pages
-            ├─ incidencia «Salud de la edición» si hay hallazgos graves (§12)
-            └─ aviso IndexNow a los buscadores
+  publicar.yml (modo diario, §8):
+   tools/verificar.py --modo diario → debug/salud.json (informa, no bloquea)
+   tools/datos.sh guardar → commit «Edición del AAAA-MM-DD» en la rama datos
+   tools/montar_sitio.py → _site/ → artefacto de GitHub Pages → despliegue
+    ├─ incidencia «Salud de la edición» si hay hallazgos graves (§12)
+    └─ aviso IndexNow a los buscadores
 ```
 
 Cada pase rehace la edición del día desde cero. Por eso todo lo que publica
@@ -110,6 +113,9 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `reproceso.py` | Reprocesa el histórico del BOE con varios extractores y una descarga por día. Solo toca `state/`. | `state/nombramientos.json`, `state/provincias.json` | — |
 | `redaccion.py` | Capa Gemini: propone titular y entradilla, verifica cifras y fechas contra la fuente, cachea. Si no hay clave o cuota, no hace nada. | `state/redaccion.json` | — |
 | `tools/verificar.py` | Comprobaciones de calidad comunes a la integración continua y a la salud diaria (§12). | `debug/salud.json` (modo diario) | — |
+| `tools/publicables.txt` | La lista de lo que se publica: el único sitio donde se declara una carpeta publicada (§8). | — | — |
+| `tools/montar_sitio.py` | Monta `_site/` con lo de `publicables.txt` y comprueba lo obligatorio, el `CNAME` y el límite de 1 GB (§8). | — | `_site/` |
+| `tools/datos.sh` | Trae y guarda `data/`, `state/` y `debug/` en la rama `datos`. El único sitio que sabe dónde viven los datos (§8). | rama `datos` | — |
 | `tools/incidencia_salud.sh` | Abre, comenta o cierra la incidencia «Salud de la edición» con `gh` (§12). | — | — |
 
 Front-end: `template*.html` (plantillas con marcadores `{{…}}`),
@@ -151,6 +157,9 @@ con los marcadores `TITLE`, `META_DESC`, `CANONICAL`, `JSONLD`, `EDITION_DATE`,
 | Senado | **Fuera de la automatización** (`SENADO_ACTIVO = False` en `build.py`) | Akamai devuelve 403 a las IP de centro de datos, también en los ficheros de datos abiertos (diagnóstico en la PR #8), y el Senado respondió que no tiene API ni conexión para la reutilización automatizada (`docs/solicitud-acceso-senado.md`). **No se esquiva el bloqueo**: sin proxies, sin cabeceras falsas y sin relés. Mientras sea `False` no se llama a `fetch_senado()` (que se conserva) y la nota de cobertura dice, fija: «El Senado no ofrece por ahora acceso automatizado a sus datos, así que esta sección cubre solo el Congreso». Una pieza suelta se puede añadir a mano con `feed_append` en `curated/`. |
 
 ## 6. Dónde vive cada dato (`state/`, `data/`, `curated/`)
+
+`data/`, `state/` y `debug/` viven en la rama `datos` (§8); los workflows
+los traen al árbol de trabajo con `tools/datos.sh` antes de construir.
 
 `data/AAAA-MM-DD.json` es la edición de cada día: todo lo que se pinta de
 ella sale de ahí. Las ediciones de archivo (enero a septiembre de 2026) solo
@@ -210,19 +219,78 @@ cuando haga falta:
 1. **Partir por año** lo que se acumula. Ya lo hacen `state/respuestas/` y
    el índice del buscador (`datos/indice-<tipo>[-AAAA[-MM[-q1|-q2]]].json`,
    en cuanto un tipo, un año o un mes pasa de 1 MB). Hazlo con cualquier fichero nuevo que acumule.
-2. **Separar la web del código**: publicar el HTML generado con un artefacto
-   de Pages o una rama `gh-pages`, en vez de commitearlo en `main`. Conviene
-   cuando el repositorio pase de ~1 GB.
+2. **Separar la web del código** — *aplicada en octubre de 2026* (§8): el
+   HTML generado se publica como artefacto de Pages y no se commitea; los
+   datos van a la rama `datos`, que se puede compactar sin tocar `main`.
 3. **Llevar fuera los datos pesados** (Cloudflare R2 o Pages, con capa
    gratuita) solo si algún día se guardan textos completos.
 
-## 8. Workflows
+## 8. Workflows y publicación
 
-`daily.yml` (**Edición diaria**) lanza `python build.py` y publica si hay
-cambios. Lo dispara el Worker de `disparador/` por `workflow_dispatch`; sus
-cron son de respaldo.
+Desde la PR «publicacion-artefacto» (octubre de 2026) la web **no se guarda
+en ninguna rama**: se construye en Actions y se publica como artefacto de
+GitHub Pages. Los datos acumulados viven en la rama huérfana `datos`. El bot
+ya no escribe en `main`.
 
-`archivo.yml` (**Archivo histórico**) se lanza a mano y tiene cuatro modos:
+```
+                       ┌──────────── main (código) ────────────┐
+daily.yml  (diario) ─┐ │                                       │
+archivo.yml(archivo) ├─► publicar.yml ── job construir ────────┤
+push a main (render)─┘   1. checkout de main                   │
+                         2. tools/datos.sh traer  ◄── rama datos (data/ state/ debug/)
+                         3. build.py (según el modo)
+                         4. tools/verificar.py
+                         5. tools/datos.sh guardar ──► rama datos (solo diario/archivo)
+                         6. tools/montar_sitio.py → _site/ (tools/publicables.txt)
+                         7. upload-pages-artifact
+                       job desplegar: deploy-pages → https://terceracamara.es/, IndexNow
+```
+
+### `publicar.yml` (**Publicar**)
+
+El único workflow que escribe en `datos` y el único que despliega. Se lanza
+con `workflow_call` (desde `daily.yml` y `archivo.yml`), `workflow_dispatch`
+o un push a `main`. Input `modo`:
+
+- `render` (por defecto, y siempre en un push de código):
+  `python build.py --render --sin-red`. No descarga nada ni escribe en
+  `datos`; repinta la web con el código nuevo. Verifica con `--modo ci`: con
+  un grave no despliega.
+- `diario`: el pase normal (`python build.py`), salud con `--modo diario`
+  (`debug/salud.json`, informa y no bloquea), commit «Edición del
+  AAAA-MM-DD» en `datos`, incidencia de salud e IndexNow.
+- `archivo`: los modos de `archivo.yml` (`archivo_modo`: `ediciones`,
+  `reprocesar`, `nombramientos`, `repintar`, con `desde`, `hasta`, `lote` y
+  `extractores`). La salud va a `RUNNER_TEMP`.
+
+Input `desplegar` (por defecto `true`; en un push solo despliega `main`).
+Con `false` construye y sube el artefacto `github-pages` (se puede descargar
+desde la ejecución para revisarlo) pero no lo publica.
+
+Permisos: `contents: write` e `issues: write` solo en el job `construir`
+(rama `datos` e incidencia); `pages: write` e `id-token: write` solo en
+`desplegar`, que usa el entorno `github-pages`. Antes de desplegar comprueba
+que Settings › Pages publica desde «GitHub Actions» (`build_type =
+workflow`); si no, avisa y no despliega. Después comprueba que
+https://terceracamara.es/ responde 200 con su canonical.
+
+Concurrencia: todo lo que escribe en `datos` (modos `diario` y `archivo`, y
+la vuelta atrás) comparte el grupo `escritura-datos` y va de uno en uno. Los
+`render` van en `publicar-render` para que un push de código nunca cancele una
+edición pendiente. Los despliegues comparten `pages`.
+
+Fuera de `main` (una prueba lanzada desde otra rama) se escribe en
+`datos-pruebas`, que se crea partiendo de `datos` sin tocarla, y no se
+despliega (el entorno `github-pages` solo admite `main`).
+
+### `daily.yml`, `archivo.yml` y `ci.yml`
+
+`daily.yml` (**Edición diaria**) llama a `publicar.yml` con `modo: diario`.
+Lo dispara el Worker de `disparador/` por `workflow_dispatch`; sus cron son de
+respaldo.
+
+`archivo.yml` (**Archivo histórico**) se lanza a mano y llama a
+`publicar.yml` con `modo: archivo`. Sus cuatro modos:
 
 - `ediciones`: construye las ediciones del BOE entre `desde` y `hasta`, por
   lotes (`--archivo-desde`, `--lote`).
@@ -234,21 +302,57 @@ cron son de respaldo.
   ejemplo, `arreglar_fuentes()` añade a las preguntas orales antiguas la
   contestación citada.
 
-Los dos workflows comparten el grupo de concurrencia `edicion-diaria`. Solo
-puede haber una ejecución pendiente, así que no lances varias seguidas.
-Los dos terminan con la salud de la edición (§12).
+Solo puede haber una ejecución pendiente por grupo de concurrencia, así que no
+lances varias seguidas.
 
 `ci.yml` (**Integración continua**) se lanza en cada PR contra `main` y a mano.
-Solo lee: nunca hace commit ni push (§12).
+Trae los datos de la rama `datos` para pintar con datos reales y monta `_site`
+sin subirlo. Solo lee: nunca hace commit ni push (§12).
 
-Toda carpeta publicada tiene que estar en tres sitios:
+### Dónde se declara lo que se publica: `tools/publicables.txt`
 
-- la lista de `mkdir` de `build.main()`;
-- las líneas `mkdir -p` y `git add -A` de los dos workflows;
-- una constante `*_DIR` en `build.py`.
+Es el **único sitio**. `tools/montar_sitio.py` copia a `_site/` solo lo que
+está ahí; lo demás (código, `data/`, `state/`, `debug/`, `tests/`…) no
+llega a la web. Una entrada con `!` es obligatoria: si falta, no se despliega.
+`montar_sitio.py` además se niega si `CNAME` no es `terceracamara.es` o si
+`_site` pasa de 1 GB (límite de Pages).
 
-Si falta en los workflows, `git add` falla. `tools/verificar.py` lo comprueba
-(grave) en cada PR y cada día.
+Al añadir una sección con páginas, añade su carpeta a `tools/publicables.txt`
+y nada más. `tools/verificar.py` (comprobación a) da un grave si una carpeta
+con HTML, o un fichero de la web de la raíz (HTML, XML, `CNAME`,
+`robots.txt`, `llms.txt`, la clave de IndexNow), no está en la lista. La
+lista de `mkdir` de `build.main()` sigue creando las carpetas, pero ya no es un
+sitio donde haya que declararlas.
+
+### La rama `datos` y `tools/datos.sh`
+
+`datos` es una rama huérfana (sin historia común con `main`, no se fusiona
+nunca) con `data/`, `state/`, `debug/` y un README. La crea el primer pase
+`diario` o `archivo` que no la encuentra: un commit «Datos iniciales» con lo
+que había en `main` y encima el del pase.
+
+`tools/datos.sh` es el **único sitio que sabe dónde están los datos**
+(`traer` y `guardar`). `build.py` sigue leyendo y escribiendo `./data`,
+`./state` y `./debug`. Cuando en la fase B los datos pasen a almacenamiento
+externo, se cambia ese script y nada más. `guardar` hace `pull --rebase` y un
+reintento; nunca toca `main`.
+
+### Vuelta atrás
+
+Si la publicación por artefacto falla y la web deja de cargar:
+
+1. Settings › Pages › Build and deployment › Source: **Deploy from a branch**,
+   rama `main`, carpeta `/ (root)`.
+2. Settings › Secrets and variables › Actions › Variables: crea o pon
+   `PUBLICAR_EN_MAIN` a `true`.
+3. Actions › Edición diaria › Run workflow (rama `main`).
+
+Con la variable a `true`, `daily.yml` y `archivo.yml` corren su job antiguo
+(commit en `main`), que antes trae los datos de la rama `datos` para no perder
+lo publicado por la vía nueva, y saltan `publicar.yml`. Para volver a la vía
+nueva: Source «GitHub Actions», `PUBLICAR_EN_MAIN` a `false` y lanzar
+«Publicar» con `modo: render`. (El job antiguo se borra en la PR
+«main-solo-codigo».)
 
 ## 9. Cómo añadir una sección o una fuente
 
@@ -268,7 +372,7 @@ Si falta en los workflows, `git add` falla. `tools/verificar.py` lo comprueba
    Recuerda qué publicaste para no repetir.
 5. **Páginas.** `generar_paginas(h)` según el contrato del §4. En `build.py`,
    un `renderizar_mi_seccion()` llamado desde `renderizar()` en su `try`, la
-   carpeta en los tres sitios del §8, y enlaces desde `render_nav`,
+   carpeta en `tools/publicables.txt` (§8), y enlaces desde `render_nav`,
    `renderizar_mapa` y, si procede, `/seguimiento/`.
 6. **Descubrimiento.** Entradas en `llms.txt`. Si tiene que aparecer en el
    buscador, un tipo nuevo en `renderizar_buscador`.
@@ -286,10 +390,13 @@ python tools/verificar.py --modo ci        # comprobaciones sobre el resultado
 
 El modo `--sin-red` se explica en §12.
 
-La validación con datos reales se hace lanzando «Edición diaria» sobre la
-rama de trabajo (Actions › Run workflow › rama) y leyendo el log y
-`debug/last-run.json`. Esa rama se llena de commits del bot, así que la PR sale
-de otra rama limpia con solo el código.
+La validación con datos reales se hace lanzando «Edición diaria» (o
+«Publicar» con `modo: diario`) sobre la rama de trabajo (Actions › Run
+workflow › rama), una vez que el workflow está en `main`. Fuera de `main` los
+datos se escriben en la rama `datos-pruebas` (que parte de `datos` sin
+tocarla) y no se despliega nada: se lee el log, el resumen y
+`debug/last-run.json` en `datos-pruebas`. La rama de trabajo no recibe
+commits del bot.
 
 ## 11. Glosario
 
@@ -322,13 +429,13 @@ el detalle de los graves acaba en «Qué hacer: …».
 
 | | Comprobación | Nivel |
 |---|---|---|
-| a | `carpetas`: cada carpeta de primer nivel con HTML está en los tres sitios del §8 | grave |
+| a | `carpetas`: cada carpeta de primer nivel con HTML y cada fichero de la web de la raíz están en `tools/publicables.txt` (§8) | grave |
 | b | `html`: marcadores sin sustituir (`{{`, `}}`, `__SSR_…__`, `None`, `undefined`, `NaN`, `<EMAIL_DE_CONTACTO>`, fuera de `<script>`), JSON-LD estricto, `<title>`, meta description y canonical de `https://terceracamara.es`, enlaces internos a ficheros inexistentes | grave |
 | c | `sitemap`: XML válido, URL del dominio que existen, sin duplicados, ≤ 50.000 por fichero | grave |
 | d | `indice`: `datos/indice*.json` válido y < 1 MB | grave |
 | e | `titulares` de `data/<fecha>.json` (BOE y Cortes): fin en preposición/artículo/conjunción, nombres de fichero o códigos, «Y N ASUNTOS MÁS», longitud, palabra cortada | grave (muy largo: aviso) |
 | f | `duplicados`: identificador (referencia del BOE o documento oficial) ya publicado en los 7 días anteriores; titular repetido con otro documento | grave / aviso |
-| g | `tamanos`: ficheros de `state/` (aviso 10 MB, grave 25 MB), repositorio (aviso 500 MB, grave 900 MB), número y peso de lo publicado | aviso / grave |
+| g | `tamanos`: ficheros de `state/` (aviso 10 MB, grave 25 MB), historia de `main` (aviso 500 MB, grave 900 MB), historia de la rama `datos` (aviso 200 MB, grave 500 MB), número y peso de lo que va a `_site` | aviso / grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -336,28 +443,31 @@ fallo real del que sale. Los fragmentos que otra página incrusta
 piezas que enlazan al propio sitio (el recuento diario de preguntas
 pendientes) no cuentan como duplicado.
 
-En Actions el checkout es superficial, así que `git count-objects -vH` solo ve
-el último commit: los workflows pasan `REPO_TAMANO_KB` (tamaño que da la API de
-GitHub) y, con el clon superficial, manda ese.
+Los tamaños de historia se miden con `git rev-list --disk-usage --objects`:
+`main` en `HEAD` y `datos` en la referencia de `VERIFICAR_REF_DATOS`
+(`origin/datos`). `publicar.yml` descarga `main` con la historia completa; en
+`ci.yml` el checkout es superficial y se usa `REPO_TAMANO_KB` (el tamaño de
+todo el repositorio según la API de GitHub), que es una cota superior.
 
 `SALUD_FORZAR_GRAVE=1` añade un hallazgo grave ficticio: sirve para probar la
 incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 
 ### Integración continua: `.github/workflows/ci.yml`
 
-En cada PR contra `main` (y a mano): compila (`compileall`), pasa las
+En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
+(`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
 `python tools/verificar.py --modo ci`: (a), (b), (c), (d) y (g) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave; los avisos van al resumen del job. `permissions: contents:
-read`, sin secretos, nunca hace commit ni push. El render completo tarda unos
-20 s.
+read`, sin secretos, nunca hace commit ni push. Al final monta `_site` con
+`tools/montar_sitio.py`, sin subirlo. El render completo tarda unos 20 s.
 
-### Salud diaria (final de `daily.yml` y `archivo.yml`)
+### Salud diaria (`publicar.yml`, modos `diario` y `archivo`)
 
 Después de construir y antes de publicar, `verificar.py --modo diario`
-escribe `debug/salud.json` (en `archivo.yml`, a `RUNNER_TEMP`, para no dejar
-commits vacíos) y el resumen del job. **La edición se publica siempre**: la
+escribe `debug/salud.json`, que se guarda en la rama `datos` (en modo
+`archivo`, a `RUNNER_TEMP`, para no dejar commits vacíos) y el resumen del job. **La edición se publica siempre**: la
 salud informa, no bloquea, y el paso tiene `continue-on-error`.
 
 Después de publicar, `tools/incidencia_salud.sh` usa `gh` con el
@@ -368,7 +478,7 @@ Después de publicar, `tools/incidencia_salud.sh` usa `gh` con el
 - sin graves y con una abierta, comenta «Resuelto el <fecha>» y la cierra.
 
 GitHub avisa por correo de las incidencias nuevas a quien vigila el
-repositorio, y el dueño lo vigila por defecto: no hace falta nada más.
+repositorio (Watch › Custom › Issues, activado en octubre de 2026).
 
 ### Modo sin red (`--sin-red`)
 

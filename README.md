@@ -21,8 +21,10 @@ Todo ocurre dentro de GitHub, sin servidores:
    Congreso (BOCG y Diarios de Sesiones). El Senado está fuera de la automatización (ver
    más abajo).
 3. Redacta los artículos y guarda la edición en `data/AAAA-MM-DD.json`.
-4. Fusiona por encima lo que haya en `curated/` (ver más abajo), regenera `index.html` a
-   partir de `template.html` y hace commit. GitHub Pages sirve el resultado.
+4. Fusiona por encima lo que haya en `curated/` (ver más abajo) y regenera el sitio
+   a partir de las plantillas. Los datos (`data/`, `state/`, `debug/`) se guardan en la
+   rama `datos` y la web se publica como artefacto de GitHub Pages (`publicar.yml`):
+   el HTML generado no se guarda en ninguna rama y el bot no escribe en `main`.
 
 ## Redacción: con modelo o sin él
 
@@ -194,11 +196,13 @@ python tools/verificar.py --modo ci  # comprobaciones de calidad sobre el result
 ```
 build.py                    pipeline: recolección, redacción, renderizado y SEO
 tools/verificar.py          comprobaciones de calidad (integración continua y salud diaria)
+tools/publicables.txt       lo que se publica en la web (único sitio donde se declara)
+tools/datos.sh              trae y guarda los datos en la rama datos
 template.html               plantilla de la portada (marcadores __DIGEST_DATA__, __SSR_*__)
 template_edicion.html       plantilla de cada página de archivo (ediciones/AAAA-MM-DD.html)
 template_archivo.html       plantilla del índice del archivo (ediciones/index.html)
 assets/style.css            hoja de estilos compartida por portada y ediciones
-data/AAAA-MM-DD.json        una edición por día (regenerable)
+data/AAAA-MM-DD.json        una edición por día (en la rama datos)
 curated/AAAA-MM-DD.json     contenido escrito a mano, se fusiona por encima
 debug/last-run.json         diagnóstico de la última ejecución
 state/senado.json           último boletín del Senado leído (sin uso mientras SENADO_ACTIVO = False)
