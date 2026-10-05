@@ -24,17 +24,38 @@ on:
     # abriría la edición del día siguiente con el BOE de hoy.
   workflow_dispatch:        # permite lanzarla a mano desde la pestaña Actions
 
+# Desde la PR «publicacion-artefacto» la edición la construye y publica
+# publicar.yml (modo diario): los datos van a la rama datos y la web se
+# despliega como artefacto de GitHub Pages. El bot ya no escribe en main.
 permissions:
-  contents: write           # para hacer commit del index.html regenerado
-  issues: write             # para la incidencia «Salud de la edición»
-
-concurrency:
-  group: edicion-diaria
-  cancel-in-progress: false
+  contents: read
 
 jobs:
   publicar:
+    if: vars.PUBLICAR_EN_MAIN != 'true'
+    uses: ./.github/workflows/publicar.yml
+    with:
+      modo: diario
+    secrets: inherit
+    permissions:
+      contents: write         # rama datos
+      issues: write           # incidencia «Salud de la edición»
+      pages: write            # despliegue
+      id-token: write         # despliegue
+
+  # VUELTA ATRÁS — publicación antigua con commit en main. Desactivada: solo
+  # corre con la variable de repositorio PUBLICAR_EN_MAIN = "true" (y con
+  # Settings › Pages en «Deploy from a branch»). Ver ARQUITECTURA.md §8.
+  # Se borra en la PR «main-solo-codigo».
+  publicar-en-main:
+    if: vars.PUBLICAR_EN_MAIN == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    concurrency:
+      group: escritura-datos
+      cancel-in-progress: false
     steps:
       - name: Descargar el repositorio
         uses: actions/checkout@v4
@@ -46,6 +67,11 @@ jobs:
 
       - name: Instalar dependencias
         run: pip install -r requirements.txt
+
+      # Vuelta atrás sin perder lo publicado por la vía nueva: los datos más
+      # recientes están en la rama datos.
+      - name: Traer los datos (rama datos)
+        run: bash tools/datos.sh traer
 
       - name: Construir la edición de hoy
         env:
@@ -80,8 +106,14 @@ jobs:
           git config user.name "BOE Digest bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # git add falla con 'pathspec did not match' si una carpeta no existe todavía
-          mkdir -p data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas sesiones personas nombramientos tramitacion seguimiento provincias datos buscar mapa assets
-          git add -A data curated debug state ediciones normas temas plazos diputados votaciones rankings preguntas sesiones personas nombramientos tramitacion seguimiento provincias datos buscar mapa assets index.html 'sitemap*.xml' feed.xml
+          # Las carpetas publicadas salen de tools/publicables.txt (único sitio).
+          set -f   # los comodines (sitemap-*.xml) los resuelve git, no el shell
+          mkdir -p data curated debug state
+          git add -A data curated debug state
+          for P in $(grep -v '^[[:space:]]*#' tools/publicables.txt | sed 's/^!//'); do
+            git add -A -- "$P" 2>/dev/null || true    # una entrada sin ficheros no es un error
+          done
+          set +f
           if git diff --staged --quiet; then
             echo "Sin cambios: no se publica nada."
             echo "publicado=no" >> "$GITHUB_OUTPUT"
