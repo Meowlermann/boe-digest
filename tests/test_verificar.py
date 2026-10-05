@@ -30,22 +30,17 @@ PAGINA = """<!doctype html>
 
 BUILD = '''
 ROOT = pathlib.Path(__file__).parent
-DATA_DIR = ROOT / "data"
-NORMAS_DIR = ROOT / "normas"
-MAPA_DIR = ROOT / "mapa"
-ESTADO = ROOT / "state"
-
-def main() -> None:
-    for carpeta in (DATA_DIR, ESTADO,
-                NORMAS_DIR, MAPA_DIR):
-        carpeta.mkdir(exist_ok=True)
+INDEXNOW_KEY = "abc123"
 '''
 
-WORKFLOW = """
-      - name: Publicar si hay cambios
-        run: |
-          mkdir -p data state normas mapa
-          git add -A data state normas mapa index.html 'sitemap*.xml' feed.xml
+PUBLICABLES = """# lista de prueba
+!index.html
+sitemap*.xml
+!normas
+mapa
+!CNAME
+robots.txt
+abc123.txt
 """
 
 
@@ -61,8 +56,8 @@ class Sitio:
         self._tmp = tempfile.TemporaryDirectory()
         self.raiz = pathlib.Path(self._tmp.name)
         self.escribir("build.py", BUILD)
-        self.escribir(".github/workflows/daily.yml", WORKFLOW)
-        self.escribir(".github/workflows/archivo.yml", WORKFLOW)
+        self.lista = self.escribir("tools/publicables.txt", PUBLICABLES)
+        self.escribir("CNAME", "terceracamara.es\n")
         self.escribir("index.html", pagina(canonical="https://terceracamara.es/",
                                            cuerpo='<a href="/normas/">Normas</a>'))
         self.escribir("normas/index.html", pagina(cuerpo='<a href="/mapa/">Mapa</a> '
@@ -93,34 +88,47 @@ class TestCarpetas(unittest.TestCase):
     def tearDown(self):
         self.s.cerrar()
 
+    def carpetas(self):
+        return v.comprobar_carpetas(self.s.raiz, self.s.lista)
+
     def test_coherentes(self):
-        self.assertEqual(v.comprobar_carpetas(self.s.raiz), [])
-
-    def test_carpetas_build_traduce_constantes(self):
-        self.assertEqual(v.carpetas_build(BUILD), {"data", "state", "normas", "mapa"})
-
-    def test_falta_en_daily(self):
-        self.s.escribir(".github/workflows/daily.yml", WORKFLOW.replace(" mapa", ""))
-        h = v.comprobar_carpetas(self.s.raiz)
-        self.assertEqual(len(h), 2)                       # mkdir -p y git add -A
-        self.assertTrue(all(x["nivel"] == v.GRAVE and x["fichero"].endswith("daily.yml") for x in h))
-        self.assertIn("«mapa/»", h[0]["detalle"])
-        self.assertIn("Qué hacer:", h[0]["detalle"])
-
-    def test_falta_en_build(self):
-        self.s.escribir("build.py", BUILD.replace(", MAPA_DIR", ""))
-        h = v.comprobar_carpetas(self.s.raiz)
-        self.assertEqual([x["fichero"] for x in h], ["build.py"])
+        self.assertEqual(self.carpetas(), [])
 
     def test_carpeta_nueva_sin_registrar(self):
         self.s.escribir("plazos/index.html", pagina())
-        h = v.comprobar_carpetas(self.s.raiz)
-        self.assertEqual(len(h), 5)                       # build + 2 líneas × 2 workflows
+        h = self.carpetas()
+        self.assertEqual(len(h), 1)
+        self.assertEqual(h[0]["nivel"], v.GRAVE)
+        self.assertEqual(h[0]["fichero"], "tools/publicables.txt")
+        self.assertIn("«plazos/»", h[0]["detalle"])
+        self.assertIn("Qué hacer:", h[0]["detalle"])
+
+    def test_quitada_de_la_lista(self):
+        self.s.escribir("tools/publicables.txt", PUBLICABLES.replace("mapa\n", ""))
+        self.assertIn("«mapa/»", self.carpetas()[0]["detalle"])
+
+    def test_ficheros_de_la_raiz(self):
+        # robots.txt y la clave de IndexNow están en la lista; feed.xml y
+        # googleXXX.html no: deben salir los dos.
+        for f in ("robots.txt", "abc123.txt", "feed.xml", "google0a1b.html", "requirements.txt",
+                  "template.html"):
+            self.s.escribir(f, "x")
+        self.assertEqual(sorted(h["detalle"].split("«")[1].split("»")[0] for h in self.carpetas()),
+                         ["feed.xml", "google0a1b.html"])
+
+    def test_comodines(self):
+        self.s.escribir("sitemap.xml", "<x/>")
+        self.s.escribir("sitemap-2.xml", "<x/>")
+        self.assertEqual(self.carpetas(), [])
 
     def test_carpetas_no_publicadas_no_cuentan(self):
-        self.s.escribir("tests/fixture.html", "<p>x</p>")
-        self.s.escribir("docs/x.html", "<p>x</p>")
-        self.assertEqual(v.comprobar_carpetas(self.s.raiz), [])
+        for f in ("tests/fixture.html", "docs/x.html", "_site/index.html", "app/x.html"):
+            self.s.escribir(f, "<p>x</p>")
+        self.assertEqual(self.carpetas(), [])
+
+    def test_sin_lista(self):
+        (self.s.raiz / "tools" / "publicables.txt").unlink()
+        self.assertIn("No existe", self.carpetas()[0]["detalle"])
 
     def test_repositorio_real(self):
         # El repositorio tal como está tiene que pasar (es el caso que más ha fallado).
@@ -356,7 +364,7 @@ class TestDuplicados(unittest.TestCase):
 
 
 class TestTamanos(unittest.TestCase):
-    GIT = "count: 0\nsize: 0 bytes\nin-pack: 55578\npacks: 1\nsize-pack: {pack}\nprune-packable: 0\ngarbage: 0\nsize-garbage: 0 bytes\n"
+    MIB = 1024 ** 2
 
     def setUp(self):
         self.s = Sitio()
@@ -364,40 +372,59 @@ class TestTamanos(unittest.TestCase):
     def tearDown(self):
         self.s.cerrar()
 
-    def test_bytes_de_texto(self):
-        self.assertEqual(v.bytes_de_texto("61.41 MiB"), int(61.41 * 1024 ** 2))
-        self.assertEqual(v.bytes_de_texto("1.2 GiB"), int(1.2 * 1024 ** 3))
-        self.assertEqual(v.bytes_de_texto("0 bytes"), 0)
+    def tamanos(self, main=0, datos=0):
+        return v.comprobar_tamanos(self.s.raiz, main, datos)
 
     def test_sin_hallazgos(self):
         self.s.escribir("state/congreso.json", "{}")
-        self.assertEqual(v.comprobar_tamanos(self.s.raiz, self.GIT.format(pack="61.41 MiB")), [])
+        self.assertEqual(self.tamanos(61 * self.MIB, 5 * self.MIB), [])
 
-    def test_git(self):
-        self.assertEqual(v.comprobar_tamanos(self.s.raiz, self.GIT.format(pack="600 MiB"))[0]["nivel"], v.AVISO)
-        self.assertEqual(v.comprobar_tamanos(self.s.raiz, self.GIT.format(pack="1.1 GiB"))[0]["nivel"], v.GRAVE)
+    def test_main(self):
+        self.assertEqual(self.tamanos(main=600 * self.MIB)[0]["nivel"], v.AVISO)
+        h = self.tamanos(main=1100 * self.MIB)
+        self.assertEqual((h[0]["nivel"], h[0]["fichero"]), (v.GRAVE, ".git"))
+
+    def test_rama_datos(self):
+        self.assertEqual(self.tamanos(datos=250 * self.MIB)[0]["nivel"], v.AVISO)
+        h = self.tamanos(datos=600 * self.MIB)
+        self.assertEqual((h[0]["nivel"], h[0]["fichero"]), (v.GRAVE, "datos"))
+        self.assertIn("compacta", h[0]["detalle"])
 
     def test_clon_superficial_usa_la_api(self):
-        (self.s.raiz / ".git").mkdir()
-        (self.s.raiz / ".git" / "shallow").write_text("abc\n")
-        with mock.patch.dict(os.environ, {"REPO_TAMANO_KB": str(950 * 1024)}):
-            h = v.comprobar_tamanos(self.s.raiz, self.GIT.format(pack="2 MiB"))
+        with mock.patch.object(v, "tamano_ref", return_value=None), \
+                mock.patch.dict(os.environ, {"REPO_TAMANO_KB": str(950 * 1024)}):
+            h = v.comprobar_tamanos(self.s.raiz, None, 0)
         self.assertEqual([x["nivel"] for x in h], [v.GRAVE])
-        with mock.patch.dict(os.environ, {"REPO_TAMANO_KB": ""}):
-            self.assertEqual(v.comprobar_tamanos(self.s.raiz, self.GIT.format(pack="2 MiB")), [])
+        self.assertIn("API", h[0]["detalle"])
+
+    def test_tamano_ref_en_un_repositorio_real(self):
+        import subprocess
+        r = self.s.raiz
+        def git(*a):
+            subprocess.run(["git", *a], cwd=r, check=True, capture_output=True)
+        git("init", "-q"); git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q",
+                              "--allow-empty", "-m", "x")
+        git("-c", "user.email=a@b", "-c", "user.name=a", "add", "-A")
+        git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "y")
+        self.assertGreater(v.tamano_ref(r, "HEAD"), 0)
+        self.assertIsNone(v.tamano_ref(r, "origin/datos"))
 
     def test_state(self):
         self.s.escribir("state/x.json", "{}")
         with mock.patch.object(v, "STATE_AVISO_BYTES", 1), mock.patch.object(v, "STATE_GRAVE_BYTES", 100):
-            self.assertEqual([x["nivel"] for x in v.comprobar_tamanos(self.s.raiz, "")], [v.AVISO])
+            self.assertEqual([x["nivel"] for x in self.tamanos()], [v.AVISO])
         with mock.patch.object(v, "STATE_AVISO_BYTES", 1), mock.patch.object(v, "STATE_GRAVE_BYTES", 2):
-            self.assertEqual([x["nivel"] for x in v.comprobar_tamanos(self.s.raiz, "")], [v.GRAVE])
+            self.assertEqual([x["nivel"] for x in self.tamanos()], [v.GRAVE])
 
-    def test_numero_de_ficheros(self):
-        with mock.patch.object(v, "FICHEROS_AVISO", 3), mock.patch.object(v, "FICHEROS_GRAVE", 1000):
-            h = v.comprobar_tamanos(self.s.raiz, "")
+    def test_numero_de_ficheros_publicados(self):
+        # Cuenta lo de la lista (index.html, normas/ ×2, mapa/, CNAME), no state/ ni tests/.
+        self.s.escribir("state/a.json", "{}")
+        self.s.escribir("tests/b.py", "")
+        with mock.patch.object(v, "LISTA_PUBLICABLES", self.s.lista), \
+                mock.patch.object(v, "FICHEROS_AVISO", 5), mock.patch.object(v, "FICHEROS_GRAVE", 6):
+            h = self.tamanos()
         self.assertEqual([x["nivel"] for x in h], [v.AVISO])
-        self.assertIn("ficheros publicados", h[0]["detalle"])
+        self.assertIn("5 ficheros publicados", h[0]["detalle"])
 
 
 class TestEjecucion(unittest.TestCase):
