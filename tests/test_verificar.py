@@ -462,6 +462,16 @@ class TestEjecucion(unittest.TestCase):
         self.assertIn("graves=1", salidas.read_text(encoding="utf-8"))
         self.assertIn("forzado", resumen.read_text(encoding="utf-8"))
 
+    def test_datos_no_bloquean_el_ci(self):
+        # Un titular roto en la última edición: aviso en el CI, grave en la salud diaria.
+        self.s.escribir("data/2026-10-04.json", json.dumps(edicion(
+            boe=[{"ref": "BOE-A-1", "headline": "REGISTRADO HOY: DSCD-15-PL-204.PDF"}])))
+        ci = v.ejecutar(self.s.raiz, "ci")
+        diario = v.ejecutar(self.s.raiz, "diario")
+        self.assertEqual((ci["graves"], diario["graves"]), (0, 1))
+        self.assertIn("no bloquea el CI", ci["hallazgos"][0]["detalle"])
+        self.assertEqual(ci["hallazgos"][0]["nivel"], v.AVISO)
+
     def test_una_comprobacion_que_revienta_es_grave(self):
         with mock.patch.object(v, "comprobar_indice", side_effect=RuntimeError("roto")):
             informe = v.ejecutar(self.s.raiz, "ci")
