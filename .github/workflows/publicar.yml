@@ -49,11 +49,7 @@ on:
         default: ediciones
       extractores: { description: "Archivo (reprocesar): extractores", type: string, default: "nombramientos,provincias" }
   push:
-    # TEMPORAL (validación de la PR «publicacion-artefacto»): workflow_dispatch
-    # solo funciona con el workflow ya en main, así que la prueba de render se
-    # lanza con un push a la rama de la PR. Fuera de main no despliega ni
-    # escribe en datos. Se quita antes de fusionar.
-    branches: [main, publicacion-artefacto]
+    branches: [main]
 
 permissions:
   contents: read
