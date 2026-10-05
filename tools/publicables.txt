@@ -1,0 +1,45 @@
+# Lo que se publica en https://terceracamara.es/ — ÚNICO sitio donde se declara.
+#
+# tools/montar_sitio.py copia estas rutas (relativas a la raíz del repositorio)
+# a _site/, que publicar.yml sube como artefacto de GitHub Pages. Nada que no
+# esté aquí llega a la web. tools/verificar.py comprueba (a) que toda carpeta de
+# primer nivel con HTML está en la lista.
+#
+# Formato: una ruta por línea; se admiten comodines de glob en el nombre
+# (sitemap*.xml). Una carpeta se copia entera. Un «!» delante marca la entrada
+# como obligatoria: si falta, no se despliega.
+#
+# Al añadir una sección con páginas, añade aquí su carpeta y nada más.
+
+# --- Generado por build.py ----------------------------------------------------
+!index.html
+!sitemap.xml
+sitemap-*.xml
+!feed.xml
+!ediciones
+!normas
+temas
+plazos
+diputados
+votaciones
+rankings
+preguntas
+sesiones
+personas
+nombramientos
+tramitacion
+seguimiento
+provincias
+buscar
+mapa
+datos
+
+# --- Escrito a mano, se publica tal cual -------------------------------------
+!CNAME
+!assets
+robots.txt
+llms.txt
+# Verificación de Google Search Console
+google*.html
+# Clave de IndexNow (build.INDEXNOW_KEY): tiene que servirse en la raíz
+d29eac49b00fed8432cc6c405d618f35.txt

@@ -8,9 +8,13 @@ cada módulo, dónde se guarda cada dato y cómo añadir una sección.
 Son decisiones tomadas y no están abiertas a discusión en cada tarea.
 
 - **Nada de commits directos en `main`.** Cada tarea va en su rama y llega a
-  `main` con una PR. Si la validación con datos reales necesita commits del
-  bot, se hace en una rama de pruebas y la PR sale de otra rama con solo el
-  código.
+  `main` con una PR. `main` es solo código: el bot no escribe en ella. La web
+  se publica como artefacto de Pages desde `publicar.yml` y los datos viven en
+  la rama `datos` (ARQUITECTURA.md §8).
+- **La rama `datos` solo la escribe `publicar.yml`** (por `tools/datos.sh`).
+  No se edita a mano, no se fusiona con `main` y no se usa como base de
+  ninguna PR. Las pruebas lanzadas desde otra rama escriben en
+  `datos-pruebas`.
 - **Las herramientas nuevas son deterministas**: nada de LLM, APIs de pago ni
   dependencias nuevas (`requirements.txt`: requests, beautifulsoup4, pypdf).
   La capa Gemini que ya existe (`redaccion.py`) se mantiene para titulares y
@@ -52,8 +56,11 @@ Son decisiones tomadas y no están abiertas a discusión en cada tarea.
   (`cd.PAUSA_BUSCADOR`).
 - Lo que acumula va en `state/`, con `esquema` y poda o partición por año.
   Nunca se guardan textos completos ni PDF si basta una cita y un enlace.
-- Si añades una carpeta publicada, ponla en los tres sitios que indica
-  ARQUITECTURA.md §8.
+- Si añades una carpeta o un fichero publicado, ponlo en
+  `tools/publicables.txt`: es el único sitio (ARQUITECTURA.md §8). Lo que no
+  esté ahí no llega a la web.
+- El acceso a los datos va siempre por `tools/datos.sh`. No leas ni escribas
+  la rama `datos` desde otro sitio.
 - Documenta en el docstring del módulo el formato de la fuente tal como lo
   comprobaste, con la fecha, y los casos que no se cubren.
 - Añade pruebas sin red en `tests/` (`python -m unittest discover tests`).

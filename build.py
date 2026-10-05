@@ -618,11 +618,43 @@ def desambiguar_titulares(articulos: list[dict]) -> None:
     for grupo in vistos.values():
         if len(grupo) < 2:
             continue
-        for a in grupo:
-            materia = materia_de(a.get("titulo_oficial") or a.get("standfirst") or "")
-            if materia:
-                base = recortar(a.get("headline", ""), 58).rstrip("…").rstrip(" ,;")
-                a["headline"] = f"{base}: {recortar(materia, 58).upper()}"
+        materias = [materia_de(a.get("titulo_oficial") or a.get("standfirst") or "") for a in grupo]
+        for a, distinto in zip(grupo, lo_que_distingue(materias)):
+            if not distinto:
+                continue
+            # Antes se pegaba la materia entera recortada con «…», y si las dos
+            # empezaban igual salían otra vez idénticas y rotas (5-10-2026, dos
+            # resoluciones de la Comisión Mixta para las Relaciones con el
+            # Tribunal de Cuentas: «… PARA LAS: APROBADA POR LA COMISIÓN MIXTA
+            # PARA LAS RELACIONES CON EL…»). Ahora va solo lo que las distingue,
+            # cortado por palabra y pasado por la verja de siempre.
+            base = cerrar(a.get("headline", ""), 50)
+            for cand in (f"{base}: {distinto.upper()}", distinto.upper()):
+                cand = sanear_titular(cand)
+                if cand and not titular_valido(cand):
+                    a["headline"] = cand
+                    break
+
+
+def lo_que_distingue(textos: list[str]) -> list[str]:
+    """Para cada texto, lo que queda tras quitar las palabras iniciales que
+    tienen todos en común (y los artículos o preposiciones que cuelguen al
+    principio). "" si no hay diferencia o el texto está vacío."""
+    palabras = [t.split() for t in textos]
+    if not all(palabras):
+        return [""] * len(textos)
+    comun = 0
+    for trozo in zip(*palabras):
+        if len({_limpio(w) for w in trozo}) != 1:
+            break
+        comun += 1
+    salida = []
+    for ws in palabras:
+        resto = ws[comun:]
+        while resto and _limpio(resto[0]) in ABRIDORES:
+            resto = resto[1:]
+        salida.append(" ".join(resto).strip(" ,;:."))
+    return salida
 
 
 

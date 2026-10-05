@@ -1,0 +1,255 @@
+name: Publicar
+
+# Construye el sitio y lo publica como artefacto de GitHub Pages. Es el único
+# workflow que escribe en la rama «datos» y el único que despliega la web:
+# daily.yml (modo diario) y archivo.yml (modo archivo) lo llaman, y un push de
+# código a main lo lanza en modo render. El HTML generado no se guarda en
+# ninguna rama. Ver ARQUITECTURA.md §8.
+#
+# Modos:
+#   render   python build.py --render --sin-red. No descarga nada y no escribe
+#            en datos: repinta la web con el código nuevo y los datos de ayer.
+#   diario   el pase normal (python build.py). Guarda data/, state/ y debug/
+#            en la rama datos y avisa a IndexNow.
+#   archivo  los modos de archivo.yml (ediciones, reprocesar, nombramientos,
+#            repintar). Guarda en datos si hay cambios.
+
+on:
+  workflow_call:
+    inputs:
+      modo:
+        type: string
+        default: render
+      desplegar:
+        type: boolean
+        default: true
+      desde: { type: string, default: "" }
+      hasta: { type: string, default: "" }
+      lote: { type: string, default: "30" }
+      archivo_modo: { type: string, default: ediciones }
+      extractores: { type: string, default: "nombramientos,provincias" }
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "render (solo pinta), diario (pase normal) o archivo"
+        type: choice
+        options: [render, diario, archivo]
+        default: render
+      desplegar:
+        description: "Desplegar en GitHub Pages (false: solo construye y sube el artefacto para revisarlo)"
+        type: boolean
+        default: true
+      desde: { description: "Archivo: primera fecha (AAAA-MM-DD)", type: string, default: "" }
+      hasta: { description: "Archivo: última fecha", type: string, default: "" }
+      lote: { description: "Archivo: máximo de ediciones nuevas", type: string, default: "30" }
+      archivo_modo:
+        description: "Archivo: ediciones, reprocesar, nombramientos o repintar"
+        type: choice
+        options: [ediciones, reprocesar, nombramientos, repintar]
+        default: ediciones
+      extractores: { description: "Archivo (reprocesar): extractores", type: string, default: "nombramientos,provincias" }
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    # Todo lo que escribe en la rama datos va en fila, de uno en uno. Los
+    # repintados (modo render) van en otro grupo para que un push de código
+    # nunca cancele una edición pendiente.
+    concurrency:
+      group: ${{ (inputs.modo || 'render') == 'render' && 'publicar-render' || 'escritura-datos' }}
+      cancel-in-progress: false
+    permissions:
+      contents: write         # solo para escribir en la rama datos (diario y archivo)
+      issues: write           # incidencia «Salud de la edición»
+    env:
+      MODO: ${{ inputs.modo || 'render' }}
+      # Solo main escribe en los datos de producción. Una prueba lanzada desde
+      # otra rama escribe en «datos-pruebas», que parte de «datos» sin tocarla.
+      DATOS_RAMA: ${{ github.ref == 'refs/heads/main' && 'datos' || 'datos-pruebas' }}
+    outputs:
+      montado: ${{ steps.subir.outcome == 'success' }}
+      indexnow: ${{ steps.indexnow.outputs.json }}
+    steps:
+      - name: Descargar el código (main)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0      # historia completa: verificar.py mide el tamaño de main
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Traer los datos (rama datos)
+        run: bash tools/datos.sh traer
+
+      - name: Construir
+        id: construir
+        env:
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODELO: ${{ vars.GEMINI_MODELO }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+          LOTE: ${{ inputs.lote }}
+          ARCHIVO_MODO: ${{ inputs.archivo_modo }}
+          EXTRACTORES: ${{ inputs.extractores }}
+        run: |
+          INICIO=$(date +%s)
+          case "$MODO" in
+            render)
+              python build.py --render --sin-red ;;
+            diario)
+              python build.py ;;
+            archivo)
+              if [ "$ARCHIVO_MODO" = "repintar" ]; then
+                ARGS="--repintar-ediciones"
+              elif [ "$ARCHIVO_MODO" = "nombramientos" ]; then
+                ARGS="--nombramientos-desde $DESDE"
+                if [ -n "$HASTA" ]; then ARGS="$ARGS --nombramientos-hasta $HASTA"; fi
+              elif [ "$ARCHIVO_MODO" = "reprocesar" ]; then
+                ARGS="--reprocesar-desde $DESDE --extractores ${EXTRACTORES:-nombramientos,provincias}"
+                if [ -n "$HASTA" ]; then ARGS="$ARGS --reprocesar-hasta $HASTA"; fi
+              else
+                ARGS="--archivo-desde $DESDE --lote $LOTE"
+                if [ -n "$HASTA" ]; then ARGS="$ARGS --archivo-hasta $HASTA"; fi
+              fi
+              python build.py $ARGS ;;
+            *)
+              echo "Modo desconocido: $MODO"; exit 1 ;;
+          esac
+          echo "Construcción ($MODO): $(( $(date +%s) - INICIO )) s" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      # render: el mismo criterio que ci.yml (un grave no se despliega).
+      # diario/archivo: la salud informa, no bloquea; la edición sale siempre.
+      - name: Verificar
+        id: salud
+        if: always()
+        continue-on-error: ${{ (inputs.modo || 'render') != 'render' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFICAR_REF_DATOS: origin/${{ github.ref == 'refs/heads/main' && 'datos' || 'datos-pruebas' }}
+        run: |
+          export REPO_TAMANO_KB=$(gh api "repos/$GITHUB_REPOSITORY" --jq .size 2>/dev/null || true)
+          case "$MODO" in
+            render)  python tools/verificar.py --modo ci ;;
+            diario)  python tools/verificar.py --modo diario --fecha "$(date +%Y-%m-%d)" \
+                       --markdown "$RUNNER_TEMP/salud.md" ;;
+            archivo) python tools/verificar.py --modo diario --salida "$RUNNER_TEMP/salud.json" \
+                       --markdown "$RUNNER_TEMP/salud.md" ;;
+          esac
+
+      - name: Guardar los datos (rama datos)
+        if: always() && env.MODO != 'render'
+        env:
+          ARCHIVO_MODO: ${{ inputs.archivo_modo }}
+          DESDE: ${{ inputs.desde }}
+          HASTA: ${{ inputs.hasta }}
+        run: |
+          if [ "$MODO" = "diario" ]; then
+            bash tools/datos.sh guardar "Edición del $(date +%Y-%m-%d)"
+          else
+            bash tools/datos.sh guardar "Archivo (${ARCHIVO_MODO:-ediciones}): de ${DESDE:-?} a ${HASTA:-la primera publicada}"
+          fi
+
+      - name: Incidencia de salud
+        if: always() && env.MODO != 'render' && steps.salud.outputs.graves != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: bash tools/incidencia_salud.sh "${{ steps.salud.outputs.graves }}" "$(date +%Y-%m-%d)" "$RUNNER_TEMP/salud.md"
+
+      # Solo lo publicable (tools/publicables.txt). Comprueba lo obligatorio,
+      # el CNAME y el límite de 1 GB de Pages; si algo falla, no se despliega.
+      - name: Montar _site
+        id: montar
+        if: always() && (env.MODO != 'render' || steps.salud.outcome == 'success')
+        run: python tools/montar_sitio.py
+
+      - name: Subir el artefacto de Pages
+        id: subir
+        if: always() && steps.montar.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Lista de IndexNow
+        id: indexnow
+        if: always() && steps.subir.outcome == 'success' && env.MODO != 'render'
+        run: |
+          if [ -s indexnow.json ]; then
+            { echo "json<<FIN_INDEXNOW"; cat indexnow.json; echo; echo "FIN_INDEXNOW"; } >> "$GITHUB_OUTPUT"
+          fi
+
+  desplegar:
+    needs: construir
+    # En un push solo despliega main; a mano o desde daily/archivo, según el input.
+    if: >-
+      always() && needs.construir.outputs.montado == 'true' &&
+      ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+       (github.event_name != 'push' && inputs.desplegar))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      # Mientras Settings › Pages no esté en «GitHub Actions» (o si se ha vuelto
+      # atrás a «Deploy from a branch»), no se intenta desplegar.
+      - name: Comprobar la fuente de Pages
+        id: fuente
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TIPO=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type 2>/dev/null || echo "desconocido")
+          echo "Fuente de Pages: $TIPO"
+          echo "tipo=$TIPO" >> "$GITHUB_OUTPUT"
+          if [ "$TIPO" != "workflow" ]; then
+            echo "::notice::Pages no publica desde GitHub Actions (build_type=$TIPO): no se despliega. Ver ARQUITECTURA.md §8."
+          fi
+
+      - name: Desplegar en GitHub Pages
+        id: despliegue
+        if: steps.fuente.outputs.tipo == 'workflow'
+        uses: actions/deploy-pages@v4
+
+      - name: Comprobar la web
+        if: steps.fuente.outputs.tipo == 'workflow'
+        run: |
+          sleep 20
+          URL="https://terceracamara.es/"
+          CODIGO=$(curl -sS -o /tmp/portada.html -w "%{http_code}" "$URL")
+          echo "$URL respondió $CODIGO"
+          test "$CODIGO" = "200"
+          grep -q '<link rel="canonical" href="https://terceracamara.es/"' /tmp/portada.html
+          echo "Portada servida con su canonical."
+
+      - name: Avisar a los buscadores (IndexNow)
+        if: steps.fuente.outputs.tipo == 'workflow' && needs.construir.outputs.indexnow != ''
+        continue-on-error: true
+        env:
+          LISTA: ${{ needs.construir.outputs.indexnow }}
+        run: |
+          printf '%s' "$LISTA" > indexnow.json
+          CODIGO=$(curl -sS -o /tmp/indexnow.out -w "%{http_code}" -X POST \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data @indexnow.json https://api.indexnow.org/IndexNow)
+          echo "IndexNow respondió $CODIGO"; cat /tmp/indexnow.out 2>/dev/null || true

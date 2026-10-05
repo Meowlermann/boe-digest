@@ -38,6 +38,11 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
+      # Los datos reales (data/, state/, debug/) viven en la rama datos: se
+      # traen para pintar con ellos. Solo lectura: el CI no escribe en ninguna rama.
+      - name: Traer los datos (rama datos)
+        run: bash tools/datos.sh traer
+
       - name: Compilar
         run: python -m compileall -q -x '(^|/)\.git/' .
 
@@ -53,6 +58,7 @@ jobs:
       - name: Verificar el resultado
         env:
           GH_TOKEN: ${{ github.token }}
+          VERIFICAR_REF_DATOS: origin/datos
         run: |
           # Tamaño real del repositorio (el checkout es superficial); si la API
           # no responde, se mide solo lo descargado.
@@ -61,3 +67,8 @@ jobs:
           # edición más reciente de data/. Falla si hay algún hallazgo grave;
           # los avisos van al resumen del job.
           python tools/verificar.py --modo ci
+
+      # Lo mismo que publicaría publicar.yml: lo obligatorio, el CNAME y el
+      # límite de 1 GB de Pages. No sube nada.
+      - name: Montar _site (sin publicar)
+        run: python tools/montar_sitio.py

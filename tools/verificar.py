@@ -17,8 +17,8 @@ no bloquea la publicación.
 
 Comprobaciones (las letras son las de la PR que las introdujo):
 
-  a) carpetas    Cada carpeta publicada está en los tres sitios de
-                 ARQUITECTURA.md §8 (build.main() y los dos workflows).
+  a) carpetas    Toda carpeta con HTML y todo fichero de la web de la raíz
+                 están en tools/publicables.txt (ARQUITECTURA.md §8).
   b) html        Marcadores sin sustituir, <title>, meta description y
                  canonical, y enlaces internos rotos.
   c) sitemap     XML válido, URL del dominio que existen, sin duplicados,
@@ -26,7 +26,7 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   d) indice      datos/indice*.json válido y < 1 MB cada uno.
   e) titulares   Heurísticas sobre los titulares de data/<fecha>.json.
   f) duplicados  Piezas repetidas respecto a los 7 días anteriores.
-  g) tamanos     state/, .git y número de ficheros publicados.
+  g) tamanos     state/, historia de main y de la rama datos, y lo publicado.
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -59,13 +59,15 @@ AVISO = "aviso"
 
 # Carpetas de primer nivel que no son parte del sitio aunque contengan HTML
 # (o puedan contenerlo): código, pruebas, documentación y utilidades.
-NO_PUBLICADAS = {".git", ".github", "node_modules", "tests", "app", "docs",
+NO_PUBLICADAS = {".git", ".github", "node_modules", "tests", "app", "docs", "_site",
                  "disparador", "geo", "tools", "__pycache__"}
 # Ficheros HTML de la raíz que no son páginas del sitio: plantillas con
 # marcadores y verificaciones de propiedad de buscadores.
 HTML_RAIZ_IGNORADOS = re.compile(r"^(template.*|google[0-9a-f]+)\.html$")
 
-WORKFLOWS_PUBLICACION = (".github/workflows/daily.yml", ".github/workflows/archivo.yml")
+LISTA_PUBLICABLES = pathlib.Path(__file__).resolve().parent / "publicables.txt"
+# montar_sitio.py (mismo directorio) lee esa lista; se importa desde aquí.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 
 def hallazgo(nivel: str, comprobacion: str, detalle: str, fichero: str = "",
@@ -98,64 +100,52 @@ def carpetas_publicadas(raiz: pathlib.Path) -> list[str]:
     return salida
 
 
-def carpetas_build(texto: str) -> set[str] | None:
-    """Carpetas del bucle `for carpeta in (…)` de main() en build.py.
-
-    Traduce las constantes (`NORMAS_DIR = ROOT / "normas"`) a nombres de
-    carpeta. Devuelve None si no encuentra el bucle."""
-    constantes = dict(re.findall(r'^(\w+)\s*=\s*ROOT\s*/\s*"([^"/]+)"\s*$', texto, re.M))
-    m_main = re.search(r"^def main\(.*?(?=^def |\Z)", texto, re.M | re.S)
-    if not m_main:
-        return None
-    m = re.search(r"for\s+carpeta\s+in\s*\((.*?)\)\s*:", m_main.group(0), re.S)
-    if not m:
-        return None
-    nombres = re.findall(r"[A-Z_][A-Z0-9_]*", m.group(1))
-    return {constantes.get(n, n) for n in nombres}
+def _publicables(lista: pathlib.Path | None = None) -> list[tuple[str, bool]]:
+    import montar_sitio                                       # noqa: PLC0415 (mismo directorio)
+    return montar_sitio.leer_publicables(lista or LISTA_PUBLICABLES)
 
 
-def carpetas_workflow(texto: str) -> tuple[set[str] | None, set[str] | None]:
-    """(carpetas de `mkdir -p`, carpetas de `git add -A`) del paso de publicar."""
-    def tokens(patron: str) -> set[str] | None:
-        lineas = re.findall(patron, texto, re.M)
-        if not lineas:
-            return None
-        return {t.strip("'\"") for linea in lineas for t in linea.split()}
-    return tokens(r"^\s*mkdir -p (.+)$"), tokens(r"^\s*git add -A (.+)$")
-
-
-def comprobar_carpetas(raiz: pathlib.Path) -> list[dict]:
-    hallazgos = []
-    publicadas = carpetas_publicadas(raiz)
-    que = ("añádela en los tres sitios de ARQUITECTURA.md §8: el bucle de mkdir de "
-           "build.main() y las líneas mkdir -p y git add -A de daily.yml y archivo.yml.")
+def ficheros_raiz_web(raiz: pathlib.Path) -> list[str]:
+    """Ficheros de la raíz que forman parte de la web: los HTML (no las
+    plantillas), los XML, CNAME, robots.txt, llms.txt y la clave de IndexNow."""
+    clave = None
     build = raiz / "build.py"
-    en_build = carpetas_build(build.read_text(encoding="utf-8")) if build.exists() else None
-    if en_build is None:
-        hallazgos.append(hallazgo(GRAVE, "carpetas", "No se encuentra el bucle "
-                                  "`for carpeta in (…)` de main() en build.py.", "build.py",
-                                  "restaura el bucle o actualiza carpetas_build() en tools/verificar.py."))
-    else:
-        for c in publicadas:
-            if c not in en_build:
-                hallazgos.append(hallazgo(GRAVE, "carpetas", f"La carpeta publicada «{c}/» no "
-                                          "está en el bucle de mkdir de build.main().", "build.py", que))
-    for wf in WORKFLOWS_PUBLICACION:
-        ruta = raiz / wf
-        if not ruta.exists():
-            hallazgos.append(hallazgo(GRAVE, "carpetas", f"No existe {wf}.", wf,
-                                      "restaura el workflow o actualiza WORKFLOWS_PUBLICACION."))
+    if build.exists():
+        m = re.search(r'^INDEXNOW_KEY\s*=\s*"([0-9a-f]+)"', build.read_text(encoding="utf-8"), re.M)
+        clave = f"{m.group(1)}.txt" if m else None
+    salida = []
+    for p in sorted(raiz.iterdir()):
+        if not p.is_file():
             continue
-        mk, add = carpetas_workflow(ruta.read_text(encoding="utf-8"))
-        for nombre, conjunto in (("mkdir -p", mk), ("git add -A", add)):
-            if conjunto is None:
-                hallazgos.append(hallazgo(GRAVE, "carpetas", f"{wf} no tiene la línea `{nombre}`.",
-                                          wf, "restaura el paso «Publicar si hay cambios»."))
-                continue
-            for c in publicadas:
-                if c not in conjunto:
-                    hallazgos.append(hallazgo(GRAVE, "carpetas", f"La carpeta publicada «{c}/» no "
-                                              f"está en la línea `{nombre}` de {wf}.", wf, que))
+        n = p.name
+        if ((n.endswith(".html") and not n.startswith("template")) or n.endswith(".xml")
+                or n in ("CNAME", "robots.txt", "llms.txt") or n == clave):
+            salida.append(n)
+    return salida
+
+
+def comprobar_carpetas(raiz: pathlib.Path, lista: pathlib.Path | None = None) -> list[dict]:
+    """(a) Todo lo que forma la web está en tools/publicables.txt, el único
+    sitio donde se declara (ARQUITECTURA.md §8). Lo que no está ahí no llega al
+    artefacto de Pages: una carpeta olvidada es una sección que desaparece."""
+    rel_lista = "tools/publicables.txt"
+    try:
+        patrones = [p for p, _ in _publicables(lista)]
+    except FileNotFoundError:
+        return [hallazgo(GRAVE, "carpetas", "No existe tools/publicables.txt.", rel_lista,
+                         "restáuralo: es la lista de lo que se publica.")]
+    import montar_sitio                                       # noqa: PLC0415
+    hallazgos = []
+    for c in carpetas_publicadas(raiz):
+        if not montar_sitio.cubre(patrones, c):
+            hallazgos.append(hallazgo(GRAVE, "carpetas", f"La carpeta publicada «{c}/» no está "
+                                      "en tools/publicables.txt.", rel_lista,
+                                      f"añade «{c}» a tools/publicables.txt (ARQUITECTURA.md §8)."))
+    for f in ficheros_raiz_web(raiz):
+        if not montar_sitio.cubre(patrones, f):
+            hallazgos.append(hallazgo(GRAVE, "carpetas", f"El fichero de la web «{f}» no está en "
+                                      "tools/publicables.txt.", rel_lista,
+                                      f"añade «{f}» a tools/publicables.txt (ARQUITECTURA.md §8)."))
     return hallazgos
 
 
@@ -552,39 +542,53 @@ def comprobar_duplicados(raiz: pathlib.Path, fecha: str) -> list[dict]:
 
 STATE_AVISO_BYTES = 10 * 1024 ** 2
 STATE_GRAVE_BYTES = 25 * 1024 ** 2
-GIT_AVISO_BYTES = 500 * 1024 ** 2
+GIT_AVISO_BYTES = 500 * 1024 ** 2       # historia de main
 GIT_GRAVE_BYTES = 900 * 1024 ** 2
-# Número de ficheros publicados (todo lo versionado que sirve Pages). En
-# octubre de 2026 hay unos 7.500; el aviso deja margen de un orden de magnitud.
+DATOS_AVISO_BYTES = 200 * 1024 ** 2     # historia de la rama datos
+DATOS_GRAVE_BYTES = 500 * 1024 ** 2
+# Número de ficheros publicados (lo que va a _site). En octubre de 2026 hay
+# unos 7.000; el aviso deja margen de un orden de magnitud.
 FICHEROS_AVISO = 60_000
 FICHEROS_GRAVE = 150_000
 # Tamaño publicado: el límite de GitHub Pages es 1 GB.
 PUBLICADO_AVISO_BYTES = 600 * 1024 ** 2
 PUBLICADO_GRAVE_BYTES = 900 * 1024 ** 2
 
-_UNIDADES = {"bytes": 1, "b": 1, "kib": 1024, "mib": 1024 ** 2, "gib": 1024 ** 3,
-             "kb": 1000, "mb": 1000 ** 2, "gb": 1000 ** 3}
+
+def _git(raiz: pathlib.Path, *args: str) -> str | None:
+    try:
+        return subprocess.run(["git", *args], cwd=raiz, check=True, capture_output=True,
+                              text=True, timeout=120).stdout.strip()
+    except Exception:                                         # noqa: BLE001
+        return None
 
 
-def bytes_de_texto(valor: str) -> int:
-    """'61.41 MiB' → bytes (formato de `git count-objects -vH`)."""
-    m = re.match(r"\s*([\d.]+)\s*([A-Za-z]+)?", valor or "")
-    if not m:
-        return 0
-    return int(float(m.group(1)) * _UNIDADES.get((m.group(2) or "bytes").lower(), 1))
-
-
-def tamano_git(salida_count_objects: str) -> int:
-    datos = dict(l.split(":", 1) for l in salida_count_objects.splitlines() if ":" in l)
-    return (bytes_de_texto(datos.get("size", "0")) + bytes_de_texto(datos.get("size-pack", "0"))
-            + bytes_de_texto(datos.get("size-garbage", "0")))
+def tamano_ref(raiz: pathlib.Path, ref: str) -> int | None:
+    """Bytes en disco de toda la historia alcanzable desde `ref`
+    (`git rev-list --disk-usage --objects`). None si no se puede medir: sin
+    repositorio, sin esa referencia o, para HEAD, con un clon superficial (solo
+    tendría el último commit)."""
+    if not (raiz / ".git").exists() or _git(raiz, "rev-parse", "--verify", "--quiet", ref) is None:
+        return None
+    if ref == "HEAD" and _git(raiz, "rev-parse", "--is-shallow-repository") == "true":
+        return None
+    salida = _git(raiz, "rev-list", "--disk-usage", "--objects", ref)
+    return int(salida) if salida and salida.isdigit() else None
 
 
 def _nivel_tamano(valor: int, aviso: int, grave: int) -> str | None:
     return GRAVE if valor >= grave else AVISO if valor >= aviso else None
 
 
-def comprobar_tamanos(raiz: pathlib.Path, salida_git: str | None = None) -> list[dict]:
+def comprobar_tamanos(raiz: pathlib.Path, tam_main: int | None = None,
+                      tam_datos: int | None = None) -> list[dict]:
+    """(g) state/, historia de main, historia de la rama datos y lo publicado.
+
+    `tam_main` y `tam_datos` (bytes) son para las pruebas; si no se pasan se
+    miden con tamano_ref(): main en HEAD y datos en VERIFICAR_REF_DATOS (los
+    workflows ponen origin/datos). Con un clon superficial de main (ci.yml) se
+    usa REPO_TAMANO_KB, el tamaño de todo el repositorio que da la API: es una
+    cota superior."""
     hallazgos = []
     for f in sorted((raiz / "state").rglob("*")) if (raiz / "state").exists() else []:
         if not f.is_file():
@@ -595,33 +599,35 @@ def comprobar_tamanos(raiz: pathlib.Path, salida_git: str | None = None) -> list
             hallazgos.append(hallazgo(nivel, "tamanos", f"{_rel(raiz, f)} pesa "
                                       f"{tam / 1024 ** 2:.1f} MiB.", _rel(raiz, f),
                                       "pódalo por ventana o pártelo por año (ARQUITECTURA.md §7)."))
-    if salida_git is None and (raiz / ".git").exists():
-        try:
-            salida_git = subprocess.run(["git", "count-objects", "-vH"], cwd=raiz, check=True,
-                                        capture_output=True, text=True, timeout=60).stdout
-        except Exception:                                     # noqa: BLE001
-            salida_git = None
-    tam_git = tamano_git(salida_git) if salida_git else None
-    # En Actions el checkout es superficial (fetch-depth 1): .git solo tiene el
-    # último commit y no dice nada del historial. Los workflows pasan entonces
-    # el tamaño del repositorio que da la API de GitHub (en KB) y manda ese.
-    if (raiz / ".git" / "shallow").exists() and os.environ.get("REPO_TAMANO_KB", "").isdigit():
-        tam_git = int(os.environ["REPO_TAMANO_KB"]) * 1024
-    if tam_git is not None:
-        nivel = _nivel_tamano(tam_git, GIT_AVISO_BYTES, GIT_GRAVE_BYTES)
+    origen = "historia de main"
+    if tam_main is None:
+        tam_main = tamano_ref(raiz, "HEAD")
+        if tam_main is None and os.environ.get("REPO_TAMANO_KB", "").isdigit():
+            tam_main, origen = int(os.environ["REPO_TAMANO_KB"]) * 1024, "repositorio entero (API)"
+    if tam_main is not None:
+        nivel = _nivel_tamano(tam_main, GIT_AVISO_BYTES, GIT_GRAVE_BYTES)
         if nivel:
-            hallazgos.append(hallazgo(nivel, "tamanos", f".git ocupa {tam_git / 1024 ** 2:.0f} MiB.",
-                                      ".git", "aplica la salida 2 de ARQUITECTURA.md §7 "
-                                      "(separar la web del código)."))
+            hallazgos.append(hallazgo(nivel, "tamanos", f"La {origen} ocupa "
+                                      f"{tam_main / 1024 ** 2:.0f} MiB.", ".git",
+                                      "main solo debería crecer con código: busca qué ficheros "
+                                      "grandes se están commiteando."))
+    if tam_datos is None and os.environ.get("VERIFICAR_REF_DATOS"):
+        tam_datos = tamano_ref(raiz, os.environ["VERIFICAR_REF_DATOS"])
+    if tam_datos is not None:
+        nivel = _nivel_tamano(tam_datos, DATOS_AVISO_BYTES, DATOS_GRAVE_BYTES)
+        if nivel:
+            hallazgos.append(hallazgo(nivel, "tamanos", f"La historia de la rama datos ocupa "
+                                      f"{tam_datos / 1024 ** 2:.0f} MiB.", "datos",
+                                      "compacta la rama datos (ARQUITECTURA.md §8)."))
+    import montar_sitio                                       # noqa: PLC0415
     n, total = 0, 0
-    for actual, dirs, ficheros in os.walk(raiz):
-        dirs[:] = [d for d in dirs if d not in (".git", "node_modules", "__pycache__")]
-        for f in ficheros:
-            n += 1
-            try:
-                total += os.path.getsize(os.path.join(actual, f))
-            except OSError:
-                pass
+    try:
+        for patron, _ in _publicables():
+            for r in montar_sitio.resolver(raiz, patron):
+                a, b = montar_sitio.tamano(r)
+                n, total = n + a, total + b
+    except FileNotFoundError:
+        pass                              # ya lo informa comprobar_carpetas
     nivel = _nivel_tamano(n, FICHEROS_AVISO, FICHEROS_GRAVE)
     if nivel:
         hallazgos.append(hallazgo(nivel, "tamanos", f"{n} ficheros publicados.", "",
@@ -642,6 +648,10 @@ def ultima_edicion(raiz: pathlib.Path) -> str | None:
     ids = sorted(p.stem for p in (raiz / "data").glob("*.json")
                  if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem))
     return ids[-1] if ids else None
+
+
+# Comprobaciones sobre los datos de la edición (no sobre el código).
+COMPROBACIONES_DE_DATOS = {"titulares", "duplicados"}
 
 
 def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
@@ -665,6 +675,17 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
             # rota pasaría por verde.
             hallazgos.append(hallazgo(GRAVE, nombre, f"La comprobación falló: {exc!r}.",
                                       "tools/verificar.py", "corrige el verificador con un test."))
+    if modo == "ci":
+        # El CI juzga el código; los datos los juzga la salud diaria. (e) y (f)
+        # miran la última edición de data/, que escribió el pase diario y que
+        # ninguna PR puede corregir (la edición se rehace con el código nuevo
+        # solo después de fusionar). Ahí un grave bloquearía cualquier PR, así
+        # que en el CI pasan a aviso; en modo diario siguen siendo graves y
+        # abren la incidencia. Decidido el 5-10-2026 con el mantenedor.
+        for h in hallazgos:
+            if h["nivel"] == GRAVE and h["comprobacion"] in COMPROBACIONES_DE_DATOS:
+                h["nivel"] = AVISO
+                h["detalle"] = "(datos: grave en la salud diaria, no bloquea el CI) " + h["detalle"]
     if os.environ.get("SALUD_FORZAR_GRAVE") == "1":
         # Solo para probar la apertura de la incidencia en una rama de pruebas.
         hallazgos.append(hallazgo(GRAVE, "forzado", "Hallazgo grave forzado con "
