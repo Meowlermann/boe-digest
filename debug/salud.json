@@ -2,20 +2,7 @@
   "esquema": 1,
   "modo": "diario",
   "fecha": "2026-10-05",
-  "graves": 2,
+  "graves": 0,
   "avisos": 0,
-  "hallazgos": [
-    {
-      "nivel": "grave",
-      "comprobacion": "titulares",
-      "detalle": "[boe] «RESOLUCIÓN, APROBADA POR LA COMISIÓN MIXTA PARA LAS: APROBADA POR LA COMISIÓN MIXTA PARA LAS RELACIONES CON EL…»: termina en preposición, artículo o conjunción. Qué hacer: corrige la plantilla o el recorte que lo genera (o ponlo bien en curated/ si es un caso suelto).",
-      "fichero": "data/2026-10-05.json"
-    },
-    {
-      "nivel": "grave",
-      "comprobacion": "titulares",
-      "detalle": "[boe] «RESOLUCIÓN, APROBADA POR LA COMISIÓN MIXTA PARA LAS: APROBADA POR LA COMISIÓN MIXTA PARA LAS RELACIONES CON EL…»: termina en preposición, artículo o conjunción. Qué hacer: corrige la plantilla o el recorte que lo genera (o ponlo bien en curated/ si es un caso suelto).",
-      "fichero": "data/2026-10-05.json"
-    }
-  ]
+  "hallazgos": []
 }
