@@ -433,8 +433,8 @@ el detalle de los graves acaba en «Qué hacer: …».
 | b | `html`: marcadores sin sustituir (`{{`, `}}`, `__SSR_…__`, `None`, `undefined`, `NaN`, `<EMAIL_DE_CONTACTO>`, fuera de `<script>`), JSON-LD estricto, `<title>`, meta description y canonical de `https://terceracamara.es`, enlaces internos a ficheros inexistentes | grave |
 | c | `sitemap`: XML válido, URL del dominio que existen, sin duplicados, ≤ 50.000 por fichero | grave |
 | d | `indice`: `datos/indice*.json` válido y < 1 MB | grave |
-| e | `titulares` de `data/<fecha>.json` (BOE y Cortes): fin en preposición/artículo/conjunción, nombres de fichero o códigos, «Y N ASUNTOS MÁS», longitud, palabra cortada | grave (muy largo: aviso) |
-| f | `duplicados`: identificador (referencia del BOE o documento oficial) ya publicado en los 7 días anteriores; titular repetido con otro documento | grave / aviso |
+| e | `titulares` de `data/<fecha>.json` (BOE y Cortes): fin en preposición/artículo/conjunción, nombres de fichero o códigos, «Y N ASUNTOS MÁS», longitud, palabra cortada | grave (muy largo: aviso); en el CI, aviso |
+| f | `duplicados`: identificador (referencia del BOE o documento oficial) ya publicado en los 7 días anteriores; titular repetido con otro documento | grave / aviso; en el CI, aviso |
 | g | `tamanos`: ficheros de `state/` (aviso 10 MB, grave 25 MB), historia de `main` (aviso 500 MB, grave 900 MB), historia de la rama `datos` (aviso 200 MB, grave 500 MB), número y peso de lo que va a `_site` | aviso / grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
@@ -459,8 +459,11 @@ En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
 `python tools/verificar.py --modo ci`: (a), (b), (c), (d) y (g) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
-cualquier grave; los avisos van al resumen del job. `permissions: contents:
-read`, sin secretos, nunca hace commit ni push. Al final monta `_site` con
+cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
+datos que escribió el pase diario y que ninguna PR puede corregir (la edición
+se rehace con el código nuevo solo después de fusionar), así que bloquearían
+cualquier PR. En la salud diaria siguen siendo graves y abren la incidencia.
+Los avisos van al resumen del job. `permissions: contents: read`, sin secretos, nunca hace commit ni push. Al final monta `_site` con
 `tools/montar_sitio.py`, sin subirlo. El render completo tarda unos 20 s.
 
 ### Salud diaria (`publicar.yml`, modos `diario` y `archivo`)
