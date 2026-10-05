@@ -4636,9 +4636,22 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-05"
+  },
+  "C-23e0547981320d47": {
+   "huella": "e2a7e9ef81c9d027",
+   "fuente": "104e84fed1e342c5",
+   "titular": "32 preguntas escritas en el Congreso superan los 20 días hábiles sin respuesta",
+   "entradilla": "El Congreso registra 32 preguntas escritas que rebasan el plazo habitual de contestación, con la más antigua fechada en febrero de 2026.",
+   "claves": [
+    "Un total de 32 preguntas escritas acumulan más de 20 días hábiles desde su publicación sin que conste respuesta registrada.",
+    "Por grupos parlamentarios, Sumar acumula 19 preguntas pendientes, el PSOE 7, el PP 3 y el grupo mixto y autonómico 3.",
+    "La pregunta más antigua de este recuento se publicó el lunes 23 de febrero de 2026."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-05"
   }
  },
  "uso": {
-  "2026-10-05": 4
+  "2026-10-05": 5
  }
 }
