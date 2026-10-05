@@ -3,7 +3,7 @@
   "modo": "diario",
   "fecha": "2026-10-05",
   "graves": 2,
-  "avisos": 1,
+  "avisos": 0,
   "hallazgos": [
     {
       "nivel": "grave",
@@ -15,12 +15,6 @@
       "nivel": "grave",
       "comprobacion": "titulares",
       "detalle": "[boe] «RESOLUCIÓN, APROBADA POR LA COMISIÓN MIXTA PARA LAS: APROBADA POR LA COMISIÓN MIXTA PARA LAS RELACIONES CON EL…»: termina en preposición, artículo o conjunción. Qué hacer: corrige la plantilla o el recorte que lo genera (o ponlo bien en curated/ si es un caso suelto).",
-      "fichero": "data/2026-10-05.json"
-    },
-    {
-      "nivel": "aviso",
-      "comprobacion": "duplicados",
-      "detalle": "[cortes] titular repetido del 2026-10-04: «29 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada».",
       "fichero": "data/2026-10-05.json"
     }
   ]
