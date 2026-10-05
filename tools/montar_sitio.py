@@ -102,8 +102,9 @@ def montar(raiz: pathlib.Path, destino: pathlib.Path) -> tuple[list[str], dict]:
     n, b = tamano(destino)
     if b >= LIMITE_PAGES_BYTES:
         problemas.append(f"_site ocupa {b / 1024 ** 2:.0f} MiB: pasa del límite de Pages (1 GB).")
+    raiz_sitio = sorted(p.name + ("/" if p.is_dir() else "") for p in destino.iterdir())
     resumen = {"entradas": copiadas, "ficheros": n, "bytes": b,
-               "aviso": b >= AVISO_PAGES_BYTES}
+               "aviso": b >= AVISO_PAGES_BYTES, "raiz": raiz_sitio}
     return problemas, resumen
 
 
@@ -115,6 +116,7 @@ def main(argv: list[str] | None = None) -> int:
     problemas, r = montar(pathlib.Path(args.raiz).resolve(), pathlib.Path(args.destino).resolve())
     texto = (f"### Sitio montado\n\n{r['entradas']} entradas, {r['ficheros']} ficheros, "
              f"**{r['bytes'] / 1024 ** 2:.1f} MiB** (límite de Pages: 1 GB).\n")
+    texto += "\nRaíz de `_site`: " + ", ".join(f"`{x}`" for x in r["raiz"]) + "\n"
     if r["aviso"]:
         texto += "\n⚠️ Pasa de 800 MiB: aplica las salidas de ARQUITECTURA.md §7.\n"
     for p in problemas:
