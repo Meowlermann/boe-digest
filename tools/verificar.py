@@ -650,6 +650,10 @@ def ultima_edicion(raiz: pathlib.Path) -> str | None:
     return ids[-1] if ids else None
 
 
+# Comprobaciones sobre los datos de la edición (no sobre el código).
+COMPROBACIONES_DE_DATOS = {"titulares", "duplicados"}
+
+
 def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
     """Corre todas las comprobaciones y devuelve el informe."""
     fecha = fecha or ultima_edicion(raiz)
@@ -671,6 +675,17 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
             # rota pasaría por verde.
             hallazgos.append(hallazgo(GRAVE, nombre, f"La comprobación falló: {exc!r}.",
                                       "tools/verificar.py", "corrige el verificador con un test."))
+    if modo == "ci":
+        # El CI juzga el código; los datos los juzga la salud diaria. (e) y (f)
+        # miran la última edición de data/, que escribió el pase diario y que
+        # ninguna PR puede corregir (la edición se rehace con el código nuevo
+        # solo después de fusionar). Ahí un grave bloquearía cualquier PR, así
+        # que en el CI pasan a aviso; en modo diario siguen siendo graves y
+        # abren la incidencia. Decidido el 5-10-2026 con el mantenedor.
+        for h in hallazgos:
+            if h["nivel"] == GRAVE and h["comprobacion"] in COMPROBACIONES_DE_DATOS:
+                h["nivel"] = AVISO
+                h["detalle"] = "(datos: grave en la salud diaria, no bloquea el CI) " + h["detalle"]
     if os.environ.get("SALUD_FORZAR_GRAVE") == "1":
         # Solo para probar la apertura de la incidencia en una rama de pruebas.
         hallazgos.append(hallazgo(GRAVE, "forzado", "Hallazgo grave forzado con "
