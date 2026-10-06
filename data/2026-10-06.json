@@ -334,7 +334,7 @@
       "rows": [
         {
           "g": "Sumar",
-          "n": 23
+          "n": 24
         },
         {
           "g": "PSOE",
@@ -363,11 +363,11 @@
         "chamber": "congreso",
         "type": "Preguntas pendientes",
         "date": "martes 6 de octubre de 2026",
-        "headline": "36 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada",
+        "headline": "37 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada",
         "standfirst": "Recuento sobre las preguntas del último año con la fecha límite que publica el Congreso ya superada. Puede haber prórrogas o respuestas aún no reflejadas en la ficha.",
         "body": [
           "La más antigua se publicó el lunes 23 de febrero de 2026.",
-          "Por grupo de quien pregunta: Sumar 23, PSOE 7, PP 3, GV (EAJ-PNV 1, Junts 1, Sin grupo 1."
+          "Por grupo de quien pregunta: Sumar 24, PSOE 7, PP 3, GV (EAJ-PNV 1, Junts 1, Sin grupo 1."
         ],
         "source": {
           "label": "Pendientes más antiguas",
@@ -375,19 +375,19 @@
         }
       },
       {
-        "chamber": "congreso",
-        "type": "Tramitación",
-        "date": "martes, 6 de octubre de 2026",
-        "headline": "1 PLAZO DE ENMIENDAS TERMINA ANTES DEL MARTES, 13 DE OCTUBRE DE 2026",
-        "standfirst": "Hasta esa fecha los grupos pueden presentar enmiendas a estas iniciativas.",
         "body": [
           "«Proyecto de Ley por la que se adoptan medidas fiscales y financieras urgentes que contribuyan a la reconstrucción económica y social de la…» (121/000115): hasta el martes, 13 de octubre de 2026.",
           "Otras 156 iniciativas tienen un plazo ampliado que vence esta semana; la lista de las que más ampliaciones acumulan está en tramitacion/ampliaciones.html."
         ],
+        "chamber": "congreso",
+        "date": "martes, 6 de octubre de 2026",
+        "headline": "1 PLAZO DE ENMIENDAS TERMINA ANTES DEL MARTES, 13 DE OCTUBRE DE 2026",
         "source": {
           "label": "Qué se tramita",
           "url": "https://terceracamara.es/tramitacion/"
-        }
+        },
+        "standfirst": "Hasta esa fecha los grupos pueden presentar enmiendas a estas iniciativas.",
+        "type": "Tramitación"
       }
     ],
     "coverage": {
