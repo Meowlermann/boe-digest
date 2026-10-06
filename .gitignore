@@ -2,3 +2,32 @@ __pycache__/
 indexnow.json
 node_modules/
 _site/
+
+# Desde la PR «main-solo-codigo» main es solo código. Esto lo genera build.py
+# o lo trae tools/datos.sh de la rama datos, y nunca se versiona aquí: la web
+# sale como artefacto de Pages (publicar.yml) y los datos viven en la rama
+# datos. Ver ARQUITECTURA.md §8.
+/data/
+/state/
+/debug/
+/ediciones/
+/normas/
+/temas/
+/plazos/
+/diputados/
+/votaciones/
+/rankings/
+/preguntas/
+/sesiones/
+/personas/
+/nombramientos/
+/tramitacion/
+/seguimiento/
+/provincias/
+/buscar/
+/mapa/
+/datos/
+/index.html
+/sitemap.xml
+/sitemap-*.xml
+/feed.xml
