@@ -15,6 +15,13 @@ Son decisiones tomadas y no están abiertas a discusión en cada tarea.
   No se edita a mano, no se fusiona con `main` y no se usa como base de
   ninguna PR. Las pruebas lanzadas desde otra rama escriben en
   `datos-pruebas`.
+- **Nunca se fuerza un push**, con una única excepción: la compactación de la
+  rama `datos` (`tools/compactar_datos.sh`, lanzado solo por
+  `.github/workflows/compactar-datos.yml`), que la reescribe como un commit con
+  el mismo contenido y hace `push --force-with-lease` solo a esa rama. Ninguna
+  otra rama, ningún otro workflow y ningún agente a mano.
+- **`main` no versiona nada generado ni datos**: `.gitignore` lo impide. Si un
+  render local o del CI deja HTML o `data/` en el árbol, no se sube.
 - **Las herramientas nuevas son deterministas**: nada de LLM, APIs de pago ni
   dependencias nuevas (`requirements.txt`: requests, beautifulsoup4, pypdf).
   La capa Gemini que ya existe (`redaccion.py`) se mantiene para titulares y

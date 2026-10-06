@@ -115,6 +115,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `tools/verificar.py` | Comprobaciones de calidad comunes a la integración continua y a la salud diaria (§12). | `debug/salud.json` (modo diario) | — |
 | `tools/publicables.txt` | La lista de lo que se publica: el único sitio donde se declara una carpeta publicada (§8). | — | — |
 | `tools/montar_sitio.py` | Monta `_site/` con lo de `publicables.txt` y comprueba lo obligatorio, el `CNAME` y el límite de 1 GB (§8). | — | `_site/` |
+| `tools/compactar_datos.sh` | Reescribe la rama `datos` como un único commit si su historia pasa de los umbrales (§8). Lo lanza `compactar-datos.yml`. | rama `datos` | — |
 | `tools/datos.sh` | Trae y guarda `data/`, `state/` y `debug/` en la rama `datos`. El único sitio que sabe dónde viven los datos (§8). | rama `datos` | — |
 | `tools/incidencia_salud.sh` | Abre, comenta o cierra la incidencia «Salud de la edición» con `gh` (§12). | — | — |
 
@@ -177,7 +178,8 @@ tienen el BOE.
 | `nombramientos.json` | Registros de nombramientos y ceses por día | `nombramientos`, `reproceso` | ~0,9 MB | — |
 | `provincias.json` | Disposiciones del BOE con provincia asignada | `provincias`, `reproceso` | ~1,5 MB | — |
 | `redaccion.json` | Caché de titulares Gemini y uso de cuota | `redaccion` | ~0,2 MB | — |
-| `ediciones.json` | Qué fecha de BOE tiene cada edición | `build` | < 10 KB | — |
+| `ediciones.json` | Fecha de última modificación real de cada edición | `build` | < 10 KB | — |
+| `ediciones_huellas.json` | Huella (sha1) del HTML de cada edición, para saber si ha cambiado sin tenerlo en disco | `build` | < 20 KB | — |
 | `senado.json` | Último boletín del Senado leído | `build.fetch_senado` | < 1 KB | Sin uso mientras `SENADO_ACTIVO = False` |
 
 Esquema de `state/respuestas/AAAA.json`:
@@ -253,7 +255,7 @@ con `workflow_call` (desde `daily.yml` y `archivo.yml`), `workflow_dispatch`
 o un push a `main`. Input `modo`:
 
 - `render` (por defecto, y siempre en un push de código):
-  `python build.py --render --sin-red`. No descarga nada ni escribe en
+  `python build.py --render --sin-red --sitio-completo`. No descarga nada ni escribe en
   `datos`; repinta la web con el código nuevo. Verifica con `--modo ci`: con
   un grave no despliega.
 - `diario`: el pase normal (`python build.py`), salud con `--modo diario`
@@ -262,6 +264,13 @@ o un push a `main`. Input `modo`:
 - `archivo`: los modos de `archivo.yml` (`archivo_modo`: `ediciones`,
   `reprocesar`, `nombramientos`, `repintar`, con `desde`, `hasta`, `lote` y
   `extractores`). La salud va a `RUNNER_TEMP`.
+
+Todos los modos llevan `--sitio-completo`: como la web no se guarda en
+ninguna rama, cada pase pinta **todas** las ediciones y sus normas desde
+`data/` (no solo la ventana de `MAX_DAYS`), en unos 40 s. Fuera de la ventana
+no se pide nada a Gemini: solo se aplica la caché. Qué ediciones han cambiado
+(para el `lastmod` del sitemap e IndexNow) se decide comparando la huella del
+HTML con `state/ediciones_huellas.json`, no con el fichero del disco.
 
 Input `desplegar` (por defecto `true`; en un push solo despliega `main`).
 Con `false` construye y sube el artefacto `github-pages` (se puede descargar
@@ -275,7 +284,7 @@ workflow`); si no, avisa y no despliega. Después comprueba que
 https://terceracamara.es/ responde 200 con su canonical.
 
 Concurrencia: todo lo que escribe en `datos` (modos `diario` y `archivo`, y
-la vuelta atrás) comparte el grupo `escritura-datos` y va de uno en uno. Los
+la compactación) comparte el grupo `escritura-datos` y va de uno en uno. Los
 `render` van en `publicar-render` para que un push de código nunca cancele una
 edición pendiente. Los despliegues comparten `pages`.
 
@@ -337,22 +346,41 @@ que había en `main` y encima el del pase.
 externo, se cambia ese script y nada más. `guardar` hace `pull --rebase` y un
 reintento; nunca toca `main`.
 
+### Compactación de la rama `datos`
+
+`datos` recibe tres commits al día y reescribe ficheros de `state/` de varios
+MB, así que su historia crece sin parar. `.github/workflows/compactar-datos.yml`
+corre los domingos de madrugada (y a mano, con `forzar`) y ejecuta
+`tools/compactar_datos.sh`: si la rama pasa de `MAX_COMMITS` commits (300) o de
+`MAX_MB` MB de historia (150), la reescribe como **un único commit con el mismo
+árbol** que la punta y hace push forzado **solo a `datos`**, con
+`--force-with-lease` contra la punta que acaba de medir. Va en el grupo de
+concurrencia `escritura-datos`, así que nunca coincide con un pase. El
+contenido no cambia; solo se pierde la historia de `datos`. Es la única
+excepción a la regla de no forzar push (AGENTS.md).
+
 ### Vuelta atrás
 
-Si la publicación por artefacto falla y la web deja de cargar:
+`main` ya no contiene la web ni los datos (PR «main-solo-codigo»). El último
+commit de `main` que los tenía, con el job antiguo de commit en `main`, es
+**`e31e2553d`** (fusión de la PR #19). Si la publicación por artefacto falla y
+la web deja de cargar:
 
-1. Settings › Pages › Build and deployment › Source: **Deploy from a branch**,
-   rama `main`, carpeta `/ (root)`.
-2. Settings › Secrets and variables › Actions › Variables: crea o pon
-   `PUBLICAR_EN_MAIN` a `true`.
-3. Actions › Edición diaria › Run workflow (rama `main`).
+1. Abre una PR que revierta la fusión de «main-solo-codigo» (en la PR
+   fusionada, botón **Revert**). Eso devuelve a `main` el HTML generado,
+   `data/`, `state/`, `debug/` y el job antiguo de `daily.yml` y `archivo.yml`
+   tal como estaban en `e31e2553d`. Fusiónala.
+2. Settings › Pages › Build and deployment › Source: **Deploy from a branch**,
+   rama `main`, carpeta `/ (root)`. En ese momento se sirve la web de
+   `e31e2553d` (la del 5 de octubre de 2026).
+3. Settings › Secrets and variables › Actions › Variables: crea
+   `PUBLICAR_EN_MAIN` con el valor `true`.
+4. Actions › Edición diaria › Run workflow (rama `main`). El job antiguo trae
+   antes los datos de la rama `datos`, así que no se pierde nada de lo
+   publicado por la vía nueva, y deja la edición del día en `main`.
 
-Con la variable a `true`, `daily.yml` y `archivo.yml` corren su job antiguo
-(commit en `main`), que antes trae los datos de la rama `datos` para no perder
-lo publicado por la vía nueva, y saltan `publicar.yml`. Para volver a la vía
-nueva: Source «GitHub Actions», `PUBLICAR_EN_MAIN` a `false` y lanzar
-«Publicar» con `modo: render`. (El job antiguo se borra en la PR
-«main-solo-codigo».)
+Para volver a la vía nueva: Source «GitHub Actions», borra `PUBLICAR_EN_MAIN`
+y vuelve a fusionar «main-solo-codigo» (revirtiendo la reversión).
 
 ## 9. Cómo añadir una sección o una fuente
 
@@ -464,7 +492,7 @@ datos que escribió el pase diario y que ninguna PR puede corregir (la edición
 se rehace con el código nuevo solo después de fusionar), así que bloquearían
 cualquier PR. En la salud diaria siguen siendo graves y abren la incidencia.
 Los avisos van al resumen del job. `permissions: contents: read`, sin secretos, nunca hace commit ni push. Al final monta `_site` con
-`tools/montar_sitio.py`, sin subirlo. El render completo tarda unos 20 s.
+`tools/montar_sitio.py`, sin subirlo. El render completo (`--sitio-completo`) tarda unos 40 s.
 
 ### Salud diaria (`publicar.yml`, modos `diario` y `archivo`)
 

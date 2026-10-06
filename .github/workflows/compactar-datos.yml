@@ -1,0 +1,38 @@
+name: Compactar datos
+
+# La rama datos recibe tres commits al día y reescribe ficheros de state/ de
+# varios MB, así que su historia crece sin parar. Una vez por semana se mide y,
+# si pasa de los umbrales de tools/compactar_datos.sh (300 commits o 150 MB),
+# se reescribe como un único commit con el estado actual y push forzado SOLO a
+# la rama datos. Es la única excepción a «no forzar push» (AGENTS.md). main no
+# se toca nunca.
+
+on:
+  schedule:
+    - cron: "17 3 * * 0"     # domingos de madrugada, lejos de los pases diarios
+  workflow_dispatch:
+    inputs:
+      forzar:
+        description: "Compactar aunque no se pasen los umbrales"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  compactar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # El mismo grupo que todo lo que escribe en datos: nunca a la vez que un pase.
+    concurrency:
+      group: escritura-datos
+      cancel-in-progress: false
+    permissions:
+      contents: write          # solo para la rama datos
+    steps:
+      - name: Descargar el código (main)
+        uses: actions/checkout@v4
+
+      - name: Compactar si hace falta
+        run: bash tools/compactar_datos.sh ${{ inputs.forzar && '--forzar' || '' }}

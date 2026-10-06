@@ -124,6 +124,9 @@ def log(msg: str) -> None:
 # Con --render --sin-red el sitio se regenera entero desde data/ y state/.
 
 SIN_RED = False
+# --sitio-completo: pintar todas las ediciones y normas, no solo la ventana
+# (la web se publica como artefacto y no queda nada en el disco entre pases).
+SITIO_COMPLETO = False
 
 
 class SinRed(RuntimeError):
@@ -3637,6 +3640,18 @@ def _replace_placeholders(html: str, frag: dict) -> str:
 # esa edición se modificó hoy; si no, conserva su fecha anterior.
 
 MANIFIESTO = ESTADO / "ediciones.json"
+# Huella (sha1) del HTML de cada edición la última vez que se pintó. Desde la
+# publicación por artefacto no queda el HTML en el disco entre pases, así que
+# el «¿ha cambiado?» se compara con la huella y no con el fichero.
+HUELLAS = ESTADO / "ediciones_huellas.json"
+
+
+def _cargar_huellas() -> dict:
+    try:
+        return json.loads(HUELLAS.read_text(encoding="utf-8")) if HUELLAS.exists() else {}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  state/ediciones_huellas.json ilegible ({exc}); se reconstruye")
+        return {}
 
 
 def _cargar_manifiesto() -> dict:
@@ -3800,6 +3815,8 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
     ids_todas = ids_de_ediciones()
     pos = {ident: i for i, ident in enumerate(ids_todas)}
     cambiadas = []
+    huellas = _cargar_huellas()
+    import hashlib
 
     for day in sorted(dias, key=lambda d: d["id"]):
         ident = day["id"]
@@ -3844,9 +3861,19 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
             continue
 
         destino = EDICIONES_DIR / f"{ident}.html"
-        anterior_html = destino.read_text(encoding="utf-8") if destino.exists() else None
-        if anterior_html != html:
-            destino.write_text(html, encoding="utf-8")
+        huella = hashlib.sha1(html.encode("utf-8")).hexdigest()
+        if ident in huellas:
+            cambio = huellas[ident] != huella
+        else:
+            # Sin huella previa: una edición nueva (no está en el manifiesto)
+            # cambia; una ya publicada se compara con el disco si hay fichero
+            # y, si no lo hay (primer pase con este registro), no se da por
+            # cambiada, para no anunciar como nuevas cientos de ediciones.
+            cambio = (ident not in manifiesto_prev
+                      or (destino.exists() and destino.read_text(encoding="utf-8") != html))
+        huellas[ident] = huella
+        escribir_si_cambia(destino, html)
+        if cambio:
             # Una edición de archivo no «cambia» por reenlazarla con la
             # siguiente: su lastmod es su fecha, estable, para que el sitemap
             # no diga cada día que cientos de páginas son nuevas.
@@ -3858,6 +3885,7 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
     for ident in ids_todas:
         manifiesto_nuevo.setdefault(ident, ident)
     _guardar_manifiesto(manifiesto_nuevo)
+    HUELLAS.write_text(json.dumps(huellas, sort_keys=True, indent=0), encoding="utf-8")
 
     entradas = [{"id": i, "url": f"{SITE_URL}ediciones/{i}.html",
                  "lastmod": manifiesto_nuevo.get(i, i)} for i in ids_todas]
@@ -6246,13 +6274,24 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
             if ident in ids:
                 i = ids.index(ident)
                 extra_ids.update(ids[max(0, i - 1):i + 2])
+    if SITIO_COMPLETO:
+        # La web ya no se guarda en ninguna rama (publicación por artefacto):
+        # cada pase pinta TODAS las ediciones y sus normas desde data/, no solo
+        # la ventana. Antes las de fuera de la ventana sobrevivían en el disco.
+        extra_ids = {d["id"] for d in todos}
     ventana = {d["id"] for d in dias}
     a_pintar = dias + [d for d in todos if d["id"] in extra_ids and d["id"] not in ventana]
     try:
         import redaccion
-        # Sin red tampoco se pide nada a Gemini: solo se aplica la caché.
-        DIAG["redaccion"] = redaccion.aplicar(a_pintar, titular_valido, cerrar,
+        # Sin red tampoco se pide nada a Gemini: solo se aplica la caché. Y
+        # fuera de la ventana nunca se pide: solo se aplica lo que ya hay en
+        # caché, para que las ediciones viejas salgan con los titulares de siempre.
+        DIAG["redaccion"] = redaccion.aplicar(dias if SITIO_COMPLETO else a_pintar,
+                                              titular_valido, cerrar,
                                               pedir=not en_archivo and not SIN_RED)
+        if SITIO_COMPLETO and len(a_pintar) > len(dias):
+            redaccion.aplicar([d for d in a_pintar if d["id"] not in ventana],
+                              titular_valido, cerrar, pedir=False)
         log(f"redacción IA: {DIAG['redaccion']}")
     except Exception as exc:                                  # noqa: BLE001
         log(f"redacción IA no disponible en este pase ({exc})")
@@ -6425,7 +6464,12 @@ def main() -> None:
     # --repintar-ediciones) regenera el sitio desde data/ y state/.
     ap.add_argument("--sin-red", action="store_true",
                     help="no hace ninguna petición HTTP; solo con --render o --repintar-ediciones")
+    ap.add_argument("--sitio-completo", action="store_true",
+                    help="pinta todas las ediciones y normas, no solo la ventana de MAX_DAYS")
     args = ap.parse_args()
+    if args.sitio_completo:
+        global SITIO_COMPLETO
+        SITIO_COMPLETO = True
 
     if args.sin_red:
         if not (args.render or args.repintar_ediciones):

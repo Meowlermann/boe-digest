@@ -52,7 +52,7 @@ jobs:
       - name: Regenerar el sitio sin red
         run: |
           INICIO=$(date +%s)
-          python build.py --render --sin-red
+          python build.py --render --sin-red --sitio-completo
           echo "Render completo sin red: $(( $(date +%s) - INICIO )) s" | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Verificar el resultado

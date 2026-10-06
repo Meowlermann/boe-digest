@@ -119,7 +119,8 @@ class TestRamaDatos(unittest.TestCase):
         for rel, texto in {"data/2026-10-04.json": '{"id": "2026-10-04"}', "state/s.json": "{}",
                            "debug/last-run.json": "{}", "build.py": "print()",
                            "tools/datos.sh": (RAIZ_REPO / "tools" / "datos.sh").read_text(encoding="utf-8"),
-                           "tools/LEEME-datos.md": "# Rama datos\n"}.items():
+                           "tools/LEEME-datos.md": "# Rama datos\n",
+                           "tools/compactar_datos.sh": (RAIZ_REPO / "tools" / "compactar_datos.sh").read_text(encoding="utf-8")}.items():
             p = self.trabajo / rel
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_text(texto, encoding="utf-8")
@@ -180,6 +181,32 @@ class TestRamaDatos(unittest.TestCase):
         self.assertEqual(self.git(self.origin, "rev-parse", "datos"), antes)
         self.assertEqual(self.git(self.origin, "log", "--format=%s", "datos-pruebas").splitlines(),
                          ["Prueba", "Datos iniciales"])
+
+    def compactar(self, *args, **entorno):
+        return subprocess.run(["bash", "tools/compactar_datos.sh", *args], cwd=self.trabajo,
+                              env={**self.entorno, **entorno}, check=True, capture_output=True,
+                              text=True).stdout
+
+    def test_compactar(self):
+        self.datos("traer")
+        (self.trabajo / "data" / "2026-10-05.json").write_text('{"id": "2026-10-05"}', encoding="utf-8")
+        self.datos("guardar", "Edición del 2026-10-05")
+        arbol = self.git(self.origin, "rev-parse", "datos^{tree}")
+        # Por debajo de los umbrales no toca nada.
+        self.assertIn("No hace falta", self.compactar())
+        self.assertEqual(self.git(self.origin, "rev-list", "--count", "datos"), "2")
+        # Por encima: un solo commit con el mismo árbol, y main intacta.
+        main = self.git(self.origin, "rev-parse", "main")
+        self.assertIn("Compactada", self.compactar(MAX_COMMITS="1"))
+        self.assertEqual(self.git(self.origin, "rev-list", "--count", "datos"), "1")
+        self.assertEqual(self.git(self.origin, "rev-parse", "datos^{tree}"), arbol)
+        self.assertEqual(self.git(self.origin, "rev-parse", "main"), main)
+        self.assertIn("Datos compactados", self.git(self.origin, "log", "-1", "--format=%s", "datos"))
+        # Y el siguiente pase sigue escribiendo encima con normalidad.
+        self.datos("traer")
+        (self.trabajo / "state" / "s.json").write_text('{"n": 2}', encoding="utf-8")
+        self.datos("guardar", "Edición del 2026-10-06")
+        self.assertEqual(self.git(self.origin, "rev-list", "--count", "datos"), "2")
 
 
 if __name__ == "__main__":

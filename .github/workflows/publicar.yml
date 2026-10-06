@@ -6,6 +6,9 @@ name: Publicar
 # código a main lo lanza en modo render. El HTML generado no se guarda en
 # ninguna rama. Ver ARQUITECTURA.md §8.
 #
+# Siempre con --sitio-completo: la web no se guarda en ninguna rama, así que
+# cada pase pinta todas las ediciones y normas desde data/, no solo la ventana.
+#
 # Modos:
 #   render   python build.py --render --sin-red. No descarga nada y no escribe
 #            en datos: repinta la web con el código nuevo y los datos de ayer.
@@ -109,9 +112,9 @@ jobs:
           INICIO=$(date +%s)
           case "$MODO" in
             render)
-              python build.py --render --sin-red ;;
+              python build.py --render --sin-red --sitio-completo ;;
             diario)
-              python build.py ;;
+              python build.py --sitio-completo ;;
             archivo)
               if [ "$ARCHIVO_MODO" = "repintar" ]; then
                 ARGS="--repintar-ediciones"
@@ -125,7 +128,7 @@ jobs:
                 ARGS="--archivo-desde $DESDE --lote $LOTE"
                 if [ -n "$HASTA" ]; then ARGS="$ARGS --archivo-hasta $HASTA"; fi
               fi
-              python build.py $ARGS ;;
+              python build.py $ARGS --sitio-completo ;;
             *)
               echo "Modo desconocido: $MODO"; exit 1 ;;
           esac
