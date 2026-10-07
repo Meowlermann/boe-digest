@@ -1,4 +1,4 @@
-"""El censo de diputados tras una disolución de las Cortes, sin red.
+"""El censo de diputados y el hemiciclo tras una disolución de las Cortes, sin red.
 
 `python -m unittest tests.test_censo`. Desde el 7-10-2026 (Cortes disueltas
 por el Real Decreto 806/2026) DiputadosActivos solo trae a la Diputación
@@ -53,3 +53,17 @@ class TestElegirCenso(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestHemicicloDiputacionPermanente(unittest.TestCase):
+    def test_resalta_solo_la_permanente(self):
+        orden = [{"clave": "a", "slug": "a", "natural": "A", "grupo": ""},
+                 {"clave": "b", "slug": "b", "natural": "B", "grupo": ""}]
+        svg = cd.hemiciclo_svg(orden, resaltar={"a"})
+        self.assertEqual(svg.count("fuera-dp"), 1)
+        self.assertIn('class="escano fuera-dp" data-d="b"', svg)
+        self.assertNotIn("fuera-dp", cd.hemiciclo_svg(orden))
+
+    def test_estado(self):
+        self.assertIsNone(cd.diputacion_permanente({}))
+        self.assertEqual(cd.diputacion_permanente({"diputacion_permanente": {"miembros": ["a"]}}), {"a"})

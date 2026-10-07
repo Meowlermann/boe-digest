@@ -181,6 +181,13 @@ CENSO_MINIMO = 300
 CENSO_RESPALDO = pathlib.Path(__file__).resolve().parent / "curated" / "censo_xv.json"
 
 
+def diputacion_permanente(estado: dict) -> set | None:
+    """Claves de los miembros de la Diputación Permanente mientras las Cortes
+    están disueltas (las guarda build.cosechar_congreso); None si no lo están."""
+    dp = estado.get("diputacion_permanente") or {}
+    return set(dp.get("miembros") or []) or None
+
+
 def elegir_censo(nuevo: dict, previo: dict, log=None) -> dict:
     """El censo con el que se trabaja: el descargado si está completo (al
     menos CENSO_MINIMO diputados, como pasará también al empezar una
@@ -795,7 +802,8 @@ def orden_hemiciclo(fichas: list) -> list:
     return sorted(fichas, key=clave)
 
 
-def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
+def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11,
+                  resaltar: set | None = None) -> str:
     """El semicírculo de escaños, dibujado en el servidor.
 
     Se genera como SVG en el build y no con JavaScript en el navegador: así lo
@@ -804,7 +812,11 @@ def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
     dibujo, en vez de sustituirlo por un hueco vacío.
 
     Cada escaño lleva el identificador de su diputado, que es lo que permite
-    que al pasar el ratón salga su ficha sin volver a calcular nada."""
+    que al pasar el ratón salga su ficha sin volver a calcular nada.
+
+    `resaltar` (claves de nombre): con las Cortes disueltas, los miembros de
+    la Diputación Permanente. El resto de escaños llevan la clase «fuera-dp»
+    y se ven atenuados; el dibujo sigue siendo el de los 350."""
     total = len(orden)
     if not total:
         return ""
@@ -815,10 +827,11 @@ def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
         color = GRUPO_COLOR.get(f.get("grupo", ""), "#8d8d8d")
         corto = GRUPO_CORTO.get(f.get("grupo", ""), "")
         nombre = (f.get("natural") or "").replace("&", "&amp;").replace("<", "&lt;")
+        fuera = resaltar is not None and (f.get("clave") or clave_nombre(f.get("nombre") or "")) not in resaltar
         circulos.append(
-            f'<circle class="escano" data-d="{f.get("slug", "")}" '
+            f'<circle class="escano{" fuera-dp" if fuera else ""}" data-d="{f.get("slug", "")}" '
             f'cx="{x:.1f}" cy="{y:.1f}" r="{rp:.1f}" fill="{color}">'
-            f'<title>{nombre} ({corto})</title></circle>')
+            f'<title>{nombre} ({corto}){"" if resaltar is None or fuera else " · Diputación Permanente"}</title></circle>')
 
     return (f'<svg id="hemiciclo" class="hemiciclo" viewBox="0 0 {ancho} {alto}" '
             f'role="img" aria-label="Distribución de los {total} escaños por grupo '
