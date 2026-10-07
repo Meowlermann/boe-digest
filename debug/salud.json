@@ -3,12 +3,18 @@
   "modo": "diario",
   "fecha": "2026-10-07",
   "graves": 0,
-  "avisos": 1,
+  "avisos": 2,
   "hallazgos": [
     {
       "nivel": "aviso",
       "comprobacion": "duplicados",
       "detalle": "[boe] titular repetido del 2026-10-06: «RESOLUCIÓN, APROBADA POR LA COMISIÓN MIXTA PARA LAS RELACIONES CON EL TRIBUNAL».",
+      "fichero": "data/2026-10-07.json"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[cortes] titular repetido del 2026-10-06: «38 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada».",
       "fichero": "data/2026-10-07.json"
     }
   ]
