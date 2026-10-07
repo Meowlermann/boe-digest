@@ -5128,15 +5128,12 @@
    "fecha": "2026-10-07"
   },
   "C-fa833a0ba97bca99": {
-   "huella": "5e1f39d064f6ddad",
-   "fuente": "c042cb4196c5591c",
-   "titular": "El Congreso acumula cuarenta preguntas escritas sin contestación registrada",
-   "entradilla": "Un total de 40 preguntas formuladas por los grupos parlamentarios llevan más de 20 días hábiles superando el límite establecido para recibir una respuesta por escrito.",
-   "claves": [
-    "La pregunta escrita más antigua que permanece sin contestación registrada fue publicada el lunes 2 de febrero de 2026.",
-    "Por grupos parlamentarios, Sumar acumula 26 preguntas sin responder, el PSOE tiene 7, el PP cuenta con 4 y el PNV, Junts y el grupo mixto registran una cada uno."
-   ],
-   "modelo": "gemini-3.5-flash",
+   "huella": "a9ec076ef5f74406",
+   "fuente": "e1ea11998e1a0f81",
+   "titular": "Cuarenta preguntas escritas superan el plazo de contestación en el Congreso",
+   "entradilla": "El Congreso contabiliza cuarenta preguntas escritas del último año que superan los veinte días hábiles desde su publicación sin contestación registrada.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-07"
   },
   "C-9ff10193841bd76c": {
@@ -5177,9 +5174,72 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-07"
+  },
+  "C-b1991db82526ee98": {
+   "huella": "7ca112ee71c3b75e",
+   "fuente": "877535714ec6daa0",
+   "titular": "El Gobierno contesta a Antonio Cavacasillas sobre la interconexión con Portugal",
+   "entradilla": "El Congreso publica la respuesta escrita del Gobierno a la pregunta del diputado Antonio Cavacasillas sobre la interconexión eléctrica con Portugal.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-f4946d43073afe1c": {
+   "huella": "cdb1698e3f8f76ce",
+   "fuente": "7ea2744d5c60b743",
+   "titular": "El Gobierno contesta a Víctor Javier Ruiz de Diego sobre ayudas en Zaragoza",
+   "entradilla": "El Congreso publica la respuesta escrita del Gobierno a la pregunta del diputado Víctor Javier Ruiz de Diego sobre las solicitudes de ayuda del Programa 2% Cultural en Zaragoza.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-b7181445c70c9281": {
+   "huella": "206d97b43085ee84",
+   "fuente": "dd32707e50ad7177",
+   "titular": "El Gobierno contesta a Enrique Fernando Santiago Romero sobre un folleto de la UME",
+   "entradilla": "El Congreso publica la respuesta escrita del Gobierno a la pregunta del diputado Enrique Fernando Santiago Romero sobre un folleto distribuido por la UME a alumnado de Educación Secundaria.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-43913998e3fa9969": {
+   "huella": "76322ad03c1cdada",
+   "fuente": "cfa50ebb3e6fef0c",
+   "titular": "El Gobierno contesta a Ignacio López Cano sobre rehabilitación de viviendas",
+   "entradilla": "El Congreso publica la respuesta escrita del Gobierno a la pregunta del diputado Ignacio López Cano sobre municipios beneficiarios de programas de rehabilitación de vivienda e importes.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-58bd75c3f9dbaed5": {
+   "huella": "626452227d47da29",
+   "fuente": "e4daf6bcefdd45ce",
+   "titular": "El Gobierno contesta a Ignacio López Cano sobre viviendas rehabilitadas",
+   "entradilla": "El Congreso publica la respuesta escrita del Gobierno a la pregunta del diputado Ignacio López Cano sobre el número de viviendas y edificios residenciales rehabilitados con fondos europeos.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-81ec4f5491a70559": {
+   "huella": "56639187890c578f",
+   "fuente": "ae96a61677cb4f45",
+   "titular": "El Gobierno contesta a Alberto Ibáñez Mezquita sobre fachadas de edificios",
+   "entradilla": "El Congreso publica la respuesta escrita del Gobierno a la pregunta del diputado Alberto Ibáñez Mezquita acerca de reforzar la exigencia de reacción al fuego en fachadas.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-fbc06ce4da217039": {
+   "huella": "82077ab5a7efc023",
+   "fuente": "96c13efe731e6e74",
+   "titular": "El Gobierno registra ochenta contestaciones escritas en el Congreso",
+   "entradilla": "El Congreso registra ochenta contestaciones escritas remitidas por el Gobierno en la jornada de hoy.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
   }
  },
  "uso": {
-  "2026-10-07": 6
+  "2026-10-07": 8
  }
 }
