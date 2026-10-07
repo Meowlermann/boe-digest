@@ -4867,17 +4867,13 @@
    "fecha": "2026-10-06"
   },
   "C-0c74f32afbf96cca": {
-   "huella": "8ecd053d1d75331c",
-   "fuente": "fc00f569ad9cf070",
-   "titular": "Treinta y seis preguntas escritas del Congreso superan el plazo sin contestación",
-   "entradilla": "Estas preguntas escritas del último año acumulan más de 20 días hábiles desde su publicación sin que conste una respuesta, aunque podría haber prórrogas o contestaciones aún no reflejadas.",
-   "claves": [
-    "La pregunta más antigua de este recuento de cuestiones pendientes del último año se publicó el lunes 23 de febrero de 2026.",
-    "Sumar es el grupo con más preguntas sin contestar con un total de 23, seguido por el PSOE con 7 y el PP con 3.",
-    "El grupo GV (EAJ-PNV), Junts y la categoría sin grupo acumulan una pregunta pendiente cada uno."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-06"
+   "huella": "6e58aaaeee37ab06",
+   "fuente": "6bdd8a596879b53b",
+   "titular": "Treinta y seis preguntas escritas superan el plazo de veinte días hábiles sin contestación",
+   "entradilla": "El Congreso acumula 36 iniciativas que superan el plazo habitual de respuesta desde su publicación oficial.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
   },
   "C-f08f068721da8c71": {
    "huella": "7520244121602a6e",
@@ -5237,9 +5233,54 @@
    "claves": [],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-07"
+  },
+  "C-8863179c148b8d35": {
+   "huella": "e85a342b3580b8f8",
+   "fuente": "bbb1c82c202296ae",
+   "titular": "El Gobierno contesta a Carazo Hermoso sobre la ausencia de RNE en un viaje",
+   "entradilla": "Eduardo Carazo Hermoso y otros ocho diputados reciben la respuesta escrita sobre la exclusión de RNE en el viaje oficial a la India.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-ddddfe3d0d79722a": {
+   "huella": "b9e37c3030a1b35e",
+   "fuente": "3adc9c95a016e86a",
+   "titular": "El Gobierno contesta a Garrido Jiménez sobre los presupuestos de vivienda",
+   "entradilla": "Elisa Garrido Jiménez y otros dos diputados obtienen respuesta sobre las cuentas del Ministerio de Vivienda y Agenda Urbana en La Rioja.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-5bc30f3a2db55c27": {
+   "huella": "5924436800e60ce6",
+   "fuente": "a44bc969deb1f9ab",
+   "titular": "El Gobierno contesta a González López sobre el parque público de vivienda",
+   "entradilla": "Nahuel González López y otro diputado reciben la contestación relativa a las actuaciones previstas en ciudades con tensión residencial como Alicante.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-ff576e9f63570215": {
+   "huella": "c808f51cd2dc579e",
+   "fuente": "72d0cfb06c8b18da",
+   "titular": "El Gobierno contesta a Sagastizabal Unzetabarrenetxea sobre el sector eléctrico",
+   "entradilla": "Idoia Sagastizabal Unzetabarrenetxea obtiene respuesta sobre el informe previsto en la Ley del Sector Eléctrico para los consumidores en red.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
+  },
+  "C-a0806f1cc05f9964": {
+   "huella": "5ea354c623b8fe2c",
+   "fuente": "9c9b3f0c6fea68fa",
+   "titular": "El Congreso registra 181 contestaciones escritas del Gobierno",
+   "entradilla": "La cámara baja publica las respuestas a 181 preguntas formuladas por distintos grupos parlamentarios.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-07"
   }
  },
  "uso": {
-  "2026-10-07": 8
+  "2026-10-07": 10
  }
 }
