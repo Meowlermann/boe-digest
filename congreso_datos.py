@@ -28,6 +28,7 @@ import datetime as dt
 import json
 import re
 import unicodedata
+import pathlib
 
 CONGRESO = "https://www.congreso.es"
 PAG_DIPUTADOS = f"{CONGRESO}/es/opendata/diputados"
@@ -168,6 +169,47 @@ def _elegir(urls: list, nombre: str) -> str:
 # ---------------------------------------------------------------------------
 # Cosecha
 # ---------------------------------------------------------------------------
+
+# Tras una disolución de las Cortes (la XV Legislatura, el 5-10-2026, Real
+# Decreto 806/2026), el fichero DiputadosActivos deja de traer a los 350: solo
+# quedan los miembros de la Diputación Permanente (137 el 7-10-2026). Si se
+# tomara tal cual, el hemiciclo se queda con 137 escaños, las votaciones de la
+# legislatura se pintan con huecos y desaparecen las fichas del resto de
+# diputados. Un censo por debajo de CENSO_MINIMO no sustituye al último
+# completo; el de la XV en la disolución está en curated/censo_xv.json.
+CENSO_MINIMO = 300
+CENSO_RESPALDO = pathlib.Path(__file__).resolve().parent / "curated" / "censo_xv.json"
+
+
+def diputacion_permanente(estado: dict) -> set | None:
+    """Claves de los miembros de la Diputación Permanente mientras las Cortes
+    están disueltas (las guarda build.cosechar_congreso); None si no lo están."""
+    dp = estado.get("diputacion_permanente") or {}
+    return set(dp.get("miembros") or []) or None
+
+
+def elegir_censo(nuevo: dict, previo: dict, log=None) -> dict:
+    """El censo con el que se trabaja: el descargado si está completo (al
+    menos CENSO_MINIMO diputados, como pasará también al empezar una
+    legislatura nueva); si no, el último completo que haya en el estado y, si
+    tampoco lo hay, el de curated/censo_xv.json."""
+    if len(nuevo or {}) >= CENSO_MINIMO:
+        return nuevo
+    if len(previo or {}) >= CENSO_MINIMO:
+        elegido, origen = previo, "el último completo del estado"
+    else:
+        try:
+            elegido = json.loads(CENSO_RESPALDO.read_text(encoding="utf-8")).get("censo") or {}
+        except (OSError, ValueError):
+            elegido = {}
+        origen = "curated/censo_xv.json"
+        if len(elegido) < CENSO_MINIMO:
+            return nuevo or previo or {}
+    if log:
+        log(f"  censo descargado con {len(nuevo or {})} diputados (< {CENSO_MINIMO}, "
+            f"Cámara disuelta): se mantiene {origen} ({len(elegido)})")
+    return elegido
+
 
 def censo(get, log) -> dict:
     """Los diputados en activo, por nombre oficial."""
@@ -760,7 +802,8 @@ def orden_hemiciclo(fichas: list) -> list:
     return sorted(fichas, key=clave)
 
 
-def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
+def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11,
+                  resaltar: set | None = None) -> str:
     """El semicírculo de escaños, dibujado en el servidor.
 
     Se genera como SVG en el build y no con JavaScript en el navegador: así lo
@@ -769,7 +812,11 @@ def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
     dibujo, en vez de sustituirlo por un hueco vacío.
 
     Cada escaño lleva el identificador de su diputado, que es lo que permite
-    que al pasar el ratón salga su ficha sin volver a calcular nada."""
+    que al pasar el ratón salga su ficha sin volver a calcular nada.
+
+    `resaltar` (claves de nombre): con las Cortes disueltas, los miembros de
+    la Diputación Permanente. El resto de escaños llevan la clase «fuera-dp»
+    y se ven atenuados; el dibujo sigue siendo el de los 350."""
     total = len(orden)
     if not total:
         return ""
@@ -780,10 +827,11 @@ def hemiciclo_svg(orden: list, ancho: int = 720, filas: int = 11) -> str:
         color = GRUPO_COLOR.get(f.get("grupo", ""), "#8d8d8d")
         corto = GRUPO_CORTO.get(f.get("grupo", ""), "")
         nombre = (f.get("natural") or "").replace("&", "&amp;").replace("<", "&lt;")
+        fuera = resaltar is not None and (f.get("clave") or clave_nombre(f.get("nombre") or "")) not in resaltar
         circulos.append(
-            f'<circle class="escano" data-d="{f.get("slug", "")}" '
+            f'<circle class="escano{" fuera-dp" if fuera else ""}" data-d="{f.get("slug", "")}" '
             f'cx="{x:.1f}" cy="{y:.1f}" r="{rp:.1f}" fill="{color}">'
-            f'<title>{nombre} ({corto})</title></circle>')
+            f'<title>{nombre} ({corto}){"" if resaltar is None or fuera else " · Diputación Permanente"}</title></circle>')
 
     return (f'<svg id="hemiciclo" class="hemiciclo" viewBox="0 0 {ancho} {alto}" '
             f'role="img" aria-label="Distribución de los {total} escaños por grupo '

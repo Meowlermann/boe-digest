@@ -3251,6 +3251,7 @@ def cortes_congreso(fecha: dt.date) -> dict:
         censo = json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8")).get("censo") or {}
     except Exception:                                         # noqa: BLE001
         pass
+    censo = cd.elegir_censo(censo, {})
     try:
         filas = cd.descargar_intervenciones(get, log)
         # Antes de redactar: las piezas citan la contestación del Diario de
@@ -3719,7 +3720,12 @@ def render_parlamento_ssr() -> tuple[bool, str]:
                      ("Circunscripciones", circ),
                      ("Se apartaron de su grupo", disidentes)])
 
-    pie = (f"{hablaron} intervinieron en la última sesión de la que tenemos constancia, "
+    import congreso_datos as cd
+    dp = cd.diputacion_permanente(CONGRESO_ESTADO)
+    pie = ("Cortes disueltas: en color, los miembros de la Diputación Permanente, que ejerce "
+           "las funciones del Congreso hasta que se constituya la nueva Cámara."
+           if dp else
+           f"{hablaron} intervinieron en la última sesión de la que tenemos constancia, "
            f"la del {fecha}." if fecha and hablaron else
            "Recuentos sobre las publicaciones oficiales del Congreso, sin adjetivos.")
 
@@ -4631,13 +4637,27 @@ def cosechar_congreso(sin_red: bool = False) -> list:
     if sin_red:
         # Pase de archivo: las fichas se rehacen con lo que ya hay en state/,
         # sin descargar nada. El archivo es BOE y nada más.
-        censo = estado.get("censo") or {}
+        guardado = estado.get("censo") or {}
+        if guardado and len(guardado) < cd.CENSO_MINIMO and "diputacion_permanente" not in estado:
+            # El estado ya traía el censo parcial (pases del 7-10-2026 antes de
+            # este arreglo): ese parcial es la Diputación Permanente.
+            estado["diputacion_permanente"] = {"fecha": "", "miembros": sorted(guardado)}
+        censo = cd.elegir_censo(guardado, {}, log)
+        if censo:
+            estado["censo"] = censo
         CONGRESO_ESTADO.clear()
         CONGRESO_ESTADO.update(estado)
         return cd.fusionar(censo, estado, estado.get("intervenciones") or {}) if censo else []
 
     log("Congreso: datos abiertos de diputados, intervenciones y votaciones")
-    censo = cd.censo(get, log) or estado.get("censo") or {}
+    descargado = cd.censo(get, log)
+    if descargado and len(descargado) < cd.CENSO_MINIMO:
+        # Cortes disueltas: lo que queda «en activo» es la Diputación Permanente.
+        estado["diputacion_permanente"] = {"fecha": dt.date.today().isoformat(),
+                                           "miembros": sorted(descargado)}
+    elif len(descargado or {}) >= cd.CENSO_MINIMO:
+        estado.pop("diputacion_permanente", None)
+    censo = cd.elegir_censo(descargado, estado.get("censo") or {}, log)
     if censo:
         estado["censo"] = censo
     try:
@@ -5466,6 +5486,26 @@ def renderizar_rankings(fichas_dip: list) -> list:
     return salidas
 
 
+def nota_diputacion_permanente(fichas: list, dp: set | None, prefijo: str = "") -> str:
+    """Con las Cortes disueltas: qué se ve en el hemiciclo y por qué. Vacío
+    si la Cámara está constituida."""
+    if not dp:
+        return ""
+    import congreso_datos as cd
+    n = sum(1 for f in fichas if f.get("clave") in dp)
+    por_grupo: dict = {}
+    for f in fichas:
+        if f.get("clave") in dp:
+            corto = cd.GRUPO_CORTO.get(f.get("grupo", ""), "")
+            por_grupo[corto] = por_grupo.get(corto, 0) + 1
+    reparto = ", ".join(f"{g} {k}" for g, k in sorted(por_grupo.items(), key=lambda x: -x[1]) if g)
+    return (f'<p class="destacado nota-dp"><b>Cortes disueltas.</b> Desde el 6 de octubre de 2026 '
+            f'(Real Decreto 806/2026) no hay Pleno: hasta que se constituya la nueva Cámara, la '
+            f'<b>Diputación Permanente</b> ejerce sus funciones. En color, sus {n} miembros '
+            f'({esc_html(reparto)}); atenuados, el resto de los 350 diputados de la XV Legislatura, '
+            f'cuyas fichas y votaciones se conservan.</p>')
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -5666,7 +5706,8 @@ def renderizar_diputados(fichas: list) -> list:
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
     orden = cd.orden_hemiciclo(fichas)
-    hemi = cd.hemiciclo_svg(orden)
+    dp = cd.diputacion_permanente(CONGRESO_ESTADO)
+    hemi = cd.hemiciclo_svg(orden, resaltar=dp)
     # La portada lo reutiliza tal cual: dibujarlo dos veces sería tener dos
     # geometrías que se separan en cuanto se toque una.
     DATOS_DIR.mkdir(exist_ok=True)
@@ -5694,6 +5735,7 @@ def renderizar_diputados(fichas: list) -> list:
     # añaden la capa interactiva encima. Si el script no carga, lo de debajo
     # sigue siendo una página completa.
     cuerpo = (
+        nota_diputacion_permanente(fichas, dp) +
         f'<div class="hemi-caja">{hemi}<ul class="leyenda-grupos">{leyenda}</ul></div>'
         f'<div id="hemiciclo-app" data-src="../datos/parlamento.json"></div>'
         f'<p class="hemi-nota">Pasa el ratón por cualquier escaño para ver quién lo ocupa. '

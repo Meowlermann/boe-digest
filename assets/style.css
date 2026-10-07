@@ -657,6 +657,11 @@ ul.indice .ref{display:block;font:500 11px/1.5 "IBM Plex Mono",ui-monospace,mono
   outline: none;
 }
 
+/* Cortes disueltas: el hemiciclo sigue siendo el de los 350, pero solo los
+   miembros de la Diputación Permanente van en color (congreso_datos.hemiciclo_svg). */
+.escano.fuera-dp { opacity: .2; }
+.nota-dp { border-left: 3px solid #c81e2c; padding-left: 10px; }
+
 /* Cuando hay un filtro activo, lo que no encaja se apaga en vez de
    desaparecer: así se ve de un vistazo cuánta cámara es y cuánta no. */
 #hemiciclo.filtrando .escano.apagado { opacity: .13; }
