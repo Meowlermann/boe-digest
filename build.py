@@ -3251,6 +3251,7 @@ def cortes_congreso(fecha: dt.date) -> dict:
         censo = json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8")).get("censo") or {}
     except Exception:                                         # noqa: BLE001
         pass
+    censo = cd.elegir_censo(censo, {})
     try:
         filas = cd.descargar_intervenciones(get, log)
         # Antes de redactar: las piezas citan la contestación del Diario de
@@ -4631,13 +4632,15 @@ def cosechar_congreso(sin_red: bool = False) -> list:
     if sin_red:
         # Pase de archivo: las fichas se rehacen con lo que ya hay en state/,
         # sin descargar nada. El archivo es BOE y nada más.
-        censo = estado.get("censo") or {}
+        censo = cd.elegir_censo(estado.get("censo") or {}, {}, log)
+        if censo:
+            estado["censo"] = censo
         CONGRESO_ESTADO.clear()
         CONGRESO_ESTADO.update(estado)
         return cd.fusionar(censo, estado, estado.get("intervenciones") or {}) if censo else []
 
     log("Congreso: datos abiertos de diputados, intervenciones y votaciones")
-    censo = cd.censo(get, log) or estado.get("censo") or {}
+    censo = cd.elegir_censo(cd.censo(get, log), estado.get("censo") or {}, log)
     if censo:
         estado["censo"] = censo
     try:

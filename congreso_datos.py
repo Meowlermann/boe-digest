@@ -28,6 +28,7 @@ import datetime as dt
 import json
 import re
 import unicodedata
+import pathlib
 
 CONGRESO = "https://www.congreso.es"
 PAG_DIPUTADOS = f"{CONGRESO}/es/opendata/diputados"
@@ -168,6 +169,40 @@ def _elegir(urls: list, nombre: str) -> str:
 # ---------------------------------------------------------------------------
 # Cosecha
 # ---------------------------------------------------------------------------
+
+# Tras una disolución de las Cortes (la XV Legislatura, el 5-10-2026, Real
+# Decreto 806/2026), el fichero DiputadosActivos deja de traer a los 350: solo
+# quedan los miembros de la Diputación Permanente (137 el 7-10-2026). Si se
+# tomara tal cual, el hemiciclo se queda con 137 escaños, las votaciones de la
+# legislatura se pintan con huecos y desaparecen las fichas del resto de
+# diputados. Un censo por debajo de CENSO_MINIMO no sustituye al último
+# completo; el de la XV en la disolución está en curated/censo_xv.json.
+CENSO_MINIMO = 300
+CENSO_RESPALDO = pathlib.Path(__file__).resolve().parent / "curated" / "censo_xv.json"
+
+
+def elegir_censo(nuevo: dict, previo: dict, log=None) -> dict:
+    """El censo con el que se trabaja: el descargado si está completo (al
+    menos CENSO_MINIMO diputados, como pasará también al empezar una
+    legislatura nueva); si no, el último completo que haya en el estado y, si
+    tampoco lo hay, el de curated/censo_xv.json."""
+    if len(nuevo or {}) >= CENSO_MINIMO:
+        return nuevo
+    if len(previo or {}) >= CENSO_MINIMO:
+        elegido, origen = previo, "el último completo del estado"
+    else:
+        try:
+            elegido = json.loads(CENSO_RESPALDO.read_text(encoding="utf-8")).get("censo") or {}
+        except (OSError, ValueError):
+            elegido = {}
+        origen = "curated/censo_xv.json"
+        if len(elegido) < CENSO_MINIMO:
+            return nuevo or previo or {}
+    if log:
+        log(f"  censo descargado con {len(nuevo or {})} diputados (< {CENSO_MINIMO}, "
+            f"Cámara disuelta): se mantiene {origen} ({len(elegido)})")
+    return elegido
+
 
 def censo(get, log) -> dict:
     """Los diputados en activo, por nombre oficial."""

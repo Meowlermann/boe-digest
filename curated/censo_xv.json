@@ -1,0 +1,3156 @@
+{
+ "_nota": "Censo de diputados de la XV Legislatura tal como lo publicaban los datos abiertos del Congreso (DiputadosActivos) el 6 de octubre de 2026, el día después de la disolución de las Cortes (Real Decreto 806/2026, BOE del 6-10-2026). Desde el 7 de octubre ese fichero solo trae a los miembros de la Diputación Permanente. Se usa como respaldo cuando el censo descargado no llega a congreso_datos.CENSO_MINIMO (ver build.cosechar_congreso).",
+ "fecha": "2026-10-06",
+ "censo": {
+  "abades martinez cristina": {
+   "nombre": "Abades Martínez, Cristina",
+   "natural": "Cristina Abades Martínez",
+   "slug": "cristina-abades-martinez",
+   "circunscripcion": "Lugo",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "abascal conde santiago": {
+   "nombre": "Abascal Conde, Santiago",
+   "natural": "Santiago Abascal Conde",
+   "slug": "santiago-abascal-conde",
+   "circunscripcion": "Madrid",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "acedo reyes sofia": {
+   "nombre": "Acedo Reyes, Sofía",
+   "natural": "Sofía Acedo Reyes",
+   "slug": "sofia-acedo-reyes",
+   "circunscripcion": "Melilla",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "aceves galindo jose luis": {
+   "nombre": "Aceves Galindo, José Luis",
+   "natural": "José Luis Aceves Galindo",
+   "slug": "jose-luis-aceves-galindo",
+   "circunscripcion": "Segovia",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "adrio taracido maria": {
+   "nombre": "Adrio Taracido, María",
+   "natural": "María Adrio Taracido",
+   "slug": "maria-adrio-taracido",
+   "circunscripcion": "Pontevedra",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "agirretxea urresti joseba andoni": {
+   "nombre": "Agirretxea Urresti, Joseba Andoni",
+   "natural": "Joseba Andoni Agirretxea Urresti",
+   "slug": "joseba-andoni-agirretxea-urresti",
+   "circunscripcion": "Gipuzkoa",
+   "partido": "EAJ-PNV",
+   "grupo": "Grupo Parlamentario Vasco (EAJ-PNV)",
+   "alta": "16/08/2023"
+  },
+  "aguera gago cristina": {
+   "nombre": "Agüera Gago, Cristina",
+   "natural": "Cristina Agüera Gago",
+   "slug": "cristina-aguera-gago",
+   "circunscripcion": "Barcelona",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "07/08/2023"
+  },
+  "aguirre gil de biedma rocio": {
+   "nombre": "Aguirre Gil de Biedma, Rocío",
+   "natural": "Rocío Aguirre Gil de Biedma",
+   "slug": "rocio-aguirre-gil-de-biedma",
+   "circunscripcion": "Madrid",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/01/2024"
+  },
+  "aizcorbe torra juan jose": {
+   "nombre": "Aizcorbe Torra, Juan José",
+   "natural": "Juan José Aizcorbe Torra",
+   "slug": "juan-jose-aizcorbe-torra",
+   "circunscripcion": "Barcelona",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "02/08/2023"
+  },
+  "aizpurua arzallus mertxe": {
+   "nombre": "Aizpurua Arzallus, Mertxe",
+   "natural": "Mertxe Aizpurua Arzallus",
+   "slug": "mertxe-aizpurua-arzallus",
+   "circunscripcion": "Gipuzkoa",
+   "partido": "EH Bildu",
+   "grupo": "Grupo Parlamentario Euskal Herria Bildu",
+   "alta": "14/08/2023"
+  },
+  "alcaraz martos francisco jose": {
+   "nombre": "Alcaraz Martos, Francisco José",
+   "natural": "Francisco José Alcaraz Martos",
+   "slug": "francisco-jose-alcaraz-martos",
+   "circunscripcion": "Jaén",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "01/08/2023"
+  },
+  "alfonso cendon javier": {
+   "nombre": "Alfonso Cendón, Javier",
+   "natural": "Javier Alfonso Cendón",
+   "slug": "javier-alfonso-cendon",
+   "circunscripcion": "León",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "alfonso silvestre alma": {
+   "nombre": "Alfonso Silvestre, Alma",
+   "natural": "Alma Alfonso Silvestre",
+   "slug": "alma-alfonso-silvestre",
+   "circunscripcion": "Valencia/València",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "alia aguado maria pilar": {
+   "nombre": "Alía Aguado, María Pilar",
+   "natural": "María Pilar Alía Aguado",
+   "slug": "maria-pilar-alia-aguado",
+   "circunscripcion": "Toledo",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "almiron ruiz oriol": {
+   "nombre": "Almirón Ruiz, Oriol",
+   "natural": "Oriol Almirón Ruiz",
+   "slug": "oriol-almiron-ruiz",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/09/2024"
+  },
+  "almodovar sanchez emilia": {
+   "nombre": "Almodóvar Sánchez, Emilia",
+   "natural": "Emilia Almodóvar Sánchez",
+   "slug": "emilia-almodovar-sanchez",
+   "circunscripcion": "Cáceres",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "19/12/2023"
+  },
+  "alonso cantorne felix": {
+   "nombre": "Alonso Cantorné, Fèlix",
+   "natural": "Fèlix Alonso Cantorné",
+   "slug": "felix-alonso-cantorne",
+   "circunscripcion": "Tarragona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "14/08/2023"
+  },
+  "alos lopez ana isabel": {
+   "nombre": "Alós López, Ana Isabel",
+   "natural": "Ana Isabel Alós López",
+   "slug": "ana-isabel-alos-lopez",
+   "circunscripcion": "Huesca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "alvarez de toledo peralta ramos cayetana": {
+   "nombre": "Álvarez de Toledo Peralta-Ramos, Cayetana",
+   "natural": "Cayetana Álvarez de Toledo Peralta-Ramos",
+   "slug": "cayetana-alvarez-de-toledo-peralta-ramos",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "alvarez fanjul beatriz": {
+   "nombre": "Álvarez Fanjul, Beatriz",
+   "natural": "Beatriz Álvarez Fanjul",
+   "slug": "beatriz-alvarez-fanjul",
+   "circunscripcion": "Bizkaia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "07/08/2023"
+  },
+  "alvarez gonzalez alicia": {
+   "nombre": "Álvarez González, Alicia",
+   "natural": "Alicia Álvarez González",
+   "slug": "alicia-alvarez-gonzalez",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "alvaro vidal francesc marc": {
+   "nombre": "Álvaro Vidal, Francesc-Marc",
+   "natural": "Francesc-Marc Álvaro Vidal",
+   "slug": "francesc-marc-alvaro-vidal",
+   "circunscripcion": "Barcelona",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "10/08/2023"
+  },
+  "andala ubbi teslem": {
+   "nombre": "Andala Ubbi, Teslem",
+   "natural": "Teslem Andala Ubbi",
+   "slug": "teslem-andala-ubbi",
+   "circunscripcion": "Madrid",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "andres anon carmen": {
+   "nombre": "Andrés Añón, Carmen",
+   "natural": "Carmen Andrés Añón",
+   "slug": "carmen-andres-anon",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "antunano colina pablo": {
+   "nombre": "Antuñano Colina, Pablo",
+   "natural": "Pablo Antuñano Colina",
+   "slug": "pablo-antunano-colina",
+   "circunscripcion": "Cantabria",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "01/08/2025"
+  },
+  "aragones mendiguchia carlos": {
+   "nombre": "Aragonés Mendiguchía, Carlos",
+   "natural": "Carlos Aragonés Mendiguchía",
+   "slug": "carlos-aragones-mendiguchia",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "11/08/2023"
+  },
+  "aranda vargas francisco": {
+   "nombre": "Aranda Vargas, Francisco",
+   "natural": "Francisco Aranda Vargas",
+   "slug": "francisco-aranda-vargas",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "argota castro trinidad carmen": {
+   "nombre": "Argota Castro, Trinidad Carmen",
+   "natural": "Trinidad Carmen Argota Castro",
+   "slug": "trinidad-carmen-argota-castro",
+   "circunscripcion": "Sevilla",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "arguelles garcia silverio": {
+   "nombre": "Argüelles García, Silverio",
+   "natural": "Silverio Argüelles García",
+   "slug": "silverio-arguelles-garcia",
+   "circunscripcion": "Asturias",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "armario gonzalez blanca": {
+   "nombre": "Armario González, Blanca",
+   "natural": "Blanca Armario González",
+   "slug": "blanca-armario-gonzalez",
+   "circunscripcion": "Cádiz",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "10/08/2023"
+  },
+  "armengol socias francina": {
+   "nombre": "Armengol Socias, Francina",
+   "natural": "Francina Armengol Socias",
+   "slug": "francina-armengol-socias",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "PSIB-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "arribas maroto manuel": {
+   "nombre": "Arribas Maroto, Manuel",
+   "natural": "Manuel Arribas Maroto",
+   "slug": "manuel-arribas-maroto",
+   "circunscripcion": "Ávila",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "asarta cuevas alberto": {
+   "nombre": "Asarta Cuevas, Alberto",
+   "natural": "Alberto Asarta Cuevas",
+   "slug": "alberto-asarta-cuevas",
+   "circunscripcion": "Castellón/Castelló",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "aznar teruel evarist": {
+   "nombre": "Aznar Teruel, Evarist",
+   "natural": "Evarist Aznar Teruel",
+   "slug": "evarist-aznar-teruel",
+   "circunscripcion": "Valencia/València",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "15/01/2026"
+  },
+  "azorin salar lazaro": {
+   "nombre": "Azorín Salar, Lázaro",
+   "natural": "Lázaro Azorín Salar",
+   "slug": "lazaro-azorin-salar",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "14/08/2023"
+  },
+  "badia casas eloi": {
+   "nombre": "Badia Casas, Eloi",
+   "natural": "Eloi Badia Casas",
+   "slug": "eloi-badia-casas",
+   "circunscripcion": "Barcelona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "barrio baroja carmelo": {
+   "nombre": "Barrio Baroja, Carmelo",
+   "natural": "Carmelo Barrio Baroja",
+   "slug": "carmelo-barrio-baroja",
+   "circunscripcion": "Araba/Álava",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "19/03/2024"
+  },
+  "bayon rolo juan andres": {
+   "nombre": "Bayón Rolo, Juan Andrés",
+   "natural": "Juan Andrés Bayón Rolo",
+   "slug": "juan-andres-bayon-rolo",
+   "circunscripcion": "Pontevedra",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "11/06/2024"
+  },
+  "beamonte mesa luis maria": {
+   "nombre": "Beamonte Mesa, Luis María",
+   "natural": "Luis María Beamonte Mesa",
+   "slug": "luis-maria-beamonte-mesa",
+   "circunscripcion": "Zaragoza",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "belarra urteaga ione": {
+   "nombre": "Belarra Urteaga, Ione",
+   "natural": "Ione Belarra Urteaga",
+   "slug": "ione-belarra-urteaga",
+   "circunscripcion": "Madrid",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "11/08/2023"
+  },
+  "belda perez pedrero enrique": {
+   "nombre": "Belda Pérez-Pedrero, Enrique",
+   "natural": "Enrique Belda Pérez-Pedrero",
+   "slug": "enrique-belda-perez-pedrero",
+   "circunscripcion": "Ciudad Real",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "belmonte gomez rafael benigno": {
+   "nombre": "Belmonte Gómez, Rafael Benigno",
+   "natural": "Rafael Benigno Belmonte Gómez",
+   "slug": "rafael-benigno-belmonte-gomez",
+   "circunscripcion": "Sevilla",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "bendodo benasayag elias": {
+   "nombre": "Bendodo Benasayag, Elías",
+   "natural": "Elías Bendodo Benasayag",
+   "slug": "elias-bendodo-benasayag",
+   "circunscripcion": "Málaga",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "bermudez de castro fernandez jose antonio": {
+   "nombre": "Bermúdez de Castro Fernández, José Antonio",
+   "natural": "José Antonio Bermúdez de Castro Fernández",
+   "slug": "jose-antonio-bermudez-de-castro-fernandez",
+   "circunscripcion": "Salamanca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "blanco arrue gabriel": {
+   "nombre": "Blanco Arrúe, Gabriel",
+   "natural": "Gabriel Blanco Arrúe",
+   "slug": "gabriel-blanco-arrue",
+   "circunscripcion": "Bizkaia",
+   "partido": "PSE-EE (PSOE)",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/06/2025"
+  },
+  "blanquer alcaraz patricia": {
+   "nombre": "Blanquer Alcaraz, Patricia",
+   "natural": "Patricia Blanquer Alcaraz",
+   "slug": "patricia-blanquer-alcaraz",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "boada danes julia": {
+   "nombre": "Boada Danés, Júlia",
+   "natural": "Júlia Boada Danés",
+   "slug": "julia-boada-danes",
+   "circunscripcion": "Girona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "bolanos garcia felix": {
+   "nombre": "Bolaños García, Félix",
+   "natural": "Félix Bolaños García",
+   "slug": "felix-bolanos-garcia",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "bondia pinos maria elena": {
+   "nombre": "Bondía Pinós, María Elena",
+   "natural": "María Elena Bondía Pinós",
+   "slug": "maria-elena-bondia-pinos",
+   "circunscripcion": "Zaragoza",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/09/2026"
+  },
+  "borrego cortes isabel maria": {
+   "nombre": "Borrego Cortés, Isabel María",
+   "natural": "Isabel María Borrego Cortés",
+   "slug": "isabel-maria-borrego-cortes",
+   "circunscripcion": "Murcia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "bravo baena juan": {
+   "nombre": "Bravo Baena, Juan",
+   "natural": "Juan Bravo Baena",
+   "slug": "juan-bravo-baena",
+   "circunscripcion": "Sevilla",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "01/08/2023"
+  },
+  "cabezon casas tomas": {
+   "nombre": "Cabezón Casas, Tomás",
+   "natural": "Tomás Cabezón Casas",
+   "slug": "tomas-cabezon-casas",
+   "circunscripcion": "Soria",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "31/07/2023"
+  },
+  "cacho isla ivan": {
+   "nombre": "Cacho Isla, Iván",
+   "natural": "Iván Cacho Isla",
+   "slug": "ivan-cacho-isla",
+   "circunscripcion": "Navarra",
+   "partido": "PSN-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "18/06/2025"
+  },
+  "calvo gomez pilar": {
+   "nombre": "Calvo Gómez, Pilar",
+   "natural": "Pilar Calvo Gómez",
+   "slug": "pilar-calvo-gomez",
+   "circunscripcion": "Barcelona",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/08/2023"
+  },
+  "camino minana victor": {
+   "nombre": "Camino Miñana, Víctor",
+   "natural": "Víctor Camino Miñana",
+   "slug": "victor-camino-minana",
+   "circunscripcion": "Valencia/València",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "campos asensi jorge": {
+   "nombre": "Campos Asensi, Jorge",
+   "natural": "Jorge Campos Asensi",
+   "slug": "jorge-campos-asensi",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "09/08/2023"
+  },
+  "canelo matito andrea": {
+   "nombre": "Canelo Matito, Andrea",
+   "natural": "Andrea Canelo Matito",
+   "slug": "andrea-canelo-matito",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/09/2024"
+  },
+  "cantalapiedra alvarez maria de las mercedes": {
+   "nombre": "Cantalapiedra Álvarez, María de las Mercedes",
+   "natural": "María de las Mercedes Cantalapiedra Álvarez",
+   "slug": "maria-de-las-mercedes-cantalapiedra-alvarez",
+   "circunscripcion": "Valladolid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "carazo hermoso eduardo": {
+   "nombre": "Carazo Hermoso, Eduardo",
+   "natural": "Eduardo Carazo Hermoso",
+   "slug": "eduardo-carazo-hermoso",
+   "circunscripcion": "Valladolid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "carballedo berlanga maria eugenia": {
+   "nombre": "Carballedo Berlanga, María Eugenia",
+   "natural": "María Eugenia Carballedo Berlanga",
+   "slug": "maria-eugenia-carballedo-berlanga",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "castilla alvarez maria carmen": {
+   "nombre": "Castilla Álvarez, María Carmen",
+   "natural": "María Carmen Castilla Álvarez",
+   "slug": "maria-carmen-castilla-alvarez",
+   "circunscripcion": "Sevilla",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "catalan higueras alberto": {
+   "nombre": "Catalán Higueras, Alberto",
+   "natural": "Alberto Catalán Higueras",
+   "slug": "alberto-catalan-higueras",
+   "circunscripcion": "Navarra",
+   "partido": "UPN",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "08/08/2023"
+  },
+  "cavacasillas rodriguez antonio": {
+   "nombre": "Cavacasillas Rodríguez, Antonio",
+   "natural": "Antonio Cavacasillas Rodríguez",
+   "slug": "antonio-cavacasillas-rodriguez",
+   "circunscripcion": "Badajoz",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "celaya brey javier": {
+   "nombre": "Celaya Brey, Javier",
+   "natural": "Javier Celaya Brey",
+   "slug": "javier-celaya-brey",
+   "circunscripcion": "Ceuta",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "cercas mena blanca": {
+   "nombre": "Cercas Mena, Blanca",
+   "natural": "Blanca Cercas Mena",
+   "slug": "blanca-cercas-mena",
+   "circunscripcion": "Girona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "cervera pinart josep maria": {
+   "nombre": "Cervera Pinart, Josep Maria",
+   "natural": "Josep Maria Cervera Pinart",
+   "slug": "josep-maria-cervera-pinart",
+   "circunscripcion": "Girona",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/08/2023"
+  },
+  "chamorro delmo ricardo": {
+   "nombre": "Chamorro Delmo, Ricardo",
+   "natural": "Ricardo Chamorro Delmo",
+   "slug": "ricardo-chamorro-delmo",
+   "circunscripcion": "Ciudad Real",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "14/08/2023"
+  },
+  "clavell lopez oscar": {
+   "nombre": "Clavell López, Óscar",
+   "natural": "Óscar Clavell López",
+   "slug": "oscar-clavell-lopez",
+   "circunscripcion": "Castellón/Castelló",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "clemente munoz raquel": {
+   "nombre": "Clemente Muñoz, Raquel",
+   "natural": "Raquel Clemente Muñoz",
+   "slug": "raquel-clemente-munoz",
+   "circunscripcion": "Teruel",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "cobo carmona ana": {
+   "nombre": "Cobo Carmona, Ana",
+   "natural": "Ana Cobo Carmona",
+   "slug": "ana-cobo-carmona",
+   "circunscripcion": "Jaén",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "cobo perez noelia": {
+   "nombre": "Cobo Pérez, Noelia",
+   "natural": "Noelia Cobo Pérez",
+   "slug": "noelia-cobo-perez",
+   "circunscripcion": "Cantabria",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "16/08/2023"
+  },
+  "cobo vega manuel": {
+   "nombre": "Cobo Vega, Manuel",
+   "natural": "Manuel Cobo Vega",
+   "slug": "manuel-cobo-vega",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "cofino fernandez rafael": {
+   "nombre": "Cofiño Fernández, Rafael",
+   "natural": "Rafael Cofiño Fernández",
+   "slug": "rafael-cofino-fernandez",
+   "circunscripcion": "Asturias",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "07/08/2023"
+  },
+  "conde bajen agustin": {
+   "nombre": "Conde Bajén, Agustín",
+   "natural": "Agustín Conde Bajén",
+   "slug": "agustin-conde-bajen",
+   "circunscripcion": "Toledo",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "01/08/2023"
+  },
+  "conde lopez francisco jose": {
+   "nombre": "Conde López, Francisco José",
+   "natural": "Francisco José Conde López",
+   "slug": "francisco-jose-conde-lopez",
+   "circunscripcion": "Lugo",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "conesa coma ignasi": {
+   "nombre": "Conesa Coma, Ignasi",
+   "natural": "Ignasi Conesa Coma",
+   "slug": "ignasi-conesa-coma",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "19/09/2023"
+  },
+  "cortes carballo mario": {
+   "nombre": "Cortés Carballo, Mario",
+   "natural": "Mario Cortés Carballo",
+   "slug": "mario-cortes-carballo",
+   "circunscripcion": "Málaga",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "corujo berriel maria dolores": {
+   "nombre": "Corujo Berriel, María Dolores",
+   "natural": "María Dolores Corujo Berriel",
+   "slug": "maria-dolores-corujo-berriel",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "crespin rubio rafaela": {
+   "nombre": "Crespín Rubio, Rafaela",
+   "natural": "Rafaela Crespín Rubio",
+   "slug": "rafaela-crespin-rubio",
+   "circunscripcion": "Córdoba",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "cruset domenech josep maria": {
+   "nombre": "Cruset Domènech, Josep Maria",
+   "natural": "Josep Maria Cruset Domènech",
+   "slug": "josep-maria-cruset-domenech",
+   "circunscripcion": "Tarragona",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/08/2023"
+  },
+  "cruz guzman garcia maria soledad": {
+   "nombre": "Cruz-Guzmán García, María Soledad",
+   "natural": "María Soledad Cruz-Guzmán García",
+   "slug": "maria-soledad-cruz-guzman-garcia",
+   "circunscripcion": "Sevilla",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "cruz santana gabriel": {
+   "nombre": "Cruz Santana, Gabriel",
+   "natural": "Gabriel Cruz Santana",
+   "slug": "gabriel-cruz-santana",
+   "circunscripcion": "Huelva",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "cuesta rodriguez maria": {
+   "nombre": "Cuesta Rodríguez, María",
+   "natural": "María Cuesta Rodríguez",
+   "slug": "maria-cuesta-rodriguez",
+   "circunscripcion": "Segovia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "cuevas larrosa raul": {
+   "nombre": "Cuevas Larrosa, Raúl",
+   "natural": "Raúl Cuevas Larrosa",
+   "slug": "raul-cuevas-larrosa",
+   "circunscripcion": "Zaragoza",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "17/12/2024"
+  },
+  "de la rosa baena olvido": {
+   "nombre": "De la Rosa Baena, Olvido",
+   "natural": "Olvido De la Rosa Baena",
+   "slug": "olvido-de-la-rosa-baena",
+   "circunscripcion": "Granada",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "20/02/2024"
+  },
+  "de las cuevas cortes felix": {
+   "nombre": "De las Cuevas Cortés, Félix",
+   "natural": "Félix De las Cuevas Cortés",
+   "slug": "felix-de-las-cuevas-cortes",
+   "circunscripcion": "Cantabria",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "de los santos gonzalez jaime miguel": {
+   "nombre": "De los Santos González, Jaime Miguel",
+   "natural": "Jaime Miguel De los Santos González",
+   "slug": "jaime-miguel-de-los-santos-gonzalez",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "de luna tobarra llanos": {
+   "nombre": "De Luna Tobarra, Llanos",
+   "natural": "Llanos De Luna Tobarra",
+   "slug": "llanos-de-luna-tobarra",
+   "circunscripcion": "Barcelona",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "de meer mendez rocio": {
+   "nombre": "De Meer Méndez, Rocío",
+   "natural": "Rocío De Meer Méndez",
+   "slug": "rocio-de-meer-mendez",
+   "circunscripcion": "Almería",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "14/08/2023"
+  },
+  "de rosa torner fernando": {
+   "nombre": "De Rosa Torner, Fernando",
+   "natural": "Fernando De Rosa Torner",
+   "slug": "fernando-de-rosa-torner",
+   "circunscripcion": "Valencia/València",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "del valle rodriguez emilio jesus": {
+   "nombre": "Del Valle Rodríguez, Emilio Jesús",
+   "natural": "Emilio Jesús Del Valle Rodríguez",
+   "slug": "emilio-jesus-del-valle-rodriguez",
+   "circunscripcion": "Cantabria",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "07/08/2023"
+  },
+  "delgado arce celso luis": {
+   "nombre": "Delgado Arce, Celso Luis",
+   "natural": "Celso Luis Delgado Arce",
+   "slug": "celso-luis-delgado-arce",
+   "circunscripcion": "Ourense",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "delgado taramona hernandez jimena": {
+   "nombre": "Delgado-Taramona Hernández, Jimena",
+   "natural": "Jimena Delgado-Taramona Hernández",
+   "slug": "jimena-delgado-taramona-hernandez",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "diaz marin raul": {
+   "nombre": "Díaz Marín, Raúl",
+   "natural": "Raúl Díaz Marín",
+   "slug": "raul-diaz-marin",
+   "circunscripcion": "Rioja (La)",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "diaz perez yolanda": {
+   "nombre": "Díaz Pérez, Yolanda",
+   "natural": "Yolanda Díaz Pérez",
+   "slug": "yolanda-diaz-perez",
+   "circunscripcion": "Madrid",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "diouf dioh luc andre": {
+   "nombre": "Diouf Dioh, Luc Andre",
+   "natural": "Luc Andre Diouf Dioh",
+   "slug": "luc-andre-diouf-dioh",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "estrems fayos etna": {
+   "nombre": "Estrems Fayos, Etna",
+   "natural": "Etna Estrems Fayos",
+   "slug": "etna-estrems-fayos",
+   "circunscripcion": "Girona",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "08/10/2024"
+  },
+  "fabra part alberto": {
+   "nombre": "Fabra Part, Alberto",
+   "natural": "Alberto Fabra Part",
+   "slug": "alberto-fabra-part",
+   "circunscripcion": "Castellón/Castelló",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "fagundez campo antidio": {
+   "nombre": "Fagúndez Campo, Antidio",
+   "natural": "Antidio Fagúndez Campo",
+   "slug": "antidio-fagundez-campo",
+   "circunscripcion": "Zamora",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "faneca lopez maria luisa": {
+   "nombre": "Faneca López, María Luisa",
+   "natural": "María Luisa Faneca López",
+   "slug": "maria-luisa-faneca-lopez",
+   "circunscripcion": "Huelva",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "fernandez beneitez andrea": {
+   "nombre": "Fernández Benéitez, Andrea",
+   "natural": "Andrea Fernández Benéitez",
+   "slug": "andrea-fernandez-beneitez",
+   "circunscripcion": "León",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "fernandez gonzalez maria mercedes": {
+   "nombre": "Fernández González, María Mercedes",
+   "natural": "María Mercedes Fernández González",
+   "slug": "maria-mercedes-fernandez-gonzalez",
+   "circunscripcion": "Asturias",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "fernandez hernandez pedro": {
+   "nombre": "Fernández Hernández, Pedro",
+   "natural": "Pedro Fernández Hernández",
+   "slug": "pedro-fernandez-hernandez",
+   "circunscripcion": "Zaragoza",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "02/08/2023"
+  },
+  "fernandez rios tomas": {
+   "nombre": "Fernández Ríos, Tomás",
+   "natural": "Tomás Fernández Ríos",
+   "slug": "tomas-fernandez-rios",
+   "circunscripcion": "Huelva",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "09/08/2023"
+  },
+  "figaredo alvarez sala jose maria": {
+   "nombre": "Figaredo Álvarez-Sala, José María",
+   "natural": "José María Figaredo Álvarez-Sala",
+   "slug": "jose-maria-figaredo-alvarez-sala",
+   "circunscripcion": "Asturias",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "09/08/2023"
+  },
+  "flores juberias carlos": {
+   "nombre": "Flores Juberías, Carlos",
+   "natural": "Carlos Flores Juberías",
+   "slug": "carlos-flores-juberias",
+   "circunscripcion": "Valencia/València",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "08/08/2023"
+  },
+  "floriano corrales carlos javier": {
+   "nombre": "Floriano Corrales, Carlos Javier",
+   "natural": "Carlos Javier Floriano Corrales",
+   "slug": "carlos-javier-floriano-corrales",
+   "circunscripcion": "Cáceres",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "folch blanc javier jose": {
+   "nombre": "Folch Blanc, Javier José",
+   "natural": "Javier José Folch Blanc",
+   "slug": "javier-jose-folch-blanc",
+   "circunscripcion": "Huesca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "franco gonzalez silvia": {
+   "nombre": "Franco González, Silvia",
+   "natural": "Silvia Franco González",
+   "slug": "silvia-franco-gonzalez",
+   "circunscripcion": "León",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "fullaondo la cruz marije": {
+   "nombre": "Fullaondo la Cruz, Marije",
+   "natural": "Marije Fullaondo la Cruz",
+   "slug": "marije-fullaondo-la-cruz",
+   "circunscripcion": "Bizkaia",
+   "partido": "EH Bildu",
+   "grupo": "Grupo Parlamentario Euskal Herria Bildu",
+   "alta": "14/08/2023"
+  },
+  "funez de gregorio carmen": {
+   "nombre": "Fúnez de Gregorio, Carmen",
+   "natural": "Carmen Fúnez de Gregorio",
+   "slug": "carmen-funez-de-gregorio",
+   "circunscripcion": "Ciudad Real",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "gallardo barrena pedro ignacio": {
+   "nombre": "Gallardo Barrena, Pedro Ignacio",
+   "natural": "Pedro Ignacio Gallardo Barrena",
+   "slug": "pedro-ignacio-gallardo-barrena",
+   "circunscripcion": "Cádiz",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "gamarra ruiz clavijo concepcion": {
+   "nombre": "Gamarra Ruiz-Clavijo, Concepción",
+   "natural": "Concepción Gamarra Ruiz-Clavijo",
+   "slug": "concepcion-gamarra-ruiz-clavijo",
+   "circunscripcion": "Rioja (La)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "garcia adanero carlos": {
+   "nombre": "García Adanero, Carlos",
+   "natural": "Carlos García Adanero",
+   "slug": "carlos-garcia-adanero",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "11/08/2023"
+  },
+  "garcia chavarria maria montserrat": {
+   "nombre": "García Chavarría, María Montserrat",
+   "natural": "María Montserrat García Chavarría",
+   "slug": "maria-montserrat-garcia-chavarria",
+   "circunscripcion": "Coruña (A)",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "23/04/2024"
+  },
+  "garcia felix manuel": {
+   "nombre": "García Félix, Manuel",
+   "natural": "Manuel García Félix",
+   "slug": "manuel-garcia-felix",
+   "circunscripcion": "Huelva",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "garcia gomis david": {
+   "nombre": "García Gomis, David",
+   "natural": "David García Gomis",
+   "slug": "david-garcia-gomis",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "04/08/2023"
+  },
+  "garcia gurrutxaga maria luisa": {
+   "nombre": "García Gurrutxaga, María Luisa",
+   "natural": "María Luisa García Gurrutxaga",
+   "slug": "maria-luisa-garcia-gurrutxaga",
+   "circunscripcion": "Gipuzkoa",
+   "partido": "PSE-EE (PSOE)",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "garcia lopez maribel": {
+   "nombre": "García López, Maribel",
+   "natural": "Maribel García López",
+   "slug": "maribel-garcia-lopez",
+   "circunscripcion": "Badajoz",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "garcia moris roberto": {
+   "nombre": "García Morís, Roberto",
+   "natural": "Roberto García Morís",
+   "slug": "roberto-garcia-moris",
+   "circunscripcion": "Asturias",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "garre murcia cristobal": {
+   "nombre": "Garre Murcia, Cristóbal",
+   "natural": "Cristóbal Garre Murcia",
+   "slug": "cristobal-garre-murcia",
+   "circunscripcion": "Málaga",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "garrido jimenez elisa": {
+   "nombre": "Garrido Jiménez, Elisa",
+   "natural": "Elisa Garrido Jiménez",
+   "slug": "elisa-garrido-jimenez",
+   "circunscripcion": "Rioja (La)",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "garrido valenzuela irene": {
+   "nombre": "Garrido Valenzuela, Irene",
+   "natural": "Irene Garrido Valenzuela",
+   "slug": "irene-garrido-valenzuela",
+   "circunscripcion": "Pontevedra",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "gavin i valls isidre": {
+   "nombre": "Gavin i Valls, Isidre",
+   "natural": "Isidre Gavin i Valls",
+   "slug": "isidre-gavin-i-valls",
+   "circunscripcion": "Lleida",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/08/2023"
+  },
+  "gil de reboleno lastortres esther": {
+   "nombre": "Gil de Reboleño Lastortres, Esther",
+   "natural": "Esther Gil de Reboleño Lastortres",
+   "slug": "esther-gil-de-reboleno-lastortres",
+   "circunscripcion": "Cádiz",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "03/08/2023"
+  },
+  "gil lazaro ignacio": {
+   "nombre": "Gil Lázaro, Ignacio",
+   "natural": "Ignacio Gil Lázaro",
+   "slug": "ignacio-gil-lazaro",
+   "circunscripcion": "Valencia/València",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "04/08/2023"
+  },
+  "gomez pina luis antonio": {
+   "nombre": "Gómez Piña, Luis Antonio",
+   "natural": "Luis Antonio Gómez Piña",
+   "slug": "luis-antonio-gomez-pina",
+   "circunscripcion": "Pontevedra",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "11/02/2025"
+  },
+  "gonzalez gracia juan antonio": {
+   "nombre": "González Gracia, Juan Antonio",
+   "natural": "Juan Antonio González Gracia",
+   "slug": "juan-antonio-gonzalez-gracia",
+   "circunscripcion": "Badajoz",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "gonzalez herdaro ana": {
+   "nombre": "González Herdaro, Ana",
+   "natural": "Ana González Herdaro",
+   "slug": "ana-gonzalez-herdaro",
+   "circunscripcion": "Valencia/València",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "05/02/2026"
+  },
+  "gonzalez lopez nahuel": {
+   "nombre": "González López, Nahuel",
+   "natural": "Nahuel González López",
+   "slug": "nahuel-gonzalez-lopez",
+   "circunscripcion": "Valencia/València",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "08/08/2023"
+  },
+  "gonzalez robatto perote jacobo": {
+   "nombre": "González-Robatto Perote, Jacobo",
+   "natural": "Jacobo González-Robatto Perote",
+   "slug": "jacobo-gonzalez-robatto-perote",
+   "circunscripcion": "Granada",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "04/08/2023"
+  },
+  "gonzalez vazquez marta": {
+   "nombre": "González Vázquez, Marta",
+   "natural": "Marta González Vázquez",
+   "slug": "marta-gonzalez-vazquez",
+   "circunscripcion": "Coruña (A)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "gracia blanco marta": {
+   "nombre": "Gracia Blanco, Marta",
+   "natural": "Marta Gracia Blanco",
+   "slug": "marta-gracia-blanco",
+   "circunscripcion": "Zaragoza",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "16/01/2024"
+  },
+  "granollers cunillera ines": {
+   "nombre": "Granollers Cunillera, Inés",
+   "natural": "Inés Granollers Cunillera",
+   "slug": "ines-granollers-cunillera",
+   "circunscripcion": "Lleida",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "10/08/2023"
+  },
+  "guardiola salmeron mirian": {
+   "nombre": "Guardiola Salmerón, Mirian",
+   "natural": "Mirian Guardiola Salmerón",
+   "slug": "mirian-guardiola-salmeron",
+   "circunscripcion": "Murcia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "18/09/2023"
+  },
+  "guijarro garcia txema": {
+   "nombre": "Guijarro García, Txema",
+   "natural": "Txema Guijarro García",
+   "slug": "txema-guijarro-garcia",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "03/08/2023"
+  },
+  "guinart moreno lidia": {
+   "nombre": "Guinart Moreno, Lídia",
+   "natural": "Lídia Guinart Moreno",
+   "slug": "lidia-guinart-moreno",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "14/08/2023"
+  },
+  "gutierrez prieto sergio": {
+   "nombre": "Gutiérrez Prieto, Sergio",
+   "natural": "Sergio Gutiérrez Prieto",
+   "slug": "sergio-gutierrez-prieto",
+   "circunscripcion": "Toledo",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "gutierrez santiago victor": {
+   "nombre": "Gutiérrez Santiago, Víctor",
+   "natural": "Víctor Gutiérrez Santiago",
+   "slug": "victor-gutierrez-santiago",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "05/12/2023"
+  },
+  "hernandez quero carlos": {
+   "nombre": "Hernández Quero, Carlos",
+   "natural": "Carlos Hernández Quero",
+   "slug": "carlos-hernandez-quero",
+   "circunscripcion": "Málaga",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "hernando fraile rafael antonio": {
+   "nombre": "Hernando Fraile, Rafael Antonio",
+   "natural": "Rafael Antonio Hernando Fraile",
+   "slug": "rafael-antonio-hernando-fraile",
+   "circunscripcion": "Almería",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "herrera garcia milena": {
+   "nombre": "Herrera García, Milena",
+   "natural": "Milena Herrera García",
+   "slug": "milena-herrera-garcia",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "PSIB-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "herrero bono jose alberto": {
+   "nombre": "Herrero Bono, José Alberto",
+   "natural": "José Alberto Herrero Bono",
+   "slug": "jose-alberto-herrero-bono",
+   "circunscripcion": "Teruel",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "hispan iglesias de ussel pablo": {
+   "nombre": "Hispán Iglesias de Ussel, Pablo",
+   "natural": "Pablo Hispán Iglesias de Ussel",
+   "slug": "pablo-hispan-iglesias-de-ussel",
+   "circunscripcion": "Granada",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "hita tellez guillermo": {
+   "nombre": "Hita Téllez, Guillermo",
+   "natural": "Guillermo Hita Téllez",
+   "slug": "guillermo-hita-tellez",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "11/06/2024"
+  },
+  "hoces iniguez ignacio": {
+   "nombre": "Hoces Íñiguez, Ignacio",
+   "natural": "Ignacio Hoces Íñiguez",
+   "slug": "ignacio-hoces-iniguez",
+   "circunscripcion": "Badajoz",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "09/08/2023"
+  },
+  "hoyo julia belen": {
+   "nombre": "Hoyo Juliá, Belén",
+   "natural": "Belén Hoyo Juliá",
+   "slug": "belen-hoyo-julia",
+   "circunscripcion": "Valencia/València",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "ibanez hernando angel": {
+   "nombre": "Ibáñez Hernando, Ángel",
+   "natural": "Ángel Ibáñez Hernando",
+   "slug": "angel-ibanez-hernando",
+   "circunscripcion": "Burgos",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "ibanez mezquita alberto": {
+   "nombre": "Ibáñez Mezquita, Alberto",
+   "natural": "Alberto Ibáñez Mezquita",
+   "slug": "alberto-ibanez-mezquita",
+   "circunscripcion": "Valencia/València",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "08/08/2023"
+  },
+  "inarritu garcia jon": {
+   "nombre": "Iñarritu García, Jon",
+   "natural": "Jon Iñarritu García",
+   "slug": "jon-inarritu-garcia",
+   "circunscripcion": "Gipuzkoa",
+   "partido": "EH Bildu",
+   "grupo": "Grupo Parlamentario Euskal Herria Bildu",
+   "alta": "14/08/2023"
+  },
+  "iniesta egido isabel": {
+   "nombre": "Iniesta Egido, Isabel",
+   "natural": "Isabel Iniesta Egido",
+   "slug": "isabel-iniesta-egido",
+   "circunscripcion": "Albacete",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "jerez antequera juan carlos": {
+   "nombre": "Jerez Antequera, Juan Carlos",
+   "natural": "Juan Carlos Jerez Antequera",
+   "slug": "juan-carlos-jerez-antequera",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "jimenez linuesa beatriz": {
+   "nombre": "Jiménez Linuesa, Beatriz",
+   "natural": "Beatriz Jiménez Linuesa",
+   "slug": "beatriz-jimenez-linuesa",
+   "circunscripcion": "Cuenca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "jodar perez irene": {
+   "nombre": "Jódar Pérez, Irene",
+   "natural": "Irene Jódar Pérez",
+   "slug": "irene-jodar-perez",
+   "circunscripcion": "Murcia",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/09/2025"
+  },
+  "jorda i roura teresa": {
+   "nombre": "Jordà i Roura, Teresa",
+   "natural": "Teresa Jordà i Roura",
+   "slug": "teresa-jorda-i-roura",
+   "circunscripcion": "Barcelona",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "10/08/2023"
+  },
+  "lago penas manuel": {
+   "nombre": "Lago Peñas, Manuel",
+   "natural": "Manuel Lago Peñas",
+   "slug": "manuel-lago-penas",
+   "circunscripcion": "Coruña (A)",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "06/02/2024"
+  },
+  "lamua estanol marc": {
+   "nombre": "Lamuà Estañol, Marc",
+   "natural": "Marc Lamuà Estañol",
+   "slug": "marc-lamua-estanol",
+   "circunscripcion": "Girona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "leal fernandez isaura": {
+   "nombre": "Leal Fernández, Isaura",
+   "natural": "Isaura Leal Fernández",
+   "slug": "isaura-leal-fernandez",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "legarda uriarte mikel": {
+   "nombre": "Legarda Uriarte, Mikel",
+   "natural": "Mikel Legarda Uriarte",
+   "slug": "mikel-legarda-uriarte",
+   "circunscripcion": "Araba/Álava",
+   "partido": "EAJ-PNV",
+   "grupo": "Grupo Parlamentario Vasco (EAJ-PNV)",
+   "alta": "16/08/2023"
+  },
+  "lima garcia laura maria": {
+   "nombre": "Lima García, Laura María",
+   "natural": "Laura María Lima García",
+   "slug": "laura-maria-lima-garcia",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "llamazares domingo esther": {
+   "nombre": "Llamazares Domingo, Esther",
+   "natural": "Esther Llamazares Domingo",
+   "slug": "esther-llamazares-domingo",
+   "circunscripcion": "Asturias",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "lopez alvarez patxi": {
+   "nombre": "López Álvarez, Patxi",
+   "natural": "Patxi López Álvarez",
+   "slug": "patxi-lopez-alvarez",
+   "circunscripcion": "Bizkaia",
+   "partido": "PSE-EE (PSOE)",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "lopez cano ignacio": {
+   "nombre": "López Cano, Ignacio",
+   "natural": "Ignacio López Cano",
+   "slug": "ignacio-lopez-cano",
+   "circunscripcion": "Málaga",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "11/08/2023"
+  },
+  "lopez maraver angel": {
+   "nombre": "López Maraver, Ángel",
+   "natural": "Ángel López Maraver",
+   "slug": "angel-lopez-maraver",
+   "circunscripcion": "Guadalajara",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "03/08/2023"
+  },
+  "lopez tagliafico candela": {
+   "nombre": "López Tagliafico, Candela",
+   "natural": "Candela López Tagliafico",
+   "slug": "candela-lopez-tagliafico",
+   "circunscripcion": "Barcelona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "30/01/2024"
+  },
+  "lopez zamora cristina": {
+   "nombre": "López Zamora, Cristina",
+   "natural": "Cristina López Zamora",
+   "slug": "cristina-lopez-zamora",
+   "circunscripcion": "Ciudad Real",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "lorente anaya macarena": {
+   "nombre": "Lorente Anaya, Macarena",
+   "natural": "Macarena Lorente Anaya",
+   "slug": "macarena-lorente-anaya",
+   "circunscripcion": "Cádiz",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "lorenzo cazorla juan antonio": {
+   "nombre": "Lorenzo Cazorla, Juan Antonio",
+   "natural": "Juan Antonio Lorenzo Cazorla",
+   "slug": "juan-antonio-lorenzo-cazorla",
+   "circunscripcion": "Almería",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "28/11/2023"
+  },
+  "losada fernandez jose": {
+   "nombre": "Losada Fernández, José",
+   "natural": "José Losada Fernández",
+   "slug": "jose-losada-fernandez",
+   "circunscripcion": "Sevilla",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "28/11/2023"
+  },
+  "macias gata alfonso carlos": {
+   "nombre": "Macías Gata, Alfonso Carlos",
+   "natural": "Alfonso Carlos Macías Gata",
+   "slug": "alfonso-carlos-macias-gata",
+   "circunscripcion": "Badajoz",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "madrenas i mir marta": {
+   "nombre": "Madrenas i Mir, Marta",
+   "natural": "Marta Madrenas i Mir",
+   "slug": "marta-madrenas-i-mir",
+   "circunscripcion": "Girona",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/08/2023"
+  },
+  "madrid olmo bartolome": {
+   "nombre": "Madrid Olmo, Bartolomé",
+   "natural": "Bartolomé Madrid Olmo",
+   "slug": "bartolome-madrid-olmo",
+   "circunscripcion": "Córdoba",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "11/08/2023"
+  },
+  "maldonado lopez adriana": {
+   "nombre": "Maldonado López, Adriana",
+   "natural": "Adriana Maldonado López",
+   "slug": "adriana-maldonado-lopez",
+   "circunscripcion": "Navarra",
+   "partido": "PSN-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "marcos ortega milagros": {
+   "nombre": "Marcos Ortega, Milagros",
+   "natural": "Milagros Marcos Ortega",
+   "slug": "milagros-marcos-ortega",
+   "circunscripcion": "Palencia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "mari boso jose vicente": {
+   "nombre": "Marí Bosó, José Vicente",
+   "natural": "José Vicente Marí Bosó",
+   "slug": "jose-vicente-mari-boso",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "marin aparicio inmaculada": {
+   "nombre": "Marín Aparicio, Inmaculada",
+   "natural": "Inmaculada Marín Aparicio",
+   "slug": "inmaculada-marin-aparicio",
+   "circunscripcion": "Cádiz",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/06/2026"
+  },
+  "mariscal anaya guillermo": {
+   "nombre": "Mariscal Anaya, Guillermo",
+   "natural": "Guillermo Mariscal Anaya",
+   "slug": "guillermo-mariscal-anaya",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "mariscal zabala manuel": {
+   "nombre": "Mariscal Zabala, Manuel",
+   "natural": "Manuel Mariscal Zabala",
+   "slug": "manuel-mariscal-zabala",
+   "circunscripcion": "Toledo",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "11/08/2023"
+  },
+  "marques ates amador": {
+   "nombre": "Marqués Atés, Amador",
+   "natural": "Amador Marqués Atés",
+   "slug": "amador-marques-ates",
+   "circunscripcion": "Lleida",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "martin blanco nacho": {
+   "nombre": "Martín Blanco, Nacho",
+   "natural": "Nacho Martín Blanco",
+   "slug": "nacho-martin-blanco",
+   "circunscripcion": "Barcelona",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "martin garcia pedro samuel": {
+   "nombre": "Martín García, Pedro Samuel",
+   "natural": "Pedro Samuel Martín García",
+   "slug": "pedro-samuel-martin-garcia",
+   "circunscripcion": "Salamanca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "martin martinez andreu": {
+   "nombre": "Martín Martínez, Andreu",
+   "natural": "Andreu Martín Martínez",
+   "slug": "andreu-martin-martinez",
+   "circunscripcion": "Tarragona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "martin rodriguez margarita": {
+   "nombre": "Martín Rodríguez, Margarita",
+   "natural": "Margarita Martín Rodríguez",
+   "slug": "margarita-martin-rodriguez",
+   "circunscripcion": "Ourense",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "martin urriza carlos": {
+   "nombre": "Martín Urriza, Carlos",
+   "natural": "Carlos Martín Urriza",
+   "slug": "carlos-martin-urriza",
+   "circunscripcion": "Madrid",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "10/08/2023"
+  },
+  "martinez barbero veronica": {
+   "nombre": "Martínez Barbero, Verónica",
+   "natural": "Verónica Martínez Barbero",
+   "slug": "veronica-martinez-barbero",
+   "circunscripcion": "Pontevedra",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "martinez gomez antonio": {
+   "nombre": "Martínez Gómez, Antonio",
+   "natural": "Antonio Martínez Gómez",
+   "slug": "antonio-martinez-gomez",
+   "circunscripcion": "Albacete",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "martinez hierro lander": {
+   "nombre": "Martínez Hierro, Lander",
+   "natural": "Lander Martínez Hierro",
+   "slug": "lander-martinez-hierro",
+   "circunscripcion": "Bizkaia",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "03/08/2023"
+  },
+  "martinez labella ana": {
+   "nombre": "Martínez Labella, Ana",
+   "natural": "Ana Martínez Labella",
+   "slug": "ana-martinez-labella",
+   "circunscripcion": "Almería",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "martinez ramirez carmen": {
+   "nombre": "Martínez Ramírez, Carmen",
+   "natural": "Carmen Martínez Ramírez",
+   "slug": "carmen-martinez-ramirez",
+   "circunscripcion": "Valencia/València",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "martinez salmeron joaquin": {
+   "nombre": "Martínez Salmerón, Joaquín",
+   "natural": "Joaquín Martínez Salmerón",
+   "slug": "joaquin-martinez-salmeron",
+   "circunscripcion": "Murcia",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "martinez seijo maria luz": {
+   "nombre": "Martínez Seijo, María Luz",
+   "natural": "María Luz Martínez Seijo",
+   "slug": "maria-luz-martinez-seijo",
+   "circunscripcion": "Palencia",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "matute garcia de jalon oskar": {
+   "nombre": "Matute García de Jalón, Oskar",
+   "natural": "Oskar Matute García de Jalón",
+   "slug": "oskar-matute-garcia-de-jalon",
+   "circunscripcion": "Bizkaia",
+   "partido": "EH Bildu",
+   "grupo": "Grupo Parlamentario Euskal Herria Bildu",
+   "alta": "14/08/2023"
+  },
+  "mayoral de lamo alberto": {
+   "nombre": "Mayoral de Lamo, Alberto",
+   "natural": "Alberto Mayoral de Lamo",
+   "slug": "alberto-mayoral-de-lamo",
+   "circunscripcion": "Córdoba",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "mayoral perez jesus": {
+   "nombre": "Mayoral Pérez, Jesús",
+   "natural": "Jesús Mayoral Pérez",
+   "slug": "jesus-mayoral-perez",
+   "circunscripcion": "Toledo",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "19/12/2023"
+  },
+  "mejias sanchez carina": {
+   "nombre": "Mejías Sánchez, Carina",
+   "natural": "Carina Mejías Sánchez",
+   "slug": "carina-mejias-sanchez",
+   "circunscripcion": "Barcelona",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "melgarejo moreno joaquin": {
+   "nombre": "Melgarejo Moreno, Joaquín",
+   "natural": "Joaquín Melgarejo Moreno",
+   "slug": "joaquin-melgarejo-moreno",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "mellado sierra valle": {
+   "nombre": "Mellado Sierra, Valle",
+   "natural": "Valle Mellado Sierra",
+   "slug": "valle-mellado-sierra",
+   "circunscripcion": "Tarragona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "mendez monasterio lourdes": {
+   "nombre": "Méndez Monasterio, Lourdes",
+   "natural": "Lourdes Méndez Monasterio",
+   "slug": "lourdes-mendez-monasterio",
+   "circunscripcion": "Murcia",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "09/08/2023"
+  },
+  "mercadal baquero pepe": {
+   "nombre": "Mercadal Baquero, Pepe",
+   "natural": "Pepe Mercadal Baquero",
+   "slug": "pepe-mercadal-baquero",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "PSIB-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "merino martinez javier": {
+   "nombre": "Merino Martínez, Javier",
+   "natural": "Javier Merino Martínez",
+   "slug": "javier-merino-martinez",
+   "circunscripcion": "Rioja (La)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "mesquida mayans joan": {
+   "nombre": "Mesquida Mayans, Joan",
+   "natural": "Joan Mesquida Mayans",
+   "slug": "joan-mesquida-mayans",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "07/08/2023"
+  },
+  "mico mico agueda": {
+   "nombre": "Micó Micó, Àgueda",
+   "natural": "Àgueda Micó Micó",
+   "slug": "agueda-mico-mico",
+   "circunscripcion": "Valencia/València",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "08/08/2023"
+  },
+  "minguez garcia montse": {
+   "nombre": "Mínguez García, Montse",
+   "natural": "Montse Mínguez García",
+   "slug": "montse-minguez-garcia",
+   "circunscripcion": "Lleida",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "molina leon ainhoa": {
+   "nombre": "Molina León, Ainhoa",
+   "natural": "Ainhoa Molina León",
+   "slug": "ainhoa-molina-leon",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "17/09/2024"
+  },
+  "moneo diez maria sandra": {
+   "nombre": "Moneo Díez, María Sandra",
+   "natural": "María Sandra Moneo Díez",
+   "slug": "maria-sandra-moneo-diez",
+   "circunscripcion": "Burgos",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "montavez aguillaume vicente": {
+   "nombre": "Montávez Aguillaume, Vicente",
+   "natural": "Vicente Montávez Aguillaume",
+   "slug": "vicente-montavez-aguillaume",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "17/09/2024"
+  },
+  "montesinos de miguel macarena": {
+   "nombre": "Montesinos de Miguel, Macarena",
+   "natural": "Macarena Montesinos de Miguel",
+   "slug": "macarena-montesinos-de-miguel",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "moraleja gomez tristana maria": {
+   "nombre": "Moraleja Gómez, Tristana María",
+   "natural": "Tristana María Moraleja Gómez",
+   "slug": "tristana-maria-moraleja-gomez",
+   "circunscripcion": "Coruña (A)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "morales alvarez alvaro": {
+   "nombre": "Morales Álvarez, Álvaro",
+   "natural": "Álvaro Morales Álvarez",
+   "slug": "alvaro-morales-alvarez",
+   "circunscripcion": "Burgos",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "moreno borras cristina": {
+   "nombre": "Moreno Borrás, Cristina",
+   "natural": "Cristina Moreno Borrás",
+   "slug": "cristina-moreno-borras",
+   "circunscripcion": "Valencia/València",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/07/2024"
+  },
+  "moreno fernandez ma isabel": {
+   "nombre": "Moreno Fernández, Mª Isabel",
+   "natural": "Mª Isabel Moreno Fernández",
+   "slug": "ma-isabel-moreno-fernandez",
+   "circunscripcion": "Cádiz",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "moro almaraz maria jesus": {
+   "nombre": "Moro Almaraz, María Jesús",
+   "natural": "María Jesús Moro Almaraz",
+   "slug": "maria-jesus-moro-almaraz",
+   "circunscripcion": "Salamanca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "munoz abrines pedro": {
+   "nombre": "Muñoz Abrines, Pedro",
+   "natural": "Pedro Muñoz Abrines",
+   "slug": "pedro-munoz-abrines",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "munoz de la iglesia ester": {
+   "nombre": "Muñoz de la Iglesia, Ester",
+   "natural": "Ester Muñoz de la Iglesia",
+   "slug": "ester-munoz-de-la-iglesia",
+   "circunscripcion": "León",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "nacarino brabo jimenez aurora": {
+   "nombre": "Nacarino-Brabo Jiménez, Aurora",
+   "natural": "Aurora Nacarino-Brabo Jiménez",
+   "slug": "aurora-nacarino-brabo-jimenez",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "narbona ruiz cristina": {
+   "nombre": "Narbona Ruiz, Cristina",
+   "natural": "Cristina Narbona Ruiz",
+   "slug": "cristina-narbona-ruiz",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "14/08/2023"
+  },
+  "nasarre oliva begona": {
+   "nombre": "Nasarre Oliva, Begoña",
+   "natural": "Begoña Nasarre Oliva",
+   "slug": "begona-nasarre-oliva",
+   "circunscripcion": "Huesca",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "navarro lacoba carmen": {
+   "nombre": "Navarro Lacoba, Carmen",
+   "natural": "Carmen Navarro Lacoba",
+   "slug": "carmen-navarro-lacoba",
+   "circunscripcion": "Albacete",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "nogueras i camero miriam": {
+   "nombre": "Nogueras i Camero, Míriam",
+   "natural": "Míriam Nogueras i Camero",
+   "slug": "miriam-nogueras-i-camero",
+   "circunscripcion": "Barcelona",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/08/2023"
+  },
+  "noriega gomez javier": {
+   "nombre": "Noriega Gómez, Javier",
+   "natural": "Javier Noriega Gómez",
+   "slug": "javier-noriega-gomez",
+   "circunscripcion": "Cantabria",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "07/08/2023"
+  },
+  "nunez feijoo alberto": {
+   "nombre": "Núñez Feijóo, Alberto",
+   "natural": "Alberto Núñez Feijóo",
+   "slug": "alberto-nunez-feijoo",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "nunez guijarro jose enrique": {
+   "nombre": "Núñez Guijarro, José Enrique",
+   "natural": "José Enrique Núñez Guijarro",
+   "slug": "jose-enrique-nunez-guijarro",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "30/01/2024"
+  },
+  "ogou i corbi viviane": {
+   "nombre": "Ogou i Corbi, Viviane",
+   "natural": "Viviane Ogou i Corbi",
+   "slug": "viviane-ogou-i-corbi",
+   "circunscripcion": "Barcelona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "11/02/2025"
+  },
+  "olano vela jaime eduardo de": {
+   "nombre": "Olano Vela, Jaime Eduardo de",
+   "natural": "Jaime Eduardo de Olano Vela",
+   "slug": "jaime-eduardo-de-olano-vela",
+   "circunscripcion": "Lugo",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "ortega smith molina francisco javier": {
+   "nombre": "Ortega Smith-Molina, Francisco Javier",
+   "natural": "Francisco Javier Ortega Smith-Molina",
+   "slug": "francisco-javier-ortega-smith-molina",
+   "circunscripcion": "Madrid",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "16/08/2023"
+  },
+  "otero gabirondo mikel": {
+   "nombre": "Otero Gabirondo, Mikel",
+   "natural": "Mikel Otero Gabirondo",
+   "slug": "mikel-otero-gabirondo",
+   "circunscripcion": "Araba/Álava",
+   "partido": "EH Bildu",
+   "grupo": "Grupo Parlamentario Euskal Herria Bildu",
+   "alta": "18/02/2025"
+  },
+  "otero garcia mercedes": {
+   "nombre": "Otero García, Mercedes",
+   "natural": "Mercedes Otero García",
+   "slug": "mercedes-otero-garcia",
+   "circunscripcion": "Asturias",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "22/07/2024"
+  },
+  "otero rodriguez patricia": {
+   "nombre": "Otero Rodríguez, Patricia",
+   "natural": "Patricia Otero Rodríguez",
+   "slug": "patricia-otero-rodriguez",
+   "circunscripcion": "Lugo",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/03/2024"
+  },
+  "pachon martin brigida": {
+   "nombre": "Pachón Martín, Brígida",
+   "natural": "Brígida Pachón Martín",
+   "slug": "brigida-pachon-martin",
+   "circunscripcion": "Sevilla",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "11/06/2026"
+  },
+  "pages i masso josep": {
+   "nombre": "Pagès i Massó, Josep",
+   "natural": "Josep Pagès i Massó",
+   "slug": "josep-pages-i-masso",
+   "circunscripcion": "Barcelona",
+   "partido": "JxCAT-JUNTS",
+   "grupo": "Grupo Parlamentario Junts per Catalunya",
+   "alta": "10/09/2024"
+  },
+  "palencia rubio hector": {
+   "nombre": "Palencia Rubio, Héctor",
+   "natural": "Héctor Palencia Rubio",
+   "slug": "hector-palencia-rubio",
+   "circunscripcion": "Ávila",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "31/07/2023"
+  },
+  "paniagua nunez miguel angel": {
+   "nombre": "Paniagua Núñez, Miguel Ángel",
+   "natural": "Miguel Ángel Paniagua Núñez",
+   "slug": "miguel-angel-paniagua-nunez",
+   "circunscripcion": "Palencia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "pare aregall josep": {
+   "nombre": "Paré Aregall, Josep",
+   "natural": "Josep Paré Aregall",
+   "slug": "josep-pare-aregall",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/01/2024"
+  },
+  "parra aparicio julia": {
+   "nombre": "Parra Aparicio, Julia",
+   "natural": "Julia Parra Aparicio",
+   "slug": "julia-parra-aparicio",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "parra gallego agustin": {
+   "nombre": "Parra Gallego, Agustín",
+   "natural": "Agustín Parra Gallego",
+   "slug": "agustin-parra-gallego",
+   "circunscripcion": "Barcelona",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "pascual rocamora sandra": {
+   "nombre": "Pascual Rocamora, Sandra",
+   "natural": "Sandra Pascual Rocamora",
+   "slug": "sandra-pascual-rocamora",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "pedreno molina juan luis": {
+   "nombre": "Pedreño Molina, Juan Luis",
+   "natural": "Juan Luis Pedreño Molina",
+   "slug": "juan-luis-pedreno-molina",
+   "circunscripcion": "Murcia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "pena camarero esther": {
+   "nombre": "Peña Camarero, Esther",
+   "natural": "Esther Peña Camarero",
+   "slug": "esther-pena-camarero",
+   "circunscripcion": "Burgos",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "perea i conillas maria merce": {
+   "nombre": "Perea i Conillas, María Mercè",
+   "natural": "María Mercè Perea i Conillas",
+   "slug": "maria-merce-perea-i-conillas",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "perez coronado pablo": {
+   "nombre": "Pérez Coronado, Pablo",
+   "natural": "Pablo Pérez Coronado",
+   "slug": "pablo-perez-coronado",
+   "circunscripcion": "Segovia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "perez lopez alvaro": {
+   "nombre": "Pérez López, Álvaro",
+   "natural": "Álvaro Pérez López",
+   "slug": "alvaro-perez-lopez",
+   "circunscripcion": "Coruña (A)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "perez ortiz isabel maria": {
+   "nombre": "Pérez Ortiz, Isabel María",
+   "natural": "Isabel María Pérez Ortiz",
+   "slug": "isabel-maria-perez-ortiz",
+   "circunscripcion": "Málaga",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "01/08/2023"
+  },
+  "perez osma daniel": {
+   "nombre": "Pérez Osma, Daniel",
+   "natural": "Daniel Pérez Osma",
+   "slug": "daniel-perez-osma",
+   "circunscripcion": "Cuenca",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "perez recuerda isabel gema": {
+   "nombre": "Pérez Recuerda, Isabel Gema",
+   "natural": "Isabel Gema Pérez Recuerda",
+   "slug": "isabel-gema-perez-recuerda",
+   "circunscripcion": "Málaga",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "pisarello prados gerardo": {
+   "nombre": "Pisarello Prados, Gerardo",
+   "natural": "Gerardo Pisarello Prados",
+   "slug": "gerardo-pisarello-prados",
+   "circunscripcion": "Barcelona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "plaza garcia ines": {
+   "nombre": "Plaza García, Inés",
+   "natural": "Inés Plaza García",
+   "slug": "ines-plaza-garcia",
+   "circunscripcion": "Almería",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "poblador pacheco maria araceli": {
+   "nombre": "Poblador Pacheco, María Araceli",
+   "natural": "María Araceli Poblador Pacheco",
+   "slug": "maria-araceli-poblador-pacheco",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "pose mesura modesto": {
+   "nombre": "Pose Mesura, Modesto",
+   "natural": "Modesto Pose Mesura",
+   "slug": "modesto-pose-mesura",
+   "circunscripcion": "Pontevedra",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "pozueta fernandez isabel": {
+   "nombre": "Pozueta Fernández, Isabel",
+   "natural": "Isabel Pozueta Fernández",
+   "slug": "isabel-pozueta-fernandez",
+   "circunscripcion": "Navarra",
+   "partido": "EH Bildu",
+   "grupo": "Grupo Parlamentario Euskal Herria Bildu",
+   "alta": "14/08/2023"
+  },
+  "prieto serrano maria isabel": {
+   "nombre": "Prieto Serrano, María Isabel",
+   "natural": "María Isabel Prieto Serrano",
+   "slug": "maria-isabel-prieto-serrano",
+   "circunscripcion": "Córdoba",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "puente santiago oscar": {
+   "nombre": "Puente Santiago, Óscar",
+   "natural": "Óscar Puente Santiago",
+   "slug": "oscar-puente-santiago",
+   "circunscripcion": "Valladolid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "puy fraga pedro": {
+   "nombre": "Puy Fraga, Pedro",
+   "natural": "Pedro Puy Fraga",
+   "slug": "pedro-puy-fraga",
+   "circunscripcion": "Pontevedra",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "quintana carballo rosa": {
+   "nombre": "Quintana Carballo, Rosa",
+   "natural": "Rosa Quintana Carballo",
+   "slug": "rosa-quintana-carballo",
+   "circunscripcion": "Ourense",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "quintanilla navarro miguel angel": {
+   "nombre": "Quintanilla Navarro, Miguel Ángel",
+   "natural": "Miguel Ángel Quintanilla Navarro",
+   "slug": "miguel-angel-quintanilla-navarro",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "quintero hernandez jonay": {
+   "nombre": "Quintero Hernández, Jonay",
+   "natural": "Jonay Quintero Hernández",
+   "slug": "jonay-quintero-hernandez",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/12/2024"
+  },
+  "rallo lombarte artemi": {
+   "nombre": "Rallo Lombarte, Artemi",
+   "natural": "Artemi Rallo Lombarte",
+   "slug": "artemi-rallo-lombarte",
+   "circunscripcion": "Castellón/Castelló",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "ramajo prada oscar": {
+   "nombre": "Ramajo Prada, Óscar",
+   "natural": "Óscar Ramajo Prada",
+   "slug": "oscar-ramajo-prada",
+   "circunscripcion": "Zamora",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "ramirez carner arnau": {
+   "nombre": "Ramírez Carner, Arnau",
+   "natural": "Arnau Ramírez Carner",
+   "slug": "arnau-ramirez-carner",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "ramirez del rio jose": {
+   "nombre": "Ramírez del Río, José",
+   "natural": "José Ramírez del Río",
+   "slug": "jose-ramirez-del-rio",
+   "circunscripcion": "Córdoba",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "03/08/2023"
+  },
+  "ramirez martin maria lourdes": {
+   "nombre": "Ramírez Martín, María Lourdes",
+   "natural": "María Lourdes Ramírez Martín",
+   "slug": "maria-lourdes-ramirez-martin",
+   "circunscripcion": "Granada",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "ramirez moreno maria de las nieves": {
+   "nombre": "Ramírez Moreno, María de las Nieves",
+   "natural": "María de las Nieves Ramírez Moreno",
+   "slug": "maria-de-las-nieves-ramirez-moreno",
+   "circunscripcion": "Málaga",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "01/08/2023"
+  },
+  "ramos esteban cesar joaquin": {
+   "nombre": "Ramos Esteban, César Joaquín",
+   "natural": "César Joaquín Ramos Esteban",
+   "slug": "cesar-joaquin-ramos-esteban",
+   "circunscripcion": "Cáceres",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "recas martin alda": {
+   "nombre": "Recas Martín, Alda",
+   "natural": "Alda Recas Martín",
+   "slug": "alda-recas-martin",
+   "circunscripcion": "Madrid",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "29/10/2024"
+  },
+  "redondo cardenas gonzalo": {
+   "nombre": "Redondo Cárdenas, Gonzalo",
+   "natural": "Gonzalo Redondo Cárdenas",
+   "slug": "gonzalo-redondo-cardenas",
+   "circunscripcion": "Ciudad Real",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "rego candamil nestor": {
+   "nombre": "Rego Candamil, Néstor",
+   "natural": "Néstor Rego Candamil",
+   "slug": "nestor-rego-candamil",
+   "circunscripcion": "Coruña (A)",
+   "partido": "BNG",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "10/08/2023"
+  },
+  "renteria lasanta nerea": {
+   "nombre": "Renteria Lasanta, Nerea",
+   "natural": "Nerea Renteria Lasanta",
+   "slug": "nerea-renteria-lasanta",
+   "circunscripcion": "Bizkaia",
+   "partido": "EAJ-PNV",
+   "grupo": "Grupo Parlamentario Vasco (EAJ-PNV)",
+   "alta": "08/04/2025"
+  },
+  "requena ruiz juan diego": {
+   "nombre": "Requena Ruiz, Juan Diego",
+   "natural": "Juan Diego Requena Ruiz",
+   "slug": "juan-diego-requena-ruiz",
+   "circunscripcion": "Jaén",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "07/08/2023"
+  },
+  "rey de las heras luis alfonso": {
+   "nombre": "Rey de las Heras, Luis Alfonso",
+   "natural": "Luis Alfonso Rey de las Heras",
+   "slug": "luis-alfonso-rey-de-las-heras",
+   "circunscripcion": "Soria",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "01/08/2023"
+  },
+  "reynal reillo esperanza": {
+   "nombre": "Reynal Reillo, Esperanza",
+   "natural": "Esperanza Reynal Reillo",
+   "slug": "esperanza-reynal-reillo",
+   "circunscripcion": "Valencia/València",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "10/08/2023"
+  },
+  "rivera arias engracia": {
+   "nombre": "Rivera Arias, Engracia",
+   "natural": "Engracia Rivera Arias",
+   "slug": "engracia-rivera-arias",
+   "circunscripcion": "Sevilla",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "08/08/2023"
+  },
+  "rives arcayna caridad": {
+   "nombre": "Rives Arcayna, Caridad",
+   "natural": "Caridad Rives Arcayna",
+   "slug": "caridad-rives-arcayna",
+   "circunscripcion": "Murcia",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "robles lopez joaquin": {
+   "nombre": "Robles López, Joaquín",
+   "natural": "Joaquín Robles López",
+   "slug": "joaquin-robles-lopez",
+   "circunscripcion": "Murcia",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "rodriguez almeida andres alberto": {
+   "nombre": "Rodríguez Almeida, Andrés Alberto",
+   "natural": "Andrés Alberto Rodríguez Almeida",
+   "slug": "andres-alberto-rodriguez-almeida",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "10/08/2023"
+  },
+  "rodriguez calleja patricia": {
+   "nombre": "Rodríguez Calleja, Patricia",
+   "natural": "Patricia Rodríguez Calleja",
+   "slug": "patricia-rodriguez-calleja",
+   "circunscripcion": "Ávila",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "rodriguez de millan parro maria jose": {
+   "nombre": "Rodríguez de Millán Parro, María José",
+   "natural": "María José Rodríguez de Millán Parro",
+   "slug": "maria-jose-rodriguez-de-millan-parro",
+   "circunscripcion": "Madrid",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "rodriguez gomez de celis alfonso": {
+   "nombre": "Rodríguez Gómez de Celis, Alfonso",
+   "natural": "Alfonso Rodríguez Gómez de Celis",
+   "slug": "alfonso-rodriguez-gomez-de-celis",
+   "circunscripcion": "Sevilla",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "rodriguez herrer maria elvira": {
+   "nombre": "Rodríguez Herrer, María Elvira",
+   "natural": "María Elvira Rodríguez Herrer",
+   "slug": "maria-elvira-rodriguez-herrer",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/09/2025"
+  },
+  "rodriguez palacios javier": {
+   "nombre": "Rodríguez Palacios, Javier",
+   "natural": "Javier Rodríguez Palacios",
+   "slug": "javier-rodriguez-palacios",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "05/12/2023"
+  },
+  "rodriguez salas jose antonio": {
+   "nombre": "Rodríguez Salas, José Antonio",
+   "natural": "José Antonio Rodríguez Salas",
+   "slug": "jose-antonio-rodriguez-salas",
+   "circunscripcion": "Granada",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "rodriguez serra santi": {
+   "nombre": "Rodríguez Serra, Santi",
+   "natural": "Santi Rodríguez Serra",
+   "slug": "santi-rodriguez-serra",
+   "circunscripcion": "Barcelona",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "rodriguez suarez esther": {
+   "nombre": "Rodríguez Suárez, Esther",
+   "natural": "Esther Rodríguez Suárez",
+   "slug": "esther-rodriguez-suarez",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "rojas garcia carlos": {
+   "nombre": "Rojas García, Carlos",
+   "natural": "Carlos Rojas García",
+   "slug": "carlos-rojas-garcia",
+   "circunscripcion": "Granada",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "rojas manrique juan antonio": {
+   "nombre": "Rojas Manrique, Juan Antonio",
+   "natural": "Juan Antonio Rojas Manrique",
+   "slug": "juan-antonio-rojas-manrique",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "rojo blas alberto": {
+   "nombre": "Rojo Blas, Alberto",
+   "natural": "Alberto Rojo Blas",
+   "slug": "alberto-rojo-blas",
+   "circunscripcion": "Guadalajara",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "08/08/2023"
+  },
+  "roman jasanada antonio": {
+   "nombre": "Román Jasanada, Antonio",
+   "natural": "Antonio Román Jasanada",
+   "slug": "antonio-roman-jasanada",
+   "circunscripcion": "Guadalajara",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "romero pozo rafaela": {
+   "nombre": "Romero Pozo, Rafaela",
+   "natural": "Rafaela Romero Pozo",
+   "slug": "rafaela-romero-pozo",
+   "circunscripcion": "Gipuzkoa",
+   "partido": "PSE-EE (PSOE)",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "04/08/2023"
+  },
+  "romero vilches maria de los reyes": {
+   "nombre": "Romero Vilches, María de los Reyes",
+   "natural": "María de los Reyes Romero Vilches",
+   "slug": "maria-de-los-reyes-romero-vilches",
+   "circunscripcion": "Sevilla",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "16/08/2023"
+  },
+  "ros martinez susana": {
+   "nombre": "Ros Martínez, Susana",
+   "natural": "Susana Ros Martínez",
+   "slug": "susana-ros-martinez",
+   "circunscripcion": "Castellón/Castelló",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "rueda perello patricia": {
+   "nombre": "Rueda Perelló, Patricia",
+   "natural": "Patricia Rueda Perelló",
+   "slug": "patricia-rueda-perello",
+   "circunscripcion": "Málaga",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "14/08/2023"
+  },
+  "rufian romero gabriel": {
+   "nombre": "Rufián Romero, Gabriel",
+   "natural": "Gabriel Rufián Romero",
+   "slug": "gabriel-rufian-romero",
+   "circunscripcion": "Barcelona",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "16/08/2023"
+  },
+  "ruiz boix juan carlos": {
+   "nombre": "Ruiz Boix, Juan Carlos",
+   "natural": "Juan Carlos Ruiz Boix",
+   "slug": "juan-carlos-ruiz-boix",
+   "circunscripcion": "Cádiz",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "ruiz de diego victor javier": {
+   "nombre": "Ruiz de Diego, Víctor Javier",
+   "natural": "Víctor Javier Ruiz de Diego",
+   "slug": "victor-javier-ruiz-de-diego",
+   "circunscripcion": "Zaragoza",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "ruiz solas maria de la cabeza": {
+   "nombre": "Ruiz Solás, María de la Cabeza",
+   "natural": "María de la Cabeza Ruiz Solás",
+   "slug": "maria-de-la-cabeza-ruiz-solas",
+   "circunscripcion": "Madrid",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "14/08/2023"
+  },
+  "saez alonso munumer pablo": {
+   "nombre": "Sáez Alonso-Muñumer, Pablo",
+   "natural": "Pablo Sáez Alonso-Muñumer",
+   "slug": "pablo-saez-alonso-munumer",
+   "circunscripcion": "Valladolid",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "03/08/2023"
+  },
+  "saez cruz emilio": {
+   "nombre": "Sáez Cruz, Emilio",
+   "natural": "Emilio Sáez Cruz",
+   "slug": "emilio-saez-cruz",
+   "circunscripcion": "Albacete",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "sagastizabal unzetabarrenetxea idoia": {
+   "nombre": "Sagastizabal Unzetabarrenetxea, Idoia",
+   "natural": "Idoia Sagastizabal Unzetabarrenetxea",
+   "slug": "idoia-sagastizabal-unzetabarrenetxea",
+   "circunscripcion": "Bizkaia",
+   "partido": "EAJ-PNV",
+   "grupo": "Grupo Parlamentario Vasco (EAJ-PNV)",
+   "alta": "16/08/2023"
+  },
+  "sahuquillo garcia luis carlos": {
+   "nombre": "Sahuquillo García, Luis Carlos",
+   "natural": "Luis Carlos Sahuquillo García",
+   "slug": "luis-carlos-sahuquillo-garcia",
+   "circunscripcion": "Cuenca",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "01/08/2023"
+  },
+  "sainz martin maria": {
+   "nombre": "Sainz Martín, María",
+   "natural": "María Sainz Martín",
+   "slug": "maria-sainz-martin",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "25/06/2024"
+  },
+  "salvador i duch jordi": {
+   "nombre": "Salvador i Duch, Jordi",
+   "natural": "Jordi Salvador i Duch",
+   "slug": "jordi-salvador-i-duch",
+   "circunscripcion": "Tarragona",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "03/08/2023"
+  },
+  "sanchez diaz maria carmen": {
+   "nombre": "Sánchez Díaz, María Carmen",
+   "natural": "María Carmen Sánchez Díaz",
+   "slug": "maria-carmen-sanchez-diaz",
+   "circunscripcion": "Cádiz",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "sanchez garcia jose maria": {
+   "nombre": "Sánchez García, José María",
+   "natural": "José María Sánchez García",
+   "slug": "jose-maria-sanchez-garcia",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "VOX",
+   "grupo": "Grupo Parlamentario VOX",
+   "alta": "02/08/2023"
+  },
+  "sanchez ojeda carlos alberto": {
+   "nombre": "Sánchez Ojeda, Carlos Alberto",
+   "natural": "Carlos Alberto Sánchez Ojeda",
+   "slug": "carlos-alberto-sanchez-ojeda",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "sanchez perez castejon pedro": {
+   "nombre": "Sánchez Pérez-Castejón, Pedro",
+   "natural": "Pedro Sánchez Pérez-Castejón",
+   "slug": "pedro-sanchez-perez-castejon",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "09/08/2023"
+  },
+  "sanchez perez cesar": {
+   "nombre": "Sánchez Pérez, César",
+   "natural": "César Sánchez Pérez",
+   "slug": "cesar-sanchez-perez",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "sanchez serna javier": {
+   "nombre": "Sánchez Serna, Javier",
+   "natural": "Javier Sánchez Serna",
+   "slug": "javier-sanchez-serna",
+   "circunscripcion": "Murcia",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "14/08/2023"
+  },
+  "sanchez sierra maria del mar": {
+   "nombre": "Sánchez Sierra, María del Mar",
+   "natural": "María del Mar Sánchez Sierra",
+   "slug": "maria-del-mar-sanchez-sierra",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "14/08/2023"
+  },
+  "sanchez torregrosa maribel": {
+   "nombre": "Sánchez Torregrosa, Maribel",
+   "natural": "Maribel Sánchez Torregrosa",
+   "slug": "maribel-sanchez-torregrosa",
+   "circunscripcion": "Almería",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "sancho iniguez herminio rufino": {
+   "nombre": "Sancho Íñiguez, Herminio Rufino",
+   "natural": "Herminio Rufino Sancho Íñiguez",
+   "slug": "herminio-rufino-sancho-iniguez",
+   "circunscripcion": "Teruel",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "santana aguilera ada": {
+   "nombre": "Santana Aguilera, Ada",
+   "natural": "Ada Santana Aguilera",
+   "slug": "ada-santana-aguilera",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "07/08/2023"
+  },
+  "santana perera noemi": {
+   "nombre": "Santana Perera, Noemí",
+   "natural": "Noemí Santana Perera",
+   "slug": "noemi-santana-perera",
+   "circunscripcion": "Palmas (Las)",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "02/08/2023"
+  },
+  "santiago romero enrique fernando": {
+   "nombre": "Santiago Romero, Enrique Fernando",
+   "natural": "Enrique Fernando Santiago Romero",
+   "slug": "enrique-fernando-santiago-romero",
+   "circunscripcion": "Córdoba",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "07/08/2023"
+  },
+  "santos maraver agustin": {
+   "nombre": "Santos Maraver, Agustín",
+   "natural": "Agustín Santos Maraver",
+   "slug": "agustin-santos-maraver",
+   "circunscripcion": "Madrid",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "sanz martinez luisa": {
+   "nombre": "Sanz Martínez, Luisa",
+   "natural": "Luisa Sanz Martínez",
+   "slug": "luisa-sanz-martinez",
+   "circunscripcion": "Valladolid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "03/08/2023"
+  },
+  "sarria morell vicent manuel": {
+   "nombre": "Sarrià Morell, Vicent Manuel",
+   "natural": "Vicent Manuel Sarrià Morell",
+   "slug": "vicent-manuel-sarria-morell",
+   "circunscripcion": "Valencia/València",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "sastre uya miguel angel": {
+   "nombre": "Sastre Uyá, Miguel Ángel",
+   "natural": "Miguel Ángel Sastre Uyá",
+   "slug": "miguel-angel-sastre-uya",
+   "circunscripcion": "Cádiz",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "sayas lopez sergio": {
+   "nombre": "Sayas López, Sergio",
+   "natural": "Sergio Sayas López",
+   "slug": "sergio-sayas-lopez",
+   "circunscripcion": "Navarra",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "08/08/2023"
+  },
+  "semper pascual borja": {
+   "nombre": "Sémper Pascual, Borja",
+   "natural": "Borja Sémper Pascual",
+   "slug": "borja-semper-pascual",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "11/08/2023"
+  },
+  "senderos oraa daniel": {
+   "nombre": "Senderos Oraá, Daniel",
+   "natural": "Daniel Senderos Oraá",
+   "slug": "daniel-senderos-oraa",
+   "circunscripcion": "Araba/Álava",
+   "partido": "PSE-EE (PSOE)",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "serrada pariente david": {
+   "nombre": "Serrada Pariente, David",
+   "natural": "David Serrada Pariente",
+   "slug": "david-serrada-pariente",
+   "circunscripcion": "Salamanca",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "serrano martinez juan francisco": {
+   "nombre": "Serrano Martínez, Juan Francisco",
+   "natural": "Juan Francisco Serrano Martínez",
+   "slug": "juan-francisco-serrano-martinez",
+   "circunscripcion": "Jaén",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "sierra caballero francisco": {
+   "nombre": "Sierra Caballero, Francisco",
+   "natural": "Francisco Sierra Caballero",
+   "slug": "francisco-sierra-caballero",
+   "circunscripcion": "Sevilla",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "14/08/2023"
+  },
+  "simancas simancas rafael": {
+   "nombre": "Simancas Simancas, Rafael",
+   "natural": "Rafael Simancas Simancas",
+   "slug": "rafael-simancas-simancas",
+   "circunscripcion": "Madrid",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "simarro vicens carlos": {
+   "nombre": "Simarro Vicens, Carlos",
+   "natural": "Carlos Simarro Vicens",
+   "slug": "carlos-simarro-vicens",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "21/07/2025"
+  },
+  "soldevilla novials alba": {
+   "nombre": "Soldevilla Novials, Alba",
+   "natural": "Alba Soldevilla Novials",
+   "slug": "alba-soldevilla-novials",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "12/12/2023"
+  },
+  "soler mur alejandro": {
+   "nombre": "Soler Mur, Alejandro",
+   "natural": "Alejandro Soler Mur",
+   "slug": "alejandro-soler-mur",
+   "circunscripcion": "Alicante/Alacant",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "14/08/2023"
+  },
+  "taibo monelos diego": {
+   "nombre": "Taibo Monelos, Diego",
+   "natural": "Diego Taibo Monelos",
+   "slug": "diego-taibo-monelos",
+   "circunscripcion": "Coruña (A)",
+   "partido": "PsdeG-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "15/09/2026"
+  },
+  "tarno blanco ricardo": {
+   "nombre": "Tarno Blanco, Ricardo",
+   "natural": "Ricardo Tarno Blanco",
+   "slug": "ricardo-tarno-blanco",
+   "circunscripcion": "Sevilla",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "tellado filgueira miguel": {
+   "nombre": "Tellado Filgueira, Miguel",
+   "natural": "Miguel Tellado Filgueira",
+   "slug": "miguel-tellado-filgueira",
+   "circunscripcion": "Coruña (A)",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "teniente sanchez cristina": {
+   "nombre": "Teniente Sánchez, Cristina",
+   "natural": "Cristina Teniente Sánchez",
+   "slug": "cristina-teniente-sanchez",
+   "circunscripcion": "Cáceres",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "tomas olivares violante": {
+   "nombre": "Tomás Olivares, Violante",
+   "natural": "Violante Tomás Olivares",
+   "slug": "violante-tomas-olivares",
+   "circunscripcion": "Murcia",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "04/08/2023"
+  },
+  "torres tejada maria": {
+   "nombre": "Torres Tejada, María",
+   "natural": "María Torres Tejada",
+   "slug": "maria-torres-tejada",
+   "circunscripcion": "Jaén",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/01/2024"
+  },
+  "trenzano rubio marta": {
+   "nombre": "Trenzano Rubio, Marta",
+   "natural": "Marta Trenzano Rubio",
+   "slug": "marta-trenzano-rubio",
+   "circunscripcion": "Valencia/València",
+   "partido": "PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "10/08/2023"
+  },
+  "uriarte bengoechea edurne": {
+   "nombre": "Uriarte Bengoechea, Edurne",
+   "natural": "Edurne Uriarte Bengoechea",
+   "slug": "edurne-uriarte-bengoechea",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "30/01/2024"
+  },
+  "valero morales juan antonio": {
+   "nombre": "Valero Morales, Juan Antonio",
+   "natural": "Juan Antonio Valero Morales",
+   "slug": "juan-antonio-valero-morales",
+   "circunscripcion": "Málaga",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "03/08/2023"
+  },
+  "valido garcia cristina": {
+   "nombre": "Valido García, Cristina",
+   "natural": "Cristina Valido García",
+   "slug": "cristina-valido-garcia",
+   "circunscripcion": "S/C Tenerife",
+   "partido": "CCa",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "02/08/2023"
+  },
+  "vallugera balana pilar": {
+   "nombre": "Vallugera Balañà, Pilar",
+   "natural": "Pilar Vallugera Balañà",
+   "slug": "pilar-vallugera-balana",
+   "circunscripcion": "Barcelona",
+   "partido": "ERC",
+   "grupo": "Grupo Parlamentario Republicano",
+   "alta": "10/08/2023"
+  },
+  "vaquero montero maribel": {
+   "nombre": "Vaquero Montero, Maribel",
+   "natural": "Maribel Vaquero Montero",
+   "slug": "maribel-vaquero-montero",
+   "circunscripcion": "Gipuzkoa",
+   "partido": "EAJ-PNV",
+   "grupo": "Grupo Parlamentario Vasco (EAJ-PNV)",
+   "alta": "16/08/2023"
+  },
+  "varela pazos marta": {
+   "nombre": "Varela Pazos, Marta",
+   "natural": "Marta Varela Pazos",
+   "slug": "marta-varela-pazos",
+   "circunscripcion": "Madrid",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "16/08/2023"
+  },
+  "vazquez blanco ana belen": {
+   "nombre": "Vázquez Blanco, Ana Belén",
+   "natural": "Ana Belén Vázquez Blanco",
+   "slug": "ana-belen-vazquez-blanco",
+   "circunscripcion": "Ourense",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "vazquez jimenez maria del mar": {
+   "nombre": "Vázquez Jiménez, María del Mar",
+   "natural": "María del Mar Vázquez Jiménez",
+   "slug": "maria-del-mar-vazquez-jimenez",
+   "circunscripcion": "Málaga",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "03/08/2023"
+  },
+  "vedrina conesa maria elisa": {
+   "nombre": "Vedrina Conesa, María Elisa",
+   "natural": "María Elisa Vedrina Conesa",
+   "slug": "maria-elisa-vedrina-conesa",
+   "circunscripcion": "Tarragona",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "11/06/2024"
+  },
+  "velarde gomez martina": {
+   "nombre": "Velarde Gómez, Martina",
+   "natural": "Martina Velarde Gómez",
+   "slug": "martina-velarde-gomez",
+   "circunscripcion": "Granada",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Mixto",
+   "alta": "08/08/2023"
+  },
+  "velasco morillo elvira": {
+   "nombre": "Velasco Morillo, Elvira",
+   "natural": "Elvira Velasco Morillo",
+   "slug": "elvira-velasco-morillo",
+   "circunscripcion": "Zamora",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "velasco retamosa jose manuel": {
+   "nombre": "Velasco Retamosa, José Manuel",
+   "natural": "José Manuel Velasco Retamosa",
+   "slug": "jose-manuel-velasco-retamosa",
+   "circunscripcion": "Toledo",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "09/08/2023"
+  },
+  "verano dominguez bella": {
+   "nombre": "Verano Domínguez, Bella",
+   "natural": "Bella Verano Domínguez",
+   "slug": "bella-verano-dominguez",
+   "circunscripcion": "Huelva",
+   "partido": "PP",
+   "grupo": "Grupo Parlamentario Popular en el Congreso",
+   "alta": "02/08/2023"
+  },
+  "verdejo vicente ferran": {
+   "nombre": "Verdejo Vicente, Ferran",
+   "natural": "Ferran Verdejo Vicente",
+   "slug": "ferran-verdejo-vicente",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  },
+  "vergara roman laura": {
+   "nombre": "Vergara Román, Laura",
+   "natural": "Laura Vergara Román",
+   "slug": "laura-vergara-roman",
+   "circunscripcion": "Zaragoza",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "10/02/2026"
+  },
+  "vidal matas vicenc": {
+   "nombre": "Vidal Matas, Vicenç",
+   "natural": "Vicenç Vidal Matas",
+   "slug": "vicenc-vidal-matas",
+   "circunscripcion": "Balears (Illes)",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "09/08/2023"
+  },
+  "vidal saez aina": {
+   "nombre": "Vidal Sáez, Aina",
+   "natural": "Aina Vidal Sáez",
+   "slug": "aina-vidal-saez",
+   "circunscripcion": "Barcelona",
+   "partido": "SUMAR",
+   "grupo": "Grupo Parlamentario Plurinacional SUMAR",
+   "alta": "16/08/2023"
+  },
+  "zaragoza alonso jose": {
+   "nombre": "Zaragoza Alonso, José",
+   "natural": "José Zaragoza Alonso",
+   "slug": "jose-zaragoza-alonso",
+   "circunscripcion": "Barcelona",
+   "partido": "PSC-PSOE",
+   "grupo": "Grupo Parlamentario Socialista",
+   "alta": "02/08/2023"
+  }
+ }
+}
