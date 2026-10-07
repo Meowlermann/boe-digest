@@ -1,8 +1,261 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-06",
-  "graves": 0,
-  "avisos": 0,
-  "hallazgos": []
+  "fecha": "2026-10-07",
+  "graves": 41,
+  "avisos": 1,
+  "hallazgos": [
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/isidre-gavin-i-valls.html» desde 15 página(s), p. ej. ediciones/2026-09-30.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-30.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/alberto-catalan-higueras.html» desde 12 página(s), p. ej. ediciones/2026-09-30.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-30.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/cristina-valido-garcia.html» desde 12 página(s), p. ej. ediciones/2026-09-28.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-28.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/etna-estrems-fayos.html» desde 10 página(s), p. ej. ediciones/2026-09-30.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-30.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/jon-inarritu-garcia.html» desde 10 página(s), p. ej. sesiones/2024-02-28.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-02-28.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/francesc-marc-alvaro-vidal.html» desde 8 página(s), p. ej. sesiones/2024-06-26.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-06-26.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/jordi-salvador-i-duch.html» desde 8 página(s), p. ej. sesiones/2024-02-28.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-02-28.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/ines-granollers-cunillera.html» desde 7 página(s), p. ej. sesiones/2024-04-10.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-04-10.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/mikel-otero-gabirondo.html» desde 7 página(s), p. ej. ediciones/2026-09-30.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-30.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/agustin-conde-bajen.html» desde 5 página(s), p. ej. ediciones/2026-09-30.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-30.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/isabel-pozueta-fernandez.html» desde 5 página(s), p. ej. sesiones/2023-12-20.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2023-12-20.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/josep-maria-cervera-pinart.html» desde 5 página(s), p. ej. sesiones/2024-09-25.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-09-25.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/josep-pages-i-masso.html» desde 5 página(s), p. ej. sesiones/2024-11-27.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-11-27.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/marije-fullaondo-la-cruz.html» desde 5 página(s), p. ej. sesiones/2024-03-13.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-03-13.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/pilar-calvo-gomez.html» desde 5 página(s), p. ej. sesiones/2024-06-26.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-06-26.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/carlos-garcia-adanero.html» desde 4 página(s), p. ej. sesiones/2023-12-20.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2023-12-20.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/juan-diego-requena-ruiz.html» desde 4 página(s), p. ej. sesiones/2024-11-27.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-11-27.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/nacho-martin-blanco.html» desde 4 página(s), p. ej. sesiones/2023-12-20.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2023-12-20.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/pedro-ignacio-gallardo-barrena.html» desde 4 página(s), p. ej. sesiones/2024-02-21.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-02-21.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/pilar-vallugera-balana.html» desde 4 página(s), p. ej. sesiones/2024-05-29.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-05-29.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/laura-maria-lima-garcia.html» desde 3 página(s), p. ej. sesiones/2024-04-10.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-04-10.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/marta-madrenas-i-mir.html» desde 3 página(s), p. ej. ediciones/2026-09-28.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "ediciones/2026-09-28.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/rosa-quintana-carballo.html» desde 3 página(s), p. ej. sesiones/2024-11-13.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-11-13.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/silvia-franco-gonzalez.html» desde 3 página(s), p. ej. sesiones/2025-09-24.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2025-09-24.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/bella-verano-dominguez.html» desde 2 página(s), p. ej. sesiones/2024-03-20.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-03-20.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/carina-mejias-sanchez.html» desde 2 página(s), p. ej. sesiones/2024-06-19.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-06-19.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/hector-palencia-rubio.html» desde 2 página(s), p. ej. sesiones/2024-04-24.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-04-24.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/javier-merino-martinez.html» desde 2 página(s), p. ej. sesiones/2024-09-18.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-09-18.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/miguel-angel-sastre-uya.html» desde 2 página(s), p. ej. sesiones/2024-03-13.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-03-13.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/alma-alfonso-silvestre.html» desde 1 página(s), p. ej. sesiones/2024-11-13.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-11-13.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/carmelo-barrio-baroja.html» desde 1 página(s), p. ej. sesiones/2024-10-09.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-10-09.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/cesar-sanchez-perez.html» desde 1 página(s), p. ej. sesiones/2024-11-20.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-11-20.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/engracia-rivera-arias.html» desde 1 página(s), p. ej. sesiones/2025-10-22.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2025-10-22.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/jorge-campos-asensi.html» desde 1 página(s), p. ej. sesiones/2025-02-26.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2025-02-26.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/jose-alberto-herrero-bono.html» desde 1 página(s), p. ej. sesiones/2024-11-27.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-11-27.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/juan-andres-bayon-rolo.html» desde 1 página(s), p. ej. sesiones/2026-02-18.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2026-02-18.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/maria-de-las-mercedes-cantalapiedra-alvarez.html» desde 1 página(s), p. ej. sesiones/2024-10-23.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-10-23.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/mario-cortes-carballo.html» desde 1 página(s), p. ej. sesiones/2024-10-16.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2024-10-16.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/marta-trenzano-rubio.html» desde 1 página(s), p. ej. sesiones/2025-05-21.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2025-05-21.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Enlace interno roto a «/diputados/milagros-marcos-ortega.html» desde 1 página(s), p. ej. sesiones/2025-12-10.html. Qué hacer: corrige el enlace en la función que lo pinta o genera la página de destino.",
+      "fichero": "sesiones/2025-12-10.html"
+    },
+    {
+      "nivel": "grave",
+      "comprobacion": "html",
+      "detalle": "Y 7 destinos rotos más. Qué hacer: corrige primero los de arriba.",
+      "fichero": ""
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-10-06: «RESOLUCIÓN, APROBADA POR LA COMISIÓN MIXTA PARA LAS RELACIONES CON EL TRIBUNAL».",
+      "fichero": "data/2026-10-07.json"
+    }
+  ]
 }
