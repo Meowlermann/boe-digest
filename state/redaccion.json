@@ -4902,14 +4902,11 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso acumula 38 preguntas escritas sin responder tras vencer el plazo",
-   "entradilla": "Un total de 38 preguntas escritas llevan más de 20 días hábiles desde su publicación sin que se haya registrado una contestación oficial, siendo la más antigua del 15 de diciembre de 2025.",
-   "claves": [
-    "El grupo parlamentario de Sumar lidera las iniciativas pendientes con 30 preguntas sin contestar fuera de plazo.",
-    "El resto de preguntas pendientes corresponden al PSOE con 4, al PP con 2, a Junts con 1 y a un diputado sin grupo con otra."
-   ],
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Gobierno tiene 38 preguntas escritas pendientes de respuesta en el Congreso",
+   "entradilla": "Estas iniciativas del último año acumulan más de 20 días hábiles desde su publicación sin contestación registrada, con Sumar como el grupo con más preguntas en espera.",
+   "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
   },
@@ -5549,9 +5546,81 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
+  },
+  "C-99a37ad984bd5fd5": {
+   "huella": "e00277372e15b9ee",
+   "fuente": "f2d28da5f26ec4db",
+   "titular": "El Gobierno responde al PP sobre el mantenimiento de carreteras en Extremadura",
+   "entradilla": "El Gobierno ha registrado su respuesta a una pregunta de Alfonso Carlos Macías Gata sobre la previsión para reforzar el mantenimiento invernal de carreteras en zonas rurales de Extremadura.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-771050f7e5d6f0ba": {
+   "huella": "f4549c1a4cfd25f1",
+   "fuente": "f66a1e35ece3e1dd",
+   "titular": "El Gobierno responde al PP sobre la protección y recuperación del talento joven",
+   "entradilla": "El Gobierno ha contestado a una pregunta de Miguel Ángel Sastre Uyá sobre las acciones previstas para cumplir la Proposición no de Ley para la protección y recuperación de talento joven en España.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-87201431a06c4b37": {
+   "huella": "c1a1e905fdf079aa",
+   "fuente": "289db4559ed27bdc",
+   "titular": "El Gobierno responde al PP sobre la accesibilidad a centros sanitarios de Badajoz",
+   "entradilla": "El Gobierno ha respondido a una pregunta de Antonio Cavacasillas Rodríguez sobre las medidas para mejorar la accesibilidad viaria a centros sanitarios de referencia en la provincia de Badajoz.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-67b6e0765a212f31": {
+   "huella": "2c8cdca3a3777456",
+   "fuente": "ce831ba1620fa600",
+   "titular": "El Gobierno responde al PP sobre la creación de la Hucha Hogar Joven",
+   "entradilla": "El Gobierno ha contestado a una pregunta de Miguel Ángel Sastre Uyá sobre las acciones para cumplir la Proposición no de Ley relativa a la creación de una Hucha Hogar Joven para adquirir vivienda.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-4dfe1c6ed514918d": {
+   "huella": "36eb7f49d50c3499",
+   "fuente": "32a56c0681f5a4f0",
+   "titular": "El Gobierno responde al PP sobre las travesías de titularidad estatal en Badajoz",
+   "entradilla": "El Gobierno ha contestado a una pregunta de Antonio Cavacasillas Rodríguez sobre las inversiones destinadas a la mejora de travesías urbanas de titularidad estatal en Badajoz.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-64a7a0aa63896490": {
+   "huella": "22374ec878cd1166",
+   "fuente": "539490cf13ee4c0e",
+   "titular": "El Gobierno responde al PP sobre por qué no se ha avanzado en la N-432 en Badajoz",
+   "entradilla": "El Gobierno ha respondido a una pregunta de Antonio Cavacasillas Rodríguez sobre los motivos por los que no se ha avanzado en la mejora integral de la carretera N-432 a su paso por Badajoz.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-8578bdc778d4eb12": {
+   "huella": "bd05334b7a7808cf",
+   "fuente": "8097d774822787c3",
+   "titular": "El Gobierno registra 218 contestaciones por escrito en el Congreso",
+   "entradilla": "Un total de 218 preguntas escritas han pasado a tener su contestación registrada hoy en el Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-80b2917f52f7b1ee": {
+   "huella": "c1c945d416129551",
+   "fuente": "82f32ff74f089783",
+   "titular": "El Congreso acumula 959 preguntas escritas al Gobierno fuera de plazo",
+   "entradilla": "Un total de 959 iniciativas del último año superan los 20 días hábiles desde su publicación sin que conste respuesta, siendo el PP el grupo con más cuestiones pendientes.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
   }
  },
  "uso": {
-  "2026-10-08": 2
+  "2026-10-08": 4
  }
 }
