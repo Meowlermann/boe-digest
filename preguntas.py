@@ -687,6 +687,17 @@ def generar_paginas(h: dict) -> list:
         })
         salidas.append({"url": url, "lastmod": lastmod})
 
+    # Ministerios: solo las preguntas ORALES dicen quién contesta (las
+    # escritas las remite el Gobierno en su conjunto, ver la metodología).
+    try:
+        mins = generar_ministerios(h, salidas)
+    except Exception as exc:                                  # noqa: BLE001
+        print(f"[preguntas] ministerios: {exc}")
+        mins = []
+    enlaces_min = "".join(
+        f'<li><a href="ministerio-{attr(ms)}.html">{esc(m["nombre"])}</a>'
+        f'<span class="ref">{len(m["regs"])}</span></li>' for ms, m in mins)
+
     grupos = por_grupo(items)
     enlaces_grupo = "".join(
         f'<li><a href="grupo-{attr(_slug_grupo(r["g"]))}.html">{esc(r["g"])}</a>'
@@ -707,7 +718,11 @@ def generar_paginas(h: dict) -> list:
         f'prórrogas.</p><ul class="indice">' + "".join(
             fila(k, v, f' · publicada el {esc(fecha(v["p"]))}') for k, v in vencidas[:60])
         + f'</ul><h2 class="rotulo" id="grupos">Por grupo de quien pregunta</h2>'
-          f'<ul class="provincias">{enlaces_grupo}</ul>')
+          f'<ul class="provincias">{enlaces_grupo}</ul>'
+        + (f'<h2 class="rotulo" id="ministerios">Por ministerio que contesta (preguntas orales)</h2>'
+           f'<p class="rk-nota">Preguntas de la sesión de control del Pleno, por el departamento '
+           f'de quien contesta. Cada ministerio tiene su canal RSS.</p>'
+           f'<ul class="provincias">{enlaces_min}</ul>' if enlaces_min else ""))
     pagina("index.html", "Preguntas escritas al Gobierno: respuestas y pendientes",
            "Las preguntas con respuesta escrita que los diputados dirigen al Gobierno: "
            "últimas contestaciones, últimas registradas y las que siguen sin respuesta.",
@@ -781,6 +796,59 @@ otra forma (art. 190.2).</p>"""
            "Metodología de las preguntas", "Qué se cuenta, de dónde sale y qué no se afirma.",
            metod)
     return salidas
+
+
+def generar_ministerios(h: dict, salidas: list) -> list:
+    """/preguntas/ministerio-<slug>.html: las preguntas orales de control que
+    contesta cada departamento, de la más reciente a la más antigua, con la
+    sesión donde se ve la contestación citada. Devuelve [(slug, ministerio)]
+    ordenados por número de preguntas y añade sus URL a `salidas`."""
+    import feeds as fd
+    import respuestas as rp
+    esc, attr, fecha = h["esc_html"], h["esc_attr"], h["fmt_date_es"]
+    carpeta, site = h["carpeta"], h["site_url"]
+    orales: dict = {}
+    for a in rp.anios():
+        orales.update(rp.cargar(a).get("orales") or {})
+    mins = sorted(fd.ministerios(orales).items(), key=lambda x: (-len(x[1]["regs"]), x[0]))
+    for ms, m in mins:
+        regs = m["regs"]
+        lastmod = regs[0][1].get("s") or dt.date.today().isoformat()
+        url = f"{site}preguntas/ministerio-{ms}.html"
+        titulo = f"Preguntas orales: {m['nombre']}"
+        filas = "".join(
+            f'<li><a href="../sesiones/{attr(r.get("s", ""))}.html">«{esc(r.get("t") or exp)}»</a>'
+            f'<span class="ref">{esc(exp)} · {esc(r.get("a", ""))}'
+            f'{" (" + esc(grupo_corto(r["g"])) + ")" if r.get("g") else ""} · sesión del '
+            f'{esc(fecha(r.get("s", "")))} · contesta {esc(r.get("gob", ""))}</span></li>'
+            for exp, r in regs[:200])
+        cargos = sorted({r.get("cargo", "") for _e, r in regs if r.get("cargo")})
+        h["pagina_suelta"](h["plantilla"], carpeta, f"ministerio-{ms}.html", {
+            "TITLE": esc(f"{titulo} | La Tercera Cámara"),
+            "META_DESC": attr(f"Las {len(regs)} preguntas orales de la sesión de control del Congreso "
+                              f"que ha contestado {m['nombre']}, con enlace a la sesión y a la cita "
+                              f"del Diario de Sesiones."[:155]),
+            "CANONICAL": url,
+            "JSONLD": h["jsonld_script"]([{"@type": "CollectionPage", "url": url, "name": titulo,
+                                           "inLanguage": "es-ES", "dateModified": lastmod}]),
+            "EDITION_DATE": esc(f"Datos al {fecha(lastmod)}"),
+            "MIGA": ('<a href="../">Portada</a> › <a href="../diputados/">Parlamento</a> › '
+                     f'<a href="./">Preguntas</a> › <span aria-current="page">{esc(m["nombre"])}</span>'),
+            "KICKER": "Control al Gobierno",
+            "HEADLINE": esc(titulo),
+            "STANDFIRST": esc("Preguntas orales en Pleno, de la más reciente a la más antigua. "
+                              "Mismo recuento para todos los departamentos."),
+            "FICHA": (f"<dt>Preguntas orales</dt><dd>{len(regs)}</dd>"
+                      f"<dt>Cargos que contestan</dt><dd>{esc('; '.join(cargos))}</dd>"),
+            "CUERPO": f'<ul class="indice">{filas}</ul>',
+            "FUENTE": ('Fuente: Diario de Sesiones y volcado de intervenciones del Congreso. '
+                       'El departamento se deduce del cargo de quien contesta. Las preguntas '
+                       'escritas no dicen qué ministerio las redacta y no se incluyen. '
+                       '<a class="srclink" href="metodologia.html">Cómo se cuenta</a>.'),
+            "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+        })
+        salidas.append({"url": url, "lastmod": lastmod})
+    return mins
 
 
 def _slug_grupo(g: str) -> str:

@@ -3608,11 +3608,31 @@ def render_nav() -> str:
 TITULAR_LARGO = 80
 
 
+# Analítica: Cloudflare Web Analytics, sin cookies ni almacenamiento en el
+# navegador (comprobado en la web publicada, ARQUITECTURA.md §13). El token del
+# sitio es PÚBLICO —viaja en el HTML de cada página— y lo da el panel de
+# Cloudflare (Web Analytics › terceracamara.es › instalación manual). Vacío:
+# no se inserta ninguna baliza.
+CF_ANALYTICS_TOKEN = ""
+
+
+def baliza_analitica(token: str | None = None) -> str:
+    token = CF_ANALYTICS_TOKEN if token is None else token
+    if not re.fullmatch(r"[0-9A-Za-z]{16,64}", token or ""):
+        if token:
+            log(f"  AVISO: CF_ANALYTICS_TOKEN no tiene forma de token ({token!r}); sin baliza")
+        return ""
+    return ("<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" "
+            f"data-cf-beacon='{{\"token\": \"{token}\"}}'></script>")
+
+
 def _replace_placeholders(html: str, frag: dict) -> str:
     # La navegación es la misma en todas las páginas: se pone aquí para que
     # ninguna plantilla ni ningún generador de páginas pueda olvidarla.
     if "__SSR_NAV__" in html:
         html = html.replace("__SSR_NAV__", render_nav())
+    if "__SSR_ANALITICA__" in html:
+        html = html.replace("__SSR_ANALITICA__", baliza_analitica())
     # Un titular largo (un título oficial de ley, un asunto votado) no puede ir
     # en el cuerpo y las mayúsculas del de portada: se le pone una clase para
     # que vaya en letra normal y más pequeña. El umbral es de caracteres vistos.
@@ -4336,11 +4356,28 @@ def escribir_si_cambia(ruta: pathlib.Path, texto: str) -> bool:
     return True
 
 
+# Canales Atom por entidad (feeds.py): {(carpeta, página): (fichero .xml, título)}.
+# Lo llena renderizar_feeds() antes de pintar las páginas, y _pagina_suelta()
+# anuncia el canal en la página que le corresponde: así ningún generador de
+# páginas (tampoco los módulos que no importan build.py) tiene que acordarse.
+FEEDS_PAGINA: dict = {}
+
+
+def _anunciar_feed(html: str, carpeta: pathlib.Path, nombre: str) -> str:
+    feed = FEEDS_PAGINA.get((carpeta.name, nombre))
+    if not feed:
+        return html
+    import feeds as fd
+    html = html.replace("</head>", fd.enlace_alternate(feed[0], feed[1]) + "\n</head>", 1)
+    return html.replace('<dl class="ficha">', fd.boton(feed[0]) + '<dl class="ficha">', 1)
+
+
 def _pagina_suelta(plantilla: str, carpeta: pathlib.Path, nombre: str, frag: dict) -> None:
     """Todas las páginas auxiliares comparten la plantilla de ficha: un diseño,
     un sitio donde tocarlo."""
     carpeta.mkdir(exist_ok=True)
-    escribir_si_cambia(carpeta / nombre, _replace_placeholders(plantilla, frag))
+    escribir_si_cambia(carpeta / nombre,
+                       _anunciar_feed(_replace_placeholders(plantilla, frag), carpeta, nombre))
 
 
 def renderizar_plazos(dias: list) -> list:
@@ -4443,15 +4480,9 @@ def renderizar_plazos(dias: list) -> list:
     return [{"url": url, "lastmod": hoy.isoformat()}]
 
 
-def renderizar_temas(dias: list) -> list:
-    """Una página por materia. Es la sección que la gente busca («subvenciones
-    BOE», «plazos laborales») y el cimiento de las alertas: cuando haya correo,
-    suscribirse será elegir estas mismas materias."""
-    if not TEMPLATE_NORMA.exists():
-        return []
-    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
-    hoy = dt.date.today().isoformat()
-    import indices as ix
+def agrupar_materias(dias: list) -> tuple[dict, set]:
+    """({slug: [(día, pieza)]}, claves vistas), de lo más reciente a lo más
+    antiguo. Lo comparten /temas/ y sus canales: la misma lista en los dos."""
     por_materia: dict = {}
     vistas: set = set()
     for day in sorted(dias, key=lambda d: d["id"], reverse=True):
@@ -4463,6 +4494,19 @@ def renderizar_temas(dias: list) -> list:
             vistas.add(clave)
             for slug in materias_de(titulo_oficial_de(s_), s_.get("headline", "")):
                 por_materia.setdefault(slug, []).append((day, s_))
+    return por_materia, vistas
+
+
+def renderizar_temas(dias: list) -> list:
+    """Una página por materia. Es la sección que la gente busca («subvenciones
+    BOE», «plazos laborales») y el cimiento de las alertas: cuando haya correo,
+    suscribirse será elegir estas mismas materias."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    hoy = dt.date.today().isoformat()
+    import indices as ix
+    por_materia, vistas = agrupar_materias(dias)
     hoy_d = dt.date.today()
     lunes = hoy_d - dt.timedelta(days=hoy_d.weekday())
 
@@ -6141,6 +6185,200 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
     log("mapa/: página de todo el sitio")
     return [{"url": url, "lastmod": hoy}]
 
+def _escribir_feed(carpeta: pathlib.Path, base: str, titulo: str, subtitulo: str,
+                   entradas: list, contador: dict, tipo: str) -> None:
+    """Escribe carpeta/base.xml si tiene entradas y lo registra para que la
+    página carpeta/base.html lo anuncie. Si se queda sin entradas, lo borra."""
+    import feeds as fd
+    ruta = carpeta / f"{base}.xml"
+    url_feed = f"{SITE_URL}{carpeta.name}/{base}.xml"
+    url_pagina = f"{SITE_URL}{carpeta.name}/{base}.html"
+    texto = fd.atom(titulo, subtitulo, url_feed, url_pagina, fd.ordenar(entradas))
+    if not texto:
+        if ruta.exists():
+            ruta.unlink()
+        return
+    escribir_si_cambia(ruta, texto)
+    FEEDS_PAGINA[(carpeta.name, f"{base}.html")] = (f"{base}.xml", titulo)
+    contador[tipo] = contador.get(tipo, 0) + 1
+
+
+def renderizar_feeds(fichas_dip: list, todos: list) -> dict:
+    """Canales Atom por entidad (feeds.py), escritos junto a su página. Va
+    ANTES de pintar las páginas: _pagina_suelta() anuncia cada canal en la suya.
+    Cada tipo va en su propio try: un fallo deja sin canal ese tipo y nada más.
+    Devuelve {tipo: canales escritos}."""
+    import feeds as fd
+    FEEDS_PAGINA.clear()
+    cuenta: dict = {}
+    refs_normas = {ref_norma(s) for d in todos for s in (d.get("boe", {}) or {}).get("stories") or []
+                   if ref_norma(s)}
+
+    def url_norma(ref: str, alternativa: str) -> str:
+        return f"{SITE_URL}normas/{ref}.html" if ref in refs_normas else alternativa
+
+    orales: dict = {}
+    try:
+        import respuestas as rp
+        for a in rp.anios():
+            orales.update(rp.cargar(a).get("orales") or {})
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales: preguntas orales no disponibles ({exc})")
+    try:
+        import preguntas as pq
+        escritas = pq.cargar_escritas().get("exp") or {}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales: preguntas escritas no disponibles ({exc})")
+        pq, escritas = None, {}
+
+    def e_escrita(exp: str, v: dict) -> list:
+        """Dos hechos por pregunta escrita: el registro y, si la hay, la contestación."""
+        url = pq.url_ficha(exp)
+        firmantes = ", ".join(v.get("a") or [])
+        sal = [fd.entrada(f"pregunta-escrita:{exp}:registro", f"Pregunta escrita: «{v.get('t') or exp}»",
+                          v.get("pr") or v.get("p") or "", url,
+                          f"Expediente {exp}. Firmada por {firmantes}." if firmantes else f"Expediente {exp}.")]
+        if v.get("c"):
+            import respuestas as rp
+            pdf = (rp.escrita(exp) or {}).get("pdf") or url
+            sal.append(fd.entrada(f"pregunta-escrita:{exp}:contestacion",
+                                  f"Contestada: «{v.get('t') or exp}»", v["c"], pdf,
+                                  f"El Gobierno registró su contestación a la pregunta {exp} "
+                                  f"el {fmt_date_es(v['c'])}."))
+        return sal
+
+    def e_oral(exp: str, r: dict) -> dict | None:
+        quien = f"Contesta {r['gob']}, {r.get('cargo', '')}".rstrip(", ") + "." if r.get("gob") else ""
+        return fd.entrada(f"pregunta-oral:{exp}", f"Pregunta oral de {r.get('a', '')}: «{r.get('t') or exp}»",
+                          r.get("s") or "", f"{SITE_URL}sesiones/{r.get('s')}.html", quien)
+
+    # --- diputados ------------------------------------------------------
+    try:
+        import congreso_datos as cd
+        fichas_por_clave = {frozenset(cd.clave_nombre(f.get("natural") or "").split()): f
+                            for f in fichas_dip or []}
+        esc_por: dict = {}
+        for exp, v in escritas.items():
+            for autor in v.get("a") or []:
+                esc_por.setdefault(frozenset(cd.clave_nombre(autor).split()), []).append((exp, v))
+        oral_por: dict = {}
+        for exp, r in orales.items():
+            oral_por.setdefault(frozenset(cd.clave_nombre(r.get("a") or "").split()), []).append((exp, r))
+        voto_txt = {"si": "sí", "no": "no", "abstencion": "abstención", "no_vota": "no votó"}
+        for clave, f in fichas_por_clave.items():
+            ent = []
+            for exp, v in esc_por.get(clave, []):
+                ent += e_escrita(exp, v)
+            ent += [e_oral(exp, r) for exp, r in oral_por.get(clave, [])]
+            for i in f.get("ultimas_intervenciones") or []:
+                fecha = fd.ddmmaaaa_a_iso(i.get("fecha", ""))
+                ident = ":".join([i.get("exp") or "-", fecha, fd.slug(i.get("organo", "")),
+                                  fd.slug(i.get("fase", "") or "-")])
+                enlace = (cd.ficha_iniciativa_url(i["exp"]) if i.get("exp")
+                          else f"{SITE_URL}diputados/{f['slug']}.html")
+                ent.append(fd.entrada(f"intervencion:{ident}",
+                                      f"Intervención: {i.get('asunto') or 'sin asunto en el dato oficial'}",
+                                      fecha, enlace,
+                                      " · ".join(x for x in (i.get("organo"), i.get("fase")) if x)))
+            for v in f.get("ultimos_votos") or []:
+                if v.get("con_su_grupo", True) or not v.get("enlace"):
+                    continue
+                ent.append(fd.entrada(
+                    f"voto-distinto:{f['slug']}:{v['enlace']}",
+                    f"Votó {voto_txt.get(v.get('voto'), v.get('voto', ''))} y su grupo, "
+                    f"{voto_txt.get(v.get('grupo_voto'), v.get('grupo_voto') or '¿?')}: "
+                    f"{v.get('asunto') or 'votación'}",
+                    v.get("fecha") or "", f"{SITE_URL}votaciones/{v['enlace']}", v.get("que") or ""))
+            _escribir_feed(DIPUTADOS_DIR, f["slug"], f"{f['natural']} — La Tercera Cámara",
+                           f"Preguntas, intervenciones y votos distintos a su grupo de {f['natural']}.",
+                           ent, cuenta, "diputados")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales de diputados: {exc}")
+
+    # --- provincias -----------------------------------------------------
+    try:
+        import provincias as pv
+        estado = pv.cargar()
+        boe_por: dict = {}
+        for ident, r in estado["registros"].items():
+            for s in r.get("provincias") or []:
+                boe_por.setdefault(s, []).append((ident, r))
+        preg_por: dict = {}
+        for exp, v in escritas.items():
+            for s in pv.menciones(v.get("t") or ""):
+                preg_por.setdefault(s, []).append((exp, v))
+        for p in pv.cargar_referencia()["provincias"]:
+            ent = [fd.entrada(f"boe:{ident}", recortar(r.get("titulo", ident), 300), r.get("fecha", ""),
+                              url_norma(ident, pv.url_boe(ident)), f"BOE, sección {r.get('seccion', '')}. {ident}.")
+                   for ident, r in boe_por.get(p["slug"], [])]
+            for exp, v in preg_por.get(p["slug"], []):
+                ent += e_escrita(exp, v)
+            _escribir_feed(PROVINCIAS_DIR, p["slug"], f"{p['nombre']} — La Tercera Cámara",
+                           f"El BOE que nombra {p['nombre']} y las preguntas escritas que la citan.",
+                           ent, cuenta, "provincias")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales de provincias: {exc}")
+
+    # --- materias -------------------------------------------------------
+    try:
+        por_materia, _vistas = agrupar_materias(todos)
+        for slug, etiqueta, _ in MATERIAS:
+            ent = []
+            for d, x in por_materia.get(slug, [])[:fd.MAX_ENTRADAS * 2]:
+                ref = ref_norma(x)
+                ident = f"boe:{ref}" if ref else f"edicion:{d['id']}:{fd.slug(x.get('headline', ''))}"
+                ent.append(fd.entrada(ident, x.get("headline", ""), fecha_boe_iso(d) or d["id"],
+                                      url_norma(ref, f"{SITE_URL}ediciones/{d['id']}.html"),
+                                      titulo_oficial_de(x)))
+            _escribir_feed(TEMAS_DIR, slug, f"{etiqueta} en el BOE — La Tercera Cámara",
+                           f"Lo que publica el BOE en la materia «{etiqueta}».", ent, cuenta, "materias")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales de materias: {exc}")
+
+    # --- iniciativas en tramitación -------------------------------------
+    try:
+        import tramitacion as tr
+        for exp, v in (tr.cargar().get("ini") or {}).items():
+            if tr.estado_de(v) not in tr.ABIERTOS:
+                continue
+            url = f"{SITE_URL}tramitacion/{tr.slug(exp)}.html"
+            ent = []
+            for paso in v.get("pasos") or []:
+                hito, ini = paso[0], (paso[1] if len(paso) > 1 else "")
+                fin = paso[2] if len(paso) > 2 else ""
+                ent.append(fd.entrada(f"tramite:{exp}:{ini}:{fd.slug(hito)}", hito, ini, url,
+                                      f"Desde el {fmt_date_es(ini)}"
+                                      + (f" hasta el {fmt_date_es(fin)}." if fin else ".") if ini else ""))
+            de_enm = [p for p in v.get("plazos") or [] if re.search(r"enmienda", p[2], re.I)]
+            for anterior, p in zip(de_enm, de_enm[1:]):
+                if not re.search(r"ampliaci", p[2], re.I):
+                    continue
+                ent.append(fd.entrada(
+                    f"ampliacion:{exp}:{p[0]}", f"Plazo de enmiendas ampliado hasta el {fmt_date_es(p[0])}",
+                    anterior[0], url,
+                    f"{p[2]}. El Congreso no publica la fecha del acuerdo: se fecha el día en que "
+                    f"vencía el plazo anterior ({fmt_date_es(anterior[0])}), el último en que pudo acordarse."))
+            _escribir_feed(TRAMITACION_DIR, tr.slug(exp),
+                           f"{tr.tipo_corto(v.get('tipo', ''))} {exp} — La Tercera Cámara",
+                           recortar(v.get("t") or exp, 200), ent, cuenta, "iniciativas")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales de tramitación: {exc}")
+
+    # --- ministerios (preguntas orales de control) ----------------------
+    try:
+        for ms, m in fd.ministerios(orales).items():
+            ent = [e_oral(exp, r) for exp, r in m["regs"]]
+            _escribir_feed(PREGUNTAS_DIR, f"ministerio-{ms}",
+                           f"Preguntas orales: {m['nombre']} — La Tercera Cámara",
+                           f"Las preguntas de la sesión de control que contesta {m['nombre']}.",
+                           ent, cuenta, "ministerios")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  canales de ministerios: {exc}")
+
+    log(f"canales Atom: {cuenta}")
+    return cuenta
+
+
 def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
     """Todas las ediciones, no solo la ventana de render, y con la fecha de
     modificación real de cada una."""
@@ -6346,6 +6584,14 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         # cosechar_congreso descarga censo y votaciones: es recolección, aunque
         # se llame desde aquí. En archivo y en --sin-red trabaja solo con state/.
         fichas_dip = cosechar_congreso(sin_red=en_archivo or SIN_RED)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"diputados/: no se pudieron cosechar los datos ({exc})")
+    # Los canales Atom van antes que las páginas: cada página anuncia el suyo.
+    try:
+        DIAG["canales"] = renderizar_feeds(fichas_dip, todos)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"canales Atom: no se pudieron generar ({exc})")
+    try:
         extras += renderizar_diputados(fichas_dip)
         extras += renderizar_votaciones(fichas_dip)
         # Los rankings son un añadido: si fallan, la edición sale igual.
@@ -6383,6 +6629,18 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         extras += renderizar_provincias(fichas_dip, todos)
     except Exception as exc:                                  # noqa: BLE001
         log(f"provincias/: no se pudo generar ({exc})")
+
+    # Textos fijos: /seguir/, /privacidad.html y /aviso-legal.html.
+    try:
+        import paginas_fijas
+        extras += paginas_fijas.generar_paginas({
+            "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+            "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+            "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+            "site_url": SITE_URL, "raiz": ROOT,
+        })
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"páginas fijas: no se pudieron generar ({exc})")
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(sorted(a_pintar, key=lambda d: d["id"], reverse=True))
