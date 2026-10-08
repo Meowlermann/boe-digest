@@ -33,6 +33,11 @@ provincias
 buscar
 mapa
 datos
+# Canales RSS (feeds.py): van dentro de las carpetas de cada sección
+# (diputados/<slug>.xml, provincias/, temas/, tramitacion/, preguntas/).
+seguir
+!privacidad.html
+!aviso-legal.html
 
 # --- Escrito a mano, se publica tal cual -------------------------------------
 !CNAME

@@ -74,11 +74,13 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
   renderizar() ─────────────────────────────────────────────────────┐
    ├─ redaccion.aplicar()        titulares Gemini (opcional, con caché)
    ├─ cosechar_congreso()        censo, votaciones → state/congreso.json
+   ├─ renderizar_feeds()         canales Atom por entidad (antes que las páginas, §13)
    ├─ renderizar_diputados / votaciones / rankings
    ├─ renderizar_preguntas / sesiones / nombramientos / tramitacion
    ├─ renderizar_seguimiento / provincias
    ├─ renderizar_index / ediciones / normas / temas / plazos
    ├─ renderizar_buscador / mapa
+   ├─ paginas_fijas              /seguir/, /privacidad.html, /aviso-legal.html
    └─ sitemap.xml, feed.xml, indexnow.json
             │
   publicar.yml (modo diario, §8):
@@ -101,7 +103,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 |---|---|---|---|
 | `build.py` | Orquesta todo: CLI, recolección del BOE (y del Senado si `SENADO_ACTIVO`), redacción determinista, render de todas las páginas, sitemap, feed. Es grande (~6.000 líneas) porque es la capa de presentación del sitio entero. | `data/`, `debug/`, `state/ediciones.json` | `/`, `/ediciones/`, `/normas/`, `/temas/`, `/plazos/`, `/diputados/`, `/votaciones/`, `/rankings/`, `/seguimiento/`, `/buscar/`, `/mapa/`, `/datos/` |
 | `congreso_datos.py` | Cliente de los datos abiertos del Congreso: censo de diputados, volcado de intervenciones, votaciones (con el histórico por `targetDate`), grupos y colores, URL de fichas. | `state/congreso.json` (vía build) | — |
-| `preguntas.py` | Preguntas al Gobierno: orales (volcado) y escritas (buscador de iniciativas, tipo 184). Plazos del art. 190 del Reglamento, pendientes, piezas del feed. | `state/preguntas_escritas.json`, `state/preguntas_orales.json` | `/preguntas/` (solo con el año completo en el estado) |
+| `preguntas.py` | Preguntas al Gobierno: orales (volcado) y escritas (buscador de iniciativas, tipo 184). Plazos del art. 190 del Reglamento, pendientes, piezas del feed. Páginas por ministerio con las preguntas orales que contesta (las escritas no dicen qué ministerio las redacta). | `state/preguntas_escritas.json`, `state/preguntas_orales.json` | `/preguntas/`, `/preguntas/ministerio-<slug>.html` (solo con el año completo en el estado) |
 | `respuestas.py` | Qué contesta el Gobierno. Orales: citas del Diario de Sesiones (contestación, réplica, dúplica). Escritas: cita del PDF de contestación. | `state/respuestas/AAAA.json` | `/sesiones/` |
 | `tramitacion.py` | Seguimiento de proyectos y proposiciones de ley: estados, plazos de enmiendas, ampliaciones, ley resultante. `situacion()` explica en cada ficha dónde está y qué falta para que avance (incluido el «congelador»: plazo de enmiendas ampliado ≥ `CONGELADOR_AMP` veces durante ≥ `CONGELADOR_DIAS` días). `contenido()` saca del primer BOCG la frase de la exposición de motivos que dice qué hace el texto y los títulos de sus artículos. | `state/tramitacion.json` | `/tramitacion/` |
 | `nombramientos.py` | Nombramientos y ceses de la sección II.A del BOE. | `state/nombramientos.json` | `/personas/`, `/nombramientos/` |
@@ -109,6 +111,8 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `rankings.py` | Clasificaciones de diputados y grupos sobre `state/congreso.json`. | — | `/rankings/` |
 | `nombres.py` | Nombres populares («Verifactu», «ley mordaza») y títulos cortos, desde `curated/nombres_populares.json`. Solo para el buscador y los títulos. | — | — |
 | `aes_puro.py` | Descifrado AES en Python puro para que pypdf lea los PDF cifrados sin añadir `cryptography`. Se activa en `build.pdf_text`. | — | — |
+| `feeds.py` | Canales Atom por entidad (diputado, provincia, materia, iniciativa en tramitación, ministerio): formato, orden, tope de 50 y `id` estables. No importa `build.py`; lo usa `build.renderizar_feeds()` (§13). | — | `/diputados/<slug>.xml`, `/provincias/<slug>.xml`, `/temas/<slug>.xml`, `/tramitacion/<slug>.xml`, `/preguntas/ministerio-<slug>.xml` |
+| `paginas_fijas.py` | Textos fijos: cómo seguir la web con RSS y las páginas legales, con el marcador `<TITULAR_PENDIENTE>` (§13). | — | `/seguir/`, `/privacidad.html`, `/aviso-legal.html` |
 | `indices.py` | Componentes HTML comunes de las páginas índice (cifras, filtro, filas). | — | — |
 | `reproceso.py` | Reprocesa el histórico del BOE con varios extractores y una descarga por día. Solo toca `state/`. | `state/nombramientos.json`, `state/provincias.json` | — |
 | `redaccion.py` | Capa Gemini: propone titular y entradilla, verifica cifras y fechas contra la fuente, cachea. Si no hay clave o cuota, no hace nada. | `state/redaccion.json` | — |
@@ -460,12 +464,13 @@ el detalle de los graves acaba en «Qué hacer: …».
 | | Comprobación | Nivel |
 |---|---|---|
 | a | `carpetas`: cada carpeta de primer nivel con HTML y cada fichero de la web de la raíz están en `tools/publicables.txt` (§8) | grave |
-| b | `html`: marcadores sin sustituir (`{{`, `}}`, `__SSR_…__`, `None`, `undefined`, `NaN`, `<EMAIL_DE_CONTACTO>`, fuera de `<script>`), JSON-LD estricto, `<title>`, meta description y canonical de `https://terceracamara.es`, enlaces internos a ficheros inexistentes | grave |
+| b | `html`: marcadores sin sustituir (`{{`, `}}`, `__SSR_…__`, `None`, `undefined`, `NaN`, `<EMAIL_DE_CONTACTO>`, fuera de `<script>`), JSON-LD estricto, `<title>`, meta description y canonical de `https://terceracamara.es`, enlaces internos a ficheros inexistentes. `<TITULAR_PENDIENTE>` es solo **aviso**: es un hueco decidido por el mantenedor, no un fallo del código (§13) | grave (titular pendiente: aviso) |
 | c | `sitemap`: XML válido, URL del dominio que existen, sin duplicados, ≤ 50.000 por fichero | grave |
 | d | `indice`: `datos/indice*.json` válido y < 1 MB | grave |
 | e | `titulares` de `data/<fecha>.json` (BOE y Cortes): fin en preposición/artículo/conjunción, nombres de fichero o códigos, «Y N ASUNTOS MÁS», longitud, palabra cortada | grave (muy largo: aviso); en el CI, aviso |
 | f | `duplicados`: identificador (referencia del BOE o documento oficial) ya publicado en los 7 días anteriores; titular repetido con otro documento | grave / aviso; en el CI, aviso |
 | g | `tamanos`: ficheros de `state/` (aviso 10 MB, grave 25 MB), historia de `main` (aviso 500 MB, grave 900 MB), historia de la rama `datos` (aviso 200 MB, grave 500 MB), número y peso de lo que va a `_site` | aviso / grave |
+| h | `feeds`: cada `.xml` publicado (salvo los sitemaps) es Atom 1.0 o RSS 2.0 bien formado, con los campos obligatorios, fechas RFC 3339 (Atom) o RFC 822 (RSS), sin `id`/`guid` repetidos y con 50 entradas como máximo | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -538,3 +543,63 @@ se comportan como siempre.
 
 Si una comprobación da un falso positivo, se corrige la comprobación en una
 PR con un test que lo cubra; no se silencia ni se rebaja sin justificarlo.
+
+## 13. Audiencia: analítica, canales, páginas legales
+
+Fase de crear audiencia antes de cobrar (octubre de 2026). Nada de backend
+propio ni dependencias nuevas; todo lo nuevo es determinista.
+
+### Analítica sin cookies
+
+Cloudflare Web Analytics, con la baliza en todas las plantillas
+(`__SSR_ANALITICA__`, que `_replace_placeholders` sustituye por
+`baliza_analitica()`). El token del sitio va en `build.CF_ANALYTICS_TOKEN`: es
+**público** (viaja en el HTML de cada página) y lo da el panel de Cloudflare
+(Web Analytics › sitio `terceracamara.es` › instalación manual, porque la web
+no pasa por el proxy de Cloudflare). Vacío o con forma rara, no se inserta
+nada. Sustituye a GoatCounter.
+
+La baliza no usa cookies ni almacenamiento del navegador. Cómo comprobarlo
+(hecho en la web publicada al instalarla): abrir una página, esperar a que
+cargue `static.cloudflareinsights.com/beacon.min.js` y mirar que
+`document.cookie` está vacío y que `localStorage`, `sessionStorage` e
+IndexedDB no tienen ninguna clave; en las herramientas de desarrollo,
+Application › Cookies no muestra ninguna para `terceracamara.es` ni para
+`cloudflareinsights.com`. Como no hay cookies, no hay banner de
+consentimiento. Si algún día se añade algo que guarde estado en el
+navegador, hay que revisar /privacidad.html y la necesidad de banner.
+
+### Canales por entidad (las «alertas» gratuitas)
+
+`build.renderizar_feeds()` escribe, junto a cada página, su canal Atom con
+las mismas reglas (`feeds.py`): 50 entradas como máximo, fecha del hecho
+oficial, `id` estable `tag:terceracamara.es,2026:<tipo>:<identificador>`, y el
+`updated` del canal es el de su entrada más reciente (sin novedades, el
+fichero no cambia).
+
+| Canal | Entradas |
+|---|---|
+| `/diputados/<slug>.xml` | preguntas escritas (registro y contestación), preguntas orales, últimas intervenciones y votos distintos a los de su grupo |
+| `/provincias/<slug>.xml` | disposiciones del BOE que la nombran (`state/provincias.json`) y preguntas escritas cuyo título la cita |
+| `/temas/<slug>.xml` | lo publicado en el BOE en esa materia (`agrupar_materias`, la misma lista que /temas/) |
+| `/tramitacion/<slug>.xml` | solo iniciativas abiertas (`tramitacion.ABIERTOS`): cada paso con su fecha y cada ampliación del plazo de enmiendas, fechada el día en que vencía el plazo anterior (el Congreso no publica la fecha del acuerdo; la entrada lo dice) |
+| `/preguntas/ministerio-<slug>.xml` | preguntas orales de control que contesta ese departamento (deducido del cargo de quien contesta; las escritas no dicen ministerio) |
+
+Se generan antes que las páginas: `FEEDS_PAGINA` registra cada canal y
+`_pagina_suelta()` pone en su página el `<link rel="alternate"
+type="application/atom+xml">` y el botón «Seguir con RSS». Ningún generador
+de páginas tiene que saber nada. Un canal sin entradas no se escribe. La
+comprobación (h) de `verificar.py` los valida todos. `/seguir/` explica qué es
+RSS, lectores gratuitos y cómo recibir los canales por correo con servicios
+gratuitos de terceros.
+
+### Páginas legales
+
+`/privacidad.html` y `/aviso-legal.html` (`paginas_fijas.py`), enlazadas en el
+pie de todas las plantillas. No hay actividad económica y los datos del
+titular no se publican: en su lugar va el marcador literal
+`<TITULAR_PENDIENTE>`, que `verificar.py` señala como aviso.
+
+**Antes de cualquier actividad económica (suscripción o publicidad), el aviso
+legal debe incluir los datos del titular exigidos por la LSSI.**
+

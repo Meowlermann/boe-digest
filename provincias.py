@@ -187,10 +187,17 @@ def analizar(texto: str) -> dict:
     return {"provincias": provs, "ccaa": comunidades, "descartes": descartes}
 
 
+_MENCIONES: dict = {}
+
+
 def menciones(texto: str) -> set[str]:
     """Slugs de las provincias que nombra el texto (ver el docstring del
-    módulo para las reglas). Las comunidades pluriprovinciales no cuentan."""
-    return analizar(texto)["provincias"]
+    módulo para las reglas). Las comunidades pluriprovinciales no cuentan.
+    Con caché por texto: los canales de provincia (build.renderizar_feeds) y
+    las páginas analizan los mismos 15.000 títulos de preguntas en cada pase."""
+    if texto not in _MENCIONES:
+        _MENCIONES[texto] = frozenset(analizar(texto)["provincias"])
+    return set(_MENCIONES[texto])
 
 
 def menciones_ccaa(texto: str) -> set[str]:

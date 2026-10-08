@@ -27,6 +27,8 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   e) titulares   Heurísticas sobre los titulares de data/<fecha>.json.
   f) duplicados  Piezas repetidas respecto a los 7 días anteriores.
   g) tamanos     state/, historia de main y de la rama datos, y lo publicado.
+  h) feeds       Canales Atom/RSS: XML bien formado, campos obligatorios,
+                 fechas válidas, sin entradas duplicadas, ≤ 50 entradas.
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -165,6 +167,15 @@ MARCADORES = [
     ("NaN", re.compile(r"\bNaN\b")),
     ("<EMAIL_DE_CONTACTO>", re.compile(r"(<|&lt;)EMAIL_DE_CONTACTO(>|&gt;)")),
 ]
+# Marcadores que se publican a sabiendas y solo dan AVISO. <TITULAR_PENDIENTE>
+# ocupa en el aviso legal y en la privacidad el sitio del nombre y el NIF del
+# titular: mientras no haya actividad económica no se publican (decisión del
+# mantenedor, octubre de 2026), así que no es un fallo del código y no debe
+# bloquear el CI. Antes de cobrar o poner publicidad, la LSSI exige esos datos
+# (ARQUITECTURA.md §13): el aviso diario recuerda que sigue pendiente.
+MARCADORES_AVISO = [
+    ("<TITULAR_PENDIENTE>", re.compile(r"(<|&lt;)TITULAR_PENDIENTE(>|&gt;)")),
+]
 RE_SCRIPT = re.compile(r"<script\b([^>]*)>(.*?)</script>", re.S | re.I)
 RE_STYLE = re.compile(r"<style\b[^>]*>.*?</style>", re.S | re.I)
 RE_DOCUMENTO = re.compile(r"<!doctype html|<html[\s>]", re.I)
@@ -252,6 +263,10 @@ def comprobar_html(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None
             hallazgos.append(hallazgo(GRAVE, "html", f"Marcador sin sustituir {nombres}: …{ctx}…",
                                       rel, "busca qué plantilla o función deja ese valor y "
                                       "corrígela; no parchees el HTML generado."))
+        if any(patron.search(visible) for _n, patron in MARCADORES_AVISO):
+            hallazgos.append(hallazgo(AVISO, "html", "Datos del titular pendientes "
+                                      "(<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de "
+                                      "cualquier actividad económica.", rel))
         cab = texto[:20000]
         # Un fragmento que otra página incrusta (datos/votaciones-banner.html)
         # no es una página: no lleva <title>, description ni canonical.
@@ -641,6 +656,112 @@ def comprobar_tamanos(raiz: pathlib.Path, tam_main: int | None = None,
 
 
 # ---------------------------------------------------------------------------
+# h) Canales RSS y Atom
+# ---------------------------------------------------------------------------
+
+NS_ATOM = "{http://www.w3.org/2005/Atom}"
+MAX_ENTRADAS_CANAL = 50            # feeds.MAX_ENTRADAS
+RE_RFC3339 = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$")
+# Ficheros XML publicados que no son canales.
+RE_NO_CANAL = re.compile(r"^sitemap(-\d+)?\.xml$")
+
+
+def ficheros_canal(raiz: pathlib.Path) -> list[pathlib.Path]:
+    """feed.xml de la raíz y todos los .xml de las carpetas publicadas."""
+    salida = [p for p in sorted(raiz.glob("*.xml")) if not RE_NO_CANAL.match(p.name)]
+    for c in carpetas_publicadas(raiz):
+        salida.extend(sorted((raiz / c).rglob("*.xml")))
+    return salida
+
+
+def _fecha_rss_ok(texto: str) -> bool:
+    from email.utils import parsedate_to_datetime
+    try:
+        return parsedate_to_datetime(texto) is not None
+    except (TypeError, ValueError):
+        return False
+
+
+def problemas_canal(texto: str) -> list[str]:
+    """Problemas de un canal Atom 1.0 o RSS 2.0: XML bien formado, campos
+    obligatorios, fechas válidas, sin entradas duplicadas y con el tope de
+    entradas de los canales por entidad."""
+    try:
+        doc = ET.fromstring(texto.encode("utf-8"))
+    except ET.ParseError as exc:
+        return [f"XML mal formado ({exc})"]
+    problemas: list[str] = []
+    if doc.tag == NS_ATOM + "feed":
+        for campo in ("id", "title", "updated"):
+            if not (doc.findtext(NS_ATOM + campo) or "").strip():
+                problemas.append(f"al canal le falta <{campo}>")
+        if not RE_RFC3339.match((doc.findtext(NS_ATOM + "updated") or "").strip()):
+            problemas.append("<updated> del canal no es RFC 3339")
+        if not any(l.get("rel") == "self" for l in doc.findall(NS_ATOM + "link")):
+            problemas.append('al canal le falta <link rel="self">')
+        autor_canal = doc.find(NS_ATOM + "author") is not None
+        entradas = doc.findall(NS_ATOM + "entry")
+        ids = []
+        for i, e in enumerate(entradas, 1):
+            for campo in ("id", "title", "updated"):
+                if not (e.findtext(NS_ATOM + campo) or "").strip():
+                    problemas.append(f"a la entrada {i} le falta <{campo}>")
+            if not RE_RFC3339.match((e.findtext(NS_ATOM + "updated") or "").strip()):
+                problemas.append(f"<updated> de la entrada {i} no es RFC 3339")
+            if not any(l.get("href") for l in e.findall(NS_ATOM + "link")):
+                problemas.append(f"a la entrada {i} le falta <link href>")
+            if not autor_canal and e.find(NS_ATOM + "author") is None:
+                problemas.append(f"la entrada {i} no tiene autor (ni el canal)")
+            ids.append((e.findtext(NS_ATOM + "id") or "").strip())
+        tope = MAX_ENTRADAS_CANAL
+    elif doc.tag == "rss":
+        canal = doc.find("channel")
+        if canal is None:
+            return ["RSS sin <channel>"]
+        for campo in ("title", "link", "description"):
+            if not (canal.findtext(campo) or "").strip():
+                problemas.append(f"al canal le falta <{campo}>")
+        entradas = canal.findall("item")
+        ids = []
+        for i, it in enumerate(entradas, 1):
+            if not ((it.findtext("title") or "").strip() or (it.findtext("description") or "").strip()):
+                problemas.append(f"a la entrada {i} le falta <title> o <description>")
+            if not (it.findtext("link") or "").strip():
+                problemas.append(f"a la entrada {i} le falta <link>")
+            fecha = (it.findtext("pubDate") or "").strip()
+            if fecha and not _fecha_rss_ok(fecha):
+                problemas.append(f"<pubDate> de la entrada {i} no es RFC 822")
+            ids.append((it.findtext("guid") or it.findtext("link") or "").strip())
+        tope = MAX_ENTRADAS_CANAL
+    else:
+        return [f"no es Atom ni RSS 2.0 (raíz <{doc.tag}>)"]
+    if not entradas:
+        problemas.append("canal sin entradas")
+    if len(entradas) > tope:
+        problemas.append(f"{len(entradas)} entradas (máximo {tope})")
+    repetidos = sorted({x for x in ids if x and ids.count(x) > 1})
+    if repetidos:
+        problemas.append(f"entradas duplicadas: {', '.join(repetidos[:3])}")
+    return problemas
+
+
+def comprobar_feeds(raiz: pathlib.Path, ficheros: list[pathlib.Path] | None = None) -> list[dict]:
+    """(h) Cada canal publicado es Atom o RSS 2.0 válido (feeds.py)."""
+    hallazgos = []
+    for p in (ficheros if ficheros is not None else ficheros_canal(raiz)):
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception as exc:                              # noqa: BLE001
+            texto, problemas = "", [f"no se puede leer ({exc})"]
+        else:
+            problemas = problemas_canal(texto)
+        if problemas:
+            hallazgos.append(hallazgo(GRAVE, "feeds", "; ".join(problemas[:5]) + ".", _rel(raiz, p),
+                                      "corrige el generador en feeds.py o build.renderizar_feeds."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # Ejecución
 # ---------------------------------------------------------------------------
 
@@ -665,6 +786,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("titulares", lambda: comprobar_titulares(raiz, fecha) if fecha else []),
         ("duplicados", lambda: comprobar_duplicados(raiz, fecha) if fecha else []),
         ("tamanos", lambda: comprobar_tamanos(raiz)),
+        ("feeds", lambda: comprobar_feeds(raiz)),
     ]
     hallazgos: list[dict] = []
     for nombre, fn in comprobaciones:
