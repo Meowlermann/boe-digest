@@ -4902,11 +4902,15 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Gobierno tiene 38 preguntas escritas pendientes de respuesta en el Congreso",
-   "entradilla": "Estas iniciativas del último año acumulan más de 20 días hábiles desde su publicación sin contestación registrada, con Sumar como el grupo con más preguntas en espera.",
-   "claves": [],
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Un total de 38 preguntas escritas en el Congreso siguen sin contestación",
+   "entradilla": "Las preguntas escritas del último año acumulan más de 20 días hábiles desde su publicación sin contestación registrada.",
+   "claves": [
+    "La pregunta más antigua sin contestación registrada se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupo de quien pregunta, Sumar acumula 30 preguntas sin contestación registrada, el PSOE tiene 4 y el PP 2.",
+    "Las restantes preguntas corresponden a Junts con una y otra sin grupo."
+   ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
   },
@@ -5618,9 +5622,60 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
+  },
+  "C-bb67558a91ca168f": {
+   "huella": "892aa10672def808",
+   "fuente": "c5c307dc464fefc1",
+   "titular": "El Gobierno responde a Sumar sobre el monumento de Sa Feixina en Palma",
+   "entradilla": "La contestación a la pregunta de Enrique Fernando Santiago Romero sobre las acciones para evitar reivindicaciones fascistas se ha registrado 134 días después de su publicación.",
+   "claves": [
+    "La iniciativa de Enrique Fernando Santiago Romero y seis personas más de Sumar fue publicada el lunes 25 de mayo de 2026.",
+    "La contestación del Gobierno se registró el martes 6 de octubre de 2026, tras transcurrir 134 días naturales.",
+    "La pregunta planteaba acciones para asegurar que no haya reivindicaciones del fascismo en el monumento de Sa Feixina en Palma."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-30817389c345e57c": {
+   "huella": "3a0ee3a840c8b092",
+   "fuente": "343a63f69632f350",
+   "titular": "El Gobierno contesta a Junts sobre la regulación para proponer un municipio",
+   "entradilla": "El Gobierno ha registrado la respuesta a una pregunta de Marta Madrenas i Mir sobre los documentos que regulan la comprobación de la propuesta de municipio 69 días después de su publicación.",
+   "claves": [
+    "La pregunta de Marta Madrenas i Mir de Junts fue publicada el miércoles 29 de julio de 2026.",
+    "La contestación escrita del Gobierno se registró el martes 6 de octubre de 2026.",
+    "El plazo transcurrido entre la publicación en el BOCG y la respuesta ha sido de 69 días naturales, unos 26 hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-829aff0445ecb020": {
+   "huella": "a9fe081362452a69",
+   "fuente": "1ed7505e1a99579e",
+   "titular": "El Gobierno registra las respuestas a 319 preguntas escritas en el Congreso",
+   "entradilla": "Un total de 319 preguntas escritas en el Congreso han pasado a tener su contestación registrada hoy en su ficha oficial.",
+   "claves": [
+    "El Congreso ha registrado hoy las contestaciones del Gobierno a un total de 319 preguntas escritas.",
+    "Las respuestas corresponden a las iniciativas que han pasado a tener la contestación registrada en su ficha oficial."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-c1371a871310afda": {
+   "huella": "39aec936e1ad6b38",
+   "fuente": "4723afade848ada3",
+   "titular": "Un total de 957 preguntas escritas en el Congreso siguen sin contestación",
+   "entradilla": "Estas iniciativas del último año acumulan más de 20 días hábiles desde su publicación sin que se haya registrado su contestación, habiendo superado la fecha límite.",
+   "claves": [
+    "La pregunta más antigua sin contestación registrada se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupo de quien pregunta, el PP tiene 590 preguntas pendientes, Junts 105, Vox 92 y Sumar 87.",
+    "Las demás preguntas corresponden a Mixto con 61, PSOE con 13, ERC con 9 y una sin grupo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
   }
  },
  "uso": {
-  "2026-10-08": 4
+  "2026-10-08": 6
  }
 }
