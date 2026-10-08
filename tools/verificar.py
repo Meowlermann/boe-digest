@@ -29,6 +29,8 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   g) tamanos     state/, historia de main y de la rama datos, y lo publicado.
   h) feeds       Canales Atom/RSS: XML bien formado, campos obligatorios,
                  fechas válidas, sin entradas duplicadas, ≤ 50 entradas.
+  i) semana      (solo salud diaria) La página de la semana que acaba de
+                 cerrar existe.
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -762,6 +764,37 @@ def comprobar_feeds(raiz: pathlib.Path, ficheros: list[pathlib.Path] | None = No
 
 
 # ---------------------------------------------------------------------------
+# i) La semana: el resumen de la semana cerrada está publicado
+# ---------------------------------------------------------------------------
+
+def semana_cerrada(fecha: str) -> str:
+    """«AAAA-Snn» de la semana ISO que terminó el domingo anterior a `fecha`
+    (la misma cuenta que semana.ultima_cerrada, sin importar el módulo)."""
+    d = dt.date.fromisoformat(fecha)
+    a, n, _ = (d - dt.timedelta(days=d.weekday() + 1)).isocalendar()
+    return f"{a}-S{n:02d}"
+
+
+def comprobar_semana(raiz: pathlib.Path, fecha: str | None) -> list[dict]:
+    """(i) Solo en la salud diaria: desde el lunes, /semana/ tiene la semana
+    que acaba de cerrar. La construye el pase diario (semana.asegurar) y se
+    guarda en data/semanas/; si falta, el pase del lunes falló o no hubo datos."""
+    if not fecha:
+        return []
+    sid = semana_cerrada(fecha)
+    pagina = raiz / "semana" / f"{sid}.html"
+    if pagina.is_file():
+        return []
+    datos = raiz / "data" / "semanas" / f"{sid}.json"
+    detalle = (f"Falta la página de la semana {sid} (/semana/{sid}.html)"
+               + ("; el resumen está congelado pero no se pintó." if datos.is_file()
+                  else "; no se ha congelado el resumen."))
+    return [hallazgo(GRAVE, "semana", detalle, f"semana/{sid}.html",
+                     "mira el log del pase («semana:») y relanza «Edición diaria»: "
+                     "semana.asegurar() construye las semanas que faltan.")]
+
+
+# ---------------------------------------------------------------------------
 # Ejecución
 # ---------------------------------------------------------------------------
 
@@ -788,6 +821,8 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("tamanos", lambda: comprobar_tamanos(raiz)),
         ("feeds", lambda: comprobar_feeds(raiz)),
     ]
+    if modo == "diario":
+        comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))
     hallazgos: list[dict] = []
     for nombre, fn in comprobaciones:
         try:
