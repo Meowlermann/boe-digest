@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "Un total de 38 preguntas escritas en el Congreso siguen sin contestación",
-   "entradilla": "Las preguntas escritas del último año acumulan más de 20 días hábiles desde su publicación sin contestación registrada.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
+   "entradilla": "Estas iniciativas parlamentarias llevan más de 20 días hábiles desde su publicación sin que se haya registrado contestación, aunque puede haber prórrogas o respuestas no reflejadas.",
    "claves": [
-    "La pregunta más antigua sin contestación registrada se publicó el lunes 15 de diciembre de 2025.",
-    "Por grupo de quien pregunta, Sumar acumula 30 preguntas sin contestación registrada, el PSOE tiene 4 y el PP 2.",
-    "Las restantes preguntas corresponden a Junts con una y otra sin grupo."
+    "La pregunta más antigua que permanece sin contestación registrada fue publicada el lunes 16 de febrero de 2026.",
+    "Por grupos parlamentarios, Sumar acumula 24 preguntas sin responder, el PSOE tiene 7, el PP cuenta con 4 y Junts tiene una.",
+    "El grupo GV (EAJ-PNV) tiene una pregunta pendiente y hay otra correspondiente a un diputado sin grupo."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
@@ -5673,9 +5673,21 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
+  },
+  "C-93e4c921a03bc1d9": {
+   "huella": "0649df9af9cb1f46",
+   "fuente": "c541449db6f48b81",
+   "titular": "El Gobierno registra las respuestas a 438 preguntas escritas en el Congreso",
+   "entradilla": "El Gobierno ha incorporado hoy las contestaciones oficiales a estas iniciativas parlamentarias en sus respectivas fichas del Congreso.",
+   "claves": [
+    "El Gobierno ha registrado hoy las contestaciones a un total de 438 preguntas escritas en el Congreso.",
+    "Estas contestaciones oficiales han quedado incorporadas a la ficha de cada una de las preguntas parlamentarias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
   }
  },
  "uso": {
-  "2026-10-08": 6
+  "2026-10-08": 7
  }
 }
