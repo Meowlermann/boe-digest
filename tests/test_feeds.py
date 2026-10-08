@@ -99,7 +99,9 @@ class Anuncio(unittest.TestCase):
         b = self.build.baliza_analitica("0123456789abcdef0123456789abcdef")
         self.assertIn("static.cloudflareinsights.com/beacon.min.js", b)
         self.assertIn('data-cf-beacon=\'{"token": "0123456789abcdef0123456789abcdef"}\'', b)
-        self.assertIn(" defer ", b)
+        self.assertIn('type="module"', b)
+        # El token del sitio está puesto y tiene forma válida.
+        self.assertTrue(self.build.baliza_analitica())
 
     def test_plantillas_sin_goatcounter(self):
         for p in RAIZ_REPO.glob("template*.html"):
