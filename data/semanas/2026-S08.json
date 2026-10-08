@@ -1,0 +1,951 @@
+{
+ "desde": "2026-02-16",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-02-22",
+ "secciones": {
+  "cifra": {
+   "asunto": "",
+   "fuente": "",
+   "regla": 3,
+   "texto": "leyes y reales decretos publicados en el BOE",
+   "url": "",
+   "valor": 7
+  },
+  "nombramientos": {
+   "ceses": 6,
+   "lista": [
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrada",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-02-16",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3485",
+     "persona": "María Isabel Soler Navarro",
+     "rango": "Acuerdo",
+     "url": "/personas/maria-isabel-soler-navarro.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente de la Sala de lo Social del Tribunal Superior de Justicia de Andalucía, Ceuta y Melilla, sede Málaga",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3636",
+     "persona": "Manuel Martín Hernández-Carrillo",
+     "rango": "Real Decreto",
+     "url": "/personas/manuel-martin-hernandez-carrillo.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente de la Sala de lo Social del Tribunal Superior de Justicia de la Región de Murcia",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3637",
+     "persona": "Mariano Gascón Valero",
+     "rango": "Real Decreto",
+     "url": "/personas/mariano-gascon-valero.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente de la Sala Quinta del Tribunal Supremo",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3638",
+     "persona": "Jacobo Barja de Quiroga López",
+     "rango": "Real Decreto",
+     "url": "/personas/jacobo-barja-de-quiroga-lopez.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrada de la Sala de lo Penal de la Audiencia Nacional",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3639",
+     "persona": "Concepción Espejel Jorquera",
+     "rango": "Real Decreto",
+     "url": "/personas/concepcion-espejel-jorquera.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrado de la Sala de lo Contencioso-Administrativo del Tribunal Superior de Justicia de Madrid",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3640",
+     "persona": "Javier Aguayo Mejía",
+     "rango": "Real Decreto",
+     "url": "/personas/javier-aguayo-mejia.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrado de la Sala de lo Civil y Penal del Tribunal Superior de Justicia de Murcia",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3641",
+     "persona": "Miguel Alfonso Pasqual del Riquelme Herrero",
+     "rango": "Real Decreto",
+     "url": "/personas/miguel-alfonso-pasqual-del-riquelme-herrero.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrado de la Audiencia Provincial de Sevilla, correspondiente al Orden Civil, en sección con competencia en materia de familia y capacidad",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3642",
+     "persona": "Óscar Rey Muñoz",
+     "rango": "Real Decreto",
+     "url": "/personas/oscar-rey-munoz.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Embajador en Misión Especial para el Sahel",
+     "emisor": "MINISTERIO DE ASUNTOS EXTERIORES, UNIÓN EUROPEA Y COOPERACIÓN",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3736",
+     "persona": "Alberto Cerezo Sobrino",
+     "rango": "Real Decreto",
+     "url": "/personas/alberto-cerezo-sobrino.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Director del Gabinete del Secretario de Estado de Educación",
+     "emisor": "MINISTERIO DE EDUCACIÓN, FORMACIÓN PROFESIONAL Y DEPORTES",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3737",
+     "persona": "Francisco Daniel Rueda Sagaseta",
+     "rango": "Orden",
+     "url": "/personas/francisco-daniel-rueda-sagaseta.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Subsecretaria de Vivienda y Agenda Urbana",
+     "emisor": "MINISTERIO DE VIVIENDA Y AGENDA URBANA",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3740",
+     "persona": "María de los Llanos Castellanos Garijo",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-de-los-llanos-castellanos-garijo.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Secretario General Técnico",
+     "emisor": "MINISTERIO DE VIVIENDA Y AGENDA URBANA",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3741",
+     "persona": "Pablo Torres Paniagua",
+     "rango": "Real Decreto",
+     "url": "/personas/pablo-torres-paniagua.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Subsecretario de Vivienda y Agenda Urbana",
+     "emisor": "MINISTERIO DE VIVIENDA Y AGENDA URBANA",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3742",
+     "persona": "Pablo Torres Paniagua",
+     "rango": "Real Decreto",
+     "url": "/personas/pablo-torres-paniagua.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Secretario General Técnico",
+     "emisor": "MINISTERIO DE VIVIENDA Y AGENDA URBANA",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3743",
+     "persona": "Pablo Moreno Lucía",
+     "rango": "Real Decreto",
+     "url": "/personas/pablo-moreno-lucia.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Secretaria General Técnica",
+     "emisor": "MINISTERIO DE CULTURA",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3744",
+     "persona": "Laura Cadenas Lázaro",
+     "rango": "Real Decreto",
+     "url": "/personas/laura-cadenas-lazaro.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Subsecretario de Igualdad",
+     "emisor": "MINISTERIO DE IGUALDAD",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3746",
+     "persona": "Ignacio Sola Barleycorn",
+     "rango": "Real Decreto",
+     "url": "/personas/ignacio-sola-barleycorn.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Subsecretaria de Igualdad",
+     "emisor": "MINISTERIO DE IGUALDAD",
+     "fecha": "2026-02-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3747",
+     "persona": "Laura Cadenas Lázaro",
+     "rango": "Real Decreto",
+     "url": "/personas/laura-cadenas-lazaro.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente del Tribunal Superior de Justicia de Illes Balears",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-02-19",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3816",
+     "persona": "Carlos Gómez Martínez",
+     "rango": "Real Decreto",
+     "url": "/personas/carlos-gomez-martinez.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-02-19",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3817",
+     "persona": "Ángel Luis Sanabria Parejo",
+     "rango": "Acuerdo",
+     "url": "/personas/angel-luis-sanabria-parejo.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-02-20",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3912",
+     "persona": "Juan Ignacio Medrano Sánchez",
+     "rango": "Acuerdo",
+     "url": "/personas/juan-ignacio-medrano-sanchez.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-02-20",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3913",
+     "persona": "José María Merlos Fernández",
+     "rango": "Acuerdo",
+     "url": "/personas/jose-maria-merlos-fernandez.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Directora del Gabinete de la Secretaría de Estado de Migraciones",
+     "emisor": "MINISTERIO DE INCLUSIÓN, SEGURIDAD SOCIAL Y MIGRACIONES",
+     "fecha": "2026-02-20",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-3915",
+     "persona": "Eva Martínez Montero",
+     "rango": "Orden",
+     "url": "/personas/eva-martinez-montero.html"
+    }
+   ],
+   "nombramientos": 37,
+   "resto": 32,
+   "total": 54
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-02-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/19/pdfs/BOE-A-2026-3810.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-3810",
+    "titular": "ADOPTAN MEDIDAS URGENTES EN RESPUESTA A LOS DAÑOS CAUSADOS POR DIVERSOS FENÓMENOS METEOROLÓGICOS ADVERSOS",
+    "titulo": "Real Decreto-ley 5/2026, de 17 de febrero, por el que se adoptan medidas urgentes en respuesta a los daños causados por diversos fenómenos meteorológicos adversos, de especial afectación en las comunidades autónomas de Andalucía y Extremadura.",
+    "url": "/normas/BOE-A-2026-3810.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-02-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/20/pdfs/BOE-A-2026-3909.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-3909",
+    "titular": "MODIFICACIÓN DEL TEXTO ÚNICO DE LA LEY DE LA FUNCIÓN PÚBLICA DE LA ADMINISTRACIÓN",
+    "titulo": "Ley 1/2026, de 4 de febrero, de modificación del texto único de la Ley de la función pública de la Administración de la Generalitat de Catalunya aprobado por el Decreto Legislativo 1/1997.",
+    "url": "/normas/BOE-A-2026-3909.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-02-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/19/pdfs/BOE-A-2026-3815.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-3815",
+    "titular": "POR EL QUE SE FIJA EL SALARIO MÍNIMO INTERPROFESIONAL PARA 2026",
+    "titulo": "Real Decreto 126/2026, de 18 de febrero, por el que se fija el salario mínimo interprofesional para 2026.",
+    "url": "/normas/BOE-A-2026-3815.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-02-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/20/pdfs/BOE-A-2026-3908.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-3908",
+    "titular": "CAMBIAN LAS REGLAS: ASPECTOS RELATIVOS AL AJUSTE DE LA ASIGNACIÓN GRATUITA",
+    "titulo": "Real Decreto 127/2026, de 18 de febrero, por el que se modifica el Real Decreto 1089/2020, de 9 de diciembre, por el que se desarrollan aspectos relativos al ajuste de la asignación gratuita de derechos de emisión de gases de efecto invernadero en el periodo 2021-2030.",
+    "url": "/normas/BOE-A-2026-3908.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-02-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/20/pdfs/BOE-A-2026-3960.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-3960",
+    "titular": "GRAN CRUZ DE LA ORDEN CIVIL DE ALFONSO X EL SABIO PARA MARÍA DOLORES GONZÁLEZ FLORES",
+    "titulo": "Real Decreto 137/2026, de 18 de febrero, por el que se concede la Gran Cruz de la Orden Civil de Alfonso X el Sabio a doña María Dolores González Flores.",
+    "url": "/normas/BOE-A-2026-3960.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-02-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/20/pdfs/BOE-A-2026-3961.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-3961",
+    "titular": "GRAN CRUZ DE LA ORDEN CIVIL DE ALFONSO X EL SABIO PARA JOSÉ ANTONIO CARMONA CARMONA",
+    "titulo": "Real Decreto 138/2026, de 18 de febrero, por el que se concede la Gran Cruz de la Orden Civil de Alfonso X el Sabio a don José Antonio Carmona Carmona.",
+    "url": "/normas/BOE-A-2026-3961.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-02-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/02/21/pdfs/BOE-A-2026-3980.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-3980",
+    "titular": "CAMBIAN LAS REGLAS: LA ESTRUCTURA DE LAS CONSEJERÍAS DEL MINISTERIO",
+    "titulo": "Real Decreto 128/2026, de 18 de febrero, por el que se modifica el Real Decreto 262/2019, de 12 de abril, por el que se establece la estructura de las Consejerías del Ministerio de Agricultura, Pesca y Alimentación en el exterior y se regula la organización, funciones y provisión de puestos de trabajo.",
+    "url": "/normas/BOE-A-2026-3980.html"
+   }
+  ],
+  "preguntas": {
+   "contestadas": [
+    {
+     "autores": [
+      "Montesinos de Miguel, Macarena",
+      "Rojas García, Carlos",
+      "Ibáñez Hernando, Ángel",
+      "Pérez López, Álvaro"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031586",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Criterio oficial del Gobierno sobre la remisión a las Cortes Generales de los dictámenes del Consejo de Estado sobre su normativa en elaboración.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031586"
+    },
+    {
+     "autores": [
+      "Ibáñez Hernando, Ángel",
+      "Moneo Díez, María Sandra",
+      "Moro Almaraz, María Jesús"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031593",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Previsiones acerca de incrementar los servicios judiciales en Burgos.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031593"
+    },
+    {
+     "autores": [
+      "Catalán Higueras, Alberto"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031621",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Motivos por los que el Ministerio de Transportes y Movilidad Sostenible incumple la legislación a la hora de remitir información a las Cortes Generales que solicitan los miembros de las mismas.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031621"
+    },
+    {
+     "autores": [
+      "Catalán Higueras, Alberto"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031622",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Medidas que está adoptando el Gobierno en la lucha antiterrorista contra el yihadismo, así como medidas previstas para proteger los símbolos cristianos y judíos ante la citada amenaza.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031622"
+    },
+    {
+     "autores": [
+      "Ibáñez Hernando, Ángel",
+      "Moneo Díez, María Sandra",
+      "Moro Almaraz, María Jesús"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031629",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Situación en la que se encuentra el proyecto de permuta según el cual el Ayuntamiento de Villarcayo intercambiaría un edificio con el Ministerio de la Presidencia, Justicia y Relaciones con las Cortes.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031629"
+    },
+    {
+     "autores": [
+      "Ibáñez Hernando, Ángel",
+      "Moneo Díez, María Sandra",
+      "Moro Almaraz, María Jesús"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031630",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Previsiones acerca de atender la demanda remitida por la Confederación de Asociaciones Empresariales de Burgos (FAE) junto con los sindicatos UGT y FAE alertando del deterioro importante que atraviesan los Juzgados de lo",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031630"
+    },
+    {
+     "autores": [
+      "Ibáñez Hernando, Ángel",
+      "Moneo Díez, María Sandra",
+      "Moro Almaraz, María Jesús"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031631",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Retrasos sistemáticos en los juzgados de Aranda.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031631"
+    },
+    {
+     "autores": [
+      "Muñoz Abrines, Pedro",
+      "Olano Vela, Jaime Eduardo de",
+      "Pérez López, Álvaro",
+      "Montesinos de Miguel, Macarena"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031640",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Acusaciones sobre el comportamiento presuntamente machista y acosador de Francisco Salazar y conocimiento y actuación del Presidente del Gobierno al respecto.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031640"
+    },
+    {
+     "autores": [
+      "Figaredo Álvarez-Sala, José María",
+      "Mejías Sánchez, Carina",
+      "Flores Juberías, Carlos",
+      "Rodríguez Almeida, Andrés Alberto",
+      "Rueda Perelló, Patricia"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031663",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Impacto que tendría en la cadena de valor ferroviaria española la posible compra de trenes chinos en lugar de reforzar la capacidad productiva de fabricantes europeos presentes en España.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031663"
+    },
+    {
+     "autores": [
+      "García Gomis, David",
+      "Fernández Ríos, Tomás",
+      "De Meer Méndez, Rocío"
+     ],
+     "cita": "",
+     "contestada": "2026-02-18",
+     "dias": 58,
+     "exp": "184/031675",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2025-12-22",
+     "titulo": "Medidas en las que está trabajando el Gobierno para que en cualquier lugar de España los pacientes infantiles y adultos puedan acceder a los cuidados paliativos de 24 horas.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F031675"
+    }
+   ],
+   "n_contestadas": 213,
+   "n_orales": 17,
+   "orales": [
+    {
+     "autor": "Ester Muñoz de la Iglesia",
+     "cargo": "Vicepresidenta Primera del Gobierno y Ministra de Hacienda",
+     "cita": "Lo que llama la atención, señora Muñoz, es que ustedes siempre utilicen una doble moral: cuando ocurre algún caso presuntamente de abuso o agresión sobre una persona o una mujer que pertenezca o esté relacionada con la esfera del Gobierno, ustedes se rasgan las vestiduras, pero no se sienten interpelados cuando miembros de su partido permanecen en las instituciones después de las denuncias…",
+     "contesta": "María Jesús Montero Cuadrado",
+     "exp": "180/000928",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Cree que este Gobierno está actuando con responsabilidad?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Miguel Tellado Filgueira",
+     "cargo": "Vicepresidenta Primera del Gobierno y Ministra de Hacienda",
+     "cita": "Señor Tellado, con qué alegría y con qué cobardía ataca usted a la presidenta de esta sala (el señor Tellado Filgueira hace gestos negativos) cuando sabe que no puede defenderse. Ese es el estilo del señor Tellado, el estilo del Partido Popular, esconderse. Se esconden, señor Tellado, porque desde luego tienen ustedes mucho que ocultar. […]",
+     "contesta": "María Jesús Montero Cuadrado",
+     "exp": "180/000929",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Cómo valora su trabajo como Ministra de Hacienda?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Juan Bravo Baena",
+     "cargo": "Vicepresidenta Primera del Gobierno y Ministra de Hacienda",
+     "cita": "Tienen ustedes ministros de Hacienda a quienes preguntar. ¿Dónde estaba el dinero cuando el señor Rato gobernaba? ¿Dónde estaba el dinero cuando el señor Montoro gobernaba? ¿Dónde estaba el dinero cuando los ministros del Interior tapaban la destrucción de pruebas y fabricaban pruebas falsas de la policía patriótica? […]",
+     "contesta": "María Jesús Montero Cuadrado",
+     "exp": "180/000930",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Es consciente de que los españoles viven cada vez peor?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Ione Belarra Urteaga",
+     "cargo": "Vicepresidenta Primera del Gobierno y Ministra de Hacienda",
+     "cita": "Creo que he transmitido en más de una ocasión, señora Belarra, algo que me parece muy importante y en lo que coincidimos, pero no sé por qué su formación política está más preocupada en buscar diferencias que en posibilitar puntos de encuentro. Creo que usted y yo compartimos que el salario mínimo interprofesional no puede ser un salario de subsistencia. […]",
+     "contesta": "María Jesús Montero Cuadrado",
+     "exp": "180/000921",
+     "grupo": "Mixto",
+     "s": "2026-02-18",
+     "texto": "¿Sigue pensando que el salario mínimo interprofesional (SMI) ya no es un salario de supervivencia?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Jaime Eduardo de Olano Vela",
+     "cargo": "Vicepresidenta Segunda y Ministra de Trabajo y Economía Social",
+     "cita": "Señor De Olano, he aprendido mucho de la reflexión que ha hecho usted y a la pregunta que me ha formulado le digo que honestamente sí.",
+     "contesta": "Yolanda Díaz Pérez",
+     "exp": "180/000931",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Cree que puede seguir siendo Vicepresidenta del Gobierno?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Jaime Miguel De los Santos González",
+     "cargo": "Ministra de Educación, Formación Profesional y Deportes",
+     "cita": "Pues lo que vamos a hacer es seguir apoyando a la comunidad educativa y seguir apoyándonos en algo tan importante como es el Consejo Escolar del Estado, con el que, por cierto, tuvimos reunión la pasada semana. Gracias.",
+     "contesta": "Milagros Tolón Jaime",
+     "exp": "180/000936",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Cómo piensa desarrollar la LOMLOE?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Joseba Andoni (GV (EAJ-PNV)) Agirretxea Urresti",
+     "cargo": "Ministra de Educación, Formación Profesional y Deportes",
+     "cita": "Señoría, lo primero que quiero es mandarle un mensaje de tranquilidad, un mensaje de colaboración, porque a ustedes y a nosotros nos preocupa mucho la formación profesional. Y lo más importante, sobre todo, es el respeto que este Gobierno tiene a las competencias de las comunidades autónomas no solamente en la formación profesional, sino en todo lo que corresponde a las cuestiones educativas. […]",
+     "contesta": "Milagros Tolón Jaime",
+     "exp": "180/000923",
+     "grupo": "",
+     "s": "2026-02-18",
+     "texto": "¿Va a seguir el Gobierno actuando sin contar con Euskadi en una materia como la Formación Profesional?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Cayetana Álvarez de Toledo Peralta-Ramos",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señora Álvarez de Toledo, usted sabe y es público -ya lo he dicho en esta misma Cámara- que el Gobierno discrepa de la sentencia de la Sala Segunda del Tribunal Supremo. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/000932",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Está el Gobierno con el Fiscal General condenado o con el Tribunal Supremo que lo condenó?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "María José Rodríguez de Millán Parro",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señora Millán, veamos cuánto maltratamos a los españoles. En ocho años de Gobierno, hemos subido un 66 % el salario mínimo interprofesional. Las docenas de miles de españoles que perciben el salario mínimo interprofesional, ¿usted cree que se consideran mal o bien tratados? También hemos subido las pensiones casi un 25 % en España. De media, nuestros pensionistas cobran 400 euros más. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/000927",
+     "grupo": "Vox",
+     "s": "2026-02-18",
+     "texto": "¿Hasta cuándo van a seguir maltratando a los españoles?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Pilar Vallugera Balañà",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señora Vallugera. Le agradezco la pregunta porque nos permite hablar del servicio público de la justicia, algo que no es habitual hacer en esta Cámara con todo detalle. Usted conoce bien que en esta legislatura estamos llevando a cabo la mayor transformación de la justicia en décadas: reformas que llevaban décadas postergadas, décadas metidas en un cajón, y que estamos llevando a cabo. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/000924",
+     "grupo": "ERC",
+     "s": "2026-02-18",
+     "texto": "¿Cómo valora el funcionamiento de la Administración de Justicia?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Mirian Guardiola Salmerón",
+     "cargo": "Ministro del Interior",
+     "cita": "Señora Guardiola, los hechos denunciados por la víctima respecto al antiguo director adjunto operativo son de tal gravedad que, conocidos inmediatamente, se exigió su renuncia y, si no, su dimisión. Son de una gravedad absolutamente manifiesta, y esa exigencia implica, evidentemente, tomar conocimiento y reaccionar inmediatamente. […]",
+     "contesta": "Fernando Grande-Marlaska Gómez",
+     "exp": "180/000933",
+     "grupo": "PP",
+     "s": "2026-02-18",
+     "texto": "¿Está su Ministerio preparado?",
+     "url": "/sesiones/2026-02-18.html"
+    },
+    {
+     "autor": "Ignacio Gil Lázaro",
+     "cargo": "Ministro del Interior",
+     "cita": "Señor Gil Lázaro, le repito lo mismo. Solo espero que ustedes sean capaces, ante hechos tan graves como los de ayer imputados al director adjunto operativo, de actuar de la misma forma y con la misma contundencia. Eso será que realmente les importan y les preocupan las violencias y las violencias hacia las mujeres. […]",
+     "contesta": "Fernando Grande-Marlaska Gómez",
+     "exp": "180/000926",
+     "grupo": "Vox",
+     "s": "2026-02-18",
+     "texto": "¿Qué consecuencias va a tener para la seguridad ciudadana la regularización de quinientos mil inmigrantes ilegales?",
+     "url": "/sesiones/2026-02-18.html"
+    }
+   ]
+  },
+  "tramitacion": [
+   {
+    "clase": "paso",
+    "exp": "122/000234",
+    "f": "2026-02-17",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000234",
+    "hasta": "2026-02-23",
+    "hito": "Concluido - (Rechazado)",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley sobre la evaluación del impacto en el ámbito de la juventud de las políticas públicas",
+    "url": "/tramitacion/122-000234.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000237",
+    "f": "2026-02-17",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000237",
+    "hasta": "2026-02-23",
+    "hito": "Concluido - (Rechazado)",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica para la protección de la dignidad de las mujeres y la seguridad ciudadana en el espacio público",
+    "url": "/tramitacion/122-000237.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000241",
+    "f": "2026-02-17",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000241",
+    "hasta": "2026-02-20",
+    "hito": "Comisión de Presupuestos · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley para garantizar el cumplimiento de la Ley 47/2003, de 26 de noviembre, General Presupuestaria",
+    "url": "/tramitacion/122-000241.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000255",
+    "f": "2026-02-17",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000255",
+    "hasta": "2026-02-20",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica por la que se modifica el artículo 172.quater del Código Penal que regula el derecho a la interrupción voluntaria del embarazo",
+    "url": "/tramitacion/122-000255.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000011",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000011",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Familias",
+    "url": "/tramitacion/121-000011.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000021",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000021",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de universalidad del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000021.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000024",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000024",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan las medidas de suspensión de lanzamientos sobre la vivienda habitual para la protección de los colectivos vulnerables (procedente del Real Decreto-ley 1/2024, de 14 de mayo)",
+    "url": "/tramitacion/121-000024.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000026",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000026",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley del Cine y de la Cultura Audiovisual",
+    "url": "/tramitacion/121-000026.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000027",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000027",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para la simplificación y mejora del nivel asistencial de la protección por desempleo, y para completar la transposición de la Directiva (UE) 2019/1158 del Parlamento Europeo y del Consejo, de 20 de junio de 2019, relativa a la conciliación de la vida familiar y la vida profesional de los progenitores y los cuidadores, y por la que se deroga la Directiva 2010/18/UE del Consejo (procedente del Real Decreto-ley 2/2024, de 21 de mayo)",
+    "url": "/tramitacion/121-000027.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000028",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000028",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas de promoción del uso del transporte público colectivo terrestre por parte de los jóvenes para los viajes realizados en el periodo estival de 2024 (procedente del Real Decreto-ley 3/2024, de 4 de junio)",
+    "url": "/tramitacion/121-000028.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000029",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000029",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifican diversas normas para consolidar la equidad y cohesión del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000029.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000032",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000032",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan determinadas medidas para afrontar las consecuencias económicas y sociales derivadas de los conflictos en Ucrania y Oriente Próximo y se adoptan medidas urgentes en materia fiscal, energética y social (procedente del Real Decreto-ley 4/2024, de 26 de junio)",
+    "url": "/tramitacion/121-000032.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000035",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000035",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de restablecimiento de la Comisión Nacional de la Energía, A.A.I",
+    "url": "/tramitacion/121-000035.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000037",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000037",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 17/2006, de 5 de junio, de la radio y la televisión de titularidad estatal, para adoptar medidas urgentes relativas al régimen jurídico aplicable a la Corporación RTVE (procedente del Real Decreto-ley 5/2024, de 22 de octubre)",
+    "url": "/tramitacion/121-000037.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000038",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000038",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de información empresarial sobre sostenibilidad, mediante la que se modifican el Código de Comercio, la Ley de Sociedades de Capital y la Ley de Auditoría de Cuentas",
+    "url": "/tramitacion/121-000038.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000039",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000039",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes de respuesta ante los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 6/2024, de 5 de noviembre)",
+    "url": "/tramitacion/121-000039.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000040",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000040",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000040.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000041",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000041",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica por la que se modifica la Ley Orgánica 5/2000, de 12 de enero, reguladora de la responsabilidad penal de los menores, complementaria de la Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000041.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000042",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000042",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para el impulso del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 7/2024, de 11 de noviembre)",
+    "url": "/tramitacion/121-000042.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000043",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000043",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Industria y Autonomía Estratégica",
+    "url": "/tramitacion/121-000043.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000044",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000044",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes complementarias en el marco del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 8/2024, de 28 de noviembre)",
+    "url": "/tramitacion/121-000044.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000045",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000045",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley para la mejora de la compatibilidad de la pensión de jubilación con el trabajo (procedente del Real Decreto-ley 11/2024, de 23 de diciembre)",
+    "url": "/tramitacion/121-000045.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000047",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000047",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes en materia económica, de transporte, de Seguridad Social, y para hacer frente a situaciones de vulnerabilidad (procedente del Real Decreto-ley 1/2025, de 28 de enero)",
+    "url": "/tramitacion/121-000047.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000048",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000048",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de acciones colectivas para la protección y defensa de los derechos e intereses de los consumidores y usuarios",
+    "url": "/tramitacion/121-000048.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000049",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000049",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de administradores y compradores de créditos y por la que se modifican la Ley de Medidas de Reforma del Sistema Financiero, la Ley de contratos de crédito al consumo, la Ley de ordenación, supervisión y solvencia de entidades de crédito, la Ley reguladora de los contratos de crédito inmobiliario, y el texto refundido de la Ley Concursal",
+    "url": "/tramitacion/121-000049.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000050",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000050",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de prevención del consumo de bebidas alcohólicas y de sus efectos en las personas menores de edad",
+    "url": "/tramitacion/121-000050.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000055",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000055",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes para la garantía del interés superior de la infancia y adolescencia ante situaciones de contingencias migratorias extraordinarias (procedente del Real Decreto-ley 2/2025, de 18 de marzo)",
+    "url": "/tramitacion/121-000055.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000056",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000056",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se establece el programa de incentivos ligados a la movilidad eléctrica (MOVES III) para el año 2025 (procedente del Real Decreto-ley 3/2025, de 1 de abril)",
+    "url": "/tramitacion/121-000056.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000057",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000057",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas urgentes de respuesta a la amenaza arancelaria y de relanzamiento comercial (procedente del Real Decreto-ley 4/2025, de 8 de abril)",
+    "url": "/tramitacion/121-000057.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000062",
+    "f": "2026-02-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000062",
+    "hasta": "2026-02-25",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-02-18 se amplía hasta el 2026-02-25",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas de promoción del uso del transporte público colectivo por parte de la juventud para los viajes realizados en el periodo estival de 2025 (procedente del Real Decreto-ley 5/2025, de 10 de junio)",
+    "url": "/tramitacion/121-000062.html"
+   }
+  ]
+ },
+ "semana": "2026-S08",
+ "version": 1
+}
