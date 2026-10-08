@@ -4902,17 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin contestar fuera de plazo",
-   "entradilla": "Estas iniciativas parlamentarias del último año acumulan más de 20 días hábiles desde su publicación sin que se haya registrado una respuesta, siendo Sumar el grupo con más preguntas pendientes.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas sin responder tras vencer el plazo",
+   "entradilla": "Un total de 38 preguntas escritas llevan más de 20 días hábiles desde su publicación sin que se haya registrado una contestación oficial, siendo la más antigua del 15 de diciembre de 2025.",
    "claves": [
-    "Un total de 38 preguntas escritas formuladas en el último año han superado la fecha límite de contestación publicada por el Congreso sin que conste una respuesta registrada.",
-    "La iniciativa más antigua que permanece sin contestación se publicó el lunes 16 de febrero de 2026, aunque el Congreso advierte de que podría haber prórrogas o respuestas no reflejadas aún.",
-    "Por grupos parlamentarios, Sumar lidera las preguntas pendientes con 24, seguido por el PSOE con 7, el PP con 4, y GV (EAJ-PNV), Junts y los parlamentarios sin grupo con una cada uno."
+    "El grupo parlamentario de Sumar lidera las iniciativas pendientes con 30 preguntas sin contestar fuera de plazo.",
+    "El resto de preguntas pendientes corresponden al PSOE con 4, al PP con 2, a Junts con 1 y a un diputado sin grupo con otra."
    ],
    "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-06"
+   "fecha": "2026-10-08"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -5278,9 +5277,281 @@
    "claves": [],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-07"
+  },
+  "BOE-A-2026-20908": {
+   "huella": "0b14817bbd274bbb",
+   "fuente": "af8efd559c66c04e",
+   "titular": "España pagará 445.000 dólares al FIDA por gestionar un proyecto de desarrollo",
+   "entradilla": "El Gobierno firma un acuerdo de cofinanciación con el Fondo Internacional de Desarrollo Agrícola para regular los servicios de supervisión y el pago de las comisiones asociadas al proyecto.",
+   "claves": [
+    "El pago total de la comisión de servicio asciende a 445.000 dólares, que serán abonados por España tras recibir las correspondientes facturas.",
+    "Un primer desembolso de 187.000 dólares se realizará tras la firma de los acuerdos de financiación y del convenio individual de cofinanciación.",
+    "Los 258.000 dólares restantes se abonarán en un máximo de seis cuotas anuales iguales, condicionadas a la presentación de planes de supervisión."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20909": {
+   "huella": "2a2d1e279beccdf5",
+   "fuente": "c591191e353d3a01",
+   "titular": "El Gobierno aclara que el acuerdo de sede con UNICEF se firmó en Nueva York",
+   "entradilla": "Una corrección de errores en el Boletín Oficial del Estado rectifica el sumario del convenio para el establecimiento de una Oficina Global de esta organización en España.",
+   "claves": [
+    "El texto oficial publicado indicaba erróneamente que el acuerdo con UNICEF se había firmado en Washington y Madrid el pasado verano.",
+    "La rectificación establece que el documento fue firmado en Nueva York y Madrid el 25 de agosto y el 11 de septiembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20910": {
+   "huella": "5941daa0eef538df",
+   "fuente": "37982a45d5ad31c2",
+   "titular": "El Gobierno regula el Banco Estatal de ADN de Víctimas de la Guerra y la Dictadura",
+   "entradilla": "El nuevo registro, gestionado por el Instituto Nacional de Toxicología y Ciencias Forenses, almacenará perfiles genéticos disociados de datos personales para facilitar la identificación y filiación.",
+   "claves": [
+    "El banco incluirá perfiles de restos cadavéricos de la Guerra Civil y la Dictadura, muestras de familiares y casos de sustracción de recién nacidos.",
+    "Los perfiles genéticos se registrarán mediante un código alfanumérico disociado para garantizar la privacidad de los afectados.",
+    "Los datos personales identificativos, como nombres o teléfonos, no se incluirán en el banco y serán gestionados de forma externa por cada laboratorio."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20911": {
+   "huella": "4cd8d9d14e8ef857",
+   "fuente": "0df1644c7f59da1c",
+   "titular": "El transporte de aceite de oliva a granel exigirá confirmación digital al recibirlo",
+   "entradilla": "El Gobierno modifica la norma de calidad del sector oleícola para obligar a los destinatarios a validar las entregas y los análisis de clasificación en un sistema informatizado.",
+   "claves": [
+    "El nuevo tenedor de la mercancía a granel deberá confirmar la recepción en el sistema informático y validar los datos del boletín de análisis.",
+    "Todo transporte de aceite de oliva, sea o no a granel, deberá ir acompañado en todo momento por un documento de identificación del producto.",
+    "En los envíos a granel, el sistema informatizado generará automáticamente el documento de acompañamiento obligatorio."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20912": {
+   "huella": "30c11697c64b092f",
+   "fuente": "44132c1341e6d933",
+   "titular": "El Gobierno aprueba subvenciones directas para el sector agroalimentario y pesquero",
+   "entradilla": "Un real decreto regula la concesión directa de ayudas singulares a diversas entidades para impulsar la digitalización, la mejora de regadíos, el desarrollo rural y la investigación científica.",
+   "claves": [
+    "Las ayudas se conceden de forma directa al constatar la inexistencia de otras entidades de ámbito nacional equivalentes para realizar estas actividades.",
+    "Las subvenciones destinadas a la empresa estatal EXPASA y al CSIC quedan excluidas de la Ley General de Subvenciones, aunque sujetas a condiciones especiales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20913": {
+   "huella": "c9c32e01c8a689eb",
+   "fuente": "86d5023016c669b6",
+   "titular": "El IDP Barcelona recibirá una ayuda directa para estudiar el modelo territorial",
+   "entradilla": "El Ministerio de Política Territorial otorga una subvención directa al Observatorio de Derecho Público para organizar el Foro de las Autonomías y publicar informes especializados en 2027.",
+   "claves": [
+    "La subvención financiará la celebración de seminarios, congresos, jornadas y publicaciones sobre el modelo territorial español durante el ejercicio 2027.",
+    "El Gobierno justifica la concesión directa por la especialización y trayectoria del observatorio, lo que dificulta convocar un concurso competitivo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20914": {
+   "huella": "bddcc32cf1155b86",
+   "fuente": "d09046086c07e04e",
+   "titular": "La Fundación Giménez Abad recibirá una ayuda para estudiar el modelo territorial",
+   "entradilla": "El Gobierno autoriza la concesión directa de una subvención a esta entidad para realizar seminarios, congresos y publicaciones técnicas sobre la organización territorial del Estado.",
+   "claves": [
+    "La ayuda se canalizará mediante un convenio entre el Ministerio de Política Territorial y Memoria Democrática y la propia fundación.",
+    "La concesión directa se justifica por la trayectoria única de la fundación y la necesidad de dar continuidad técnica a sus investigaciones históricas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20915": {
+   "huella": "645aa5e86d2ae5f5",
+   "fuente": "465c17c99340b3bc",
+   "titular": "El Gobierno autoriza el uso excepcional de tarjetas bancarias para pagos públicos",
+   "entradilla": "Una reforma de varios reales decretos financieros adapta la normativa contra el blanqueo de capitales y permite usar tarjetas de crédito en pagos a justificar y anticipos de caja fija.",
+   "claves": [
+    "Las disposiciones de fondos de cuentas 'a justificar' y de caja fija podrán realizarse excepcionalmente con tarjeta bancaria si se justifica su necesidad.",
+    "El uso de estas tarjetas se regulará mediante una orden ministerial conjunta de los ministerios de Hacienda y de Economía.",
+    "La norma transpone parcialmente una directiva europea de 2024 para reforzar la prevención del blanqueo de capitales y la financiación del terrorismo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20916": {
+   "huella": "2c17a2ce7bcdb027",
+   "fuente": "5cd815dcc38ee36f",
+   "titular": "El Gobierno concede subvenciones directas a entidades de infancia y juventud",
+   "entradilla": "El Ministerio de Juventud e Infancia otorga ayudas directas de carácter singular a organizaciones del tercer sector para combatir la pobreza infantil y promover la participación juvenil.",
+   "claves": [
+    "Entre los beneficiarios figuran federaciones de adopción internacional, la Plataforma de Organizaciones de Infancia y el Consejo de la Juventud de España.",
+    "Las subvenciones financiarán el apoyo a las estructuras organizativas de estas entidades y proyectos de defensa de los derechos de los menores."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20917": {
+   "huella": "46244485ad90f7c7",
+   "fuente": "d7c48a71d1f23c1f",
+   "titular": "El Consejo de Seguridad Nuclear fija las normas para desmantelar instalaciones",
+   "entradilla": "La nueva instrucción técnica establece los requisitos de protección radiológica que deben cumplir las solicitudes de cese de actividad y la ejecución de los trabajos de desmantelamiento.",
+   "claves": [
+    "La norma define los criterios para elaborar el Informe radiológico final necesario para solicitar la declaración de clausura de una instalación.",
+    "En almacenes de combustible gastado o residuos radiactivos, la instrucción solo se aplicará a las instalaciones auxiliares que no sigan operativas tras el cierre."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20950": {
+   "huella": "13a2e38500a4a82a",
+   "fuente": "286f0a991bcd7160",
+   "titular": "Indra aportará 1.200 euros para la Fiesta Nacional en la Embajada en Croacia",
+   "entradilla": "Un convenio regula el patrocinio de la empresa tecnológica para la recepción oficial del 15 de octubre de 2026 en Zagreb, que no tendrá coste para las arcas públicas.",
+   "claves": [
+    "La empresa Indra Sistemas realizará una aportación en metálico de 1.200 euros para financiar la celebración de la Fiesta Nacional de España en Zagreb.",
+    "A cambio del patrocinio, la Embajada difundirá la marca de la empresa en el material gráfico, redes sociales y mediante la colocación de un expositor físico.",
+    "La Embajada de España en Croacia entregará a la compañía de forma gratuita entradas de cortesía para el evento y emitirá una certificación fiscal."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20951": {
+   "huella": "2fe0e4b678298ade",
+   "fuente": "96752a2435b53c12",
+   "titular": "Justicia veta que una sociedad profesional sume la actividad de agencia de seguros",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública confirma que estas sociedades deben tener como objeto único y exclusivo actividades que requieran titulación universitaria y colegiación.",
+   "claves": [
+    "La registradora mercantil de Alicante suspendió la inscripción de la ampliación de objeto social solicitada por la firma Marta Lo Cuida, SLP.",
+    "La resolución recuerda que las actividades de agencia comercial y auxiliar de seguros no cumplen los requisitos de exclusividad que exige la Ley de Sociedades Profesionales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20952": {
+   "huella": "67014612849c27b2",
+   "fuente": "52cacae7f88e9c57",
+   "titular": "El Registro de Vigo rechaza un alquiler turístico por tener el número revocado",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública ratifica la decisión de suspender el depósito del modelo informativo de arrendamiento de corta duración de una finca.",
+   "claves": [
+    "La registradora de la propiedad de Vigo denegó la solicitud al constatar que el número de registro de alquiler de corta duración de la finca estaba revocado.",
+    "La solicitante tampoco acreditó ser la titular registral de la vivienda ni ostentar la representación o un contrato de gestión que la facultara para explotarla."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20953": {
+   "huella": "f385c4e53ba483bf",
+   "fuente": "35a45e838e9792ac",
+   "titular": "La Dirección General de Seguridad Jurídica deniega inscribir dos fincas en Brenes",
+   "entradilla": "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes desestima un recurso contra la calificación del registrador de la propiedad número 3 de Sevilla, que rechazó la inmatriculación de los inmuebles.",
+   "claves": [
+    "Una de las fincas ya consta inscrita en el registro de la propiedad de Brenes a favor de dos particulares, según se ha comprobado en las investigaciones de las parcelas colindantes.",
+    "La segunda finca no se ha podido registrar porque su descripción en el título inmatriculador no coincide con la certificación catastral descriptiva y gráfica.",
+    "La resolución aclara que la liquidación de gananciales y la adjudicación hereditaria son negocios jurídicos distintos, aunque compartan el fallecimiento como hecho desencadenante."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20954": {
+   "huella": "05f69e98264042d4",
+   "fuente": "e15153e2c80cd903",
+   "titular": "El Registro de Felanitx frena una georreferenciación por solaparse con otra finca",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública confirma la suspensión del expediente para rectificar la descripción de una parcela ante la oposición de una vecina colindante.",
+   "claves": [
+    "La propietaria de la finca colindante presentó alegaciones al detectar que la nueva representación gráfica propuesta invadía su parcela catastral.",
+    "El informe técnico reveló un área de solape de 860,04 metros cuadrados entre la representación gráfica alternativa aportada y la catastral de la vecina.",
+    "La resolución determina que existen dudas razonables sobre la delimitación de las fincas que deben resolverse en los tribunales, al carecer el registro de fase probatoria."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20955": {
+   "huella": "b0bb9ed3238e2e29",
+   "fuente": "ed489a05093ae118",
+   "titular": "El Registro de Madrid suspende el cambio de uso de un local a piso turístico",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública dirime si un local comercial puede convertirse en vivienda de uso turístico sin el voto favorable de tres quintas partes de la comunidad de vecinos.",
+   "claves": [
+    "La registradora suspendió la inscripción al exigir el acuerdo de la junta de propietarios con una mayoría de tres quintos, según la Ley de Propiedad Horizontal.",
+    "La empresa promotora alegó que presentó la declaración responsable el 31 de marzo de 2025, tres días antes de la entrada en vigor de la reforma legal.",
+    "Las licencias municipales de primera ocupación y funcionamiento del Ayuntamiento de Madrid se concedieron con posterioridad a la vigencia de la nueva ley."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-9b040a477ec99ad8": {
+   "huella": "ff8b9e91663c7b2f",
+   "fuente": "465a96a2ff7b0a20",
+   "titular": "El Gobierno responde a Junts sobre las comunicaciones de periodistas",
+   "entradilla": "El Gobierno contesta en el Congreso a una pregunta por escrito de Míriam Nogueras i Camero sobre la recepción de requerimientos de organizaciones profesionales de periodistas o de la Comisión Europea.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-8b1639234fa5ac23": {
+   "huella": "2e24af3bdb782d99",
+   "fuente": "7c4497a3f91646a1",
+   "titular": "El Gobierno responde a Junts sobre las medidas de Interior ante un documento",
+   "entradilla": "El Gobierno responde por escrito en quince días a una pregunta de Míriam Nogueras i Camero sobre las actuaciones del ministro del Interior tras publicarse el documento titulado 'Tertulianos. Radio y Televisión'.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-0dbdaa6dde20af7e": {
+   "huella": "aa4fd3513b7120cf",
+   "fuente": "b425f90f63fef99e",
+   "titular": "El Gobierno responde a Junts sobre el gasto en publicidad institucional en Cataluña",
+   "entradilla": "El Gobierno contesta a una pregunta de Míriam Nogueras i Camero sobre la inversión del Estado en publicidad institucional en medios de comunicación con sede en Cataluña y en lengua catalana desde el año 2019.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-f61e2ac57f4564a4": {
+   "huella": "68b6445f7d046dd8",
+   "fuente": "87e0aac4b448ecb7",
+   "titular": "El Gobierno contesta a Junts sobre los datos enviados a la Comisión Europea",
+   "entradilla": "El Gobierno responde por escrito a Míriam Nogueras i Camero sobre la información facilitada a la Comisión Europea en el marco del mecanismo del estado de derecho y el seguimiento de la libertad de los medios.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-1da10644a39f905c": {
+   "huella": "2e85065757543312",
+   "fuente": "28a9fa599b193d8f",
+   "titular": "El Gobierno responde a Junts sobre la publicidad institucional en lengua catalana",
+   "entradilla": "El Gobierno contesta en quince días a una pregunta de Míriam Nogueras i Camero sobre los criterios aplicados para garantizar que la publicidad institucional del Estado llegue a los medios en lengua catalana.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-fcedafe087bb2fbd": {
+   "huella": "ac02706cb3f748ad",
+   "fuente": "7b030ac9cb0eac0e",
+   "titular": "El Gobierno responde a Junts sobre las ayudas a medios de comunicación catalanes",
+   "entradilla": "El Gobierno responde por escrito a una pregunta de Míriam Nogueras i Camero sobre el mantenimiento de ayudas, subvenciones, convenios o contratos con medios de comunicación catalanes o en lengua catalana.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-dad8f727702f2556": {
+   "huella": "50ec45c78c74384a",
+   "fuente": "b10a7d21578df9d2",
+   "titular": "El Congreso registra 101 respuestas escritas del Gobierno en una sola jornada",
+   "entradilla": "Un total de 101 preguntas escritas formuladas por los diputados han pasado a tener hoy su contestación registrada de forma oficial en su ficha del Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-7ebdbc2d3503b4db": {
+   "huella": "542b32fb6b52a777",
+   "fuente": "8e1257bd877f3312",
+   "titular": "El Congreso registra 293 respuestas escritas del Gobierno en un solo día",
+   "entradilla": "Un total de 293 preguntas escritas han pasado hoy a tener su contestación registrada de forma oficial en su ficha del Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
   }
  },
  "uso": {
-  "2026-10-07": 10
+  "2026-10-08": 2
  }
 }
