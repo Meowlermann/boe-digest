@@ -4902,14 +4902,15 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
-   "entradilla": "Estas iniciativas parlamentarias llevan más de 20 días hábiles desde su publicación sin que se haya registrado contestación, aunque puede haber prórrogas o respuestas no reflejadas.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Gobierno deja sin responder 38 preguntas del Congreso fuera del plazo límite",
+   "entradilla": "Un total de 38 iniciativas escritas acumulan más de 20 días hábiles desde su publicación sin que se haya registrado su contestación, afectando principalmente a preguntas del grupo Sumar.",
    "claves": [
-    "La pregunta más antigua que permanece sin contestación registrada fue publicada el lunes 16 de febrero de 2026.",
-    "Por grupos parlamentarios, Sumar acumula 24 preguntas sin responder, el PSOE tiene 7, el PP cuenta con 4 y Junts tiene una.",
-    "El grupo GV (EAJ-PNV) tiene una pregunta pendiente y hay otra correspondiente a un diputado sin grupo."
+    "Las 38 preguntas escritas pendientes corresponden al último año y ya han superado la fecha límite de contestación publicada por el Congreso.",
+    "La iniciativa más antigua que permanece sin respuesta registrada fue publicada el lunes 15 de diciembre de 2025.",
+    "Por grupos parlamentarios, Sumar acumula 30 preguntas sin responder, seguido del PSOE con 4, el PP con 2, Junts con 1 y otra de un diputado sin grupo.",
+    "El Congreso advierte de que sobre estas preguntas puede haber prórrogas o respuestas que todavía no se hayan reflejado en la ficha oficial."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
@@ -5685,9 +5686,21 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
+  },
+  "C-9ae931f03dae39a4": {
+   "huella": "7b428f7bdda168d2",
+   "fuente": "4e9cf5e3f2784987",
+   "titular": "El Gobierno registra hoy las respuestas a 556 preguntas escritas en el Congreso",
+   "entradilla": "El Congreso ha registrado hoy la contestación oficial del Gobierno a un total de 556 preguntas escritas formuladas por los grupos parlamentarios.",
+   "claves": [
+    "Un total de 556 preguntas escritas han pasado a tener hoy su contestación registrada de forma oficial en el Congreso.",
+    "Entre las contestaciones publicadas hoy se encuentran aquellas que han acumulado un mayor retraso en su tramitación."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
   }
  },
  "uso": {
-  "2026-10-08": 7
+  "2026-10-08": 8
  }
 }
