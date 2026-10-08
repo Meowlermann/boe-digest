@@ -66,7 +66,8 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
    │    └─ tramitacion.actualizar() / feed() → state/tramitacion.json
    ├─ fetch_senado()            solo si SENADO_ACTIVO (hoy False, ver §5)
    ├─ redactar_boe() / redactar_cortes()
-   └─ fusionar_curado()         curated/ por encima
+   ├─ fusionar_curado()         curated/ por encima
+   └─ semana.asegurar()         congela las semanas cerradas que falten (§13)
             │
             ▼
    data/AAAA-MM-DD.json   (la edición del día, fuente de verdad del render)
@@ -81,6 +82,7 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
    ├─ renderizar_index / ediciones / normas / temas / plazos
    ├─ renderizar_buscador / mapa
    ├─ paginas_fijas              /seguir/, /privacidad.html, /aviso-legal.html
+   ├─ renderizar_semana()        /semana/ desde data/semanas/ (congeladas por semana.asegurar)
    └─ sitemap.xml, feed.xml, indexnow.json
             │
   publicar.yml (modo diario, §8):
@@ -112,6 +114,8 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `nombres.py` | Nombres populares («Verifactu», «ley mordaza») y títulos cortos, desde `curated/nombres_populares.json`. Solo para el buscador y los títulos. | — | — |
 | `aes_puro.py` | Descifrado AES en Python puro para que pypdf lea los PDF cifrados sin añadir `cryptography`. Se activa en `build.pdf_text`. | — | — |
 | `feeds.py` | Canales Atom por entidad (diputado, provincia, materia, iniciativa en tramitación, ministerio): formato, orden, tope de 50 y `id` estables. No importa `build.py`; lo usa `build.renderizar_feeds()` (§13). | — | `/diputados/<slug>.xml`, `/provincias/<slug>.xml`, `/temas/<slug>.xml`, `/tramitacion/<slug>.xml`, `/preguntas/ministerio-<slug>.xml` |
+| `semana.py` | Resumen semanal: `construir(semana_iso)` agrega lunes a domingo (leyes y reales decretos, votaciones ajustadas y disidencias, preguntas, tramitación, nombramientos, cifra de la semana); `asegurar()` congela las semanas cerradas; `generar_paginas()` las pinta (§13). | `data/semanas/AAAA-Snn.json` | `/semana/`, `/semana/AAAA-Snn.html`, `/semana/feed.xml` |
+| `tools/semana_email.py` | Versión para correo del resumen semanal (HTML con tablas y CSS en línea, 600 px, sin JS, y texto plano) desde el mismo JSON. No envía nada. | — | artefacto `semana-correo` de `publicar.yml` |
 | `paginas_fijas.py` | Textos fijos: cómo seguir la web con RSS y las páginas legales, con el marcador `<TITULAR_PENDIENTE>` (§13). | — | `/seguir/`, `/privacidad.html`, `/aviso-legal.html` |
 | `indices.py` | Componentes HTML comunes de las páginas índice (cifras, filtro, filas). | — | — |
 | `reproceso.py` | Reprocesa el histórico del BOE con varios extractores y una descarga por día. Solo toca `state/`. | `state/nombramientos.json`, `state/provincias.json` | — |
@@ -168,7 +172,8 @@ con los marcadores `TITLE`, `META_DESC`, `CANONICAL`, `JSONLD`, `EDITION_DATE`,
 los traen al árbol de trabajo con `tools/datos.sh` antes de construir.
 
 `data/AAAA-MM-DD.json` es la edición de cada día: todo lo que se pinta de
-ella sale de ahí. Las ediciones de archivo (enero a septiembre de 2026) solo
+ella sale de ahí. `data/semanas/AAAA-Snn.json` es el resumen congelado de
+cada semana cerrada (§13), la fuente de verdad de `/semana/` y del correo. Las ediciones de archivo (enero a septiembre de 2026) solo
 tienen el BOE.
 
 `state/` guarda lo que se acumula entre días:
@@ -471,6 +476,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | f | `duplicados`: identificador (referencia del BOE o documento oficial) ya publicado en los 7 días anteriores; titular repetido con otro documento | grave / aviso; en el CI, aviso |
 | g | `tamanos`: ficheros de `state/` (aviso 10 MB, grave 25 MB), historia de `main` (aviso 500 MB, grave 900 MB), historia de la rama `datos` (aviso 200 MB, grave 500 MB), número y peso de lo que va a `_site` | aviso / grave |
 | h | `feeds`: cada `.xml` publicado (salvo los sitemaps) es Atom 1.0 o RSS 2.0 bien formado, con los campos obligatorios, fechas RFC 3339 (Atom) o RFC 822 (RSS), sin `id`/`guid` repetidos y con 50 entradas como máximo | grave |
+| i | `semana` (solo salud diaria): existe `/semana/AAAA-Snn.html` de la semana que terminó el domingo anterior | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -565,8 +571,16 @@ cargue `static.cloudflareinsights.com/beacon.min.js` y mirar que
 `document.cookie` está vacío y que `localStorage`, `sessionStorage` e
 IndexedDB no tienen ninguna clave; en las herramientas de desarrollo,
 Application › Cookies no muestra ninguna para `terceracamara.es` ni para
-`cloudflareinsights.com`. Como no hay cookies, no hay banner de
-consentimiento. Si algún día se añade algo que guarde estado en el
+`cloudflareinsights.com`. Comprobado el 8-10-2026 en
+https://terceracamara.es/ tras desplegar: se cargan `beacon.min.js` y el
+envío a `cloudflareinsights.com/cdn-cgi/rum`; `document.cookie` vacío, ninguna
+clave nueva en `localStorage` ni en IndexedDB, y el código de la baliza no
+menciona `cookie`, `localStorage` ni `sessionStorage`. (Un `skipgc` que pueda
+quedar en un navegador es la marca de exclusión de GoatCounter, de antes.)
+El sitio no tiene Content Security Policy; si algún día se pone una, hay que
+permitir `https://static.cloudflareinsights.com` en `script-src` y
+`https://cloudflareinsights.com` en `connect-src`. Como no hay cookies, no hay
+banner de consentimiento. Si algún día se añade algo que guarde estado en el
 navegador, hay que revisar /privacidad.html y la necesidad de banner.
 
 ### Canales por entidad (las «alertas» gratuitas)
@@ -592,6 +606,46 @@ de páginas tiene que saber nada. Un canal sin entradas no se escribe. La
 comprobación (h) de `verificar.py` los valida todos. `/seguir/` explica qué es
 RSS, lectores gratuitos y cómo recibir los canales por correo con servicios
 gratuitos de terceros.
+
+### Resumen semanal (`semana.py`)
+
+`/semana/AAAA-Snn.html` («La semana en las Cortes y el BOE (del D al D de
+mes de AAAA)»), `/semana/index.html` (archivo) y `/semana/feed.xml`. Secciones,
+cada una solo si tiene datos y cada elemento con su enlace: leyes y reales
+decretos del BOE (con el titular Gemini de la edición diaria, si lo hay,
+marcado como editorial), las votaciones más ajustadas y los votos distintos a
+los del grupo (sin el Grupo Mixto, como en /rankings/), preguntas (orales
+literales, escritas contestadas y pendientes con el plazo superado, con la
+redacción prudente de /preguntas/), cambios de tramitación (pasos y
+ampliaciones de enmiendas), nombramientos y ceses de real decreto, orden o
+acuerdo, y «La cifra de la semana» con reglas fijas (`semana.REGLAS_CIFRA`,
+publicadas en cada página). Mismo trato para todos los grupos.
+
+**Cuándo se construye.** El pase diario (`python build.py`, `daily.yml`)
+llama a `semana.asegurar()`: congela en `data/semanas/AAAA-Snn.json` las
+semanas cerradas que falten. El del lunes construye la que acaba de cerrar;
+los demás no hacen nada, así que relanzar el pase no cambia nada
+(idempotente). La primera vez construyó todo el archivo desde la semana 1 de
+2026. `build.py --render` solo pinta las congeladas. Para rehacerlas todas
+tras cambiar las reglas, se sube `semana.VERSION`.
+
+**Por qué congelar.** Una semana publicada no debe cambiar porque luego se
+pode el estado (preguntas escritas: 365 días; votaciones con detalle nominal:
+las últimas `DETALLE_MAX`). Por lo mismo, una semana solo resume votaciones si
+el detalle la cubre entera, y las pendientes al cierre solo se cuentan al
+congelar la semana recién cerrada (`DIAS_PENDIENTES`). Los enlaces se
+resuelven al pintar: si la página del sitio ya no existe (una votación que
+salió del detalle), se enlaza la fuente oficial.
+
+**JSON-LD.** `Report`, no `NewsArticle`: es un informe periódico generado con
+reglas fijas sobre datos oficiales, sin autoría periodística ni valoraciones.
+Presentarlo como noticia sería afirmar algo que no es, aunque Google solo dé
+resultados enriquecidos de artículo a `NewsArticle`.
+
+**Correo.** `tools/semana_email.py` hace la versión para correo (tablas, CSS
+en línea, 600 px, sin JS ni recursos remotos, y texto plano) del mismo JSON.
+`publicar.yml` la sube en cada pase como artefacto `semana-correo` (30 días)
+para revisarla. No envía nada.
 
 ### Páginas legales
 

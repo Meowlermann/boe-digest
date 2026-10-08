@@ -1510,3 +1510,8 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .seguir-rss{margin:4px 0 14px;font-size:12px}
 .seguir-rss .srclink::before{content:"";display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:2px;background:#e8811a;vertical-align:-1px}
 .seguir-rss .seguir-que{color:inherit;opacity:.65;margin-left:8px;font-size:11px}
+
+/* Resumen semanal (semana.py): la cifra de la semana. */
+.semana-cifra{margin:6px 0 18px;padding:14px 16px;border-left:4px solid var(--rojo,#c81e2c);background:rgba(200,30,44,.06)}
+.norma .cuerpo .semana-cifra .sc-num{font-weight:700;font-family:'Anton','Oswald',sans-serif;font-size:44px;line-height:1;margin:4px 0}
+.norma .cuerpo .semana-cifra .sc-txt{margin:4px 0 6px;font-size:15px}

@@ -36,6 +36,8 @@ datos
 # Canales RSS (feeds.py): van dentro de las carpetas de cada sección
 # (diputados/<slug>.xml, provincias/, temas/, tramitacion/, preguntas/).
 seguir
+# Resumen semanal (semana.py): páginas, archivo y feed.xml
+semana
 !privacidad.html
 !aviso-legal.html
 

@@ -434,8 +434,13 @@ class TestEjecucion(unittest.TestCase):
         self.s.escribir("datos/indice.json", "{}")
         self.s.escribir("data/2026-10-04.json", json.dumps(edicion(
             boe=[{"ref": "BOE-A-1", "headline": "CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS"}])))
+        # La comprobación (i) de la salud diaria tiene sus propias pruebas
+        # (test_semana.py); aquí se aísla para contar solo los graves de cada caso.
+        self.sin_semana = mock.patch.object(v, "comprobar_semana", return_value=[])
+        self.sin_semana.start()
 
     def tearDown(self):
+        self.sin_semana.stop()
         self.s.cerrar()
 
     def test_ci_verde(self):
