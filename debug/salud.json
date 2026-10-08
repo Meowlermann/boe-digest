@@ -3,6 +3,19 @@
   "modo": "diario",
   "fecha": "2026-10-08",
   "graves": 0,
-  "avisos": 0,
-  "hallazgos": []
+  "avisos": 2,
+  "hallazgos": [
+    {
+      "nivel": "aviso",
+      "comprobacion": "html",
+      "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
+      "fichero": "aviso-legal.html"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "html",
+      "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
+      "fichero": "privacidad.html"
+    }
+  ]
 }

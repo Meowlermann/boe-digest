@@ -4902,18 +4902,9 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Gobierno deja sin responder 38 preguntas del Congreso fuera del plazo límite",
-   "entradilla": "Un total de 38 iniciativas escritas acumulan más de 20 días hábiles desde su publicación sin que se haya registrado su contestación, afectando principalmente a preguntas del grupo Sumar.",
-   "claves": [
-    "Las 38 preguntas escritas pendientes corresponden al último año y ya han superado la fecha límite de contestación publicada por el Congreso.",
-    "La iniciativa más antigua que permanece sin respuesta registrada fue publicada el lunes 15 de diciembre de 2025.",
-    "Por grupos parlamentarios, Sumar acumula 30 preguntas sin responder, seguido del PSOE con 4, el PP con 2, Junts con 1 y otra de un diputado sin grupo.",
-    "El Congreso advierte de que sobre estas preguntas puede haber prórrogas o respuestas que todavía no se hayan reflejado en la ficha oficial."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-08"
+   "huella": "d5cdf02c8277a60c",
+   "descartado": "nombre «Vasco» que no está en el texto oficial",
+   "intentos": 2
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -5698,9 +5689,85 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
+  },
+  "C-dd3b7cb32e432662": {
+   "huella": "0131c26890f29859",
+   "fuente": "49fb1962ceb10ba5",
+   "titular": "El Gobierno responde a Sumar sobre el polvorín del aeropuerto de Mallorca",
+   "entradilla": "La contestación escrita se registra 225 días después de la pregunta formulada por el diputado Vicenç Vidal Matas en el Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-3d13a38920ebce1a": {
+   "huella": "c8ed7ba6a823b99d",
+   "fuente": "6deffadf2c9db9ab",
+   "titular": "El Gobierno contesta sobre el Sagrado Corazón de Monzón y la Memoria Democrática",
+   "entradilla": "La respuesta por escrito llega 225 días después de la iniciativa presentada por el diputado de Sumar Alberto Ibáñez Mezquita en el Congreso.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-955f912dc2d339c8": {
+   "huella": "2e7445a9b1aa6398",
+   "fuente": "0411de1821087a0d",
+   "titular": "El Gobierno responde sobre incidentes de personal militar con civiles en Aragón",
+   "entradilla": "La contestación escrita se registra 225 días después de la pregunta formulada por el diputado de Sumar Alberto Ibáñez Mezquita.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-f40e68106ddc6981": {
+   "huella": "76e40bf96d60137c",
+   "fuente": "89d7f62df92b1f6e",
+   "titular": "El Gobierno responde sobre las obras del Museo Arqueológico de Sevilla",
+   "entradilla": "La contestación por escrito se registra 218 días después de la pregunta formulada por el diputado del PP Ricardo Tarno Blanco y otros tres parlamentarios.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-0284fb914a53f149": {
+   "huella": "4a1997480504aba4",
+   "fuente": "7c58f19efca96b3d",
+   "titular": "El Gobierno responde sobre los actos en torno al cardenal Vicente Enrique",
+   "entradilla": "La contestación escrita se registra 218 días después de la pregunta formulada en el Congreso por el diputado de Sumar Alberto Ibáñez Mezquita.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-c4b5c865b3090fdc": {
+   "huella": "3f5b66ccf263f078",
+   "fuente": "a5dc0c0b93732702",
+   "titular": "El Gobierno responde sobre asistencia consular a víctimas de violencia de género",
+   "entradilla": "La contestación por escrito se registra 217 días después de la pregunta formulada por la diputada de Sumar Viviane Ogou i Corbi y otra parlamentaria.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-491fd604cb3436f6": {
+   "huella": "246648a5e25b1dbb",
+   "fuente": "497e0c67f1e6567f",
+   "titular": "El Gobierno registra 656 respuestas escritas a preguntas parlamentarias",
+   "entradilla": "Un total de 656 preguntas escritas en el Congreso han pasado a tener su contestación registrada en la ficha oficial.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
+  },
+  "C-4e1036db38724923": {
+   "huella": "8175b19676730a1b",
+   "fuente": "a959022067c4f4fe",
+   "titular": "El Congreso acumula 949 preguntas escritas sin contestación registrada",
+   "entradilla": "Estas iniciativas parlamentarias llevan más de 20 días hábiles desde su publicación sin que conste una respuesta oficial en su ficha.",
+   "claves": [
+    "La pregunta más antigua sin contestación registrada se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupos parlamentarios, el PP acumula 589 preguntas pendientes, seguido de Junts con 105 y Vox con 92.",
+    "El resto de iniciativas sin respuesta corresponden a Sumar con 80, Mixto con 61, PSOE con 13, ERC con 9 y una sin grupo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-08"
   }
  },
  "uso": {
-  "2026-10-08": 8
+  "2026-10-08": 10
  }
 }
