@@ -66,6 +66,7 @@ NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
 TRAMITACION_DIR = ROOT / "tramitacion"
 SEGUIMIENTO_DIR = ROOT / "seguimiento"
 PROVINCIAS_DIR = ROOT / "provincias"
+SEMANA_DIR = ROOT / "semana"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
@@ -3520,6 +3521,10 @@ def preguntas_publicadas() -> bool:
         return False
 
 
+def semanas_publicadas() -> bool:
+    return any((DATA_DIR / "semanas").glob("*-S*.json"))
+
+
 def render_nav() -> str:
     global _NAV_HTML
     if _NAV_HTML:
@@ -3544,8 +3549,10 @@ def render_nav() -> str:
         + enlace("/", "Edición de hoy", "El BOE y las Cortes del día, explicados")
         + enlace("/#h-boe", "El BOE de hoy", "Lo que se publica y a quién afecta")
         + enlace("/#h-cortes", "Las Cortes hoy", "Qué registran, preguntan y votan")
+        + (enlace("/semana/", "La semana", "Cada lunes, la semana anterior en una página")
+           if semanas_publicadas() else "")
         + enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados")
-        + enlace("/feed.xml", "Suscribirse por RSS", "Cada edición, en tu lector")
+        + enlace("/seguir/", "Seguir con RSS", "Cada diputado, provincia, materia o ley, en tu lector")
         + '</ul></div></li>'
 
         f'<li class="pilar" data-pilar="parlamento">'
@@ -5328,6 +5335,28 @@ def renderizar_tramitacion(todos: list) -> list:
     return salidas
 
 
+def renderizar_semana() -> list:
+    """/semana/: el resumen semanal (semana.py), pintado desde las semanas ya
+    congeladas en data/semanas/. No construye ninguna: eso lo hace el pase
+    diario (semana.asegurar), que es el que guarda en la rama datos."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import semana
+
+    def registrar(pagina, fichero, titulo):
+        FEEDS_PAGINA[(SEMANA_DIR.name, pagina)] = (fichero, titulo)
+
+    salidas = semana.generar_paginas({
+        "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+        "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+        "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+        "site_url": SITE_URL, "carpeta": SEMANA_DIR, "raiz": ROOT,
+        "escribir": escribir_si_cambia, "registrar_feed": registrar,
+    })
+    log(f"semana/: {len(salidas)} páginas")
+    return salidas
+
+
 def orales_de_ediciones(dias: list) -> list:
     """Las preguntas orales tal como salen en las ediciones: texto, autor,
     quién contesta, fecha de la sesión y edición donde se publicaron."""
@@ -6653,6 +6682,12 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
     except Exception as exc:                                  # noqa: BLE001
         log(f"buscar/: no se pudo generar ({exc})")
     extras += renderizar_archivo(entradas, todos)
+    # La semana va al final: enlaza a páginas de otras secciones y comprueba
+    # que existen (si no, enlaza a la fuente oficial).
+    try:
+        extras += renderizar_semana()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"semana/: no se pudo generar ({exc})")
     renderizar_sitemap(entradas, fichas + extras)
     renderizar_feed([d for d in dias if not d.get("archivo")])
 
@@ -6783,7 +6818,7 @@ def main() -> None:
     for carpeta in (DATA_DIR, CURATED_DIR, DEBUG_DIR, ESTADO, EDICIONES_DIR,
                 NORMAS_DIR, TEMAS_DIR, PLAZOS_DIR, DIPUTADOS_DIR, DATOS_DIR, VOTACIONES_DIR,
                 RANKINGS_DIR, PREGUNTAS_DIR, SESIONES_DIR, PERSONAS_DIR, NOMBRAMIENTOS_DIR, TRAMITACION_DIR, SEGUIMIENTO_DIR, PROVINCIAS_DIR,
-                BUSCAR_DIR, MAPA_DIR):
+                BUSCAR_DIR, MAPA_DIR, SEMANA_DIR):
         carpeta.mkdir(exist_ok=True)
 
     if args.repintar_ediciones:
@@ -6859,6 +6894,13 @@ def main() -> None:
             completar_materia()
         except Exception as exc:                              # noqa: BLE001
             log(f"materia: no se pudo completar ({exc})")
+        # Resumen semanal: el pase del lunes congela la semana que acaba de
+        # cerrar (y cualquier otra que falte). Los demás pases no hacen nada.
+        try:
+            import semana
+            DIAG["semanas"] = semana.asegurar(fecha, log)
+        except Exception as exc:                              # noqa: BLE001
+            log(f"semana: no se pudo construir ({exc})")
         DIAG["fin"] = dt.datetime.now(dt.timezone.utc).isoformat()
         (DEBUG_DIR / "last-run.json").write_text(
             json.dumps(DIAG, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -22,6 +22,7 @@ Repositorio (código y datos en bruto): https://github.com/Meowlermann/boe-diges
   edición) con su fecha de última modificación real.
 - /feed.xml — feed RSS 2.0 con las últimas ediciones.
 - /seguir/ — canales Atom por entidad: /diputados/<slug>.xml, /provincias/<slug>.xml, /temas/<slug>.xml, /tramitacion/<slug>.xml y /preguntas/ministerio-<slug>.xml (50 entradas, fecha del hecho oficial).
+- /semana/ — cada lunes, el resumen de la semana anterior (/semana/AAAA-Snn.html) y su canal /semana/feed.xml.
 - /privacidad.html y /aviso-legal.html — qué se mide (sin cookies) y condiciones de uso.
 - /data/AAAA-MM-DD.json — datos estructurados en bruto de cada edición
   (mismo contenido que se renderiza en la página, en JSON).
