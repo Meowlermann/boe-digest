@@ -3620,7 +3620,7 @@ TITULAR_LARGO = 80
 # sitio es PÚBLICO —viaja en el HTML de cada página— y lo da el panel de
 # Cloudflare (Web Analytics › terceracamara.es › instalación manual). Vacío:
 # no se inserta ninguna baliza.
-CF_ANALYTICS_TOKEN = ""
+CF_ANALYTICS_TOKEN = "bf1c995fc01d4b0abad70863ced6154d"
 
 
 def baliza_analitica(token: str | None = None) -> str:
@@ -3629,7 +3629,9 @@ def baliza_analitica(token: str | None = None) -> str:
         if token:
             log(f"  AVISO: CF_ANALYTICS_TOKEN no tiene forma de token ({token!r}); sin baliza")
         return ""
-    return ("<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" "
+    # Igual que el fragmento que da el panel: type="module" (se ejecuta
+    # diferido, sin bloquear la lectura de la página).
+    return ("<script type=\"module\" src=\"https://static.cloudflareinsights.com/beacon.min.js\" "
             f"data-cf-beacon='{{\"token\": \"{token}\"}}'></script>")
 
 
