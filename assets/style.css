@@ -1505,3 +1505,8 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 @media (prefers-reduced-motion: reduce){ .ix-fila, .ix-losa{ transition:none; } .ix-fila:hover, .ix-losa:hover{ transform:none; } }
 @media (max-width:720px){ .ix-filtro{ top:0; } }
 .stats:empty{ display:none; }
+
+/* Canales RSS por entidad (feeds.py): enlace discreto bajo la entradilla. */
+.seguir-rss{margin:4px 0 14px;font-size:12px}
+.seguir-rss .srclink::before{content:"";display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:2px;background:#e8811a;vertical-align:-1px}
+.seguir-rss .seguir-que{color:inherit;opacity:.65;margin-left:8px;font-size:11px}
