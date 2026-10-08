@@ -1,0 +1,20 @@
+name: Comprobar DNS de correo
+
+# Consulta los registros DNS públicos de terceracamara.es (SPF, DMARC, DKIM y
+# MX) y falla si no hay exactamente un SPF con ImprovMX y MailerLite. Solo
+# lee: no tiene secretos ni permisos de escritura. Ver ARQUITECTURA.md §13.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar los registros
+        run: bash tools/comprobar_dns.sh terceracamara.es
