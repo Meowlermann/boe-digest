@@ -571,8 +571,16 @@ cargue `static.cloudflareinsights.com/beacon.min.js` y mirar que
 `document.cookie` está vacío y que `localStorage`, `sessionStorage` e
 IndexedDB no tienen ninguna clave; en las herramientas de desarrollo,
 Application › Cookies no muestra ninguna para `terceracamara.es` ni para
-`cloudflareinsights.com`. Como no hay cookies, no hay banner de
-consentimiento. Si algún día se añade algo que guarde estado en el
+`cloudflareinsights.com`. Comprobado el 8-10-2026 en
+https://terceracamara.es/ tras desplegar: se cargan `beacon.min.js` y el
+envío a `cloudflareinsights.com/cdn-cgi/rum`; `document.cookie` vacío, ninguna
+clave nueva en `localStorage` ni en IndexedDB, y el código de la baliza no
+menciona `cookie`, `localStorage` ni `sessionStorage`. (Un `skipgc` que pueda
+quedar en un navegador es la marca de exclusión de GoatCounter, de antes.)
+El sitio no tiene Content Security Policy; si algún día se pone una, hay que
+permitir `https://static.cloudflareinsights.com` en `script-src` y
+`https://cloudflareinsights.com` en `connect-src`. Como no hay cookies, no hay
+banner de consentimiento. Si algún día se añade algo que guarde estado en el
 navegador, hay que revisar /privacidad.html y la necesidad de banner.
 
 ### Canales por entidad (las «alertas» gratuitas)
