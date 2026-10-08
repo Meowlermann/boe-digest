@@ -134,6 +134,24 @@ jobs:
           esac
           echo "Construcción ($MODO): $(( $(date +%s) - INICIO )) s" | tee -a "$GITHUB_STEP_SUMMARY"
 
+      # La versión para correo del último resumen semanal (tools/semana_email.py),
+      # como artefacto del workflow para revisarla. No envía nada.
+      - name: Correo de la semana (para revisar)
+        id: correo
+        if: always() && steps.construir.outcome == 'success'
+        continue-on-error: true
+        run: python tools/semana_email.py --salida "$RUNNER_TEMP/correo"
+
+      - name: Subir el correo de la semana
+        if: always() && steps.correo.outcome == 'success'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: semana-correo
+          path: ${{ runner.temp }}/correo
+          if-no-files-found: ignore
+          retention-days: 30
+
       # render: el mismo criterio que ci.yml (un grave no se despliega).
       # diario/archivo: la salud informa, no bloquea; la edición sale siempre.
       - name: Verificar

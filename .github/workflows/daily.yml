@@ -24,6 +24,10 @@ on:
     # abriría la edición del día siguiente con el BOE de hoy.
   workflow_dispatch:        # permite lanzarla a mano desde la pestaña Actions
 
+# El pase del lunes congela además el resumen de la semana que acaba de cerrar
+# (semana.asegurar, en build.py): /semana/AAAA-Snn.html. Los demás pases no
+# lo tocan, así que relanzarlo no cambia nada (ARQUITECTURA.md §13).
+#
 # Desde la PR «publicacion-artefacto» la edición la construye y publica
 # publicar.yml (modo diario): los datos van a la rama datos y la web se
 # despliega como artefacto de GitHub Pages. El bot ya no escribe en main.
