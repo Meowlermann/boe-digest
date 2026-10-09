@@ -4902,9 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "descartado": "nombre «Vasco» que no está en el texto oficial",
-   "intentos": 2
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Gobierno acumula 38 preguntas escritas del Congreso sin responder",
+   "entradilla": "Un total de 38 iniciativas parlamentarias escritas superan el plazo de 20 días hábiles desde su publicación sin que se haya registrado una contestación.",
+   "claves": [
+    "La pregunta pendiente más antigua fue publicada el lunes 15 de diciembre de 2025.",
+    "Sumar es el grupo con más preguntas sin contestar con 30 iniciativas, seguido del PSOE con 4 y el PP con 2."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -5765,9 +5772,335 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-08"
+  },
+  "BOE-A-2026-20976": {
+   "huella": "69ffa66ebe6fb03c",
+   "fuente": "a497de0de55ef9da",
+   "titular": "La AECID aportará 750.000 euros a la OCDE para proyectos de desarrollo en África",
+   "entradilla": "La Agencia Española de Cooperación Internacional para el Desarrollo financia con esta contribución voluntaria tres líneas de actuación del organismo internacional durante el periodo 2025-2026.",
+   "claves": [
+    "El Centro de Desarrollo recibirá 500.000 euros para apoyar el proyecto de la Plataforma de Inversiones en África.",
+    "Se destinarán 200.000 euros al Club del Sahel y de África del Oeste para promover políticas regionales de bienestar.",
+    "La Dirección de Cooperación para el Desarrollo obtendrá 50.000 euros para apoyar la red internacional INCAF.",
+    "El importe total de la contribución voluntaria incluye un 6,23 % destinado a cubrir gastos indirectos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-20977": {
+   "huella": "c67e9f0285f00874",
+   "fuente": "e8132f39c4a66113",
+   "titular": "Los partidos deberán declarar que no incurren en ciertos supuestos de la LOREG",
+   "entradilla": "El Gobierno modifica el reglamento de las subvenciones estatales para gastos electorales, condicionando su cobro a una declaración formal del representante general de la formación política.",
+   "claves": [
+    "La declaración del representante general de que no se incurre en los supuestos de la LOREG será obligatoria para tramitar adelantos o liquidaciones.",
+    "Este documento deberá acompañar a la solicitud de adelanto o, en su defecto, será requerido previamente por la Administración.",
+    "Antes de liquidar la subvención, la Administración podrá exigir documentos que acrediten la veracidad de los datos declarados."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-20978": {
+   "huella": "4a3891ac75f1a9b2",
+   "fuente": "13f13a09cd896c67",
+   "titular": "Defensa regula la jornada general de los militares en 35 horas semanales",
+   "entradilla": "El Ministerio de Defensa modifica el horario habitual de los miembros de las Fuerzas Armadas para adaptarlo a las instrucciones de la Administración General del Estado.",
+   "claves": [
+    "La jornada general de los militares será de 35 horas semanales de trabajo efectivo de promedio en cómputo anual, equivalente a mil quinientas treinta y tres horas anuales.",
+    "El personal en puestos considerados de especial dedicación tendrá una jornada de 37 horas y media semanales, sin perjuicio del aumento excepcional por necesidades del servicio.",
+    "Los militares con hijos menores de doce años o personas dependientes a su cargo tendrán derecho a flexibilizar en una hora diaria la parte fija de su horario."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-20979": {
+   "huella": "99887f40d588cff8",
+   "fuente": "6cb89ab74b545b4f",
+   "titular": "El Gobierno concede una subvención a La Rioja para el Centro Nacional del Envase",
+   "entradilla": "La ayuda directa financiará gastos de inversión, principalmente equipamiento, para el proyecto de la Ciudad del Envase y el Embalaje a través del CENTIDE.",
+   "claves": [
+    "Los fondos estatales se destinarán a equipar la línea de embalaje innovador dentro del área de investigación en diseño y nuevas funcionalidades.",
+    "La Comunidad Autónoma de La Rioja, como beneficiaria, deberá presentar una cuenta justificativa para acreditar la realización de la actividad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-20980": {
+   "huella": "84d166a4cf39a36a",
+   "fuente": "dc9dde7b53d8e88e",
+   "titular": "La Fundación ONCE recibe una ayuda para proteger la vista durante los eclipses",
+   "entradilla": "El Ministerio de Ciencia concede una subvención directa a la entidad para colaborar en actividades de divulgación y protección ocular ante el trío de eclipses solares de 2026, 2027 y 2028.",
+   "claves": [
+    "La subvención apoya medidas de seguridad y salud pública ante los tres eclipses solares que se producirán entre los años 2026 y 2028.",
+    "La Fundación ONCE deberá presentar la documentación de aceptación formal por medios electrónicos en un plazo de quince días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21028": {
+   "huella": "f6266c25549cf46f",
+   "fuente": "5d94aa4d2f4a536a",
+   "titular": "La Sección 33 de la Audiencia de Madrid se especializará en Violencia sobre la Mujer",
+   "entradilla": "El Consejo General del Poder Judicial aprueba atribuir de forma exclusiva y excluyente esta materia a la nueva sección judicial, que comenzará a funcionar a finales de año.",
+   "claves": [
+    "La medida de especialización exclusiva y excluyente entrará en vigor el próximo 31 de diciembre de 2026.",
+    "Esa fecha coincide con el inicio de actividad previsto para la Sección 33.ª de la Audiencia Provincial de Madrid."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21029": {
+   "huella": "c9521de4de2dd339",
+   "fuente": "4bc43b501c0c98d1",
+   "titular": "El presidente de la Sala Civil y Penal del TSJ de Murcia llevará la mitad de casos",
+   "entradilla": "El Consejo General del Poder Judicial publica las normas de reparto de la sala para 2026, que liberan parcialmente de ponencias a la presidencia para que atienda sus funciones gubernativas.",
+   "claves": [
+    "El reparto de asuntos asignará dos casos a cada magistrado de la Sala Civil y Penal y, a continuación, uno al presidente.",
+    "La designación de ponentes se realizará mediante un turno sucesivo por orden de antigüedad en el escalafón.",
+    "El presidente de la sala integrará y presidirá siempre el tribunal en los turnos establecidos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21030": {
+   "huella": "36ce28fda4b26295",
+   "fuente": "23f9e3df2948d4d2",
+   "titular": "Indra costeará suministros para la Fiesta Nacional en la Embajada de España en China",
+   "entradilla": "La empresa tecnológica aportará servicios en especie por un valor estimado de 2.000 euros para la celebración del evento en Pekín, que tendrá lugar el 9 de octubre de 2026.",
+   "claves": [
+    "El convenio firmado establece que la colaboración de Indra no supondrá ningún coste económico para la Embajada de España.",
+    "La Embajada difundirá la participación de la empresa incluyendo su logotipo en el material gráfico, web y redes sociales del evento.",
+    "La legación diplomática entregará a la empresa una certificación de la aportación realizada en un plazo máximo de 30 días."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21031": {
+   "huella": "272d10e3fb9b1cba",
+   "fuente": "883de888f1563a80",
+   "titular": "Mondragon India aportará 115.000 rupias para la Fiesta Nacional en Nueva Delhi",
+   "entradilla": "La Embajada de España en la India firma un convenio de patrocinio con la empresa para financiar la celebración del evento el próximo 11 de septiembre de 2026.",
+   "claves": [
+    "La aportación económica se realizará en metálico y no supondrá ningún coste para la Embajada de España.",
+    "A cambio, la Embajada difundirá la colaboración mediante el logotipo de la empresa en invitaciones, web y redes sociales.",
+    "La Embajada emitirá una certificación oficial de la aportación en un plazo máximo de 30 días desde la realización del evento."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21032": {
+   "huella": "c557d2967b88716a",
+   "fuente": "03c8b2ca7bc3867b",
+   "titular": "Indra aporta 2.000 euros para la Fiesta Nacional en la Embajada de España en Angola",
+   "entradilla": "La empresa tecnológica realiza una aportación en metálico para la celebración del evento en Luanda, previsto para el próximo 9 de octubre de 2026.",
+   "claves": [
+    "La aportación económica de 2.000 euros se realiza en metálico y no supondrá ningún coste para la Embajada.",
+    "La Embajada de España se compromete a difundir el patrocinio de Indra en el material gráfico, web y redes sociales del evento.",
+    "La representación diplomática emitirá una certificación de la aportación en un plazo máximo de 30 días tras el evento."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21033": {
+   "huella": "9f78f38386118448",
+   "fuente": "92e5425cec9f6340",
+   "titular": "Air Europa aportará 3.660 euros en servicios para la Fiesta Nacional en Roma",
+   "entradilla": "La aerolínea firma un convenio con la Embajada de España en Italia para costear mediante suministros o servicios en especie la celebración del próximo 8 de octubre de 2026.",
+   "claves": [
+    "La aportación en especie consiste en la contratación por cuenta de Air Europa de suministros o servicios para el evento.",
+    "El convenio no generará ningún coste económico para la Embajada de España en Roma.",
+    "La Embajada agradecerá la colaboración incorporando el logotipo de la aerolínea en invitaciones, programas y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21034": {
+   "huella": "8c981f45efb5fc08",
+   "fuente": "2d96bf809565e858",
+   "titular": "Verti costeará servicios para la Fiesta Nacional en la Embajada de España en Roma",
+   "entradilla": "La aseguradora firma un convenio de patrocinio en especie valorado en 3.660 euros para la celebración del evento el próximo 8 de octubre de 2026.",
+   "claves": [
+    "La aportación en especie consiste en la contratación directa por parte de Verti de suministros o servicios para la actividad.",
+    "El acuerdo no tendrá ningún coste económico para la Embajada de España en Italia.",
+    "La Embajada difundirá la colaboración de la empresa en el material gráfico impreso, web y redes sociales del evento."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21035": {
+   "huella": "952484eea5ef028a",
+   "fuente": "934ec74edc0c0446",
+   "titular": "Indra aportará servicios para la Fiesta Nacional en la Embajada de España en Kuwait",
+   "entradilla": "La empresa tecnológica firma un convenio de patrocinio en especie valorado en 2.000 euros para la celebración del evento el próximo 12 de octubre de 2026.",
+   "claves": [
+    "La aportación consiste en la contratación por cuenta de Indra de suministros o servicios para la celebración.",
+    "El convenio no supondrá ningún coste económico para la Embajada de España en Kuwait.",
+    "La Embajada difundirá la colaboración de la empresa en invitaciones, programas, web y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21036": {
+   "huella": "305554afc9cd526a",
+   "fuente": "70416383f023d6bf",
+   "titular": "Indra aportará 2.000 euros para la Fiesta Nacional en la Embajada en Portugal",
+   "entradilla": "La filial portuguesa de la tecnológica firma un convenio para realizar una aportación en metálico destinada a la celebración del evento en Lisboa el próximo 12 de octubre de 2026.",
+   "claves": [
+    "La aportación económica de 2.000 euros se realiza en metálico y no supondrá ningún coste para la Embajada.",
+    "La Embajada de España en Lisboa difundirá la colaboración de la empresa en el material gráfico, web y redes sociales.",
+    "La representación diplomática emitirá una certificación de la aportación en un plazo máximo de 30 días."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21037": {
+   "huella": "0737730cac32e574",
+   "fuente": "9f7244b08390f482",
+   "titular": "Iberdrola aportará 5.000 euros en servicios para la Fiesta Nacional en Bruselas",
+   "entradilla": "La compañía eléctrica firma un convenio de patrocinio en especie para la celebración del evento en la capital belga el próximo 19 de octubre de 2026.",
+   "claves": [
+    "La aportación consiste en la contratación por cuenta de Iberdrola de suministros o servicios para la actividad por valor de 5.000 euros.",
+    "El convenio no generará ningún coste económico para la Embajada de España en Bruselas.",
+    "La Embajada difundirá la colaboración de la empresa en invitaciones, programas, web y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21038": {
+   "huella": "9f2e49a24c51e995",
+   "fuente": "7c54dfd2910ef7ad",
+   "titular": "Banca Mediolanum aportará 7.320 euros en servicios para la Fiesta Nacional en Roma",
+   "entradilla": "La entidad financiera firma un convenio de patrocinio en especie para la celebración del evento en la capital italiana el próximo 8 de octubre de 2026.",
+   "claves": [
+    "La aportación en especie consiste en la contratación por cuenta del banco de suministros o servicios para la actividad.",
+    "El convenio no supondrá ningún coste económico para la Embajada de España en Roma.",
+    "La Embajada difundirá la colaboración de la entidad en invitaciones, programas, web y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-7c9e81e115bd817a": {
+   "huella": "ac36422f329a67b6",
+   "fuente": "3452ff9c652a641f",
+   "titular": "El Gobierno responde sobre la subvención de la AECID para la memoria en Rosario",
+   "entradilla": "El Gobierno contesta a una pregunta escrita formulada por el PP en el Congreso sobre una ayuda de 73.500 euros destinada a crear una red de memoria democrática en Argentina.",
+   "claves": [
+    "La iniciativa parlamentaria del PP pedía información sobre una subvención de 73.500 euros otorgada por la AECID para un programa en Rosario, Argentina.",
+    "El Gobierno ha registrado su contestación por escrito en el Congreso 22 días naturales después de la publicación de la pregunta."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-eea152ba97f8abba": {
+   "huella": "12899975de9c2dac",
+   "fuente": "403164df7d7067e5",
+   "titular": "El Gobierno responde sobre el tráfico aéreo estacional en Badajoz",
+   "entradilla": "El Gobierno contesta por escrito a una pregunta del PP en el Congreso sobre las medidas previstas para reducir la estacionalidad del tráfico aéreo en Badajoz.",
+   "claves": [
+    "La pregunta fue formulada por el diputado Antonio Cavacasillas Rodríguez y otro miembro del PP en el Congreso.",
+    "La contestación por escrito del Gobierno se ha registrado 22 días naturales después de la publicación de la iniciativa parlamentaria."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-11b9ff008bae6907": {
+   "huella": "dbd9f3a86fc9e93f",
+   "fuente": "6ce0d894ce743d5d",
+   "titular": "El Gobierno responde sobre la innovación en el aeropuerto de Alicante-Elche",
+   "entradilla": "El Gobierno contesta por escrito a una pregunta del PP sobre las actuaciones de innovación ejecutadas en el aeropuerto de Alicante-Elche Miguel Hernández.",
+   "claves": [
+    "La iniciativa del PP se interesaba por las medidas de innovación del Documento de Regulación Aeroportuaria para el periodo 2022-2026.",
+    "El Gobierno ha registrado su respuesta escrita en el Congreso 22 días naturales después de la publicación de la pregunta de Sandra Pascual Rocamora."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-8f2e1cd36f4b070a": {
+   "huella": "bff382594364fd32",
+   "fuente": "daa362a8726c0e99",
+   "titular": "El Gobierno responde sobre la limpieza de cauces en la Comunitat Valenciana",
+   "entradilla": "El Gobierno contesta por escrito a una pregunta del PP sobre las peticiones de limpieza y mantenimiento de cauces y barrancos realizadas por ayuntamientos desde 2023.",
+   "claves": [
+    "La pregunta fue presentada por Óscar Clavell López y otros doce diputados del PP en el Congreso.",
+    "La iniciativa consulta sobre las solicitudes de limpieza de cauces y barrancos enviadas por los ayuntamientos a las confederaciones hidrográficas.",
+    "La respuesta del Gobierno se ha registrado 22 días naturales después de la publicación de la pregunta parlamentaria."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-b5c04b2370e02ca1": {
+   "huella": "6025bbd53a4d3c3f",
+   "fuente": "75339d96dfc559b7",
+   "titular": "El Gobierno responde sobre la seguridad en el aeropuerto de Badajoz",
+   "entradilla": "El Gobierno contesta por escrito a una pregunta del PP sobre las inversiones previstas para mejorar los sistemas de seguridad operacional en el aeropuerto de Badajoz.",
+   "claves": [
+    "La iniciativa parlamentaria fue formulada por Antonio Cavacasillas Rodríguez y otro diputado del PP.",
+    "El Gobierno ha registrado su contestación por escrito 22 días naturales después de la publicación de la pregunta en el Congreso."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-add0a666f6388c23": {
+   "huella": "a3fcb6225c69a3a8",
+   "fuente": "4bf36e81e237e704",
+   "titular": "El Gobierno responde sobre la renovación de la pista del aeropuerto de Badajoz",
+   "entradilla": "El Gobierno contesta por escrito a una pregunta del PP sobre la previsión existente para renovar la pista del aeropuerto de Badajoz.",
+   "claves": [
+    "La pregunta fue registrada por Antonio Cavacasillas Rodríguez y otro diputado del PP en el Congreso.",
+    "La respuesta escrita del Gobierno se ha registrado 22 días naturales después de la publicación de la iniciativa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-c2c8620441bee1f3": {
+   "huella": "1bc246fcccbc8895",
+   "fuente": "a1aaccc3bb370e67",
+   "titular": "El Gobierno registra 286 respuestas escritas en el Congreso",
+   "entradilla": "El Congreso ha registrado hoy un total de 286 contestaciones escritas remitidas por el Gobierno para responder a preguntas de los diputados.",
+   "claves": [
+    "Un total de 286 preguntas escritas han pasado a tener hoy su contestación registrada en su ficha oficial.",
+    "El registro de estas contestaciones se ha realizado en la ficha oficial del Congreso."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-2f686cfb0240554c": {
+   "huella": "90ad698eb444b73f",
+   "fuente": "6ea59c6522e367f7",
+   "titular": "El Gobierno acumula 617 preguntas escritas del Congreso sin responder",
+   "entradilla": "Un total de 617 iniciativas parlamentarias escritas superan el plazo de 20 días hábiles desde su publicación sin que se haya registrado una contestación.",
+   "claves": [
+    "La pregunta pendiente más antigua fue publicada el lunes 15 de diciembre de 2025.",
+    "Por grupos parlamentarios, el PP lidera las preguntas sin contestar con 388 iniciativas, seguido de Vox con 63 y Sumar con 56."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-d1809125dd084be2": {
+   "huella": "b5363c570568f5f6",
+   "fuente": "e54a22473530d3de",
+   "titular": "El Gobierno registra 1.034 respuestas escritas en el Congreso",
+   "entradilla": "El Congreso ha registrado hoy un total de 1.034 contestaciones escritas remitidas por el Gobierno para responder a preguntas de los diputados.",
+   "claves": [
+    "Un total de 1.034 preguntas escritas han pasado a tener hoy su contestación registrada en su ficha oficial."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-a7974b9e0a50e6cf": {
+   "huella": "8d4a7e6364999928",
+   "fuente": "214273844556e815",
+   "titular": "El Gobierno acumula 902 preguntas escritas del Congreso sin responder",
+   "entradilla": "Un total de 902 iniciativas parlamentarias escritas superan el plazo de 20 días hábiles desde su publicación sin que se haya registrado una contestación.",
+   "claves": [
+    "La pregunta pendiente más antigua fue publicada el lunes 15 de diciembre de 2025.",
+    "El PP es el grupo con más preguntas sin contestar con 570, seguido de Junts con 105 y Sumar con 77."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
   }
  },
  "uso": {
-  "2026-10-08": 10
+  "2026-10-09": 2
  }
 }
