@@ -4902,13 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Gobierno acumula 38 preguntas escritas del Congreso sin responder",
-   "entradilla": "Un total de 38 iniciativas parlamentarias escritas superan el plazo de 20 días hábiles desde su publicación sin que se haya registrado una contestación.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Gobierno tiene pendientes de respuesta 38 preguntas escritas del Congreso",
+   "entradilla": "Un total de 38 iniciativas parlamentarias del último año acumulan más de 20 días hábiles desde su publicación sin que se haya registrado su contestación.",
    "claves": [
-    "La pregunta pendiente más antigua fue publicada el lunes 15 de diciembre de 2025.",
-    "Sumar es el grupo con más preguntas sin contestar con 30 iniciativas, seguido del PSOE con 4 y el PP con 2."
+    "Sumar es el grupo parlamentario con más iniciativas pendientes de respuesta, con un total de 24 preguntas sin contestar.",
+    "La iniciativa más antigua que sigue a la espera de respuesta por parte del Gobierno se publicó el lunes 16 de febrero de 2026.",
+    "El resto de preguntas sin responder corresponden al PSOE con 7, al PP con 4, al grupo GV (EAJ-PNV con 1, a Junts con 1 y a un parlamentario sin grupo con 1."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
@@ -6098,9 +6099,104 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
+  },
+  "C-3b72ed3fd5fa091f": {
+   "huella": "011221e28e0fd1c3",
+   "fuente": "0071d24c5034e3cf",
+   "titular": "El Gobierno responde al PP tras 232 días sobre el deterioro del Camí Els Pinets",
+   "entradilla": "La contestación a la pregunta formulada por el diputado César Sánchez Pérez sobre el estado de esta carretera se ha registrado 232 días naturales después de su publicación.",
+   "claves": [
+    "La iniciativa fue presentada por el diputado César Sánchez Pérez junto a otros cuatro parlamentarios del PP.",
+    "Entre la publicación de la pregunta en el boletín oficial y el registro de la respuesta transcurrieron 232 días naturales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-e2d679b1924776df": {
+   "huella": "14040f284c8bf06a",
+   "fuente": "39c19ecd4c6940f1",
+   "titular": "El Gobierno contesta a Sumar sobre los efectos del temporal en Córdoba tras 217 días",
+   "entradilla": "La respuesta por escrito a la pregunta de Enrique Fernando Santiago Romero sobre las consecuencias del temporal en la provincia cordobesa se ha demorado más de siete meses.",
+   "claves": [
+    "La pregunta parlamentaria fue publicada originalmente en el boletín oficial el martes 3 de marzo de 2026.",
+    "La contestación oficial del Gobierno quedó registrada el martes 6 de octubre de 2026, tras 111 días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-01f680ee783028f6": {
+   "huella": "047faa4bbd542c0b",
+   "fuente": "5591256217370d56",
+   "titular": "El Gobierno contesta a Sumar sobre la privatización de la FP tras 217 días de espera",
+   "entradilla": "La iniciativa de Juan Antonio Valero Morales sobre el impacto de las políticas educativas del Partido Popular en la Formación Profesional recibe respuesta tras 217 días naturales.",
+   "claves": [
+    "La pregunta escrita fue publicada el martes 3 de marzo de 2026 y su respuesta se registró el martes 6 de octubre de 2026.",
+    "El plazo transcurrido entre la publicación de la iniciativa y la contestación equivale a unos 111 días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-e98b2019130c094d": {
+   "huella": "0e00987f5a42689b",
+   "fuente": "3ea4b4b81497636e",
+   "titular": "El Gobierno contesta a Sumar sobre los refugios antiaéreos de Alicante tras 190 días",
+   "entradilla": "La pregunta de Txema Guijarro García sobre la petición de los guiones de las visitas a los refugios antiaéreos al Ayuntamiento de Alicante obtiene respuesta escrita 190 días después.",
+   "claves": [
+    "La iniciativa parlamentaria fue publicada el lunes 30 de marzo de 2026 en el boletín oficial.",
+    "La contestación del Gobierno se registró el martes 6 de octubre de 2026, tras unos 92 días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-14a13babb3b81641": {
+   "huella": "713acacf0845c06f",
+   "fuente": "3046a1c99c370ab8",
+   "titular": "El Gobierno responde a Sumar sobre la línea de alta tensión Escatrón-La Secuita",
+   "entradilla": "La contestación a la pregunta de Alberto Ibáñez Mezquita sobre la necesidad de un estudio de impacto ambiental para este tendido entre Aragón y Cataluña se registra tras 190 días.",
+   "claves": [
+    "La iniciativa parlamentaria fue publicada el lunes 30 de marzo de 2026 y contestada el martes 6 de octubre de 2026.",
+    "El tiempo transcurrido hasta el registro de la respuesta equivale a 190 días naturales o unos 92 días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-381ebbc1ac014090": {
+   "huella": "36c865aa1b5e9d45",
+   "fuente": "b677c579ba2b7480",
+   "titular": "El Gobierno responde al PSOE sobre las ayudas al alquiler en Santa Cruz de Tenerife",
+   "entradilla": "La diputada Alicia Álvarez González recibe la contestación escrita sobre los beneficiarios y la cuantía del bono alquiler joven en la provincia tinerfeña 175 días después.",
+   "claves": [
+    "La pregunta parlamentaria fue publicada el martes 14 de abril de 2026 y contestada el martes 6 de octubre de 2026.",
+    "El periodo transcurrido hasta el registro de la respuesta equivale a 175 días naturales o unos 81 días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-46af593f7cbec706": {
+   "huella": "17ee0da907584903",
+   "fuente": "6fa4b870c410e950",
+   "titular": "El Gobierno registra las respuestas por escrito a 526 preguntas del Congreso",
+   "entradilla": "Un total de 526 iniciativas parlamentarias que requerían una contestación escrita por parte del Gobierno han pasado a tener su respuesta registrada en la ficha oficial de la Cámara.",
+   "claves": [
+    "Las 526 preguntas escritas han pasado a tener contestación registrada en su ficha oficial en el día de hoy."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-a3f35949389c6fbd": {
+   "huella": "341ac186e5930b0e",
+   "fuente": "306745fc3393806d",
+   "titular": "El Congreso acumula 383 preguntas escritas al Gobierno fuera de plazo",
+   "entradilla": "Estas iniciativas parlamentarias llevan más de 20 días hábiles desde su publicación sin que se haya registrado una contestación oficial, siendo la más antigua de diciembre de 2025.",
+   "claves": [
+    "La pregunta más antigua que permanece sin contestación oficial se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupos, el PP acumula 248 preguntas pendientes de respuesta, seguido de Vox con 54 y Junts con 45."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
   }
  },
  "uso": {
-  "2026-10-09": 2
+  "2026-10-09": 4
  }
 }
