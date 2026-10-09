@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Gobierno tiene pendientes de respuesta 38 preguntas escritas del Congreso",
-   "entradilla": "Un total de 38 iniciativas parlamentarias del último año acumulan más de 20 días hábiles desde su publicación sin que se haya registrado su contestación.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso registra 38 preguntas escritas que superan el plazo sin contestación",
+   "entradilla": "Estas 38 preguntas parlamentarias del último año acumulan más de 20 días hábiles desde su publicación sin que conste una respuesta en su ficha.",
    "claves": [
-    "Sumar es el grupo parlamentario con más iniciativas pendientes de respuesta, con un total de 24 preguntas sin contestar.",
-    "La iniciativa más antigua que sigue a la espera de respuesta por parte del Gobierno se publicó el lunes 16 de febrero de 2026.",
-    "El resto de preguntas sin responder corresponden al PSOE con 7, al PP con 4, al grupo GV (EAJ-PNV con 1, a Junts con 1 y a un parlamentario sin grupo con 1."
+    "La iniciativa más antigua que permanece sin contestación registrada fue publicada el lunes 15 de diciembre de 2025.",
+    "Sumar es el grupo parlamentario con más preguntas pendientes, acumulando un total de 30 de las 38 registradas.",
+    "El recuento admite la posibilidad de que existan prórrogas o de que las respuestas no se hayan reflejado aún en la ficha oficial."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
@@ -6194,9 +6194,34 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
+  },
+  "C-a6b92ab122dd19ea": {
+   "huella": "05c67964e5f15b3b",
+   "fuente": "e8a8f540ecd881e4",
+   "titular": "El Gobierno registra 819 respuestas por escrito a preguntas en el Congreso",
+   "entradilla": "El Congreso ha registrado hoy las contestaciones oficiales a 819 preguntas escritas, entre las que se incluyen las que más han tardado en responderse.",
+   "claves": [
+    "Las contestaciones del Gobierno han quedado registradas hoy en la ficha oficial de cada iniciativa.",
+    "El lote de respuestas incluye aquellas contestaciones que más tiempo han tardado en tramitarse."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-ad4eb4bef645fa2e": {
+   "huella": "750ce9795956442b",
+   "fuente": "0d992fb4684d5367",
+   "titular": "El Congreso acumula 102 preguntas escritas sin contestación fuera de plazo",
+   "entradilla": "Un total de 102 iniciativas parlamentarias del último año superan ya el límite de 20 días hábiles desde su publicación sin que se haya registrado su respuesta.",
+   "claves": [
+    "La pregunta escrita más antigua que sigue pendiente de respuesta se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupos parlamentarios, el PP lidera las preguntas sin contestar con 56, seguido de Vox con 20 y Sumar con 15.",
+    "El recuento admite la posibilidad de que existan prórrogas o de que las respuestas no se hayan reflejado aún en la ficha oficial."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
   }
  },
  "uso": {
-  "2026-10-09": 4
+  "2026-10-09": 6
  }
 }
