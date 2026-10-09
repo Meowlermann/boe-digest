@@ -4902,15 +4902,11 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso registra 38 preguntas escritas que superan el plazo sin contestación",
-   "entradilla": "Estas 38 preguntas parlamentarias del último año acumulan más de 20 días hábiles desde su publicación sin que conste una respuesta en su ficha.",
-   "claves": [
-    "La iniciativa más antigua que permanece sin contestación registrada fue publicada el lunes 15 de diciembre de 2025.",
-    "Sumar es el grupo parlamentario con más preguntas pendientes, acumulando un total de 30 de las 38 registradas.",
-    "El recuento admite la posibilidad de que existan prórrogas o de que las respuestas no se hayan reflejado aún en la ficha oficial."
-   ],
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Gobierno acumula 38 preguntas escritas fuera de plazo en el Congreso",
+   "entradilla": "Las iniciativas llevan más de 20 días hábiles sin respuesta registrada, siendo Sumar el grupo con más cuestiones pendientes y el 16 de febrero de 2026 la fecha más antigua.",
+   "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
   },
@@ -6219,9 +6215,81 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
+  },
+  "C-c5823ba00db6c2e6": {
+   "huella": "644ad09be257fb9e",
+   "fuente": "5c1caab27c06a0d6",
+   "titular": "El Gobierno contesta tras 288 días sobre la financiación para el complejo Aloy",
+   "entradilla": "La pregunta del diputado socialista Víctor Javier Ruiz de Diego sobre las incidencias en la rehabilitación de viviendas se registró en diciembre de 2025.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-435ca67b5bf2dcb7": {
+   "huella": "fd2c0e2778604be2",
+   "fuente": "b826e49a3b9f5389",
+   "titular": "El Gobierno responde con 288 días de retraso sobre la prórroga para frenar desahucios",
+   "entradilla": "El diputado de Sumar Alberto Ibáñez Mezquita recibe la contestación a su pregunta sobre las previsiones para aprobar un real decreto de revisión de contratos en 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-71a83ec78f150992": {
+   "huella": "b635cc85d4e95338",
+   "fuente": "c1e533a8a89c7579",
+   "titular": "El Gobierno contesta tras 259 días sobre un homenaje a defensores del franquismo",
+   "entradilla": "El diputado Enrique Fernando Santiago Romero preguntó en enero de 2026 por el acto de la fundación 'profesor George Manu' en memoria de Ion Mota y Vasile Ma.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-a45c769a4e08415f": {
+   "huella": "f3fac28f80a7d82e",
+   "fuente": "bfdad5239d6fccf0",
+   "titular": "El Gobierno responde tras 246 días sobre la adjudicación de pisos de Casa47",
+   "entradilla": "La diputada Verónica Martínez Barbero (Sumar) recibe la contestación escrita sobre el proceso de adjudicación de viviendas de la nueva empresa pública.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-45d80012ee52450c": {
+   "huella": "66691b9350b245e0",
+   "fuente": "0dad71e6f888ec0d",
+   "titular": "El Gobierno contesta tras 246 días sobre las obras en la Base Aérea de Son Sant Joan",
+   "entradilla": "El diputado Fèlix Alonso Cantorné (Sumar) obtiene respuesta a su pregunta escrita sobre las instalaciones que está previsto construir en este espacio militar.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-cafd0d897fe2d98d": {
+   "huella": "4657d0f4a6572990",
+   "fuente": "27c037183e497c08",
+   "titular": "El Gobierno responde tras 245 días sobre la gestión de los lotes de CASA47",
+   "entradilla": "La iniciativa de Sumar cuestionaba la posible privatización y gestión por parte de grandes fondos de estos contratos de la Entidad Es.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-eda6eb0c76a0c8c0": {
+   "huella": "58a267ba20957579",
+   "fuente": "03ac32366c530e22",
+   "titular": "El Gobierno registra 915 contestaciones a preguntas escritas",
+   "entradilla": "Las fichas oficiales del Congreso han incorporado hoy las respuestas del Gobierno a casi un millar de iniciativas formuladas por escrito.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
+  },
+  "C-ff887735c82b1eac": {
+   "huella": "6382410a649549c6",
+   "fuente": "b2f601d3ed6ee7ef",
+   "titular": "Seis preguntas de Sumar al Gobierno acumulan más de 20 días hábiles de retraso",
+   "entradilla": "El grupo parlamentario tiene media docena de iniciativas escritas pendientes de contestación oficial, de las cuales la más antigua se publicó el 15 de diciembre de 2025.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-09"
   }
  },
  "uso": {
-  "2026-10-09": 6
+  "2026-10-09": 8
  }
 }
