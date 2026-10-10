@@ -1,9 +1,9 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-09",
+  "fecha": "2026-10-10",
   "graves": 0,
-  "avisos": 2,
+  "avisos": 4,
   "hallazgos": [
     {
       "nivel": "aviso",
@@ -16,6 +16,18 @@
       "comprobacion": "html",
       "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
       "fichero": "privacidad.html"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-10-03: «CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS».",
+      "fichero": "data/2026-10-10.json"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[cortes] titular repetido del 2026-10-09: «6 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada».",
+      "fichero": "data/2026-10-10.json"
     }
   ]
 }

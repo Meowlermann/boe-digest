@@ -4902,17 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso acumula 38 preguntas escritas que superan el plazo límite sin respuesta",
-   "entradilla": "Estas iniciativas parlamentarias del último año acumulan más de 20 días hábiles desde su publicación sin que conste contestación, aunque la ficha del Congreso podría no reflejar aún prórrogas o respuestas.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "Treinta y ocho preguntas escritas superan el plazo límite sin respuesta del Gobierno",
+   "entradilla": "El Congreso contabiliza preguntas de los grupos parlamentarios que rebasan los veinte días hábiles desde su publicación.",
    "claves": [
-    "Sumar es el grupo parlamentario con más iniciativas pendientes de contestación, acumulando un total de 30 preguntas sin respuesta registrada.",
-    "El resto de preguntas sin contestar corresponden al PSOE con cuatro, al PP con dos, a Junts con una y otra de un diputado sin grupo parlamentario.",
-    "La pregunta escrita más antigua que permanece sin contestación registrada fue publicada en el Congreso el lunes 15 de diciembre de 2025."
+    "Las cuestiones acumuladas superan el plazo fijado por la cámara sin que conste una respuesta registrada hasta la fecha.",
+    "Por formación política, Sumar acumula 24 preguntas pendientes, el PSOE 7, el PP 4 y los grupos de la minoría 3."
    ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-09"
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -6291,9 +6290,238 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-09"
+  },
+  "BOE-A-2026-21097": {
+   "huella": "4dc92b0cecb50711",
+   "fuente": "82d54141e2447fe9",
+   "titular": "España, el Programa de las Naciones Unidas y Castellón firman un acuerdo",
+   "entradilla": "El Ministerio de Asuntos Exteriores publica el acuerdo internacional administrativo entre España, el Programa de las Naciones Unidas para los asentamientos humanos y el Ayuntamiento de Castellón.",
+   "claves": [
+    "El acuerdo se formalizó en Nairobi y Castellón de la Plana los días 9 de julio y 10 de septiembre de 2026.",
+    "Participan el Reino de España, el Programa de las Naciones Unidas para los asentamientos humanos a través de su División de Programa Regional y el Ayuntamiento de Castellón de la Plana."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21098": {
+   "huella": "de3b089da7c98cbe",
+   "fuente": "e0899d0623e049a5",
+   "titular": "España y Angola pactan la cooperación en seguridad y lucha contra la delincuencia",
+   "entradilla": "El Ministerio de Asuntos Exteriores publica el tratado internacional suscrito en Madrid entre ambos países.",
+   "claves": [
+    "El convenio regula la cooperación bilateral entre el Reino de España y la República de Angola en materia de seguridad.",
+    "El texto aborda específicamente la lucha contra la delincuencia y fue adoptado en Madrid el 5 de noviembre de 2018."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21099": {
+   "huella": "f3b81519c9134fe4",
+   "fuente": "8393de3ba262afe6",
+   "titular": "Hacienda fija los nuevos precios de venta de determinadas labores de tabaco",
+   "entradilla": "El Comisionado para el Mercado de Tabacos actualiza las tarifas aplicables en las Expendedurías de Tabaco y Timbre.",
+   "claves": [
+    "La resolución modifica los precios de venta al público para determinadas labores de tabaco en el área del Monopolio.",
+    "La medida se canaliza a través de las Expendedurías de Tabaco y Timbre autorizadas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21100": {
+   "huella": "e679b1eea2e7e2f3",
+   "fuente": "3c88488efe2cb32f",
+   "titular": "La Comunitat Valenciana corrige errores en los Estatutos de la Universidad de Alicante",
+   "entradilla": "El Consell enmienda el decreto autonómico por el que se aprobaron inicialmente las normas universitarias.",
+   "claves": [
+    "La corrección afecta al Decreto 105/2026, de 3 de julio, que aprobó los Estatutos de la Universidad de Alicante.",
+    "La disposición enmienda los errores detectados en la publicación original del texto estatutario."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21137": {
+   "huella": "c8694a0c6bcaba05",
+   "fuente": "539d461a035a8ddb",
+   "titular": "International Container Services costeará la Fiesta Nacional en Filipinas",
+   "entradilla": "La Embajada de España en Manila firma un convenio de mecenazgo por valor de trescientos mil pesos filipinos.",
+   "claves": [
+    "La empresa International Container Terminal Services asumirá la contratación de suministros o servicios valorados en 300.000 PHP.",
+    "El convenio regula la celebración de la Fiesta Nacional de España prevista en Manila para el 12 de octubre de 2026.",
+    "La aportación económica no supondrá coste alguno para la Embajada de España."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21138": {
+   "huella": "59725c0f6efb3184",
+   "fuente": "43bc1328c73d45a5",
+   "titular": "BDO Unibank financiará la recepción de la Fiesta Nacional en Filipinas",
+   "entradilla": "La Embajada de España en Manila recibe una aportación económica en metálico para el evento de octubre.",
+   "claves": [
+    "BDO Unibank efectuará una aportación económica por importe de doscientos cincuenta mil pesos filipinos (250.000 PHP).",
+    "El convenio regula la participación de la entidad en la Fiesta Nacional de España que se celebrará en Manila el 12 de octubre de 2026.",
+    "La colaboración se acoge al régimen fiscal de entidades sin fines lucrativos y no genera coste para la Embajada."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21139": {
+   "huella": "8adca8dd578f1360",
+   "fuente": "9148050fdeaf7b92",
+   "titular": "IE University y IE NYC financiarán la Fiesta Nacional en Canadá",
+   "entradilla": "La Embajada de España en Ottawa sella un acuerdo de mecenazgo por valor de tres mil dólares canadienses.",
+   "claves": [
+    "IE University y IE NYC realizarán una aportación económica en metálico de 3.000 CAD para la celebración de la Fiesta Nacional.",
+    "El acto institucional está previsto que tenga lugar en Ottawa el próximo 7 de octubre de 2026.",
+    "La Embajada se compromete a difundir la participación de la entidad y a expedir la certificación acreditativa en un plazo máximo de treinta días."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21140": {
+   "huella": "c552ec82928f3bf4",
+   "fuente": "8f943e1fbc20df01",
+   "titular": "Exteriores fija los centros para el voto en urna desde el extranjero en noviembre",
+   "entradilla": "La Subsecretaría detalla las sedes consulares y locales habilitados para depositar el voto en las elecciones de noviembre.",
+   "claves": [
+    "En la demarcación de Santiago de Chile el centro habilitado será el Centro Cultural de España en la avenida Providencia.",
+    "En México el depósito se realizará en el Hospital Español de la Ciudad de México y en Caracas en la Quinta de Marmolejo y la Hermandad Gallega de Valencia.",
+    "Los electores residentes en el extranjero podrán votar entre el octavo y el tercer día anteriores a la jornada electoral."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21141": {
+   "huella": "a7f5cb4ef48694c7",
+   "fuente": "4d3c9de24004d03f",
+   "titular": "Hacienda aprueba la actualización de la Carta de Servicios del Tabaco",
+   "entradilla": "El Comisionado para el Mercado de Tabacos renueva sus compromisos de calidad para el periodo 2026-2029.",
+   "claves": [
+    "La carta de servicios detalla las prestaciones y derechos de los usuarios ante el Comisionado para el Mercado de Tabacos.",
+    "El documento entra en vigor al día siguiente de su publicación en el Boletín Oficial del Estado.",
+    "La información estará disponible de forma permanente en la sede electrónica del Ministerio de Hacienda y en el Punto de Acceso General."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21142": {
+   "huella": "e9d618ee521fb8fc",
+   "fuente": "9e90a0afafa1dd72",
+   "titular": "El Instituto de Estudios Fiscales y la Fundación Carolina impulsan un máster",
+   "entradilla": "Se publica el convenio para celebrar el seminario en América Latina de la UNED en Hacienda Pública.",
+   "claves": [
+    "El acuerdo regula la celebración del seminario en América Latina integrado en la XII Edición del Máster Universitario oficial de la UNED.",
+    "El convenio fue formalizado de forma conjunta por el Instituto de Estudios Fiscales y la Fundación Carolina el 30 de septiembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21143": {
+   "huella": "12dd6f2ca40aea7b",
+   "fuente": "deff6a2a3d388ed1",
+   "titular": "El Colegio de la Abogacía de Reus colaborará en la gestión catastral",
+   "entradilla": "La Dirección General del Catastro firma un convenio para acercar los trámites tributarios a la ciudadanía.",
+   "claves": [
+    "El acuerdo facilita la presentación electrónica de declaraciones catastrales y la práctica de notificaciones a través de los colegiados.",
+    "Se contempla expresamente el compromiso de gestionar Puntos de Información Catastral para acercar los servicios a los ciudadanos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21144": {
+   "huella": "6d886dee90afbf1f",
+   "fuente": "3409cce63cb432ba",
+   "titular": "El Gobierno aprueba la directriz de autoprotección frente a emergencias",
+   "entradilla": "El Consejo de Ministros actualiza la normativa de planificación de protección civil para centros de riesgo.",
+   "claves": [
+    "La directriz establece el contenido mínimo y los criterios para elaborar los planes de autoprotección en instalaciones con riesgo de emergencia.",
+    "La norma sustituye al anterior Real Decreto 393/2007 tras la entrada en vigor de la nueva Norma Básica de Protección Civil.",
+    "La aplicación de esta disposición no generará ningún incremento de gasto público ni de dotaciones de personal."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21145": {
+   "huella": "a1d67f5bc25ba46b",
+   "fuente": "67487a608c69ddcd",
+   "titular": "El Gobierno aprueba la nueva directriz de protección civil ante terremotos",
+   "entradilla": "El Consejo de Ministros actualiza el marco de planificación frente al riesgo sísmico vigente desde 1995.",
+   "claves": [
+    "La directriz básica homogeneiza la planificación de emergencias por riesgo de terremotos entre las distintas administraciones públicas.",
+    "El acuerdo deja sin efecto la anterior directriz aprobada por el Consejo de Ministros el 7 de abril de 1995.",
+    "La medida entra en vigor al día siguiente de su publicación oficial y no supone incremento del gasto público."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21146": {
+   "huella": "fc54ce6712ebe28b",
+   "fuente": "8413c731332e6c5e",
+   "titular": "El Gobierno aprueba la directriz de protección civil ante sustancias peligrosas",
+   "entradilla": "El Consejo de Ministros actualiza la normativa para el control y planificación de accidentes químicos y nucleares.",
+   "claves": [
+    "La directriz regula la gestión integral de riesgos derivados de instalaciones con sustancias químicas, biológicas, nucleares o radiactivas.",
+    "La norma sustituye al anterior marco regulador aprobado por el Real Decreto 1196/2003.",
+    "La aplicación del acuerdo no supondrá un incremento de dotaciones presupuestarias ni de gastos de personal."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21147": {
+   "huella": "a1dc93245f77498c",
+   "fuente": "74dc03064ce26bdc",
+   "titular": "El Gobierno aprueba la nueva directriz de protección civil ante riesgo volcánico",
+   "entradilla": "El Consejo de Ministros actualiza la planificación especial frente a erupciones volcánicas tras la norma de 1996.",
+   "claves": [
+    "La directriz establece los criterios mínimos para los planes especiales de protección civil ante el riesgo volcánico.",
+    "El texto deroga formalmente la directriz que se encontraba en vigor desde el acuerdo del Consejo de Ministros del 19 de enero de 1996.",
+    "La normativa produce efectos desde el día siguiente al de su publicación oficial sin incrementar el gasto público."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21148": {
+   "huella": "043b6d34a7bfd24c",
+   "fuente": "81a76537db078afc",
+   "titular": "Trabajo y Aragón prorrogan el registro electrónico de empresas de la construcción",
+   "entradilla": "Se prolonga durante cuatro años más el convenio para el funcionamiento telemático de las acreditaciones laborales.",
+   "claves": [
+    "La adenda prorroga por un periodo adicional de cuatro años el convenio original suscrito entre ambas administraciones.",
+    "Los compromisos adquiridos por el Ministerio de Trabajo y Economía Social y el Gobierno de Aragón permanecen inalterados.",
+    "El texto adquiere eficacia tras su inscripción en el registro estatal y su posterior publicación en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "C-3df4350f7c2a32eb": {
+   "huella": "332bb4e595b2df8b",
+   "fuente": "08b41834f272e0e9",
+   "titular": "El Congreso rechaza la tramitación de la proposición de ley de familias",
+   "entradilla": "La iniciativa presentada por el Grupo Parlamentario Mixto ha sido inadmitida al requerir aclaraciones previas.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "C-ab758ec3b904ad7b": {
+   "huella": "61e1dbc71ebb79c4",
+   "fuente": "be00d2115b7ca0d7",
+   "titular": "El Congreso inadmite a trámite una proposición de ley del Grupo Mixto",
+   "entradilla": "El Congreso rechaza la proposición de ley para establecer un plan frente a las consecuencias de determinadas políticas con requerimiento de aclaración.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
+  },
+  "C-9b2a7953e2298b8d": {
+   "huella": "7c1da6776370a5b6",
+   "fuente": "b9962e1913517511",
+   "titular": "El Congreso inadmite otra proposición sobre el plan anti-pedida por el Mixto",
+   "entradilla": "La iniciativa presentada por el Grupo Parlamentario Mixto no continúa su curso parlamentario por falta de claridad.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-10"
   }
  },
  "uso": {
-  "2026-10-09": 10
+  "2026-10-10": 2
  }
 }

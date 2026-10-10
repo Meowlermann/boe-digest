@@ -1,15 +1,15 @@
 {
-  "inicio": "2026-10-09T19:41:41.629746+00:00",
+  "inicio": "2026-10-10T05:41:07.087092+00:00",
   "peticiones": [
     {
-      "url": "https://www.boe.es/boe/dias/2026/10/09/index.php",
+      "url": "https://www.boe.es/boe/dias/2026/10/10/index.php",
       "status": 200,
-      "bytes": 213497
+      "bytes": 246953
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261009",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261010",
       "status": 200,
-      "bytes": 344715
+      "bytes": 416189
     },
     {
       "url": "https://www.congreso.es/es/opendata/intervenciones",
@@ -17,9 +17,9 @@
       "bytes": 86515
     },
     {
-      "url": "https://www.congreso.es/webpublica/opendata/intervenciones/IntervencionesCronologicamente__20261009050132.json",
+      "url": "https://www.congreso.es/webpublica/opendata/intervenciones/IntervencionesCronologicamente__20261010050220.json",
       "status": 200,
-      "bytes": 56100977
+      "bytes": 56101015
     },
     {
       "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=filtrarListado&p_p_cacheability=cacheLevelPage&_iniciativas_mode=verListadoIndice&_iniciativas_tipo=184&_iniciativas_legislatura=15",
@@ -1322,404 +1322,404 @@
       "bytes": 94083
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098193_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098639_n_000.pdf",
       "status": 200,
-      "bytes": 180305
+      "bytes": 180888
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098208_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098638_n_000.pdf",
       "status": 200,
-      "bytes": 425634
+      "bytes": 180894
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098192_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098632_n_000.pdf",
       "status": 200,
-      "bytes": 181994
+      "bytes": 180896
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098204_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098654_n_000.pdf",
       "status": 200,
-      "bytes": 349304
+      "bytes": 180872
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098203_n_000.pdf",
-      "status": 200,
-      "bytes": 180121
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098205_n_000.pdf",
-      "status": 200,
-      "bytes": 233345
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098194_n_000.pdf",
-      "status": 200,
-      "bytes": 277589
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098852_n_000.pdf",
-      "status": 200,
-      "bytes": 232367
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098202_n_000.pdf",
-      "status": 200,
-      "bytes": 464032
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098198_n_000.pdf",
-      "status": 200,
-      "bytes": 181450
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098197_n_000.pdf",
-      "status": 200,
-      "bytes": 238364
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098200_n_000.pdf",
-      "status": 200,
-      "bytes": 357850
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098199_n_000.pdf",
-      "status": 200,
-      "bytes": 236034
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098195_n_000.pdf",
-      "status": 200,
-      "bytes": 231145
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098704_n_000.pdf",
-      "status": 200,
-      "bytes": 231343
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098196_n_000.pdf",
-      "status": 200,
-      "bytes": 590181
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098201_n_000.pdf",
-      "status": 200,
-      "bytes": 302230
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098687_n_000.pdf",
-      "status": 200,
-      "bytes": 230739
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098686_n_000.pdf",
-      "status": 200,
-      "bytes": 230713
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098700_n_000.pdf",
-      "status": 200,
-      "bytes": 180471
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098699_n_000.pdf",
-      "status": 200,
-      "bytes": 180511
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098702_n_000.pdf",
-      "status": 200,
-      "bytes": 180473
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098685_n_000.pdf",
-      "status": 200,
-      "bytes": 230633
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098701_n_000.pdf",
-      "status": 200,
-      "bytes": 180485
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098684_n_000.pdf",
-      "status": 200,
-      "bytes": 230720
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098688_n_000.pdf",
-      "status": 200,
-      "bytes": 181004
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098693_n_000.pdf",
-      "status": 200,
-      "bytes": 367458
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098692_n_000.pdf",
-      "status": 200,
-      "bytes": 367518
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098189_n_000.pdf",
-      "status": 200,
-      "bytes": 285911
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098695_n_000.pdf",
-      "status": 200,
-      "bytes": 367571
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098689_n_000.pdf",
-      "status": 200,
-      "bytes": 180946
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098691_n_000.pdf",
-      "status": 200,
-      "bytes": 181019
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098690_n_000.pdf",
-      "status": 200,
-      "bytes": 181024
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098683_n_000.pdf",
-      "status": 200,
-      "bytes": 230830
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098697_n_000.pdf",
-      "status": 200,
-      "bytes": 180518
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098696_n_000.pdf",
-      "status": 200,
-      "bytes": 180502
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098698_n_000.pdf",
-      "status": 200,
-      "bytes": 180435
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098663_n_000.pdf",
-      "status": 200,
-      "bytes": 180900
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098662_n_000.pdf",
-      "status": 200,
-      "bytes": 180856
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098665_n_000.pdf",
-      "status": 200,
-      "bytes": 180878
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098664_n_000.pdf",
-      "status": 200,
-      "bytes": 180860
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098672_n_000.pdf",
-      "status": 200,
-      "bytes": 180975
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098671_n_000.pdf",
-      "status": 200,
-      "bytes": 180915
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098668_n_000.pdf",
-      "status": 200,
-      "bytes": 180903
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098667_n_000.pdf",
-      "status": 200,
-      "bytes": 180882
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098670_n_000.pdf",
-      "status": 200,
-      "bytes": 180890
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098669_n_000.pdf",
-      "status": 200,
-      "bytes": 180869
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098676_n_000.pdf",
-      "status": 200,
-      "bytes": 180884
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098674_n_000.pdf",
-      "status": 200,
-      "bytes": 180924
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098678_n_000.pdf",
-      "status": 200,
-      "bytes": 180899
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098677_n_000.pdf",
-      "status": 200,
-      "bytes": 180854
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098673_n_000.pdf",
-      "status": 200,
-      "bytes": 180847
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098660_n_000.pdf",
-      "status": 200,
-      "bytes": 180856
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098659_n_000.pdf",
-      "status": 200,
-      "bytes": 180859
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098661_n_000.pdf",
-      "status": 200,
-      "bytes": 180849
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098680_n_000.pdf",
-      "status": 200,
-      "bytes": 180917
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098656_n_000.pdf",
-      "status": 200,
-      "bytes": 180942
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098679_n_000.pdf",
-      "status": 200,
-      "bytes": 180844
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098682_n_000.pdf",
-      "status": 200,
-      "bytes": 180867
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098658_n_000.pdf",
-      "status": 200,
-      "bytes": 180893
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098681_n_000.pdf",
-      "status": 200,
-      "bytes": 180845
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098657_n_000.pdf",
-      "status": 200,
-      "bytes": 180908
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098642_n_000.pdf",
-      "status": 200,
-      "bytes": 180860
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098641_n_000.pdf",
-      "status": 200,
-      "bytes": 180860
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098629_n_000.pdf",
-      "status": 200,
-      "bytes": 180839
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098648_n_000.pdf",
-      "status": 200,
-      "bytes": 180814
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098647_n_000.pdf",
-      "status": 200,
-      "bytes": 180828
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098650_n_000.pdf",
-      "status": 200,
-      "bytes": 180847
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098649_n_000.pdf",
-      "status": 200,
-      "bytes": 180843
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098644_n_000.pdf",
-      "status": 200,
-      "bytes": 180895
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098643_n_000.pdf",
-      "status": 200,
-      "bytes": 180939
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e9/e_0098646_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098631_n_000.pdf",
       "status": 200,
       "bytes": 180875
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098645_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098635_n_000.pdf",
       "status": 200,
-      "bytes": 180882
+      "bytes": 180913
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098640_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098634_n_000.pdf",
       "status": 200,
-      "bytes": 180861
+      "bytes": 180898
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098651_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098610_n_000.pdf",
       "status": 200,
-      "bytes": 180907
+      "bytes": 183403
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098653_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098609_n_000.pdf",
       "status": 200,
-      "bytes": 180945
+      "bytes": 183423
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098630_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098628_n_000.pdf",
       "status": 200,
-      "bytes": 180885
+      "bytes": 180929
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098652_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098605_n_000.pdf",
       "status": 200,
-      "bytes": 180883
+      "bytes": 183516
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098637_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098627_n_000.pdf",
       "status": 200,
-      "bytes": 180853
+      "bytes": 180859
     },
     {
-      "url": "https://www.congreso.es/l15p/e9/e_0098636_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e9/e_0098604_n_000.pdf",
       "status": 200,
-      "bytes": 180887
+      "bytes": 183375
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098607_n_000.pdf",
+      "status": 200,
+      "bytes": 183370
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098606_n_000.pdf",
+      "status": 200,
+      "bytes": 183410
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098624_n_000.pdf",
+      "status": 200,
+      "bytes": 183327
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098623_n_000.pdf",
+      "status": 200,
+      "bytes": 183426
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098626_n_000.pdf",
+      "status": 200,
+      "bytes": 183371
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098603_n_000.pdf",
+      "status": 200,
+      "bytes": 183344
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098625_n_000.pdf",
+      "status": 200,
+      "bytes": 183374
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098608_n_000.pdf",
+      "status": 200,
+      "bytes": 183312
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098620_n_000.pdf",
+      "status": 200,
+      "bytes": 183386
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098622_n_000.pdf",
+      "status": 200,
+      "bytes": 183403
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098621_n_000.pdf",
+      "status": 200,
+      "bytes": 183367
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098617_n_000.pdf",
+      "status": 200,
+      "bytes": 183377
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098615_n_000.pdf",
+      "status": 200,
+      "bytes": 183505
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098619_n_000.pdf",
+      "status": 200,
+      "bytes": 183470
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098618_n_000.pdf",
+      "status": 200,
+      "bytes": 183382
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098612_n_000.pdf",
+      "status": 200,
+      "bytes": 183398
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098611_n_000.pdf",
+      "status": 200,
+      "bytes": 183392
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098614_n_000.pdf",
+      "status": 200,
+      "bytes": 183413
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098613_n_000.pdf",
+      "status": 200,
+      "bytes": 183351
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098582_n_000.pdf",
+      "status": 200,
+      "bytes": 183416
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098580_n_000.pdf",
+      "status": 200,
+      "bytes": 183407
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098584_n_000.pdf",
+      "status": 200,
+      "bytes": 183383
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098583_n_000.pdf",
+      "status": 200,
+      "bytes": 183416
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098601_n_000.pdf",
+      "status": 200,
+      "bytes": 183366
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098577_n_000.pdf",
+      "status": 200,
+      "bytes": 183407
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098600_n_000.pdf",
+      "status": 200,
+      "bytes": 183402
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098579_n_000.pdf",
+      "status": 200,
+      "bytes": 183469
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098602_n_000.pdf",
+      "status": 200,
+      "bytes": 183406
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098578_n_000.pdf",
+      "status": 200,
+      "bytes": 183394
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098586_n_000.pdf",
+      "status": 200,
+      "bytes": 183400
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098585_n_000.pdf",
+      "status": 200,
+      "bytes": 183367
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098587_n_000.pdf",
+      "status": 200,
+      "bytes": 183406
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098599_n_000.pdf",
+      "status": 200,
+      "bytes": 183416
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098593_n_000.pdf",
+      "status": 200,
+      "bytes": 183384
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098592_n_000.pdf",
+      "status": 200,
+      "bytes": 183333
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098596_n_000.pdf",
+      "status": 200,
+      "bytes": 183353
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098595_n_000.pdf",
+      "status": 200,
+      "bytes": 183301
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098589_n_000.pdf",
+      "status": 200,
+      "bytes": 183274
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098588_n_000.pdf",
+      "status": 200,
+      "bytes": 183427
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098591_n_000.pdf",
+      "status": 200,
+      "bytes": 183335
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098590_n_000.pdf",
+      "status": 200,
+      "bytes": 183372
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098598_n_000.pdf",
+      "status": 200,
+      "bytes": 183372
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098597_n_000.pdf",
+      "status": 200,
+      "bytes": 183422
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098575_n_000.pdf",
+      "status": 200,
+      "bytes": 183381
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098571_n_000.pdf",
+      "status": 200,
+      "bytes": 183312
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098573_n_000.pdf",
+      "status": 200,
+      "bytes": 183325
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098572_n_000.pdf",
+      "status": 200,
+      "bytes": 183377
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098574_n_000.pdf",
+      "status": 200,
+      "bytes": 183421
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098181_n_000.pdf",
+      "status": 200,
+      "bytes": 358441
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098182_n_000.pdf",
+      "status": 200,
+      "bytes": 230559
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098179_n_000.pdf",
+      "status": 200,
+      "bytes": 357935
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098178_n_000.pdf",
+      "status": 200,
+      "bytes": 181952
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098180_n_000.pdf",
+      "status": 200,
+      "bytes": 358476
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098177_n_000.pdf",
+      "status": 200,
+      "bytes": 358132
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098176_n_000.pdf",
+      "status": 200,
+      "bytes": 358469
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098187_n_000.pdf",
+      "status": 200,
+      "bytes": 230639
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098186_n_000.pdf",
+      "status": 200,
+      "bytes": 282116
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098188_n_000.pdf",
+      "status": 200,
+      "bytes": 232580
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098184_n_000.pdf",
+      "status": 200,
+      "bytes": 180394
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098185_n_000.pdf",
+      "status": 200,
+      "bytes": 352851
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098183_n_000.pdf",
+      "status": 200,
+      "bytes": 180026
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098165_n_000.pdf",
+      "status": 200,
+      "bytes": 339179
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098160_n_000.pdf",
+      "status": 200,
+      "bytes": 182185
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098162_n_000.pdf",
+      "status": 200,
+      "bytes": 180470
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098161_n_000.pdf",
+      "status": 200,
+      "bytes": 233006
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098175_n_000.pdf",
+      "status": 200,
+      "bytes": 358435
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e9/e_0098174_n_000.pdf",
+      "status": 200,
+      "bytes": 357026
     },
     {
       "url": "https://www.congreso.es/es/opendata/iniciativas",
@@ -1727,19 +1727,19 @@
       "bytes": 87611
     },
     {
-      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/ProyectosDeLey__20261009050028.json",
+      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/ProyectosDeLey__20261010050044.json",
       "status": 200,
-      "bytes": 365017
+      "bytes": 367858
     },
     {
-      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/ProposicionesDeLey__20261009050143.json",
+      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/ProposicionesDeLey__20261010050233.json",
       "status": 200,
-      "bytes": 727105
+      "bytes": 738311
     },
     {
-      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/PropuestasDeReforma__20261009050039.json",
+      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/PropuestasDeReforma__20261010050056.json",
       "status": 200,
-      "bytes": 2623
+      "bytes": 2812
     },
     {
       "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000010",
@@ -1842,114 +1842,106 @@
       "bytes": 92757
     },
     {
-      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/IniciativasLegislativasAprobadas__20261009050017.json",
+      "url": "https://www.congreso.es/webpublica/opendata/iniciativas/IniciativasLegislativasAprobadas__20261010050032.json",
       "status": 200,
       "bytes": 77696
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20976",
-      "status": 200,
-      "bytes": 40801
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21097",
+      "status": 404
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20977",
-      "status": 200,
-      "bytes": 31923
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21098",
+      "status": 404
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20978",
-      "status": 200,
-      "bytes": 33864
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21099",
+      "status": 404
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20979",
-      "status": 200,
-      "bytes": 75873
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21100",
+      "status": 404
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20980",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21137",
       "status": 200,
-      "bytes": 59686
+      "bytes": 31365
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21028",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21138",
       "status": 200,
-      "bytes": 25581
+      "bytes": 30967
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21029",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21139",
       "status": 200,
-      "bytes": 19450
+      "bytes": 31040
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21030",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21140",
       "status": 200,
-      "bytes": 31397
+      "bytes": 19378
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21031",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21141",
       "status": 200,
-      "bytes": 31003
+      "bytes": 16300
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21032",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21142",
       "status": 200,
-      "bytes": 31141
+      "bytes": 40990
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21033",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21143",
       "status": 200,
-      "bytes": 30989
+      "bytes": 41135
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21034",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21144",
       "status": 200,
-      "bytes": 31236
+      "bytes": 128598
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21035",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21145",
       "status": 200,
-      "bytes": 31377
+      "bytes": 238833
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21036",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21146",
       "status": 200,
-      "bytes": 31332
+      "bytes": 229867
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21037",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21147",
       "status": 200,
-      "bytes": 31226
+      "bytes": 239867
     },
     {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21038",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-21148",
       "status": 200,
-      "bytes": 31071
+      "bytes": 21302
     }
   ],
   "nombramientos": {
-    "fecha": "2026-10-09",
+    "fecha": "2026-10-10",
     "fuente": "api",
-    "incluidos": 5,
+    "incluidos": 6,
     "descartes": {
-      "sin nombre propio": 9,
-      "nombre sin patrón reconocido": 2,
-      "II.B: sin nombre propio": 31
+      "sin nombre propio": 5,
+      "II.B: sin nombre propio": 25
     }
   },
   "provincias": {
-    "fecha": "2026-10-09",
-    "incluidos": 14,
+    "fecha": "2026-10-10",
+    "incluidos": 10,
     "descartes": {}
   },
   "resumen": {
-    "boe_entradas": 128,
-    "congreso_piezas": 8,
+    "boe_entradas": 66,
+    "congreso_piezas": 4,
     "senado_docs": 0
   },
-  "titulares_descartados": [
-    "DINERO PÚBLICO — menos de cinco palabras"
-  ],
   "semanas": [],
-  "fin": "2026-10-09T19:48:14.022335+00:00"
+  "fin": "2026-10-10T05:51:12.445120+00:00"
 }
