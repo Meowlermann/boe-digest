@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso registra 38 preguntas escritas que superan el plazo sin respuesta",
-   "entradilla": "Un total de 38 preguntas registradas en el Congreso superan el límite de 20 días hábiles sin contestación reflejada, con Sumar como la formación con más consultas pendientes.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas sin contestar fuera de plazo",
+   "entradilla": "Un total de 38 iniciativas parlamentarias superan los 20 días hábiles desde su publicación sin contestación registrada en el Congreso, en un recuento relativo al último año.",
    "claves": [
-    "Por grupos parlamentarios, Sumar acumula 30 preguntas pendientes, el PSOE 4, el PP 2, Junts 1 y la categoría Sin grupo 1.",
-    "La iniciativa parlamentaria más antigua con el plazo superado se publicó el lunes 15 de diciembre de 2025.",
-    "El recuento del último año advierte de que pueden existir prórrogas o respuestas no reflejadas todavía en las fichas del Congreso."
+    "Por grupos parlamentarios, Sumar encabeza las preguntas pendientes con 24, seguido del PSOE con 7, el PP con 4, y el GV (EAJ-PNV), Junts y el grupo Sin grupo con una cada uno.",
+    "La pregunta más antigua acumulada en este recuento oficial se publicó en la cámara el lunes 16 de febrero de 2026.",
+    "Las fichas parlamentarias pueden incluir prórrogas en el plazo o respuestas ya emitidas que todavía no figuren registradas."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-11"
@@ -6523,6 +6523,6 @@
   }
  },
  "uso": {
-  "2026-10-11": 7
+  "2026-10-11": 8
  }
 }
