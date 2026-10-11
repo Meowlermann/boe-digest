@@ -4903,8 +4903,16 @@
   },
   "C-04ab2ddc383b1c34": {
    "huella": "0ffb5472867d2876",
-   "descartado": "nombre «Alta» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso suma 38 preguntas escritas con el plazo de respuesta superado",
+   "entradilla": "Un total de 38 iniciativas parlamentarias superan los 20 días hábiles sin contestación registrada, correspondiendo la mayoría al grupo parlamentario Sumar.",
+   "claves": [
+    "Del total de 38 preguntas fuera de plazo, 30 pertenecen a Sumar, 4 al PSOE, 2 al PP, una a Junts y una a un diputado sin grupo.",
+    "La pregunta escrita más antigua que ha superado el plazo límite de respuesta se publicó el lunes 15 de diciembre de 2025.",
+    "El recuento analiza el último año y contempla que puedan existir prórrogas o respuestas aún no reflejadas en la ficha oficial."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-11"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -6515,6 +6523,6 @@
   }
  },
  "uso": {
-  "2026-10-10": 10
+  "2026-10-11": 2
  }
 }

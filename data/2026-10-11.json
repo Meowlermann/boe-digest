@@ -1,0 +1,62 @@
+{
+  "id": "2026-10-11",
+  "label": "11 OCT",
+  "boe": {
+    "numero": "",
+    "fecha": "",
+    "fechaISO": "",
+    "sourceUrl": "",
+    "counts": {
+      "fiscal": 0,
+      "laboral": 0,
+      "mercantil": 0,
+      "otros": 0
+    },
+    "extra": "El BOE no se publica los domingos. El último es el del sábado, 10 de octubre de 2026.",
+    "stories": [],
+    "ultimo": "2026-10-10"
+  },
+  "cortes": {
+    "congreso": {
+      "presidenta": "Francina Armengol Socias",
+      "legislatura": "XV Legislatura (2023– )",
+      "sede": "Plaza de las Cortes, 1, Madrid"
+    },
+    "senado": {
+      "presidente": "Pedro Rollán",
+      "legislatura": "XV Legislatura (2023– )",
+      "sede": "Bailén, 3, Madrid"
+    },
+    "scoreboard": {
+      "note": "Preguntas escritas con el plazo superado y sin contestación registrada, por grupo de quien pregunta.",
+      "rows": [
+        {
+          "g": "Sumar",
+          "n": 6
+        }
+      ]
+    },
+    "feed": [
+      {
+        "chamber": "congreso",
+        "type": "Preguntas pendientes",
+        "date": "domingo 11 de octubre de 2026",
+        "headline": "6 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada",
+        "standfirst": "Recuento sobre las preguntas del último año con la fecha límite que publica el Congreso ya superada. Puede haber prórrogas o respuestas aún no reflejadas en la ficha.",
+        "body": [
+          "La más antigua se publicó el lunes 15 de diciembre de 2025.",
+          "Por grupo de quien pregunta: Sumar 6."
+        ],
+        "source": {
+          "label": "Pendientes más antiguas",
+          "url": "https://terceracamara.es/preguntas/#pendientes"
+        }
+      }
+    ],
+    "coverage": {
+      "congreso": true,
+      "senado": false,
+      "nota": "El Senado no ofrece por ahora acceso automatizado a sus datos, así que esta sección cubre solo el Congreso. Sin sesión de control nueva desde el miércoles 23 de septiembre de 2026; sus preguntas salieron en la edición del miércoles 30 de septiembre de 2026."
+    }
+  }
+}
