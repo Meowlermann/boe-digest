@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "38 preguntas escritas en el Congreso superan el plazo de 20 días sin respuesta",
-   "entradilla": "El Congreso acumula 38 preguntas escritas pendientes de contestación cuyo plazo límite ya ha superado los 20 días hábiles desde su publicación.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Treinta y ocho preguntas escritas superan los veinte días hábiles sin contestación",
+   "entradilla": "El Congreso acumula 38 preguntas escritas del último año que superan el plazo límite de publicación sin respuesta registrada.",
    "claves": [
-    "La pregunta más antigua del recuento se publicó el lunes 16 de febrero de 2026.",
-    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE 7 y el PP 4.",
-    "El grupo GV registra 3 preguntas, divididas entre EAJ-PNV, Junts y sin grupo con una cada uno."
+    "La pregunta más antigua acumulada se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupos parlamentarios, Sumar acumula 30 preguntas sin contestar, el PSOE cuatro, el PP dos, Junts una y el grupo mixto otra.",
+    "El recuento incluye aquellas preguntas cuya fecha límite publicada por el Congreso ya ha sido superada."
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-12"
@@ -6730,6 +6730,6 @@
   }
  },
  "uso": {
-  "2026-10-12": 7
+  "2026-10-12": 8
  }
 }
