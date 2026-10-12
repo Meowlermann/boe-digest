@@ -1,7 +1,7 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-11",
+  "fecha": "2026-10-12",
   "graves": 0,
   "avisos": 3,
   "hallazgos": [
@@ -20,8 +20,8 @@
     {
       "nivel": "aviso",
       "comprobacion": "duplicados",
-      "detalle": "[cortes] titular repetido del 2026-10-10: «6 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada».",
-      "fichero": "data/2026-10-11.json"
+      "detalle": "[cortes] titular repetido del 2026-10-11: «6 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada».",
+      "fichero": "data/2026-10-12.json"
     }
   ]
 }

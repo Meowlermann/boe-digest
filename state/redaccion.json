@@ -4902,17 +4902,17 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "Treinta y ocho preguntas escritas superan el plazo de contestación en el Congreso",
-   "entradilla": "El Congreso acumula 38 preguntas escritas del último año que superan los 20 días hábiles de plazo sin respuesta registrada.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso registra 38 preguntas escritas con más de 20 días sin contestar",
+   "entradilla": "Un total de 38 preguntas escritas planteadas en el Congreso han superado el límite de 20 días hábiles desde su publicación sin que conste respuesta registrada.",
    "claves": [
-    "La más antigua de las preguntas sin contestación se publicó el lunes 15 de diciembre de 2025.",
-    "Por grupos parlamentarios, Sumar acumula 30 preguntas pendientes, el PSOE 4, el PP 2, Junts 1 y los diputados sin grupo 1.",
-    "El recuento señala que la fecha límite que publica el Congreso ya ha sido superada, aunque pueden existir prórrogas o respuestas pendientes de reflejar."
+    "Por grupos parlamentarios, Sumar encabeza la lista con 24 preguntas sin responder, seguido del PSOE con 7 y el PP con 4.",
+    "Las formaciones GV (EAJ-PNV), Junts y la opción Sin grupo cuentan con una iniciativa pendiente cada uno.",
+    "La iniciativa parlamentaria más antigua que sobrepasa el plazo de contestación fijado se publicó el lunes 16 de febrero de 2026."
    ],
-   "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-10-11"
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-12"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -6520,9 +6520,216 @@
    "claves": [],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-10"
+  },
+  "BOE-A-2026-21165": {
+   "huella": "2b7206209be2cf56",
+   "fuente": "12ad2e9d9204c214",
+   "titular": "España y las Escuelas Europeas implantan y financian el catalán como lengua nacional",
+   "entradilla": "El Ministerio de Educación formaliza el acuerdo para incluir la enseñanza del catalán en el sistema de Escuelas Europeas, asumiendo íntegramente su coste.",
+   "claves": [
+    "El acuerdo regula la implantación y financiación de la lengua catalana como otra lengua nacional en el sistema de las Escuelas Europeas.",
+    "El Consejo Superior de las Escuelas Europeas aprobó esta inclusión tras el compromiso de España de asumir la financiación de dicha enseñanza.",
+    "La medida se ampara en el Convenio del Estatuto de las Escuelas Europeas y en el compromiso constitucional de protección de la diversidad lingüística."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21166": {
+   "huella": "bad8f31f949f42f6",
+   "fuente": "17ad0eb8f07665c3",
+   "titular": "Transportes regula las funciones de control de calidad e inspección técnica",
+   "entradilla": "El Ministerio de Transportes establece los umbrales presupuestarios y las actuaciones de auditoría para los contratos de su sector.",
+   "claves": [
+    "La Subdirección General de Control de Calidad e Inspección Técnica evaluará la gestión de contratos y convenios en los servicios centrales, periféricos y entidades del Ministerio.",
+    "Se fijan umbrales presupuestarios para evitar duplicidades en los controles internos, aplicando muestreos y auditorías específicas en los contratos de menor cuantía.",
+    "Quedan excluidos de esta orden los contratos de gestión de servicios públicos de transporte regular de viajeros por carretera, ferrocarril y transporte marítimo sujetos a obligaciones de servicio público."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21167": {
+   "huella": "4efb032116e643d4",
+   "fuente": "08430f04c327a67f",
+   "titular": "Educación actualiza los estándares de competencias de once familias profesionales",
+   "entradilla": "El Ministerio de Educación actualiza diversos estándares de competencias profesionales incluidos en el Catálogo Nacional en todo el territorio nacional.",
+   "claves": [
+    "La orden actualiza los estándares de las familias profesionales de Agraria, Artes Gráficas, Artes y Artesanías, Energía y Agua, Edificación y Obra Civil, y Fabricación Mecánica.",
+    "También se actualizan los estándares correspondientes a Industrias Alimentarias, Madera, Mueble y Corcho, Química, Textil, Confección y Piel, y Vidrio y Cerámica.",
+    "Los nuevos anexos técnicos sustituyen a la parte afectada de los estándares originales, sin constituir la regulación de ninguna profesión."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21197": {
+   "huella": "b0ecae6f27cdb888",
+   "fuente": "48a2a1c488cb17e3",
+   "titular": "La AECID y la Universidad de A Coruña colaboran en saneamiento en Bolivia",
+   "entradilla": "La Agencia Española de Cooperación y la Universidad de A Coruña impulsan la segunda fase del proyecto de saneamiento y drenaje en Bolivia.",
+   "claves": [
+    "El convenio se enmarca en la gestión del Fondo de Cooperación para Agua y Saneamiento para apoyar el desarrollo sostenible en América Latina.",
+    "La Universidad de A Coruña aporta apoyo técnico, gestión y capacitación en la planificación del saneamiento y drenaje sostenible en el estado plurinacional de Bolivia.",
+    "La actuación forma parte de las políticas públicas de cooperación española para asegurar el acceso al agua potable y saneamiento a las poblaciones más vulnerables."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21198": {
+   "huella": "7bb0c1500776df6b",
+   "fuente": "27649812db23e7e1",
+   "titular": "La AECID y Médicos del Mundo coordinan su respuesta ante emergencias",
+   "entradilla": "Ambas organizaciones firman un convenio para desplegar equipos médicos conjuntos y coordinar la ayuda humanitaria dentro y fuera de España.",
+   "claves": [
+    "El acuerdo establece modalidades de colaboración que incluyen el despliegue conjunto de personal técnico y sanitario en operaciones de emergencia.",
+    "Se contempla la formación conjunta de personal, el intercambio de información técnica y la coordinación de capacidades logísticas y de transporte.",
+    "Médicos del Mundo pondrá a disposición personal especializado y equipamiento médico, mientras que la AECID facilitará la integración en los dispositivos de respuesta y su capacidad logística."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21199": {
+   "huella": "f848ae04c0466fa8",
+   "fuente": "5573daf2a336860b",
+   "titular": "PLDT costeará la celebración de la Fiesta Nacional en la Embajada en Filipinas",
+   "entradilla": "La empresa PLDT financiará servicios por valor de 300.000 pesos filipinos para la recepción de la Fiesta Nacional organizada por la Embajada en Manila.",
+   "claves": [
+    "La aportación económica de PLDT se realiza en especie mediante la contratación directa de suministros o servicios para el evento del 12 de octubre de 2026.",
+    "El convenio no genera coste alguno para la Embajada de España en Filipinas y se acoge a los incentivos fiscales al mecenazgo.",
+    "La Embajada se compromete a difundir la participación de la empresa mediante la inclusión de su logotipo en el material gráfico, web y menciones en el acto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21200": {
+   "huella": "b35f0a045127597d",
+   "fuente": "9b01926dce1889e6",
+   "titular": "El Centro de Estudios Jurídicos y la Universidad de Girona impartirán un curso",
+   "entradilla": "Ambas instituciones organizarán un curso de especialización en justicia restaurativa dirigido a profesionales de la Administración de Justicia.",
+   "claves": [
+    "El curso cuenta con 20 créditos ECTS y se impartirá en modalidad a distancia durante el curso académico 2026-2027 y siguientes.",
+    "El Centro de Estudios Jurídicos seleccionará anualmente entre 40 y 60 participantes de la carrera fiscal, letrados de la administración de justicia, médicos forenses y otros cuerpos.",
+    "La Universidad de Girona pondrá los medios técnicos y humanos, elaborará el material docente troncal y se encargará de la gestión académica."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21201": {
+   "huella": "263f3a35861a4ca6",
+   "fuente": "9849991935ab19f9",
+   "titular": "Justicia y Extremadura prorrogan cuatro años el convenio para usar JARA",
+   "entradilla": "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes y Extremadura extienden su acuerdo e incluyen a los psicólogos del IMLCF en el acceso a la historia clínica.",
+   "claves": [
+    "La prórroga del convenio entre el Ministerio y la Comunidad Autónoma de Extremadura para usar la aplicación informática JARA se extiende por un periodo de cuatro años.",
+    "El acceso a la herramienta de historia clínica en JARA queda limitado a la Dirección del IMLCF o a las personas en las que delegue entre los médicos forenses y psicólogos del Instituto.",
+    "La adenda actualiza las denominaciones oficiales del Ministerio de la Presidencia, Justicia y Relaciones con las Cortes y de la Consejería de Salud y Atención a la Dependencia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21202": {
+   "huella": "33892148f146878c",
+   "fuente": "d051306353b92214",
+   "titular": "El Centro de Estudios Políticos coedita la revista Historia Constitucional",
+   "entradilla": "El Centro de Estudios Políticos y Constitucionales y la Fundación Universidad de Oviedo colaboran en la difusión de la revista durante 2026 y 2027.",
+   "claves": [
+    "El convenio tiene por objeto la coedición y difusión de la revista electrónica Historia Constitucional.",
+    "La colaboración abarca los ejercicios presupuestarios correspondientes a los años 2026 y 2027."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21203": {
+   "huella": "e9d758ab92d783e9",
+   "fuente": "1c382ebad9d3c0eb",
+   "titular": "Justicia valora las lenguas y el derecho propio en los concursos de traslados",
+   "entradilla": "Los letrados de la Administración de Justicia obtendrán hasta tres años de antigüedad equivalente por acreditar lenguas cooficiales o derecho autonómico.",
+   "claves": [
+    "El conocimiento oral y escrito de la lengua oficial propia se valora con un año de antigüedad para nivel elemental, dos para medio y tres para nivel superior.",
+    "El conocimiento del Derecho propio de determinadas comunidades autónomas otorga una puntuación equivalente a un año de antigüedad a efectos de concurso de traslados.",
+    "Los listados con los solicitantes que han obtenido el reconocimiento de estos méritos se publican en los anexos de la resolución."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21204": {
+   "huella": "864933fc417b095c",
+   "fuente": "df4874cd47477d83",
+   "titular": "Emplazan a los interesados en el recurso contra el nombramiento de Gestión Procesal",
+   "entradilla": "La Dirección General para la Eficiencia del Servicio Público de Justicia abre un plazo de nueve días para comparecer ante el Tribunal Central de Instancia.",
+   "claves": [
+    "El procedimiento abreviado número 145/2026 se ha interpuesto ante la Sección de lo Contencioso-Administrativo del Tribunal Central de Instancia.",
+    "El recurso impugna la Orden PJC/570/2026, que nombra funcionario del Cuerpo de Gestión Procesal y Administrativa por el turno libre.",
+    "Las personas interesadas disponen de un plazo de nueve días para comparecer ante la referida Sala."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21205": {
+   "huella": "5f660d7fe420cc99",
+   "fuente": "d8729c7efb44bfd9",
+   "titular": "Emplazan a los afectados en el recurso sobre destinos de Tramitación Procesal",
+   "entradilla": "Se abre un plazo de nueve días para comparecer en el recurso contencioso-administrativo interpuesto ante el Tribunal Central de Instancia.",
+   "claves": [
+    "El procedimiento abreviado número 147/2026 impugna la desestimación presunta de un recurso contra la asignación de destinos del Cuerpo de Tramitación Procesal.",
+    "La convocatoria deriva del proceso selectivo de acceso libre iniciado por la Orden JUS/1288/2022.",
+    "Los interesados pueden comparecer ante la Sección de lo Contencioso-Administrativo del Tribunal Central de Instancia en el plazo de nueve días."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21206": {
+   "huella": "ea3ba0d5eb760382",
+   "fuente": "47836658e8a9a8fd",
+   "titular": "El Catastro y el Colegio de Abogados de Terrassa colaboran en gestión catastral",
+   "entradilla": "La Dirección General del Catastro y el Colegio de Abogados firman un convenio para facilitar trámites tributarios y notificaciones a la ciudadanía.",
+   "claves": [
+    "El acuerdo permite a los ciudadanos presentar declaraciones catastrales de forma electrónica a través de la colaboración con los servicios jurídicos.",
+    "Se contempla la gestión de Puntos de Información Catastral para facilitar el acceso a la información y el cumplimiento de las obligaciones tributarias.",
+    "La colaboración se ampara en el principio de cooperación administrativa y en la Ley General Tributaria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21207": {
+   "huella": "c5fdc857aaaba214",
+   "fuente": "ce5c22a61867a33a",
+   "titular": "El Ministerio del Interior declara de utilidad pública a diversas asociaciones",
+   "entradilla": "Interior otorga la condición de utilidad pública a varias asociaciones y federaciones inscritas en registros estatales y autonómicos.",
+   "claves": [
+    "La orden abarca entidades inscritas en el Registro Nacional de Asociaciones y en registros de comunidades autónomas tras la tramitación de sus expedientes.",
+    "Se incluyen también federaciones de asociaciones, cuyos entes integrados requerirán solicitud e instrucción individual para obtener la misma declaración.",
+    "Contra la resolución cabe interponer recurso de reposición en el plazo de un mes o recurso contencioso-administrativo ante la Audiencia Nacional en dos meses."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21208": {
+   "huella": "2bbaeb94600548d0",
+   "fuente": "44af38c7f308bdff",
+   "titular": "Interior endurece los requisitos para conceder la condecoración policial",
+   "entradilla": "La Policía Nacional exige carecer de antecedentes disciplinarios graves y estar en activo para recibir las medallas a la dedicación al servicio.",
+   "claves": [
+    "Se exige ser funcionario en situación de servicio activo y contar con 20, 25, 30 o 35 años de servicio efectivo según la categoría de la condecoración.",
+    "Los aspirantes no deben registrar anotaciones desfavorables por faltas graves o muy graves ni estar sujetos a procesos penales o disciplinarios en el momento de la concesión.",
+    "Se computa el tiempo como alumno en el centro de formación o en prácticas, excluyendo otros periodos en situaciones administrativas ajenas al servicio activo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21209": {
+   "huella": "1a617803724e68e0",
+   "fuente": "e6550f2ac239b8c2",
+   "titular": "Hacienda publica las subvenciones a partidos políticos del tercer trimestre",
+   "entradilla": "El Estado aboca las ayudas ordinarias a las formaciones con representación en el Congreso con cargo a los Presupuestos Generales.",
+   "claves": [
+    "La subvención se otorga de forma no condicionada para atender los gastos de funcionamiento ordinario de los partidos políticos.",
+    "El reparto se efectúa conforme al artículo 3 de la Ley Orgánica sobre financiación de los partidos políticos durante el tercer trimestre de 2026.",
+    "Las cantidades se financian a través del programa presupuestario destinado a elecciones y partidos políticos en los Presupuestos Generales del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-12"
   }
  },
  "uso": {
-  "2026-10-11": 9
+  "2026-10-12": 2
  }
 }
