@@ -4902,17 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "38 preguntas escritas en el Congreso superan el plazo de 20 días sin respuesta",
-   "entradilla": "El Congreso acumula 38 preguntas escritas del último año que superan el plazo de 20 días hábiles sin que conste contestación registrada.",
-   "claves": [
-    "La pregunta más antigua de este recuento se publicó el lunes 16 de febrero de 2026.",
-    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE 7 y el PP 4.",
-    "El grupo GV registra 2 preguntas, repartidas entre EAJ-PNV y Junts, además de 1 pregunta sin grupo."
-   ],
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Treinta y ocho preguntas al Gobierno superan el plazo sin respuesta",
+   "entradilla": "Un total de treinta y ocho preguntas escritas formuladas por los grupos parlamentarios llevan más de veinte días hábiles sin contestación registrada.",
+   "claves": [],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-10-12"
+   "fecha": "2026-10-13"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -6727,9 +6723,233 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-12"
+  },
+  "BOE-A-2026-21251": {
+   "huella": "90ac7ab4309ad3ac",
+   "fuente": "abf326d80e0a44e1",
+   "titular": "Hacienda adapta los modelos de marcas fiscales para todo tipo de labores del tabaco",
+   "entradilla": "El Ministerio de Hacienda actualiza la normativa sobre marcas fiscales para adaptarla a la obligación europea de incluir medidas de seguridad en todos los productos del tabaco.",
+   "claves": [
+    "Las labores del tabaco distintas de cigarrillos y picadura de liar deben llevar los nuevos modelos de marcas fiscales a partir del 1 de enero de 2027.",
+    "Se mantiene la validez de las marcas fiscales ya adheridas a envases fabricados o importados antes del 1 de enero de 2027 hasta agotar su venta minorista.",
+    "Las existencias de marcas anteriores solicitadas antes del 1 de enero de 2027 podrán adherirse en enero, febrero y marzo de 2027.",
+    "Las marcas fiscales anteriores no adheridas deben devolverse a la Oficina Gestora en los tres meses siguientes al 1 de abril de 2027."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21252": {
+   "huella": "db5c733854523f77",
+   "fuente": "aaad877fee3b79b7",
+   "titular": "SEPIDES crea su registro electrónico para la recepción y remisión de solicitudes",
+   "entradilla": "La Sociedad Estatal de Promoción Industrial y Desarrollo Empresarial habilita un registro electrónico accesible las veinticuatro horas en la dirección de Red SARA.",
+   "claves": [
+    "El registro electrónico está disponible en la dirección https://reg.redsara.es para la recepción y remisión de escritos y solicitudes.",
+    "La utilización de este registro electrónico es una vía adicional y no obligatoria para los interesados, salvo para los sujetos obligados por ley.",
+    "El registro depende de la Secretaría General y Dirección de Asesoría Jurídica de SEPIDES.",
+    "La Dirección de Sistema de Información asume la responsabilidad de la seguridad del registro conforme al Esquema Nacional de Seguridad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21253": {
+   "huella": "5006d4ba71399f91",
+   "fuente": "a26c2d58f6634d37",
+   "titular": "La Sociedad Estatal de Promoción Industrial y Desarrollo Empresarial crea su sede electrónica",
+   "entradilla": "SEPIDES aprueba la creación de su sede electrónica oficial para facilitar los trámites administrativos de la entidad con plenas garantías de accesibilidad y seguridad.",
+   "claves": [
+    "La dirección oficial de la sede electrónica de SEPIDES es https://sede.sepides.gob.es y enlaza desde su portal de internet.",
+    "La sede se extiende a todos los órganos y unidades de la Sociedad Estatal de Promoción Industrial y Desarrollo Empresarial.",
+    "La Presidencia de la entidad asume la titularidad de la sede y la responsabilidad sobre su información.",
+    "La gestión tecnológica corresponde a la Dirección de Sistemas de Información de la entidad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21254": {
+   "huella": "c76164b6fc47e2e7",
+   "fuente": "7300de88d76ccb40",
+   "titular": "El Ministerio de Trabajo publica la relación de fiestas laborales para el año 2027",
+   "entradilla": "El Ministerio de Trabajo da publicidad a las fiestas laborales del año 2027 remitidas por las comunidades autónomas y las ciudades de Ceuta y Melilla.",
+   "claves": [
+    "Las diecisiete comunidades autónomas y las ciudades de Ceuta y Melilla han remitido sus calendarios de fiestas laborales al Ministerio.",
+    "La publicación en el Boletín Oficial del Estado tiene por objeto facilitar el conocimiento general del conjunto de las fiestas laborales.",
+    "El marco normativo incluye las fiestas de ámbito nacional no sustituibles y las opciones de cambio que corresponden a cada comunidad autónoma.",
+    "Se contemplan asimismo hasta dos días de carácter local inhábiles para el trabajo y retribuidos en cada municipio."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21282": {
+   "huella": "3e9f0b6c8783ebb2",
+   "fuente": "f53f1ee3f9c6e7b2",
+   "titular": "Velilla Group costeará la Fiesta Nacional en la Embajada de España en Bangladesh",
+   "entradilla": "La Embajada de España en Dhaka y Velilla Group suscriben un convenio para financiar la recepción de la Fiesta Nacional de España con dos mil euros.",
+   "claves": [
+    "La empresa Velilla Group aporta dos mil euros en metálico para la celebración de la Fiesta Nacional prevista en Dhaka el 12 de octubre de 2026.",
+    "El convenio no genera coste alguno para la Embajada de España en Bangladesh.",
+    "La Embajada se compromete a difundir la participación de la empresa mediante agradecimientos, logotipos y material gráfico.",
+    "La Embajada emitirá la certificación acreditativa de la aportación en un plazo máximo de treinta días tras la realización del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21283": {
+   "huella": "218224d31c858a60",
+   "fuente": "cc39a02d74bf0751",
+   "titular": "Técnicas Reunidas patrocina la Fiesta Nacional en el Consulado en Houston",
+   "entradilla": "El Consulado General de España en Houston y Técnicas Reunidas pactan la aportación de servicios por valor de tres mil euros para la Fiesta Nacional.",
+   "claves": [
+    "Técnicas Reunidas asume la contratación de suministros o servicios por valor estimado de tres mil euros para la celebración del 9 de octubre de 2026.",
+    "El acuerdo no supone ningún coste económico para el Consulado General de España.",
+    "El Consulado difundirá la participación de la empresa incluyendo su logotipo en invitaciones, web y redes sociales.",
+    "El Consulado expedirá la certificación de la aportación en un plazo máximo de treinta días desde la celebración."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21284": {
+   "huella": "e9f6a268823a82f8",
+   "fuente": "3ae2444a42d3690a",
+   "titular": "Naturgy Ban financiará la Fiesta Nacional en la Embajada de España en Argentina",
+   "entradilla": "La Embajada de España en Buenos Aires y Naturgy Ban formalizan un convenio para sufragar los festejos de la Fiesta Nacional por valor de ochocientos mil pesos.",
+   "claves": [
+    "Naturgy Ban aporta servicios por un valor estimado de ochocientos mil pesos argentinos para el evento previsto el 10 de octubre de 2024.",
+    "La aportación se realiza en especie mediante la contratación directa de suministros o servicios por parte de la empresa.",
+    "La Embajada de España no asume ningún coste por la celebración gracias a este patrocinio.",
+    "La legación diplomática certificará la aportación en un plazo de treinta días para los incentivos fiscales al mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21285": {
+   "huella": "d07258f2b8bb018a",
+   "fuente": "ae4edfbc457bdece",
+   "titular": "Endesa costeará los actos de la Fiesta Nacional en la Embajada en Bélgica",
+   "entradilla": "La Embajada de España en Bruselas y Endesa firman un convenio de colaboración para sufragar los actos institucionales del 19 de octubre de 2026.",
+   "claves": [
+    "Endesa aporta tres mil euros en especie mediante la contratación de suministros o servicios para la celebración en Bruselas.",
+    "El convenio no genera gasto alguno para la Embajada de España en Bélgica.",
+    "La Embajada difundirá la colaboración de Endesa en su material gráfico, web, redes sociales y menciones en el acto.",
+    "La representación diplomática emitirá la certificación de la aportación en un plazo máximo de treinta días tras el evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21286": {
+   "huella": "15ed2e2553a91755",
+   "fuente": "82ddd1e68a7dd03e",
+   "titular": "Endesa patrocinará la recepción de la Fiesta Nacional en la Embajada en Portugal",
+   "entradilla": "La Embajada de España en Lisboa y Endesa suscriben un convenio de mecenazgo por importe de tres mil euros para la celebración de la Fiesta Nacional.",
+   "claves": [
+    "Endesa realiza una aportación económica en metálico de tres mil euros para la recepción del 12 de octubre de 2026 en Lisboa.",
+    "La celebración no tendrá coste alguno para la Embajada de España en Portugal.",
+    "La Embajada agradecerá la aportación incluyendo el logotipo de la empresa en invitaciones, soportes físicos y redes sociales.",
+    "La Embajada enviará a Endesa la certificación acreditativa de la aportación en el plazo máximo de treinta días."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21287": {
+   "huella": "213360a0fb975d32",
+   "fuente": "0a93b6664c093534",
+   "titular": "Registradores confirman la denegación de cancelar una nota marginal en Osuna",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública desestima el recurso contra la negativa del registro a cancelar mediante instancia privada una nota marginal.",
+   "claves": [
+    "El recurso impugna la calificación de la registradora de la propiedad de Osuna que denegó la cancelación de una nota marginal de expedición de certificación.",
+    "La registradora sustituta de Sevilla número 11 confirmó la calificación negativa de la registradora de Osuna.",
+    "La cancelación de notas marginales de certificación requiere una resolución judicial que lo ordene conforme a la Ley de Enjuiciamiento Civil.",
+    "El asiento registral se encuentra bajo la salvaguardia de los tribunales y no puede modificarse mediante instancia privada."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21288": {
+   "huella": "59ede17c9df8635e",
+   "fuente": "72c810b1e414b1d0",
+   "titular": "Deniegan la extinción de multipropiedad en Dénia por normas estatutarias",
+   "entradilla": "El registrador de la propiedad frena la cancelación de un régimen de multipropiedad al constar una modificación estatutaria anterior aprobada por la comunidad.",
+   "claves": [
+    "La entidad Melf Match Propco solicitó la cancelación del régimen de multipropiedad sobre varias fincas en Dénia.",
+    "La escritura invocaba una causa estatutaria de extinción por voluntad unánime de los titulares de las participaciones indivisas.",
+    "El registro suspendió la inscripción porque la comunidad había aprobado por unanimidad una modificación previa de los estatutos.",
+    "La registradora fundamenta la negativa en los acuerdos inscritos de la junta de titulares celebrada el 3 de marzo de 2022."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21289": {
+   "huella": "8b3f885823411b59",
+   "fuente": "fc24630b95a4142b",
+   "titular": "Deniegan la inscripción de pérdida de unipersonalidad en Málaga",
+   "entradilla": "El Registro Mercantil de Málaga rechaza inscribir el cese de sociedad unipersonal por falta de escritura pública y cierre registral por cuentas no depositadas.",
+   "claves": [
+    "La sociedad chipriota Menona Limited solicitó hacer constar la pérdida de unipersonalidad de Global Sustainable Development.",
+    "La hoja registral de la sociedad española se encuentra cerrada provisionalmente por falta de depósito de cuentas anuales.",
+    "La declaración de pérdida de unipersonalidad no se formalizó en escritura pública ni fue firmada por persona con facultad para ello.",
+    "No se exhibió ante el notario el libro registro de acciones nominativas exigido para sociedades anónimas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21290": {
+   "huella": "8c6cba0442b508d8",
+   "fuente": "37a3dbcd38a07222",
+   "titular": "Deniegan la georreferenciación de una finca en Níjar tras alegaciones",
+   "entradilla": "El Registro de la Propiedad de Almería frena la inscripción de una obra nueva y la georreferenciación catastral debido a la oposición de un colindante.",
+   "claves": [
+    "El titular registral solicitó la inscripción de georreferenciación y obra nueva por antigüedad sobre una finca en Níjar.",
+    "Se tramitó el expediente del artículo 199 de la Ley Hipotecaria para completar la descripción gráfica de la parcela.",
+    "Un titular catastral colindante presentó alegaciones durante el transcurso del procedimiento registral.",
+    "La registradora accidental resolvió no practicar la inscripción de la representación gráfica georreferenciada debido a dicha oposición."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21291": {
+   "huella": "f2649188a1be0c25",
+   "fuente": "c8566eb28c17b533",
+   "titular": "Suspenden la inscripción de una partición hereditaria en Santander",
+   "entradilla": "El Registro de la Propiedad de Santander frena una adjudicación hereditaria por no incluir a todos los legitimarios y descendientes de los desheredados.",
+   "claves": [
+    "Se solicitó la inscripción de una escritura de partición de herencia otorgada en marzo de 2015 en Santander.",
+    "El testamento desheredaba a cuatro hijos del causante, lo que exige acreditar si tienen descendientes que ocupen su lugar legal.",
+    "Una sentencia judicial declaró nula la desheredación de una de las hijas y su derecho a suceder como heredera forzosa.",
+    "La heredera afectada por la sentencia judicial no intervino en las operaciones de partición presentadas a registro."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21292": {
+   "huella": "e2e6c233466def88",
+   "fuente": "3de224519ef32bba",
+   "titular": "Recurren la negativa a inscribir una herencia en Alhama de Granada",
+   "entradilla": "Un heredero recurre ante los registradores la suspensión de la inscripción de unas fincas familiares en Alhama de Granada por discrepancias en los porcentajes.",
+   "claves": [
+    "El recurrente reclama la titularidad del cien por cien del pleno dominio de dos fincas heredadas de su padre.",
+    "El registro refleja que solo el sesenta y seis por ciento pertenecía al causante, correspondiendo el resto a otros familiares.",
+    "El escrito detalla la cadena de transmisiones hereditarias desde escrituras otorgadas en 1964 y 1989.",
+    "Se solicita la rectificación registral para reflejar la totalidad de los derechos adquiridos por la familia a lo largo de las sucesiones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21293": {
+   "huella": "ad53fa8e8c959cb4",
+   "fuente": "c09cb5f6c1b99a69",
+   "titular": "Avalan la inclusión de prestaciones accesorias estatutarias en Sevilla",
+   "entradilla": "Un recurso analiza la validez de reflejar en los estatutos sociales de una empresa sevillana los compromisos adoptados previamente en un pacto de socios.",
+   "claves": [
+    "La junta general universal de Create Business Iberia Aftermarket aprobó por unanimidad una nueva redacción de estatutos.",
+    "La modificación introduce una prestación accesoria destinada a dar cumplimiento estatutario a un pacto parasocial previo.",
+    "La resolución examina la oponibilidad de los pactos de socios y su integración en el régimen interno de la sociedad.",
+    "Se recuerda que los pactos reservados entre socios no vinculan a la sociedad a menos que esta sea parte contratante."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-13"
   }
  },
  "uso": {
-  "2026-10-13": 2
+  "2026-10-13": 3
  }
 }

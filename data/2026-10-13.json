@@ -335,11 +335,27 @@
       "sede": "Bailén, 3, Madrid"
     },
     "scoreboard": {
-      "note": "Preguntas escritas con el plazo superado y sin contestación registrada, por grupo de quien pregunta.",
+      "note": "Preguntas escritas registradas desde la última edición (525), por grupo de quien pregunta.",
       "rows": [
         {
+          "g": "PP",
+          "n": 206
+        },
+        {
+          "g": "Mixto",
+          "n": 178
+        },
+        {
           "g": "Sumar",
-          "n": 6
+          "n": 108
+        },
+        {
+          "g": "Vox",
+          "n": 32
+        },
+        {
+          "g": "PSOE",
+          "n": 1
         }
       ]
     },
