@@ -4902,15 +4902,12 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas pendientes de respuesta",
-   "entradilla": "Las iniciativas parlamentarias superan los 20 días hábiles desde su publicación sin que conste una respuesta registrada.",
-   "claves": [
-    "Por grupos, Sumar acumula 24 preguntas pendientes, el PSOE 7, el PP 4, EAJ-PNV una, Junts una y los diputados sin grupo una.",
-    "La pregunta más antigua sin contestación fue publicada en la Cámara el lunes 16 de febrero de 2026."
-   ],
-   "modelo": "gemini-3.5-flash",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Treinta y ocho preguntas escritas superan el plazo de contestación",
+   "entradilla": "El Congreso registra 38 iniciativas que rebasan los 20 días hábiles sin respuesta del Gobierno.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-14"
   },
   "BOE-A-2026-20822": {
@@ -7172,9 +7169,63 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-14"
+  },
+  "C-f7472e60bd6e3922": {
+   "huella": "600d78342f0d4cce",
+   "fuente": "f871cf3f14d2550f",
+   "titular": "El Gobierno contesta a Sumar sobre la fosa del cementerio de Sevilla",
+   "entradilla": "El Gobierno responde por escrito a Engracia Rivera Arias y otros diputados de Sumar acerca de los trabajos de exhumación e identificación en Sevilla.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-35020c4ab2b48e2e": {
+   "huella": "f3f346e6bdfdba6e",
+   "fuente": "c798ac1bf4f26aea",
+   "titular": "El Gobierno responde a Sumar sobre el Parador de San Marcos",
+   "entradilla": "El Gobierno da respuesta por escrito a Nahuel González López, diputado de Sumar, sobre la declaración como lugar de Memoria Democrática.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-c739a3da77fff6e9": {
+   "huella": "184d09baf259be32",
+   "fuente": "a9f001753700455c",
+   "titular": "El Gobierno contesta a Sumar sobre lugares de Memoria Democrática",
+   "entradilla": "El Gobierno responde por escrito a Nahuel González López, de Sumar, en relación con la declaración de varios espacios como lugares de Memoria.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-b937f3eadf6b2758": {
+   "huella": "1c5451eb5fbdb039",
+   "fuente": "0a6a0b0dc4d71f0a",
+   "titular": "El Gobierno responde a Sumar sobre trabajos forzados en la dictadura",
+   "entradilla": "El Gobierno contesta por escrito a Enrique Fernando Santiago Romero y otros diputados de Sumar sobre el inventario de edificaciones y obras.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-2e312b328838568d": {
+   "huella": "bd6937679bee59f6",
+   "fuente": "727508f50024bec3",
+   "titular": "El Gobierno contesta a Sumar sobre misas en homenaje a Franco",
+   "entradilla": "El Gobierno responde por escrito a Enrique Fernando Santiago Romero y otros diputados de Sumar acerca de las misas celebradas en homenaje a Francisco Franco.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-e995badac9278d99": {
+   "huella": "cd759ab76d5a129e",
+   "fuente": "bc0c2b29b6e00d54",
+   "titular": "El Gobierno responde a Sumar sobre viviendas sociales en Écija",
+   "entradilla": "El Gobierno contesta por escrito a Engracia Rivera Arias, diputada de Sumar, sobre la titularidad y gestión de las viviendas sociales de La Alcarrachela.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
   }
  },
  "uso": {
-  "2026-10-14": 5
+  "2026-10-14": 7
  }
 }
