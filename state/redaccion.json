@@ -4903,14 +4903,15 @@
   },
   "C-04ab2ddc383b1c34": {
    "huella": "d5cdf02c8277a60c",
-   "descartado": "nombre «Vasco» que no está en el texto oficial",
-   "intentos": 1,
-   "titular": "Treinta y ocho preguntas escritas superan el plazo de contestación",
-   "entradilla": "El Congreso registra 38 iniciativas que rebasan los 20 días hábiles sin respuesta del Gobierno.",
-   "claves": [],
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "Treinta y ocho preguntas escritas superan el plazo de contestación en el Congreso",
+   "entradilla": "El Congreso acumula 38 preguntas escritas que superan los 20 días hábiles de plazo sin respuesta registrada.",
+   "claves": [
+    "La pregunta más antigua acumulada se publicó el lunes 16 de febrero de 2026.",
+    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE siete y el PP cuatro."
+   ],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-10-14",
-   "fuente": "fce995420a0973e3"
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -7228,6 +7229,6 @@
   }
  },
  "uso": {
-  "2026-10-14": 9
+  "2026-10-14": 10
  }
 }
