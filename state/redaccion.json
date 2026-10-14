@@ -4902,12 +4902,15 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso acumula 38 preguntas escritas pendientes de respuesta tras superar el plazo",
-   "entradilla": "Los parlamentarios de distintos grupos llevan más de 20 días hábiles sin recibir contestación a sus iniciativas desde diciembre de 2025.",
-   "claves": [],
-   "modelo": "gemini-3.5-flash-lite",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas pendientes de respuesta",
+   "entradilla": "Las iniciativas parlamentarias superan los 20 días hábiles desde su publicación sin que conste una respuesta registrada.",
+   "claves": [
+    "Por grupos, Sumar acumula 24 preguntas pendientes, el PSOE 7, el PP 4, EAJ-PNV una, Junts una y los diputados sin grupo una.",
+    "La pregunta más antigua sin contestación fue publicada en la Cámara el lunes 16 de febrero de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-14"
   },
   "BOE-A-2026-20822": {
@@ -6963,8 +6966,15 @@
   },
   "BOE-A-2026-21318": {
    "huella": "9c86d023759805c9",
-   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "791a2ce014c6e20e",
+   "titular": "La Ciudad de Ceuta recibirá 45.320.000 euros por la crisis migratoria",
+   "entradilla": "El Gobierno aprueba subvenciones directas para financiar gastos extraordinarios urgentes en servicios públicos y medio ambiente derivados de la crisis iniciada el 31 de julio de 2026.",
+   "claves": [
+    "Las subvenciones suman 45.320.000 euros, distribuidos en 40.670.000 euros para gastos corrientes y 4.650.000 euros para inversiones de capital.",
+    "La financiación cubre actuaciones urgentes en materia de medio ambiente, servicios sociales, salud pública, educación, seguridad y emergencias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-21319": {
    "huella": "1ccc1c7b8fb0829f",
@@ -7007,23 +7017,53 @@
   },
   "BOE-A-2026-21388": {
    "huella": "e09be565697f07ce",
-   "descartado": "nombre «Aportará» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "b9b9c6f976e981ca",
+   "titular": "El Parque Móvil proveerá 195 conductores en la XXX Conferencia Iberoamericana",
+   "entradilla": "Un convenio fijará el operativo especial de transporte entre el 26 de octubre y el 7 de noviembre con vehículos oficiales y contratados de alquiler.",
+   "claves": [
+    "El Parque Móvil del Estado facilitará un máximo de 195 conductores, 11 coordinadores de flota y hasta 82 berlinas de representación.",
+    "Los trayectos se realizarán con automóviles aportados por el organismo público y vehículos de alquiler contratados por el Ministerio de Asuntos Exteriores.",
+    "El organismo asumirá el coste de combustible, peajes y lavados, además de la confección e instalación de matrículas oficiales en los coches."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-21389": {
    "huella": "097db5cb3da8dd1e",
-   "descartado": "nombre «Publican» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "05528ac9f9719fd4",
+   "titular": "Educación y el Instituto Cervantes formarán a profesores de español",
+   "entradilla": "Un convenio permitirá impartir cursos de español a distancia y presenciales a docentes de Filipinas, Polonia y Brasil durante el año 2026.",
+   "claves": [
+    "Los cursos están dirigidos a profesorado de lengua filipina, polaca y portuguesa, así como de asignaturas no lingüísticas.",
+    "El Ministerio de Educación, Formación Profesional y Deportes asume el coste de la actividad académica, con importes por alumno de entre 269 y 478 euros.",
+    "El Instituto Cervantes financia las instalaciones, equipamientos, desplazamientos, personal y materiales necesarios para las actividades."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-21390": {
    "huella": "c887470980f3edac",
-   "descartado": "nombre «Puerto» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "c788135ea2808586",
+   "titular": "Tráfico y la Autoridad Portuaria de Barcelona compartirán información",
+   "entradilla": "El acuerdo permitirá el intercambio de datos sobre movilidad, transporte y calidad ambiental, facilitando el acceso a sus registros informáticos.",
+   "claves": [
+    "La Jefatura Central de Tráfico ordenará el acceso a sus bases de datos y registros informáticos para las funciones de gestión del tráfico y la movilidad.",
+    "El convenio impulsará el suministro de información del tráfico en tiempo real y la coordinación en materia de seguridad vial y medio ambiente."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-21391": {
    "huella": "9fa24d5c10bcae4f",
-   "descartado": "acaba en el número «2026» sin decir de qué",
-   "intentos": 1
+   "fuente": "d678fe6457fac15d",
+   "titular": "La AECID y el Teatro Real promoverán el patrimonio musical en Asia",
+   "entradilla": "Un convenio de colaboración regulará la organización de conciertos, talleres e intercambios culturales en diversos países asiáticos durante 2026.",
+   "claves": [
+    "La Agencia Española de Cooperación Internacional para el Desarrollo financiará los gastos artísticos, derechos de autor, producción, viajes y logística.",
+    "La Fundación del Teatro Real asumirá la dirección artística, musical y técnica, así como la organización de talleres con el público y artistas locales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-21392": {
    "huella": "8c283b5be6a7ffb2",
@@ -7053,8 +7093,15 @@
   },
   "BOE-A-2026-21394": {
    "huella": "345c863d7f6e32e8",
-   "descartado": "nombre «Guardias» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "d6afaf16e7ad3acf",
+   "titular": "Guardias civiles en reserva vigilarán e inspeccionarán el mercado del tabaco",
+   "entradilla": "Un convenio asigna a agentes en situación de reserva de la Guardia Civil tareas de inspección, control administrativo y persecución de infracciones sobre los expendedores.",
+   "claves": [
+    "Los agentes estarán encuadrados en el Servicio Fiscal de la Guardia Civil para vigilar el cumplimiento normativo de los operadores del sector del tabaco.",
+    "El acuerdo renueva la colaboración institucional para optimizar las funciones de inspección y el ejercicio de la potestad sancionadora del Comisionado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-21396": {
    "huella": "c7d03b692f72f12c",
@@ -7119,11 +7166,15 @@
   },
   "C-4cae14c87c9b96d8": {
    "huella": "518389bf82b4d19a",
-   "descartado": "nombre «Alta» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "e35f45079181e0ec",
+   "titular": "Una proposición de ley orgánica del Senado caduca sin ser calificada",
+   "entradilla": "La iniciativa para modificar la Ley Orgánica 4/2000, presentada en el Congreso el 1 de octubre de 2026, ha concluido su tramitación por caducidad.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-14"
   }
  },
  "uso": {
-  "2026-10-14": 3
+  "2026-10-14": 5
  }
 }
