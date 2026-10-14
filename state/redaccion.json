@@ -4902,17 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso suma 38 preguntas escritas pendientes tras superar 20 días hábiles",
-   "entradilla": "Un total de 38 iniciativas escritas del último año han superado el plazo fijado en la Cámara sin que conste contestación registrada.",
-   "claves": [
-    "Sumar encabeza el recuento con 24 preguntas sin contestación registrada, seguido del PSOE con 7, el PP con 4, GV (EAJ-PNV) con 1, Junts con 1 y Sin grupo con 1.",
-    "La iniciativa más antigua publicada sin respuesta registrada por el Congreso se remonta al lunes 16 de febrero de 2026.",
-    "El recuento analiza las preguntas del último año con la fecha límite superada, aunque se advierte de que puede haber prórrogas o respuestas no reflejadas."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-13"
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas pendientes de respuesta tras superar el plazo",
+   "entradilla": "Los parlamentarios de distintos grupos llevan más de 20 días hábiles sin recibir contestación a sus iniciativas desde diciembre de 2025.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -6951,9 +6947,183 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-13"
+  },
+  "BOE-A-2026-21317": {
+   "huella": "abfc72ccdf11560f",
+   "fuente": "0455c3b50365d525",
+   "titular": "La Jefatura del Estado reconoce como agentes de la autoridad a los funcionarios penitenciarios",
+   "entradilla": "La nueva ley orgánica otorga relevancia probatoria a sus informes en procedimientos disciplinarios y obliga a la Administración a indemnizarles por daños.",
+   "claves": [
+    "Los funcionarios de prisiones tendrán la condición de agentes de la autoridad en el ejercicio de su cargo y podrán identificarse con su número de registro profesional en procesos administrativos y judiciales.",
+    "Sus informes en procedimientos disciplinarios constituirán base suficiente para adoptar resoluciones, salvo prueba en contrario.",
+    "La Administración deberá resarcir económicamente a los funcionarios por los daños personales o materiales sufridos en acto de servicio sin mediación de dolo, culpa o negligencia grave."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21318": {
+   "huella": "9c86d023759805c9",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21319": {
+   "huella": "1ccc1c7b8fb0829f",
+   "fuente": "9552bb957bc629ee",
+   "titular": "El Ministerio de Agricultura establece la estrategia de protección frente a la lengua azul",
+   "entradilla": "La orden fija las nuevas medidas sanitarias y autoriza la vacunación voluntaria en todo el país, salvo en las Illes Balears.",
+   "claves": [
+    "Se delimitan tres tipos de zonas en el territorio nacional: zona libre en Canarias, zona con programa de control en Illes Balears y zona sin estatus en la península.",
+    "Queda autorizada la vacunación voluntaria frente a todos los serotipos detectados, mientras que en Illes Balears será obligatoria en explotaciones de bovino y ovino.",
+    "La vacunación no podrá realizarse empleando vacunas vivas atenuadas y será responsabilidad del titular de la explotación a través del personal veterinario."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21384": {
+   "huella": "db19c9a9ccb9e8f7",
+   "fuente": "77f9880efb8ca513",
+   "titular": "Iraeta costeará la celebración de la Fiesta Nacional en la Embajada de España en China",
+   "entradilla": "La empresa financiará suministros y servicios por valor de 10.000 yuanes para el evento institucional que tendrá lugar el 9 de octubre en Pekín.",
+   "claves": [
+    "La aportación económica en especie de Iraeta Energy Equipment Co., Ltd. se destina a la celebración de la Fiesta Nacional de España en Pekín el 9 de octubre de 2026.",
+    "El convenio no tendrá coste alguno para la Embajada de España en la República Popular de China.",
+    "La Embajada se compromete a difundir la participación de la empresa mediante agradecimientos y la inclusión de su logotipo en materiales gráficos y digitales."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21385": {
+   "huella": "2f71e3be9f6dfce2",
+   "fuente": "b59b4552165ea455",
+   "titular": "La Abogacía General del Estado prestará asistencia jurídica al Grupo Hunosa",
+   "entradilla": "Un nuevo convenio regula el asesoramiento y la defensa judicial de las sociedades estatales del grupo minero por parte de los Abogados del Estado.",
+   "claves": [
+    "La asistencia jurídica comprende tanto el asesoramiento como la representación y defensa ante cualquier orden jurisdiccional en los mismos términos que a la Administración General del Estado.",
+    "El acuerdo incluye a Hulleras del Norte, SA, S.M.E., Hunosa Empresas, SA, S.M.E., la Sociedad Asturiana de Diversificación Minera y la Fundación Laboral de Personas con Discapacidad Santa Bárbara.",
+    "Se designarán uno o más Abogados del Estado en activo para que actúen como coordinadores directos de la asistencia jurídica."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21388": {
+   "huella": "e09be565697f07ce",
+   "descartado": "nombre «Aportará» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21389": {
+   "huella": "097db5cb3da8dd1e",
+   "descartado": "nombre «Publican» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21390": {
+   "huella": "c887470980f3edac",
+   "descartado": "nombre «Puerto» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21391": {
+   "huella": "9fa24d5c10bcae4f",
+   "descartado": "acaba en el número «2026» sin decir de qué",
+   "intentos": 1
+  },
+  "BOE-A-2026-21392": {
+   "huella": "8c283b5be6a7ffb2",
+   "fuente": "62b52e9c5fa31ac4",
+   "titular": "El Consejo Superior de Deportes utilizará la aplicación de registro GEISER de la Administración Digital",
+   "entradilla": "Un convenio regula la prestación de servicios para la gestión integrada de registros oficiales de entrada y salida en el organismo deportivo.",
+   "claves": [
+    "La Agencia Estatal de Administración Digital proporciona la aplicación GEISER al Consejo Superior de Deportes.",
+    "La herramienta permite gestionar los registros oficiales de entrada y salida y el intercambio electrónico de documentación.",
+    "El acuerdo se enmarca en el uso de servicios comunes y transversales de sistemas de información en la administración pública."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21393": {
+   "huella": "cd19b90dbd9593d9",
+   "fuente": "e64457161fc08d80",
+   "titular": "La AECID adoptará la aplicación de registro GEISER de la Administración Digital",
+   "entradilla": "La Agencia Española de Cooperación Internacional para el Desarrollo utilizará la plataforma para la gestión de sus registros electrónicos.",
+   "claves": [
+    "La Agencia Estatal de Administración Digital cede el uso de la aplicación de Gestión Integrada de Servicios de Registro (GEISER).",
+    "El sistema optimiza el intercambio de documentación en formato electrónico tanto a nivel interno como con otros organismos públicos.",
+    "Se garantizan las labores de soporte técnico y mantenimiento asociadas a la herramienta."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21394": {
+   "huella": "345c863d7f6e32e8",
+   "descartado": "nombre «Guardias» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21396": {
+   "huella": "c7d03b692f72f12c",
+   "fuente": "67faafbebc6ed941",
+   "titular": "Ineco costeará la recepción de la Fiesta Nacional en la Embajada de España en Kuwait",
+   "entradilla": "La ingeniería estatal aportará 800 euros en servicios y suministros para la celebración que tendrá lugar el 12 de octubre.",
+   "claves": [
+    "Ingeniería y Economía del Transporte (Ineco) efectúa una aportación en especie estimada en 800 euros para el evento del 12 de octubre de 2026 en Kuwait.",
+    "El acuerdo no genera ningún coste económico para la Embajada de España en el Estado de Kuwait.",
+    "La misión diplomática difundirá la participación de la empresa mediante la inclusión de su logotipo en invitaciones, programas y redes sociales."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21397": {
+   "huella": "a90b4f97a1dd2c98",
+   "fuente": "4a5b8f24519242e4",
+   "titular": "Defensa y Agricultura prorrogan el convenio de explotación del buque escuela Intermares",
+   "entradilla": "Una adenda mantiene el régimen de uso compartido y las funciones de cooperación pesquera y enseñanza militar de la embarcación.",
+   "claves": [
+    "Se prorroga la afectación concurrente del buque escuela de cooperación pesquera Intermares al Ministerio de Agricultura, Pesca y Alimentación y al Ministerio de Defensa.",
+    "El buque continuará integrado en la Lista Oficial de Buques de la Armada dentro de la Fuerza de Acción Marítima.",
+    "Se mantienen las actividades destinadas a la formación en artes pesqueras, oceanografía e investigación para profesionales y estudiantes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21398": {
+   "huella": "69c04a8d88c41540",
+   "fuente": "ed0613c0656e719a",
+   "titular": "La Dirección General de Seguridad Jurídica resuelve un recurso sobre partición de herencia",
+   "entradilla": "El organismo se pronuncia sobre la negativa a inscribir una escritura otorgada por un albacea y contador-partidor designado en testamento.",
+   "claves": [
+    "El litigio trae causa de un testamento otorgado en 1989 y de una escritura de partición de herencia formalizada por un albacea universal.",
+    "La escritura contemplaba adjudicaciones basadas en cesiones previas de derechos hereditarios entre coherederos.",
+    "Se estipularon plazos y condiciones de pago en metálico para equilibrar las cuotas hereditarias pendientes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21399": {
+   "huella": "103e9527de3e2e84",
+   "fuente": "0c95c318df5260ea",
+   "titular": "El registrador de Málaga denegó el asiento de una escritura redactada en catalán",
+   "entradilla": "La Dirección General resuelve el recurso interpuesto contra la negativa a inscribir un préstamo hipotecario por estar escrito en una lengua no oficial en Andalucía.",
+   "claves": [
+    "El Registro de la Propiedad de Málaga número 10 rechazó practicar el asiento de presentación de una escritura de préstamo hipotecario procedente de Esplugues de Llobregat.",
+    "El motivo de la denegación fue que el documento notarial estaba redactado íntegramente en catalán.",
+    "La normativa hipotecaria regula los requisitos de los títulos presentados y el procedimiento de recurso ante la Dirección General de Seguridad Jurídica y Fe Pública."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-698a4494b25e193e": {
+   "huella": "a16c752315865a21",
+   "fuente": "adc0a206d7eabbf7",
+   "titular": "Sumar presenta una proposición de ley sobre beneficios extraordinarios de empresas",
+   "entradilla": "El Grupo Parlamentario Plurinacional Sumar promueve la creación de un gravamen temporal en el Congreso de los Diputados.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-14"
+  },
+  "C-4cae14c87c9b96d8": {
+   "huella": "518389bf82b4d19a",
+   "descartado": "nombre «Alta» que no está en el texto oficial",
+   "intentos": 1
   }
  },
  "uso": {
-  "2026-10-13": 8
+  "2026-10-14": 2
  }
 }
