@@ -4902,12 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "Treinta y ocho preguntas escritas superan el plazo reglamentario sin contestación en el Congreso",
-   "entradilla": "Un total de 38 preguntas acumuladas superan los 20 días hábiles desde su publicación sin respuesta registrada.",
-   "claves": [],
-   "modelo": "gemini-3.5-flash-lite",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas que superan el plazo fijado",
+   "entradilla": "Un total de 38 cuestiones presentadas por varios grupos parlamentarios durante el último año exceden el límite oficial de 20 días hábiles sin registrar una contestación.",
+   "claves": [
+    "Sumar encabeza las iniciativas pendientes con 24, seguida del PSOE con 7 y del PP con 4.",
+    "El grupo GV (EAJ-PNV), Junts y los parlamentarios sin grupo cuentan con una pregunta pendiente cada uno.",
+    "La pregunta más antigua sin respuesta registrada en la ficha de la Cámara se publicó el lunes 16 de febrero de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-15"
   },
   "BOE-A-2026-20822": {
@@ -7430,6 +7434,6 @@
   }
  },
  "uso": {
-  "2026-10-15": 4
+  "2026-10-15": 5
  }
 }
