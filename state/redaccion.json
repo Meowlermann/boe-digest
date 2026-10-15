@@ -4902,16 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "Treinta y ocho preguntas escritas superan el plazo de contestación en el Congreso",
-   "entradilla": "El Congreso acumula 38 preguntas escritas que superan los 20 días hábiles de plazo sin respuesta registrada.",
-   "claves": [
-    "La pregunta más antigua acumulada se publicó el lunes 16 de febrero de 2026.",
-    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE siete y el PP cuatro."
-   ],
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Treinta y ocho preguntas escritas superan el plazo reglamentario sin contestación en el Congreso",
+   "entradilla": "Un total de 38 preguntas acumuladas superan los 20 días hábiles desde su publicación sin respuesta registrada.",
+   "claves": [],
    "modelo": "gemini-3.5-flash-lite",
-   "fecha": "2026-10-14"
+   "fecha": "2026-10-15"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -7226,9 +7223,213 @@
    "claves": [],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-14"
+  },
+  "BOE-A-2026-21445": {
+   "huella": "3b0397cc0f05589c",
+   "fuente": "1876e4abefc31abb",
+   "titular": "El Gobierno actualiza el Reglamento de asistencia jurídica gratuita en los procesos penales",
+   "entradilla": "Se modifican los anexos relativos a las compensaciones económicas de la abogacía y la procura y los porcentajes de devengo de las indemnizaciones.",
+   "claves": [
+    "Las retribuciones a los profesionales se calcularán según los nuevos módulos y bases de compensación establecidos en el anexo II.",
+    "El anexo III detalla los porcentajes de devengo de la indemnización, fijando un 70 por ciento para el inicio de diversas actuaciones y un 30 por ciento restante al finalizar la instancia.",
+    "Se contemplan reglas específicas para las asistencias letradas a personas jurídicas y la intervención en medios adecuados de solución de controversias."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21446": {
+   "huella": "3fc0dd9cc79d97c4",
+   "fuente": "029a0f2af2bd7b22",
+   "titular": "La Comisión Nacional de los Mercados y la Competencia crea las figuras del Economista Jefe",
+   "entradilla": "Se modifica el Estatuto Orgánico de la CNMC para incorporar nuevas funciones de análisis económico, inteligencia artificial y tratamiento de datos.",
+   "claves": [
+    "El Pleno del Consejo nombrará y cesará al Economista Jefe a propuesta del Presidente, bajo cuya dependencia directa actuará con plena autonomía funcional.",
+    "El Economista Jefe asesorará en el diseño estratégico y económico y asumirá la superior dirección de la Subdirección de Inteligencia Económica.",
+    "La nueva Subdirección desarrollará herramientas de análisis cuantitativo y apoyará a las direcciones de instrucción en la detección de conductas anticompetitivas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21447": {
+   "huella": "b5a50198dd0a3499",
+   "fuente": "0d40cb6ee9ebaf22",
+   "titular": "El Tribunal Supremo desestima el recurso contra las medidas cautelares sobre la Ley de Memoria Democrática",
+   "entradilla": "Se publica en el Boletín Oficial del Estado la parte dispositiva del auto que rechaza el recurso de reposición del Estado y el INE.",
+   "claves": [
+    "La Sala Tercera del Tribunal Supremo desestima el recurso interpuesto por la Administración General del Estado y el Instituto Nacional de Estadística.",
+    "El procedimiento deriva de la medida cautelar solicitada por el partido político Iustitia Europa contra un acuerdo de la Junta Electoral Central.",
+    "El auto ordena la publicación urgente de su parte dispositiva en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21449": {
+   "huella": "33ca77f7e76572b5",
+   "fuente": "005f3e2d29db4617",
+   "titular": "El Ministerio de Transportes concede subvenciones directas para el transporte público",
+   "entradilla": "Se destinan ayudas excepcionales a Madrid, Barcelona, Valencia y Canarias para financiar el transporte terrestre regular de viajeros en 2026.",
+   "claves": [
+    "Los beneficiarios son el Consorcio Regional de Transportes de Madrid, las autoridades metropolitanas de Barcelona y Valencia, y la Comunidad Autónoma de Canarias.",
+    "Las subvenciones se conceden de forma directa por razones de interés público, social y económico para financiar las actividades realizadas durante el año 2026.",
+    "Las entidades interesadas deben presentar su solicitud a través del Registro Electrónico General de la Administración General del Estado en un plazo máximo de diez días hábiles."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21450": {
+   "huella": "736c867c965478c7",
+   "fuente": "d8f481b3be3d81f2",
+   "titular": "Transportes subvenciona a la escuela infantil del ministerio y al Aula Cultural de Fomento",
+   "entradilla": "Regulan la concesión directa de ayudas para financiar las actividades de ambas asociaciones durante el ejercicio presupuestario 2026.",
+   "claves": [
+    "La subvención a la Asociación de Familias de Alumnos garantiza el funcionamiento de la Escuela de Educación Infantil situada en el complejo de Nuevos Ministerios.",
+    "El Aula Cultural de Fomento destinará la ayuda a difundir la actividad del ministerio y a favorecer la transición a la jubilación de su personal vinculado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21451": {
+   "huella": "f46e757abca26756",
+   "fuente": "447e712efd4ab4fd",
+   "titular": "El Ministerio de Educación financia las acciones de los Centros de Referencia Nacional de Formación Profesional",
+   "entradilla": "Se regula la concesión directa de subvenciones con cargo al Plan de Trabajo Anual 2026 para el desarrollo de actividades formativas.",
+   "claves": [
+    "La Administración General del Estado garantiza los recursos económicos suficientes para el desempeño de las funciones de los Centros de Referencia Nacional.",
+    "Las entidades beneficiarias son las comunidades autónomas y organismos públicos titulares de estos centros en sus respectivas áreas profesionales.",
+    "Las ayudas se tramitan mediante concesión directa al concurrir razones de interés público y existir vínculos de colaboración preexistentes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21452": {
+   "huella": "1f71b2d529c5ee61",
+   "fuente": "bf697b9341ed9efc",
+   "titular": "El Ministerio de Educación otorga subvenciones directas para inclusión educativa y social",
+   "entradilla": "Se articulan ayudas excepcionales dirigidas a poblaciones vulnerables y a la renovación pedagógica ante la prórroga presupuestaria de 2026.",
+   "claves": [
+    "Las subvenciones se conceden de forma directa por razones de interés público y social al amparo de la Ley General de Subvenciones.",
+    "Entre las finalidades figuran la inclusión social y educativa, el apoyo a personas con discapacidad auditiva y la promoción de disciplinas STEAM.",
+    "Se incluye también el impulso a la red de Universidades Populares y el desarrollo de la plataforma web formativa denominada «INTEF, cámara y acción»."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21453": {
+   "huella": "8b5ec599327fa51e",
+   "fuente": "8439e068fbeef47a",
+   "titular": "El Tesoro actualiza el anexo de prudencia financiera para comunidades autónomas y entidades locales",
+   "entradilla": "Se publica el nuevo coste de financiación del Estado aplicable a las operaciones de endeudamiento y derivados de las administraciones territoriales.",
+   "claves": [
+    "El coste total máximo de las operaciones de endeudamiento no puede superar el coste de financiación del Estado al plazo medio más el diferencial correspondiente.",
+    "Las administraciones sin herramientas de valoración propias deben emplear la tabla de tipos fijos y diferenciales máximos que publica mensualmente la Dirección General del Tesoro.",
+    "La actualización se realiza mediante la publicación de un nuevo anexo 1 conforme a la evolución de los tipos de interés."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21454": {
+   "huella": "c7cd016d17a52fe7",
+   "fuente": "81fd96b2c5505e25",
+   "titular": "El Comité Olímpico Español fomentará el deporte en centros de migraciones mediante subvención",
+   "entradilla": "Se regula una ayuda directa para impulsar la inclusión social y la lucha contra el racismo a través de la actividad deportiva.",
+   "claves": [
+    "La subvención está destinada al Comité Olímpico Español para desarrollar actuaciones en centros de la red pública de migraciones y centros educativos.",
+    "El objetivo es facilitar la integración de los residentes y la transmisión de valores deportivos, así como identificar posibles deportistas de alto nivel.",
+    "La concesión se realiza de forma directa por la inexistencia de una pluralidad de beneficiarios debido a la titularidad exclusiva de las funciones olímpicas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21455": {
+   "huella": "3df945e7f313c226",
+   "fuente": "ff75d03f53ccb4a2",
+   "titular": "Juventud e Infancia concede subvenciones directas para la protección de menores vulnerables",
+   "entradilla": "Se articulan ayudas orientadas a combatir la pobreza infantil, la exclusión social y la violencia en colaboración con diversas entidades.",
+   "claves": [
+    "Las subvenciones se otorgan con carácter excepcional y por razones de interés público, social y humanitario a entidades específicas.",
+    "Entre los fines prioritarios figuran la defensa de los derechos de la infancia, la igualdad de oportunidades y la asistencia a la juventud migrante.",
+    "La Federación Española de Municipios y Provincias figura como beneficiaria para desarrollar herramientas de lucha contra la pobreza infantil en los ayuntamientos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21507": {
+   "huella": "2aa2408b78544222",
+   "fuente": "49d1d5474815a0af",
+   "titular": "Constituyen el Comité de Selección de candidaturas para el Grupo de Expertos en violencia contra la mujer",
+   "entradilla": "El nuevo grupo de trabajo propondrá hasta tres nombres para integrar el GREVIO del Consejo de Europa.",
+   "claves": [
+    "El Comité se configura como un grupo de trabajo integrado por representantes de los ministerios de Igualdad, Asuntos Exteriores y Presidencia.",
+    "Su función principal consiste en examinar los currículos y evaluar la idoneidad de las personas candidatas al GREVIO.",
+    "Las propuestas seleccionadas se remitirán al Consejo de Europa a través del Ministerio de Asuntos Exteriores, Unión Europea y Cooperación."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21509": {
+   "huella": "bc06d671e3231832",
+   "fuente": "fca0366c25c10cd8",
+   "titular": "Defensa publica el convenio con la Universidad Politécnica para enseñanzas de ingenieros militares",
+   "entradilla": "El acuerdo regula la colaboración docente e investigadora en materia de vías de comunicación y castrametación para el periodo 2026-2027.",
+   "claves": [
+    "El convenio da continuidad a las líneas de cooperación entre la Academia de Ingenieros del Ejército de Tierra y la Escuela Técnica Superior de Ingenieros de Caminos, Canales y Puertos.",
+    "Su finalidad es impartir enseñanzas técnicas a los alumnos militares y desarrollar programas de investigación de interés mutuo.",
+    "La publicación en el Boletín Oficial del Estado se realiza en cumplimiento de la Ley de Régimen Jurídico del Sector Público."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21510": {
+   "huella": "e6d3aa5085ae7490",
+   "fuente": "0283303e32b1aba7",
+   "titular": "El ISFAS y los podólogos prorrogan su convenio de asistencia sanitaria para cuatro años más",
+   "entradilla": "Se extiende el acuerdo que facilita el acceso del colectivo militar a servicios podológicos en condiciones ventajosas.",
+   "claves": [
+    "La prórroga extiende por un periodo de cuatro años adicionales el convenio inicial suscrito en diciembre de 2022.",
+    "Los afiliados titulares y beneficiarios del ISFAS mantienen el acceso a servicios de podología a un precio inferior al general de mercado.",
+    "La adenda surtirá efectos desde la fecha de finalización del convenio anterior tras su inscripción en el registro electrónico oficial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21511": {
+   "huella": "fb5aebf912039c0c",
+   "fuente": "72c7fb294edb07f4",
+   "titular": "Instituciones Penitenciarias y la Asociación Asansull firman un convenio para trabajos comunitarios",
+   "entradilla": "El acuerdo permite cumplir las penas de trabajos en beneficio de la comunidad colaborando en la atención a personas dependientes.",
+   "claves": [
+    "La Secretaría General de Instituciones Penitenciarias canaliza la ejecución de esta pena privativa de derechos conforme al Código Penal.",
+    "La Asociación Asansull colaborará ofreciendo actividades de utilidad pública orientadas a personas con discapacidad intelectual y en situación de dependencia.",
+    "La prestación de estos servicios requiere siempre el consentimiento expreso de la persona penada."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21514": {
+   "huella": "11ca56fda67d081e",
+   "fuente": "40b9a76253de9d38",
+   "titular": "AESA exime de acuerdo previo las construcciones en el término municipal de Barcelona",
+   "entradilla": "Se establecen las condiciones por las que no será necesario solicitar autorización aeronáutica específica en zonas afectadas por servidumbres.",
+   "claves": [
+    "La resolución afecta al término municipal de Barcelona en relación con las servidumbres aeronáuticas del aeropuerto Josep Tarradellas Barcelona-El Prat.",
+    "Los estudios técnicos acreditan que las actuaciones que cumplan las condiciones establecidas no superan las limitaciones de altura ni afectan a la seguridad aérea.",
+    "La exención dispensa de obtener el acuerdo previo favorable de la Agencia Estatal de Seguridad Aérea para las construcciones e instalaciones previstas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-15"
+  },
+  "BOE-A-2026-21515": {
+   "huella": "bae62f912ad0aaf1",
+   "descartado": "cifra «31296070» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-702b16e10b732238": {
+   "huella": "24f3a3e18a4702e9",
+   "descartado": "nombre «Penitenciaria» que no está en el texto oficial",
+   "intentos": 2
   }
  },
  "uso": {
-  "2026-10-15": 2
+  "2026-10-15": 4
  }
 }
