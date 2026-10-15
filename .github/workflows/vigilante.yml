@@ -1,0 +1,55 @@
+name: Vigilante de despliegues
+
+# Si una ejecución se queda en «Waiting» (esperando una aprobación del entorno
+# github-pages que nadie puede dar), bloquea la cola serializada y la web deja
+# de actualizarse. Pasó con la Edición diaria #197 (13/10/2026): 1 d 20 h
+# atascada; «Cancel workflow» no la movía y solo la quitó la cancelación
+# forzosa de la API (force-cancel).
+#
+# Este workflow corre después de cada pase de la edición (07:40, 14:40 y 21:40
+# en España) y fuerza la cancelación de cualquier ejecución que lleve más de
+# 60 minutos en «waiting». Las que están en «pending» (en cola detrás de otra)
+# no se tocan.
+#
+# Cron en UTC: 07:40, 14:40 y 21:40 UTC caen 1 h después de cada pase en
+# invierno (CET) y 2 h después en verano (CEST). Nunca corre antes de tiempo.
+
+on:
+  schedule:
+    - cron: "40 7,14,21 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+concurrency:
+  group: vigilante
+  cancel-in-progress: false
+
+jobs:
+  vigilar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Cancelar ejecuciones atascadas en «waiting»
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          LIMITE_MIN: "60"
+        run: |
+          ahora=$(date -u +%s)
+          desbloqueadas=0
+          while IFS=$'\t' read -r id numero nombre creada; do
+            [ -z "$id" ] && continue
+            edad=$(( (ahora - $(date -u -d "$creada" +%s)) / 60 ))
+            if [ "$edad" -ge "$LIMITE_MIN" ]; then
+              echo "::warning::Forzando la cancelación de «$nombre» #$numero (en waiting; creada hace $edad min)"
+              gh api -X POST "repos/$GH_REPO/actions/runs/$id/force-cancel"
+              desbloqueadas=$((desbloqueadas + 1))
+            else
+              echo "«$nombre» #$numero en waiting desde hace $edad min: aún dentro del margen"
+            fi
+          done < <(gh run list --status waiting --limit 50 \
+                     --json databaseId,number,workflowName,createdAt \
+                     --jq '.[] | [.databaseId, .number, .workflowName, .createdAt] | @tsv')
+          echo "### Vigilante: $desbloqueadas ejecución(es) desbloqueada(s)" >> "$GITHUB_STEP_SUMMARY"
