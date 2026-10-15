@@ -1,9 +1,9 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-14",
+  "fecha": "2026-10-15",
   "graves": 0,
-  "avisos": 3,
+  "avisos": 2,
   "hallazgos": [
     {
       "nivel": "aviso",
@@ -16,12 +16,6 @@
       "comprobacion": "html",
       "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
       "fichero": "privacidad.html"
-    },
-    {
-      "nivel": "aviso",
-      "comprobacion": "duplicados",
-      "detalle": "[boe] titular repetido del 2026-10-08: «RESOLUCIÓN, DE LA DIRECCIÓN GENERAL DE SEGURIDAD JURÍDICA Y FE PÚBLICA, EN EL RECURSO INTERPUESTO».",
-      "fichero": "data/2026-10-14.json"
     }
   ]
 }
