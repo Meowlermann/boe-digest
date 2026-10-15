@@ -385,18 +385,18 @@
     "scoreboard": null,
     "feed": [
       {
-        "chamber": "congreso",
-        "type": "Tramitación",
-        "date": "jueves, 15 de octubre de 2026",
-        "headline": "APROBADA «PROPOSICIÓN DE LEY ORGÁNICA POR LA QUE SE MODIFICA EL ARTÍCULO OCHENTA DE LA LEY ORGÁNICA 1/1979, DE 26 DE SEPTIEMBRE,…»",
-        "standfirst": "Proposición de ley de Grupo Parlamentario Socialista. Antes: senado.",
         "body": [
           "Expediente 122/000088. Resultado: Aprobado con modificaciones."
         ],
+        "chamber": "congreso",
+        "date": "jueves, 15 de octubre de 2026",
+        "headline": "APROBADA «PROPOSICIÓN DE LEY ORGÁNICA POR LA QUE SE MODIFICA EL ARTÍCULO OCHENTA DE LA LEY ORGÁNICA 1/1979, DE 26 DE SEPTIEMBRE,…»",
         "source": {
           "label": "Tramitación de 122/000088",
           "url": "https://terceracamara.es/tramitacion/122-000088.html"
-        }
+        },
+        "standfirst": "Proposición de ley de Grupo Parlamentario Socialista. Antes: senado.",
+        "type": "Tramitación"
       }
     ],
     "coverage": {
