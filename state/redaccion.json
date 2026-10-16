@@ -4902,17 +4902,9 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso suma 38 preguntas escritas sin respuesta tras vencer el plazo",
-   "entradilla": "Un total de 38 iniciativas parlamentarias superan los 20 días hábiles sin contestación registrada, con la solicitud más antigua publicada el lunes 15 de diciembre de 2025.",
-   "claves": [
-    "Sumar concentra la mayor parte de las consultas sin responder con 30, seguido por el PSOE con 4, el PP con 2, Junts con 1 y Sin grupo con 1.",
-    "Todas las iniciativas superan los 20 días hábiles desde su publicación sin que conste contestación en sus fichas del Congreso.",
-    "La solicitud más antigua sin respuesta registrada en la Cámara se publicó el lunes 15 de diciembre de 2025."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-15"
+   "huella": "d5cdf02c8277a60c",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -7431,9 +7423,217 @@
    "huella": "24f3a3e18a4702e9",
    "descartado": "nombre «Penitenciaria» que no está en el texto oficial",
    "intentos": 2
+  },
+  "BOE-A-2026-21525": {
+   "huella": "ccde5f3dd661a411",
+   "fuente": "24559d8b97ecc6dd",
+   "titular": "La Presidencia corrige un error en el Real Decreto sobre accesibilidad",
+   "entradilla": "El Boletín Oficial del Estado publica una rectificación que sustituye la expresión sobre el Consejo de Estado en el Reglamento de accesibilidad cognitiva.",
+   "claves": [
+    "La modificación afecta a la página 118524 del Boletín Oficial del Estado número 218 de 3 de septiembre de 2026.",
+    "El texto sustituye la mención de que se ha oído al Consejo de Estado por la indicación de que se actúa de acuerdo con él."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21526": {
+   "huella": "012b9f01b4c13282",
+   "fuente": "0b254e140ea7f277",
+   "titular": "Transición Ecológica subvenciona a la Fundación Minería y Vida",
+   "entradilla": "El Ministerio otorga una ayuda directa a la entidad para impulsar la sostenibilidad y la concienciación sobre las materias primas minerales hasta 2030.",
+   "claves": [
+    "La subvención financia los trabajos de la actuación A16.M23 del I Plan de Acción para la Gestión Sostenible de las Materias Primas Minerales 2026-2030.",
+    "La Fundación Minería y Vida desarrollará una memoria de sostenibilidad vinculada a los ODS y guías prácticas voluntarias para las empresas del sector.",
+    "La entidad beneficiaria tiene su domicilio social en la plaza de las Cortes de Madrid y cuenta con el CIF G06923007."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21527": {
+   "huella": "ae958e932828d1b5",
+   "fuente": "5aa079d87e64ddf9",
+   "titular": "Ciencia crea el órgano gestor del Año de Investigación contra el Cáncer",
+   "entradilla": "El Ministerio constituye un comité interministerial presidido por el Instituto de Salud Carlos III para ejecutar el programa de este acontecimiento.",
+   "claves": [
+    "El nuevo órgano colegiado se encarga de certificar la adecuación de los gastos e inversiones a los objetivos del programa del Año de Investigación contra el Cáncer 2026.",
+    "La presidencia recae en la persona titular de la Dirección del Instituto de Salud Carlos III y cuenta con representantes de Ciencia, Hacienda, Sanidad, el CNIO y el CSIC.",
+    "La creación de este órgano no genera ningún incremento del gasto público según recoge la orden ministerial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21596": {
+   "huella": "53e4d60bda19bd36",
+   "fuente": "fd10ef7ba39527dc",
+   "titular": "Indra financiará la Fiesta Nacional en la Embajada de España en Albania",
+   "entradilla": "La multinacional aporta una cantidad en especie valorada en dos mil euros para el evento oficial que se celebra en Tirana.",
+   "claves": [
+    "Indra Group aporta una contribución económica en especie por importe de 2.000 euros para la celebración de la Fiesta Nacional de España en Tirana prevista para el 12 de octubre de 2026.",
+    "La Embajada de España en Albania se compromete a difundir la participación de la empresa mediante la inclusión de su logotipo en materiales gráficos, web y redes sociales.",
+    "La Embajada entregará una certificación acreditativa de la aportación en un plazo máximo de treinta días tras la realización del evento para acogerse a los incentivos fiscales al mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21597": {
+   "huella": "1fcadb21e3a2b85b",
+   "fuente": "9d2c0deb3f48ee23",
+   "titular": "Autopistas del Sol costeará la Fiesta Nacional en la Embajada en Argentina",
+   "entradilla": "La empresa contrata suministros y servicios por valor de cuatro mil euros para apoyar la recepción oficial en Buenos Aires.",
+   "claves": [
+    "Ausol asume la contratación de suministros o servicios para la celebración del evento por un valor estimado de 4.000 euros.",
+    "La Fiesta Nacional de España en Buenos Aires está prevista para el próximo 9 de octubre de 2026.",
+    "La Embajada difundirá la colaboración de la empresa e incluirá su logotipo en las invitaciones, programas y soportes físicos del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21598": {
+   "huella": "d9bbef70cec45a1d",
+   "fuente": "51f2ac364fb38f6a",
+   "titular": "Aleste Padel patrocinará la Fiesta Nacional en la Embajada en Costa Rica",
+   "entradilla": "La mercantil aporta mil dólares en suministros y servicios para la recepción oficial que se celebra en San José.",
+   "claves": [
+    "La aportación económica en especie consiste en la contratación de suministros o servicios por un valor estimado de 1.000 dólares estadounidenses.",
+    "El evento conmemorativo de la Fiesta Nacional de España en San José de Costa Rica se celebra el 9 de octubre de 2026.",
+    "La Embajada entregará a la empresa la certificación de la aportación en un plazo máximo de treinta días tras el evento a efectos de mecenazgo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21599": {
+   "huella": "018d3a0ce27d549c",
+   "fuente": "3739b41915fb0083",
+   "titular": "Rising Fashion financia la Fiesta Nacional de España en Bangladesh",
+   "entradilla": "La empresa aporta veinte mil takas en metálico para respaldar la recepción oficial organizada por la Embajada en Dhaka.",
+   "claves": [
+    "La contribución económica en metálico asciende a 20.000 takas bangladesíes (BDT).",
+    "La recepción de la Fiesta Nacional se celebra en Dhaka el 12 de octubre de 2026.",
+    "La Embajada agradecerá la aportación en el acto institucional y colocará el logotipo de la empresa en los soportes de difusión y en el lugar de la celebración."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21600": {
+   "huella": "4f93a164929dcde7",
+   "fuente": "45cdef5350606bca",
+   "titular": "Almaviva costea servicios para la Fiesta Nacional en la Embajada en Italia",
+   "entradilla": "La compañía sufraga suministros por valor de siete mil trescientos veinte euros para la recepción oficial en Roma.",
+   "claves": [
+    "Almival realiza una aportación en especie mediante la contratación por su cuenta de suministros o servicios valorados en 7.320 euros.",
+    "La celebración de la Fiesta Nacional de España en Roma está prevista para el 8 de octubre de 2026.",
+    "La Embajada difundirá la participación de la empresa en su web, redes sociales y mediante la colocación de un soporte publicitario en el lugar del evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21601": {
+   "huella": "175bba284bcb4d2c",
+   "fuente": "18160506ffff8392",
+   "titular": "Defensa homologa un cartucho militar fabricado por Makine Ve Kimya",
+   "entradilla": "La Dirección General de Armamento otorga la certificación por dos años al modelo de munición solicitado por Bocum Company Group.",
+   "claves": [
+    "El producto homologado es el cartucho de 5,56 x 45 mm NATO ordinario fabricado en la factoría de Etimesgut, en Ankara.",
+    "La homologación tiene una validez de dos años y se le asigna la contraseña de registro 1305.25.02.",
+    "El cartucho ha superado los ensayos establecidos en el acuerdo STANAG 4172 y cuenta con el número de diseño de la OTAN AC/225-141A."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21602": {
+   "huella": "40122eec94a4b689",
+   "fuente": "40d640b7333a141b",
+   "titular": "Transición Ecológica formula la DIA de tres parques eólicos en Cuenca",
+   "entradilla": "El Ministerio evalúa el impacto ambiental de los proyectos de hibridación eólica promovidos por Elawan Fotovoltaica en Belinchón y Zarza de Tajo.",
+   "claves": [
+    "La resolución afecta a los proyectos Elawan Belinchón I (21,6 MW), II (21,6 MW) y III (28,8 MW), promovidos por sus respectivas sociedades en la provincia de Cuenca.",
+    "Los proyectos contemplan la instalación de módulos eólicos para su hibridación con parques solares fotovoltaicos ya existentes.",
+    "Las infraestructuras se ubican en los términos municipales conquenses de Belinchón y Zarza de Tajo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21603": {
+   "huella": "43a52aedd18f2212",
+   "fuente": "ecf17bb012db864a",
+   "titular": "Energía desestima la planta fotovoltaica Bordecorex Norte en Soria",
+   "entradilla": "La Dirección General deniega la autorización a Biovent Energía para su proyecto híbrido de más de cuarenta megavatios.",
+   "claves": [
+    "La solicitud afectada corresponde a la instalación fotovoltaica Bordecorex Norte, de 44,199 MW de potencia instalada.",
+    "El proyecto preveía su hibridación con el parque eólico homónimo existente de 44,35 MW.",
+    "Las instalaciones proyectadas se ubicaban en los términos municipales sorianos de Velamazán, Barca, Caltojar, Berlanga de Duero y Centenera de Andaluz."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21604": {
+   "huella": "743c4157c116b25c",
+   "fuente": "75e8e17ebf950846",
+   "titular": "Energía desestima la planta fotovoltaica Ventosa del Ducado en Soria",
+   "entradilla": "El Ministerio deniega la autorización a Iberdrola Renovables para su proyecto de hibridación en el municipio de Miño de Medinaceli.",
+   "claves": [
+    "La resolución rechaza la solicitud de autorización administrativa previa y de construcción para la planta solar de 43,89 MW de potencia.",
+    "El proyecto estaba concebido para hibridarse con el parque eólico Ventosa del Ducado, que cuenta con 44 MW de potencia instalada.",
+    "Las infraestructuras se localizaban en el término municipal de Miño de Medinaceli, en la provincia de Soria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21605": {
+   "huella": "b14967afb9006047",
+   "fuente": "1ba16ce583e643ef",
+   "titular": "Transición Ecológica autoriza el almacenamiento con baterías Tagus 2 en Toledo",
+   "entradilla": "El Ministerio autoriza a Khons Sun Power el proyecto de baterías de 176,44 MW para hibridar la planta fotovoltaica Tagus 2 en Ocaña y Ontígola.",
+   "claves": [
+    "El proyecto incluye un sistema de almacenamiento de ion-litio con una potencia instalada de 176,44 MW y una capacidad de energía de 661,98 MWh.",
+    "La potencia conjunta del sistema hibridado, que suma las baterías y la planta fotovoltaica Tagus 2, alcanza los 400,84 MW.",
+    "La instalación contará con 132 contenedores de baterías, 44 inversores y 22 centros de transformación ubicados en los términos municipales de Ocaña y Ontígola.",
+    "La energía se evacuará mediante líneas subterráneas de media tensión a 33 kV hasta un centro de seccionamiento para conectarse a la red de transporte en la subestación Arganda de 220 kV."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21606": {
+   "huella": "4b146823e3954da4",
+   "fuente": "92a5b78ce3128eb9",
+   "titular": "Energía autoriza la repotenciación de la línea eléctrica a 400 kV en el sur",
+   "entradilla": "Red Eléctrica recibe el visto bueno para modernizar el tramo de transporte que conecta Tajo de la Encantada con Litoral.",
+   "claves": [
+    "La actuación afecta a las provincias de Málaga, Granada y Almería a lo largo de las infraestructuras de transporte a 400 kV.",
+    "El primer tramo comprende la conexión entre las subestaciones de Archidona y Tajo de la Encantada en la provincia de Málaga.",
+    "Los trabajos incluyen el recrecido de diversos apoyos metálicos y la elevación de la temperatura máxima de servicio de los conductores."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21607": {
+   "huella": "723c5973969caf98",
+   "fuente": "d33b0759d4f059bd",
+   "titular": "Cultura publica el convenio para las Jornadas de Música de Segovia",
+   "entradilla": "El INAEM y la Fundación Don Juan de Borbón organizan conjuntamente la trigésima cuarta edición del ciclo musical y sus talleres didácticos.",
+   "claves": [
+    "El convenio regula la programación de las XXXIV Jornadas de Música Contemporánea de Segovia para la temporada 2026-2027.",
+    "Las actividades se desarrollarán entre los meses de octubre de 2026 y mayo de 2027 en diversos espacios de Segovia.",
+    "El INAEM asume la contratación directa de formaciones como el Trío Arbós y el grupo Around the Sound por cuantías máximas específicas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21608": {
+   "huella": "96c9746770b4cf2c",
+   "fuente": "d2cd8876510a33b5",
+   "titular": "El Museo del Prado colabora en el proyecto cultural de la Embajada de Suecia",
+   "entradilla": "La pinacoteca acogerá actividades con motivo del cuatrocientos aniversario de la Reina Cristina de Suecia y el programa Suecia Creativa.",
+   "claves": [
+    "El convenio establece los términos de la participación del Museo Nacional del Prado como entidad colaboradora en el proyecto cultural.",
+    "La vigencia del acuerdo se extiende hasta el mes de diciembre de 2026, concentrando sus actividades principales entre octubre y diciembre.",
+    "La Embajada de Suecia se encarga de organizar y ejecutar el proyecto, asumiendo las acciones de comunicación y nombrando al museo como socio principal."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-16"
   }
  },
  "uso": {
-  "2026-10-15": 9
+  "2026-10-16": 2
  }
 }
