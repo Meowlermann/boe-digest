@@ -4902,13 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "Treinta y ocho preguntas escritas al Gobierno en el Congreso superan los veinte días sin respuesta",
-   "entradilla": "El recuento del Congreso refleja preguntas pendientes de contestación desde el pasado 16 de febrero de 2026.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Treinta y ocho preguntas escritas superan el plazo de contestación en el Congreso",
+   "entradilla": "Un total de 38 preguntas escritas acumulan más de 20 días hábiles desde su publicación sin que conste respuesta registrada en la Cámara.",
    "claves": [
-    "Un total de 38 preguntas escritas acumulan más de 20 días hábiles desde su publicación sin una respuesta registrada.",
-    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE 7, el PP 4, y el grupo mixto y formaciones vascas y catalanas suman otras 3."
+    "Las preguntas superan la fecha límite publicada por el Congreso, aunque cabe la posibilidad de prórrogas o de respuestas pendientes de reflejar en la ficha.",
+    "La pregunta más antigua de este grupo pendiente de contestación se publicó el lunes 15 de diciembre de 2025.",
+    "Por grupos parlamentarios, el grupo Sumar acumula 30 preguntas, el PSOE 4, el PP 2, Junts 1 y los diputados sin grupo 1."
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-17"
@@ -7742,8 +7743,15 @@
   },
   "BOE-A-2026-21649": {
    "huella": "78c4bb108d874ba0",
-   "descartado": "nombre «VioGén» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "68274127d76ca93f",
+   "titular": "La Policía Local de Algarrobo se incorporará al sistema sobre violencia de género",
+   "entradilla": "El Ministerio del Interior y el Ayuntamiento de Algarrobo firman un convenio para integrar a los agentes locales en el registro estatal de seguimiento de la violencia de género.",
+   "claves": [
+    "El acuerdo permite la incorporación de la Policía Local de Algarrobo al registro común de las Fuerzas y Cuerpos de Seguridad para el seguimiento individualizado de las víctimas.",
+    "La base de datos común permite tener conocimiento permanente de las circunstancias de las víctimas para valorar el riesgo de sufrir nuevas agresiones y adoptar medidas de protección."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-17"
   },
   "BOE-A-2026-21652": {
    "huella": "a7fb061ea29a9c4b",
@@ -7783,8 +7791,16 @@
   },
   "BOE-A-2026-21655": {
    "huella": "f88d823338a0eec1",
-   "descartado": "cifra «700000» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "5459e4dcf2965f94",
+   "titular": "Adif y el Ayuntamiento de Fene financiarán una nueva pasarela peatonal",
+   "entradilla": "El Administrador de Infraestructuras Ferroviarias y el Ayuntamiento de Fene firman un convenio para construir una pasarela peatonal y mejorar la permeabilidad en la línea Betanzos-Ferrol.",
+   "claves": [
+    "Adif y el Ayuntamiento de Fene sufragarán a partes iguales los costes de las obras de construcción de la nueva pasarela peatonal.",
+    "Adif actuará como órgano de contratación, dirigirá las obras y otorgará una concesión gratuita de la pasarela al Ayuntamiento de Fene por hasta 75 años.",
+    "El Ayuntamiento de Fene cederá los terrenos necesarios y asumirá el posterior mantenimiento, conservación y vigilancia de la pasarela."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
   },
   "BOE-A-2026-21656": {
    "huella": "859bde907c295436",
@@ -7827,6 +7843,6 @@
   }
  },
  "uso": {
-  "2026-10-17": 2
+  "2026-10-17": 4
  }
 }
