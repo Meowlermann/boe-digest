@@ -1,9 +1,9 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-16",
+  "fecha": "2026-10-17",
   "graves": 0,
-  "avisos": 2,
+  "avisos": 3,
   "hallazgos": [
     {
       "nivel": "aviso",
@@ -16,6 +16,12 @@
       "comprobacion": "html",
       "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
       "fichero": "privacidad.html"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-10-10: «CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS».",
+      "fichero": "data/2026-10-17.json"
     }
   ]
 }

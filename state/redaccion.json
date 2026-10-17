@@ -4902,17 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Gobierno acumula 38 preguntas del Congreso sin responder en plazo",
-   "entradilla": "Un total de 38 preguntas parlamentarias escritas superan los 20 días hábiles sin contestación registrada, la mayoría formuladas por el grupo Sumar.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "Treinta y ocho preguntas escritas al Gobierno en el Congreso superan los veinte días sin respuesta",
+   "entradilla": "El recuento del Congreso refleja preguntas pendientes de contestación desde el pasado 16 de febrero de 2026.",
    "claves": [
-    "Un total de 38 preguntas escritas del último año llevan más de 20 días hábiles desde su publicación sin que conste contestación registrada en el Congreso.",
-    "Por grupos parlamentarios, Sumar encabeza la lista con 30 preguntas pendientes, seguido del PSOE con 4, el PP con 2, Junts con 1 y Sin grupo con 1.",
-    "La pregunta más antigua se publicó el lunes 15 de diciembre de 2025, aunque el recuento advierte de que puede haber prórrogas o respuestas aún no reflejadas."
+    "Un total de 38 preguntas escritas acumulan más de 20 días hábiles desde su publicación sin una respuesta registrada.",
+    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE 7, el PP 4, y el grupo mixto y formaciones vascas y catalanas suman otras 3."
    ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-16"
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -7639,9 +7638,195 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-16"
+  },
+  "BOE-A-2026-21620": {
+   "huella": "6809b3ce6a6908f8",
+   "fuente": "7297040b17ab104f",
+   "titular": "El Comisionado para el Mercado de Tabacos fija nuevos precios para las labores de tabaco en Península",
+   "entradilla": "Se actualizan los precios de venta al público de determinadas labores de tabaco en las expendedurías del área de Península y Baleares.",
+   "claves": [
+    "Los nuevos precios de venta al público se aplican en todas las expendedurías de tabaco y timbre de la Península y Baleares.",
+    "La resolución entra en vigor el mismo día de su publicación en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21621": {
+   "huella": "898759e19f396de4",
+   "fuente": "fdda4b314da14841",
+   "titular": "La Fábrica Nacional de Moneda y Timbre emite monedas de colección de la XIV Serie Iberoamericana",
+   "entradilla": "Se acuñan hasta 4.000 monedas de plata de 5 euros dedicadas a la catedral de Toledo dentro de la serie «Encuentro de Dos Mundos».",
+   "claves": [
+    "La moneda tiene un valor facial de 5 euros, un peso de 13,50 gramos y un diámetro de 33 milímetros.",
+    "El anverso reproduce el Escudo de España junto a los escudos de los países participantes y la leyenda FELIPE VI REY DE ESPAÑA.",
+    "El reverso muestra una imagen de la catedral de Toledo y el rosetón de su fachada oeste.",
+    "La puesta en circulación de estas piezas tendrá lugar durante el último cuatrimestre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21622": {
+   "huella": "8a3b832ed675b93d",
+   "fuente": "a36e40cbc3c0377b",
+   "titular": "El Ministerio de Ciencia crea un órgano interadministrativo para el acontecimiento Trío de Eclipses",
+   "entradilla": "Se constituye el órgano colegiado encargado de certificar los gastos y desarrollar el programa de apoyo al acontecimiento de excepcional interés público.",
+   "claves": [
+    "El nuevo órgano queda adscrito a la Secretaría de Estado de Ciencia, Innovación y Universidades.",
+    "La presidencia corresponde a la persona titular del Gabinete de la Secretaría de Estado de Ciencia, Innovación y Universidades.",
+    "Su funcionamiento no genera ningún incremento del gasto público."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21623": {
+   "huella": "22387dfa713a4991",
+   "fuente": "97b547bb1791777c",
+   "titular": "El Gobierno concede una subvención directa a la Fundación Círculo de Tecnologías",
+   "entradilla": "La ayuda económica contribuirá a financiar durante 2026 las actuaciones de fomento de iniciativas tecnológicas aplicadas a la defensa y la seguridad.",
+   "claves": [
+    "La concesión se realiza de forma directa por razones de interés público, social y económico.",
+    "La subvención se rige por lo dispuesto en la Ley General de Subvenciones y en el propio real decreto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21645": {
+   "huella": "44b69ee3874290cc",
+   "fuente": "00ad5c88cbe4bb17",
+   "titular": "La Secretaría General de la Presidencia y Ecoembes fomentan la recogida selectiva de residuos",
+   "entradilla": "Un nuevo convenio impulsa la separación de envases y campañas de concienciación en las instalaciones de la Secretaría de Estado de Comunicación.",
+   "claves": [
+    "El acuerdo establece una experiencia piloto e innovadora de recogida selectiva en origen en la Presidencia del Gobierno.",
+    "Ambas entidades se comprometen a realizar iniciativas de sensibilización sobre el reciclaje entre el personal y los usuarios."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21646": {
+   "huella": "94326939218d4af6",
+   "fuente": "f0047601721bfab2",
+   "titular": "La AECID y la Agencia Andaluza de Cooperación colaborarán en el programa Intercoonecta",
+   "entradilla": "Ambas agencias articulan un convenio para ejecutar programaciones de capacitación técnica e innovación en cooperación internacional.",
+   "claves": [
+    "El acuerdo se suscribe en el marco de la Convocatoria Intercoonecta 2025 de la AECID.",
+    "La colaboración incluye proyectos sobre operaciones urbanas en Centroamérica, pesca artesanal sostenible y gobernanza territorial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21647": {
+   "huella": "d77aff2a03db7042",
+   "fuente": "b34f361591b4b8d3",
+   "titular": "Cellnex Poland financiará la recepción de la Fiesta Nacional en la Embajada de España",
+   "entradilla": "La empresa colaborará con una aportación en especie valorada en 10.000 zlotys polacos para el evento celebrado en Varsovia.",
+   "claves": [
+    "El convenio regula la participación de la empresa en la celebración organizada por la Embajada de España en Polonia el 16 de octubre de 2026.",
+    "La aportación económica en especie consiste en la contratación de suministros o servicios por valor de 10.000 zlotys polacos.",
+    "La Embajada se compromete a difundir la participación e incluir el logotipo de Cellnex Poland en el material gráfico y digital de la actividad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21648": {
+   "huella": "db409baaa309806c",
+   "fuente": "2b3ff6bdb850e6a1",
+   "titular": "Justicia y el Servicio de Salud balear colaboran en autopsias en el Hospital Can Misses",
+   "entradilla": "El Hospital Can Misses cede espacios temporales para autopsias judiciales y los forenses colaborarán en autopsias clínicas en Ibiza.",
+   "claves": [
+    "El Servicio de Salud de las Illes Balears autoriza el uso gratuito de una superficie de 300 metros cuadrados en el semisótano del Hospital Can Misses.",
+    "El Instituto de Medicina Legal y Ciencias Forenses cede personal médico forense para colaborar en la fase de disección de autopsias clínicas.",
+    "El acuerdo incluye el desarrollo de actividades conjuntas de formación e investigación sobre materias sanitarias y forenses."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21649": {
+   "huella": "78c4bb108d874ba0",
+   "descartado": "nombre «VioGén» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21652": {
+   "huella": "a7fb061ea29a9c4b",
+   "fuente": "761e63e165dda867",
+   "titular": "La Secretaría de Estado de Seguridad y el Ayuntamiento de Aljaraque firman un convenio de seguridad",
+   "entradilla": "Se establecen los mecanismos de coordinación operativa entre la Guardia Civil y la Policía Local en el término municipal.",
+   "claves": [
+    "El acuerdo busca mejorar la participación y la coordinación en el diseño y ejecución de las políticas de seguridad ciudadana.",
+    "Se refuerza la actuación conjunta y coordinada a través de un Plan Global de Colaboración entre administraciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21653": {
+   "huella": "4604728be046a924",
+   "fuente": "94a7c5fdb6017b10",
+   "titular": "Transportes aprueba la Carta de Servicios de la Entidad Pública Empresarial Sasemar para 2026-2029",
+   "entradilla": "La sociedad estatal actualiza sus compromisos de calidad y la información a la ciudadanía sobre los servicios encomendados.",
+   "claves": [
+    "La Carta de Servicios tiene vigencia para el periodo comprendido entre 2026 y 2029.",
+    "El documento se publica en el Boletín Oficial del Estado y se difunde a través de internet y en las dependencias con atención al público."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21654": {
+   "huella": "3f2de24218e6ab97",
+   "fuente": "e92dfbeab29ccbd5",
+   "titular": "Extremadura, Mérida y Adif prorrogan el convenio para la pasarela peatonal de la estación de tren",
+   "entradilla": "Se publica la tercera adenda de modificación y prórroga del acuerdo para la ejecución de la pasarela urbana financiada con fondos europeos.",
+   "claves": [
+    "Las obras del proyecto constructivo de la pasarela peatonal y con carril bici recibieron el acta de recepción el 30 de diciembre de 2025.",
+    "Adif formalizó la entrega de la construcción a la Junta de Extremadura el 17 de marzo de 2026."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21655": {
+   "huella": "f88d823338a0eec1",
+   "descartado": "cifra «700000» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "BOE-A-2026-21656": {
+   "huella": "859bde907c295436",
+   "fuente": "02c7d36444bd4552",
+   "titular": "Puertos del Estado homologa a la Fundación Isidoriana de Cartagena para cursos de mercancías peligrosas",
+   "entradilla": "La entidad impartirá formación a operadores de muelle o terminal que manipulen mercancías peligrosas en puertos de interés general.",
+   "claves": [
+    "La homologación concedida tiene una validez de tres años desde su publicación en el Boletín Oficial del Estado.",
+    "La fundación debe informar por correo electrónico a Puertos del Estado con al menos un mes de antelación sobre el inicio de cada curso.",
+    "La entidad remitirá las actas oficiales y entregará los certificados acreditativos a los alumnos que superen el curso con la calificación de apto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21657": {
+   "huella": "d7c8a556b7d7da4e",
+   "fuente": "518e60880c6664a2",
+   "titular": "Puertos del Estado prorroga la homologación a la Escuela Europea de Maquinaria para mercancías peligrosas",
+   "entradilla": "La entidad continuará impartiendo cursos de capacitación para operadores de terminales portuarias durante tres años más.",
+   "claves": [
+    "La prórroga de la homologación tiene una validez de tres años desde su publicación en el Boletín Oficial del Estado.",
+    "La escuela debe comunicar a Puertos del Estado los datos de cada curso y de los alumnos con un mes de antelación mínima.",
+    "Se remitirán las actas oficiales y se entregarán los certificados a los alumnos que obtengan la calificación de apto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
+  },
+  "BOE-A-2026-21658": {
+   "huella": "68411ae8f81eadc1",
+   "fuente": "ca5ffad9e04d011a",
+   "titular": "El Ayuntamiento de Benidorm y el Ministerio de Educación impulsan el programa Aula Mentor",
+   "entradilla": "Un nuevo convenio facilita la formación abierta no reglada para adultos a través de Internet en las instalaciones municipales de la calle Londres.",
+   "claves": [
+    "El Ayuntamiento de Benidorm aporta las instalaciones situadas en la calle Londres número 17 y asume su mantenimiento y conexión a internet.",
+    "El consistorio designa a un administrador para gestionar las matrículas, la atención al alumnado y el apoyo a las tutorías telemáticas y presenciales.",
+    "El Ministerio de Educación, Formación Profesional y Deportes facilita el acceso al catálogo oficial de cursos de la iniciativa."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-17"
   }
  },
  "uso": {
-  "2026-10-16": 10
+  "2026-10-17": 2
  }
 }
