@@ -1,7 +1,7 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-17",
+  "fecha": "2026-10-18",
   "graves": 0,
   "avisos": 3,
   "hallazgos": [
@@ -19,9 +19,9 @@
     },
     {
       "nivel": "aviso",
-      "comprobacion": "duplicados",
-      "detalle": "[boe] titular repetido del 2026-10-10: «CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS».",
-      "fichero": "data/2026-10-17.json"
+      "comprobacion": "titulares",
+      "detalle": "No hay edición del 2026-10-18.",
+      "fichero": "data/2026-10-18.json"
     }
   ]
 }
