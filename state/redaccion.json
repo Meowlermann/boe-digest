@@ -4902,15 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso acumula 38 preguntas escritas pendientes tras vencer su fecha límite",
-   "entradilla": "Un total de 38 iniciativas parlamentarias en el Congreso acumulan más de 20 días hábiles desde su publicación sin que conste una respuesta oficial.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso suma 38 preguntas escritas sin responder tras vencer el plazo",
+   "entradilla": "Un total de 38 preguntas escritas llevan más de 20 días hábiles sin contestación registrada en el Congreso. La mayor parte de las iniciativas pendientes pertenecen a Sumar, que acumula 24 de ellas.",
    "claves": [
-    "La mayoría de las iniciativas sin contestación registrada corresponden a Sumar, con 30 preguntas, frente a 4 del PSOE y 2 del PP.",
-    "Junts y el grupo Sin grupo cuentan cada uno con 1 pregunta pendiente en el recuento sobre el último año.",
-    "La iniciativa escrita más antigua sin respuesta registrada en la ficha de la Cámara se publicó el lunes 15 de diciembre de 2025.",
-    "El recuento señala que pueden existir prórrogas o respuestas aún no reflejadas tras superarse la fecha límite del Congreso."
+    "Las 38 preguntas escritas han superado el plazo de 20 días hábiles desde su publicación sin que conste una contestación registrada.",
+    "Por grupos, Sumar cuenta con 24 preguntas pendientes, el PSOE con 7, el PP con 4, EAJ-PNV con 1, Junts con 1 y la categoría Sin grupo con 1.",
+    "La solicitud más antigua se publicó el lunes 16 de febrero de 2026, si bien puede haber prórrogas o respuestas aún no reflejadas en la ficha."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-19"
@@ -8033,6 +8032,6 @@
   }
  },
  "uso": {
-  "2026-10-19": 7
+  "2026-10-19": 8
  }
 }
