@@ -1,9 +1,9 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-19",
+  "fecha": "2026-10-20",
   "graves": 0,
-  "avisos": 2,
+  "avisos": 3,
   "hallazgos": [
     {
       "nivel": "aviso",
@@ -16,6 +16,12 @@
       "comprobacion": "html",
       "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
       "fichero": "privacidad.html"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-10-16: «OTORGA A RED ELÉCTRICA DE ESPAÑA, SAU, AUTORIZACIÓN ADMINISTRATIVA PREVIA Y AUTORIZACIÓN ADMINISTRATIVA».",
+      "fichero": "data/2026-10-20.json"
     }
   ]
 }
