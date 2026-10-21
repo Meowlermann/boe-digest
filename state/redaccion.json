@@ -4902,12 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta tras superar el plazo reglamentario de 20 días",
-   "entradilla": "El grupo parlamentario Sumar encabeza las iniciativas pendientes del último año con 24 cuestiones sin contestación registrada.",
-   "claves": [],
-   "modelo": "gemini-3.5-flash-lite",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas del último año sin responder en plazo",
+   "entradilla": "Un total de 38 iniciativas parlamentarias superan el límite de 20 días hábiles sin que se haya registrado su contestación oficial, situándose la consulta más antigua en el 15 de diciembre de 2025.",
+   "claves": [
+    "Sumar encabeza las iniciativas sin contestar con 30 preguntas escritas pendientes, seguido del PSOE con cuatro, el PP con dos, Junts con una y otra del grupo Sin Grupo.",
+    "Las preguntas acumulan más de 20 días hábiles desde su publicación rebasando el límite fijado por la Cámara, aunque la ficha del Congreso puede incluir prórrogas o respuestas pendientes de publicar.",
+    "La pregunta más antigua acumulada sin contestación registrada fue publicada el lunes 15 de diciembre de 2025."
+   ],
+   "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-21"
   },
   "BOE-A-2026-20822": {
@@ -8414,9 +8418,22 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21926": {
+   "huella": "8894069b1b3076b0",
+   "fuente": "cff0d16fbc512685",
+   "titular": "La registradora de Canjáyar frena una donación en Instinción por posible parcelación",
+   "entradilla": "El Registro de la Propiedad mantiene en suspenso la inscripción de una cuota del 25% de una parcela rústica no registrada tras detectar edificaciones destinadas a vivienda y otras transmisiones simultáneas en el mismo terreno.",
+   "claves": [
+    "La donación abarca una cuarta parte indivisa de la parcela 14 del polígono 1 de Instinción, que cuenta con una superficie total de 130.567 metros cuadrados.",
+    "La registradora detectó edificaciones destinadas a vivienda en las ortofotos de la finca rústica, lo que constituye un indicio de parcelación ilegal.",
+    "La escritura de donación se presentó junto a otras cuatro escrituras notariales que transmitían participaciones indivisas sobre la misma propiedad no inscrita."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-21"
   }
  },
  "uso": {
-  "2026-10-21": 1
+  "2026-10-21": 2
  }
 }
