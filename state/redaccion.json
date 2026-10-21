@@ -4902,17 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "38 preguntas escritas en el Congreso superan el plazo de 20 días sin contestación",
-   "entradilla": "Un total de 38 iniciativas presentadas en el último año llevan más de 20 días hábiles de retraso sobre la fecha límite publicada por la Cámara. La mayoría de las cuestiones proceden del grupo de Sumar.",
-   "claves": [
-    "Sumar encabeza las iniciativas sin contestación registrada con 30 preguntas, seguido por el PSOE con 4, el PP con 2, Junts con 1 y Sin grupo con 1.",
-    "La pregunta escrita más antigua sin respuesta registrada se publicó el lunes 15 de diciembre de 2025.",
-    "El recuento contempla que puedan existir prórrogas concedidas o respuestas ya remitidas que aún no se hayan reflejado en la ficha del Congreso."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-20"
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta tras superar el plazo reglamentario de 20 días",
+   "entradilla": "El grupo parlamentario Sumar encabeza las iniciativas pendientes del último año con 24 cuestiones sin contestación registrada.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -8224,9 +8220,203 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-20"
+  },
+  "BOE-A-2026-21872": {
+   "huella": "b65e36f3249bb21d",
+   "fuente": "1f5e7e58b2bfeb21",
+   "titular": "El Gobierno fija en el doble del salario mínimo la pensión mínima por terrorismo y reduce cotizaciones",
+   "entradilla": "Las pensiones extraordinarias por actos de terrorismo equivaldrán al doble del salario mínimo y se reducen las cuotas para mayores de 62 años en incapacidad temporal.",
+   "claves": [
+    "El importe mínimo mensual de las pensiones extraordinarias por actos de terrorismo será el doble del salario mínimo interprofesional vigente en cada momento.",
+    "Las empresas tendrán una reducción del 75 por ciento en las cuotas empresariales por contingencias comunes durante la incapacidad temporal de los trabajadores mayores de 62 años.",
+    "Se añaden nuevas situaciones especiales de incapacidad temporal como la menstruación incapacitante secundaria, la interrupción del embarazo y la donación de órganos o tejidos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21873": {
+   "huella": "942082932bfadf88",
+   "fuente": "a60bae8dc2ea01c8",
+   "titular": "Moldavia comunica al Consejo de Europa un estado de emergencia energética e hidrológica de 60 días",
+   "entradilla": "La medida excepcional busca garantizar el suministro de electricidad, gas y agua ante las vulnerabilidades provocadas por los ataques en Ucrania y un déficit hidrológico.",
+   "claves": [
+    "El Parlamento de la República de Moldavia declaró el estado de emergencia en los sectores energético e hidrológico en todo su territorio por un período de 60 días desde el 26 de septiembre de 2026.",
+    "La decisión se adopta debido a las vulnerabilidades derivadas de los ataques a infraestructuras energéticas en Ucrania, perturbaciones logísticas y un déficit hidrológico prolongado.",
+    "La Comisión Nacional de Gestión de Crisis queda facultada para aprobar medidas temporales para garantizar el abastecimiento a la población y el funcionamiento de las infraestructuras esenciales."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21874": {
+   "huella": "15a2fb0e93dc52cc",
+   "fuente": "17795754cd57be97",
+   "titular": "Educación modifica los requisitos de evaluación y profesorado del currículo mixto de Bachillerato",
+   "entradilla": "La norma detalla la calificación de la prueba externa, los títulos y exige un nivel B2 de francés para impartir materias no lingüísticas.",
+   "claves": [
+    "El alumnado que curse el programa de doble titulación realizará una prueba externa sobre las materias específicas del currículo mixto de segundo curso.",
+    "La calificación global de la prueba externa será la media aritmética de las calificaciones de cada materia, expresada de 0 a 10 puntos con dos decimales.",
+    "Las administraciones educativas exigirán al profesorado que imparta materias no lingüísticas en lengua francesa una competencia equivalente al menos al nivel B2."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21875": {
+   "huella": "7863895a3e395184",
+   "fuente": "bce9e40a80cafde5",
+   "titular": "Función Pública actualiza el modelo de aceptación de apoderamientos para acelerar su inscripción",
+   "entradilla": "La medida integra la suficiencia del poder en el formulario para evitar el bastanteo individualizado y reducir los plazos del registro.",
+   "claves": [
+    "Se actualiza el modelo de aceptación del apoderamiento que figura como anexo IV en el Registro Electrónico de Apoderamientos de la Administración General del Estado.",
+    "El nuevo formulario electrónico estandarizado estará disponible a través de la aplicación Apodera en el Punto de Acceso General.",
+    "La comprobación de la suficiencia queda integrada en el propio modelo, lo que reduce de forma significativa el número de inscripciones sujetas al bastanteo jurídico individualizado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21876": {
+   "huella": "c47143e72c2bae2f",
+   "fuente": "45ab14dc16f27e35",
+   "titular": "Extremadura aprueba ayudas extraordinarias y medidas urgentes",
+   "entradilla": "El decreto-ley establece subvenciones directas para explotaciones agrarias, empresas turísticas y viviendas dañadas, junto con bonificaciones fiscales.",
+   "claves": [
+    "Se establece un régimen extraordinario de ayudas directas para titularidades de explotaciones agrícolas y ganaderas y empresas turísticas ubicadas en municipios afectados por los incendios forestales del verano de 2026.",
+    "La norma incluye la bonificación temporal del impuesto sobre aprovechamientos cinegéticos y de determinadas tasas vinculadas a la actividad ganadera y cinegética en las zonas afectadas.",
+    "Se regulan subvenciones directas para paliar los daños sufridos en viviendas e instalaciones complementarias, y se modifican aspectos de la Ley Agraria de Extremadura en materia de montes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21916": {
+   "huella": "c0787852d84081bd",
+   "fuente": "4a377c31edb329a5",
+   "titular": "Registradores y notarios deben calificar de forma conjunta los procedimientos judiciales conexos",
+   "entradilla": "La Dirección General de Seguridad Jurídica establece que la calificación registral debe abarcar la totalidad del iter jurídico documentado y no resoluciones aisladas.",
+   "claves": [
+    "La función calificadora del registrador debe ceñirse a la legalidad formal sin fragmentar artificialmente una unidad negocial que resulte de varias resoluciones judiciales conexas.",
+    "Cuando el título integra una sentencia de divorcio con liquidación de gananciales y otra posterior de modificación de medidas, la calificación debe efectuarse sobre la totalidad del proceso.",
+    "A efectos registrales, si los inmuebles fueron transmitidos a un tercero antes de la aprobación judicial, lo que se liquida es el derecho de crédito de la compraventa previa."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21917": {
+   "huella": "ecb3d82c76471d33",
+   "fuente": "69e3cbcef85bf8f6",
+   "titular": "El Registro de la Propiedad de Mérida deniega la presentación de un documento privado urbanístico",
+   "entradilla": "La entidad mercantil Las Abadías Promociones y Contratos recurre sin éxito la negativa a inscribir una solicitud sobre la modificación de un Plan Parcial.",
+   "claves": [
+    "La mercantil solicitó la anotación preventiva de un procedimiento urbanístico en tramitación o subsidiariamente una nota marginal de afección sobre múltiples fincas.",
+    "La registradora denegó la extensión del asiento de presentación por tratarse de un documento privado que no cuenta con eficacia registral ni puede provocar operación alguna.",
+    "La resolución señala que el solicitante carecía de legitimación sobre las fincas afectadas por la modificación del Plan Parcial del Sector aprobada por el Ayuntamiento de Mérida."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21921": {
+   "huella": "8b1ce25aaa36ab22",
+   "fuente": "a82e8d17adaa5de1",
+   "titular": "Cunit suspende la agrupación de fincas por discrepancias entre el Catastro y la realidad física",
+   "entradilla": "El registrador aprecia diferencias de superficie en una parcela y el notario recurre al considerar que no se explicita el criterio técnico empleado.",
+   "claves": [
+    "El registrador de la propiedad de Cunit suspendió la inscripción de una escritura de agrupación de dos fincas por dudas sobre la correspondencia gráfica de la registral 4.560.",
+    "La calificación apreció una superficie real distinta a los datos catastrales, dejando fuera una pieza de terreno de forma triangular según la cartografía consultada.",
+    "El notario recurrente argumenta que la resolución no explicita el método o criterio técnico empleado para justificar la supuesta discordancia física de la parcela."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21930": {
+   "huella": "090c559f75719e7c",
+   "fuente": "d9900e41dad965fa",
+   "titular": "La Fundación Iberdrola iluminará la fachada del Cuartel General del Ejército del Aire y del Espacio",
+   "entradilla": "Un convenio con el Ministerio de Defensa regula el proyecto ornamental exterior y el suministro de luminarias en la madrileña plaza de la Moncloa.",
+   "claves": [
+    "El Ministerio de Defensa y la Fundación Iberdrola España suscribieron un convenio el 6 de octubre de 2026 para la iluminación exterior de la fachada principal del cuartel.",
+    "El acuerdo comprende la elaboración del proyecto ornamental, el suministro de luminarias, así como la dirección técnica y la ejecución de los trabajos de instalación.",
+    "Las actuaciones se desarrollan en el emblemático edificio situado en la plaza de la Moncloa de Madrid, cuya construcción abarcó desde 1943 hasta 1958."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21931": {
+   "huella": "064f9f5d7eea08c4",
+   "fuente": "238e09795db9725e",
+   "titular": "Hacienda publica la rehabilitación de números de identificación fiscal",
+   "entradilla": "El Departamento de Gestión Tributaria difunde el listado de NIF rehabilitados al amparo de la normativa contra el fraude fiscal.",
+   "claves": [
+    "La resolución se dicta en aplicación de la Ley General Tributaria tras las modificaciones introducidas por la normativa de prevención y lucha contra el fraude fiscal.",
+    "El listado completo de los números de identificación fiscal rehabilitados se incluye en el anexo de la publicación oficial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21933": {
+   "huella": "bd89b794983eaaa6",
+   "fuente": "e9713a9723d53db9",
+   "titular": "Instituciones Penitenciarias emplaza a los interesados en el recurso contencioso sobre un concurso",
+   "entradilla": "Los funcionarios disponen de un plazo de nueve días para personarse ante el Tribunal Superior de Justicia de Madrid por un recurso de puestos de trabajo.",
+   "claves": [
+    "El Tribunal Superior de Justicia de Madrid tramita el procedimiento ordinario 1670/2026 interpuesto contra la resolución del concurso general de provisión de puestos en servicios periféricos.",
+    "El emplazamiento va dirigido a las personas funcionarias interesadas en la desestimación del recurso de reposición frente al concurso de traslados de la Secretaría General de Instituciones Penitenciarias.",
+    "El plazo para comparecer ante la Sala de lo Contencioso-Administrativo es de nueve días hábiles a partir del día siguiente al de la publicación oficial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21935": {
+   "huella": "eef053d1fad2b0d0",
+   "fuente": "5f95ecf94f8c4c5c",
+   "titular": "Marina Mercante convoca pruebas de capacitación para prácticos de puerto en varios municipios",
+   "entradilla": "Los aspirantes a plazas en Algeciras, Barcelona, Málaga, Torrevieja, Santa Pola y otros puertos disponen de un mes para presentar solicitudes.",
+   "claves": [
+    "Se convocan pruebas específicas de capacitación profesional para servicios portuarios de practicaje en los puertos de Algeciras, Torrevieja y Santa Pola, Barcelona, Cariño Celeiro y Burela, y Málaga.",
+    "Los solicitantes deben acreditar al menos dos años de mando en buques de arqueo superior a 1.000 GT dentro de los últimos diez años y abonar una tasa de 46,68 euros.",
+    "El plazo de presentación de solicitudes es de un mes a contar desde el día siguiente al de la publicación de la resolución en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21936": {
+   "huella": "3a25c078300f6761",
+   "fuente": "4ad4eebdb147b8ca",
+   "titular": "Educación y Murcia firman un convenio para ceder el código del sistema de bibliotecas escolares ABIES+",
+   "entradilla": "La Región de Murcia se adhiere a la herramienta informática del ministerio para fomentar la lectura y la gestión de bibliotecas en centros educativos.",
+   "claves": [
+    "El Ministerio de Educación, Formación Profesional y Deportes formalizó un convenio con la Comunidad Autónoma de la Región de Murcia el 9 de octubre de 2026.",
+    "El objeto del acuerdo es la cesión y utilización del código del programa ABIES+ como sistema integrado de gestión para las bibliotecas escolares de la región.",
+    "La medida se ampara en la legislación de régimen jurídico del sector público sobre puesta a disposición mutua de aplicaciones entre administraciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21937": {
+   "huella": "27eb9bb5ec8dda8c",
+   "fuente": "954834a0578c4cfe",
+   "titular": "Agricultura distribuye 1.614 días de esfuerzo pesquero para campañas científicas en 2026",
+   "entradilla": "Todas las solicitudes presentadas han sido calificadas como preferentes y la asignación estará vigente hasta el 31 de diciembre.",
+   "claves": [
+    "La Dirección General de Pesca Sostenible fija en 1.614 los días disponibles para asignar esfuerzo pesquero con fines científicos durante el ejercicio 2026.",
+    "Todas las solicitudes presentadas por los buques participantes han sido calificadas como preferentes al adecuarse a las líneas estratégicas del ministerio.",
+    "La distribución surte efectos desde el día siguiente a su publicación en el BOE hasta el 31 de diciembre de 2026, con posibilidad de recurso de alzada en un mes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21938": {
+   "huella": "98748ade79409143",
+   "fuente": "240bc77907f78439",
+   "titular": "Transición Ecológica autoriza un sistema de almacenamiento por baterías en el parque solar de Tabernas",
+   "entradilla": "Naturgy Renovables construirá el módulo BESS Tabernas I, de 19,8 MW, para hibridación con la planta fotovoltaica existente en Almería.",
+   "claves": [
+    "Se otorga a Naturgy Renovables la autorización administrativa previa y de construcción del módulo de almacenamiento por baterías BESS Tabernas I, con 19,8 MW de potencia instalada.",
+    "La instalación se ubica en el término municipal de Tabernas, en Almería, y cuenta con una capacidad de almacenamiento de 46,656 MWh mediante tecnología de ion-litio.",
+    "El proyecto incluye nueve contenedores de baterías y cinco bloques de potencia, conectándose a la red de transporte a través de una línea soterrada de 30 kV hasta la subestación Miralles."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-21"
   }
  },
  "uso": {
-  "2026-10-20": 9
+  "2026-10-21": 1
  }
 }

@@ -1,9 +1,9 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-20",
+  "fecha": "2026-10-21",
   "graves": 0,
-  "avisos": 3,
+  "avisos": 4,
   "hallazgos": [
     {
       "nivel": "aviso",
@@ -20,8 +20,14 @@
     {
       "nivel": "aviso",
       "comprobacion": "duplicados",
-      "detalle": "[boe] titular repetido del 2026-10-16: «OTORGA A RED ELÉCTRICA DE ESPAÑA, SAU, AUTORIZACIÓN ADMINISTRATIVA PREVIA Y AUTORIZACIÓN ADMINISTRATIVA».",
-      "fichero": "data/2026-10-20.json"
+      "detalle": "[boe] titular repetido del 2026-10-14: «RESOLUCIÓN, DE LA DIRECCIÓN GENERAL DE SEGURIDAD JURÍDICA Y FE PÚBLICA, EN EL RECURSO INTERPUESTO».",
+      "fichero": "data/2026-10-21.json"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-10-19: «SUSPENDE LA INSCRIPCIÓN DE UNA ESCRITURA DE DONACIÓN DE UNA PARTICIPACIÓN INDIVISA».",
+      "fichero": "data/2026-10-21.json"
     }
   ]
 }
