@@ -4902,17 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso registra 38 preguntas escritas que superan el plazo sin respuesta",
-   "entradilla": "Un total de 38 preguntas escritas acumulan más de 20 días hábiles desde su publicación sin que conste contestación registrada en la ficha del Congreso.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas al Gobierno fuera de plazo de respuesta",
+   "entradilla": "Un total de 38 iniciativas parlamentarias superan los 20 días hábiles sin respuesta registrada, perteneciendo 30 de ellas a diputados del grupo Sumar.",
    "claves": [
-    "Sumar encabeza las preguntas pendientes con 24, seguida por el PSOE con 7, el PP con 4, y GV (EAJ-PNV), Junts y Sin grupo con una cada uno.",
-    "La pregunta escrita más antigua sin respuesta registrada en el Congreso se publicó el lunes 16 de febrero de 2026.",
-    "El recuento abarca el último año y contempla que pueda haber prórrogas o respuestas aún no reflejadas en la ficha."
+    "Treinta de las preguntas pendientes sin contestación corresponden al grupo parlamentario Sumar, cuatro al PSOE y dos al PP.",
+    "La pregunta más antigua acumulada sin respuesta fue publicada el 15 de diciembre de 2025."
    ],
    "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-21"
+   "fecha": "2026-10-22"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -8431,9 +8430,215 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-21"
+  },
+  "BOE-A-2026-21944": {
+   "huella": "dedc6f6dabbcae99",
+   "fuente": "e959c38e146ac11d",
+   "titular": "Asturias aporta 80.000 euros a la OIT para los cuidados comunitarios en Cali",
+   "entradilla": "El Principado de Asturias financia con cargo a sus presupuestos de 2026 una iniciativa ejecutada por la OIT que busca fortalecer las organizaciones de economía social y solidaria en Colombia.",
+   "claves": [
+    "El Principado de Asturias abonará la cantidad a la Organización Internacional del Trabajo con cargo a su presupuesto de 2026.",
+    "La OIT asumirá la ejecución del proyecto, centrado en fortalecer las capacidades y redes de la Economía Social y Solidaria en la ciudad colombiana de Cali.",
+    "Los fondos financiarán un mapeo de la economía de los cuidados, las condiciones laborales y la creación o fortalecimiento de cooperativas de cuidados."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21946": {
+   "huella": "53bc69ff98391a15",
+   "fuente": "d423a4afc216c3d4",
+   "titular": "Castilla-La Mancha y ONU-Habitat acuerdan colaborar en urbanismo sostenible",
+   "entradilla": "La Vicepresidencia Primera castellano-manchega formaliza una alianza con el programa de Naciones Unidas para coordinar actuaciones vinculadas a la Nueva Agenda Urbana y la Agenda 2030.",
+   "claves": [
+    "El convenio formaliza la colaboración entre la administración autonómica y el Programa de Asentamientos Humanos de las Naciones Unidas.",
+    "La alianza busca impulsar el desarrollo urbano sostenible y el cumplimiento del Objetivo de Desarrollo Sostenible 11 de la Agenda 2030."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21947": {
+   "huella": "20d9b072a6123011",
+   "fuente": "efcf82b579b0a401",
+   "titular": "Transportes aprueba ayudas directas para prácticas marítimas y patrimonio naval",
+   "entradilla": "El Gobierno otorga subvenciones sin concurrencia a la patronal naviera ANAVE para financiar periodos de embarque de alumnos en prácticas y a dos entidades culturales del sector.",
+   "claves": [
+    "La Asociación de Navieros Españoles repartirá los fondos entre las empresas navieras que proporcionen plazas a bordo a alumnos formados en centros españoles.",
+    "La Fundación Correíllo La Palma recibirá financiación para restaurar y rehabilitar en condiciones de navegación el buque del mismo nombre.",
+    "La asociación ALBAOLA obtendrá fondos para construir la réplica de una nao de 1563 y restaurar el atunero de madera Ozentziyo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21948": {
+   "huella": "ccd2aca6e3f3c1d6",
+   "fuente": "2bd929257040767d",
+   "titular": "El Gobierno eleva al 70% la ayuda al seguro para explotaciones incendiadas en 2026",
+   "entradilla": "El Ministerio de Agricultura aprueba ayudas directas para agricultores y ganaderos con seguro contratado que hayan sufrido siniestros indemnizables por incendios a lo largo de 2026.",
+   "claves": [
+    "La ayuda incrementa la subvención concedida por la Entidad Estatal de Seguros Agrarios hasta el 70% del coste de la prima del seguro.",
+    "El límite del 70% se aplicará también a la cobertura de retirada y destrucción de animales muertos si se tenía asegurado el ganado vivo.",
+    "El Ministerio publicará una propuesta con los beneficiarios sin necesidad de solicitud previa, pudiendo consultar sus datos de forma electrónica."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21949": {
+   "huella": "eb77819e6fc3c0d7",
+   "fuente": "170cf8af2ff5b8bc",
+   "titular": "Transición Ecológica libera reservas estratégicas de gasóleo y queroseno",
+   "entradilla": "El Ministerio acuerda reducir temporalmente de 92 a 82 días la obligación de existencias mínimas de seguridad de carburantes, poniendo en el mercado unos 4,4 millones de barriles.",
+   "claves": [
+    "La reducción de seis días se aplica a gasóleos de automoción, otros gasóleos, querosenos de aviación y otros querosenos.",
+    "Con esta medida y la retransmisión previa de cuatro días, la obligación temporal de reservas para este grupo queda fijada en 82 días.",
+    "Los operadores obligados deberán haber introducido en el mercado los volúmenes liberados antes del 15 de diciembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21950": {
+   "huella": "0d011619ef56ab99",
+   "fuente": "2ade131c8e0799d4",
+   "titular": "Vivienda financiará la creación de alojamientos universitarios asequibles",
+   "entradilla": "El Gobierno aprueba subvenciones directas a universidades y administraciones públicas en 2026 para aumentar el parque público permanente de viviendas para estudiantes.",
+   "claves": [
+    "Las subvenciones financiarán actuaciones concretas para incrementar la oferta de alojamientos asequibles de uso universitario.",
+    "Los inmuebles y viviendas resultantes deberán incorporarse al parque público de forma permanente.",
+    "Todas las solicitudes y trámites de gestión se realizarán de forma telemática a través de la sede electrónica de Vivienda."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21951": {
+   "huella": "81246f1013129782",
+   "fuente": "1bfb2e4fb591a3d7",
+   "titular": "Vivienda subvencionará a las autonomías con zonas de mercado tensionado",
+   "entradilla": "Las comunidades con zonas tensionadas declaradas recibirán fondos directos para promover alquiler asequible, comprar suelo residencial y avalar rentas de jóvenes y colectivos vulnerables.",
+   "claves": [
+    "Se financiará la promoción, rehabilitación y compra de viviendas destinadas a alquiler social o asequible, así como la adquisición y desarrollo de suelo.",
+    "Las viviendas subvencionadas quedarán sujetas a un régimen de protección pública permanente sin opción a descalificación voluntaria.",
+    "Las autonomías podrán usar las ayudas para cubrir o avalar el impago de alquiler a jóvenes o personas vulnerables ajustado a los precios de referencia."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21952": {
+   "huella": "4a536ab1b6514367",
+   "fuente": "c7288ab88776095b",
+   "titular": "Economía crea un consejo nacional para prevenir el blanqueo de capitales",
+   "entradilla": "El nuevo órgano colegiado coordinará a las autoridades públicas y al sector privado para intercambiar información estratégica y evaluar los riesgos financieros del país.",
+   "claves": [
+    "El Consejo se adscribe a la Comisión de Prevención del Blanqueo de Capitales e Infracciones Monetarias con naturaleza de grupo de trabajo.",
+    "Servirá de canal para intercambiar información estratégica, táctica y operativa entre las autoridades competentes y los sujetos obligados.",
+    "El órgano participará en la elaboración del análisis nacional de riesgos y propondrá recomendaciones y guías de actuación."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21953": {
+   "huella": "acaa37a638ed776a",
+   "fuente": "a5ea4d8cd4a64eae",
+   "titular": "Sanidad fija un máximo de 100 euros en ayudas visuales para menores",
+   "entradilla": "El Gobierno regula la subvención de gafas y lentillas para personas de hasta dieciséis años con derecho a asistencia sanitaria pública. El importe máximo de la ayuda será de 100 euros.",
+   "claves": [
+    "Podrán solicitar la ayuda las personas de dieciséis años o menos que tengan derecho a la asistencia sanitaria con cargo al Sistema Nacional de Salud y un problema de refracción acreditado.",
+    "La subvención cubre la compra de monturas con lentes graduadas, lentes graduadas o lentillas con su solución de mantenimiento hasta un máximo de 100 euros, IVA incluido.",
+    "Para las ayudas de 2026, 2027 y 2028 deberá haber transcurrido al menos un año desde la anterior adquisición de productos subvencionados.",
+    "El periodo de adquisición de los sistemas de ayuda visual se extiende hasta el 31 de diciembre de 2027 o hasta que se agote el presupuesto."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21954": {
+   "huella": "22ad64482233332c",
+   "fuente": "e19c65f7f5371041",
+   "titular": "Sanidad financiará plazas de Medicina en las universidades públicas",
+   "entradilla": "El Gobierno aprueba subvenciones directas para sostener en el curso 2026-2027 las plazas de Grado en Medicina que ya recibían fondos públicos para afrontar la escasez de médicos.",
+   "claves": [
+    "Las ayudas se destinan a las universidades públicas españolas que imparten el Grado en Medicina y mantenían plazas financiadas a 31 de diciembre de 2025.",
+    "La medida busca aumentar a medio plazo el número de graduados en Medicina para su acceso a la Formación Sanitaria Especializada."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21955": {
+   "huella": "7e9a8912a0aab902",
+   "fuente": "9c25e892b093cc75",
+   "titular": "El Gobierno aprueba el nuevo Estatuto del Estudiantado Universitario",
+   "entradilla": "La norma renueva el marco de derechos y deberes de los estudiantes, regula las asociaciones de antiguos alumnos y fija la financiación del Consejo de Estudiantes Universitario del Estado.",
+   "claves": [
+    "El Ministerio de Ciencia, Innovación y Universidades asumirá los gastos de funcionamiento del Consejo de Estudiantes Universitario del Estado.",
+    "Las universidades dispondrán de seis meses para aprobar los protocolos previstos y de doce meses para adaptar el resto de sus normativas.",
+    "Los alumnos de los centros de la Defensa, Guardia Civil y Policía Nacional ejercerán sus derechos respetando el régimen de las Fuerzas Armadas y Fuerzas de Seguridad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-21956": {
+   "huella": "24cc8fad02a2038b",
+   "fuente": "c8626db0350e4bc1",
+   "titular": "Igualdad destina ayudas directas a cinco entidades para asistir a mujeres en Ceuta",
+   "entradilla": "Las ayudas financian a Mujeres en Zona de Conflicto, Cruz Roja, Fundación Cruz Blanca, Médicos del Mundo y CEAR para reforzar la detección y protección de violencia sexual y trata.",
+   "claves": [
+    "Las actuaciones se dirigen a mujeres y niñas vulnerables afectadas por la crisis humanitaria en Ceuta, incluidas solicitantes de protección internacional.",
+    "Médicos del Mundo mantendrá operativos de emergencia sanitaria y psicosocial tras atender previamente a más de 1.500 personas en la ciudad.",
+    "CEAR reforzará su servicio de asistencia jurídica en el Centro de Estancia Temporal de Inmigrantes de Ceuta."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-22006": {
+   "huella": "ec671530e2bb416d",
+   "fuente": "c930f13b39b0c7cd",
+   "titular": "El Gobierno fija el plan de gestión de la Agencia de Evaluación Pública hasta 2030",
+   "entradilla": "La orden ministerial valida el documento marco que orientará las actividades del organismo público durante el período 2027-2030 para coordinar la evaluación en la administración.",
+   "claves": [
+    "La Agencia buscará articular el conocimiento existente en los ministerios y la universidad en lugar de duplicar la producción evaluadora.",
+    "El contrato de gestión se publicará en el Portal de Transparencia de la Administración General del Estado y en la web del organismo.",
+    "La norma entrará en vigor al día siguiente de su publicación en el BOE y mantendrá su vigencia hasta el 31 de diciembre de 2030."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-22007": {
+   "huella": "03051cbb0b877387",
+   "fuente": "f0148dbc08b899e9",
+   "titular": "Justicia y el Grupo Atrox intercambian información sobre mordeduras de serpientes",
+   "entradilla": "La Secretaría de Estado de Justicia hace público un convenio con el Grupo Atrox para compartir datos sobre mordeduras de serpientes y víboras que faciliten la atención médica y pericial.",
+   "claves": [
+    "El acuerdo permite al Instituto Nacional de Toxicología y Ciencias Forenses aprovechar los conocimientos herpetológicos y la información del banco de antídotos de Atrox.",
+    "El Grupo Atrox está integrado por las sociedades Proteus Servicios y Exposiciones y Nabau Projects, especializadas en el mantenimiento y conservación de reptiles venenosos.",
+    "Proteus gestiona la sede física del banco de antídotos en el Parque Temático Faunia, mientras que Nabau administra su gestión administrativa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-22008": {
+   "huella": "eab00de472b9af4a",
+   "fuente": "34243066c86d0ff3",
+   "titular": "Justicia fija las reglas para destruir los tomos notariales de protestos de letras",
+   "entradilla": "La Dirección General de Seguridad Jurídica establece un procedimiento homogéneo para que notarios, archivos de distrito y colegios notariales eliminen estos documentos mercantiles antiguos.",
+   "claves": [
+    "Solo se podrán destruir los tomos con una antigüedad mínima de cinco años computados desde el 31 de diciembre del año correspondiente.",
+    "El proceso requiere autorización previa de la Dirección General de Seguridad Jurídica y Fe Pública tras presentar un inventario.",
+    "La destrucción material se contratará con una empresa especializada que garantice el secreto notarial, el reciclado y la imposibilidad de reconstrucción."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
+  },
+  "BOE-A-2026-22009": {
+   "huella": "b5ee58a93ac67621",
+   "fuente": "6f34aea501556495",
+   "titular": "Seguridad Jurídica revisa la calificación de un bien privativo en Alcobendas",
+   "entradilla": "La Dirección General aborda el recurso de un notario frente a la negativa del registro de Alcobendas número 2 a inscribir un inmueble pactado como privativo por ambos cónyuges.",
+   "claves": [
+    "Un notario de Madrid interpuso el recurso tras la suspensión de la inscripción de la escritura de compraventa otorgada en febrero de 2026.",
+    "Ambos cónyuges acordaron atribución privativa del inmueble manifestando que el dinero empleado procedía en su totalidad del comprador."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-22"
   }
  },
  "uso": {
-  "2026-10-21": 9
+  "2026-10-22": 2
  }
 }
