@@ -4902,9 +4902,9 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
+   "huella": "0ffb5472867d2876",
    "descartado": "nombre «Partido» que no está en el texto oficial",
-   "intentos": 2
+   "intentos": 1
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -8782,9 +8782,217 @@
    "claves": [],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22079": {
+   "huella": "534c7cd79bf70d6c",
+   "fuente": "316ba3bd4fb704a0",
+   "titular": "Las comunidades autónomas designarán puntos de contacto para materias primas",
+   "entradilla": "El Gobierno fija las normas para aplicar los reglamentos europeos sobre suministro seguro de materias primas y tecnologías de cero emisiones.",
+   "claves": [
+    "Las comunidades autónomas y las ciudades de Ceuta y Melilla designarán puntos de contacto únicos para los proyectos de materias primas fundamentales.",
+    "Para proyectos estatales o que afecten a varias comunidades, el punto de contacto será la Subdirección General de Minas o la de Impulso de Proyectos Industriales.",
+    "El Ministerio para la Transición Ecológica publicará en su portal la información necesaria para los promotores de estos proyectos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22080": {
+   "huella": "0b72bade79412e7b",
+   "fuente": "1a39cd146dd0aee3",
+   "titular": "Modifican los reales decretos sobre protección frente a agentes químicos y cancerígenos",
+   "entradilla": "Se adapta la normativa española a la directiva europea sobre valores límite para el plomo y los diisocianatos en el ámbito laboral.",
+   "claves": [
+    "Los trabajadores expuestos a agentes cancerígenos, mutágenos o reprotóxicos dispondrán de un máximo de diez minutos para el aseo antes de cada comida y antes de abandonar el trabajo.",
+    "La empresa garantizará una vigilancia específica de la salud antes del inicio de la exposición y a intervalos regulares.",
+    "La vigilancia de la salud será obligatoria cuando se haya fijado un valor límite biológico en el anexo III bis."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22081": {
+   "huella": "6986871e2f8685f7",
+   "fuente": "bfa96cc5e9c74c40",
+   "titular": "Aprueban las nuevas disposiciones mínimas de seguridad y salud ante el amianto",
+   "entradilla": "El Gobierno actualiza la normativa de prevención de riesgos laborales frente a la exposición a fibras de amianto en el trabajo.",
+   "claves": [
+    "Las empresas inscritas en el Registro de empresas con riesgo por amianto deberán solicitar la renovación en el plazo de seis meses desde la entrada en vigor.",
+    "La norma deroga el anterior Real Decreto 396/2006, de 31 de marzo.",
+    "Las empresas se relacionarán con las Administraciones públicas a través de medios electrónicos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22082": {
+   "huella": "7af2b2b0f0505146",
+   "fuente": "af287c3e5bfa4a65",
+   "titular": "Regulan subvenciones directas para fundaciones vinculadas a partidos políticos",
+   "entradilla": "El Ministerio de Cultura concede ayudas para gastos de funcionamiento en 2026 a fundaciones de partidos con representación parlamentaria.",
+   "claves": [
+    "Las ayudas se destinan a fundaciones y asociaciones que realicen actividades de estudio y desarrollo del pensamiento político y social.",
+    "La cuantía se reparte de forma proporcional a la representación obtenida en las elecciones generales del 23 de julio de 2023.",
+    "Las entidades interesadas deben presentar su solicitud en el plazo máximo de diez días desde la entrada en vigor de la norma."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22141": {
+   "huella": "5e60ea5f7efce602",
+   "fuente": "82d01fb0f280f719",
+   "titular": "Inscriben modificaciones estatutarias de tres fundaciones de competencia estatal",
+   "entradilla": "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes publica cambios de denominación y domicilio en fundaciones.",
+   "claves": [
+    "La Fundación Alianza por los Derechos, la Igualdad y la Solidaridad Internacional pasa a denominarse Fundación Action Aid Alianza por la Solidaridad.",
+    "La Fundación Social y Educativa Duc in Altum cambia su nombre por Fundación Grado Musical y fija su domicilio en la calle Ramón de Aguinaga de Madrid.",
+    "La Fundación de Arte el Mural modifica su denominación a Fundación de Arte el Mural de Hernández Carpe y traslada su domicilio a Murcia."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22142": {
+   "huella": "e8ef2a7479fa6ef0",
+   "fuente": "823a594c30dd5c6d",
+   "titular": "Inscriben en el Registro de Fundaciones la entidad Cultura contra Balas",
+   "entradilla": "Se constituye oficialmente la Fundación Cultura contra Balas con una dotación inicial de treinta mil euros y sede en Madrid.",
+   "claves": [
+    "La fundación fue constituida inicialmente en Calp y su ámbito de actuación se extiende a todo el territorio español.",
+    "La dotación inicial asciende a treinta mil euros y ha sido totalmente desembolsada.",
+    "Doña Nataliia Moskalenko Tumasova ejerce como presidenta, Don David González Alonso como secretario y Don Rubén García Ais como tesorero."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22148": {
+   "huella": "8b32da7a70611050",
+   "fuente": "4502e89320183990",
+   "titular": "Conceden la nacionalidad española a don Cristhian Rodrigo Fajardo Caballero",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad por carta de naturaleza a don Cristhian Rodrigo Fajardo Caballero.",
+   "claves": [
+    "La concesión se realiza por carta de naturaleza en atención a circunstancias excepcionales.",
+    "El beneficiario adquiere la vecindad civil de Derecho común.",
+    "La medida surtirá efectos conforme a los requisitos y plazos previstos en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22149": {
+   "huella": "aa5c6e3fe65e3ed7",
+   "fuente": "a92b5b22d6d8dd5a",
+   "titular": "Conceden la nacionalidad española a don Federico José Sacasa Patiño",
+   "entradilla": "El Gobierno otorga la nacionalidad española por carta de naturaleza a don Federico José Sacasa Patiño.",
+   "claves": [
+    "La decisión se adopta a propuesta del Ministro de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "Concurren circunstancias excepcionales en el solicitante.",
+    "La concesión produce efectos con los requisitos y plazos del Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22150": {
+   "huella": "dfefe6f58a144c05",
+   "fuente": "fa40d8cfb8c5de26",
+   "titular": "Conceden la nacionalidad española a don Jader Modesto Téllez",
+   "entradilla": "El Consejo de Ministros aprueba la concesión de la nacionalidad española por carta de naturaleza a don Jader Modesto Téllez.",
+   "claves": [
+    "La medida se adopta previa deliberación del Consejo de Ministros.",
+    "Se aplica la vía de carta de naturaleza por circunstancias excepcionales.",
+    "El nuevo nacional español adquiere vecindad civil de Derecho común."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22151": {
+   "huella": "62b34dd0ddde212b",
+   "fuente": "5f60112ffeef515b",
+   "titular": "Conceden la nacionalidad española a doña María del Socorro Oviedo Delgado",
+   "entradilla": "El Gobierno otorga la nacionalidad española por carta de naturaleza a doña María del Socorro Oviedo Delgado.",
+   "claves": [
+    "La concesión se realiza por concurrir circunstancias excepcionales.",
+    "La medida se aprueba a propuesta del Ministerio de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "Produce efectos según lo previsto en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22152": {
+   "huella": "a47ddb0245609c2e",
+   "fuente": "9f75004de76d937c",
+   "titular": "Conceden la nacionalidad española a don Medardo Mairena Sequeira",
+   "entradilla": "El Consejo de Ministros concede la nacionalidad española por carta de naturaleza a don Medardo Mairena Sequeira.",
+   "claves": [
+    "La medida se formaliza mediante real decreto acordado en Consejo de Ministros.",
+    "Se aplican los trámites y condiciones previstos en el Código Civil.",
+    "El interesado adquiere la vecindad civil de Derecho común."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22153": {
+   "huella": "c92934c190accc45",
+   "fuente": "a96b9e55fec9d0ff",
+   "titular": "Conceden la nacionalidad española a don Norlan Josué Cárdenas Ortiz",
+   "entradilla": "El Gobierno otorga la nacionalidad española por carta de naturaleza a don Norlan Josué Cárdenas Ortiz.",
+   "claves": [
+    "La concesión se aprueba tras valorar las circunstancias excepcionales del beneficiario.",
+    "El real decreto entra en vigor con los efectos previstos en el Código Civil.",
+    "Se otorga con vecindad civil de Derecho común."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22154": {
+   "huella": "66d6d52b74906931",
+   "fuente": "1781dded54156996",
+   "titular": "Conceden la nacionalidad española a don Quinto Pedro Joaquín Chamorro Barrios",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad española por carta de naturaleza a don Quinto Pedro Joaquín Chamorro Barrios.",
+   "claves": [
+    "La medida se adopta a propuesta del titular de Presidencia, Justicia y Relaciones con las Cortes.",
+    "Se fundamenta en circunstancias excepcionales.",
+    "El beneficiario queda sujeto a la vecindad civil de Derecho común."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22155": {
+   "huella": "08ab32fc02cb4e8b",
+   "fuente": "49021ef5ca7d6236",
+   "titular": "Conceden la nacionalidad española a don Abdul Montoya Vivas",
+   "entradilla": "El Gobierno concede la nacionalidad española por carta de naturaleza a don Abdul Montoya Vivas.",
+   "claves": [
+    "La concesión se efectúa mediante real decreto del Consejo de Ministros.",
+    "Se aplican los requisitos y plazos establecidos en el Código Civil.",
+    "El interesado obtiene vecindad civil de Derecho común."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22156": {
+   "huella": "a14be7f5abbd2f63",
+   "fuente": "b1d69876c1728212",
+   "titular": "Conceden la nacionalidad española a doña Adela Elizabeth Espinoza Tercero",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad española por carta de naturaleza a doña Adela Elizabeth Espinoza Tercero.",
+   "claves": [
+    "La medida atiende a circunstancias excepcionales concurrentes en la interesada.",
+    "Se dicta a propuesta del Ministerio de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "Produce efectos jurídicos conforme al Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22157": {
+   "huella": "3262b66ec14e80f8",
+   "fuente": "e83f802972ef2817",
+   "titular": "Conceden la nacionalidad española a don Adolfo Yoel Vegas Rodríguez",
+   "entradilla": "El Gobierno otorga la nacionalidad española por carta de naturaleza a don Adolfo Yoel Vegas Rodríguez.",
+   "claves": [
+    "La decisión se adopta tras la deliberación del Consejo de Ministros.",
+    "Se concede por circunstancias excepcionales mediante real decreto.",
+    "El beneficiario adquiere vecindad civil de Derecho común."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
   }
  },
  "uso": {
-  "2026-10-23": 2
+  "2026-10-23": 4
  }
 }
