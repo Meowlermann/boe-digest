@@ -4902,17 +4902,9 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "38 preguntas escritas en el Congreso superan el plazo sin contestación",
-   "entradilla": "Sumar encabeza la lista de iniciativas pendientes con 30 peticiones que superan los 20 días hábiles desde su publicación sin contestación registrada.",
-   "claves": [
-    "Del total de preguntas escritas que superan la fecha límite publicada por el Congreso, 30 pertenecen a Sumar, cuatro al PSOE, dos al PP, una a Junts y una a un diputado sin grupo.",
-    "La iniciativa pendiente más antigua fue publicada el lunes 15 de diciembre de 2025.",
-    "El recuento abarca las preguntas del último año, aunque pueden existir prórrogas o respuestas aún no reflejadas en la ficha."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-22"
+   "huella": "d5cdf02c8277a60c",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -8637,9 +8629,162 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-22"
+  },
+  "C-5f691842ac5f9b99": {
+   "huella": "f5d7a89feab957fb",
+   "fuente": "416d5df83453b733",
+   "titular": "Muñoz de la Iglesia interroga a Cuerpo sobre la gestión de la situación en Ceuta",
+   "entradilla": "La diputada del PP Ester Muñoz pregunta al vicepresidente primero por la situación en Ceuta, centrando el debate en la protección a los menores y la gestión gubernamental.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-1baf849e6a2c6001": {
+   "huella": "1abc1014f602ed6c",
+   "fuente": "0f079e8e26305e14",
+   "titular": "Bendodo exige a Cuerpo responsabilidades por la tramitación de los decretos del Gobierno",
+   "entradilla": "El diputado del PP Elías Bendodo cuestiona al vicepresidente económico sobre la asunción de responsabilidades tras la aprobación de los decretos gubernamentales.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-a9593ff0ceeb967d": {
+   "huella": "063765b1130244df",
+   "fuente": "0e469adf899e0d02",
+   "titular": "Marí Bosó y Cuerpo cruzan reproches en el Congreso sobre las políticas de vivienda",
+   "entradilla": "El diputado del PP José Vicente Marí Bosó interpela al ministro de Economía sobre la efectividad de las medidas económicas y el uso de órdenes interpretativas.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-2958c33b42a22f1f": {
+   "huella": "d4e96f145b522d91",
+   "fuente": "fdbb825a658c8138",
+   "titular": "Figaredo interpela a Cuerpo por el impacto de la inflación constante en la economía",
+   "entradilla": "El diputado de Vox José María Figaredo pregunta al ministro de Economía sobre las medidas para combatir la inflación de precios de la energía en España.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-e91999adcffb0cc1": {
+   "huella": "d3c250b39233e283",
+   "fuente": "c49bdc60c3bf708e",
+   "titular": "Belarra pregunta a Cuerpo por la desigualdad social y urge a aprobar medidas de vivienda",
+   "entradilla": "La diputada Ione Belarra interpela al ministro de Economía sobre la desigualdad y reclama el apoyo a las medidas de protección en materia de vivienda.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-6c9f324ea58beb17": {
+   "huella": "46f1ab6fadeb3393",
+   "fuente": "6fd12582188b0ab1",
+   "titular": "Guardiola y Díaz confrontan en el Congreso sobre vivienda y reducción de jornada",
+   "entradilla": "La diputada Mirian Guardiola reprocha al Gobierno la gestión de la vivienda y Yolanda Díaz defiende los 137 diputados del Partido Popular contrarios a la reducción laboral.",
+   "claves": [
+    "Mirian Guardiola pregunta a Yolanda Díaz por su prioridad en la sesión de control del miércoles 30 de septiembre de 2026.",
+    "La diputada del Partido Popular afirma que la preocupación por la vivienda ha pasado del puesto número 16 al número 1 desde que gobiernan.",
+    "Yolanda Díaz responde que su prioridad es defender a los trabajadores y acusa al Partido Popular de votar en contra de la reducción de la jornada laboral para doce millones y medio de personas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-c376a2b50ea959cc": {
+   "huella": "be94884782cd37ba",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-9d3e5cee8464ebf3": {
+   "huella": "749dbbb3ee8ae071",
+   "fuente": "723410a87e124764",
+   "titular": "Álvarez de Toledo y Bolaños cruzan reproches en el Congreso sobre responsabilidad",
+   "entradilla": "Cayetana Álvarez de Toledo recrimina la falta de asumir responsabilidades políticas y Félix Bolaños rechaza las acusaciones calificándolas de bulos.",
+   "claves": [
+    "Cayetana Álvarez de Toledo pregunta al ministro Félix Bolaños qué entiende el Gobierno por responsabilidad política en el pleno del 30 de septiembre de 2026.",
+    "La diputada popular menciona 46 muertos en Adamuz y critica la gestión de la corrupción y otros episodios por parte de los miembros del Gobierno.",
+    "Félix Bolaños acusa a la diputada de ser la mayor difusora de bulos de la historia del país."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-7fc42d74e4637945": {
+   "huella": "9b04787946a93712",
+   "fuente": "ace4da55184c8bc7",
+   "titular": "Rodríguez de Millán pregunta a Bolaños si los españoles están mejor que hace ocho años",
+   "entradilla": "La diputada de Vox María José Rodríguez de Millán interroga al ministro de la Presidencia sobre la evolución social y económica durante los últimos ocho años de gobierno.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-ff21aa04d246d8cc": {
+   "huella": "2a9a6225579f5586",
+   "fuente": "44164404abdf041d",
+   "titular": "Carazo e Isabel Rodríguez debaten en el Congreso sobre el precio de la vivienda",
+   "entradilla": "Eduardo Carazo pregunta a la ministra de Vivienda por el coste inmobiliario y ella defiende la vivienda como un derecho frente a la especulación.",
+   "claves": [
+    "Eduardo Carazo interroga a la ministra Isabel Rodríguez sobre la situación de los precios de la vivienda en España durante el pleno del 30 de septiembre de 2026.",
+    "El diputado del Partido Popular menciona el desahucio de Maricarmen ocurrido tras ocho años de gobierno socialista y aplicando una ley del Partido Socialista.",
+    "Isabel Rodríguez afirma que la vivienda es un derecho y que hay que luchar contra la especulación, añadiendo que no pueden contar con el Partido Popular para su defensa."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-af6262cbb090048b": {
+   "huella": "12b36c46127c0f37",
+   "fuente": "c39b0f82180982e3",
+   "titular": "Madrenas i Mir pide a Isabel Rodríguez que rectifique las políticas de vivienda",
+   "entradilla": "La diputada de Junts Marta Madrenas i Mir interroga a la ministra de Vivienda sobre la necesidad de reconducir la estrategia del Gobierno en esta materia.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-ccf6622ec89ead46": {
+   "huella": "758e2e5662a2a3b2",
+   "fuente": "427267ac459e752a",
+   "titular": "Vaquero Montero pregunta a la ministra de Vivienda por los acuerdos en el sector",
+   "entradilla": "La diputada Maribel Vaquero interroga a Isabel Rodríguez acerca de los procedimientos para superar los obstáculos en la negociación sobre vivienda.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-89baf7f1bc4f1f59": {
+   "huella": "81296e874a297dab",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-0662957dc1491a61": {
+   "huella": "5160cfdb966b67fc",
+   "fuente": "9860a5b4709bbf5f",
+   "titular": "Rodríguez Calleja interroga a Ana Redondo sobre los resultados de su gestión en Igualdad",
+   "entradilla": "La diputada del PP Patricia Rodríguez Calleja pregunta a la ministra de Igualdad sobre el balance de su labor legislativa y administrativa.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-42d9c3cc6373d064": {
+   "huella": "5813e81521047da9",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
+  },
+  "C-000ce1865378220d": {
+   "huella": "e265fb6fca9665ce",
+   "fuente": "f6697b2102645084",
+   "titular": "Jordà i Roura pregunta al ministro de Hacienda por la financiación europea local",
+   "entradilla": "La diputada Teresa Jordà i Roura interpela al titular de Hacienda sobre las vías para garantizar fondos del presupuesto europeo a los grupos de acción local.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
+  },
+  "C-78b0d5f07819b3cc": {
+   "huella": "6fc7e1f0fb037127",
+   "fuente": "ebd3ae2b8dc39fd0",
+   "titular": "Matute García de Jalón interroga a Hacienda sobre el coste de las medidas de protección",
+   "entradilla": "El diputado Oskar Matute García de Jalón pregunta al ministro de Hacienda quién debe sufragar las ayudas frente al encarecimiento del coste de la vida.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-23"
   }
  },
  "uso": {
-  "2026-10-22": 10
+  "2026-10-23": 2
  }
 }
