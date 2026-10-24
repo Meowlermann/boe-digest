@@ -4902,9 +4902,17 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "descartado": "nombre «Vasco» que no está en el texto oficial",
-   "intentos": 1
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas fuera del plazo de respuesta",
+   "entradilla": "Un recuento del último año muestra 38 iniciativas formuladas por diversos grupos parlamentarios que superan los 20 días hábiles sin contestación registrada.",
+   "claves": [
+    "Las preguntas pendientes corresponden a Sumar (30), PSOE (4), PP (2), Junts (1) y el grupo de Sin grupo (1).",
+    "La iniciativa más antigua sin respuesta registrada se publicó el lunes 15 de diciembre de 2025.",
+    "La cifra contempla las preguntas del último año que superan el límite publicado por la Cámara, aunque pueden existir prórrogas o respuestas no reflejadas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -8990,9 +8998,198 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-23"
+  },
+  "BOE-A-2026-22229": {
+   "huella": "f05725c823090614",
+   "fuente": "a9a861f6df383616",
+   "titular": "Hacienda publica los nuevos precios del tabaco en la Península y Baleares",
+   "entradilla": "El Comisionado para el Mercado de Tabacos actualiza las tarifas de venta al público propuestas por los fabricantes e importadores para estancos de la Península e Illes Balears.",
+   "claves": [
+    "Los nuevos precios de venta al público se aplican a cigarrillos, cigarros, cigarritos, picaduras de liar y picaduras de pipa en las expendedurías correspondientes.",
+    "La resolución entra en vigor el mismo día de su publicación en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22272": {
+   "huella": "b5707f2509caa954",
+   "fuente": "99962d384f47e0f9",
+   "titular": "Los alumnos de la ESMUC podrán hacer prácticas en el Instituto Cervantes",
+   "entradilla": "El Instituto Cervantes y la Fundació Escola Superior de Música de Catalunya acuerdan la realización de prácticas académicas externas curriculares no remuneradas para sus estudiantes.",
+   "claves": [
+    "Las prácticas no remuneradas se realizarán de forma presencial o en línea en las sedes del Instituto Cervantes en Madrid o en sus centros en el exterior.",
+    "La ESMUC gestionará las convocatorias y selecciones conforme a principios de transparencia, publicidad, accesibilidad universal e igualdad de oportunidades.",
+    "Cada alumno de la ESMUC estará bajo la dirección conjunta de un tutor académico de la escuela y un tutor del Instituto Cervantes que emitirá un informe final."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22273": {
+   "huella": "fecd6477cc68a8e9",
+   "fuente": "aab7ba0cb51145ad",
+   "titular": "El Instituto Cervantes autoriza eliminar parte de sus series documentales",
+   "entradilla": "La entidad aprueba la destrucción periódica y regulada de documentos comunes de la Administración General del Estado custodiados en sus archivos tras cumplir sus plazos de conservación.",
+   "claves": [
+    "La eliminación afectará a los documentos de las series comunes presentadas por el Grupo de Trabajo de Valoración de Series y Funciones Comunes de la AGE.",
+    "El proceso de eliminación no será efectivo hasta transcurridos tres meses desde la publicación de la resolución, siempre que no se interpongan recursos.",
+    "La destrucción de los documentos se realizará periódicamente con un método adecuado que imposibilite su reconstrucción e información."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22274": {
+   "huella": "43be93e719b26504",
+   "fuente": "67797540f983142f",
+   "titular": "Defensa, Educación y Galicia acuerdan impartir FP en centros militares",
+   "entradilla": "El Ministerio de Defensa, el Ministerio de Educación y la Xunta de Galicia colaboran para que el personal militar de tropa, marinería y suboficiales curse estudios de Formación Profesional.",
+   "claves": [
+    "El acuerdo busca que la tropa y marinería obtengan títulos de grado medio y los suboficiales consigan títulos de grado superior en centros docentes militares.",
+    "Las enseñanzas facilitarán la incorporación al mercado laboral de la tropa y marinería con relación de servicios temporal al finalizar su compromiso."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22275": {
+   "huella": "4e0e9e8b7ef2716d",
+   "fuente": "ce01cfb1613ba9b5",
+   "titular": "Patrimonio Nacional y la UAM colaborarán en un máster de Historia del Arte",
+   "entradilla": "Ambas instituciones firman un convenio para desarrollar conjuntamente el Máster Universitario en Historia del Arte de la Edad Moderna: Tradición Clásica y Mundo Globalizado.",
+   "claves": [
+    "La alianza busca ofrecer una enseñanza de calidad mediante la cooperación entre el ámbito universitario y el museístico en el estudio del arte antiguo y moderno.",
+    "Patrimonio Nacional aportará su equipo de profesionales especializados en conservación, documentación, investigación y difusión de sus bienes culturales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22276": {
+   "huella": "f4c149cca1ab1bba",
+   "fuente": "da4d7ecdf6084ed4",
+   "titular": "Justicia transferirá soluciones tecnológicas a la Comunidad de Madrid",
+   "entradilla": "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes acuerda la transferencia tecnológica a la Administración madrileña para asegurar la compatibilidad de sus sistemas.",
+   "claves": [
+    "El convenio busca garantizar la interoperabilidad de los sistemas y aplicaciones de la Administración Judicial Electrónica y las Fiscalías.",
+    "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes actuará como encargado del tratamiento de los datos conforme a las tareas fijadas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22277": {
+   "huella": "4e41f2b35b51a07f",
+   "fuente": "81394791cf5d23e2",
+   "titular": "El Catastro y el Ayuntamiento de Ferrol firman un convenio de colaboración",
+   "entradilla": "La Dirección General del Catastro y el municipio coruñés sustituyen el acuerdo de gestión catastral vigente desde 2010 por un nuevo marco de cooperación.",
+   "claves": [
+    "El nuevo instrumento de colaboración asumirá las funciones de gestión catastral en el término municipal en sustitución del convenio firmado el 21 de octubre de 2010.",
+    "El Consejo Territorial de la Propiedad Inmobiliaria de A Coruña informó favorablemente sobre la suscripción de esta nueva alianza el 11 de septiembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22278": {
+   "huella": "6f0b126d5ec81c28",
+   "fuente": "e2dfc53ce4bb8547",
+   "titular": "El Catastro y el Ayuntamiento de Oleiros fijan un convenio de colaboración",
+   "entradilla": "La Dirección General del Catastro y la localidad gallega acuerdan renovar sus funciones de gestión catastral sustituyendo el convenio vigente desde el año 2000.",
+   "claves": [
+    "El acuerdo extingue y sustituye formalmente al convenio de colaboración catastral firmado entre ambas administraciones el 2 de junio de 2000.",
+    "La solicitud fue gestionada a través de la Gerencia Regional del Catastro de Galicia e informada a favor por el Consejo Territorial de A Coruña."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22279": {
+   "huella": "511248ae23c2f786",
+   "fuente": "33de16f6e5cd5dd5",
+   "titular": "Hacienda emplaza a los afectados por un recurso en Vigilancia Aduanera",
+   "entradilla": "La Agencia Estatal de Administración Tributaria llama a personarse ante el tribunal a quienes tengan interés en el procedimiento contencioso-administrativo 155/2026.",
+   "claves": [
+    "El recurso ante el Tribunal Central de Instancia cuestiona la inadmisión de una reclamación sobre el destino asignado tras el proceso selectivo de ingreso al cuerpo por promoción interna.",
+    "Los interesados disponen de un plazo de nueve días desde el día siguiente a la publicación para comparecer y personarse en los autos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22280": {
+   "huella": "de3f34c9a6a186b8",
+   "fuente": "955c7d846c0c8e94",
+   "titular": "La Autoridad Portuaria de Santander ofrecerá prácticas a alumnos de grado y posgrado",
+   "entradilla": "Un convenio firmado con la Universidad Internacional de La Rioja regula un programa de prácticas en instalaciones de la Autoridad Portuaria de Santander para su alumnado.",
+   "claves": [
+    "La Autoridad Portuaria de Santander fijará el número de plazas y seleccionará al alumnado de grado y posgrado en cada convocatoria.",
+    "Cada estudiante contará con la dirección conjunta de un tutor académico nombrado por la universidad y un tutor profesional del organismo portuario.",
+    "El proyecto formativo buscará familiarizar al alumnado con la realidad profesional de la Administración pública."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22281": {
+   "huella": "c2d73e39e69d5f3e",
+   "fuente": "64c08d80d1e950d8",
+   "titular": "ADIF, la Diputación y el Ayuntamiento prorrogan hasta 2030 el convenio en Cuenca",
+   "entradilla": "La adenda amplía el plazo del acuerdo de integración urbana de suelos ferroviarios en Cuenca y fija un límite de 120.000 euros para el acondicionamiento de los terrenos de la estación.",
+   "claves": [
+    "El convenio para la integración urbana de suelos ferroviarios en el término municipal de Cuenca se prorroga cuatro años, hasta el 19 de septiembre de 2030.",
+    "Se modifica la actuación de acondicionamiento de terrenos de ADIF en la estación de red convencional de Cuenca, que no podrá superar los 120.000 euros.",
+    "Los trabajos en la estación comprenderán desde el entorno de la calle Diego Jiménez hasta la carretera ronda Oeste."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22282": {
+   "huella": "8102f141903491ae",
+   "fuente": "8b35bf6b45c223cb",
+   "titular": "Trabajo inscribe el VIII Convenio colectivo del Grupo Generali España",
+   "entradilla": "La Dirección General de Trabajo dispone la publicación y el registro del nuevo marco laboral acordado entre la empresa aseguradora y la representación sindical.",
+   "claves": [
+    "El texto fue suscrito por la dirección del grupo empresarial y las secciones sindicales de CC.OO., USOC y FeSMC-UGT en representación de la plantilla.",
+    "El acuerdo laboral quedó definitivamente subsanado mediante un acta suscrita por las partes negociadoras el 30 de septiembre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22283": {
+   "huella": "5dc47b95a03c97f8",
+   "fuente": "c158ae9b30a18ec2",
+   "titular": "Castilla-La Mancha gestionará las obras de agua del embalse de La Cabezuela",
+   "entradilla": "La Confederación Hidrográfica del Guadiana encomienda la explotación y mantenimiento de las infraestructuras de abastecimiento en Ciudad Real a la entidad regional.",
+   "claves": [
+    "La encomienda de gestión sobre los bienes de dominio público estatal se fija por un plazo máximo de 75 años.",
+    "Infraestructuras del Agua de Castilla-La Mancha podrá realizar la gestión directamente o mediante terceros según la normativa de contratación pública."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22284": {
+   "huella": "b9b893d0f0c9ca14",
+   "fuente": "8e78e37df8ad5b81",
+   "titular": "El Guadiana cede a Promedio la gestión del depurado en Medina de las Torres",
+   "entradilla": "La Confederación Hidrográfica del Guadiana firma un convenio con el consorcio ambiental para la explotación de infraestructuras de depuración de aguas.",
+   "claves": [
+    "El Ministerio para la Transición Ecológica actúa en catorce poblaciones extremeñas con la construcción de once depuradoras y unos 51 kilómetros de colectores.",
+    "Las actuaciones para la depuración de aguas cuentan con una inversión cercana a los 140 millones de euros en el Guadiana extremeño."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22285": {
+   "huella": "0c51cf5b5adf2e82",
+   "descartado": "acaba en «CON», que pide complemento",
+   "intentos": 2
+  },
+  "BOE-A-2026-22286": {
+   "huella": "67b29719b69680f4",
+   "fuente": "09bf95048d984ab1",
+   "titular": "Los alumnos del Centro Garrigues podrán realizar prácticas en el ICEX",
+   "entradilla": "ICEX España Exportación e Inversiones y el centro de estudios acuerdan un programa formativo para estudiantes de grado y máster entre enero y julio.",
+   "claves": [
+    "Las prácticas tendrán una duración máxima de 750 horas no prorrogables y se desarrollarán en los centros de actuación del ICEX en España.",
+    "Los estudiantes seleccionados recibirán una asignación mensual neta de 350 euros y una paga extra en la última mensualidad si completan el período."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-24"
   }
  },
  "uso": {
-  "2026-10-23": 10
+  "2026-10-24": 2
  }
 }
