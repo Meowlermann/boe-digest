@@ -4902,9 +4902,16 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "descartado": "nombre «Alta» que no está en el texto oficial",
-   "intentos": 2
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
+   "entradilla": "Un total de 38 iniciativas parlamentarias han superado el plazo de 20 días hábiles fijado sin que se haya registrado su contestación oficial.",
+   "claves": [
+    "Sumar acumula 24 preguntas sin responder, seguida del PSOE con 7 y del PP con 4.",
+    "La pregunta pendiente más antigua registrada se publicó el lunes 16 de febrero de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-26"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -9179,9 +9186,204 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-24"
+  },
+  "BOE-A-2026-22391": {
+   "huella": "a88518a97dabaa9c",
+   "fuente": "8d94acc172345b37",
+   "titular": "El Congreso convoca cuatro becas de formación en asuntos europeos y parlamentarios",
+   "entradilla": "El Congreso de los Diputados convoca cuatro becas individuales de un año de duración para la formación práctica en estudios parlamentarios y de la Unión Europea.",
+   "claves": [
+    "La cuantía de cada beca es de 1.500 euros brutos mensuales y el devengo se produce en el mismo mes de realización de la actividad.",
+    "Se reserva una de las plazas para personas con discapacidad de grado igual o superior al 33 por ciento.",
+    "Las becas podrán prorrogarse por un período máximo de doce meses cuando la conclusión de las tareas así lo aconseje."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22392": {
+   "huella": "c4a85c3265289359",
+   "fuente": "145cee0213c3bb43",
+   "titular": "El Congreso convoca seis becas de formación práctica en comunicación institucional",
+   "entradilla": "El Congreso de los Diputados convoca seis becas individuales de formación en materia de comunicación institucional orientadas a la actividad de la Cámara.",
+   "claves": [
+    "La dotación total es de 16.500 euros brutos por beca, abonados a razón de 1.500 euros mensuales.",
+    "Las becas se desarrollan del 1 de febrero al 31 de diciembre de 2027 y son improrrogables.",
+    "Se reserva una plaza para personas con discapacidad igual o superior al 33 por ciento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22393": {
+   "huella": "8e2c61b7f3bb163e",
+   "fuente": "410a615932968a29",
+   "titular": "El Instituto Cervantes y Barceló firman un convenio para ofrecer un 10 por ciento de descuento",
+   "entradilla": "El Instituto Cervantes y Barceló Gestión Hotelera firman un convenio para ofrecer ventajas a los usuarios y empleados del programa de fidelización dentro de la Unión Europea, Brasil, China y Estados Unidos.",
+   "claves": [
+    "Barceló aplicará un 10 por ciento de descuento en estancias de ocio en sus hoteles para los beneficiarios del programa y empleados del Instituto Cervantes.",
+    "El convenio tiene vigencia para los años 2026 y 2027 sin aportación de recursos económicos entre las partes.",
+    "El Instituto Cervantes incluirá esta oferta en la aplicación de su programa de incentivos con carácter anual."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22394": {
+   "huella": "cc341006f7dda484",
+   "fuente": "069369b422a557b3",
+   "titular": "El Gobierno de Aragón y Defensa impartirán ciclos de Formación Profesional",
+   "entradilla": "El acuerdo permite impartir enseñanzas de grado medio y superior en los centros docentes militares para facilitar la inserción laboral del personal de tropa, marinería y suboficiales.",
+   "claves": [
+    "La formación de suboficiales comprenderá la formación militar y la técnica correspondiente a un título de Formación Profesional de grado superior.",
+    "Para la tropa y marinería, la preparación se encamina a obtener un título de grado medio o equivalente en especialidades de música.",
+    "La medida busca facilitar la incorporación al mercado de trabajo del personal militar temporal al término de su compromiso con las Fuerzas Armadas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22395": {
+   "huella": "05dbe175b4bc0262",
+   "fuente": "6baa64f1d968abae",
+   "titular": "La Universidad de León y la Abogacía General del Estado firman un convenio de asistencia jurídica",
+   "entradilla": "La Universidad de León renueva su convenio de asistencia jurídica con la Abogacía General del Estado para la representación y defensa ante los tribunales.",
+   "claves": [
+    "La asistencia jurídica comprende tanto el asesoramiento en derecho como la representación y defensa en cualquier orden jurisdiccional.",
+    "El Abogado General del Estado designará uno o más Abogados del Estado como coordinadores directos.",
+    "La universidad se reserva la facultad de ser defendida por abogado y procurador especialmente designado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22400": {
+   "huella": "56cc21d38e5ff2b4",
+   "fuente": "de9bfcc741bbd884",
+   "titular": "Cultura, Hacienda y Almagro crean la comisión del cincuentenario de su festival de teatro",
+   "entradilla": "Se publica el convenio para la creación de la Comisión Interadministrativa del acontecimiento de excepcional interés público del 50 aniversario del Festival de Teatro Clásico de Almagro.",
+   "claves": [
+    "La comisión elaborará los planes de actividades y certificará la adecuación de los gastos realizados.",
+    "La Fundación Festival Internacional de Teatro Clásico de Almagro se encarga de la realización material y financiación de los actos.",
+    "La Administración General del Estado no asume ninguna obligación económica derivada de las actuaciones de la comisión."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22402": {
+   "huella": "df894ac1b1b9e747",
+   "fuente": "ce889d83f663efc1",
+   "titular": "Ineco costea la recepción de la Fiesta Nacional en la Embajada de España en Costa Rica",
+   "entradilla": "La Embajada de España en Costa Rica e Ineco firman un convenio para la financiación en especie de la celebración de la Fiesta Nacional de España en San José.",
+   "claves": [
+    "Ineco asume la contratación de suministros o servicios por un valor estimado de mil dólares americanos.",
+    "El convenio no supone coste alguno para la Embajada de España.",
+    "La Embajada emitirá una certificación acreditativa de la aportación en un plazo máximo de treinta días tras el evento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22403": {
+   "huella": "6cf49e0c281ba067",
+   "fuente": "33e54c4b6788d07e",
+   "titular": "Ineco financia actos de la Fiesta Nacional de España en la Embajada en Polonia",
+   "entradilla": "La Embajada de España en Varsovia e Ineco firman un convenio para la celebración de la Fiesta Nacional de España mediante una aportación en especie.",
+   "claves": [
+    "Ineco contrata por su cuenta servicios o suministros por un valor estimado de 4.300 zlotys para el evento.",
+    "La colaboración no genera ningún coste económico para la Embajada de España.",
+    "La Embajada se compromete a difundir la participación de la empresa e incluir su logotipo en el material gráfico y digital."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22404": {
+   "huella": "f1d6745ecfcfc2e6",
+   "fuente": "2d123f904d380293",
+   "titular": "La Autoridad Portuaria de Valencia pagará 95.000,00 euros a la Abogacía del Estado",
+   "entradilla": "Ambas entidades modifican su convenio debido al aumento del trabajo contencioso registrado en los servicios de asesoramiento legal prestados al puerto.",
+   "claves": [
+    "La contraprestación anual por los servicios de asistencia jurídica se fija en noventa y cinco mil euros (95.000,00 €) más IVA.",
+    "La cantidad se abonará en tres partes correspondientes a los periodos de enero-abril, mayo-agosto y septiembre-diciembre.",
+    "La modificación responde al notable incremento de la carga de trabajo registrada, especialmente en el ámbito contencioso."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22406": {
+   "huella": "2bdcc2c4a84097d0",
+   "fuente": "7dbc88986ec95fe8",
+   "titular": "La Autoridad Portuaria de Baleares usará la aplicación de registro de la Administración Digital",
+   "entradilla": "La Agencia Estatal de Administración Digital y la Autoridad Portuaria de Baleares formalizan un convenio para el uso de la aplicación de gestión integrada de registros.",
+   "claves": [
+    "La aplicación GEISER se utilizará para la gestión de registros oficiales de entrada y salida de documentos electrónicos.",
+    "La Agencia Estatal de Administración Digital asume la dirección técnica y gestión del servicio compartido.",
+    "El acuerdo facilita el intercambio de documentación en formato electrónico tanto a nivel interno como con otros organismos."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22407": {
+   "huella": "446b3a9cc9eae1a7",
+   "fuente": "173ee14d79cb6552",
+   "titular": "La Casa de la Moneda asumirá la certificación técnica de fecha y hora",
+   "entradilla": "El convenio encomienda a la institución la realización de actividades técnicas de sincronización para garantizar la seguridad de las comunicaciones electrónicas.",
+   "claves": [
+    "La Fábrica Nacional de Moneda y Timbre figura entre los prestadores incluidos en la Lista de confianza de prestadores de servicios de certificación.",
+    "Dicha lista se elabora según las especificaciones técnicas fijadas en la Decisión de Ejecución (UE) 2015/1505, de la Comisión, de 8 de septiembre de 2015.",
+    "Las actividades técnicas están dirigidas a garantizar la validez, seguridad y eficacia en la emisión y recepción de documentos por medios electrónicos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22408": {
+   "huella": "957418554f3642cd",
+   "fuente": "9a93776313df9144",
+   "titular": "La Junta de Andalucía otorgará cien millones de euros para la Base de Córdoba",
+   "entradilla": "Defensa y la Junta modifican su convenio marco para articular la aportación en una única subvención nominativa con cargo al Presupuesto autonómico de 2026.",
+   "claves": [
+    "La aportación de la Junta de Andalucía pasa de abonarse mediante varias subvenciones excepcionales a una única subvención directa nominativa.",
+    "La cuantía máxima fijada asciende a cien millones de euros (100.000.000 €) con cargo al Presupuesto de la Comunidad Autónoma de Andalucía para 2026.",
+    "La financiación se destina a la implantación en la ciudad de Córdoba de la Base Logística del Ejército de Tierra General de Ejército Javier Varela."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22409": {
+   "huella": "28759d66caadfacb",
+   "fuente": "d442ef7ab3ce1bb0",
+   "titular": "El Ministerio de Defensa y la Universidad Carlos III firman un convenio de prácticas",
+   "entradilla": "Defensa y la Universidad Carlos III de Madrid acuerdan un programa de prácticas académicas externas curriculares para estudiantes de grados y másteres.",
+   "claves": [
+    "Las prácticas se realizarán en unidades de la Secretaría General de Política de Defensa y en su división de estudios.",
+    "El convenio fomenta la cultura de seguridad y defensa en el ámbito universitario.",
+    "El número de estudiantes admitidos se determinará anualmente por mutuo acuerdo entre ambas instituciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22410": {
+   "huella": "d3d2f20aec0fd528",
+   "fuente": "156a26a8b3050b8b",
+   "titular": "Defensa concede el Premio General Gutiérrez Mellado a misiones en Kenia, Senegal e Irak",
+   "entradilla": "El Ministerio de Defensa otorga el Premio Extraordinario de Defensa General Gutiérrez Mellado 2026 a tres iniciativas humanitarias internacionales vinculadas a la paz.",
+   "claves": [
+    "El galardón está dotado con 18.000 euros, una figura en bronce de Miguel de Cervantes y un diploma acreditativo.",
+    "Se premia a la Comunidad Misionera de San Pablo Apóstol en Turkana, la Congregación de la Inmaculada Concepción de Castres y el Orfanato de las Misioneras de la Caridad en Bagdad.",
+    "Las entidades galardonadas colaboran con las Fuerzas Armadas españolas en misiones de ayuda humanitaria y estabilidad internacional."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22411": {
+   "huella": "3e0dbb670e98e001",
+   "fuente": "391d4d9c5ba26227",
+   "titular": "Puertos del Estado y cuatro universidades prorrogan su máster portuario intermodal",
+   "entradilla": "Se prorroga hasta septiembre de 2027 el convenio entre Puertos del Estado y las universidades de Oviedo, Politécnica de Madrid, Cádiz y A Coruña para su máster de postgrado.",
+   "claves": [
+    "El título oficial pasa a denominarse Máster de Formación Permanente en Gestión y Planificación Portuaria e Intermodalidad.",
+    "La prórroga tiene una duración de un año sin implicar modificaciones en el contenido económico ni en las obligaciones iniciales.",
+    "El convenio mantendrá su vigencia para siguientes ediciones incluso si no se celebra la docencia en la presente anualidad."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-26"
   }
  },
  "uso": {
-  "2026-10-26": 2
+  "2026-10-26": 4
  }
 }
