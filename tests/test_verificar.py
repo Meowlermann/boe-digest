@@ -46,7 +46,7 @@ abc123.txt
 """
 
 WEBSITE = '{"@type": "WebSite", "name": "La Tercera Cámara", "url": "https://terceracamara.es/"}'
-ARTICULO = ('{"@type": "NewsArticle", "headline": "Ley 1", "datePublished": "2026-10-01", '
+ARTICULO = ('{"@type": "NewsArticle", "headline": "Ley 1", "datePublished": "2026-10-01T07:40:00+02:00", '
             '"url": "https://terceracamara.es/normas/ley-1.html", '
             '"image": ["https://terceracamara.es/assets/og-default.png"], '
             '"publisher": {"@type": "Organization", "name": "La Tercera Cámara"}}')
@@ -454,7 +454,7 @@ class TestCompartir(unittest.TestCase):
             return v.comprobar_compartir(raiz, [f])
 
     ARTICULO = {"@context": "https://schema.org", "@graph": [{
-        "@type": "NewsArticle", "headline": "Edición", "datePublished": "2026-10-26",
+        "@type": "NewsArticle", "headline": "Edición", "datePublished": "2026-10-26T07:40:00+01:00",
         "url": "https://terceracamara.es/ediciones/2026-10-26.html",
         "image": ["https://terceracamara.es/assets/og-default.png"],
         "publisher": {"@type": "Organization", "name": "La Tercera Cámara"}}]}
@@ -490,6 +490,20 @@ class TestCompartir(unittest.TestCase):
         del ld["@graph"][0]["image"]
         h = self.comprobar("ediciones/2026-10-26.html", self.pagina(ld))
         self.assertIn("image", h[0]["detalle"])
+
+    def test_fecha_sin_hora_o_zona_falla(self):
+        for malo in ("2026-10-26", "2026-10-26T07:40:00"):
+            ld = json.loads(json.dumps(self.ARTICULO))
+            ld["@graph"][0]["dateModified"] = malo
+            h = self.comprobar("ediciones/2026-10-26.html", self.pagina(ld))
+            self.assertEqual(len(h), 1)
+            self.assertIn("dateModified", h[0]["detalle"])
+
+    def test_fecha_ld_offset_verano_invierno(self):
+        import build
+        self.assertEqual(build.fecha_ld("2026-10-24"), "2026-10-24T07:40:00+02:00")
+        self.assertEqual(build.fecha_ld("2026-10-26"), "2026-10-26T07:40:00+01:00")
+        self.assertEqual(build.fecha_ld("2026-10-26T21:40:00+01:00"), "2026-10-26T21:40:00+01:00")
 
     def test_fragmento_no_se_exige(self):
         self.assertEqual(self.comprobar("datos/votaciones-banner.html", "<div>x</div>"), [])
