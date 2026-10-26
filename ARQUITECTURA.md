@@ -477,6 +477,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | g | `tamanos`: ficheros de `state/` (aviso 10 MB, grave 25 MB), historia de `main` (aviso 500 MB, grave 900 MB), historia de la rama `datos` (aviso 200 MB, grave 500 MB), número y peso de lo que va a `_site` | aviso / grave |
 | h | `feeds`: cada `.xml` publicado (salvo los sitemaps) es Atom 1.0 o RSS 2.0 bien formado, con los campos obligatorios, fechas RFC 3339 (Atom) o RFC 822 (RSS), sin `id`/`guid` repetidos y con 50 entradas como máximo | grave |
 | i | `semana` (solo salud diaria): existe `/semana/AAAA-Snn.html` de la semana que terminó el domingo anterior | grave |
+| j | `compartir`: cada página completa lleva `og:image` absoluta y `twitter:card=summary_large_image`; la portada, un `WebSite` con `name` y `url`; las ediciones y las normas, un `NewsArticle` con `headline`, `datePublished`, `url`, `image` y `publisher`; las fichas de `diputados/` y `personas/` (no sus índices), un `Person` con `name` (`JSONLD_EXIGIDO`) | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -498,7 +499,7 @@ incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 (`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
-`python tools/verificar.py --modo ci`: (a), (b), (c), (d) y (g) sobre el
+`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g) y (j) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
 datos que escribió el pase diario y que ninguna PR puede corregir (la edición
@@ -554,6 +555,17 @@ PR con un test que lo cubra; no se silencia ni se rebaja sin justificarlo.
 
 Fase de crear audiencia antes de cobrar (octubre de 2026). Nada de backend
 propio ni dependencias nuevas; todo lo nuevo es determinista.
+
+### Tarjetas para compartir y datos estructurados
+
+Todas las plantillas (`template*.html`) declaran `og:image`, `twitter:image` y
+`twitter:card=summary_large_image` con `assets/og-default.png` (1200×630,
+`build.OG_IMAGE`). El PNG se generó una vez con `tools/generar_og.py` (Pillow,
+en local) y se commitea: el build no lo regenera, así que no es dependencia.
+No hay imagen por edición. El JSON-LD de la edición incluye un `NewsArticle`
+de la propia página (titular = su `<title>`), además de las normas
+(`Legislation`) y las piezas de Cortes. La comprobación (j) de
+`verificar.py` exige todo esto.
 
 ### Analítica sin cookies
 

@@ -71,6 +71,9 @@ TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
 
 SITE_URL = "https://terceracamara.es/"
+# Imagen por defecto para compartir (og:image, twitter:image y `image` del
+# JSON-LD). PNG estático de 1200x630 generado una vez con tools/generar_og.py.
+OG_IMAGE = f"{SITE_URL}assets/og-default.png"
 MAX_DAYS = 30
 MAX_FEED_ITEMS = 20
 
@@ -3170,6 +3173,22 @@ def jsonld_for_day(day: dict, page_url: str) -> str:
         "dateModified": day["id"],
     }]
 
+    # La edición como pieza: el artículo que Google y las redes enseñan de la
+    # página. El titular es el <title> de la edición, sin adornos.
+    objetos.append({
+        "@type": "NewsArticle",
+        "headline": recortar(build_title(day, edicion=True), 110),
+        "description": build_meta_description(day),
+        "datePublished": day["id"],
+        "dateModified": day["id"],
+        "inLanguage": "es-ES",
+        "url": page_url,
+        "image": [OG_IMAGE],
+        "author": editor,
+        "publisher": editor,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
+    })
+
     fecha_norma = fecha_boe_iso(day)          # la del sumario leído, no la de hoy
     for s in (day.get("boe", {}) or {}).get("stories") or []:
         oficial = titulo_oficial_de(s)
@@ -3199,6 +3218,7 @@ def jsonld_for_day(day: dict, page_url: str) -> str:
             "description": f.get("standfirst", ""),
             "datePublished": day["id"],
             "inLanguage": "es-ES",
+            "image": [OG_IMAGE],
             "author": editor,
             "publisher": editor,
             "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
@@ -4087,6 +4107,8 @@ def jsonld_for_norma(s: dict, day: dict, page_url: str) -> str:
         "author": editor,
         "publisher": editor,
         "isBasedOn": s.get("url") or SITE_URL,
+        "url": page_url,
+        "image": [OG_IMAGE],
         "mainEntityOfPage": {"@type": "WebPage", "@id": page_url},
         "about": norma,
     }
@@ -5707,7 +5729,7 @@ def renderizar_diputados(fichas: list) -> list:
             "JSONLD": jsonld_script([
                 {"@type": "ProfilePage", "url": url, "inLanguage": "es-ES",
                  "dateModified": hoy,
-                 "mainEntity": {"@type": "Person", "name": f["natural"],
+                 "mainEntity": {"@type": "Person", "name": f["natural"], "url": url,
                                 "jobTitle": "Diputado del Congreso de los Diputados",
                                 "affiliation": {"@type": "Organization",
                                                 "name": f["grupo"] or f["partido"]},
