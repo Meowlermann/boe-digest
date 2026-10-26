@@ -4902,17 +4902,9 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin contestar fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas de los grupos parlamentarios superan los 20 días hábiles desde su publicación sin que conste una contestación oficial.",
-   "claves": [
-    "Sumar encabeza el listado de iniciativas pendientes con 24 preguntas escritas que superan el límite de tiempo publicado por la Cámara.",
-    "El resto de preguntas sin contestación pertenecen al PSOE con 7, al PP con 4, a EAJ-PNV con 1, a Junts con 1 y a Sin grupo con 1.",
-    "La solicitud más antigua sin contestación registrada se publicó formalmente el lunes 16 de febrero de 2026."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-25"
+   "huella": "0ffb5472867d2876",
+   "descartado": "nombre «Alta» que no está en el texto oficial",
+   "intentos": 2
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -9190,6 +9182,6 @@
   }
  },
  "uso": {
-  "2026-10-25": 8
+  "2026-10-26": 2
  }
 }
