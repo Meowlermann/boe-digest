@@ -38,6 +38,7 @@ import pathlib
 import re
 import sys
 import time
+from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
@@ -3115,7 +3116,43 @@ def build_meta_description(day: dict) -> str:
     return recortar(f"{gancho}{cola}", 155)
 
 
+# Fechas JSON-LD: Google exige fecha y hora con zona en datePublished/dateModified.
+# Los datos solo guardan el día (AAAA-MM-DD), así que se fija una hora determinista:
+# 07:40 hora peninsular, la de la edición de la mañana (disparador del BOE). Así el
+# HTML no cambia entre builds sin cambios de datos. El offset (+01:00/+02:00) sale de
+# zoneinfo según el horario de verano de ese día.
+ZONA_ES = ZoneInfo("Europe/Madrid")
+HORA_EDICION = (7, 40)
+CAMPOS_FECHA_LD = ("datePublished", "dateModified")
+
+
+def fecha_ld(valor):
+    """'2026-10-26' -> '2026-10-26T07:40:00+01:00'; respeta valores que ya traen zona."""
+    if not isinstance(valor, str) or not valor:
+        return valor
+    try:
+        if len(valor) == 10:
+            d = dt.date.fromisoformat(valor)
+            t = dt.datetime(d.year, d.month, d.day, *HORA_EDICION, tzinfo=ZONA_ES)
+        else:
+            t = dt.datetime.fromisoformat(valor)
+            if t.tzinfo is None:
+                t = t.replace(tzinfo=ZONA_ES)
+    except ValueError:
+        return valor
+    return t.isoformat(timespec="seconds")
+
+
+def _fechas_ld(x):
+    if isinstance(x, dict):
+        return {k: (fecha_ld(v) if k in CAMPOS_FECHA_LD else _fechas_ld(v)) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_fechas_ld(v) for v in x]
+    return x
+
+
 def jsonld_script(objetos: list[dict]) -> str:
+    objetos = _fechas_ld(objetos)
     grafo = {"@context": "https://schema.org", "@graph": objetos}
     payload = json.dumps(grafo, ensure_ascii=False, separators=(",", ":"))
     payload = payload.replace("</", "<\\/")           # nunca cerrar el <script> por accidente

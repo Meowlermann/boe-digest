@@ -351,6 +351,9 @@ def _nodos_jsonld(texto: str) -> list[dict]:
     return nodos
 
 
+RE_FECHA_LD = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$")
+
+
 def problemas_compartir(texto: str, rel: str) -> list[str]:
     """Lo que le falta a una página completa para compartirse y describirse."""
     faltan = []
@@ -368,6 +371,11 @@ def problemas_compartir(texto: str, rel: str) -> list[str]:
             faltan.append(f"JSON-LD {tipo}")
         elif not any(all(n.get(c) for c in campos) for n in nodos):
             faltan.append(f"JSON-LD {tipo} con {', '.join(campos)}")
+    for n in _nodos_jsonld(texto):
+        for c in ("datePublished", "dateModified"):
+            v = n.get(c)
+            if v is not None and not (isinstance(v, str) and RE_FECHA_LD.match(v)):
+                faltan.append(f"JSON-LD {c} con fecha, hora y zona (hay {v!r})")
     return faltan
 
 
