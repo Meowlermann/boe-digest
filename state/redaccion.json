@@ -4902,13 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas parlamentarias han superado el plazo de 20 días hábiles fijado sin que se haya registrado su contestación oficial.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "38 preguntas escritas en el Congreso superan los 20 días sin respuesta",
+   "entradilla": "Un total de 38 preguntas parlamentarias escritas llevan más de 20 días hábiles sin contestación registrada, con la iniciativa más antigua datada el 15 de diciembre de 2025.",
    "claves": [
-    "Sumar acumula 24 preguntas sin responder, seguida del PSOE con 7 y del PP con 4.",
-    "La pregunta pendiente más antigua registrada se publicó el lunes 16 de febrero de 2026."
+    "La mayoría de las iniciativas pendientes corresponden al grupo de Sumar con 30 preguntas, seguido por el PSOE con 4, el PP con 2, Junts con 1 y el grupo de diputados sin grupo con 1.",
+    "El recuento abarca las preguntas del último año cuya fecha límite de respuesta publicada por la Cámara ya ha sido rebasada."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-26"
@@ -9381,9 +9381,22 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22397": {
+   "huella": "cbb2b2e3c49fa912",
+   "fuente": "dd91d2b703d98b74",
+   "titular": "La Abogacía del Estado asumirá la asistencia y defensa jurídica de Enusa",
+   "entradilla": "La Abogacía General del Estado prestará asesoramiento, representación y defensa judicial a la sociedad pública Enusa Industrias Avanzadas, que mantendrá no obstante la facultad de recurrir a abogados externos.",
+   "claves": [
+    "La asistencia jurídica incluirá tanto el asesoramiento como la representación y defensa ante cualquier orden jurisdiccional en los mismos términos que a la Administración General del Estado.",
+    "El Abogado General del Estado designará a uno o varios Abogados del Estado en activo para ejercer como coordinadores directos de la asistencia a la empresa pública del sector nuclear.",
+    "Enusa conservará el derecho a contratar abogados y procuradores externos, lo que implicará la renuncia a la asistencia de los Abogados del Estado para todo ese procedimiento judicial."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-26"
   }
  },
  "uso": {
-  "2026-10-26": 4
+  "2026-10-26": 5
  }
 }
