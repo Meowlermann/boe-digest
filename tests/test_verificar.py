@@ -23,6 +23,8 @@ PAGINA = """<!doctype html>
 <title>{titulo}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
+<meta property="og:image" content="https://terceracamara.es/assets/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{jsonld}</script>
 <script>if (typeof x === "undefined" || isNaN(y)) {{}}</script>
 </head><body>{cuerpo}</body></html>
@@ -43,6 +45,12 @@ robots.txt
 abc123.txt
 """
 
+WEBSITE = '{"@type": "WebSite", "name": "La Tercera Cámara", "url": "https://terceracamara.es/"}'
+ARTICULO = ('{"@type": "NewsArticle", "headline": "Ley 1", "datePublished": "2026-10-01", '
+            '"url": "https://terceracamara.es/normas/ley-1.html", '
+            '"image": ["https://terceracamara.es/assets/og-default.png"], '
+            '"publisher": {"@type": "Organization", "name": "La Tercera Cámara"}}')
+
 
 def pagina(titulo="Normas — La Tercera Cámara", desc="Descripción.",
            canonical="https://terceracamara.es/normas/", cuerpo="", jsonld='{"@type": "WebPage"}'):
@@ -58,11 +66,11 @@ class Sitio:
         self.escribir("build.py", BUILD)
         self.lista = self.escribir("tools/publicables.txt", PUBLICABLES)
         self.escribir("CNAME", "terceracamara.es\n")
-        self.escribir("index.html", pagina(canonical="https://terceracamara.es/",
+        self.escribir("index.html", pagina(canonical="https://terceracamara.es/", jsonld=WEBSITE,
                                            cuerpo='<a href="/normas/">Normas</a>'))
         self.escribir("normas/index.html", pagina(cuerpo='<a href="/mapa/">Mapa</a> '
                                                          '<a href="ley-1.html">Ley</a>'))
-        self.escribir("normas/ley-1.html", pagina(canonical="https://terceracamara.es/normas/ley-1.html",
+        self.escribir("normas/ley-1.html", pagina(canonical="https://terceracamara.es/normas/ley-1.html", jsonld=ARTICULO,
                                                   cuerpo='<a href="../index.html">Portada</a>'))
         self.escribir("mapa/index.html", pagina(canonical="https://terceracamara.es/mapa/",
                                                 cuerpo='<a href="https://terceracamara.es/normas/ley-1">x</a>'))
@@ -425,6 +433,66 @@ class TestTamanos(unittest.TestCase):
             h = self.tamanos()
         self.assertEqual([x["nivel"] for x in h], [v.AVISO])
         self.assertIn("5 ficheros publicados", h[0]["detalle"])
+
+
+class TestCompartir(unittest.TestCase):
+    """(j) og:image, twitter:card y el JSON-LD que toca a cada tipo de página."""
+
+    TARJETA = ('<meta property="og:image" content="https://terceracamara.es/assets/og-default.png">'
+               '<meta name="twitter:card" content="summary_large_image">')
+
+    def pagina(self, ld, tarjeta=True):
+        return ("<!doctype html><html><head>" + (self.TARJETA if tarjeta else "")
+                + '<script type="application/ld+json">' + json.dumps(ld) + "</script></head></html>")
+
+    def comprobar(self, rel, texto):
+        with tempfile.TemporaryDirectory() as d:
+            raiz = pathlib.Path(d)
+            f = raiz / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text(texto, encoding="utf-8")
+            return v.comprobar_compartir(raiz, [f])
+
+    ARTICULO = {"@context": "https://schema.org", "@graph": [{
+        "@type": "NewsArticle", "headline": "Edición", "datePublished": "2026-10-26",
+        "url": "https://terceracamara.es/ediciones/2026-10-26.html",
+        "image": ["https://terceracamara.es/assets/og-default.png"],
+        "publisher": {"@type": "Organization", "name": "La Tercera Cámara"}}]}
+
+    def test_paginas_correctas_pasan(self):
+        self.assertEqual(self.comprobar("ediciones/2026-10-26.html", self.pagina(self.ARTICULO)), [])
+        self.assertEqual(self.comprobar("index.html", self.pagina(
+            {"@type": "WebSite", "name": "La Tercera Cámara", "url": "https://terceracamara.es/"})), [])
+        self.assertEqual(self.comprobar("diputados/ana-perez.html", self.pagina(
+            {"@type": "ProfilePage", "mainEntity": {"@type": "Person", "name": "Ana Pérez"}})), [])
+        # Los índices no son fichas: no se les exige Person.
+        self.assertEqual(self.comprobar("diputados/provincia-soria.html", self.pagina({})), [])
+
+    def test_falta_tarjeta(self):
+        h = self.comprobar("temas/index.html", self.pagina({}, tarjeta=False))
+        self.assertEqual(len(h), 1)
+        self.assertEqual(h[0]["nivel"], v.GRAVE)
+        self.assertIn("og:image", h[0]["detalle"])
+        self.assertIn("twitter:card", h[0]["detalle"])
+
+    def test_tarjeta_pequena_no_vale(self):
+        texto = self.pagina({}).replace("summary_large_image", "summary")
+        self.assertIn("twitter:card", self.comprobar("mapa/index.html", texto)[0]["detalle"])
+
+    def test_falta_jsonld_de_su_tipo(self):
+        self.assertIn("NewsArticle", self.comprobar(
+            "ediciones/2026-10-26.html", self.pagina({"@type": "WebSite"}))[0]["detalle"])
+        self.assertIn("WebSite", self.comprobar("index.html", self.pagina({}))[0]["detalle"])
+        self.assertIn("Person", self.comprobar("personas/ana-perez.html", self.pagina({}))[0]["detalle"])
+
+    def test_articulo_sin_imagen(self):
+        ld = json.loads(json.dumps(self.ARTICULO))
+        del ld["@graph"][0]["image"]
+        h = self.comprobar("ediciones/2026-10-26.html", self.pagina(ld))
+        self.assertIn("image", h[0]["detalle"])
+
+    def test_fragmento_no_se_exige(self):
+        self.assertEqual(self.comprobar("datos/votaciones-banner.html", "<div>x</div>"), [])
 
 
 class TestEjecucion(unittest.TestCase):

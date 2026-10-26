@@ -307,6 +307,88 @@ def _cabecera(cab: str, rel: str) -> list[dict]:
     return salida
 
 
+# ---------------------------------------------------------------------------
+# j) Tarjetas para compartir y datos estructurados por tipo de página
+# ---------------------------------------------------------------------------
+
+RE_OG_IMAGE = re.compile(r"<meta\s+property=\"og:image\"\s+content=\"(https://[^\"]+)\"", re.I)
+RE_TW_CARD = re.compile(r"<meta\s+name=\"twitter:card\"\s+content=\"summary_large_image\"", re.I)
+# Qué nodo JSON-LD exige cada tipo de página (ruta relativa a la raíz) y qué
+# campos no pueden faltar. Son los obligatorios o recomendados por Google
+# para resultados enriquecidos (Article, sitio) y los mínimos de schema.org.
+JSONLD_EXIGIDO = [
+    (re.compile(r"^index\.html$"), "WebSite", ("name", "url")),
+    (re.compile(r"^ediciones/\d{4}-\d{2}-\d{2}\.html$"), "NewsArticle",
+     ("headline", "datePublished", "url", "image", "publisher")),
+    (re.compile(r"^normas/(?!index\.html$).+\.html$"), "NewsArticle",
+     ("headline", "datePublished", "url", "image", "publisher")),
+    # Fichas de una persona; no los índices por provincia o grupo.
+    (re.compile(r"^diputados/(?!index\.html$|provincia-|grupo-)[a-z0-9-]+\.html$"), "Person",
+     ("name",)),
+    (re.compile(r"^personas/(?!index\.html$|letra-)[a-z0-9-]+\.html$"), "Person", ("name",)),
+]
+
+
+def _nodos_jsonld(texto: str) -> list[dict]:
+    """Todos los objetos con @type de los JSON-LD de la página, aplanados."""
+    nodos: list[dict] = []
+
+    def recorrer(x):
+        if isinstance(x, dict):
+            if "@type" in x:
+                nodos.append(x)
+            for v in x.values():
+                recorrer(v)
+        elif isinstance(x, list):
+            for v in x:
+                recorrer(v)
+    for attrs, cuerpo in RE_SCRIPT.findall(texto):
+        if "ld+json" in attrs:
+            try:
+                recorrer(json.loads(cuerpo))
+            except ValueError:
+                pass                       # ya lo marca (b) como JSON-LD inválido
+    return nodos
+
+
+def problemas_compartir(texto: str, rel: str) -> list[str]:
+    """Lo que le falta a una página completa para compartirse y describirse."""
+    faltan = []
+    cab = texto[:20000]
+    if not RE_OG_IMAGE.search(cab):
+        faltan.append("og:image (URL absoluta https)")
+    if not RE_TW_CARD.search(cab):
+        faltan.append("twitter:card=summary_large_image")
+    for patron, tipo, campos in JSONLD_EXIGIDO:
+        if not patron.match(rel):
+            continue
+        nodos = [n for n in _nodos_jsonld(texto)
+                 if tipo == n.get("@type") or tipo in (n.get("@type") or [])]
+        if not nodos:
+            faltan.append(f"JSON-LD {tipo}")
+        elif not any(all(n.get(c) for c in campos) for n in nodos):
+            faltan.append(f"JSON-LD {tipo} con {', '.join(campos)}")
+    return faltan
+
+
+def comprobar_compartir(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    hallazgos: list[dict] = []
+    for p in (paginas if paginas is not None else paginas_html(raiz)):
+        rel = _rel(raiz, p)
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception:                                     # noqa: BLE001
+            continue                                          # ya lo marca (b)
+        if not RE_DOCUMENTO.search(texto[:500]):
+            continue                                          # fragmento incrustado
+        faltan = problemas_compartir(texto, rel)
+        if faltan:
+            hallazgos.append(hallazgo(GRAVE, "compartir", "Falta " + "; ".join(faltan) + ".",
+                                      rel, "revisa la plantilla (template*.html) o la función "
+                                      "que pinta su JSON-LD en build.py."))
+    return hallazgos
+
+
 def html_unescape(s: str) -> str:
     return s.replace("&amp;", "&").replace("&#x27;", "'").replace("&quot;", '"')
 
@@ -820,6 +902,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("duplicados", lambda: comprobar_duplicados(raiz, fecha) if fecha else []),
         ("tamanos", lambda: comprobar_tamanos(raiz)),
         ("feeds", lambda: comprobar_feeds(raiz)),
+        ("compartir", lambda: comprobar_compartir(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))
