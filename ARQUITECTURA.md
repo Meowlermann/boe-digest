@@ -48,7 +48,7 @@ del propio repositorio (§8). `main` es el código.
 
 ```
 Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workflows/daily.yml
-   07:40 · 14:40 · 21:40 (España)                         (cron propios solo de respaldo)
+   05:40 · 06:40 · 12:40 · 19:40 UTC                      (cron propios solo de respaldo)
                                                                    │
                                                  publicar.yml: datos.sh traer + python build.py
                                                                    │
@@ -92,6 +92,23 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
     ├─ incidencia «Salud de la edición» si hay hallazgos graves (§12)
     └─ aviso IndexNow a los buscadores
 ```
+
+**Horario (TC-025).** Los cron del Worker y los de respaldo de `daily.yml`
+están en UTC fijo y no siguen el cambio de hora; es intencionado y no se
+ajustan dos veces al año. En hora de España:
+
+| Worker (UTC) | Verano (UTC+2) | Invierno (UTC+1) |
+|---|---|---|
+| 05:40 | 07:40 | 06:40 |
+| 06:40 | 08:40 | 07:40 |
+| 12:40 | 14:40 | 13:40 |
+| 19:40 | 21:40 | 20:40 |
+
+Los cron de respaldo de `daily.yml` son 05:37, 08:23 y 13:07 UTC (07:37,
+10:23 y 15:07 en verano; 06:37, 09:23 y 14:07 en invierno). Nunca se dispara
+después de las 22:00 UTC: `build.py` fecha la edición con el día UTC, y un
+pase tardío (o un cron de GitHub retrasado) abriría la edición del día
+siguiente con el BOE de hoy. Por eso el pase de la noche no tiene respaldo.
 
 Cada pase rehace la edición del día desde cero. Por eso todo lo que publica
 «novedades» (preguntas orales, tramitación, contestaciones) recuerda en su
@@ -810,3 +827,22 @@ con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
   (la función común es `reproceso.entradas_de_sumario`).
 - JSON-LD: `CollectionPage` + `ItemList`. No se marca `JobPosting`: el BOE no da
   salario ni fecha límite estructurados y Google exige ambos para ese tipo.
+
+## Lighthouse CI (TC-008)
+
+`.github/workflows/lighthouse.yml` mide cada lunes (10:15 UTC), a mano o en PR
+que toquen su configuración, cinco páginas tipo de producción con
+`@lhci/cli` (`lighthouserc.json`, 3 pasadas, mediana). Rendimiento y
+accesibilidad < 90 son **aviso**, no fallo. El informe queda como artefacto
+(90 días) y el resumen en la página de la ejecución (`tools/lighthouse_resumen.py`).
+Sin servidor LHCI ni servicios de pago.
+
+Línea base (27-10-2026, mediana de 3, Lighthouse móvil, medida desde el box):
+
+| Página | Rend. | Acces. | Buenas prác. | SEO |
+|---|---|---|---|---|
+| / | 84 | 93 | 100 | 100 |
+| /ediciones/2026-10-26.html | 94 | 95 | 100 | 100 |
+| /normas/BOE-A-2026-22503.html | 94 | 95 | 100 | 100 |
+| /diputados/nestor-rego-candamil.html | 89 | 95 | 100 | 100 |
+| /buscar/ | 98 | 95 | 100 | 100 |

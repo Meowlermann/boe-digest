@@ -1,0 +1,54 @@
+name: Lighthouse
+
+# TC-008: mide Core Web Vitals y accesibilidad de 5 URL de producción con
+# Lighthouse CI (@lhci/cli, gratis; solo herramienta del runner, no es
+# dependencia del sitio ni de build.py). Configuración en lighthouserc.json.
+#
+# - Avisa (no bloquea) si Rendimiento < 90 o Accesibilidad < 90.
+# - Guarda el informe de cada ejecución como artefacto (90 días) y una tabla
+#   de puntuaciones (mediana de 3 pasadas) en el resumen.
+# - Mide producción, no el PR: las URL son fijas (una edición cerrada, una
+#   norma y una ficha que no cambian) para que las series sean comparables.
+# - Sin servicios de pago, sin cookies, sin datos personales: solo HTTP
+#   público contra https://terceracamara.es.
+#
+# Cron en UTC (lunes 10:15 UTC; 11:15 invierno / 12:15 verano en España),
+# lejos de los pases de la edición.
+
+on:
+  schedule:
+    - cron: "15 10 * * 1"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/lighthouse.yml"
+      - "lighthouserc.json"
+      - "tools/lighthouse_resumen.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lighthouse
+  cancel-in-progress: true
+
+jobs:
+  medir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Lighthouse CI (aviso, no bloqueo)
+        run: npx --yes @lhci/cli@0.14.x autorun --config=lighthouserc.json || echo "::warning::Lighthouse CI terminó con avisos o error; ver el informe."
+      - name: Resumen de puntuaciones
+        if: always()
+        run: python3 tools/lighthouse_resumen.py lhci-informe >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-${{ github.run_id }}
+          path: lhci-informe/
+          retention-days: 90
