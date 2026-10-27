@@ -16,6 +16,9 @@
 !sitemap.xml
 sitemap-*.xml
 !feed.xml
+# Alias de feed.xml (copias idénticas, TC-004)
+!rss.xml
+!index.xml
 !ediciones
 !normas
 temas

@@ -34,6 +34,7 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   j) compartir  og:image, twitter:card y JSON-LD por tipo de página.
   k) canonicales Un canonical por página, absoluto, https, sin www, igual a
                  su URL y presente en el sitemap; sin duplicados.
+  l) alias_feed  rss.xml e index.xml idénticos a feed.xml; enlace RSS en cada página.
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -537,6 +538,46 @@ def comprobar_canonicales(raiz: pathlib.Path, paginas: list[pathlib.Path] | None
 
 
 # ---------------------------------------------------------------------------
+# l) Alias del feed y <link rel="alternate"> de RSS en todas las páginas
+# ---------------------------------------------------------------------------
+
+FEED_ALIAS = ("rss.xml", "index.xml")   # = build.FEED_ALIAS
+RE_RSS_ALTERNATE = re.compile(r"<link\b(?=[^>]*\brel=\"alternate\")(?=[^>]*\btype=\"application/rss\+xml\")[^>]*>", re.I)
+
+
+def comprobar_alias_feed(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    """rss.xml e index.xml existen y son idénticos a feed.xml; cada página
+    completa anuncia el RSS con <link rel="alternate" type="application/rss+xml">."""
+    hallazgos: list[dict] = []
+    feed = raiz / "feed.xml"
+    if feed.exists():
+        original = feed.read_bytes()
+        for alias in FEED_ALIAS:
+            p = raiz / alias
+            if not p.exists():
+                hallazgos.append(hallazgo(GRAVE, "alias_feed", f"Falta el alias {alias}.", alias,
+                                          "build.renderizar_feed() debe escribir FEED_ALIAS."))
+            elif p.read_bytes() != original:
+                hallazgos.append(hallazgo(GRAVE, "alias_feed", f"{alias} no es idéntico a feed.xml.",
+                                          alias, "escribe el alias con el mismo texto que feed.xml."))
+    sin_rss = []
+    for p in (paginas if paginas is not None else paginas_html(raiz)):
+        try:
+            cab = p.read_text(encoding="utf-8")[:20000]
+        except Exception:                                     # noqa: BLE001
+            continue
+        if RE_DOCUMENTO.search(cab[:500]) and not RE_RSS_ALTERNATE.search(cab):
+            sin_rss.append(_rel(raiz, p))
+    for rel in sin_rss[:20]:
+        hallazgos.append(hallazgo(GRAVE, "alias_feed", "Falta <link rel=\"alternate\" "
+                                  "type=\"application/rss+xml\">.", rel, "añádelo a la plantilla."))
+    if len(sin_rss) > 20:
+        hallazgos.append(hallazgo(GRAVE, "alias_feed", f"Y {len(sin_rss) - 20} páginas más sin el "
+                                  "enlace al RSS.", "", "añádelo a la plantilla."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # d) Índice del buscador
 # ---------------------------------------------------------------------------
 
@@ -1002,6 +1043,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("feeds", lambda: comprobar_feeds(raiz)),
         ("compartir", lambda: comprobar_compartir(raiz)),
         ("canonicales", lambda: comprobar_canonicales(raiz)),
+        ("alias_feed", lambda: comprobar_alias_feed(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))

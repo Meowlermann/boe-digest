@@ -6,6 +6,7 @@ antes de que existiera el verificador (las fechas van en los comentarios de
 tools/verificar.py).
 """
 import json
+import re
 import os
 import pathlib
 import sys
@@ -23,6 +24,7 @@ PAGINA = """<!doctype html>
 <title>{titulo}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
+<link rel="alternate" type="application/rss+xml" title="La Tercera Cámara" href="/feed.xml">
 <meta property="og:image" content="https://terceracamara.es/assets/og-default.png">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{jsonld}</script>
@@ -38,6 +40,9 @@ INDEXNOW_KEY = "abc123"
 PUBLICABLES = """# lista de prueba
 !index.html
 sitemap*.xml
+feed.xml
+rss.xml
+index.xml
 !normas
 mapa
 !CNAME
@@ -66,6 +71,12 @@ class Sitio:
         self.escribir("build.py", BUILD)
         self.lista = self.escribir("tools/publicables.txt", PUBLICABLES)
         self.escribir("CNAME", "terceracamara.es\n")
+        rss = ('<?xml version="1.0"?><rss version="2.0"><channel><title>T</title>'
+               '<link>https://terceracamara.es/</link><description>D</description>'
+               '<item><title>E</title><link>https://terceracamara.es/normas/ley-1.html</link></item>'
+               '</channel></rss>')
+        for f in ("feed.xml", "rss.xml", "index.xml"):
+            self.escribir(f, rss)
         self.escribir("index.html", pagina(canonical="https://terceracamara.es/", jsonld=WEBSITE,
                                            cuerpo='<a href="/normas/">Normas</a>'))
         self.escribir("normas/index.html", pagina(cuerpo='<a href="/mapa/">Mapa</a> '
@@ -116,13 +127,13 @@ class TestCarpetas(unittest.TestCase):
         self.assertIn("«mapa/»", self.carpetas()[0]["detalle"])
 
     def test_ficheros_de_la_raiz(self):
-        # robots.txt y la clave de IndexNow están en la lista; feed.xml y
-        # googleXXX.html no: deben salir los dos.
-        for f in ("robots.txt", "abc123.txt", "feed.xml", "google0a1b.html", "requirements.txt",
+        # robots.txt, la clave de IndexNow y los feeds están en la lista;
+        # otro.xml y googleXXX.html no: deben salir los dos.
+        for f in ("robots.txt", "abc123.txt", "otro.xml", "google0a1b.html", "requirements.txt",
                   "template.html"):
             self.s.escribir(f, "x")
         self.assertEqual(sorted(h["detalle"].split("«")[1].split("»")[0] for h in self.carpetas()),
-                         ["feed.xml", "google0a1b.html"])
+                         ["google0a1b.html", "otro.xml"])
 
     def test_comodines(self):
         self.s.escribir("sitemap.xml", "<x/>")
@@ -254,6 +265,7 @@ class TestCanonicales(unittest.TestCase):
     URLS = ("https://terceracamara.es/", "https://terceracamara.es/normas/",
             "https://terceracamara.es/normas/ley-1.html", "https://terceracamara.es/mapa/")
 
+
     def setUp(self):
         self.s = Sitio()
 
@@ -302,6 +314,30 @@ class TestCanonicales(unittest.TestCase):
         self.sitemap(*self.URLS)
         self.s.escribir("normas/banner.html", "<p>Fragmento</p>")
         self.assertEqual(v.comprobar_canonicales(self.s.raiz), [])
+
+class TestAliasFeed(unittest.TestCase):
+    RSS = '<?xml version="1.0"?><rss version="2.0"><channel></channel></rss>'
+
+    def setUp(self):
+        self.s = Sitio()
+
+    def tearDown(self):
+        self.s.cerrar()
+
+    def test_correcto(self):
+        self.assertEqual(v.comprobar_alias_feed(self.s.raiz), [])
+
+    def test_alias_ausente_o_distinto(self):
+        (self.s.raiz / "rss.xml").unlink()
+        self.s.escribir("index.xml", (self.s.raiz / "feed.xml").read_text(encoding="utf-8") + " ")
+        detalles = [h["detalle"] for h in v.comprobar_alias_feed(self.s.raiz)]
+        self.assertEqual(len(detalles), 2, detalles)
+
+    def test_pagina_sin_enlace_rss(self):
+        self.s.escribir("mapa/index.html", re.sub(r'<link rel="alternate"[^>]*>', "",
+                                                  pagina(canonical="https://terceracamara.es/mapa/")))
+        h = v.comprobar_alias_feed(self.s.raiz)
+        self.assertEqual([x["fichero"] for x in h], ["mapa/index.html"])
 
 
 class TestIndice(unittest.TestCase):
@@ -480,14 +516,15 @@ class TestTamanos(unittest.TestCase):
             self.assertEqual([x["nivel"] for x in self.tamanos()], [v.GRAVE])
 
     def test_numero_de_ficheros_publicados(self):
-        # Cuenta lo de la lista (index.html, normas/ ×2, mapa/, CNAME), no state/ ni tests/.
+        # Cuenta lo de la lista (index.html, feed.xml y sus 2 alias, normas/ ×2, mapa/, CNAME),
+        # no state/ ni tests/.
         self.s.escribir("state/a.json", "{}")
         self.s.escribir("tests/b.py", "")
         with mock.patch.object(v, "LISTA_PUBLICABLES", self.s.lista), \
-                mock.patch.object(v, "FICHEROS_AVISO", 5), mock.patch.object(v, "FICHEROS_GRAVE", 6):
+                mock.patch.object(v, "FICHEROS_AVISO", 8), mock.patch.object(v, "FICHEROS_GRAVE", 9):
             h = self.tamanos()
         self.assertEqual([x["nivel"] for x in h], [v.AVISO])
-        self.assertIn("5 ficheros publicados", h[0]["detalle"])
+        self.assertIn("8 ficheros publicados", h[0]["detalle"])
 
 
 class TestCompartir(unittest.TestCase):

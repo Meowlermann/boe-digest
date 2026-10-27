@@ -83,7 +83,7 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
    ├─ renderizar_buscador / mapa
    ├─ paginas_fijas              /seguir/, /privacidad.html, /aviso-legal.html
    ├─ renderizar_semana()        /semana/ desde data/semanas/ (congeladas por semana.asegurar)
-   └─ sitemap.xml, feed.xml, indexnow.json
+   └─ sitemap.xml, feed.xml (+ alias rss.xml e index.xml), indexnow.json
             │
   publicar.yml (modo diario, §8):
    tools/verificar.py --modo diario → debug/salud.json (informa, no bloquea)
@@ -479,6 +479,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | i | `semana` (solo salud diaria): existe `/semana/AAAA-Snn.html` de la semana que terminó el domingo anterior | grave |
 | j | `compartir`: cada página completa lleva `og:image` absoluta y `twitter:card=summary_large_image`; la portada, un `WebSite` con `name` y `url`; las ediciones y las normas, un `NewsArticle` con `headline`, `datePublished`, `url`, `image` y `publisher`; las fichas de `diputados/` y `personas/` (no sus índices), un `Person` con `name` (`JSONLD_EXIGIDO`) | grave |
 | k | `canonicales`: cada página completa lleva exactamente un `<link rel="canonical">`, absoluto, `https://terceracamara.es` sin `www`, igual a su propia URL (`x/index.html` → `/x/`) y presente en el sitemap; no hay dos páginas con el mismo canonical y cada URL del sitemap tiene su página. El `www` → apex lo hace el proxy de Cloudflare con un 301 que conserva ruta y consulta (comprobado el 27-10-2026; no se puede comprobar en el CI) | grave |
+| l | `alias_feed`: `rss.xml` e `index.xml` existen y son copias idénticas de `feed.xml` (los escribe `build.renderizar_feed()` con `FEED_ALIAS`; GitHub Pages no hace 301); cada página completa lleva `<link rel="alternate" type="application/rss+xml">` | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -500,7 +501,7 @@ incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 (`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
-`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j) y (k) sobre el
+`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j), (k) y (l) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
 datos que escribió el pase diario y que ninguna PR puede corregir (la edición
