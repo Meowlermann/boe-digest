@@ -616,10 +616,14 @@ class TestEjecucion(unittest.TestCase):
         # Igual con (n) migas, probada en test_migas.py.
         self.sin_migas = mock.patch.object(v, "comprobar_migas", return_value=[])
         self.sin_migas.start()
+        # Y con (p) correcciones, probada en test_correcciones.py.
+        self.sin_corr = mock.patch.object(v, "comprobar_correcciones", return_value=[])
+        self.sin_corr.start()
 
     def tearDown(self):
         self.sin_semana.stop()
         self.sin_migas.stop()
+        self.sin_corr.stop()
         self.s.cerrar()
 
     def test_ci_verde(self):

@@ -761,6 +761,55 @@ def comprobar_migas(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = Non
 
 
 # ---------------------------------------------------------------------------
+# p) Correcciones: cada pieza corregida enlaza a su corrección (TC-017)
+# ---------------------------------------------------------------------------
+#
+# El registro es editorial/correcciones.json (a mano, con PR). Si tiene
+# entradas, /correcciones/index.html tiene que existir con el ancla de cada
+# una, y la página corregida tiene que enlazar a /correcciones/#c-<id>.
+
+REGISTRO_CORRECCIONES = "editorial/correcciones.json"
+
+
+def comprobar_correcciones(raiz: pathlib.Path, registro: pathlib.Path | None = None) -> list[dict]:
+    registro = registro or (raiz / REGISTRO_CORRECCIONES)
+    if not registro.exists():
+        registro = pathlib.Path(__file__).resolve().parent.parent / REGISTRO_CORRECCIONES
+    if not registro.exists():
+        return []
+    try:
+        entradas = json.loads(registro.read_text(encoding="utf-8")).get("correcciones", [])
+    except Exception as exc:                                  # noqa: BLE001
+        return [hallazgo(GRAVE, "correcciones", f"Registro ilegible: {exc}.", REGISTRO_CORRECCIONES,
+                         "corrige el JSON del registro.")]
+    hallazgos: list[dict] = []
+    pagina = raiz / "correcciones" / "index.html"
+    if not pagina.is_file():
+        return [hallazgo(GRAVE, "correcciones", "Falta /correcciones/index.html.", "correcciones/",
+                         "revisa registro_correcciones.generar_pagina() en build.py.")]
+    texto_pag = pagina.read_text(encoding="utf-8")
+    cache: dict = {}
+    for e in entradas:
+        cid, url = str(e.get("id", "")), str(e.get("url", ""))
+        if f'id="c-{cid}"' not in texto_pag:
+            hallazgos.append(hallazgo(GRAVE, "correcciones", f"/correcciones/ no tiene la entrada «{cid}».",
+                                      "correcciones/index.html", "regenera el sitio; revisa el registro."))
+        ruta = re.split(r"[?#]", url, maxsplit=1)[0]
+        rel = ruta.lstrip("/")
+        cand = [rel + "index.html"] if (rel == "" or rel.endswith("/")) else [rel, rel + ".html", rel + "/index.html"]
+        fichero = next((raiz / c for c in cand if (raiz / c).is_file()), None)
+        if fichero is None or not destino_existe(raiz, ruta, cache):
+            hallazgos.append(hallazgo(GRAVE, "correcciones", f"La página corregida «{url}» no existe.",
+                                      REGISTRO_CORRECCIONES, "corrige la url de la entrada."))
+            continue
+        if f'href="/correcciones/#c-{cid}"' not in fichero.read_text(encoding="utf-8"):
+            hallazgos.append(hallazgo(GRAVE, "correcciones", f"«{url}» no enlaza a su corrección «{cid}».",
+                                      _rel(raiz, fichero), "la página debe pasar por "
+                                      "build._replace_placeholders con su CANONICAL."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # d) Índice del buscador
 # ---------------------------------------------------------------------------
 
@@ -1229,6 +1278,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("alias_feed", lambda: comprobar_alias_feed(raiz)),
         ("boletin", lambda: comprobar_boletin(raiz)),
         ("migas", lambda: comprobar_migas(raiz)),
+        ("correcciones", lambda: comprobar_correcciones(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))

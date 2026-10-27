@@ -483,6 +483,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | k | `canonicales`: cada página completa lleva exactamente un `<link rel="canonical">`, absoluto, `https://terceracamara.es` sin `www`, igual a su propia URL (`x/index.html` → `/x/`) y presente en el sitemap; no hay dos páginas con el mismo canonical y cada URL del sitemap tiene su página. El `www` → apex lo hace el proxy de Cloudflare con un 301 que conserva ruta y consulta (comprobado el 27-10-2026; no se puede comprobar en el CI) | grave |
 | l | `alias_feed`: `rss.xml` e `index.xml` existen y son copias idénticas de `feed.xml` (los escribe `build.renderizar_feed()` con `FEED_ALIAS`; GitHub Pages no hace 301); cada página completa lleva `<link rel="alternate" type="application/rss+xml">` | grave |
 | m | `boletin`: ninguna página (texto, `<title>` ni meta description) menciona un boletín salvo como nombre de un diario oficial (Boletín Oficial…, Boletín de las Cortes, boletines oficiales) o el aviso neutro «por ahora no hay boletín por correo»; no mira el texto de la fuente (`articlebody`, `<blockquote>`, `<q>`, «…») | grave |
+| p | `correcciones` (TC-017): si `editorial/correcciones.json` tiene entradas, `/correcciones/` tiene el ancla `c-<id>` de cada una, la página corregida existe y enlaza a `/correcciones/#c-<id>` | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -580,6 +581,21 @@ se comportan como siempre.
 
 Si una comprobación da un falso positivo, se corrige la comprobación en una
 PR con un test que lo cubra; no se silencia ni se rebaja sin justificarlo.
+
+
+### Correcciones (TC-017)
+
+`/correcciones/` (lo pinta `registro_correcciones.py`, llamado desde
+`build.py` tras las páginas fijas) lista las correcciones del registro
+`editorial/correcciones.json`, que se edita **a mano con una PR** (es texto
+editorial, no un dato del pase). Cada entrada lleva `id`, `fecha`, `url` de la
+página corregida, `pieza`, `dice`, `debe_decir` y `motivo`; no se borra
+ninguna. `build._replace_placeholders` añade bajo el `<h1 class="display">` de
+la página corregida un aviso que enlaza a `/correcciones/#c-<id>`. Contacto
+único: contacto@terceracamara.es; sin nombre de persona. El pie de todas las
+plantillas enlaza a la página. Pendiente de decisión del mantenedor: si la
+política editorial debe nombrar a un responsable (hoy no lo hace, como el
+aviso legal, TC-002).
 
 ## 13. Audiencia: analítica, canales, páginas legales
 
