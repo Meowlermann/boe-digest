@@ -571,6 +571,19 @@ de la propia página (titular = su `<title>`), además de las normas
 (`Legislation`) y las piezas de Cortes. La comprobación (j) de
 `verificar.py` exige todo esto.
 
+### Migas (TC-005)
+
+Las fichas llevan la miga visible `<nav class="miga">` (clave `MIGA` del
+fragmento). `build._replace_placeholders` añade a toda página con miga y sin
+BreadcrumbList propio un JSON-LD `BreadcrumbList` derivado de esa miga
+(`build.jsonld_migas`: mismos nombres y orden, enlaces resueltos contra la
+canónica, la página actual al final), así que lo que ve Google coincide con lo
+que ve el lector. Las páginas que ya declaraban su BreadcrumbList (normas,
+materias, provincias, diputados, semana, buscador) lo conservan.
+`verificar.py` (n) exige miga y BreadcrumbList en las carpetas de
+`CARPETAS_CON_MIGA`, con los mismos pasos y la canónica al final. Las
+ediciones no llevan miga: su navegación es la tira de días.
+
 ### Analítica sin cookies
 
 Cloudflare Web Analytics, con la baliza en todas las plantillas

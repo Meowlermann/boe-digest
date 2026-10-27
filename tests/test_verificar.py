@@ -613,9 +613,13 @@ class TestEjecucion(unittest.TestCase):
         # (test_semana.py); aquí se aísla para contar solo los graves de cada caso.
         self.sin_semana = mock.patch.object(v, "comprobar_semana", return_value=[])
         self.sin_semana.start()
+        # Igual con (n) migas, probada en test_migas.py.
+        self.sin_migas = mock.patch.object(v, "comprobar_migas", return_value=[])
+        self.sin_migas.start()
 
     def tearDown(self):
         self.sin_semana.stop()
+        self.sin_migas.stop()
         self.s.cerrar()
 
     def test_ci_verde(self):
