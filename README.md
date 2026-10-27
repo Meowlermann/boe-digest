@@ -12,7 +12,7 @@ senadores. Se actualiza sola: nadie tiene que tocar nada cada día.
 
 Todo ocurre dentro de GitHub, sin servidores:
 
-1. Tres veces al día (07:40, 14:40 y 21:40 en España), un Worker de Cloudflare
+1. Cuatro veces al día (07:40, 08:40, 14:40 y 21:40 en verano; 06:40, 07:40, 13:40 y 20:40 en invierno: cron en UTC fijo, ver ARQUITECTURA.md §3), un Worker de Cloudflare
    (`disparador/`) lanza el workflow `.github/workflows/daily.yml`, que ejecuta
    `build.py`. El workflow conserva sus propios cron como respaldo. Cada pase rehace
    la edición del día: por la mañana entra el BOE; a mediodía y por la noche, lo que
