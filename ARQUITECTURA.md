@@ -83,7 +83,7 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
    ├─ renderizar_buscador / mapa
    ├─ paginas_fijas              /seguir/, /privacidad.html, /aviso-legal.html
    ├─ renderizar_semana()        /semana/ desde data/semanas/ (congeladas por semana.asegurar)
-   └─ sitemap.xml, feed.xml, indexnow.json
+   └─ sitemap.xml, feed.xml (+ alias rss.xml e index.xml), indexnow.json
             │
   publicar.yml (modo diario, §8):
    tools/verificar.py --modo diario → debug/salud.json (informa, no bloquea)
@@ -478,6 +478,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | h | `feeds`: cada `.xml` publicado (salvo los sitemaps) es Atom 1.0 o RSS 2.0 bien formado, con los campos obligatorios, fechas RFC 3339 (Atom) o RFC 822 (RSS), sin `id`/`guid` repetidos y con 50 entradas como máximo | grave |
 | i | `semana` (solo salud diaria): existe `/semana/AAAA-Snn.html` de la semana que terminó el domingo anterior | grave |
 | j | `compartir`: cada página completa lleva `og:image` absoluta y `twitter:card=summary_large_image`; la portada, un `WebSite` con `name` y `url`; las ediciones y las normas, un `NewsArticle` con `headline`, `datePublished`, `url`, `image` y `publisher`; las fichas de `diputados/` y `personas/` (no sus índices), un `Person` con `name` (`JSONLD_EXIGIDO`) | grave |
+| l | `alias_feed`: `rss.xml` e `index.xml` existen y son copias idénticas de `feed.xml` (los escribe `build.renderizar_feed()` con `FEED_ALIAS`; GitHub Pages no hace 301); cada página completa lleva `<link rel="alternate" type="application/rss+xml">` | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -499,7 +500,7 @@ incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 (`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
-`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g) y (j) sobre el
+`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j) y (l) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
 datos que escribió el pase diario y que ninguna PR puede corregir (la edición

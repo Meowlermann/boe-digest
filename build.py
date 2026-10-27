@@ -70,6 +70,7 @@ PROVINCIAS_DIR = ROOT / "provincias"
 SEMANA_DIR = ROOT / "semana"
 TEMPLATE_NORMA = ROOT / "template_norma.html"
 FEED_FILE = ROOT / "feed.xml"
+FEED_ALIAS = ("rss.xml", "index.xml")      # copias idénticas de feed.xml
 
 SITE_URL = "https://terceracamara.es/"
 # Imagen por defecto para compartir (og:image, twitter:image y `image` del
@@ -6560,7 +6561,11 @@ def renderizar_feed(dias: list[dict]) -> None:
         f'  <atom:link href="{SITE_URL}feed.xml" rel="self" type="application/rss+xml"/>\n'
         + "\n".join(items) + "\n</channel></rss>\n")
     escribir_si_cambia(FEED_FILE, canal)
-    log(f"feed.xml generado con {len(items)} ediciones")
+    # Alias que prueban los lectores RSS (daban 404 el 26-10-2026). GitHub
+    # Pages no hace 301, así que son copias idénticas de feed.xml (TC-004).
+    for alias in FEED_ALIAS:
+        escribir_si_cambia(ROOT / alias, canal)
+    log(f"feed.xml (y {', '.join(FEED_ALIAS)}) generado con {len(items)} ediciones")
 
 
 def votaciones_dia_congreso(d: dict) -> str:
