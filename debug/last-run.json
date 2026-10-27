@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-10-27T14:35:48.511077+00:00",
+  "inicio": "2026-10-27T18:38:54.086753+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261027",
@@ -189,11 +189,6 @@
       "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040865",
       "status": 200,
       "bytes": 93499
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040750",
-      "status": 200,
-      "bytes": 93535
     },
     {
       "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040746",
@@ -1526,404 +1521,409 @@
       "bytes": 94046
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040769",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F044678",
       "status": 200,
-      "bytes": 97035
+      "bytes": 93853
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128949_n_000.pdf",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040733",
       "status": 200,
-      "bytes": 329690
+      "bytes": 96570
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040770",
+      "url": "https://www.congreso.es/l15p/e12/e_0128657_n_000.pdf",
       "status": 200,
-      "bytes": 96921
+      "bytes": 181427
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128950_n_000.pdf",
-      "status": 200,
-      "bytes": 545151
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040767",
-      "status": 200,
-      "bytes": 97063
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128947_n_000.pdf",
-      "status": 200,
-      "bytes": 545301
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040768",
-      "status": 200,
-      "bytes": 97125
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128948_n_000.pdf",
-      "status": 200,
-      "bytes": 246555
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040765",
-      "status": 200,
-      "bytes": 97209
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128945_n_000.pdf",
-      "status": 200,
-      "bytes": 545345
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040766",
-      "status": 200,
-      "bytes": 96915
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128946_n_000.pdf",
-      "status": 200,
-      "bytes": 179778
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040763",
-      "status": 200,
-      "bytes": 96919
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128943_n_000.pdf",
-      "status": 200,
-      "bytes": 545214
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040764",
-      "status": 200,
-      "bytes": 97129
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128944_n_000.pdf",
-      "status": 200,
-      "bytes": 545114
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040762",
-      "status": 200,
-      "bytes": 97001
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128942_n_000.pdf",
-      "status": 200,
-      "bytes": 545277
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040760",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040711",
       "status": 200,
       "bytes": 96871
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128940_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e12/e_0128635_n_000.pdf",
       "status": 200,
-      "bytes": 545247
+      "bytes": 180938
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040761",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040709",
       "status": 200,
-      "bytes": 96963
+      "bytes": 96893
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128941_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e12/e_0128633_n_000.pdf",
       "status": 200,
-      "bytes": 545268
+      "bytes": 180971
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040780",
-      "status": 200,
-      "bytes": 97013
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128880_n_000.pdf",
-      "status": 200,
-      "bytes": 571586
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040758",
-      "status": 200,
-      "bytes": 96937
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128938_n_000.pdf",
-      "status": 200,
-      "bytes": 545175
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040759",
-      "status": 200,
-      "bytes": 96863
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128939_n_000.pdf",
-      "status": 200,
-      "bytes": 545248
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040778",
-      "status": 200,
-      "bytes": 97105
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128878_n_000.pdf",
-      "status": 200,
-      "bytes": 571657
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040756",
-      "status": 200,
-      "bytes": 95972
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128466_n_000.pdf",
-      "status": 200,
-      "bytes": 233015
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040779",
-      "status": 200,
-      "bytes": 97075
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128879_n_000.pdf",
-      "status": 200,
-      "bytes": 571703
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040757",
-      "status": 200,
-      "bytes": 96120
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128467_n_000.pdf",
-      "status": 200,
-      "bytes": 232927
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040776",
-      "status": 200,
-      "bytes": 97021
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128876_n_000.pdf",
-      "status": 200,
-      "bytes": 571759
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040777",
-      "status": 200,
-      "bytes": 97047
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128877_n_000.pdf",
-      "status": 200,
-      "bytes": 571672
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040774",
-      "status": 200,
-      "bytes": 97097
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128874_n_000.pdf",
-      "status": 200,
-      "bytes": 571591
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040775",
-      "status": 200,
-      "bytes": 96871
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128875_n_000.pdf",
-      "status": 200,
-      "bytes": 571763
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040772",
-      "status": 200,
-      "bytes": 97063
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128952_n_000.pdf",
-      "status": 200,
-      "bytes": 545166
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040773",
-      "status": 200,
-      "bytes": 97049
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128953_n_000.pdf",
-      "status": 200,
-      "bytes": 181238
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040731",
-      "status": 200,
-      "bytes": 96890
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128655_n_000.pdf",
-      "status": 200,
-      "bytes": 181478
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040749",
-      "status": 200,
-      "bytes": 95581
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128852_n_000.pdf",
-      "status": 200,
-      "bytes": 351971
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040747",
-      "status": 200,
-      "bytes": 96126
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128465_n_000.pdf",
-      "status": 200,
-      "bytes": 179692
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040748",
-      "status": 200,
-      "bytes": 97261
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128405_n_000.pdf",
-      "status": 200,
-      "bytes": 245380
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040743",
-      "status": 200,
-      "bytes": 96855
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128667_n_000.pdf",
-      "status": 200,
-      "bytes": 180963
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040744",
-      "status": 200,
-      "bytes": 100987
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128668_n_000.pdf",
-      "status": 200,
-      "bytes": 181832
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040742",
-      "status": 200,
-      "bytes": 96917
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128666_n_000.pdf",
-      "status": 200,
-      "bytes": 181040
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040740",
-      "status": 200,
-      "bytes": 96865
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128664_n_000.pdf",
-      "status": 200,
-      "bytes": 352207
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040741",
-      "status": 200,
-      "bytes": 96553
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128665_n_000.pdf",
-      "status": 200,
-      "bytes": 180895
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040738",
-      "status": 200,
-      "bytes": 96883
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128662_n_000.pdf",
-      "status": 200,
-      "bytes": 180904
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040739",
-      "status": 200,
-      "bytes": 97237
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128663_n_000.pdf",
-      "status": 200,
-      "bytes": 181114
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040736",
-      "status": 200,
-      "bytes": 96873
-    },
-    {
-      "url": "https://www.congreso.es/l15p/e12/e_0128660_n_000.pdf",
-      "status": 200,
-      "bytes": 180915
-    },
-    {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040737",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040710",
       "status": 200,
       "bytes": 96869
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128661_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e12/e_0128634_n_000.pdf",
       "status": 200,
-      "bytes": 180980
+      "bytes": 180943
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040734",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040729",
       "status": 200,
-      "bytes": 97183
+      "bytes": 98076
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128658_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e12/e_0128653_n_000.pdf",
       "status": 200,
-      "bytes": 180980
+      "bytes": 181611
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040735",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040707",
       "status": 200,
-      "bytes": 96870
+      "bytes": 96259
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128659_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e12/e_0128631_n_000.pdf",
       "status": 200,
-      "bytes": 180986
+      "bytes": 352648
     },
     {
-      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040732",
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040730",
       "status": 200,
-      "bytes": 96857
+      "bytes": 96869
     },
     {
-      "url": "https://www.congreso.es/l15p/e12/e_0128656_n_000.pdf",
+      "url": "https://www.congreso.es/l15p/e12/e_0128654_n_000.pdf",
       "status": 200,
-      "bytes": 181508
+      "bytes": 352827
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040708",
+      "status": 200,
+      "bytes": 96891
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128632_n_000.pdf",
+      "status": 200,
+      "bytes": 181168
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040727",
+      "status": 200,
+      "bytes": 97797
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128651_n_000.pdf",
+      "status": 200,
+      "bytes": 181013
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040728",
+      "status": 200,
+      "bytes": 96861
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128652_n_000.pdf",
+      "status": 200,
+      "bytes": 352755
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040706",
+      "status": 200,
+      "bytes": 96563
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128630_n_000.pdf",
+      "status": 200,
+      "bytes": 352797
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040725",
+      "status": 200,
+      "bytes": 96255
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128649_n_000.pdf",
+      "status": 200,
+      "bytes": 180830
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040726",
+      "status": 200,
+      "bytes": 96255
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128650_n_000.pdf",
+      "status": 200,
+      "bytes": 180795
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040723",
+      "status": 200,
+      "bytes": 97775
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128647_n_000.pdf",
+      "status": 200,
+      "bytes": 181096
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040724",
+      "status": 200,
+      "bytes": 96575
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128648_n_000.pdf",
+      "status": 200,
+      "bytes": 180945
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040722",
+      "status": 200,
+      "bytes": 96847
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128646_n_000.pdf",
+      "status": 200,
+      "bytes": 352346
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040720",
+      "status": 200,
+      "bytes": 96856
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128644_n_000.pdf",
+      "status": 200,
+      "bytes": 180976
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040721",
+      "status": 200,
+      "bytes": 97182
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128645_n_000.pdf",
+      "status": 200,
+      "bytes": 523245
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040718",
+      "status": 200,
+      "bytes": 97217
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128642_n_000.pdf",
+      "status": 200,
+      "bytes": 181041
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040719",
+      "status": 200,
+      "bytes": 97209
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128643_n_000.pdf",
+      "status": 200,
+      "bytes": 181118
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040716",
+      "status": 200,
+      "bytes": 96521
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128640_n_000.pdf",
+      "status": 200,
+      "bytes": 352198
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040717",
+      "status": 200,
+      "bytes": 97157
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128641_n_000.pdf",
+      "status": 200,
+      "bytes": 180984
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040714",
+      "status": 200,
+      "bytes": 96566
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128638_n_000.pdf",
+      "status": 200,
+      "bytes": 180905
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040715",
+      "status": 200,
+      "bytes": 96561
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128639_n_000.pdf",
+      "status": 200,
+      "bytes": 352211
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040712",
+      "status": 200,
+      "bytes": 97169
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128636_n_000.pdf",
+      "status": 200,
+      "bytes": 352322
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040713",
+      "status": 200,
+      "bytes": 97503
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128637_n_000.pdf",
+      "status": 200,
+      "bytes": 352507
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040691",
+      "status": 200,
+      "bytes": 99575
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128936_n_000.pdf",
+      "status": 200,
+      "bytes": 367705
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040689",
+      "status": 200,
+      "bytes": 99521
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128934_n_000.pdf",
+      "status": 200,
+      "bytes": 367737
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040690",
+      "status": 200,
+      "bytes": 99487
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128935_n_000.pdf",
+      "status": 200,
+      "bytes": 367701
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040688",
+      "status": 200,
+      "bytes": 99491
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128933_n_000.pdf",
+      "status": 200,
+      "bytes": 367735
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040705",
+      "status": 200,
+      "bytes": 96569
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128629_n_000.pdf",
+      "status": 200,
+      "bytes": 181463
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040683",
+      "status": 200,
+      "bytes": 96435
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128564_n_000.pdf",
+      "status": 200,
+      "bytes": 352109
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040684",
+      "status": 200,
+      "bytes": 96283
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128565_n_000.pdf",
+      "status": 200,
+      "bytes": 362052
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040703",
+      "status": 200,
+      "bytes": 97191
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128627_n_000.pdf",
+      "status": 200,
+      "bytes": 352840
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040704",
+      "status": 200,
+      "bytes": 96866
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128628_n_000.pdf",
+      "status": 200,
+      "bytes": 352729
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040702",
+      "status": 200,
+      "bytes": 96861
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128626_n_000.pdf",
+      "status": 200,
+      "bytes": 181468
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040700",
+      "status": 200,
+      "bytes": 97195
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128624_n_000.pdf",
+      "status": 200,
+      "bytes": 181497
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040701",
+      "status": 200,
+      "bytes": 97499
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128625_n_000.pdf",
+      "status": 200,
+      "bytes": 352876
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040698",
+      "status": 200,
+      "bytes": 96859
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128622_n_000.pdf",
+      "status": 200,
+      "bytes": 352793
+    },
+    {
+      "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040699",
+      "status": 200,
+      "bytes": 97199
+    },
+    {
+      "url": "https://www.congreso.es/l15p/e12/e_0128623_n_000.pdf",
+      "status": 200,
+      "bytes": 181737
     },
     {
       "url": "https://www.congreso.es/es/opendata/iniciativas",
@@ -2049,5 +2049,5 @@
     "ACUERDO CON GOETHE-INSTITUT MADRID — menos de cinco palabras"
   ],
   "semanas": [],
-  "fin": "2026-10-27T14:41:30.606121+00:00"
+  "fin": "2026-10-27T18:45:42.538236+00:00"
 }
