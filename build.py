@@ -43,6 +43,8 @@ from zoneinfo import ZoneInfo
 import requests
 from bs4 import BeautifulSoup
 
+import robots_boe
+
 ROOT = pathlib.Path(__file__).parent
 DATA_DIR = ROOT / "data"
 CURATED_DIR = ROOT / "curated"
@@ -161,6 +163,10 @@ def post(url: str, data: dict, tries: int = 2) -> requests.Response | None:
     de preguntas escritas solo se sirve por POST). Mismo trato que get()."""
     _comprobar_red(url)
     host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
+    if host == "www.boe.es" and not _boe_permitido(url):
+        log(f"  {url} está excluida por el robots.txt del BOE ({robots_boe.origen}); no se pide")
+        DIAG["peticiones"].append({"url": url, "status": "robots.txt"})
+        return None
     if host in _BLOQUEADOS:
         return None
     s = sesion_para(url)
@@ -208,6 +214,33 @@ def sesion_para(url: str) -> requests.Session:
 _BLOQUEADOS: set[str] = set()
 
 
+# Respeto al robots.txt del BOE (TC-023): toda petición a www.boe.es pasa por
+# aquí. Se descarga el robots.txt vivo una vez por ejecución; si no responde,
+# vale el extracto commiteado (tools/robots_boe.txt). Entre dos peticiones al
+# BOE hay al menos PAUSA_MINIMA_BOE segundos.
+PAUSA_MINIMA_BOE = 0.3
+_ultima_boe = 0.0
+
+
+def _boe_permitido(url: str) -> bool:
+    global _ultima_boe
+    if robots_boe._reglas is None:
+        try:
+            r = sesion_para(robots_boe.URL_ROBOTS).get(robots_boe.URL_ROBOTS, timeout=REQUEST_TIMEOUT)
+            r.raise_for_status()
+            robots_boe.cargar(r.text, "robots.txt vivo")
+        except Exception as exc:                              # noqa: BLE001
+            log(f"  robots.txt del BOE no disponible ({exc}); uso el extracto commiteado")
+            robots_boe.cargar()
+    if not robots_boe.permitido(url):
+        return False
+    espera = PAUSA_MINIMA_BOE - (time.monotonic() - _ultima_boe)
+    if espera > 0:
+        time.sleep(espera)
+    _ultima_boe = time.monotonic()
+    return True
+
+
 def get(url: str, tries: int = 3, referer: str | None = None,
         headers: dict | None = None) -> requests.Response | None:
     """GET tolerante. Devuelve None en vez de reventar, y anota el diagnóstico.
@@ -215,6 +248,10 @@ def get(url: str, tries: int = 3, referer: str | None = None,
     En modo --sin-red lanza SinRed (ver activar_sin_red)."""
     _comprobar_red(url)
     host = re.sub(r"^https?://([^/]+).*$", r"\1", url)
+    if host == "www.boe.es" and not _boe_permitido(url):
+        log(f"  {url} está excluida por el robots.txt del BOE ({robots_boe.origen}); no se pide")
+        DIAG["peticiones"].append({"url": url, "status": "robots.txt"})
+        return None
     if host in _BLOQUEADOS:
         # Ya nos ha denegado el acceso en esta ejecución: no insistimos.
         log(f"  {host} ya denegó el acceso; no se reintenta")
@@ -281,93 +318,117 @@ def clave_dedup(titulo: str) -> str:
     return re.sub(r"[^a-z0-9]", "", titulo.lower())[:120]
 
 
+# Sumario del BOE: API de datos abiertos (TC-023). Antes se leía el HTML de
+# /boe/dias/AAAA/MM/DD/index.php, que el robots.txt del BOE excluye para
+# algunos días (p. ej. el 2-3-2026). La API devuelve lo mismo en JSON.
+API_SUMARIO_BOE = "https://www.boe.es/datosabiertos/api/boe/sumario/{aaaammdd}"
+# Enlace para el lector a la portada del día en boe.es (no se descarga).
+PORTADA_BOE = "https://www.boe.es/boe/dias/{a}/{m:02d}/{d:02d}/index.php"
+# Tipos de disposición que entran en la edición (el resto, anuncios sobre
+# todo, se queda fuera). Igual que cuando se leía el HTML.
+RE_TIPO_DISPOSICION = re.compile(r"^(Orden|Resolución|Real Decreto|Ley|Ley Orgánica|Acuerdo|"
+                                 r"Corrección|Extracto|Circular|Instrucción|Decreto)")
+
+
+class ErrorApiBoe(Exception):
+    """La API del BOE respondió algo que no es un sumario legible."""
+
+
+def _lista(x):
+    return x if isinstance(x, list) else ([x] if x else [])
+
+
+def _hijos(nodo: dict, clave: str) -> list:
+    """Los hijos `clave` de un nodo del sumario. La API a veces los mete en un
+    objeto «texto» (contenido mixto pasado a JSON): el 2-3-2026, la Orden
+    APA/150/2026 colgaba de departamento.texto.epigrafe y no de
+    departamento.epigrafe."""
+    texto = nodo.get("texto")
+    return _lista(nodo.get(clave)) + (_lista(texto.get(clave)) if isinstance(texto, dict) else [])
+
+
+def entradas_sumario_api(datos: dict) -> tuple[list[dict], list[str]]:
+    """Entradas de un sumario de la API (data.sumario) en el formato de la
+    edición, y los números de diario. Mismo filtro y deduplicado que antes:
+    solo tipos de RE_TIPO_DISPOSICION, título de 40 caracteres o más, una vez
+    por título."""
+    entradas: list[dict] = []
+    vistos: set[str] = set()
+    numeros: list[str] = []
+    for diario in _lista(datos.get("diario")):
+        numeros.append(str(diario.get("numero", "")))
+        for sec in _hijos(diario, "seccion"):
+            seccion = " ".join(str(sec.get("nombre", "")).split())
+            for dep in _hijos(sec, "departamento"):
+                departamento = " ".join(str(dep.get("nombre", "")).split())
+                grupos = [(" ".join(str(ep.get("nombre", "")).split()), _hijos(ep, "item"))
+                          for ep in _hijos(dep, "epigrafe")]
+                grupos.append(("", _hijos(dep, "item")))
+                for epigrafe, items in grupos:
+                    for it in items:
+                        txt = " ".join(str(it.get("titulo", "")).split())
+                        if not RE_TIPO_DISPOSICION.match(txt) or len(txt) < 40:
+                            continue
+                        titulo, ident = limpiar_titulo(txt)
+                        ident = it.get("identificador") or ident
+                        k = clave_dedup(titulo)
+                        if not k or k in vistos:
+                            continue
+                        vistos.add(k)
+                        pdf = it.get("url_pdf") or {}
+                        enlace = (pdf.get("texto") if isinstance(pdf, dict) else pdf) or it.get("url_html") or ""
+                        if ident and not enlace:
+                            enlace = f"https://www.boe.es/diario_boe/txt.php?id={ident}"
+                        entradas.append({"seccion": seccion, "dept": departamento, "epigrafe": epigrafe,
+                                         "titulo": titulo, "ident": ident, "url": enlace})
+    return entradas, numeros
+
+
+def sumario_boe_api(d: dt.date) -> dict | None:
+    """data.sumario de la API para el día `d`; None si ese día no hay BOE (404).
+    Lanza ErrorApiBoe si la API falla de otra forma tras los reintentos."""
+    url = API_SUMARIO_BOE.format(aaaammdd=d.strftime("%Y%m%d"))
+    log(f"BOE: probando {url}")
+    r = get(url, tries=3, headers={"Accept": "application/json"})
+    if not r:
+        estado = (DIAG["peticiones"][-1].get("status") if DIAG.get("peticiones") else None)
+        if estado in (404, 410):
+            log(f"BOE: no hay sumario del {d.isoformat()} (404)")
+            return None
+        raise ErrorApiBoe(f"la API de datos abiertos del BOE no respondió para el {d.isoformat()} "
+                          f"(último estado: {estado}) en {url}")
+    try:
+        return r.json()["data"]["sumario"]
+    except Exception as exc:                                  # noqa: BLE001
+        raise ErrorApiBoe(f"la API del BOE no devolvió un sumario JSON legible en {url}: {exc}") from exc
+
+
 def fetch_boe(fecha: dt.date, retroceder: bool = True) -> dict | None:
     """Sumario del BOE. Prueba la fecha dada y hasta 3 días hacia atrás.
 
     Con retroceder=False solo la fecha pedida: el archivo no puede rellenar
-    un domingo con el BOE del sábado, que ya tiene su propia edición."""
+    un domingo con el BOE del sábado, que ya tiene su propia edición. Un día
+    sin BOE (404) hace retroceder; un fallo de la API corta aquí y se anota
+    en el log (no se publica el BOE de otro día como si fuera el de hoy)."""
     for delta in range(0, 4 if retroceder else 1):
         d = fecha - dt.timedelta(days=delta)
-        url = f"https://www.boe.es/boe/dias/{d.year}/{d.month:02d}/{d.day:02d}/index.php"
-        log(f"BOE: probando {url}")
-        r = get(url, tries=2)
-        if not r:
+        try:
+            datos = sumario_boe_api(d)
+        except ErrorApiBoe as exc:
+            log(f"BOE: ERROR: {exc}")
+            DIAG["boe_error"] = str(exc)
+            return None
+        if datos is None:
             continue
-
-        soup = BeautifulSoup(r.text, "html.parser")
-        soups = [soup]
-        if not retroceder:
-            # Un día puede tener más de un número (ordinario y extraordinario).
-            # index.php enseña el último y enlaza los demás como index.php?d=N;
-            # el archivo los junta todos, el ordinario primero.
-            otros = sorted({a["href"] for a in soup.find_all("a", href=True)
-                            if re.fullmatch(r"index\.php\?d=\d+", a["href"])})
-            for href in otros:
-                r2 = get(url.rsplit("/", 1)[0] + "/" + href, tries=2)
-                if r2:
-                    soups.insert(0, BeautifulSoup(r2.text, "html.parser"))
-        entradas: list[dict] = []
-        vistos: set[str] = set()
-        seccion = departamento = epigrafe = ""
-
-        for el in (e for sp in soups for e in sp.find_all(["h2", "h3", "h4", "h5", "li"])):
-            txt = " ".join(el.get_text(" ", strip=True).split())
-            if not txt:
-                continue
-
-            if el.name in ("h2", "h3"):
-                if re.match(r"^[IVX]+\.", txt):
-                    seccion = txt
-                    departamento = epigrafe = ""
-                continue
-            if el.name == "h4":
-                departamento = txt
-                epigrafe = ""
-                continue
-            if el.name == "h5":
-                epigrafe = txt
-                continue
-
-            # <li> con una disposición: debe empezar por un tipo de norma conocido
-            if not re.match(r"^(Orden|Resolución|Real Decreto|Ley|Ley Orgánica|Acuerdo|"
-                            r"Corrección|Extracto|Circular|Instrucción|Decreto)", txt):
-                continue
-            if len(txt) < 40:
-                continue
-
-            titulo, ident = limpiar_titulo(txt)
-            k = clave_dedup(titulo)
-            if not k or k in vistos:
-                continue
-            vistos.add(k)
-
-            enlace = ""
-            a = el.find("a", href=True)
-            if a:
-                href = a["href"]
-                enlace = href if href.startswith("http") else f"https://www.boe.es{href}"
-            if ident and not enlace:
-                enlace = f"https://www.boe.es/diario_boe/txt.php?id={ident}"
-
-            entradas.append({
-                "seccion": seccion,
-                "dept": departamento,
-                "epigrafe": epigrafe,
-                "titulo": titulo,
-                "ident": ident,
-                "url": enlace,
-            })
-
-        num = ""
-        cab = soups[0].get_text(" ", strip=True)[:3000]
-        m = re.search(r"[Nn]úm(?:ero)?\.?\s*(\d+)", cab)
-        if m:
-            num = m.group(1)
-        if len(soups) > 1:
-            # Varios números el mismo día: se cita el ordinario, el más bajo.
-            nums = re.findall(r"[Nn]úm(?:ero)?\.?\s*(\d+)", cab)
-            num = str(min(map(int, nums))) if nums else num
-
+        if retroceder:
+            # El pase diario cita solo el último número del día (como enseñaba
+            # index.php); el archivo los junta todos, el ordinario primero.
+            diarios = _lista(datos.get("diario"))
+            datos = {**datos, "diario": diarios[-1:]}
+        entradas, numeros = entradas_sumario_api(datos)
+        nums = [int(n) for n in numeros if n.isdigit()]
+        num = str(min(nums)) if nums else ""
+        url = PORTADA_BOE.format(a=d.year, m=d.month, d=d.day)
         log(f"BOE: {len(entradas)} disposiciones únicas para {d.isoformat()}")
         if entradas:
             return {"fecha_boe": d, "numero": num, "sourceUrl": url, "entradas": entradas}

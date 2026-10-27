@@ -39,16 +39,21 @@ def sumario_api(fecha: dt.date, get, log=print, secciones=("2A", "2B")) -> list[
     def lista(x):
         return x if isinstance(x, list) else ([x] if x else [])
 
+    def hijos(nodo, clave):
+        # La API a veces mete los hijos en un objeto «texto» (ver build._hijos).
+        texto = nodo.get("texto")
+        return lista(nodo.get(clave)) + (lista(texto.get(clave)) if isinstance(texto, dict) else [])
+
     entradas = []
     for diario in lista(datos.get("diario")):
-        for sec in lista(diario.get("seccion")):
+        for sec in hijos(diario, "seccion"):
             if sec.get("codigo") not in secciones:
                 continue
-            for dep in lista(sec.get("departamento")):
+            for dep in hijos(sec, "departamento"):
                 # Los elementos pueden colgar del departamento o de un epígrafe.
-                grupos = [(ep.get("nombre", ""), lista(ep.get("item")))
-                          for ep in lista(dep.get("epigrafe"))]
-                grupos.append(("", lista(dep.get("item"))))
+                grupos = [(ep.get("nombre", ""), hijos(ep, "item"))
+                          for ep in hijos(dep, "epigrafe")]
+                grupos.append(("", hijos(dep, "item")))
                 for epigrafe, items in grupos:
                     for it in items:
                         pdf = it.get("url_pdf") or {}
