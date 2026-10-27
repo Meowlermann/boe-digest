@@ -1,0 +1,1133 @@
+{
+ "desde": "2026-06-08",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-06-14",
+ "secciones": {
+  "cifra": {
+   "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre el desempeño de la Ministra de Inclusión, Seguridad Social y Migraciones y las políticas desarrolladas desde su Ministerio",
+   "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion033/VOT_20260611145743.json",
+   "regla": 1,
+   "texto": "votos de diferencia: la votación más ajustada del Pleno acabó en empate, 170 a favor y 170 en contra",
+   "url": "/votaciones/2026-06-11-v185-33.html",
+   "valor": 0
+  },
+  "nombramientos": {
+   "ceses": 3,
+   "lista": [
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidenta del Tribunal de Instancia de Getafe (Madrid)",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-06-08",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12304",
+     "persona": "Ana María García González",
+     "rango": "Real Decreto",
+     "url": "/personas/ana-maria-garcia-gonzalez.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidenta del Tribunal de Instancia de Gavà (Barcelona)",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-06-08",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12305",
+     "persona": "Mónica Buetas Mesa",
+     "rango": "Real Decreto",
+     "url": "/personas/monica-buetas-mesa.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Gerente del Consejo de Administración del Patrimonio Nacional",
+     "emisor": "PRESIDENCIA DEL GOBIERNO",
+     "fecha": "2026-06-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12523",
+     "persona": "María Dolores Menéndez Company",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-dolores-menendez-company.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Gerente del Consejo de Administración del Patrimonio Nacional",
+     "emisor": "PRESIDENCIA DEL GOBIERNO",
+     "fecha": "2026-06-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12524",
+     "persona": "Ana María Robles González",
+     "rango": "Real Decreto",
+     "url": "/personas/ana-maria-robles-gonzalez.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Directora General de Estrategia Industrial y de la Pequeña y Mediana Empresa",
+     "emisor": "MINISTERIO DE INDUSTRIA Y TURISMO",
+     "fecha": "2026-06-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12526",
+     "persona": "María Teresa Parejo Navajas",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-teresa-parejo-navajas.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Director General de Estrategia Industrial y de la Pequeña y Mediana Empresa",
+     "emisor": "MINISTERIO DE INDUSTRIA Y TURISMO",
+     "fecha": "2026-06-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12527",
+     "persona": "Miguel Gómez-Pavón López",
+     "rango": "Real Decreto",
+     "url": "/personas/miguel-gomez-pavon-lopez.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Directora del Organismo Autónomo Agencia Nacional de Evaluación de la Calidad y Acreditación",
+     "emisor": "MINISTERIO DE CIENCIA, INNOVACIÓN Y UNIVERSIDADES",
+     "fecha": "2026-06-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12530",
+     "persona": "María del Pilar Paneque Salgado",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-del-pilar-paneque-salgado.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente de la Junta de Castilla y León",
+     "emisor": "PRESIDENCIA DEL GOBIERNO",
+     "fecha": "2026-06-11",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12615",
+     "persona": "Alfonso Fernández Mañueco",
+     "rango": "Real Decreto",
+     "url": "/personas/alfonso-fernandez-manueco.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Delegado de Economía y Hacienda en Segovia",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-06-13",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12801",
+     "persona": "Francisco Javier Martín Malho",
+     "rango": "Orden",
+     "url": "/personas/francisco-javier-martin-malho.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Delegada de Economía y Hacienda en Segovia",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-06-13",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-12802",
+     "persona": "Cristina Blanco Robles",
+     "rango": "Orden",
+     "url": "/personas/cristina-blanco-robles.html"
+    }
+   ],
+   "nombramientos": 25,
+   "resto": 18,
+   "total": 28
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-06-10",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/10/pdfs/BOE-A-2026-12516.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-12516",
+    "titular": "MEDIDAS DE PROMOCIÓN DEL USO DEL TRANSPORTE PÚBLICO COLECTIVO POR PARTE DE LA JUVENTUD",
+    "titulo": "Real Decreto-ley 14/2026, de 9 de junio, de medidas de promoción del uso del transporte público colectivo por parte de la juventud para los viajes realizados en el periodo estival de 2026.",
+    "url": "/normas/BOE-A-2026-12516.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-10",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/10/pdfs/BOE-A-2026-12517.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-12517",
+    "titular": "AUTORIZACIÓN DE OPERACIONES DE CRÉDITO EXTRAORDINARIAS A ORGANISMOS Y ENTIDADES INTEGRANTES",
+    "titulo": "Real Decreto-ley 15/2026, de 9 de junio, de autorización de operaciones de crédito extraordinarias a organismos y entidades integrantes del sector público institucional estatal.",
+    "url": "/normas/BOE-A-2026-12517.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-11",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/11/pdfs/BOE-A-2026-12611.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-12611",
+    "titular": "CAMBIAN LAS REGLAS: EL PROCEDIMIENTO DE AUTORIZACIÓN",
+    "titulo": "Real Decreto 468/2026, de 10 de junio, por el que se modifica el Real Decreto 1345/2007, de 11 de octubre, por el que se regula el procedimiento de autorización, registro y condiciones de dispensación de los medicamentos de uso humano fabricados industrialmente.",
+    "url": "/normas/BOE-A-2026-12611.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-11",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/11/pdfs/BOE-A-2026-12692.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-12692",
+    "titular": "GRAN CRUZ DEL MÉRITO NAVAL CON DISTINTIVO BLANCO PARA GENERAL DE LA REPÚBLICA DE IRLANDA SEÑOR SEÁN CLANCY",
+    "titulo": "Real Decreto 474/2026, de 10 de junio, por el que se concede la Gran Cruz del Mérito Naval con distintivo blanco al General de la República de Irlanda señor Seán Clancy.",
+    "url": "/normas/BOE-A-2026-12692.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-12",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/12/pdfs/BOE-A-2026-12710.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-12710",
+    "titular": "APROBADO: EL ESTATUTO DE LA GERENCIA DE INFRAESTRUCTURAS Y EQUIPAMIENTOS DE CULTURA HASTA EL 31 DE DICIEMBRE",
+    "titulo": "Real Decreto 465/2026, de 10 de junio, por el que se aprueba el Estatuto de la Gerencia de Infraestructuras y Equipamientos de Cultura, O.A.",
+    "url": "/normas/BOE-A-2026-12710.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-12",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/12/pdfs/BOE-A-2026-12711.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-12711",
+    "titular": "ADAPTACIÓN DE ORGANISMOS PÚBLICOS EXISTENTES EN EL ÁMBITO ESTATAL: 20.000.000 EUROS",
+    "titulo": "Real Decreto 466/2026, de 10 de junio, de adaptación de organismos públicos existentes en el ámbito estatal a la Ley 40/2015, de 1 de octubre, de Régimen Jurídico del Sector Público.",
+    "url": "/normas/BOE-A-2026-12711.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-12",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/12/pdfs/BOE-A-2026-12712.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-12712",
+    "titular": "NUEVAS REGLAS PARA LA DEVOLUCIÓN Y DESTRUCCIÓN DE SUSTANCIAS ESTUPEFACIENTES, EN VIGOR EL 1 DE JULIO",
+    "titulo": "Real Decreto 467/2026, de 10 de junio, por el que se regulan la devolución y destrucción de sustancias estupefacientes y psicotrópicas y de medicamentos estupefacientes por las oficinas y servicios de farmacia.",
+    "url": "/normas/BOE-A-2026-12712.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-06-12",
+    "fuente": "https://www.boe.es/boe/dias/2026/06/12/pdfs/BOE-A-2026-12713.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-12713",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN: 8.000.000 EUROS",
+    "titulo": "Real Decreto 469/2026, de 10 de junio, por el que se regula la concesión directa de una subvención a la Fundación IMEC Spain para la realización de un proyecto de investigación y desarrollo destinado a impulsar el sector estratégico de la microelectrónica y los semiconductores en España, programa «UNICO I+D-IMEC Spain», en el marco del Plan de Recuperación, Transformación y Resiliencia -financiado por la Unión Europea- Next Generation EU.",
+    "url": "/normas/BOE-A-2026-12713.html"
+   }
+  ],
+  "preguntas": {
+   "contestadas": [
+    {
+     "autores": [
+      "Figaredo Álvarez-Sala, José María",
+      "Rueda Perelló, Patricia",
+      "Chamorro Delmo, Ricardo"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038058",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Confirmación acerca de si podría haberse evitado el apagón del día 28/04/2025 de haberse celebrado la reunión que solicitaban las operadoras privadas y que Red Eléctrica se negó a celebrar y número de apagones que evitó ",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038058"
+    },
+    {
+     "autores": [
+      "Catalán Higueras, Alberto"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038439",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Decisiones que ha adoptado el Gobierno de España respecto a la moción de Unión del Pueblo Navarro (UPN) aprobada por la Cámara por la que se le instaba a atender la demanda de potencia eléctrica solicitada desde el Gobie",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038439"
+    },
+    {
+     "autores": [
+      "Catalán Higueras, Alberto"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038440",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Encuentros que ha mantenido el Gobierno de España con representantes del Ejecutivo Foral respecto a la moción de Unión del Pueblo Navarro (UPN) aprobada por la Cámara en la que se le instaba a atender la demanda de poten",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038440"
+    },
+    {
+     "autores": [
+      "Catalán Higueras, Alberto"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038441",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Proyectos con necesidades energéticas concretas que le ha presentado el Gobierno de Navarra al Gobierno de España y a Red Eléctrica.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038441"
+    },
+    {
+     "autores": [
+      "Martínez Barbero, Verónica",
+      "Lago Peñas, Manuel"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038461",
+     "grupo": "Sumar",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Implantación de una fábrica de biogás sin control ambiental suficiente en A Laracha.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038461"
+    },
+    {
+     "autores": [
+      "Figaredo Álvarez-Sala, José María",
+      "Rueda Perelló, Patricia",
+      "Chamorro Delmo, Ricardo"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038572",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Previsiones acerca de impulsar alguna medida que permita asegurar la estabilidad del sistema eléctrico español sin necesidad de encarecer el precio regulado de la electricidad.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038572"
+    },
+    {
+     "autores": [
+      "Boada Danés, Júlia"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038606",
+     "grupo": "Sumar",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Valoración de las interlocuciones iniciadas en la Conferencia de Santa Marta sobre la Transición más allá de los Combustibles Fósiles, así como opinión del Gobierno acerca de si está acelerando de manera adecuada el fin ",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038606"
+    },
+    {
+     "autores": [
+      "Campos Asensi, Jorge",
+      "Figaredo Álvarez-Sala, José María",
+      "Rueda Perelló, Patricia",
+      "Chamorro Delmo, Ricardo"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038691",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Criterios técnicos que se han tenido en cuenta a la hora de elegir el trazado para interconectar las Illes Balears con el resto del sistema eléctrico español, así como alternativas previstas para evitar la destrucción de",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038691"
+    },
+    {
+     "autores": [
+      "Figaredo Álvarez-Sala, José María",
+      "Rueda Perelló, Patricia",
+      "Chamorro Delmo, Ricardo"
+     ],
+     "cita": "",
+     "contestada": "2026-06-12",
+     "dias": 24,
+     "exp": "184/038696",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Causas, según el Gobierno, del apagón que se produjo en nuestro país el día 28/04/2025, y criterios bajo los que considera que los informes oficiales acreditan que las energías renovables no fueron las responsables del m",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038696"
+    },
+    {
+     "autores": [
+      "Valido García, Cristina"
+     ],
+     "cita": "",
+     "contestada": "2026-06-11",
+     "dias": 23,
+     "exp": "184/038055",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-05-19",
+     "titulo": "Opinión del Gobierno acerca de si el mantenimiento de la actual excepción al régimen funcionarial prevista en el Texto Refundido de la Ley de Puertos del Estado y de la Marina Mercante (TRLPEMM) para la Policía Portuaria",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F038055"
+    }
+   ],
+   "n_contestadas": 679,
+   "n_orales": 17,
+   "orales": [
+    {
+     "autor": "Alberto Núñez Feijóo",
+     "cargo": "Presidente del Gobierno",
+     "cita": "Señor Feijóo, yo asumo mis errores (protestas), pero jamás voy a asumir su grado de hipocresía. Del partido de la Púnica, de la Gürtel, de la Kitchen (rumores), de la policía patriótica, del partido de Marcial Dorado, lecciones, ninguna, señor Feijóo, ninguna. Usted solicita elecciones generales, lo llevan haciendo ocho años: elecciones generales todos los años. […]",
+     "contesta": "Pedro Sánchez Pérez-Castejón",
+     "exp": "180/001085",
+     "grupo": "PP",
+     "s": "2026-06-10",
+     "texto": "¿Cuántos atropellos más necesita cometer antes de devolver la voz al pueblo?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Míriam Nogueras i Camero",
+     "cargo": "Presidente del Gobierno",
+     "cita": "La veo bien.",
+     "contesta": "Pedro Sánchez Pérez-Castejón",
+     "exp": "180/001079",
+     "grupo": "Junts",
+     "s": "2026-06-10",
+     "texto": "¿Qué opinión tiene sobre la situación política actual en Cataluña?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Mertxe Aizpurua Arzallus",
+     "cargo": "Presidente del Gobierno",
+     "cita": "Señoría. Simplemente quiero decirle que el Partido Socialista, que me honro en dirigir, ha sido contundente en las respuestas ante casos de corrupción y comportamientos que no nos han representado. Esto lo hemos hecho desde el principio, a diferencia de otros, que lo que hacen es tapar, ocultar o negar los casos de corrupción que les afectan. Por tanto, claro que hay diferencia entre unos y otros. […]",
+     "contesta": "Pedro Sánchez Pérez-Castejón",
+     "exp": "180/001091",
+     "grupo": "EH Bildu",
+     "s": "2026-06-10",
+     "texto": "¿Qué decisiones y medidas va a adoptar para dar sentido a lo que queda de legislatura?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Ester Muñoz de la Iglesia",
+     "cargo": "Vicepresidente Primero del Gobierno y Ministro de Economía, Comercio y Empresa",
+     "cita": "No deja de resultar curioso, señora Muñoz, que después de dos años sin hacerme absolutamente ninguna pregunta con respecto a los temas relativos a mi ministerio, ahora que han cogido carrerilla resulta que no les gustan mis respuestas. […]",
+     "contesta": "Carlos Cuerpo Caballero",
+     "exp": "180/001086",
+     "grupo": "PP",
+     "s": "2026-06-10",
+     "texto": "¿Piensa responder a alguna pregunta?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Juan Bravo Baena",
+     "cargo": "Vicepresidente Primero del Gobierno y Ministro de Economía, Comercio y Empresa",
+     "cita": "Señor Marí, me permitirá que haga una lista no exhaustiva -sería imposible en dos minutos y medio- de las actuaciones que ha hecho y que está haciendo el Gobierno a favor de trabajadores y empresas. Para empezar, desplegó una red de protección frente a la pandemia: tres millones y medio de trabajadores protegidos por los ERTE y 140 000 millones de euros movilizados gracias a los avales COVID. […]",
+     "contesta": "Carlos Cuerpo Caballero",
+     "exp": "180/001087",
+     "grupo": "PP",
+     "s": "2026-06-10",
+     "texto": "¿Hace algo este Gobierno por los empresarios y trabajadores de nuestro país?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "José María Figaredo Álvarez-Sala",
+     "cargo": "Vicepresidente Primero del Gobierno y Ministro de Economía, Comercio y Empresa",
+     "cita": "Señor Figaredo, su pelea con las cifras no es otra cosa que una pelea con un diagnóstico unánime de organismos nacionales e internacionales. Es una pelea, por ejemplo, con la Comisión Europea, que señala año tras año que España es líder no solo en crecimiento, sino también en creación de empleo entre las grandes economías europeas. […]",
+     "contesta": "Carlos Cuerpo Caballero",
+     "exp": "180/001084",
+     "grupo": "Vox",
+     "s": "2026-06-10",
+     "texto": "¿Van a seguir falseando las cifras económicas de España?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Inés Granollers Cunillera",
+     "cargo": "Vicepresidente Primero del Gobierno y Ministro de Economía, Comercio y Empresa",
+     "cita": "Señoría, gracias por la pregunta. Es cierto, y creo que tenemos que ser justos también, que el impacto y la aportación del sector financiero en la situación actual es muy distinto al que tuvimos en la crisis financiera. […]",
+     "contesta": "Carlos Cuerpo Caballero",
+     "exp": "180/001081",
+     "grupo": "ERC",
+     "s": "2026-06-10",
+     "texto": "¿Cuáles son las prioridades del Gobierno español en materia de política económica?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Idoia (GV (EAJ-PNV)) Sagastizabal Unzetabarrenetxea",
+     "cargo": "Vicepresidenta Tercera y Ministra para la Transición Ecológica y el Reto Demográfico",
+     "cita": "Señora Sagastizabal, le agradezco la pregunta para hablar de electrificación, que sí es motor de crecimiento económico y motor de autonomía y soberanía en vivienda, en industria y, por supuesto, también en el transporte. Lo que nos encontramos hoy es un país atractivo. Ese atractivo lleva a ese apetito por la red y por la conexión a la red eléctrica. […]",
+     "contesta": "Sara Aagesen Muñoz",
+     "exp": "180/001082",
+     "grupo": "",
+     "s": "2026-06-10",
+     "texto": "¿Cómo va a garantizar el Gobierno la electrificación de viviendas e industria con una planificación que se retrasa y una red saturada?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Néstor Rego Candamil",
+     "cargo": "Vicepresidenta Tercera y Ministra para la Transición Ecológica y el Reto Demográfico",
+     "cita": "Señor Rego. Quiero compartir con usted algo tan importante como que hay una premisa de partida: nosotros consideramos que esta transición energética ecológica tiene que ser de la mano con el territorio. El territorio importa y las personas que habitan el territorio importan. Por lo tanto, necesitamos seguir trabajando en esta línea. El Gobierno lo ha hecho desde el primer momento. […]",
+     "contesta": "Sara Aagesen Muñoz",
+     "exp": "180/001080",
+     "grupo": "Mixto",
+     "s": "2026-06-10",
+     "texto": "¿Cuál es la posición del Gobierno en relación con la selección por parte de la UE de la mina de Doade en Beariz como proyecto estratégico de materias primas críticas dentro del Plan ReArm?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Miguel Tellado Filgueira",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señor Tellado, hay muchas cosas que nos diferencian a usted y a mí, muchas (rumores), sobre todo, hay una fundamental. Igual quisiera usted parecerse a mí en algo (el señor Tellado Filgueira hace gestos negativos), y yo a usted en otras cosas, seguro, seguro, pero hay algo que nos diferencia con absoluta seguridad, y es el respetar el honor de las personas. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001088",
+     "grupo": "PP",
+     "s": "2026-06-10",
+     "texto": "¿Cuál ha sido su participación en relación con las tramas de corrupción de este Gobierno?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "Cayetana Álvarez de Toledo Peralta-Ramos",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Imagino que cuando el papa habló de la violencia, de la guerra y de la mentira (rumores.-El señor De Olano Vela pronuncia palabras que no se perciben), usted se sentiría personalmente aludida; usted, firme partidaria de la guerra y firme y diaria usuaria de la mentira. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001089",
+     "grupo": "PP",
+     "s": "2026-06-10",
+     "texto": "¿Tiene España un Gobierno contra el Estado?",
+     "url": "/sesiones/2026-06-10.html"
+    },
+    {
+     "autor": "María José Rodríguez de Millán Parro",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "España es un Estado de derecho sólido, con todas las garantías y con todo el sistema de recursos. Cuando uno discrepa de una resolución judicial, por supuesto, puede criticarla al amparo de su libertad de expresión, con respeto y con argumentos jurídicos, puede recurrirla, puede impugnarla ante los tribunales superiores. Eso es lo que hacen los demócratas. ¿Qué hacen los matones? […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001083",
+     "grupo": "Vox",
+     "s": "2026-06-10",
+     "texto": "¿Considera que hay un complot judicial contra el Gobierno?",
+     "url": "/sesiones/2026-06-10.html"
+    }
+   ]
+  },
+  "tramitacion": [
+   {
+    "clase": "ampliacion",
+    "exp": "121/000095",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000095",
+    "hasta": "2026-06-10",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-08 se amplía hasta el 2026-06-10",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas tributarias urgentes y otras medidas de apoyo en respuesta a los daños causados a las víctimas de siniestros de la DANA y otras situaciones de emergencia (procedente del Real Decreto-ley 10/2026, de 28 de abril)",
+    "url": "/tramitacion/121-000095.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "121/000096",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000096",
+    "hasta": "2026-06-12",
+    "hito": "Comisión de Economía, Comercio y Transformación Digital · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica para el buen uso y la gobernanza de la inteligencia artificial",
+    "url": "/tramitacion/121-000096.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "121/000097",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000097",
+    "hasta": "2026-06-12",
+    "hito": "Comisión de Sanidad · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la aportación de los usuarios y sus beneficiarios en la prestación farmacéutica ambulatoria (procedente del Real Decreto-ley 11/2026, de 12 de mayo)",
+    "url": "/tramitacion/121-000097.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000240",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000240",
+    "hasta": "2026-06-12",
+    "hito": "Comisión de Justicia · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de modificación de la Ley 49/1960, de 21 de julio, sobre propiedad horizontal",
+    "url": "/tramitacion/122-000240.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000274",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000274",
+    "hasta": "2026-06-12",
+    "hito": "Concluido - (Decaído)",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de reforma integral del trabajo autónomo",
+    "url": "/tramitacion/122-000274.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000285",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000285",
+    "hasta": "2026-06-16",
+    "hito": "Pleno · Toma en consideración",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley para la modificación de la Ley 16/1983, de 24 de octubre, de creación del Instituto de la Mujer y de determinadas leyes procesales dentro de su ámbito competencial",
+    "url": "/tramitacion/122-000285.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000286",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000286",
+    "hasta": "2026-06-12",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de regulación del estatuto de los ex presidentes",
+    "url": "/tramitacion/122-000286.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000287",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000287",
+    "hasta": "2026-06-12",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de modificación del artículo 307 de la Ley Orgánica 6/1985, de 1 de julio, del Poder Judicial, que regula el curso de selección de los aspirantes a ingresar en la Carrera Judicial (Orgánica)",
+    "url": "/tramitacion/122-000287.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "124/000045",
+    "f": "2026-06-08",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=124%2F000045",
+    "hasta": "2026-06-12",
+    "hito": "Comisión Constitucional · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley para la protección de la dignidad de las mujeres y la seguridad ciudadana en el espacio público",
+    "url": "/tramitacion/124-000045.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000094",
+    "f": "2026-06-09",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000094",
+    "hasta": "2026-06-10",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-09 se amplía hasta el 2026-06-10",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de gestión pública e integridad del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000094.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000011",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000011",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Familias",
+    "url": "/tramitacion/121-000011.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000021",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000021",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de universalidad del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000021.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000024",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000024",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan las medidas de suspensión de lanzamientos sobre la vivienda habitual para la protección de los colectivos vulnerables (procedente del Real Decreto-ley 1/2024, de 14 de mayo)",
+    "url": "/tramitacion/121-000024.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000026",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000026",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley del Cine y de la Cultura Audiovisual",
+    "url": "/tramitacion/121-000026.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000027",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000027",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para la simplificación y mejora del nivel asistencial de la protección por desempleo, y para completar la transposición de la Directiva (UE) 2019/1158 del Parlamento Europeo y del Consejo, de 20 de junio de 2019, relativa a la conciliación de la vida familiar y la vida profesional de los progenitores y los cuidadores, y por la que se deroga la Directiva 2010/18/UE del Consejo (procedente del Real Decreto-ley 2/2024, de 21 de mayo)",
+    "url": "/tramitacion/121-000027.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000028",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000028",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas de promoción del uso del transporte público colectivo terrestre por parte de los jóvenes para los viajes realizados en el periodo estival de 2024 (procedente del Real Decreto-ley 3/2024, de 4 de junio)",
+    "url": "/tramitacion/121-000028.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000029",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000029",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifican diversas normas para consolidar la equidad y cohesión del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000029.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000032",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000032",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan determinadas medidas para afrontar las consecuencias económicas y sociales derivadas de los conflictos en Ucrania y Oriente Próximo y se adoptan medidas urgentes en materia fiscal, energética y social (procedente del Real Decreto-ley 4/2024, de 26 de junio)",
+    "url": "/tramitacion/121-000032.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000035",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000035",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de restablecimiento de la Comisión Nacional de la Energía, A.A.I",
+    "url": "/tramitacion/121-000035.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000037",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000037",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 17/2006, de 5 de junio, de la radio y la televisión de titularidad estatal, para adoptar medidas urgentes relativas al régimen jurídico aplicable a la Corporación RTVE (procedente del Real Decreto-ley 5/2024, de 22 de octubre)",
+    "url": "/tramitacion/121-000037.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000038",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000038",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de información empresarial sobre sostenibilidad, mediante la que se modifican el Código de Comercio, la Ley de Sociedades de Capital y la Ley de Auditoría de Cuentas",
+    "url": "/tramitacion/121-000038.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000039",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000039",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes de respuesta ante los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 6/2024, de 5 de noviembre)",
+    "url": "/tramitacion/121-000039.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000040",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000040",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000040.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000041",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000041",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica por la que se modifica la Ley Orgánica 5/2000, de 12 de enero, reguladora de la responsabilidad penal de los menores, complementaria de la Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000041.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000042",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000042",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para el impulso del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 7/2024, de 11 de noviembre)",
+    "url": "/tramitacion/121-000042.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000043",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000043",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Industria y Autonomía Estratégica",
+    "url": "/tramitacion/121-000043.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000044",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000044",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes complementarias en el marco del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 8/2024, de 28 de noviembre)",
+    "url": "/tramitacion/121-000044.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000045",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000045",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley para la mejora de la compatibilidad de la pensión de jubilación con el trabajo (procedente del Real Decreto-ley 11/2024, de 23 de diciembre)",
+    "url": "/tramitacion/121-000045.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000047",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000047",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes en materia económica, de transporte, de Seguridad Social, y para hacer frente a situaciones de vulnerabilidad (procedente del Real Decreto-ley 1/2025, de 28 de enero)",
+    "url": "/tramitacion/121-000047.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000048",
+    "f": "2026-06-10",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000048",
+    "hasta": "2026-06-17",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-06-10 se amplía hasta el 2026-06-17",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de acciones colectivas para la protección y defensa de los derechos e intereses de los consumidores y usuarios",
+    "url": "/tramitacion/121-000048.html"
+   }
+  ],
+  "votaciones": {
+   "ajustadas": [
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre el desempeño de la Ministra de Inclusión, Seguridad Social y Migraciones y las políticas desarrolladas desde su Ministerio.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion033/VOT_20260611145743.json",
+     "margen": 0,
+     "n": 33,
+     "s": 185,
+     "sub": "Votación separada por puntos. Punto 2.",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      170,
+      170,
+      8,
+      2
+     ],
+     "url": "/votaciones/2026-06-11-v185-33.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre el desempeño de la Ministra de Inclusión, Seguridad Social y Migraciones y las políticas desarrolladas desde su Ministerio.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion032/VOT_20260611145741.json",
+     "margen": 0,
+     "n": 32,
+     "s": 185,
+     "sub": "Votación separada por puntos. Punto 2.",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      170,
+      170,
+      8,
+      2
+     ],
+     "url": "/votaciones/2026-06-11-v185-32.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre el desempeño de la Ministra de Inclusión, Seguridad Social y Migraciones y las políticas desarrolladas desde su Ministerio.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion034/VOT_20260611145745.json",
+     "margen": 1,
+     "n": 34,
+     "s": 185,
+     "sub": "Votación separada por puntos. Punto 2.",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      170,
+      169,
+      8,
+      3
+     ],
+     "url": "/votaciones/2026-06-11-v185-34.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley de modificación del Real Decreto Legislativo 8/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley General de la Seguridad Social en relación con las mutualidades alternativas reguladas en sus disposiciones adicionales 18ª y 19ª.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion017/VOT_20260611145722.json",
+     "margen": 3,
+     "n": 17,
+     "s": 185,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Popular en el Congreso Enmienda 47.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      171,
+      168,
+      8,
+      3
+     ],
+     "url": "/votaciones/2026-06-11-v185-17.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley de modificación del Real Decreto Legislativo 8/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley General de la Seguridad Social en relación con las mutualidades alternativas reguladas en sus disposiciones adicionales 18ª y 19ª.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion019/VOT_20260611145724.json",
+     "margen": 6,
+     "n": 19,
+     "s": 185,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Popular en el Congreso Resto de las enmiendas.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      171,
+      177,
+      0,
+      2
+     ],
+     "url": "/votaciones/2026-06-11-v185-19.html"
+    }
+   ],
+   "disidencias": [
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley Orgánica por la que se modifica el artículo ochenta de la Ley Orgánica 1/1979, de 26 de septiembre, General Penitenciaria, para reconocer, a efectos legales, el carácter de agentes de la autoridad a los funcionarios de la Administración Penitenciaria (antes denominada Proposición de Ley Orgánica por la que se modifica el artículo 80 de la Ley Orgánica 1/1979, de 26 de septiembre, General Penitenciaria, para reconocer, a efectos legales, el carácter de agentes de la autoridad a los funcionarios de Instituciones Penitenciarias).",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion039/VOT_20260611145750.json",
+     "margen": 302,
+     "n": 39,
+     "personas": [
+      {
+       "grupo": "Sumar",
+       "nombre": "Alberto Ibáñez Mezquita",
+       "slug": "alberto-ibanez-mezquita",
+       "voto": "A",
+       "voto_grupo": "S"
+      },
+      {
+       "grupo": "PSOE",
+       "nombre": "Ignacio López Cano",
+       "slug": "ignacio-lopez-cano",
+       "voto": "N",
+       "voto_grupo": "S"
+      },
+      {
+       "grupo": "Sumar",
+       "nombre": "Teslem Andala Ubbi",
+       "slug": "teslem-andala-ubbi",
+       "voto": "N",
+       "voto_grupo": "S"
+      },
+      {
+       "grupo": "Sumar",
+       "nombre": "Vicenç Vidal Matas",
+       "slug": "vicenc-vidal-matas",
+       "voto": "N",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 185,
+     "sub": "Votación de conjunto. Votación de conjunto de la Proposición de Ley Orgánica por la que se modifica el artículo ochenta de la Ley Orgánica 1/1979, de 26 de septiembre, General Penitenciaria, para reconocer, a efectos legales, el carácter de agentes de la autoridad a los funcionarios de la Administra",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      323,
+      21,
+      2,
+      4
+     ],
+     "url": "/votaciones/2026-06-11-v185-39.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley Orgánica por la que se modifica el artículo ochenta de la Ley Orgánica 1/1979, de 26 de septiembre, General Penitenciaria, para reconocer, a efectos legales, el carácter de agentes de la autoridad a los funcionarios de la Administración Penitenciaria (antes denominada Proposición de Ley Orgánica por la que se modifica el artículo 80 de la Ley Orgánica 1/1979, de 26 de septiembre, General Penitenciaria, para reconocer, a efectos legales, el carácter de agentes de la autoridad a los funcionarios de Instituciones Penitenciarias).",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion038/VOT_20260611145749.json",
+     "margen": 305,
+     "n": 38,
+     "personas": [
+      {
+       "grupo": "Sumar",
+       "nombre": "Alberto Ibáñez Mezquita",
+       "slug": "alberto-ibanez-mezquita",
+       "voto": "A",
+       "voto_grupo": "S"
+      },
+      {
+       "grupo": "Sumar",
+       "nombre": "Teslem Andala Ubbi",
+       "slug": "teslem-andala-ubbi",
+       "voto": "N",
+       "voto_grupo": "S"
+      },
+      {
+       "grupo": "Sumar",
+       "nombre": "Vicenç Vidal Matas",
+       "slug": "vicenc-vidal-matas",
+       "voto": "N",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 185,
+     "sub": "Votación del dictamen. Votación del dictamen.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      324,
+      19,
+      2,
+      5
+     ],
+     "url": "/votaciones/2026-06-11-v185-38.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Mixto (Sr. Rego Candamil), relativa a la reversión de las decisiones sobre el incremento del gasto militar para favorecer la inversión social en la actual situación de crisis económica.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion027/VOT_20260611145735.json",
+     "margen": 122,
+     "n": 27,
+     "personas": [
+      {
+       "grupo": "PP",
+       "nombre": "Carlos Aragonés Mendiguchía",
+       "slug": "carlos-aragones-mendiguchia",
+       "voto": "N",
+       "voto_grupo": "A"
+      }
+     ],
+     "s": 185,
+     "sub": "Votación separada por puntos. Punto 2.",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      167,
+      45,
+      135,
+      3
+     ],
+     "url": "/votaciones/2026-06-11-v185-27.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley de modificación del Real Decreto Legislativo 8/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley General de la Seguridad Social en relación con las mutualidades alternativas reguladas en sus disposiciones adicionales 18ª y 19ª.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion014/VOT_20260611145719.json",
+     "margen": 265,
+     "n": 14,
+     "personas": [
+      {
+       "grupo": "Sumar",
+       "nombre": "Viviane Ogou i Corbi",
+       "slug": "viviane-ogou-i-corbi",
+       "voto": "N",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 185,
+     "sub": "Enmienda presentada por el Grupo Parlamentario Plurinacional SUMAR Enmienda 12.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      41,
+      306,
+      0,
+      3
+     ],
+     "url": "/votaciones/2026-06-11-v185-14.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley de modificación del Real Decreto Legislativo 8/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley General de la Seguridad Social en relación con las mutualidades alternativas reguladas en sus disposiciones adicionales 18ª y 19ª.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion008/VOT_20260611145711.json",
+     "margen": 262,
+     "n": 8,
+     "personas": [
+      {
+       "grupo": "Vox",
+       "nombre": "Carlos Hernández Quero",
+       "slug": "carlos-hernandez-quero",
+       "voto": "A",
+       "voto_grupo": "N"
+      }
+     ],
+     "s": 185,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Euskal Herria Bildu Enmienda 16.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      42,
+      304,
+      1,
+      3
+     ],
+     "url": "/votaciones/2026-06-11-v185-8.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley de modificación del Real Decreto Legislativo 8/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley General de la Seguridad Social en relación con las mutualidades alternativas reguladas en sus disposiciones adicionales 18ª y 19ª.",
+     "f": "2026-06-11",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion185/20260611/Votacion003/VOT_20260611145704.json",
+     "margen": 206,
+     "n": 3,
+     "personas": [
+      {
+       "grupo": "Sumar",
+       "nombre": "Carlos Martín Urriza",
+       "slug": "carlos-martin-urriza",
+       "voto": "N",
+       "voto_grupo": "S"
+      },
+      {
+       "grupo": "PNV",
+       "nombre": "Joseba Andoni Agirretxea Urresti",
+       "slug": "joseba-andoni-agirretxea-urresti",
+       "voto": "N",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 185,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Mixto (Sra. Belarra Urteaga) Enmienda 1.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      54,
+      260,
+      33,
+      3
+     ],
+     "url": "/votaciones/2026-06-11-v185-3.html"
+    }
+   ],
+   "n_disidencias": 6,
+   "total": 42
+  }
+ },
+ "semana": "2026-S24",
+ "version": 1
+}

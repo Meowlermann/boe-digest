@@ -1,0 +1,963 @@
+{
+ "desde": "2026-05-18",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-05-24",
+ "secciones": {
+  "cifra": {
+   "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Mixto (Sra. Belarra Urteaga), referida a la política del Gobierno en materia educativa. Se vota en los términos de la enmienda transaccional presentada por el Grupo Parlamentario Socialista, el Grupo Parlamentario Republicano, el Grupo Parlamentario EH Bildu y el Grupo Parlamentario Mixto (Sra. Belarra Urteaga)",
+   "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion180/20260520/Votacion006/VOT_20260520142328.json",
+   "regla": 1,
+   "texto": "voto de diferencia decidió la votación más ajustada del Pleno: 169 a favor y 170 en contra",
+   "url": "/votaciones/2026-05-20-v180-6.html",
+   "valor": 1
+  },
+  "nombramientos": {
+   "ceses": 1,
+   "lista": [
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidenta de la Sala de lo Contencioso-Administrativo del Tribunal Superior de Justicia del Principado de Asturias",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-05-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10670",
+     "persona": "María Pilar Martínez Ceyanes",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-pilar-martinez-ceyanes.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Juez Togado del Juzgado Togado Militar Territorial n.º 21 de Sevilla",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-05-21",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10889",
+     "persona": "Cecilia Sánchez-Trincado Mejías",
+     "rango": "Orden",
+     "url": "/personas/cecilia-sanchez-trincado-mejias.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrada",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-05-23",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-11067",
+     "persona": "Ana Victoria Jiménez Jiménez",
+     "rango": "Acuerdo",
+     "url": "/personas/ana-victoria-jimenez-jimenez.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-05-23",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-11068",
+     "persona": "José Enrique Mora Mateo",
+     "rango": "Acuerdo",
+     "url": "/personas/jose-enrique-mora-mateo.html"
+    }
+   ],
+   "nombramientos": 36,
+   "resto": 37,
+   "total": 41
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-05-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/19/pdfs/BOE-A-2026-10742.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10742",
+    "titular": "CAMBIAN LAS REGLAS: LAS BASES REGULADORAS DE LAS SUBVENCIONES DESTINADAS",
+    "titulo": "Real Decreto 393/2026, de 13 de mayo, por el que se modifica el Real Decreto 425/2021, de 15 de junio, por el que se establecen las bases reguladoras de las subvenciones destinadas a la organización del Programa CULTIVA, relativo a estancias formativas de jóvenes agricultores en explotaciones modelo, y se convocan las correspondientes al ejercicio 2021.",
+    "url": "/normas/BOE-A-2026-10742.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/19/pdfs/BOE-A-2026-10743.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10743",
+    "titular": "CAMBIAN LAS REGLAS: LAS BASES REGULADORAS PARA LA CONCESIÓN DE AYUDAS",
+    "titulo": "Real Decreto 394/2026, de 13 de mayo, por el que se modifica el Real Decreto 657/2024, de 9 de julio, por el que se establecen las bases reguladoras para la concesión de ayudas a actuaciones de fortalecimiento industrial en la transformación de productos de la pesca y acuicultura dentro del Proyecto Estratégico para la Recuperación y Transformación Económica del Sector Agroalimentario, en el marco del Plan de Recuperación, Transformación y Resiliencia, financiadas con fondos Next Generation EU.",
+    "url": "/normas/BOE-A-2026-10743.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10882.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10882",
+    "titular": "APROBADO: EL ESTATUTO DEL ORGANISMO AUTÓNOMO MUTUALIDAD GENERAL JUDICIAL",
+    "titulo": "Real Decreto 397/2026, de 20 de mayo, por el que se aprueba el Estatuto del Organismo Autónomo Mutualidad General Judicial, y por el que se modifica el Reglamento del Mutualismo Judicial, aprobado por el Real Decreto 1026/2011, de 15 de julio.",
+    "url": "/normas/BOE-A-2026-10882.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10883.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10883",
+    "titular": "CAMBIAN LAS REGLAS: LA ORGANIZACIÓN PERIFÉRICA DE LA DIRECCIÓN GENERAL",
+    "titulo": "Real Decreto 398/2026, de 20 de mayo, por el que se modifica el Real Decreto 367/1997, de 14 de marzo, por el que se determina la organización periférica de la Dirección General de la Guardia Civil.",
+    "url": "/normas/BOE-A-2026-10883.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10884.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10884",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES A SALAS: 11.500.000 EUROS",
+    "titulo": "Real Decreto 400/2026, de 20 de mayo, por el que se regula la concesión directa de subvenciones a salas de exhibición cinematográfica para fomentar el acceso al cine de las personas de 65 o más años durante el periodo 2026-2027.",
+    "url": "/normas/BOE-A-2026-10884.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10885.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10885",
+    "titular": "QUEDA FIJADO: LAS NORMAS REGULADORAS DEL BONO CULTURAL JOVEN",
+    "titulo": "Real Decreto 401/2026, de 20 de mayo, por el que se establecen las normas reguladoras del Bono Cultural Joven.",
+    "url": "/normas/BOE-A-2026-10885.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10886.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10886",
+    "titular": "APROBADO: LOS ESTATUTOS DEL CONSEJO GENERAL DE COLEGIOS OFICIALES DE EDUCADORAS",
+    "titulo": "Real Decreto 402/2026, de 20 de mayo, por el que se aprueban los Estatutos del Consejo General de Colegios Oficiales de Educadoras y Educadores Sociales.",
+    "url": "/normas/BOE-A-2026-10886.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10957.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10957",
+    "titular": "SE CONCEDE LA NACIONALIDAD ESPAÑOLA POR CARTA DE NATURALEZA A DON SIARHEI SINEVICH",
+    "titulo": "Real Decreto 403/2026, de 20 de mayo, por el que se concede la nacionalidad española por carta de naturaleza a don Siarhei Sinevich.",
+    "url": "/normas/BOE-A-2026-10957.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10958.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10958",
+    "titular": "SE CONCEDE LA NACIONALIDAD ESPAÑOLA POR CARTA DE NATURALEZA A DOÑA ALIAKSANDRA SINEVICH",
+    "titulo": "Real Decreto 404/2026, de 20 de mayo, por el que se concede la nacionalidad española por carta de naturaleza a doña Aliaksandra Sinevich.",
+    "url": "/normas/BOE-A-2026-10958.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10959.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10959",
+    "titular": "SE CONCEDE LA NACIONALIDAD ESPAÑOLA POR CARTA DE NATURALEZA A DON HEORHI SINEVICH",
+    "titulo": "Real Decreto 405/2026, de 20 de mayo, por el que se concede la nacionalidad española por carta de naturaleza a don Heorhi Sinevich.",
+    "url": "/normas/BOE-A-2026-10959.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10960.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10960",
+    "titular": "SE CONCEDE LA NACIONALIDAD ESPAÑOLA POR CARTA DE NATURALEZA A DOÑA MARYIA SINEVICH",
+    "titulo": "Real Decreto 406/2026, de 20 de mayo, por el que se concede la nacionalidad española por carta de naturaleza a doña Maryia Sinevich.",
+    "url": "/normas/BOE-A-2026-10960.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/21/pdfs/BOE-A-2026-10961.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10961",
+    "titular": "SE CONCEDE LA NACIONALIDAD ESPAÑOLA POR CARTA DE NATURALEZA A DOÑA OKSANA SELEKHMETEVA",
+    "titulo": "Real Decreto 407/2026, de 20 de mayo, por el que se concede la nacionalidad española por carta de naturaleza a doña Oksana Selekhmeteva.",
+    "url": "/normas/BOE-A-2026-10961.html"
+   }
+  ],
+  "preguntas": {
+   "contestadas": [
+    {
+     "autores": [
+      "Muñoz de la Iglesia, Ester",
+      "Franco González, Silvia"
+     ],
+     "cita": "",
+     "contestada": "2026-05-21",
+     "dias": 66,
+     "exp": "184/035857",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-03-16",
+     "titulo": "Solicitudes de acceso y conexión de demanda que han sido denegadas o condicionadas en la provincia de León desde el año 2023 por saturación de red/subestaciones y soluciones alternativas que se han evaluado mientras lleg",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F035857"
+    },
+    {
+     "autores": [
+      "De los Santos González, Jaime Miguel",
+      "Acedo Reyes, Sofía",
+      "Franco González, Silvia",
+      "Rodríguez Calleja, Patricia",
+      "Álvarez Fanjul, Beatriz",
+      "Clavell López, Óscar"
+     ],
+     "cita": "",
+     "contestada": "2026-05-18",
+     "dias": 27,
+     "exp": "184/036493",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-04-21",
+     "titulo": "Consciencia que tiene el Gobierno de que la exigencia documental recogida en el artículo 3 del proyecto de Orden por el que se modifica la Orden IGD/239/2022, de 25 de marzo, relativa a acreditar un plan de igualdad en e",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F036493"
+    },
+    {
+     "autores": [
+      "Andala Ubbi, Teslem",
+      "Recas Martín, Alda"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037270",
+     "grupo": "Sumar",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Previsiones acerca de adquirir las viviendas que los fondos de inversión Blackstone, Cerberus, Ares Management y Azora han puesto a la venta, a efectos de su integración en el sistema público de vivienda y medidas previs",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037270"
+    },
+    {
+     "autores": [
+      "Cervera Pinart, Josep Maria"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037340",
+     "grupo": "Junts",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Previsiones acerca de desarrollar la ley correspondiente para eliminar los coeficientes reductores en la jubilación anticipada de aquellos trabajadores que hayan cotizado durante más de 40 años, motivo para retrasar la t",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037340"
+    },
+    {
+     "autores": [
+      "Cervera Pinart, Josep Maria"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037341",
+     "grupo": "Junts",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Tramitación del proyecto de Real Decreto del título de FP de Grado Medio de Técnico en Mantenimiento y venta de vehículos ligeros.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037341"
+    },
+    {
+     "autores": [
+      "Vidal Sáez, Aina"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037342",
+     "grupo": "Sumar",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Dificultades en el acceso a los archivos del Archivo General del Ministerio del Interior (AGMI), razón por la que desde el archivo no se están cumpliendo los plazos legales para su entrega, así como medidas previstas par",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037342"
+    },
+    {
+     "autores": [
+      "Vázquez Blanco, Ana Belén",
+      "Sánchez Ojeda, Carlos Alberto",
+      "Acedo Reyes, Sofía",
+      "Álvarez de Toledo Peralta-Ramos, Cayetana",
+      "Álvarez Fanjul, Beatriz",
+      "Carballedo Berlanga, María Eugenia",
+      "Cobo Vega, Manuel",
+      "De las Cuevas Cortés, Félix",
+      "De Luna Tobarra, Llanos",
+      "Romaní Cantera, José Ignacio",
+      "Sánchez Torregrosa, Maribel",
+      "Velasco Morillo, Elvira",
+      "García Adanero, Carlos",
+      "De Rosa Torner, Fernando"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037343",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Previsiones acerca de extender el criterio de ejemplaridad en la conducta a las condecoraciones del Ministerio del Interior y evitar así ejemplos de opacidad como el ocurrido con la medalla al mérito de la Guardia Civil ",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037343"
+    },
+    {
+     "autores": [
+      "Clemente Muñoz, Raquel",
+      "Requena Ruiz, Juan Diego",
+      "Mariscal Anaya, Guillermo",
+      "Herrero Bono, José Alberto"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037344",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Reducción significativa de la capacidad finalmente adjudicada en el denominado Nudo Mudéjar, enclave estratégico dentro de la red de transporte eléctrico nacional, y consecuencias técnicas, económicas y en la planificaci",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037344"
+    },
+    {
+     "autores": [
+      "Román Jasanada, Antonio"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037345",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Fecha en que ha debatido y evaluado el Consejo de Patrimonio Histórico y su grupo de trabajo de Patrimonio Mundial la candidatura del bien &#039;Paisaje dulce y salado de Atienza y Sigüenza&#039;, así como resolución ado",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037345"
+    },
+    {
+     "autores": [
+      "Vázquez Blanco, Ana Belén",
+      "García Adanero, Carlos",
+      "De Rosa Torner, Fernando",
+      "Sánchez Ojeda, Carlos Alberto",
+      "Acedo Reyes, Sofía",
+      "Álvarez de Toledo Peralta-Ramos, Cayetana",
+      "Álvarez Fanjul, Beatriz",
+      "Carballedo Berlanga, María Eugenia",
+      "Cobo Vega, Manuel",
+      "De las Cuevas Cortés, Félix",
+      "De Luna Tobarra, Llanos",
+      "Romaní Cantera, José Ignacio",
+      "Sánchez Torregrosa, Maribel",
+      "Velasco Morillo, Elvira",
+      "Argüelles García, Silverio"
+     ],
+     "cita": "",
+     "contestada": "2026-05-22",
+     "dias": 25,
+     "exp": "184/037346",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-04-27",
+     "titulo": "Criterios objetivos utilizados para priorizar las inversiones incluidas en el Plan de Infraestructuras para la Seguridad del Estado (PLISE-II), mecanismos de evaluación previstos y previsiones acerca de destinar otras pa",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037346"
+    }
+   ],
+   "n_contestadas": 370,
+   "n_orales": 21,
+   "orales": [
+    {
+     "autor": "Alberto Núñez Feijóo",
+     "cargo": "Presidente del Gobierno",
+     "cita": "Mire, señor Feijóo, toda la colaboración con la justicia, toda (rumores); todo el respeto a la presunción de inocencia y todo mi apoyo al presidente Zapatero. El presidente Zapatero, señor Feijóo, no nos metió en una guerra ilegal; no mintió a los españoles ante el peor atentado terrorista de la historia de España, no. […]",
+     "contesta": "Pedro Sánchez Pérez-Castejón",
+     "exp": "180/001050",
+     "grupo": "PP",
+     "s": "2026-05-20",
+     "texto": "¿Cuándo le va a contar la verdad a los españoles?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Santiago Abascal Conde",
+     "cargo": "Presidente del Gobierno",
+     "cita": "Señor Abascal. Sobre la corrupción, usted es un poco como Torquemada; Torquemada con el resto, pero tragaderas consigo mismo. Como le decía al señor Feijóo recordando su pasado, usted lo que tendría que hacer, si quiere hablar de corrupción, es mirarse al espejo. Y esto no lo digo yo, lo dicen sus compañeros -a los cuales usted expulsa de su partido- que denuncian sus corruptelas. […]",
+     "contesta": "Pedro Sánchez Pérez-Castejón",
+     "exp": "180/001048",
+     "grupo": "Vox",
+     "s": "2026-05-20",
+     "texto": "¿No cree que en España los españoles deben tener preferencia al menos en la adjudicación de la vivienda pública, las ayudas sociales y las guarderías?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Gabriel Rufián Romero",
+     "cargo": "Presidente del Gobierno",
+     "cita": "Señoría, el plan es continuar gobernando porque, además, los resultados económicos, laborales y sociales de este Gobierno y de estas mayorías parlamentarias que articulamos para sacar adelante leyes que están teniendo su efecto positivo en la ciudadanía, tanto catalana como española. Ahí está el crecimiento económico, ahí está la creación de empleo y ahí está la reducción de la desigualdad. […]",
+     "contesta": "Pedro Sánchez Pérez-Castejón",
+     "exp": "180/001044",
+     "grupo": "ERC",
+     "s": "2026-05-20",
+     "texto": "¿Qué plan tiene?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Cayetana Álvarez de Toledo Peralta-Ramos",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Mire, señora Álvarez de Toledo, seguro que no le extrañará que yo confíe en el presidente Zapatero. Por supuesto que confío en el presidente Zapatero. Y también estoy orgulloso de la labor que hizo en su Gobierno durante ocho años y los valores que encarna. Pero lo importante no es mi confianza personal, lo importante es la confianza en las instituciones, en el Estado de derecho. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001037",
+     "grupo": "PP",
+     "s": "2026-05-20",
+     "texto": "¿Confía el Gobierno en la Justicia?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Ester Muñoz de la Iglesia",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señora Muñoz, le reitero lo que ya he respondido a su compañera: total respeto y respaldo a la labor de la justicia, de la Fiscalía y de las fuerzas y cuerpos de seguridad del Estado. Este Gobierno permite que trabajen con libertad, con medios; permite que funcionen como han de funcionar este tipo de instituciones en un Estado de derecho, y le reitero que eso no pasaba cuando ustedes gobernaban. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001051",
+     "grupo": "PP",
+     "s": "2026-05-20",
+     "texto": "¿Cuánto va a durar esto, Ministro?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Miguel Tellado Filgueira",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señor Tellado, le deseo que se recupere de su afonía incipiente. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001052",
+     "grupo": "PP",
+     "s": "2026-05-20",
+     "texto": "¿A qué se dedica este Gobierno?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "María José Rodríguez de Millán Parro",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Le voy a decir para qué utilizamos la maquinaria del Estado: para subir las becas; para que España crezca seis veces más que la media de la Unión Europea; para que las pensiones hoy se actualicen conforme al IPC; para que hoy, al tener un hijo, da igual que seas hombre que mujer, se tenga el mismo permiso de paternidad que de maternidad; para multiplicar por ocho el presupuesto de vivienda que…",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001042",
+     "grupo": "Vox",
+     "s": "2026-05-20",
+     "texto": "¿Por qué usan la maquinaria del Estado contra los españoles?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Ignacio Gil Lázaro",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señor Gil Lázaro. Tengo la sensación de que siempre me hace la misma pregunta -algún día lo comprobaré, o sea, que le preparo de antemano lo que le responderé en alguna sesión de control futura-; al revés, ¿cómo vamos a despreciar nosotros a la ciudadanía? ¿Quiere que hablemos del voto del Grupo Socialista y de este Gobierno y del voto que hace VOX en cualquier materia? […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001043",
+     "grupo": "Vox",
+     "s": "2026-05-20",
+     "texto": "¿Por qué el Gobierno desprecia a millones de españoles?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Josep Pagès i Massó",
+     "cargo": "Ministro de la Presidencia, Justicia y Relaciones con las Cortes",
+     "cita": "Señor Pagès, estamos en la sede de la soberanía popular. Aquí nos sentamos los representantes que votaron precisamente los ciudadanos de nuestro país. En esta legislatura, hemos aprobado sesenta y dos leyes, dos reformas de la Constitución -ayer se sancionó la última de ellas-, dos; ha habido cuatro en toda la historia de la democracia. […]",
+     "contesta": "Félix Bolaños García",
+     "exp": "180/001030",
+     "grupo": "Junts",
+     "s": "2026-05-20",
+     "texto": "¿Considera que el Gobierno puede legislar sin tener en cuenta el Parlamento?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Jaime Miguel De los Santos González",
+     "cargo": "Ministra de Educación, Formación Profesional y Deporte",
+     "cita": "Señor De los Santos, un poquito de respeto a la Guardia Civil (rumores.-Varios señores diputados: ¡Por favor!); le pido un poquito de respeto a la Guardia Civil. Frente a su mala educación, a la que ya nos tiene habituados (rumores), le voy a responder con el rigor y con la seriedad que se merecen el Congreso de los Diputados y, sobre todo, los españoles y las españolas. […]",
+     "contesta": "Milagros Tolón Jaime",
+     "exp": "180/001058",
+     "grupo": "PP",
+     "s": "2026-05-20",
+     "texto": "¿Tiene el Gobierno alguna política educativa?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Josep Maria Cruset Domènech",
+     "cargo": "Ministro de Hacienda",
+     "cita": "Moltes gràcies, presidenta. Gràcies, senyoria per la seua pregunta. Muchas gracias, presidenta. Gracias, señoría, por su pregunta. Lo mejor es ver las estadísticas en frío, sin valoraciones. Según Eurostat, en los últimos tres años el crecimiento promedio de la economía española ha sido del 3 %, mientras que el crecimiento promedio de la zona euro es del 1,2 %. […]",
+     "contesta": "Arcadi España García",
+     "exp": "180/001046",
+     "grupo": "Junts",
+     "s": "2026-05-20",
+     "texto": "¿Comparte la valoración económica que se ha hecho hasta ahora por parte de su Gobierno?",
+     "url": "/sesiones/2026-05-20.html"
+    },
+    {
+     "autor": "Concepción Gamarra Ruiz-Clavijo",
+     "cargo": "Ministro del Interior",
+     "cita": "Señora Gamarra, en primer lugar, mi prioridad como ministro es sufrir la tragedia de la muerte, en este caso, evidentemente, de Jerónimo y de Germán, sin instrumentalizar en modo alguno el dolor de las familias y de la Guardia Civil, y trabajando en todo momento por la Guardia Civil y por el conjunto de las Fuerzas y Cuerpos de Seguridad del Estado. […]",
+     "contesta": "Fernando Grande-Marlaska Gómez",
+     "exp": "180/001053",
+     "grupo": "PP",
+     "s": "2026-05-20",
+     "texto": "¿Cuál es la prioridad del Ministerio del Interior?",
+     "url": "/sesiones/2026-05-20.html"
+    }
+   ]
+  },
+  "tramitacion": [
+   {
+    "clase": "paso",
+    "exp": "121/000093",
+    "f": "2026-05-18",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000093",
+    "hasta": "",
+    "hito": "Comisión de Transportes y Movilidad Sostenible · Enmiendas",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas urgentes en materia de transporte (procedente del Real Decreto-ley 9/2026, de 14 de abril)",
+    "url": "/tramitacion/121-000093.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "121/000094",
+    "f": "2026-05-19",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000094",
+    "hasta": "2026-05-22",
+    "hito": "Comisión de Sanidad · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de gestión pública e integridad del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000094.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000088",
+    "f": "2026-05-19",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000088",
+    "hasta": "2026-05-21",
+    "hito": "Comisión de Interior · Dictamen",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica por la que se modifica el artículo ochenta de la Ley Orgánica 1/1979, de 26 de septiembre, General Penitenciaria, para reconocer, a efectos legales, el carácter de agentes de la autoridad a los funcionarios de la Administración Penitenciaria",
+    "url": "/tramitacion/122-000088.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000254",
+    "f": "2026-05-19",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000254",
+    "hasta": "2026-05-26",
+    "hito": "Mesa del Congreso · Acuerdo subsiguiente a la toma en consideración",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica contra la ocupación ilegal de inmuebles y para la convivencia vecinal y la protección de la seguridad de las personas y cosas en las comunidades de propietarios",
+    "url": "/tramitacion/122-000254.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000280",
+    "f": "2026-05-19",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000280",
+    "hasta": "2026-05-26",
+    "hito": "Mesa del Congreso · Acuerdo subsiguiente a la toma en consideración",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de modificación de la Ley Orgánica 5/1985, de 19 de junio, del Régimen Electoral General, para adaptarla a la reforma del apartado 3 del artículo 69 de la Constitución",
+    "url": "/tramitacion/122-000280.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000281",
+    "f": "2026-05-19",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000281",
+    "hasta": "2026-05-22",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley para la modificación de los requisitos de exigibilidad del reintegro de prestaciones indebidas de la Ley General de la Seguridad Social y la Ley del Ingreso Mínimo Vital",
+    "url": "/tramitacion/122-000281.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000011",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000011",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Familias",
+    "url": "/tramitacion/121-000011.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000021",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000021",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de universalidad del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000021.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000024",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000024",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan las medidas de suspensión de lanzamientos sobre la vivienda habitual para la protección de los colectivos vulnerables (procedente del Real Decreto-ley 1/2024, de 14 de mayo)",
+    "url": "/tramitacion/121-000024.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000026",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000026",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley del Cine y de la Cultura Audiovisual",
+    "url": "/tramitacion/121-000026.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000027",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000027",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para la simplificación y mejora del nivel asistencial de la protección por desempleo, y para completar la transposición de la Directiva (UE) 2019/1158 del Parlamento Europeo y del Consejo, de 20 de junio de 2019, relativa a la conciliación de la vida familiar y la vida profesional de los progenitores y los cuidadores, y por la que se deroga la Directiva 2010/18/UE del Consejo (procedente del Real Decreto-ley 2/2024, de 21 de mayo)",
+    "url": "/tramitacion/121-000027.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000028",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000028",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas de promoción del uso del transporte público colectivo terrestre por parte de los jóvenes para los viajes realizados en el periodo estival de 2024 (procedente del Real Decreto-ley 3/2024, de 4 de junio)",
+    "url": "/tramitacion/121-000028.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000029",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000029",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifican diversas normas para consolidar la equidad y cohesión del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000029.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000032",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000032",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan determinadas medidas para afrontar las consecuencias económicas y sociales derivadas de los conflictos en Ucrania y Oriente Próximo y se adoptan medidas urgentes en materia fiscal, energética y social (procedente del Real Decreto-ley 4/2024, de 26 de junio)",
+    "url": "/tramitacion/121-000032.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000035",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000035",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de restablecimiento de la Comisión Nacional de la Energía, A.A.I",
+    "url": "/tramitacion/121-000035.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000037",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000037",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 17/2006, de 5 de junio, de la radio y la televisión de titularidad estatal, para adoptar medidas urgentes relativas al régimen jurídico aplicable a la Corporación RTVE (procedente del Real Decreto-ley 5/2024, de 22 de octubre)",
+    "url": "/tramitacion/121-000037.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000038",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000038",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de información empresarial sobre sostenibilidad, mediante la que se modifican el Código de Comercio, la Ley de Sociedades de Capital y la Ley de Auditoría de Cuentas",
+    "url": "/tramitacion/121-000038.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000039",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000039",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes de respuesta ante los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 6/2024, de 5 de noviembre)",
+    "url": "/tramitacion/121-000039.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000040",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000040",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000040.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000041",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000041",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica por la que se modifica la Ley Orgánica 5/2000, de 12 de enero, reguladora de la responsabilidad penal de los menores, complementaria de la Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000041.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000042",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000042",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para el impulso del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 7/2024, de 11 de noviembre)",
+    "url": "/tramitacion/121-000042.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000043",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000043",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Industria y Autonomía Estratégica",
+    "url": "/tramitacion/121-000043.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000044",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000044",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes complementarias en el marco del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 8/2024, de 28 de noviembre)",
+    "url": "/tramitacion/121-000044.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000045",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000045",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley para la mejora de la compatibilidad de la pensión de jubilación con el trabajo (procedente del Real Decreto-ley 11/2024, de 23 de diciembre)",
+    "url": "/tramitacion/121-000045.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000047",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000047",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes en materia económica, de transporte, de Seguridad Social, y para hacer frente a situaciones de vulnerabilidad (procedente del Real Decreto-ley 1/2025, de 28 de enero)",
+    "url": "/tramitacion/121-000047.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000048",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000048",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de acciones colectivas para la protección y defensa de los derechos e intereses de los consumidores y usuarios",
+    "url": "/tramitacion/121-000048.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000049",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000049",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de administradores y compradores de créditos y por la que se modifican la Ley de Medidas de Reforma del Sistema Financiero, la Ley de contratos de crédito al consumo, la Ley de ordenación, supervisión y solvencia de entidades de crédito, la Ley reguladora de los contratos de crédito inmobiliario, y el texto refundido de la Ley Concursal",
+    "url": "/tramitacion/121-000049.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000050",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000050",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de prevención del consumo de bebidas alcohólicas y de sus efectos en las personas menores de edad",
+    "url": "/tramitacion/121-000050.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000055",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000055",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes para la garantía del interés superior de la infancia y adolescencia ante situaciones de contingencias migratorias extraordinarias (procedente del Real Decreto-ley 2/2025, de 18 de marzo)",
+    "url": "/tramitacion/121-000055.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000056",
+    "f": "2026-05-20",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000056",
+    "hasta": "2026-05-27",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-20 se amplía hasta el 2026-05-27",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se establece el programa de incentivos ligados a la movilidad eléctrica (MOVES III) para el año 2025 (procedente del Real Decreto-ley 3/2025, de 1 de abril)",
+    "url": "/tramitacion/121-000056.html"
+   }
+  ],
+  "votaciones": {
+   "ajustadas": [
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Mixto (Sra. Belarra Urteaga), referida a la política del Gobierno en materia educativa. Se vota en los términos de la enmienda transaccional presentada por el Grupo Parlamentario Socialista, el Grupo Parlamentario Republicano, el Grupo Parlamentario EH Bildu y el Grupo Parlamentario Mixto (Sra. Belarra Urteaga).",
+     "f": "2026-05-20",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion180/20260520/Votacion006/VOT_20260520142328.json",
+     "margen": 1,
+     "n": 6,
+     "s": 180,
+     "sub": "",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      169,
+      170,
+      8,
+      3
+     ],
+     "url": "/votaciones/2026-05-20-v180-6.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición no de Ley del Grupo Parlamentario Plurinacional SUMAR, para frenar la especulación inmobiliaria y garantizar el acceso a una vivienda digna. Se vota en los términos de la enmienda transaccional presentada por el Grupo Parlamentario Socialista y el Grupo Parlamentario Plurinacional SUMAR.",
+     "f": "2026-05-20",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion180/20260520/Votacion005/VOT_20260520142326.json",
+     "margen": 1,
+     "n": 5,
+     "s": 180,
+     "sub": "",
+     "titulo": "Proposiciones no de Ley.",
+     "tot": [
+      169,
+      170,
+      8,
+      3
+     ],
+     "url": "/votaciones/2026-05-20-v180-5.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley del Grupo Parlamentario Popular en el Congreso, Orgánica contra la ocupación ilegal de inmuebles y para la convivencia vecinal y la protección de la seguridad de las personas y cosas en las comunidades de propietarios.",
+     "f": "2026-05-19",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion179/20260519/Votacion001/VOT_20260519203502.json",
+     "margen": 7,
+     "n": 1,
+     "s": 179,
+     "sub": "",
+     "titulo": "Toma en consideración de Proposiciones de Ley.",
+     "tot": [
+      171,
+      164,
+      11,
+      4
+     ],
+     "url": "/votaciones/2026-05-19-v179-1.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre las políticas en materia de vivienda de este Gobierno.",
+     "f": "2026-05-20",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion180/20260520/Votacion009/VOT_20260520142333.json",
+     "margen": 8,
+     "n": 9,
+     "s": 180,
+     "sub": "Votación separada por puntos. Punto 3.",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      177,
+      169,
+      1,
+      3
+     ],
+     "url": "/votaciones/2026-05-20-v180-9.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición no de Ley del Grupo Parlamentario Socialista, relativa al parque público de vivienda y al refuerzo de la transparencia y los mecanismos de control en los procesos de adjudicación de vivienda protegida.",
+     "f": "2026-05-20",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion180/20260520/Votacion004/VOT_20260520142324.json",
+     "margen": 11,
+     "n": 4,
+     "s": 180,
+     "sub": "Votación separada por puntos. Resto de la Proposición no de Ley.",
+     "titulo": "Proposiciones no de Ley.",
+     "tot": [
+      164,
+      175,
+      7,
+      4
+     ],
+     "url": "/votaciones/2026-05-20-v180-4.html"
+    }
+   ],
+   "disidencias": [
+    {
+     "asent": false,
+     "asunto": "Moción consecuencia de interpelación urgente del Grupo Parlamentario Popular en el Congreso, sobre las políticas en materia de vivienda de este Gobierno.",
+     "f": "2026-05-20",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion180/20260520/Votacion011/VOT_20260520142336.json",
+     "margen": 138,
+     "n": 11,
+     "personas": [
+      {
+       "grupo": "PSOE",
+       "nombre": "Andrea Canelo Matito",
+       "slug": "andrea-canelo-matito",
+       "voto": "N",
+       "voto_grupo": "A"
+      }
+     ],
+     "s": 180,
+     "sub": "Votación separada por puntos. Punto 5.",
+     "titulo": "Mociones consecuencia de interpelaciones urgentes.",
+     "tot": [
+      183,
+      45,
+      119,
+      3
+     ],
+     "url": "/votaciones/2026-05-20-v180-11.html"
+    }
+   ],
+   "n_disidencias": 1,
+   "total": 15
+  }
+ },
+ "semana": "2026-S21",
+ "version": 1
+}

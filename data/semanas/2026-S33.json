@@ -1,0 +1,47 @@
+{
+ "desde": "2026-08-10",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-08-16",
+ "secciones": {
+  "cifra": {
+   "asunto": "",
+   "fuente": "",
+   "regla": 4,
+   "texto": "nombramientos y ceses publicados en el BOE",
+   "url": "/nombramientos/",
+   "valor": 23
+  },
+  "nombramientos": {
+   "ceses": 1,
+   "lista": [
+    {
+     "acto": "cese",
+     "cargo": "Coordinadora para Asuntos Jurídicos en la Representación Permanente de España ante la Unión Europea",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-08-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-17378",
+     "persona": "María Dolores Villar Guzmán",
+     "rango": "Orden",
+     "url": "/personas/maria-dolores-villar-guzman.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Coordinadora para Asuntos Jurídicos en la Representación Permanente de España ante la Unión Europea",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-08-10",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-17381",
+     "persona": "Sonsoles Centeno Huerta",
+     "rango": "Orden",
+     "url": "/personas/sonsoles-centeno-huerta.html"
+    }
+   ],
+   "nombramientos": 21,
+   "resto": 21,
+   "total": 23
+  }
+ },
+ "semana": "2026-S33",
+ "version": 1
+}

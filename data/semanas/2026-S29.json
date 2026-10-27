@@ -1,0 +1,718 @@
+{
+ "desde": "2026-07-13",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-07-19",
+ "secciones": {
+  "cifra": {
+   "asunto": "Real Decreto-ley 16/2026, de 16 de junio, de medidas para garantizar la prestación del servicio público encomendado a la Corporación Radio Televisión Española, S.A., S.M.E",
+   "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion051/VOT_20260714202056.json",
+   "regla": 1,
+   "texto": "votos de diferencia decidieron la votación más ajustada del Pleno: 172 a favor y 178 en contra",
+   "url": "/votaciones/2026-07-14-v192-51.html",
+   "valor": 6
+  },
+  "nombramientos": {
+   "ceses": 7,
+   "lista": [
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-07-13",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15204",
+     "persona": "Pablo María Lucas Murillo de la Cueva",
+     "rango": "Acuerdo",
+     "url": "/personas/pablo-maria-lucas-murillo-de-la-cueva.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Magistrada de Enlace ante las autoridades de los Estados Unidos de América, con acreditación extendida ante las autoridades competentes de Canadá",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-07-13",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15205",
+     "persona": "María de las Heras García",
+     "rango": "Orden",
+     "url": "/personas/maria-de-las-heras-garcia.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Adjunto al miembro nacional de España en Eurojust",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-07-15",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15383",
+     "persona": "Jorge Ángel Espina Ramos",
+     "rango": "Real Decreto",
+     "url": "/personas/jorge-angel-espina-ramos.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Teniente Fiscal de la Fiscalía de la Comunidad Autónoma de Canarias",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-07-15",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15384",
+     "persona": "Demetrio Pintado Marrero",
+     "rango": "Real Decreto",
+     "url": "/personas/demetrio-pintado-marrero.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Adjunto al miembro nacional de España en Eurojust",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-07-15",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15385",
+     "persona": "María de las Heras García",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-de-las-heras-garcia.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza vacante de segunda categoría de la Fiscalía Provincial de Madrid",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-07-15",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15386",
+     "persona": "Juan Hernández Villalba",
+     "rango": "Real Decreto",
+     "url": "/personas/juan-hernandez-villalba.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Consejera de la Autoridad Administrativa Independiente para la Investigación Técnica de Accidentes e Incidentes ferroviarios, marítimos y de aviación civil",
+     "emisor": "MINISTERIO DE TRANSPORTES Y MOVILIDAD SOSTENIBLE",
+     "fecha": "2026-07-15",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15387",
+     "persona": "María Teresa Lumbreras Encinas",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-teresa-lumbreras-encinas.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-07-16",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15468",
+     "persona": "José Daniel Mira-Perceval Verdú",
+     "rango": "Acuerdo",
+     "url": "/personas/jose-daniel-mira-perceval-verdu.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente del Tribunal Superior de Justicia de Canarias",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-07-17",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15580",
+     "persona": "Juan Avello Formoso",
+     "rango": "Real Decreto",
+     "url": "/personas/juan-avello-formoso.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-07-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15684",
+     "persona": "José Luis Costa Pillado",
+     "rango": "Acuerdo",
+     "url": "/personas/jose-luis-costa-pillado.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-07-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15685",
+     "persona": "Mauricio Manuel Murillo García-Atance",
+     "rango": "Acuerdo",
+     "url": "/personas/mauricio-manuel-murillo-garcia-atance.html"
+    }
+   ],
+   "nombramientos": 33,
+   "resto": 35,
+   "total": 46
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-07-14",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/14/pdfs/BOE-A-2026-15303.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15303",
+    "titular": "CAMBIA DE EMPLEO PÚBLICO VASCO",
+    "titulo": "Ley 5/2026, de 25 de junio, de Medidas para la Normalización Lingüística, por la que se modifica la Ley 11/2022, de 1 de diciembre, de Empleo Público Vasco.",
+    "url": "/normas/BOE-A-2026-15303.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-14",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/14/pdfs/BOE-A-2026-15304.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15304",
+    "titular": "REGULACIÓN DE LOS FESTEJOS TAURINOS TRADICIONALES DE FOMENTO EN EUSKADI",
+    "titulo": "Ley 6/2026, de 25 de junio, de Regulación de los Festejos Taurinos Tradicionales de Fomento en Euskadi.",
+    "url": "/normas/BOE-A-2026-15304.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15463.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15463",
+    "titular": "LA GRATUIDAD DE LOS ESTUDIOS OFICIALES DE GRADO UNIVERSITARIO O ESTUDIOS SUPERIORES EQUIVALENTES",
+    "titulo": "Ley 3/2026, de 1 de julio, de la gratuidad de los estudios oficiales de grado universitario o estudios superiores equivalentes en La Rioja.",
+    "url": "/normas/BOE-A-2026-15463.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/17/pdfs/BOE-A-2026-15579.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15579",
+    "titular": "MEDIDAS URGENTES: ACELERAR PROYECTOS ESTRATÉGICOS: 500.000 EUROS",
+    "titulo": "Ley 4/2026, de 11 de junio, de medidas urgentes para acelerar proyectos estratégicos que contribuyan a la transformación económica de las Illes Balears y de otras medidas de simplificación y racionalización administrativas.",
+    "url": "/normas/BOE-A-2026-15579.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/18/pdfs/BOE-A-2026-15678.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15678",
+    "titular": "INSTITUTO DE LA FILMOTECA NACIONAL DE CATALUÑA",
+    "titulo": "Ley 4/2026, de 11 de mayo, del Instituto de la Filmoteca Nacional de Cataluña.",
+    "url": "/normas/BOE-A-2026-15678.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/18/pdfs/BOE-A-2026-15679.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15679",
+    "titular": "MEDIDAS URGENTES: APOYO AL SECTOR AGRARIO Y FORESTAL",
+    "titulo": "Ley 5/2026, de 20 de mayo, de medidas urgentes de apoyo al sector agrario y forestal.",
+    "url": "/normas/BOE-A-2026-15679.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/18/pdfs/BOE-A-2026-15680.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15680",
+    "titular": "TERCER SECTOR SOCIAL",
+    "titulo": "Ley 6/2026, de 28 de mayo, del tercer sector social.",
+    "url": "/normas/BOE-A-2026-15680.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/18/pdfs/BOE-A-2026-15681.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15681",
+    "titular": "MODIFICACIÓN DE FERROVIARIA, CON RELACIÓN AL RÉGIMEN SANCIONADOR DE LAS CONDUCTAS: 900.000 EUROS",
+    "titulo": "Ley 7/2026, de 4 de junio, de modificación de la Ley 4/2006, ferroviaria, con relación al régimen sancionador de las conductas que deslucen o deterioran las infraestructuras ferroviarias.",
+    "url": "/normas/BOE-A-2026-15681.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/18/pdfs/BOE-A-2026-15683.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-15683",
+    "titular": "LA GENERALITAT, DE MEDIDAS URGENTES FRENTE A LA HIPERREGULACIÓN: 2.500.000 EUROS",
+    "titulo": "Ley 3/2026, de 29 de junio, de la Generalitat, de medidas urgentes frente a la hiperregulación, la agilización de procedimientos y la garantía de la unidad de mercado.",
+    "url": "/normas/BOE-A-2026-15683.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15457.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15457",
+    "titular": "POR EL QUE SE CREA Y REGULA EL COMITÉ ORGANIZADOR DE «ESPAÑA PAÍS INVITADO EN LA HANNOVER MESSE 2027»",
+    "titulo": "Real Decreto 589/2026, de 15 de julio, por el que se crea y regula el Comité Organizador de «España País Invitado en la Hannover Messe 2027».",
+    "url": "/normas/BOE-A-2026-15457.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15458.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15458",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES: 60.000.000 EUROS",
+    "titulo": "Real Decreto 590/2026, de 15 de julio, por el que se regula la concesión directa de subvenciones para el desarrollo de las actuaciones de adaptación al riesgo de inundación en los municipios afectados por la DANA incluidos en el anexo del Real Decreto-ley 6/2024, de 5 de noviembre, y asociados a áreas con riesgo potencial significativo de inundación.",
+    "url": "/normas/BOE-A-2026-15458.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15459.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15459",
+    "titular": "NUEVAS REGLAS PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN A LA COMUNIDAD AUTÓNOMA DE CANARIAS",
+    "titulo": "Real Decreto 591/2026, de 15 de julio, por el que se regula la concesión directa de una subvención a la Comunidad Autónoma de Canarias para la financiación del funcionamiento de plantas potabilizadoras de agua situadas en su territorio.",
+    "url": "/normas/BOE-A-2026-15459.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15460.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15460",
+    "titular": "NUEVAS REGLAS PARA EL RÉGIMEN JURÍDICO DE LAS ENTIDADES DEL TERCER SECTOR, EN VIGOR EL 28 DE AGOSTO",
+    "titulo": "Real Decreto 592/2026, de 15 de julio, por el que se regula el régimen jurídico de las entidades del Tercer Sector de Acción Social colaboradoras con la Administración General del Estado.",
+    "url": "/normas/BOE-A-2026-15460.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15461.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15461",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN: DIEZ DÍAS PARA PRESENTARSE",
+    "titulo": "Real Decreto 594/2026, de 15 de julio, por el que se regula la concesión directa de una subvención a la Fundació Barcelona Mobile World Capital Foundation.",
+    "url": "/normas/BOE-A-2026-15461.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-16",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/16/pdfs/BOE-A-2026-15462.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15462",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN POR RAZONES: 800.000,00 EUROS",
+    "titulo": "Real Decreto 595/2026, de 15 de julio, por el que se regula la concesión directa de una subvención por razones de interés público, social y económico para la organización del South Summit España 2026 en Madrid.",
+    "url": "/normas/BOE-A-2026-15462.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/17/pdfs/BOE-A-2026-15576.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15576",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES A ENTIDADES RELACIONADAS",
+    "titulo": "Real Decreto 593/2026, de 15 de julio, por el que se regula la concesión directa de subvenciones a entidades relacionadas con la investigación y el conocimiento.",
+    "url": "/normas/BOE-A-2026-15576.html"
+   }
+  ],
+  "preguntas": {
+   "contestadas": [
+    {
+     "autores": [
+      "Hispán Iglesias de Ussel, Pablo",
+      "Hoyo Juliá, Belén"
+     ],
+     "cita": "",
+     "contestada": "2026-07-14",
+     "dias": 8,
+     "exp": "184/040924",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-07-06",
+     "titulo": "Gestiones, viajes y declaraciones que tiene previsto realizar el Ministro de Asuntos Exteriores, Unión Europea y Cooperación para garantizar la asistencia de los Presidentes de Argentina, Chile, El Salvador, Colombia y P",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F040924"
+    },
+    {
+     "autores": [
+      "Mejías Sánchez, Carina",
+      "Mariscal Zabala, Manuel"
+     ],
+     "cita": "",
+     "contestada": "2026-07-14",
+     "dias": 7,
+     "exp": "184/041162",
+     "grupo": "Vox",
+     "pdf": "",
+     "publicada": "2026-07-07",
+     "titulo": "Efectos que tiene para RTVE que la modificación de su régimen legal se haya aprobado mediante el Real Decreto-ley 16/2026, en lugar de a través de una ley tramitada por el procedimiento legislativo ordinario, así como ci",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F041162"
+    }
+   ],
+   "n_contestadas": 2
+  },
+  "tramitacion": [
+   {
+    "clase": "paso",
+    "exp": "121/000064",
+    "f": "2026-07-14",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000064",
+    "hasta": "2026-09-09",
+    "hito": "Senado",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española",
+    "url": "/tramitacion/121-000064.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000215",
+    "f": "2026-07-14",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000215",
+    "hasta": "2026-07-23",
+    "hito": "Comisión de Trabajo, Eco. Social, Inclusión, S.Social y Migraciones · Aprobación con competencia legislativa plena",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley para el impulso de la inclusión laboral de las personas con discapacidad a través de la cuota de reserva de empleo en las empresas",
+    "url": "/tramitacion/122-000215.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000295",
+    "f": "2026-07-14",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000295",
+    "hasta": "2026-07-17",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica para el reconocimiento y mejora de los derechos de sindicación y negociación colectiva de los empleados públicos de la Policía Nacional",
+    "url": "/tramitacion/122-000295.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000296",
+    "f": "2026-07-14",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000296",
+    "hasta": "2026-07-17",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica por la que se modifica la Ley Orgánica 10/1995, de 23 de noviembre, del Código Penal, con relación a la sustitución del cumplimiento de la pena impuesta a delincuentes extranjeros por su expulsión del territorio nacional y a la pérdida de nacionalidad española no de origen",
+    "url": "/tramitacion/122-000296.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "RDL 16/2026",
+    "f": "2026-07-14",
+    "fuente": "",
+    "hasta": "2026-07-14",
+    "hito": "Pleno · Convalidación o derogación",
+    "tipo": "Real Decreto-ley",
+    "titulo": "Real Decreto-ley 16/2026, de 16 de junio, de medidas para garantizar la prestación del servicio público encomendado a la Corporación Radio Televisión Española, S.A., S.M.E",
+    "url": "/tramitacion/rdl-16-2026.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "RDL 17/2026",
+    "f": "2026-07-14",
+    "fuente": "",
+    "hasta": "2026-07-14",
+    "hito": "Pleno · Convalidación o derogación",
+    "tipo": "Real Decreto-ley",
+    "titulo": "Real Decreto-ley 17/2026, de 23 de junio, de medidas extraordinarias para el fortalecimiento y consolidación del Sistema para la Autonomía y Atención a la Dependencia",
+    "url": "/tramitacion/rdl-17-2026.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000295",
+    "f": "2026-07-17",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000295",
+    "hasta": "2026-10-06",
+    "hito": "Gobierno · Contestación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica para el reconocimiento y mejora de los derechos de sindicación y negociación colectiva de los empleados públicos de la Policía Nacional",
+    "url": "/tramitacion/122-000295.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000296",
+    "f": "2026-07-17",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000296",
+    "hasta": "2026-10-06",
+    "hito": "Gobierno · Contestación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica por la que se modifica la Ley Orgánica 10/1995, de 23 de noviembre, del Código Penal, con relación a la sustitución del cumplimiento de la pena impuesta a delincuentes extranjeros por su expulsión del territorio nacional y a la pérdida de nacionalidad española no de origen",
+    "url": "/tramitacion/122-000296.html"
+   }
+  ],
+  "votaciones": {
+   "ajustadas": [
+    {
+     "asent": false,
+     "asunto": "Real Decreto-ley 16/2026, de 16 de junio, de medidas para garantizar la prestación del servicio público encomendado a la Corporación Radio Televisión Española, S.A., S.M.E.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion051/VOT_20260714202056.json",
+     "margen": 6,
+     "n": 51,
+     "s": 192,
+     "sub": "",
+     "titulo": "Convalidación o derogación de Reales Decretos-leyes.",
+     "tot": [
+      172,
+      178,
+      0,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-51.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de Ley Orgánica de reforma de la Ley Orgánica 10/1995, de 23 de noviembre, del Código Penal para la protección de la libertad de expresión.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion056/VOT_20260714202105.json",
+     "margen": 7,
+     "n": 56,
+     "s": 192,
+     "sub": "Enmiendas a la totalidad de texto alternativo. Enmienda a la totalidad de texto alternativo presentada por el Grupo Parlamentario Popular en el Congreso.",
+     "titulo": "Debates de totalidad de iniciativas legislativas.",
+     "tot": [
+      171,
+      178,
+      0,
+      1
+     ],
+     "url": "/votaciones/2026-07-14-v192-56.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion049/VOT_20260714202052.json",
+     "margen": 7,
+     "n": 49,
+     "s": 192,
+     "sub": "Corrección técnica. Enmienda de corrección técnica nº1 presentada por el Grupo Parlamentario Plurinacional SUMAR.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      178,
+      171,
+      0,
+      1
+     ],
+     "url": "/votaciones/2026-07-14-v192-49.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion004/VOT_20260714201935.json",
+     "margen": 9,
+     "n": 4,
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Mixto (Sra. Belarra Urteaga) Enmienda 59.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      167,
+      176,
+      7,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-4.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion048/VOT_20260714202050.json",
+     "margen": 10,
+     "n": 48,
+     "s": 192,
+     "sub": "Enmienda presentada por el Grupo Parlamentario Socialista y el Grupo Parlamentario Plurinacional SUMAR. Enmienda transaccional en Comisión nº12.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      179,
+      169,
+      2,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-48.html"
+    }
+   ],
+   "disidencias": [
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion048/VOT_20260714202050.json",
+     "margen": 10,
+     "n": 48,
+     "personas": [
+      {
+       "grupo": "PP",
+       "nombre": "Inmaculada Marín Aparicio",
+       "slug": "inmaculada-marin-aparicio",
+       "voto": "A",
+       "voto_grupo": "N"
+      },
+      {
+       "grupo": "PP",
+       "nombre": "Ricardo Tarno Blanco",
+       "slug": "ricardo-tarno-blanco",
+       "voto": "S",
+       "voto_grupo": "N"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmienda presentada por el Grupo Parlamentario Socialista y el Grupo Parlamentario Plurinacional SUMAR. Enmienda transaccional en Comisión nº12.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      179,
+      169,
+      2,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-48.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion047/VOT_20260714202048.json",
+     "margen": 285,
+     "n": 47,
+     "personas": [
+      {
+       "grupo": "Vox",
+       "nombre": "Ángel López Maraver",
+       "slug": "angel-lopez-maraver",
+       "voto": "N",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario VOX Votación en bloque de las enmiendas.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      32,
+      317,
+      0,
+      1
+     ],
+     "url": "/votaciones/2026-07-14-v192-47.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion042/VOT_20260714202040.json",
+     "margen": 297,
+     "n": 42,
+     "personas": [
+      {
+       "grupo": "PNV",
+       "nombre": "Joseba Andoni Agirretxea Urresti",
+       "slug": "joseba-andoni-agirretxea-urresti",
+       "voto": "S",
+       "voto_grupo": "N"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Republicano, el Grupo Parlamentario Euskal Herria Bildu y el Grupo Parlamentario Mixto (Sr. Rego Candamil) Enmienda 310.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      26,
+      323,
+      0,
+      1
+     ],
+     "url": "/votaciones/2026-07-14-v192-42.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion031/VOT_20260714202023.json",
+     "margen": 281,
+     "n": 31,
+     "personas": [
+      {
+       "grupo": "PP",
+       "nombre": "María del Mar Sánchez Sierra",
+       "slug": "maria-del-mar-sanchez-sierra",
+       "voto": "S",
+       "voto_grupo": "N"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Junts per Catalunya Enmienda 181.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      16,
+      297,
+      37,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-31.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion029/VOT_20260714202021.json",
+     "margen": 230,
+     "n": 29,
+     "personas": [
+      {
+       "grupo": "PNV",
+       "nombre": "Idoia Sagastizabal Unzetabarrenetxea",
+       "slug": "idoia-sagastizabal-unzetabarrenetxea",
+       "voto": "N",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Junts per Catalunya Enmienda 174.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      57,
+      287,
+      6,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-29.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion013/VOT_20260714201953.json",
+     "margen": 289,
+     "n": 13,
+     "personas": [
+      {
+       "grupo": "EH Bildu",
+       "nombre": "Jon Iñarritu García",
+       "slug": "jon-inarritu-garcia",
+       "voto": "A",
+       "voto_grupo": "S"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Vasco (EAJ-PNV) Enmienda 19.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      28,
+      317,
+      5,
+      0
+     ],
+     "url": "/votaciones/2026-07-14-v192-13.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proyecto de Ley por la que se modifican el Texto Refundido de la Ley General de derechos de las personas con discapacidad y de su inclusión social, aprobado por el Real Decreto Legislativo 1/2013, de 29 de noviembre, y la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia, para la extensión y refuerzo de los derechos de las personas con discapacidad a la inclusión, la autonomía y la accesibilidad universal conforme al artículo 49 de la Constitución Española.",
+     "f": "2026-07-14",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion192/20260714/Votacion010/VOT_20260714201946.json",
+     "margen": 298,
+     "n": 10,
+     "personas": [
+      {
+       "grupo": "PP",
+       "nombre": "Cristina Agüera Gago",
+       "slug": "cristina-aguera-gago",
+       "voto": "A",
+       "voto_grupo": "N"
+      }
+     ],
+     "s": 192,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Mixto (Sr. Rego Candamil) Resto de las enmiendas.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas legislativas.",
+     "tot": [
+      25,
+      323,
+      1,
+      1
+     ],
+     "url": "/votaciones/2026-07-14-v192-10.html"
+    }
+   ],
+   "n_disidencias": 7,
+   "total": 56
+  }
+ },
+ "semana": "2026-S29",
+ "version": 1
+}

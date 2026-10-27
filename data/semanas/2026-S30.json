@@ -1,0 +1,570 @@
+{
+ "desde": "2026-07-20",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-07-26",
+ "secciones": {
+  "cifra": {
+   "asunto": "Proposición de reforma del Reglamento del Congreso",
+   "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion004/VOT_20260723211934.json",
+   "regla": 1,
+   "texto": "votos de diferencia decidieron la votación más ajustada del Pleno: 170 a favor y 177 en contra",
+   "url": "/votaciones/2026-07-23-v193-4.html",
+   "valor": 7
+  },
+  "nombramientos": {
+   "ceses": 4,
+   "lista": [
+    {
+     "acto": "cese",
+     "cargo": "Presidenta de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15951",
+     "persona": "Cani Fernández Vicién",
+     "rango": "Real Decreto",
+     "url": "/personas/cani-fernandez-vicien.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Consejero de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15952",
+     "persona": "Carlos Aguilar Paredes",
+     "rango": "Real Decreto",
+     "url": "/personas/carlos-aguilar-paredes.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Consejero de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15953",
+     "persona": "Josep María Salas i Prat",
+     "rango": "Real Decreto",
+     "url": "/personas/josep-maria-salas-i-prat.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15954",
+     "persona": "Juan José Ganuza Fernández",
+     "rango": "Real Decreto",
+     "url": "/personas/juan-jose-ganuza-fernandez.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Consejera de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15955",
+     "persona": "Carmen Balsa Pascual",
+     "rango": "Real Decreto",
+     "url": "/personas/carmen-balsa-pascual.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Consejero de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15956",
+     "persona": "Joan Capdevila i Esteve",
+     "rango": "Real Decreto",
+     "url": "/personas/joan-capdevila-i-esteve.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Consejera de la Comisión Nacional de los Mercados y la Competencia",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15957",
+     "persona": "Marina Echebarría Sáenz",
+     "rango": "Real Decreto",
+     "url": "/personas/marina-echebarria-saenz.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Director del Organismo Autónomo Instituto Nacional de Administración Pública",
+     "emisor": "MINISTERIO PARA LA TRANSFORMACIÓN DIGITAL Y DE LA FUNCIÓN PÚBLICA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15958",
+     "persona": "Manuel Pastor Sainz-Pardo",
+     "rango": "Real Decreto",
+     "url": "/personas/manuel-pastor-sainz-pardo.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Directora del Organismo Autónomo Instituto Nacional de Administración Pública",
+     "emisor": "MINISTERIO PARA LA TRANSFORMACIÓN DIGITAL Y DE LA FUNCIÓN PÚBLICA",
+     "fecha": "2026-07-22",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15959",
+     "persona": "Lorena González Olivares",
+     "rango": "Real Decreto",
+     "url": "/personas/lorena-gonzalez-olivares.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrada de la Audiencia Provincial de Ciudad Real",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-07-24",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-16096",
+     "persona": "María Jesús Alarcón Barcos",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-jesus-alarcon-barcos.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrada",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-07-25",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-16176",
+     "persona": "Lourdes Menéndez González-Palenzuela",
+     "rango": "Acuerdo",
+     "url": "/personas/lourdes-menendez-gonzalez-palenzuela.html"
+    }
+   ],
+   "nombramientos": 43,
+   "resto": 44,
+   "total": 55
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16019.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-16019",
+    "titular": "APOYO A LA EMPRESA FAMILIAR: 153.000 EUROS",
+    "titulo": "Ley 3/2026, de 30 de junio, de Apoyo a la Empresa Familiar.",
+    "url": "/normas/BOE-A-2026-16019.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/21/pdfs/BOE-A-2026-15852.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15852",
+    "titular": "QUEDA FIJADO: EL CURSO DE ESPECIALIZACIÓN DE FORMACIÓN: EL CURSO DE ESPECIALIZACIÓN DE FORMACIÓN PROFESIONAL DE…",
+    "titulo": "Real Decreto 587/2026, de 15 de julio, por el que se establece el Curso de especialización de Formación Profesional de Grado Medio en Montaje integral y mantenimiento de bicicletas y vehículos de movilidad personal y se fijan los aspectos básicos del currículo.",
+    "url": "/normas/BOE-A-2026-15852.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/21/pdfs/BOE-A-2026-15853.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15853",
+    "titular": "QUEDA FIJADO: EL CURSO DE ESPECIALIZACIÓN DE FORMACIÓN: EL CURSO DE ESPECIALIZACIÓN DE FORMACIÓN PROFESIONAL DE…",
+    "titulo": "Real Decreto 588/2026, de 15 de julio, por el que se establece el Curso de especialización de Formación Profesional de Grado Superior en Desarrollo de equipos y sistemas electrónicos y se fijan los aspectos básicos del currículo.",
+    "url": "/normas/BOE-A-2026-15853.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-22",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/22/pdfs/BOE-A-2026-15943.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-15943",
+    "titular": "COLLAR DE LA INSIGNE ORDEN DEL TOISÓN DE ORO PARA SU EXCELENCIA MARCELO NUNO DUARTE REBELO",
+    "titulo": "Real Decreto 629/2026, de 21 de julio, por el que se concede el Collar de la Insigne Orden del Toisón de Oro a Su Excelencia Marcelo Nuno Duarte Rebelo de Sousa, expresidente de la República Portuguesa.",
+    "url": "/normas/BOE-A-2026-15943.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16010.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16010",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE AYUDAS A LA COMPRA: 1.000 EUROS",
+    "titulo": "Real Decreto 609/2026, de 22 de julio, por el que se regula la concesión directa de ayudas a la compra de vehículos eléctricos y electrificados (Programa Auto+).",
+    "url": "/normas/BOE-A-2026-16010.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16011.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16011",
+    "titular": "CAMBIA DIVERSOS REALES DECRETOS EN LA MATERIA HASTA EL 31 DE DICIEMBRE DE 2030",
+    "titulo": "Real Decreto 611/2026, de 22 de julio, de impulso a la descarbonización del sector del transporte y fomento de los combustibles renovables, y por el que se modifican diversos reales decretos en la materia.",
+    "url": "/normas/BOE-A-2026-16011.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16012.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16012",
+    "titular": "NUEVAS REGLAS PARA LA CONCESIÓN DIRECTA DE DOS SUBVENCIONES: 1.200.000,00 EUROS",
+    "titulo": "Real Decreto 612/2026, de 22 de julio, por el que se regula la concesión directa de dos subvenciones, a la Universidad Politécnica de Madrid y al Servicio de Salud del Principado de Asturias, en materia de seguridad minera.",
+    "url": "/normas/BOE-A-2026-16012.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16013.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16013",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES A DIVERSAS ENTIDADES: 9.062.790 EUROS",
+    "titulo": "Real Decreto 613/2026, de 22 de julio, por el que se regula la concesión directa de subvenciones a diversas entidades para la promoción de las artes escénicas y musicales en el año 2026.",
+    "url": "/normas/BOE-A-2026-16013.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16014.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16014",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES A ENTIDADES RELACIONADAS: 23.661.710 EUROS",
+    "titulo": "Real Decreto 614/2026, de 22 de julio, por el que se regula la concesión directa de subvenciones a entidades relacionadas con el patrimonio cultural y las bellas artes en el año 2026.",
+    "url": "/normas/BOE-A-2026-16014.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16015.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16015",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES DESTINADAS: 7.390.600 EUROS",
+    "titulo": "Real Decreto 615/2026, de 22 de julio, por el que se regula la concesión directa de subvenciones destinadas a actuaciones de interés público, social y cultural relacionadas con diversos ámbitos de la cultura en el año 2026.",
+    "url": "/normas/BOE-A-2026-16015.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16016.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16016",
+    "titular": "CAMBIAN LAS REGLAS: LA ESTRUCTURA ORGÁNICA BÁSICA DEL MINISTERIO",
+    "titulo": "Real Decreto 616/2026, de 22 de julio, por el que se modifica el Real Decreto 501/2024, de 21 de mayo, por el que se desarrolla la estructura orgánica básica del Ministerio de Inclusión, Seguridad Social y Migraciones, y se modifica el Real Decreto 1009/2023, de 5 de diciembre, por el que se establece la estructura orgánica básica de los departamentos ministeriales.",
+    "url": "/normas/BOE-A-2026-16016.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-23",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/23/pdfs/BOE-A-2026-16017.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16017",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN: 559.550,00 EUROS",
+    "titulo": "Real Decreto 617/2026, de 22 de julio, por el que se regula la concesión directa de una subvención a la Federación Española de Municipios y Provincias en el marco del Acuerdo sobre Fondos de Formación para el Empleo de las Administraciones Públicas.",
+    "url": "/normas/BOE-A-2026-16017.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-24",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/24/pdfs/BOE-A-2026-16094.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16094",
+    "titular": "CAMBIA DIVERSAS NORMAS EN MATERIA DE INTERVENCIONES DE LOS SECTORES DE FRUTAS: 4.750 EUROS",
+    "titulo": "Real Decreto 610/2026, de 22 de julio, por el que se modifican diversas normas en materia de intervenciones de los sectores de frutas y hortalizas, vitivinícola y apícola en el marco del Plan Estratégico de la Política Agrícola Común.",
+    "url": "/normas/BOE-A-2026-16094.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-25",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/25/pdfs/BOE-A-2026-16172.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16172",
+    "titular": "APROBADO: EL ESTATUTO DE LA AUTORIDAD INDEPENDIENTE PARA LA IGUALDAD DE TRATO Y LA NO DISCRIMINACIÓN",
+    "titulo": "Real Decreto 606/2026, de 22 de julio, por el que se aprueba el Estatuto de la Autoridad Independiente para la Igualdad de Trato y la No Discriminación, A.A.I.",
+    "url": "/normas/BOE-A-2026-16172.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-07-25",
+    "fuente": "https://www.boe.es/boe/dias/2026/07/25/pdfs/BOE-A-2026-16173.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-16173",
+    "titular": "NUEVAS REGLAS PARA LA RELACIÓN LABORAL ESPECIAL DE LAS PERSONAS ARTISTAS",
+    "titulo": "Real Decreto 607/2026, de 22 de julio, por el que se regula la relación laboral especial de las personas artistas que desarrollan su actividad en las artes escénicas, audiovisuales y musicales, así como de las personas que realizan actividades técnicas o auxiliares necesarias para el desarrollo de dicha actividad.",
+    "url": "/normas/BOE-A-2026-16173.html"
+   }
+  ],
+  "tramitacion": [
+   {
+    "clase": "paso",
+    "exp": "121/000103",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000103",
+    "hasta": "2026-07-27",
+    "hito": "Comisión Constitucional · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica de protección civil de los derechos al honor, a la intimidad personal y familiar y a la propia imagen",
+    "url": "/tramitacion/121-000103.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "121/000104",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000104",
+    "hasta": "2026-07-27",
+    "hito": "Comisión de Derechos Sociales y Consumo · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas extraordinarias para el fortalecimiento y consolidación del Sistema para la Autonomía y Atención a la Dependencia (procedente del Real Decreto-ley 17/2026, de 23 de junio)",
+    "url": "/tramitacion/121-000104.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "121/000105",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000105",
+    "hasta": "2026-07-27",
+    "hito": "Comisión de Economía, Comercio y Transformación Digital · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifican diversas leyes para la digitalización y modernización del sector financiero",
+    "url": "/tramitacion/121-000105.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "121/000106",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000106",
+    "hasta": "2026-07-27",
+    "hito": "Comisión de Igualdad · Publicación",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica de medidas en materia de violencia vicaria",
+    "url": "/tramitacion/121-000106.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000072",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000072",
+    "hasta": "2026-09-10",
+    "hito": "Pleno · Aprobación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley sobre concesión de nacionalidad española a las y los saharauis nacidos bajo la administración española",
+    "url": "/tramitacion/122-000072.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000143",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000143",
+    "hasta": "2026-09-15",
+    "hito": "Concluido - (Aprobado con modificaciones)",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de modificación del Real Decreto Legislativo 8/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley General de la Seguridad Social en relación con las mutualidades alternativas reguladas en sus disposiciones adicionales 18ª y 19ª",
+    "url": "/tramitacion/122-000143.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000215",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000215",
+    "hasta": "",
+    "hito": "Senado",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley para el impulso de la inclusión laboral de las personas con discapacidad a través de la cuota de reserva de empleo en las empresas",
+    "url": "/tramitacion/122-000215.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000233",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000233",
+    "hasta": "2026-09-15",
+    "hito": "Concluido - (Aprobado con modificaciones)",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de modificación de normas sobre el programa de cribado neonatal del Sistema Nacional de Salud y de otra normativa",
+    "url": "/tramitacion/122-000233.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000297",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000297",
+    "hasta": "2026-07-27",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley sobre el reconocimiento de la profesión de biólogo y trabajador social como profesión sanitaria",
+    "url": "/tramitacion/122-000297.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000298",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000298",
+    "hasta": "2026-07-27",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica por la que se modifica la disposición adicional décima de la Ley Orgánica 4/2000, de 11 de enero, sobre derechos y libertades de los extranjeros en España y su integración social, en materia de rechazo en frontera en las ciudades de Ceuta y Melilla",
+    "url": "/tramitacion/122-000298.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "125/000005",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=125%2F000005",
+    "hasta": "2026-09-15",
+    "hito": "Concluido - (Aprobado sin modificaciones)",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de transferencia de la titularidad y competencias de la autopista del Atlántico (AP-9) a la Comunidad Autónoma de Galicia",
+    "url": "/tramitacion/125-000005.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "125/000016",
+    "f": "2026-07-23",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=125%2F000016",
+    "hasta": "2026-07-27",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de modificación de la Ley 3/2024, de 30 de octubre, para mejorar la calidad de vida de personas con esclerosis lateral amiotrófica y otras enfermedades o procesos de alta complejidad y curso irreversible, y otras normas relativas a la atención de las personas en situación de dependencia",
+    "url": "/tramitacion/125-000016.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "RDL 18/2026",
+    "f": "2026-07-23",
+    "fuente": "",
+    "hasta": "2026-07-23",
+    "hito": "Pleno · Convalidación o derogación",
+    "tipo": "Real Decreto-ley",
+    "titulo": "Real Decreto-ley 18/2026, de 29 de junio, por el que se adoptan determinadas medidas en el marco del Plan Integral de Respuesta a la Crisis en Oriente Medio",
+    "url": "/tramitacion/rdl-18-2026.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "RDL 19/2026",
+    "f": "2026-07-23",
+    "fuente": "",
+    "hasta": "2026-07-23",
+    "hito": "Pleno · Convalidación o derogación",
+    "tipo": "Real Decreto-ley",
+    "titulo": "Real Decreto-ley 19/2026, de 29 de junio, de medidas urgentes en materia de jubilación parcial anticipada del personal laboral de las Administraciones Públicas y de complemento de insularidad en Illes Balears",
+    "url": "/tramitacion/rdl-19-2026.html"
+   }
+  ],
+  "votaciones": {
+   "ajustadas": [
+    {
+     "asent": false,
+     "asunto": "Proposición de reforma del Reglamento del Congreso.",
+     "f": "2026-07-23",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion004/VOT_20260723211934.json",
+     "margen": 7,
+     "n": 4,
+     "s": 193,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario Popular en el Congreso. Resto de las enmiendas.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas de reforma del Reglamento del Congreso.",
+     "tot": [
+      170,
+      177,
+      0,
+      3
+     ],
+     "url": "/votaciones/2026-07-23-v193-4.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Votación conjunta de las enmiendas a la totalidad de devolución al Proyecto de Ley Orgánica de medidas excepcionales de sostenibilidad financiera para las comunidades autónomas de régimen común, presentadas por los Grupos Parlamentarios VOX y Popular en el Congreso.",
+     "f": "2026-07-23",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion019/VOT_20260723212000.json",
+     "margen": 8,
+     "n": 19,
+     "s": 193,
+     "sub": "",
+     "titulo": "Debates de totalidad de iniciativas legislativas.",
+     "tot": [
+      170,
+      178,
+      0,
+      2
+     ],
+     "url": "/votaciones/2026-07-23-v193-19.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de reforma del Reglamento del Congreso.",
+     "f": "2026-07-23",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion010/VOT_20260723211944.json",
+     "margen": 8,
+     "n": 10,
+     "s": 193,
+     "sub": "Votación del dictamen. Votación del dictamen.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas de reforma del Reglamento del Congreso.",
+     "tot": [
+      178,
+      170,
+      0,
+      2
+     ],
+     "url": "/votaciones/2026-07-23-v193-10.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de reforma del Reglamento del Congreso.",
+     "f": "2026-07-23",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion002/VOT_20260723211930.json",
+     "margen": 8,
+     "n": 2,
+     "s": 193,
+     "sub": "Enmiendas presentadas por el Grupo Parlamentario VOX. Resto de las enmiendas.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas de reforma del Reglamento del Congreso.",
+     "tot": [
+      170,
+      178,
+      0,
+      2
+     ],
+     "url": "/votaciones/2026-07-23-v193-2.html"
+    },
+    {
+     "asent": false,
+     "asunto": "Proposición de reforma del Reglamento del Congreso.",
+     "f": "2026-07-23",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion011/VOT_20260723211945.json",
+     "margen": 9,
+     "n": 11,
+     "s": 193,
+     "sub": "Votación de totalidad. Votación final de totalidad, a los efectos de la disposición final segunda del Reglamento.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas de reforma del Reglamento del Congreso.",
+     "tot": [
+      178,
+      169,
+      1,
+      2
+     ],
+     "url": "/votaciones/2026-07-23-v193-11.html"
+    }
+   ],
+   "disidencias": [
+    {
+     "asent": false,
+     "asunto": "Proposición de reforma del Reglamento del Congreso.",
+     "f": "2026-07-23",
+     "fuente": "https://www.congreso.es/webpublica/opendata/votaciones/Leg15/Sesion193/20260723/Votacion011/VOT_20260723211945.json",
+     "margen": 9,
+     "n": 11,
+     "personas": [
+      {
+       "grupo": "PP",
+       "nombre": "Beatriz Álvarez Fanjul",
+       "slug": "beatriz-alvarez-fanjul",
+       "voto": "A",
+       "voto_grupo": "N"
+      }
+     ],
+     "s": 193,
+     "sub": "Votación de totalidad. Votación final de totalidad, a los efectos de la disposición final segunda del Reglamento.",
+     "titulo": "Dictámenes de Comisiones sobre iniciativas de reforma del Reglamento del Congreso.",
+     "tot": [
+      178,
+      169,
+      1,
+      2
+     ],
+     "url": "/votaciones/2026-07-23-v193-11.html"
+    }
+   ],
+   "n_disidencias": 1,
+   "total": 20
+  }
+ },
+ "semana": "2026-S30",
+ "version": 1
+}
