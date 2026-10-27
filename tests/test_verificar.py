@@ -619,11 +619,15 @@ class TestEjecucion(unittest.TestCase):
         # Y con (p) correcciones, probada en test_correcciones.py.
         self.sin_corr = mock.patch.object(v, "comprobar_correcciones", return_value=[])
         self.sin_corr.start()
+        # Y con (o) enlazado, probada en test_enlazado.py.
+        self.sin_enlazado = mock.patch.object(v, "comprobar_enlazado", return_value=[])
+        self.sin_enlazado.start()
 
     def tearDown(self):
         self.sin_semana.stop()
         self.sin_migas.stop()
         self.sin_corr.stop()
+        self.sin_enlazado.stop()
         self.s.cerrar()
 
     def test_ci_verde(self):
