@@ -6,13 +6,15 @@ módulos de páginas (ARQUITECTURA.md §4): reciben `h` y devuelven las URL para
 el sitemap. La fecha de modificación es la de la última revisión del texto
 (REVISION), no la del pase: así no cambian ni un byte si nadie las toca.
 
-Datos del titular: todavía no hay actividad económica y no se publican. En su
-lugar va el marcador literal <TITULAR_PENDIENTE> (en el HTML, escapado para
-que se vea). tools/verificar.py lo señala como AVISO, no como grave: es una
-decisión del mantenedor, no un fallo del código. Antes de cualquier actividad
-económica (suscripción de pago o publicidad), la LSSI (art. 10) exige el
-nombre o denominación, el NIF y los datos de contacto del titular en el aviso
-legal: entonces se sustituye el marcador y el aviso desaparece.
+Titular (TC-002, versión mínima, octubre de 2026): no se publican nombre, NIF
+ni domicilio. Las páginas legales describen el proyecto de forma neutra, con un
+único contacto (contacto@terceracamara.es), y declaran que se actualizarán
+antes de abrir un boletín o cualquier cobro. tools/verificar.py falla (grave)
+si el HTML publicado contiene una dirección @gmail.com o el nombre del
+mantenedor. La descripción de Cloudflare Web Analytics se ciñe a lo que dice
+su documentación oficial (developers.cloudflare.com/web-analytics/about/ y
+/web-analytics/data-metrics/data-origin-and-collection/, revisadas el
+27-10-2026); no se afirma nada que no esté ahí.
 
 Servicios de terceros citados en /seguir/: comprobados en octubre de 2026 en
 sus propias webs; solo se citan los que tienen uso gratuito.
@@ -20,9 +22,8 @@ sus propias webs; solo se citan los que tienen uso gratuito.
 
 from __future__ import annotations
 
-REVISION = "2026-10-08"
-CONTACTO = "datos@terceracamara.es"
-TITULAR = "&lt;TITULAR_PENDIENTE&gt;"
+REVISION = "2026-10-27"
+CONTACTO = "contacto@terceracamara.es"
 
 
 SEGUIR = f"""
@@ -84,77 +85,66 @@ la semana se puede leer en la web.</p>
 
 
 PRIVACIDAD = f"""
-<h2 class="rotulo">Responsable</h2>
-<p>Titular del sitio: {TITULAR}. Contacto para cualquier cuestión sobre datos personales:
-<a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
+<h2 class="rotulo">Quién responde</h2>
+<p>La Tercera Cámara es un proyecto editorial independiente de fiscalización ciudadana basado
+en datos públicos del BOE y de las Cortes Generales. Contacto único para cualquier cuestión
+sobre datos personales: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
 
-<h2 class="rotulo">Qué medimos de tu visita</h2>
-<p>Contamos visitas con <b>Cloudflare Web Analytics</b>. No usa cookies ni guarda nada en tu
-navegador (ni <i>localStorage</i>, ni <i>sessionStorage</i>, ni identificadores), no crea un
-perfil tuyo y no te sigue entre webs. Por eso no ves ningún aviso de cookies: no hay ninguna
-que aceptar. Lo comprobamos en la web publicada al instalarlo.</p>
-<p>Cada vez que abres una página, un pequeño script envía a Cloudflare la dirección de la
-página, la de procedencia (si llegas desde otra web), el tipo de navegador, sistema operativo y
-dispositivo, el país (deducido de la conexión) y medidas de velocidad de carga. Con eso vemos
-cifras agregadas: cuántas visitas tiene cada página y de dónde llegan. Cloudflare, Inc. actúa
-como encargado del tratamiento; su política está en
-<a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">cloudflare.com/privacypolicy</a>.
-Base jurídica: el interés legítimo en saber qué páginas se leen para mejorarlas (art. 6.1.f
-RGPD), con una medición diseñada para no identificar a nadie.</p>
+<h2 class="rotulo">Datos que recoge esta web</h2>
+<p>Esta web no recoge datos personales de quien la visita: no tiene formularios, cuentas de
+usuario, comentarios, boletín por correo, publicidad ni cobros.</p>
+
+<h2 class="rotulo">Medición de visitas</h2>
+<p>Contamos visitas con <b>Cloudflare Web Analytics</b>. Según su documentación oficial, es una
+analítica «privacy-first» que no recoge ni usa datos personales de los visitantes, recoge la
+cantidad mínima de información (métricas de tiempos de carga) y Cloudflare no sigue a usuarios
+individuales entre las webs de sus clientes. Funciona con un pequeño script que se carga desde
+<i>static.cloudflareinsights.com</i> y usa la Performance API del navegador para medir páginas
+vistas y rendimiento de carga. Con eso vemos cifras agregadas. Documentación:
+<a href="https://developers.cloudflare.com/web-analytics/about/" rel="noopener" target="_blank">About</a> y
+<a href="https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/" rel="noopener" target="_blank">Data origin and collection</a>.
+Política de privacidad de Cloudflare:
+<a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">cloudflare.com/privacypolicy</a>.</p>
 
 <h2 class="rotulo">Otros servicios que intervienen al cargar la página</h2>
 <ul>
-<li><b>Alojamiento</b>: la web la sirve GitHub Pages (GitHub, Inc.). Como cualquier servidor,
-recibe tu dirección IP para entregarte la página y puede conservarla en registros técnicos y de
-seguridad. <a href="https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener" target="_blank">Declaración de privacidad de GitHub</a>.</li>
+<li><b>Alojamiento y entrega</b>: la web la aloja GitHub Pages (GitHub, Inc.) y se entrega a
+través de la red de Cloudflare. Como cualquier servidor, reciben tu dirección IP para
+entregarte la página. <a href="https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener" target="_blank">Declaración de privacidad de GitHub</a>.</li>
 <li><b>Tipografías</b>: las fuentes de letra se cargan desde Google Fonts, que recibe tu IP al
 descargarlas. <a href="https://policies.google.com/privacy?hl=es" rel="noopener" target="_blank">Política de privacidad de Google</a>.</li>
 </ul>
-<p>Esta web no tiene formularios que envíen datos, cuentas de usuario ni comentarios, y no usa publicidad.</p>
-
-<h2 class="rotulo">Si te suscribes al boletín (cuando exista)</h2>
-<p>Estamos preparando un boletín semanal por correo. Cuando se abra la suscripción, se tratarán
-estos datos y solo estos:</p>
-<ul>
-<li><b>Tu correo electrónico</b>, para enviarte el boletín.</li>
-<li><b>La prueba de tu consentimiento</b>: fecha y hora de la suscripción y de la confirmación,
-y la dirección IP desde la que confirmaste. La suscripción tendrá <b>doble confirmación</b>: no
-recibirás nada hasta pulsar el enlace del correo de confirmación.</li>
-<li><b>Estadísticas de envío</b> que genere el proveedor (entregas, rebotes, bajas).</li>
-</ul>
-<p>Base jurídica: tu consentimiento (art. 6.1.a RGPD), que puedes retirar en cualquier momento
-con el enlace de baja que llevará cada envío. Los datos se conservarán mientras sigas suscrito y
-se borrarán al darte de baja, salvo la prueba del consentimiento y de la baja durante el plazo
-en que se pudieran exigir responsabilidades. El <b>encargado del tratamiento</b> será el
-proveedor de envío de correo, que se identificará aquí, con su ubicación y su política, antes de
-abrir la suscripción. Nunca se venderán ni cederán las direcciones a nadie.</p>
 
 <h2 class="rotulo">Datos de cargos públicos</h2>
-<p>La web publica nombres y actividad de diputados, miembros del Gobierno y personas nombradas o
-cesadas en el BOE, tal como aparecen en las publicaciones oficiales del Congreso y del BOE, para
-informar sobre la actividad pública. Si apareces en ellas y quieres ejercer tus derechos, escribe
-a la dirección de contacto.</p>
+<p>La web publica nombres y actividad de diputados, miembros del Gobierno y personas
+nombradas o cesadas en el BOE, tal como aparecen en las publicaciones oficiales del BOE y de las
+Cortes, para informar sobre la actividad pública. El criterio es el mismo para todos los grupos
+y partidos.</p>
 
-<h2 class="rotulo">Tus derechos</h2>
-<p>Puedes pedir acceso a tus datos, su rectificación o supresión, la limitación u oposición a su
-tratamiento y su portabilidad escribiendo a <a href="mailto:{CONTACTO}">{CONTACTO}</a>, indicando
-qué derecho ejerces. Contestaremos en el plazo de un mes. Si no quedas conforme, puedes reclamar
-ante la Agencia Española de Protección de Datos
-(<a href="https://www.aepd.es/" rel="noopener" target="_blank">aepd.es</a>).</p>
+<h2 class="rotulo">Correcciones y derechos</h2>
+<p>Para pedir una corrección o ejercer los derechos que te reconozca la normativa de protección
+de datos (por ejemplo, acceso, rectificación o supresión), escribe a
+<a href="mailto:{CONTACTO}">{CONTACTO}</a> indicando qué pides. También puedes dirigirte a la
+Agencia Española de Protección de Datos (<a href="https://www.aepd.es/" rel="noopener" target="_blank">aepd.es</a>).</p>
+
+<h2 class="rotulo">Cambios en este texto</h2>
+<p>Este texto describe la web tal como funciona hoy. Se actualizará antes de abrir un boletín
+por correo o cualquier forma de cobro, y antes de cualquier otro cambio en los datos que se
+tratan.</p>
 """
 
 
 AVISO_LEGAL = f"""
-<h2 class="rotulo">Titular</h2>
-<p>Titular del sitio terceracamara.es: {TITULAR} (nombre y NIF: {TITULAR}).
-Contacto: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
+<h2 class="rotulo">Quién está detrás</h2>
+<p>terceracamara.es es un proyecto editorial independiente de fiscalización ciudadana basado en
+datos públicos del BOE y de las Cortes Generales. Contacto único:
+<a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
 
 <h2 class="rotulo">Qué es este proyecto</h2>
-<p>La Tercera Cámara es un proyecto ciudadano e independiente que resume y ordena lo que
-publican el Boletín Oficial del Estado y el Congreso de los Diputados. No tiene actividad
-económica: no cobra suscripciones, no vende nada y no lleva publicidad. No está vinculado a
-ninguna administración, partido ni grupo parlamentario.</p>
-
+<p>La Tercera Cámara resume y ordena lo que publican el Boletín Oficial del Estado y el Congreso
+de los Diputados, con el mismo criterio para todo el arco político. No tiene actividad
+económica: no cobra suscripciones, no vende nada, no lleva publicidad y no tiene boletín por
+correo. No está vinculado a ninguna administración, partido ni grupo parlamentario.</p>
 <h2 class="rotulo">No es una fuente oficial</h2>
 <p>Lo que publicamos es un resumen. <b>Solo tiene validez oficial el texto publicado por cada
 institución</b>: el BOE en <a href="https://www.boe.es/" rel="noopener" target="_blank">boe.es</a>
@@ -167,17 +157,25 @@ asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 
 <h2 class="rotulo">Fuentes y condiciones de reutilización</h2>
 <ul>
-<li><b>Boletín Oficial del Estado</b>: datos abiertos y textos de boe.es, reutilizados conforme
-a la Ley 37/2007, sobre reutilización de la información del sector público, y a las condiciones
-de reutilización del propio BOE: se cita la fuente, no se altera el contenido de lo que se
-presenta como oficial y se indica la fecha de la información.</li>
+<li><b>Boletín Oficial del Estado</b>: documentos de la sede electrónica de la Agencia Estatal
+Boletín Oficial del Estado, reutilizados conforme a sus
+<a href="https://www.boe.es/informacion/aviso_legal/index.php" rel="noopener" target="_blank">condiciones de reutilización</a>
+(licencia tipo aprobada por Resolución de la Agencia de 27 de junio de 2024): se cita la fuente con
+enlace a <a href="https://www.boe.es" rel="noopener" target="_blank">www.boe.es</a> («Basado en datos de la
+Agencia Estatal Boletín Oficial del Estado»; «Fuente de los datos: Agencia Estatal Boletín Oficial del
+Estado» en las citas literales), no se desnaturaliza el sentido de la información, se indica la fecha de
+publicación de cada documento y lo que es elaboración propia se distingue de lo literal, que va entre
+comillas. Solo tienen carácter oficial y auténtico los textos publicados en la edición electrónica del
+BOE; los textos de legislación consolidada que se citen tienen carácter meramente informativo. No se
+insertan páginas del BOE dentro de esta web.</li>
 <li><b>Congreso de los Diputados</b>: datos abiertos, buscador de iniciativas, Diario de
 Sesiones y Boletín Oficial de las Cortes Generales de congreso.es, reutilizados con las mismas
 condiciones: cita de la fuente, sin desnaturalizar el sentido de la información y con la fecha
 de la última actualización.</li>
 <li><b>Senado</b>: no ofrece por ahora acceso automatizado a sus datos y no se recoge.</li>
 </ul>
-<p>Ninguna de estas instituciones patrocina ni respalda este proyecto.</p>
+<p>Este es un medio no oficial, sin relación con la Agencia Estatal Boletín Oficial del Estado ni con
+las Cortes Generales. Ninguna de estas instituciones participa en este proyecto, lo patrocina ni lo respalda.</p>
 
 <h2 class="rotulo">Responsabilidad y enlaces</h2>
 <p>Ponemos cuidado en que la información sea fiel a la fuente y se corrige en cuanto se detecta
@@ -185,8 +183,15 @@ un error, pero no se garantiza que esté libre de ellos ni actualizada al minuto
 webs de terceros se ofrecen para consultar la fuente o un servicio útil; no somos responsables
 de su contenido.</p>
 
+<h2 class="rotulo">Correcciones</h2>
+<p>Si encuentras un error o quieres pedir una rectificación, escribe a
+<a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
+
 <h2 class="rotulo">Privacidad</h2>
 <p>Qué se mide y qué datos se tratan está en la <a href="/privacidad.html">política de privacidad</a>.</p>
+
+<h2 class="rotulo">Cambios en este aviso</h2>
+<p>Este aviso se actualizará antes de abrir un boletín por correo o cualquier forma de cobro.</p>
 """
 
 
@@ -224,10 +229,10 @@ def generar_paginas(h: dict) -> list:
            "Sin cuentas, sin correo y sin algoritmo: elige qué seguir y tu lector te avisa.",
            SEGUIR, "WebPage")
     pagina(raiz, "privacidad.html", "privacidad.html", "Política de privacidad",
-           "Qué mide La Tercera Cámara (Cloudflare Web Analytics, sin cookies), qué datos se "
-           "tratarán en el boletín y cómo ejercer tus derechos.",
+           "Qué mide La Tercera Cámara (Cloudflare Web Analytics), qué servicios intervienen "
+           "y cómo pedir correcciones o ejercer tus derechos.",
            "Información legal", "Política de privacidad",
-           "Sin cookies, sin perfiles y sin publicidad. Esto es lo que se mide y lo que se tratará.",
+           "Esta web no recoge datos personales. Esto es lo que se mide y quién interviene.",
            PRIVACIDAD, "WebPage")
     pagina(raiz, "aviso-legal.html", "aviso-legal.html", "Aviso legal",
            "Naturaleza del proyecto La Tercera Cámara, fuentes oficiales y condiciones de "

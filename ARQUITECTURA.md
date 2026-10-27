@@ -116,7 +116,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `feeds.py` | Canales Atom por entidad (diputado, provincia, materia, iniciativa en tramitación, ministerio): formato, orden, tope de 50 y `id` estables. No importa `build.py`; lo usa `build.renderizar_feeds()` (§13). | — | `/diputados/<slug>.xml`, `/provincias/<slug>.xml`, `/temas/<slug>.xml`, `/tramitacion/<slug>.xml`, `/preguntas/ministerio-<slug>.xml` |
 | `semana.py` | Resumen semanal: `construir(semana_iso)` agrega lunes a domingo (leyes y reales decretos, votaciones ajustadas y disidencias, preguntas, tramitación, nombramientos, cifra de la semana); `asegurar()` congela las semanas cerradas; `generar_paginas()` las pinta (§13). | `data/semanas/AAAA-Snn.json` | `/semana/`, `/semana/AAAA-Snn.html`, `/semana/feed.xml` |
 | `tools/semana_email.py` | Versión para correo del resumen semanal (HTML con tablas y CSS en línea, 600 px, sin JS, y texto plano) desde el mismo JSON. No envía nada. | — | artefacto `semana-correo` de `publicar.yml` |
-| `paginas_fijas.py` | Textos fijos: cómo seguir la web con RSS y las páginas legales, con el marcador `<TITULAR_PENDIENTE>` (§13). | — | `/seguir/`, `/privacidad.html`, `/aviso-legal.html` |
+| `paginas_fijas.py` | Textos fijos: cómo seguir la web con RSS y las páginas legales, con texto neutro sin datos del titular (§13). | — | `/seguir/`, `/privacidad.html`, `/aviso-legal.html` |
 | `indices.py` | Componentes HTML comunes de las páginas índice (cifras, filtro, filas). | — | — |
 | `reproceso.py` | Reprocesa el histórico del BOE con varios extractores y una descarga por día. Solo toca `state/`. | `state/nombramientos.json`, `state/provincias.json` | — |
 | `redaccion.py` | Capa Gemini: propone titular y entradilla, verifica cifras y fechas contra la fuente, cachea. Si no hay clave o cuota, no hace nada. | `state/redaccion.json` | — |
@@ -469,7 +469,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | | Comprobación | Nivel |
 |---|---|---|
 | a | `carpetas`: cada carpeta de primer nivel con HTML y cada fichero de la web de la raíz están en `tools/publicables.txt` (§8) | grave |
-| b | `html`: marcadores sin sustituir (`{{`, `}}`, `__SSR_…__`, `None`, `undefined`, `NaN`, `<EMAIL_DE_CONTACTO>`, fuera de `<script>`), JSON-LD estricto, `<title>`, meta description y canonical de `https://terceracamara.es`, enlaces internos a ficheros inexistentes. `<TITULAR_PENDIENTE>` es solo **aviso**: es un hueco decidido por el mantenedor, no un fallo del código (§13) | grave (titular pendiente: aviso) |
+| b | `html`: marcadores sin sustituir (`{{`, `}}`, `__SSR_…__`, `None`, `undefined`, `NaN`, `<EMAIL_DE_CONTACTO>`, fuera de `<script>`), JSON-LD estricto, `<title>`, meta description y canonical de `https://terceracamara.es`, enlaces internos a ficheros inexistentes. `<TITULAR_PENDIENTE>` y datos personales del mantenedor (`@gmail.com` o su nombre, patrón construido en `verificar.py` sin escribirlo en claro) (§13) | grave |
 | c | `sitemap`: XML válido, URL del dominio que existen, sin duplicados, ≤ 50.000 por fichero | grave |
 | d | `indice`: `datos/indice*.json` válido y < 1 MB | grave |
 | e | `titulares` de `data/<fecha>.json` (BOE y Cortes): fin en preposición/artículo/conjunción, nombres de fichero o códigos, «Y N ASUNTOS MÁS», longitud, palabra cortada | grave (muy largo: aviso); en el CI, aviso |
@@ -663,9 +663,43 @@ para revisarla. No envía nada.
 
 `/privacidad.html` y `/aviso-legal.html` (`paginas_fijas.py`), enlazadas en el
 pie de todas las plantillas. No hay actividad económica y los datos del
-titular no se publican: en su lugar va el marcador literal
-`<TITULAR_PENDIENTE>`, que `verificar.py` señala como aviso.
+titular no se publican (TC-002, versión mínima, 27-10-2026): texto neutro de
+proyecto editorial independiente, contacto único contacto@terceracamara.es,
+sin boletín, publicidad ni cobro, y la declaración de que se actualizará antes
+de abrir boletín o cobro. La analítica se describe solo con lo que dice la
+documentación oficial de Cloudflare Web Analytics. `verificar.py` falla si
+reaparece `<TITULAR_PENDIENTE>`, una dirección `@gmail.com` o el nombre del
+mantenedor.
 
 **Antes de cualquier actividad económica (suscripción o publicidad), el aviso
 legal debe incluir los datos del titular exigidos por la LSSI.**
+
+### Atribución y reutilización del BOE (TC-021)
+
+Condiciones: https://www.boe.es/informacion/aviso_legal/index.php (licencia
+tipo, Resolución de la AEBOE de 27-06-2024). El pie común de `template*.html`
+lleva «Basado en datos de la Agencia Estatal Boletín Oficial del Estado» (y
+«Fuente de los datos: …» para las citas literales, entre comillas) con enlace
+a https://www.boe.es, distingue la elaboración propia, remite a la fecha de
+cada documento y avisa de que es un medio no oficial sin relación con la
+AEBOE ni las Cortes; los textos consolidados se declaran meramente
+informativos. Nada de iframes del BOE (su aviso legal prohíbe los «framings»).
+`verificar.py` (grave) y `tests/test_atribucion.py` fallan si una página o
+plantilla pierde la atribución con enlace o el aviso, o mete un iframe de
+boe.es.
+
+**Rutas de boe.es que pide el código** (revisado contra
+https://www.boe.es/robots.txt el 27-10-2026; `User-agent: *`, ~14 000 líneas,
+casi todas exclusiones de documentos concretos con datos personales):
+
+| Ruta | Dónde | Qué es | robots.txt |
+|---|---|---|---|
+| `/boe/dias/AAAA/MM/DD/index.php` (y `?d=N`) | `build.fetch_boe` | sumario del día en HTML | permitida en general; excluye ~1 700 días concretos (en 2026: `/boe/dias/2026/03/02/`) |
+| `/diario_boe/txt.php?id=BOE-X-AAAA-N` | `build.texto_disposicion` | texto íntegro de una disposición | permitida en general; excluye ~1 700 identificadores concretos |
+| `/datosabiertos/api/boe/sumario/AAAAMMDD` | `reproceso.py` | API de datos abiertos (sumario JSON) | sin exclusión |
+
+`txt.php?id=` también se usa como **enlace** (no descarga) en `nombramientos.py`,
+`provincias.py` y `semana.py`. El recolector diario todavía lee el sumario en
+HTML y no por la API de datos abiertos: migrarlo y saltar las rutas excluidas
+queda como tarea aparte (no se ha cambiado en TC-021).
 
