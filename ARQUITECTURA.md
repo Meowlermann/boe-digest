@@ -480,6 +480,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | j | `compartir`: cada página completa lleva `og:image` absoluta y `twitter:card=summary_large_image`; la portada, un `WebSite` con `name` y `url`; las ediciones y las normas, un `NewsArticle` con `headline`, `datePublished`, `url`, `image` y `publisher`; las fichas de `diputados/` y `personas/` (no sus índices), un `Person` con `name` (`JSONLD_EXIGIDO`) | grave |
 | k | `canonicales`: cada página completa lleva exactamente un `<link rel="canonical">`, absoluto, `https://terceracamara.es` sin `www`, igual a su propia URL (`x/index.html` → `/x/`) y presente en el sitemap; no hay dos páginas con el mismo canonical y cada URL del sitemap tiene su página. El `www` → apex lo hace el proxy de Cloudflare con un 301 que conserva ruta y consulta (comprobado el 27-10-2026; no se puede comprobar en el CI) | grave |
 | l | `alias_feed`: `rss.xml` e `index.xml` existen y son copias idénticas de `feed.xml` (los escribe `build.renderizar_feed()` con `FEED_ALIAS`; GitHub Pages no hace 301); cada página completa lleva `<link rel="alternate" type="application/rss+xml">` | grave |
+| m | `boletin`: ninguna página (texto, `<title>` ni meta description) menciona un boletín salvo como nombre de un diario oficial (Boletín Oficial…, Boletín de las Cortes, boletines oficiales) o el aviso neutro «por ahora no hay boletín por correo»; no mira el texto de la fuente (`articlebody`, `<blockquote>`, `<q>`, «…») | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -501,7 +502,7 @@ incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 (`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
-`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j), (k) y (l) sobre el
+`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j), (k), (l) y (m) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
 datos que escribió el pase diario y que ninguna PR puede corregir (la edición
@@ -618,8 +619,8 @@ Se generan antes que las páginas: `FEEDS_PAGINA` registra cada canal y
 type="application/atom+xml">` y el botón «Seguir con RSS». Ningún generador
 de páginas tiene que saber nada. Un canal sin entradas no se escribe. La
 comprobación (h) de `verificar.py` los valida todos. `/seguir/` explica qué es
-RSS, lectores gratuitos y cómo recibir los canales por correo con servicios
-gratuitos de terceros.
+RSS y lectores gratuitos, y ofrece solo RSS (`/feed.xml`): no hay boletín por
+correo ni se promete (TC-024); solo dice, neutro, que por ahora no lo hay.
 
 ### Resumen semanal (`semana.py`)
 
@@ -667,8 +668,8 @@ para revisarla. No envía nada.
 pie de todas las plantillas. No hay actividad económica y los datos del
 titular no se publican (TC-002, versión mínima, 27-10-2026): texto neutro de
 proyecto editorial independiente, contacto único contacto@terceracamara.es,
-sin boletín, publicidad ni cobro, y la declaración de que se actualizará antes
-de abrir boletín o cobro. La analítica se describe solo con lo que dice la
+sin envíos por correo, publicidad ni cobro, y la declaración de que se
+actualizará antes de cualquier cambio en eso. La analítica se describe solo con lo que dice la
 documentación oficial de Cloudflare Web Analytics. `verificar.py` falla si
 reaparece `<TITULAR_PENDIENTE>`, una dirección `@gmail.com` o el nombre del
 mantenedor.

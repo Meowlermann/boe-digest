@@ -9,15 +9,19 @@ el sitemap. La fecha de modificación es la de la última revisión del texto
 Titular (TC-002, versión mínima, octubre de 2026): no se publican nombre, NIF
 ni domicilio. Las páginas legales describen el proyecto de forma neutra, con un
 único contacto (contacto@terceracamara.es), y declaran que se actualizarán
-antes de abrir un boletín o cualquier cobro. tools/verificar.py falla (grave)
+antes de cualquier cambio en los datos que se tratan. tools/verificar.py falla (grave)
 si el HTML publicado contiene una dirección @gmail.com o el nombre del
 mantenedor. La descripción de Cloudflare Web Analytics se ciñe a lo que dice
 su documentación oficial (developers.cloudflare.com/web-analytics/about/ y
 /web-analytics/data-metrics/data-origin-and-collection/, revisadas el
 27-10-2026); no se afirma nada que no esté ahí.
 
-Servicios de terceros citados en /seguir/: comprobados en octubre de 2026 en
-sus propias webs; solo se citan los que tienen uso gratuito.
+/seguir/ (TC-024) ofrece solo RSS: el canal de la edición (/feed.xml) y los
+canales por entidad. No promete boletín, newsletter ni suscripción por correo;
+solo dice, neutro, que por ahora no hay boletín por correo. tools/verificar.py
+(m) falla si el HTML publicado dice «boletín» fuera de «Boletín Oficial…»,
+«Boletín de las Cortes…» y ese aviso. Lectores citados: comprobados en octubre
+de 2026 en sus propias webs; solo los que tienen uso gratuito.
 """
 
 from __future__ import annotations
@@ -27,6 +31,10 @@ CONTACTO = "contacto@terceracamara.es"
 
 
 SEGUIR = f"""
+<p class="destacado">La forma de seguir esta web es <b>RSS</b>. El canal de la edición diaria
+es <a href="/feed.xml">terceracamara.es/feed.xml</a>: pégalo en tu lector y verás cada edición
+nueva en cuanto se publique.</p>
+
 <h2 class="rotulo">Qué es RSS</h2>
 <p>RSS (y su primo Atom, que es el formato que usamos) es una forma abierta y gratuita de
 seguir una web sin depender de una red social ni de un algoritmo. Cada página que se puede
@@ -66,21 +74,9 @@ seguir esta web.</p>
 <li><a href="https://feedly.com/" rel="noopener" target="_blank">Feedly</a> e <a href="https://www.inoreader.com/" rel="noopener" target="_blank">Inoreader</a><span class="ref">en el navegador y en el móvil · con plan gratuito</span></li>
 </ul>
 
-<h2 class="rotulo">Recibirlo por correo electrónico</h2>
-<p>Si prefieres el correo, hay servicios de terceros que convierten cualquier canal en avisos
-por email. No tienen relación con esta web: les das tu dirección a ellos, no a nosotros, así
-que lee su política de privacidad antes. Con uso gratuito:</p>
-<ul class="indice">
-<li><a href="https://blogtrottr.com/" rel="noopener" target="_blank">Blogtrottr</a><span class="ref">pegas la dirección del canal y tu correo; puedes elegir recibirlo al momento o en un resumen diario. El plan gratuito incluye publicidad en los correos</span></li>
-<li><a href="https://follow.it/" rel="noopener" target="_blank">follow.it</a><span class="ref">permite seguir una web o un canal por correo con una cuenta gratuita</span></li>
-<li><span>Tu propio lector</span><span class="ref">Thunderbird, arriba, deja los canales junto a tu correo sin intermediarios</span></li>
-</ul>
-<p>Comprobado en octubre de 2026. Las condiciones de servicios ajenos pueden cambiar.</p>
-
-<h2 class="rotulo">Y algún día, nuestro propio correo</h2>
-<p>Estamos preparando un boletín semanal propio. Cuando exista, se anunciará aquí y en la
-portada, siempre con suscripción voluntaria y doble confirmación. Mientras tanto, el resumen de
-la semana se puede leer en la web.</p>
+<h2 class="rotulo">¿Y por correo?</h2>
+<p>Por ahora no hay boletín por correo. Para seguir la web basta un lector RSS; no hace falta
+darnos ningún dato. El <a href="/semana/">resumen de la semana</a> se puede leer en la web.</p>
 """
 
 
@@ -92,7 +88,7 @@ sobre datos personales: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
 
 <h2 class="rotulo">Datos que recoge esta web</h2>
 <p>Esta web no recoge datos personales de quien la visita: no tiene formularios, cuentas de
-usuario, comentarios, boletín por correo, publicidad ni cobros.</p>
+usuario, comentarios, envíos por correo, publicidad ni cobros.</p>
 
 <h2 class="rotulo">Medición de visitas</h2>
 <p>Contamos visitas con <b>Cloudflare Web Analytics</b>. Según su documentación oficial, es una
@@ -128,9 +124,8 @@ de datos (por ejemplo, acceso, rectificación o supresión), escribe a
 Agencia Española de Protección de Datos (<a href="https://www.aepd.es/" rel="noopener" target="_blank">aepd.es</a>).</p>
 
 <h2 class="rotulo">Cambios en este texto</h2>
-<p>Este texto describe la web tal como funciona hoy. Se actualizará antes de abrir un boletín
-por correo o cualquier forma de cobro, y antes de cualquier otro cambio en los datos que se
-tratan.</p>
+<p>Este texto describe la web tal como funciona hoy y se actualizará antes de cualquier cambio en
+los datos que se tratan.</p>
 """
 
 
@@ -143,7 +138,7 @@ datos públicos del BOE y de las Cortes Generales. Contacto único:
 <h2 class="rotulo">Qué es este proyecto</h2>
 <p>La Tercera Cámara resume y ordena lo que publican el Boletín Oficial del Estado y el Congreso
 de los Diputados, con el mismo criterio para todo el arco político. No tiene actividad
-económica: no cobra suscripciones, no vende nada, no lleva publicidad y no tiene boletín por
+económica: no cobra suscripciones, no vende nada, no lleva publicidad y no hace envíos por
 correo. No está vinculado a ninguna administración, partido ni grupo parlamentario.</p>
 <h2 class="rotulo">No es una fuente oficial</h2>
 <p>Lo que publicamos es un resumen. <b>Solo tiene validez oficial el texto publicado por cada
@@ -191,7 +186,8 @@ de su contenido.</p>
 <p>Qué se mide y qué datos se tratan está en la <a href="/privacidad.html">política de privacidad</a>.</p>
 
 <h2 class="rotulo">Cambios en este aviso</h2>
-<p>Este aviso se actualizará antes de abrir un boletín por correo o cualquier forma de cobro.</p>
+<p>Este aviso describe la web tal como funciona hoy y se actualizará antes de cualquier cambio
+en su naturaleza o en los datos que se tratan.</p>
 """
 
 
@@ -224,9 +220,9 @@ def generar_paginas(h: dict) -> list:
 
     pagina(raiz / "seguir", "index.html", "seguir/", "Seguir La Tercera Cámara con RSS",
            "Cómo seguir a cada diputado, provincia, materia, iniciativa o ministerio con RSS, "
-           "qué lectores usar y cómo recibir los avisos por correo gratis.",
+           "qué lectores usar y cuál es el canal de la edición diaria (/feed.xml).",
            "Alertas gratuitas", "Síguelo con RSS",
-           "Sin cuentas, sin correo y sin algoritmo: elige qué seguir y tu lector te avisa.",
+           "Solo RSS: sin cuentas, sin correo y sin algoritmo. Elige qué seguir y tu lector te avisa.",
            SEGUIR, "WebPage")
     pagina(raiz, "privacidad.html", "privacidad.html", "Política de privacidad",
            "Qué mide La Tercera Cámara (Cloudflare Web Analytics), qué servicios intervienen "

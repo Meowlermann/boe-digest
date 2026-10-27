@@ -669,3 +669,53 @@ class TestEjecucion(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestBoletin(unittest.TestCase):
+    """TC-024: ninguna página promete un boletín; solo RSS."""
+
+    def _pagina(self, cuerpo, meta=""):
+        return (f'<!doctype html><html><head><title>t</title>{meta}</head>'
+                f'<body><main>{cuerpo}</main></body></html>')
+
+    def test_promesas_fallan(self):
+        for frase in ("Estamos preparando un boletín semanal propio.",
+                      "No hay boletín por correo, publicidad ni cuentas.",
+                      "Apúntate a nuestro boletín."):
+            with self.subTest(frase=frase):
+                self.assertTrue(v.problemas_boletin(self._pagina(f"<p>{frase}</p>")))
+
+    def test_meta_description_cuenta(self):
+        meta = '<meta name="description" content="Recibe el boletín cada lunes">'
+        self.assertTrue(v.problemas_boletin(self._pagina("<p>hola</p>", meta)))
+
+    def test_permitidos_pasan(self):
+        for frase in ("Basado en datos de la Agencia Estatal Boletín Oficial del Estado.",
+                      "Publicado en el Boletín de las Cortes Generales.",
+                      "Por ahora no hay boletín por correo.",
+                      "No cubre los boletines oficiales provinciales."):
+            with self.subTest(frase=frase):
+                self.assertEqual(v.problemas_boletin(self._pagina(f"<p>{frase}</p>")), [])
+
+    def test_texto_de_la_fuente_no_cuenta(self):
+        cuerpo = ('<div class="articlebody"><p>según el boletín municipal</p></div>'
+                  '<blockquote>el boletín</blockquote><p>dijo «nuestro boletín»</p>')
+        self.assertEqual(v.problemas_boletin(self._pagina(cuerpo)), [])
+
+    def test_comprobar_boletin_en_disco(self):
+        with tempfile.TemporaryDirectory() as d:
+            raiz = pathlib.Path(d)
+            (raiz / "mal.html").write_text(self._pagina("<p>Suscríbete al boletín</p>"), encoding="utf-8")
+            (raiz / "bien.html").write_text(self._pagina("<p>Boletín Oficial del Estado</p>"), encoding="utf-8")
+            h = v.comprobar_boletin(raiz, [raiz / "mal.html", raiz / "bien.html"])
+            self.assertEqual(len(h), 1)
+            self.assertEqual(h[0]["gravedad"] if "gravedad" in h[0] else v.GRAVE, v.GRAVE)
+
+    def test_paginas_fijas_sin_promesas(self):
+        sys.path.insert(0, str(RAIZ_REPO))
+        import paginas_fijas
+        for nombre in dir(paginas_fijas):
+            valor = getattr(paginas_fijas, nombre)
+            if isinstance(valor, str) and "<" in valor:
+                with self.subTest(constante=nombre):
+                    self.assertEqual(v.problemas_boletin(valor), [])
