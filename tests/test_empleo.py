@@ -157,7 +157,10 @@ class TestPaginas(unittest.TestCase):
 
     def test_sin_datos_no_hay_paginas(self):
         h, _ = h_prueba(self.carpeta)
-        self.assertEqual(em.generar_paginas(h, {"version": 1, "registros": {}, "dias": {}}), [])
+        # El pie enlaza a /empleo/: el índice existe aunque el estado esté vacío.
+        salidas = em.generar_paginas(h, {"version": 1, "registros": {}, "dias": {}})
+        self.assertEqual([s["url"] for s in salidas], ["https://terceracamara.es/empleo/"])
+        self.assertIn("Aún no hay disposiciones", (self.carpeta / "index.html").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

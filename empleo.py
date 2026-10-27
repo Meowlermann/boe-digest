@@ -251,8 +251,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     carpeta, site = h["carpeta"], h["site_url"]
     hoy = h.get("hoy") or dt.date.today().isoformat()
     regs = _regs(estado, hoy, VENTANA_PAGINAS)
-    if not regs:
-        return []
+    # Sin datos (estado aún vacío tras la fusión) se pinta igualmente el índice:
+    # el pie de todas las páginas enlaza a /empleo/.
     carpeta.mkdir(exist_ok=True)
     por_dept, por_prov = agrupar(regs)
     nombres_prov = {p["slug"]: p["nombre"] for p in h["ref_provincias"]}
@@ -289,7 +289,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     def pagina(nombre: str, titulo: str, desc: str, h1: str, entradilla: str, filas: list,
                cuerpo: str, miga_final: str) -> None:
         url = f"{site}empleo/{'' if nombre == 'index.html' else nombre}"
-        lastmod = max(r["fecha"] for r in filas)
+        lastmod = max((r["fecha"] for r in filas), default=hoy)
         miga = ('<a href="../">Portada</a> › '
                 + ('<span aria-current="page">Empleo público</span>' if nombre == "index.html" else
                    f'<a href="./">Empleo público</a> › <span aria-current="page">{esc(miga_final)}</span>'))
@@ -343,7 +343,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=DIAS_PORTADA)).isoformat()
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
     cuerpo = (f'<p>Disposiciones de los últimos {DIAS_PORTADA} días. Por organismo y por provincia, '
-              f'los últimos {VENTANA_PAGINAS}.</p>' + por_tipo(recientes)
+              f'los últimos {VENTANA_PAGINAS}.</p>' + (por_tipo(recientes) or
+              '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
               + (f'<h2 id="provincias">Por provincia</h2><ul class="ix-lista">{"".join(enlaces_prov)}</ul>'
                  if enlaces_prov else "")
