@@ -118,6 +118,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `tools/semana_email.py` | Versión para correo del resumen semanal (HTML con tablas y CSS en línea, 600 px, sin JS, y texto plano) desde el mismo JSON. No envía nada. | — | artefacto `semana-correo` de `publicar.yml` |
 | `paginas_fijas.py` | Textos fijos: cómo seguir la web con RSS y las páginas legales, con texto neutro sin datos del titular (§13). | — | `/seguir/`, `/privacidad.html`, `/aviso-legal.html` |
 | `indices.py` | Componentes HTML comunes de las páginas índice (cifras, filtro, filas). | — | — |
+| `robots_boe.py` | Respeto al robots.txt del BOE: reglas con comodines (RFC 9309), extracto commiteado `tools/robots_boe.txt` y `--actualizar` (§13, TC-023). | — | — |
 | `reproceso.py` | Reprocesa el histórico del BOE con varios extractores y una descarga por día. Solo toca `state/`. | `state/nombramientos.json`, `state/provincias.json` | — |
 | `redaccion.py` | Capa Gemini: propone titular y entradilla, verifica cifras y fechas contra la fuente, cachea. Si no hay clave o cuota, no hace nada. | `state/redaccion.json` | — |
 | `tools/verificar.py` | Comprobaciones de calidad comunes a la integración continua y a la salud diaria (§12). | `debug/salud.json` (modo diario) | — |
@@ -690,18 +691,48 @@ informativos. Nada de iframes del BOE (su aviso legal prohíbe los «framings»)
 plantilla pierde la atribución con enlace o el aviso, o mete un iframe de
 boe.es.
 
-**Rutas de boe.es que pide el código** (revisado contra
+**Rutas de boe.es que pide el código** (TC-023; revisado contra
 https://www.boe.es/robots.txt el 27-10-2026; `User-agent: *`, ~14 000 líneas,
 casi todas exclusiones de documentos concretos con datos personales):
 
 | Ruta | Dónde | Qué es | robots.txt |
 |---|---|---|---|
-| `/boe/dias/AAAA/MM/DD/index.php` (y `?d=N`) | `build.fetch_boe` | sumario del día en HTML | permitida en general; excluye ~1 700 días concretos (en 2026: `/boe/dias/2026/03/02/`) |
-| `/diario_boe/txt.php?id=BOE-X-AAAA-N` | `build.texto_disposicion` | texto íntegro de una disposición | permitida en general; excluye ~1 700 identificadores concretos |
-| `/datosabiertos/api/boe/sumario/AAAAMMDD` | `reproceso.py` | API de datos abiertos (sumario JSON) | sin exclusión |
+| `/robots.txt` | `build._boe_permitido` | las reglas, una vez por ejecución | — |
+| `/datosabiertos/api/boe/sumario/AAAAMMDD` (`Accept: application/json`) | `build.fetch_boe` (`sumario_boe_api`) y `reproceso.py` | sumario del día en JSON | sin exclusión |
+| `/diario_boe/txt.php?id=BOE-X-AAAA-N` | `build.texto_disposicion` | texto íntegro de una disposición (la API solo da texto de la legislación consolidada, no de las disposiciones del día) | permitida en general; excluye ~1 700 identificadores concretos, que no se piden |
 
-`txt.php?id=` también se usa como **enlace** (no descarga) en `nombramientos.py`,
-`provincias.py` y `semana.py`. El recolector diario todavía lee el sumario en
-HTML y no por la API de datos abiertos: migrarlo y saltar las rutas excluidas
-queda como tarea aparte (no se ha cambiado en TC-021).
+**Ya no se pide** `/boe/dias/AAAA/MM/DD/index.php` (el sumario en HTML; el
+robots.txt excluye días enteros, p. ej. `/boe/dias/2026/03/02/`): esa URL
+queda solo como **enlace** para el lector (`sourceUrl`, `PORTADA_BOE`). Tampoco
+`/diario_boe/xml.php` (excluido entero). `txt.php?id=` también aparece como
+enlace (no descarga) en `nombramientos.py`, `provincias.py` y `semana.py`.
+
+**Cómo se respeta el robots.txt.** Toda petición de `build.get()`/`post()` a
+`www.boe.es` pregunta antes a `robots_boe.permitido()`. Las reglas son las del
+robots.txt vivo; si no se puede bajar, las del extracto commiteado
+`tools/robots_boe.txt`. `urllib.robotparser` no vale (no entiende `*` ni
+`$`), así que `robots_boe.py` aplica RFC 9309: gana la regla más larga y, a
+igual longitud, `Allow`. Una URL excluida no se pide: se anota en el log y en
+`DIAG["peticiones"]` con `status: "robots.txt"` y la función devuelve `None`
+(la edición sigue, sin esa pieza). Entre dos peticiones al BOE hay al menos
+`PAUSA_MINIMA_BOE` (0,3 s), además de las pausas propias de cada recolector.
+
+**Fallos.** `fetch_boe` hace hasta 3 intentos por día (pausas de 2 y 4 s). Un
+404 es «ese día no hay BOE» y retrocede un día (hasta 3 en el pase diario). Un
+error de otro tipo (5xx, red, JSON ilegible) no retrocede: deja en el log
+`BOE: ERROR: …` con la URL y el último estado, lo guarda en
+`DIAG["boe_error"]` y la edición sale sin BOE. La API a veces mete los hijos de
+un nodo en un objeto `texto` (el 2-3-2026, la Orden APA/150/2026 colgaba de
+`departamento.texto.epigrafe`); `build._hijos` y `reproceso.sumario_api` los
+leen igual.
+
+**Comprobación en el CI** (`tests/test_robots_boe.py`, sin red, contra el
+extracto): la API del sumario está permitida para todos los días de 2026, el
+texto de disposiciones normales también, y siguen excluidos los ejemplos
+conocidos (`/boe/dias/2026/03/02/`, `txt.php?id=BOE-A-2026-4920`, `xml.php`,
+su PDF). Si el BOE cambia su robots.txt, se regenera el extracto con
+`python robots_boe.py --actualizar` (solo reglas de `*` sobre las rutas que
+lee el recolector y años >= 2025) y se revisa el diff; el test
+`test_extracto_al_dia` falla si alguien lo edita a mano. Para consultar una URL:
+`python robots_boe.py URL…`.
 
