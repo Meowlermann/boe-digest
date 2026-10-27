@@ -3802,7 +3802,33 @@ def _replace_placeholders(html: str, frag: dict) -> str:
         log(f"  AVISO: marcadores sin sustituir, se eliminan: {', '.join(sueltos)}")
         for m in sueltos:
             html = html.replace(m, "")
+    # Correcciones (TC-017): la página corregida enlaza a su entrada en
+    # /correcciones/. El registro es editorial/correcciones.json.
+    if frag.get("CANONICAL"):
+        corr = _correcciones_por_pagina()
+        if corr:
+            import registro_correcciones as rc
+            ruta = rc.ruta_de_canonical(html_mod.unescape(frag["CANONICAL"]))
+            if ruta in corr:
+                html = rc.marcar(html, corr[ruta], esc_html, fmt_date_es)
     return html
+
+
+_CORRECCIONES: dict | None = None
+
+
+def _correcciones_por_pagina() -> dict:
+    """Registro de correcciones por ruta, leído una vez por pase. Si está mal
+    formado se avisa y no se marca nada (el CI lo para en tests/test_correcciones.py)."""
+    global _CORRECCIONES
+    if _CORRECCIONES is None:
+        try:
+            import registro_correcciones as rc
+            _CORRECCIONES = rc.por_pagina(rc.cargar())
+        except Exception as exc:                              # noqa: BLE001
+            log(f"correcciones: registro ilegible ({exc}); no se marcan páginas")
+            _CORRECCIONES = {}
+    return _CORRECCIONES
 
 
 # --- Fechas de última modificación reales -----------------------------------
@@ -6823,6 +6849,17 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         })
     except Exception as exc:                                  # noqa: BLE001
         log(f"páginas fijas: no se pudieron generar ({exc})")
+    # /correcciones/ (TC-017): registro en editorial/correcciones.json.
+    try:
+        import registro_correcciones as rc
+        extras += rc.generar_pagina({
+            "esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+            "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+            "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+            "site_url": SITE_URL, "raiz": ROOT,
+        }, rc.cargar())
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"correcciones/: no se pudo generar ({exc})")
 
     renderizar_index(dias)
     entradas = renderizar_ediciones(sorted(a_pintar, key=lambda d: d["id"], reverse=True))

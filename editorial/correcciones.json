@@ -1,0 +1,4 @@
+{
+  "_leeme": "Registro de correcciones publicadas en /correcciones/ (TC-017). Cada entrada: id (único, sin espacios), fecha (AAAA-MM-DD en que se corrigió), url (ruta de la página corregida, p. ej. /ediciones/2026-10-20.html), pieza (qué pieza, texto breve), dice (lo que decía), debe_decir (lo que dice ahora) y motivo. Se añade a mano con una PR; nunca se borra una entrada.",
+  "correcciones": []
+}
