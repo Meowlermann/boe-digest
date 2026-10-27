@@ -17,13 +17,15 @@ set -euo pipefail
 GRAVES="${1:?número de graves}"
 FECHA="${2:?fecha}"
 RESUMEN="${3:?fichero con el resumen en Markdown}"
-ETIQUETA="salud"
-TITULO="Salud de la edición"
+# observabilidad.yml usa la misma lógica con otra etiqueta y otro título.
+ETIQUETA="${INCIDENCIA_ETIQUETA:-salud}"
+TITULO="${INCIDENCIA_TITULO:-Salud de la edición}"
+DESCRIPCION="${INCIDENCIA_DESCRIPCION:-Hallazgos graves de tools/verificar.py en la edición publicada}"
 # El cuerpo de una incidencia admite 65.536 caracteres.
 MAX_BYTES=60000
 
 gh label create "$ETIQUETA" --force --color D93F0B \
-  --description "Hallazgos graves de tools/verificar.py en la edición publicada" >/dev/null
+  --description "$DESCRIPCION" >/dev/null
 
 ABIERTA=$(gh issue list --label "$ETIQUETA" --state open --limit 1 \
             --json number --jq '.[0].number // empty')

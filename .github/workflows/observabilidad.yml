@@ -1,0 +1,62 @@
+name: Observabilidad de producción
+
+# TC-009. Una vez al día, después del pase de la mañana (07:40 en España),
+# comprueba en https://terceracamara.es/ que la edición del día (si hay BOE)
+# está publicada y que el feed y la portada están al día
+# (observabilidad.py). Si algo falla abre la incidencia «Edición ausente en
+# producción» (etiqueta «produccion»); si se repite, comenta; cuando todo
+# vuelve a estar bien, la cierra. GitHub avisa por correo de las incidencias
+# nuevas al dueño del repositorio. Sin secretos ni servicios externos: solo
+# el GITHUB_TOKEN del workflow y peticiones públicas.
+#
+# Cron en UTC: 09:50 UTC = 10:50 en invierno (CET) y 11:50 en verano (CEST),
+# más de 2 h después del pase de la mañana. El vigilante de despliegues
+# (vigilante.yml) sigue cubriendo las ejecuciones atascadas.
+
+on:
+  schedule:
+    - cron: "50 9 * * *"
+  workflow_dispatch:
+    inputs:
+      hoy:
+        description: "Fecha simulada AAAA-MM-DD (vacío = hoy). Sirve para probar la incidencia."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: observabilidad
+  cancel-in-progress: false
+
+jobs:
+  observar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Comprobar producción
+        id: obs
+        env:
+          HOY: ${{ inputs.hoy }}
+        run: |
+          if [ -n "$HOY" ]; then
+            python observabilidad.py --hoy "$HOY" --hora 12:00 --markdown "$RUNNER_TEMP/obs.md"
+          else
+            python observabilidad.py --markdown "$RUNNER_TEMP/obs.md"
+          fi
+          cat "$RUNNER_TEMP/obs.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Incidencia
+        if: steps.obs.outputs.graves != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          INCIDENCIA_ETIQUETA: produccion
+          INCIDENCIA_TITULO: Edición ausente en producción
+          INCIDENCIA_DESCRIPCION: Hallazgos graves de observabilidad.py sobre la web publicada
+        run: bash tools/incidencia_salud.sh "${{ steps.obs.outputs.graves }}" "${{ steps.obs.outputs.fecha }}" "$RUNNER_TEMP/obs.md"
