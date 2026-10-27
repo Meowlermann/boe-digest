@@ -31,6 +31,9 @@ Comprobaciones (las letras son las de la PR que las introdujo):
                  fechas válidas, sin entradas duplicadas, ≤ 50 entradas.
   i) semana      (solo salud diaria) La página de la semana que acaba de
                  cerrar existe.
+  j) compartir  og:image, twitter:card y JSON-LD por tipo de página.
+  k) canonicales Un canonical por página, absoluto, https, sin www, igual a
+                 su URL y presente en el sitemap; sin duplicados.
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -443,6 +446,93 @@ def comprobar_sitemap(raiz: pathlib.Path) -> list[dict]:
             if not destino_existe(raiz, loc[len(SITIO):], cache):
                 hallazgos.append(hallazgo(GRAVE, "sitemap", f"La URL no existe como fichero: {loc}",
                                           rel, "genera la página o no la pongas en el sitemap."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
+# k) Canonicales: una por página, absoluta, https, sin www, = su URL y la del sitemap
+# ---------------------------------------------------------------------------
+
+RE_CANONICAL_TODAS = re.compile(r"<link\b[^>]*\brel=\"canonical\"[^>]*>", re.I)
+# Máximo de hallazgos de canonicales que se detallan por tipo (el resto se resume).
+MAX_CANONICALES = 20
+
+
+def url_de_pagina(rel: str) -> str:
+    """URL pública de un fichero: x/index.html → /x/, x.html → /x.html (como el sitemap)."""
+    if rel == "index.html":
+        return SITIO + "/"
+    if rel.endswith("/index.html"):
+        return SITIO + "/" + rel[:-len("index.html")]
+    return SITIO + "/" + rel
+
+
+def urls_sitemap(raiz: pathlib.Path) -> set[str] | None:
+    """URL de todos los sitemap*.xml (urlset), o None si no hay sitemap."""
+    if not (raiz / "sitemap.xml").exists():
+        return None
+    urls: set[str] = set()
+    for f in sorted(raiz.glob("sitemap*.xml")):
+        try:
+            arbol = ET.parse(f).getroot()
+        except ET.ParseError:
+            continue                                      # ya lo señala (c)
+        if arbol.tag == NS_SITEMAP + "urlset":
+            urls.update((e.text or "").strip() for e in arbol.iter(NS_SITEMAP + "loc"))
+    return urls
+
+
+def comprobar_canonicales(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    """Cada página completa lleva exactamente un canonical, absoluto, https, del
+    dominio sin www, igual a su propia URL; esa URL está en el sitemap; no hay
+    dos páginas con el mismo canonical, y toda URL del sitemap tiene página
+    cuyo canonical es ella misma. Auditoría TC-007 (27-10-2026): 0 problemas en
+    7.533 páginas; la comprobación evita que aparezcan."""
+    hallazgos: list[dict] = []
+    sitemap = urls_sitemap(raiz)
+    vistos: dict[str, str] = {}
+    por_tipo: dict[str, int] = defaultdict(int)
+
+    def anotar(tipo: str, detalle: str, rel: str, que: str) -> None:
+        por_tipo[tipo] += 1
+        if por_tipo[tipo] <= MAX_CANONICALES:
+            hallazgos.append(hallazgo(GRAVE, "canonicales", detalle, rel, que))
+
+    for p in (paginas if paginas is not None else paginas_html(raiz)):
+        rel = _rel(raiz, p)
+        try:
+            cab = p.read_text(encoding="utf-8")[:20000]
+        except Exception:                                     # noqa: BLE001
+            continue                                          # ya lo señala (b)
+        if not RE_DOCUMENTO.search(cab[:500]):
+            continue                                          # fragmento incrustado
+        etiquetas = RE_CANONICAL_TODAS.findall(cab)
+        if len(etiquetas) != 1:
+            anotar("numero", f"{len(etiquetas)} canonicales (debe haber exactamente uno).", rel,
+                   "deja un solo <link rel=\"canonical\"> en la plantilla.")
+            continue
+        m = re.search(r"\bhref=\"([^\"]*)\"", etiquetas[0])
+        href = m.group(1) if m else ""
+        propia = url_de_pagina(rel)
+        if href != propia:
+            anotar("propia", f"Canonical «{href}» distinto de la URL de la página «{propia}».", rel,
+                   "pasa a CANONICAL la URL absoluta https://terceracamara.es/… de la propia página.")
+            continue
+        if href in vistos:
+            anotar("duplicado", f"Canonical «{href}» repetido (también en {vistos[href]}).", rel,
+                   "dos ficheros publican la misma URL: quita uno.")
+        vistos[href] = rel
+        if sitemap is not None and href not in sitemap:
+            anotar("fuera", f"La URL canónica «{href}» no está en el sitemap.", rel,
+                   "añádela en renderizar_sitemap() o no publiques la página.")
+    if sitemap is not None:
+        for url in sorted(sitemap - set(vistos)):
+            anotar("sin_pagina", f"URL del sitemap sin página cuyo canonical sea ella: {url}",
+                   "sitemap.xml", "el sitemap debe listar la URL canónica exacta (/x/ y no /x/index.html).")
+    for tipo, n in por_tipo.items():
+        if n > MAX_CANONICALES:
+            hallazgos.append(hallazgo(GRAVE, "canonicales", f"Y {n - MAX_CANONICALES} problemas "
+                                      f"más del tipo «{tipo}».", "", "corrige primero los de arriba."))
     return hallazgos
 
 
@@ -911,6 +1001,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("tamanos", lambda: comprobar_tamanos(raiz)),
         ("feeds", lambda: comprobar_feeds(raiz)),
         ("compartir", lambda: comprobar_compartir(raiz)),
+        ("canonicales", lambda: comprobar_canonicales(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))
