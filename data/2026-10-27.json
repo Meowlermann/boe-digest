@@ -340,7 +340,62 @@
       "sede": "Bailén, 3, Madrid"
     },
     "scoreboard": null,
-    "feed": [],
+    "feed": [
+      {
+        "chamber": "congreso",
+        "type": "Respuesta escrita",
+        "date": "jueves 1 de octubre de 2026",
+        "headline": "LO QUE CONTESTA EL GOBIERNO A ASARTA CUEVAS (Vox): «Gasto final durante el período de vigencia del acuerdo marco anterior de sostenimiento de los aviones modelos T.18 (Falcon 900), T.22…»",
+        "standfirst": "Pregunta 184/041871. Contestación registrada el jueves 1 de octubre de 2026; su texto ya está publicado.",
+        "quote": {
+          "text": "Se informa, en relación con las preguntas planteadas, de que, a fecha 11 de agosto de 2026, el gasto ejecutado contra el actual acuerdo marco de sostenimiento de flotas T.18 (5 aeronaves que suponen una capacidad total de 70 pasajeros), T.20 (3 aeronaves que suponen una capacidad total de 15 pasajeros) y T.22 (2 aeronaves que suponen una capacidad total de 134 pasajeros) asciende a 71.061.478,54 euros. […]",
+          "author": "Respuesta del Gobierno"
+        },
+        "body": [
+          "Pregunta de Alberto Asarta Cuevas (Vox).",
+          "Título de la iniciativa: «Gasto final durante el período de vigencia del acuerdo marco anterior de sostenimiento de los aviones modelos T.18 (Falcon 900), T.22 (Airbus 310) y T.20 (Cessna Citation V).»",
+          "La respuesta completa tiene unas 113 palabras."
+        ],
+        "source": {
+          "label": "Texto de la contestación (PDF)",
+          "url": "https://www.congreso.es/l15p/e13/e_0130126_n_000.pdf"
+        },
+        "links": [
+          {
+            "label": "Ficha oficial de la pregunta 184/041871",
+            "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F041871"
+          }
+        ],
+        "expediente": "184/041871"
+      },
+      {
+        "chamber": "congreso",
+        "type": "Respuesta escrita",
+        "date": "jueves 1 de octubre de 2026",
+        "headline": "LO QUE CONTESTA EL GOBIERNO A ROJAS GARCÍA (PP): «Motivos de la Ministra de Defensa para no haber incoado los correspondientes expedientes disciplinarios y de suspensión de los agentes de…»",
+        "standfirst": "Pregunta 184/041479. Contestación registrada el jueves 1 de octubre de 2026; su texto ya está publicado.",
+        "quote": {
+          "text": "Se informa, en relación con las preguntas planteadas, de que, tras su declaración ante el magistrado que instruye el procedimiento judicial en cuestión, no se ha producido ninguna resolución judicial que modifique la situación jurídica de esta persona; estándose a la espera de la resolución que, en el curso del procedimiento judicial, pueda acordar el magistrado, para, en su caso, adoptar la resolución que proceda.",
+          "author": "Respuesta del Gobierno"
+        },
+        "body": [
+          "Pregunta de Carlos Rojas García (PP).",
+          "Título de la iniciativa: «Motivos de la Ministra de Defensa para no haber incoado los correspondientes expedientes disciplinarios y de suspensión de los agentes de la Guardia Civil afectados por las imputaciones judiciales y el cese de la propia »",
+          "La respuesta completa tiene unas 65 palabras."
+        ],
+        "source": {
+          "label": "Texto de la contestación (PDF)",
+          "url": "https://www.congreso.es/l15p/e13/e_0130125_n_000.pdf"
+        },
+        "links": [
+          {
+            "label": "Ficha oficial de la pregunta 184/041479",
+            "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F041479"
+          }
+        ],
+        "expediente": "184/041479"
+      }
+    ],
     "coverage": {
       "congreso": true,
       "senado": false,

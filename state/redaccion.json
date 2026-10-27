@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "38 preguntas escritas en el Congreso superan los 20 días hábiles sin contestación",
-   "entradilla": "Un total de 38 preguntas escritas del último año superan la fecha límite publicada por el Congreso sin contestación registrada. Sumar concentra la mayoría de las peticiones con 30 de los casos.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso acumula 38 preguntas escritas sin responder fuera de plazo",
+   "entradilla": "Un total de 38 iniciativas parlamentarias del último año superan el límite de 20 días hábiles sin que se haya registrado su contestación.",
    "claves": [
-    "Por grupos parlamentarios, la mayoría corresponde a Sumar con 30 preguntas, seguida por el PSOE con 4, el PP con 2, Junts con 1 y el grupo Sin grupo con 1.",
-    "La pregunta escrita pendiente más antigua sin contestación registrada fue publicada el lunes 15 de diciembre de 2025.",
-    "El recuento analiza las preguntas del último año y aclara que pueden existir prórrogas o respuestas que aún no figuren en la ficha."
+    "Sumar es la formación con más iniciativas pendientes con un total de 24 preguntas, seguida por el PSOE con 7 y el PP con 4.",
+    "Las iniciativas restantes fuera de plazo corresponden a EAJ-PNV, Junts y a un diputado sin grupo, con una pregunta cada uno.",
+    "La pregunta sin contestación registrada más antigua entre las contabilizadas se publicó el lunes 16 de febrero de 2026."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-27"
@@ -9599,9 +9599,19 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-27"
+  },
+  "C-fa9552f432fd9368": {
+   "huella": "08539be79c4346db",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 1
+  },
+  "C-3879f79cc3586d58": {
+   "huella": "7d93b9bb0114f654",
+   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
+   "intentos": 1
   }
  },
  "uso": {
-  "2026-10-27": 9
+  "2026-10-27": 10
  }
 }
