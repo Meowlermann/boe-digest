@@ -478,6 +478,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | h | `feeds`: cada `.xml` publicado (salvo los sitemaps) es Atom 1.0 o RSS 2.0 bien formado, con los campos obligatorios, fechas RFC 3339 (Atom) o RFC 822 (RSS), sin `id`/`guid` repetidos y con 50 entradas como máximo | grave |
 | i | `semana` (solo salud diaria): existe `/semana/AAAA-Snn.html` de la semana que terminó el domingo anterior | grave |
 | j | `compartir`: cada página completa lleva `og:image` absoluta y `twitter:card=summary_large_image`; la portada, un `WebSite` con `name` y `url`; las ediciones y las normas, un `NewsArticle` con `headline`, `datePublished`, `url`, `image` y `publisher`; las fichas de `diputados/` y `personas/` (no sus índices), un `Person` con `name` (`JSONLD_EXIGIDO`) | grave |
+| k | `canonicales`: cada página completa lleva exactamente un `<link rel="canonical">`, absoluto, `https://terceracamara.es` sin `www`, igual a su propia URL (`x/index.html` → `/x/`) y presente en el sitemap; no hay dos páginas con el mismo canonical y cada URL del sitemap tiene su página. El `www` → apex lo hace el proxy de Cloudflare con un 301 que conserva ruta y consulta (comprobado el 27-10-2026; no se puede comprobar en el CI) | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -499,7 +500,7 @@ incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 (`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
-`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g) y (j) sobre el
+`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j) y (k) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
 datos que escribió el pase diario y que ninguna PR puede corregir (la edición

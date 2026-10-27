@@ -249,6 +249,61 @@ class TestSitemap(unittest.TestCase):
         self.assertEqual(len(v.comprobar_sitemap(self.s.raiz)), 1)
 
 
+class TestCanonicales(unittest.TestCase):
+    CAB = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    URLS = ("https://terceracamara.es/", "https://terceracamara.es/normas/",
+            "https://terceracamara.es/normas/ley-1.html", "https://terceracamara.es/mapa/")
+
+    def setUp(self):
+        self.s = Sitio()
+
+    def tearDown(self):
+        self.s.cerrar()
+
+    def sitemap(self, *urls):
+        self.s.escribir("sitemap.xml", self.CAB + "".join(f"<url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
+
+    def test_correcto(self):
+        self.sitemap(*self.URLS)
+        self.assertEqual(v.comprobar_canonicales(self.s.raiz), [])
+
+    def test_sin_sitemap_solo_mira_las_paginas(self):
+        self.assertEqual(v.comprobar_canonicales(self.s.raiz), [])
+
+    def test_url_de_pagina(self):
+        self.assertEqual(v.url_de_pagina("index.html"), "https://terceracamara.es/")
+        self.assertEqual(v.url_de_pagina("normas/index.html"), "https://terceracamara.es/normas/")
+        self.assertEqual(v.url_de_pagina("normas/ley-1.html"), "https://terceracamara.es/normas/ley-1.html")
+
+    def test_www_http_e_index(self):
+        self.sitemap(*self.URLS)
+        for mala in ("https://www.terceracamara.es/mapa/", "http://terceracamara.es/mapa/",
+                     "https://terceracamara.es/mapa/index.html", "/mapa/"):
+            self.s.escribir("mapa/index.html", pagina(canonical=mala))
+            h = v.comprobar_canonicales(self.s.raiz)
+            self.assertTrue(any("distinto" in x["detalle"] for x in h), (mala, h))
+
+    def test_dos_o_ningun_canonical(self):
+        self.sitemap(*self.URLS)
+        doble = pagina(canonical="https://terceracamara.es/mapa/").replace(
+            "</head>", '<link rel="canonical" href="https://terceracamara.es/">\n</head>')
+        self.s.escribir("mapa/index.html", doble)
+        self.assertIn("2 canonicales", v.comprobar_canonicales(self.s.raiz)[0]["detalle"])
+        self.s.escribir("mapa/index.html", pagina().replace('<link rel="canonical" href="https://terceracamara.es/normas/">', ""))
+        self.assertIn("0 canonicales", v.comprobar_canonicales(self.s.raiz)[0]["detalle"])
+
+    def test_fuera_del_sitemap_y_sitemap_sin_pagina(self):
+        self.sitemap(*self.URLS[:3], "https://terceracamara.es/normas/index.html")
+        detalles = [x["detalle"] for x in v.comprobar_canonicales(self.s.raiz)]
+        self.assertTrue(any("no está en el sitemap" in d for d in detalles), detalles)
+        self.assertTrue(any("sin página" in d for d in detalles), detalles)
+
+    def test_fragmento_no_cuenta(self):
+        self.sitemap(*self.URLS)
+        self.s.escribir("normas/banner.html", "<p>Fragmento</p>")
+        self.assertEqual(v.comprobar_canonicales(self.s.raiz), [])
+
+
 class TestIndice(unittest.TestCase):
     def setUp(self):
         self.s = Sitio()
@@ -512,7 +567,8 @@ class TestCompartir(unittest.TestCase):
 class TestEjecucion(unittest.TestCase):
     def setUp(self):
         self.s = Sitio()
-        self.s.escribir("sitemap.xml", TestSitemap.CAB + "<url><loc>https://terceracamara.es/</loc></url></urlset>")
+        self.s.escribir("sitemap.xml", TestSitemap.CAB + "".join(
+            f"<url><loc>{u}</loc></url>" for u in TestCanonicales.URLS) + "</urlset>")
         self.s.escribir("datos/indice.json", "{}")
         self.s.escribir("data/2026-10-04.json", json.dumps(edicion(
             boe=[{"ref": "BOE-A-1", "headline": "CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS"}])))
