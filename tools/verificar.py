@@ -761,6 +761,92 @@ def comprobar_migas(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = Non
 
 
 # ---------------------------------------------------------------------------
+# o) Enlazado interno: huérfanas y fichas con pocos enlaces (TC-006)
+# ---------------------------------------------------------------------------
+#
+# Una página publicada sin ningún enlace entrante desde otra página del sitio
+# (huérfana) solo la encuentra un buscador por el sitemap. Medido el
+# 27-10-2026 sobre el render completo: 7.534 páginas, 0 huérfanas salvo los dos
+# fragmentos de datos/ que la portada carga por JavaScript, y ninguna ficha con
+# menos de 3 enlaces internos. Esta comprobación lo mantiene así.
+#
+# Se cuentan los href visibles (fuera de <script> y <style>) que resuelven a
+# otra página HTML publicada; los enlaces a la propia página no cuentan. La
+# portada no puede ser huérfana (es la raíz).
+
+MIN_ENLACES_FICHA = 3
+# Huérfanas justificadas: ruta -> motivo. Solo fragmentos o páginas que no
+# deben recibir enlaces normales.
+HUERFANAS_JUSTIFICADAS = {
+    "/datos/ultimas-votaciones.html": "fragmento que la portada incrusta por JavaScript; no es una página",
+    "/datos/votaciones-banner.html": "fragmento que la portada incrusta por JavaScript; no es una página",
+    "/googlec4619d97b763e0b5.html": "fichero de verificación de Search Console",
+}
+MAX_HALLAZGOS_ENLAZADO = 20
+
+
+def url_publica(rel: str) -> str:
+    """Ruta servida de un fichero publicado: x/index.html -> /x/."""
+    return "/" + (rel[: -len("index.html")] if rel == "index.html" or rel.endswith("/index.html") else rel)
+
+
+def grafo_enlaces(raiz: pathlib.Path, paginas: list[pathlib.Path]) -> dict[str, set[str]]:
+    """Para cada página (por URL), el conjunto de otras páginas publicadas a las que enlaza."""
+    urls = {url_publica(_rel(raiz, p)): p for p in paginas}
+
+    def resolver(ruta: str) -> str | None:
+        for c in (ruta, ruta + ".html", ruta.rstrip("/") + "/"):
+            if c in urls:
+                return c
+        return None
+
+    salientes: dict[str, set[str]] = {}
+    for url, p in urls.items():
+        rel = _rel(raiz, p)
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception:                                     # noqa: BLE001
+            salientes[url] = set()
+            continue
+        visible = RE_STYLE.sub(" ", RE_SCRIPT.sub(" ", texto))
+        destinos = set()
+        for href in set(RE_HREF.findall(visible)):
+            ruta = _ruta_interna(html_unescape(href), rel)
+            if ruta and (d := resolver(ruta)) and d != url:
+                destinos.add(d)
+        salientes[url] = destinos
+    return salientes
+
+
+def comprobar_enlazado(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    paginas = paginas if paginas is not None else paginas_html(raiz)
+    salientes = grafo_enlaces(raiz, paginas)
+    entrantes: dict[str, int] = {u: 0 for u in salientes}
+    for destinos in salientes.values():
+        for d in destinos:
+            entrantes[d] += 1
+    hallazgos: list[dict] = []
+    huerfanas = sorted(u for u, n in entrantes.items()
+                       if n == 0 and u != "/" and u not in HUERFANAS_JUSTIFICADAS)
+    for u in huerfanas[:MAX_HALLAZGOS_ENLAZADO]:
+        hallazgos.append(hallazgo(GRAVE, "enlazado", f"Página huérfana: ninguna otra página enlaza a «{u}».",
+                                  u.lstrip("/") or "index.html",
+                                  "enlázala desde su índice o desde una ficha relacionada; si no debe "
+                                  "recibir enlaces, añádela a HUERFANAS_JUSTIFICADAS con el motivo."))
+    if len(huerfanas) > MAX_HALLAZGOS_ENLAZADO:
+        hallazgos.append(hallazgo(GRAVE, "enlazado", f"{len(huerfanas)} páginas huérfanas en total "
+                                  f"(se muestran {MAX_HALLAZGOS_ENLAZADO}).", "", "ver las anteriores."))
+    pocas = sorted(u for u, d in salientes.items()
+                   if u.strip("/").split("/", 1)[0] in CARPETAS_CON_MIGA and "/" in u.strip("/")
+                   and len(d) < MIN_ENLACES_FICHA)
+    for u in pocas[:MAX_HALLAZGOS_ENLAZADO]:
+        hallazgos.append(hallazgo(GRAVE, "enlazado", f"La ficha «{u}» tiene {len(salientes[u])} enlaces "
+                                  f"internos (mínimo {MIN_ENLACES_FICHA}).", u.lstrip("/"),
+                                  "añade la miga y enlaces a las entidades relacionadas en su plantilla."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # d) Índice del buscador
 # ---------------------------------------------------------------------------
 
@@ -1229,6 +1315,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("alias_feed", lambda: comprobar_alias_feed(raiz)),
         ("boletin", lambda: comprobar_boletin(raiz)),
         ("migas", lambda: comprobar_migas(raiz)),
+        ("enlazado", lambda: comprobar_enlazado(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))
