@@ -810,3 +810,22 @@ lee el recolector y años >= 2025) y se revisa el diff; el test
 `test_extracto_al_dia` falla si alguien lo edita a mano. Para consultar una URL:
 `python robots_boe.py URL…`.
 
+
+## Lighthouse CI (TC-008)
+
+`.github/workflows/lighthouse.yml` mide cada lunes (10:15 UTC), a mano o en PR
+que toquen su configuración, cinco páginas tipo de producción con
+`@lhci/cli` (`lighthouserc.json`, 3 pasadas, mediana). Rendimiento y
+accesibilidad < 90 son **aviso**, no fallo. El informe queda como artefacto
+(90 días) y el resumen en la página de la ejecución (`tools/lighthouse_resumen.py`).
+Sin servidor LHCI ni servicios de pago.
+
+Línea base (27-10-2026, mediana de 3, Lighthouse móvil, medida desde el box):
+
+| Página | Rend. | Acces. | Buenas prác. | SEO |
+|---|---|---|---|---|
+| / | 84 | 93 | 100 | 100 |
+| /ediciones/2026-10-26.html | 94 | 95 | 100 | 100 |
+| /normas/BOE-A-2026-22503.html | 94 | 95 | 100 | 100 |
+| /diputados/nestor-rego-candamil.html | 89 | 95 | 100 | 100 |
+| /buscar/ | 98 | 95 | 100 | 100 |
