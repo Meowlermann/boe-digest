@@ -924,7 +924,7 @@ def generar_paginas(h: dict) -> list:
         f'<h2 class="rotulo">Categorías del BOE</h2><p>Se deducen de palabras del título, en este orden de '
         f'prioridad:</p><ul>{cats}</ul>'
         '<h2 class="rotulo">Limitaciones</h2><p>No se leen los textos, solo los títulos. No se incluyen '
-        'los boletines provinciales ni los autonómicos, ni los anuncios de ayuntamientos (Administración '
+        'los boletines oficiales provinciales ni los autonómicos, ni los anuncios de ayuntamientos (Administración '
         'Local y sección V del BOE), ni páginas de municipios. El voto nominal solo se conserva para las '
         'últimas votaciones del Pleno. Las preguntas orales solo cuentan desde que el sitio las recoge.</p>'
         '<h2 class="rotulo">Contacto</h2><p>Para señalar un error o una asignación incorrecta: '

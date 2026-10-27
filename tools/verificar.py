@@ -35,6 +35,8 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   k) canonicales Un canonical por página, absoluto, https, sin www, igual a
                  su URL y presente en el sitemap; sin duplicados.
   l) alias_feed  rss.xml e index.xml idénticos a feed.xml; enlace RSS en cada página.
+  m) boletin     Ninguna página promete un boletín: «boletín» solo como nombre
+                 de un diario oficial o en el aviso neutro (TC-024).
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -57,6 +59,7 @@ import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 from collections import defaultdict
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
@@ -618,6 +621,88 @@ def comprobar_alias_feed(raiz: pathlib.Path, paginas: list[pathlib.Path] | None 
 
 
 # ---------------------------------------------------------------------------
+# m) Ninguna promesa de boletín (TC-024)
+# ---------------------------------------------------------------------------
+
+# La web no tiene boletín por correo ni lo promete: la forma de seguirla es
+# RSS (/seguir/). «boletín» solo puede aparecer como nombre de un diario
+# oficial o en el aviso neutro de que no lo hay. No se miran los textos que
+# vienen de la fuente: el cuerpo de la pieza (class="articlebody"), las citas
+# (<blockquote>, <q>, «…») ni <script>/<style>; sí el título y la meta
+# description.
+BOLETIN_PERMITIDO = re.compile(
+    r"bolet[ií]n(?:es)?[\s·]+oficial(?:es)?"           # Boletín Oficial del Estado, boletines oficiales
+    r"|bolet[ií]n[\s·]+de[\s·]+las[\s·]+cortes"          # Boletín (Oficial) de las Cortes Generales
+    r"|bolet[ií]n[\s·]+del[\s·]+(?:estado|senado|congreso)"
+    r"|por[\s·]+ahora[\s·]+no[\s·]+hay[\s·]+bolet[ií]n[\s·]+por[\s·]+correo",  # aviso neutro
+    re.I)
+RE_BOLETIN = re.compile(r"bolet[ií]n", re.I)
+RE_CITA = re.compile(r"«[^«»]{0,2000}»")
+_SIN_CIERRE = {"br", "img", "meta", "link", "input", "hr", "source", "wbr", "area", "col", "embed", "track"}
+_META_TEXTO = {"description", "og:description", "twitter:description", "og:title", "twitter:title"}
+
+
+class _TextoPropio(HTMLParser):
+    """Texto de la página sin las zonas que vienen de la fuente."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.trozos: list[str] = []
+        self._pila: list[tuple[str, bool]] = []
+        self._fuera = 0
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "meta" and (a.get("name") or a.get("property")) in _META_TEXTO:
+            self.trozos.append(f" {a.get('content') or ''} ")
+        if tag in _SIN_CIERRE:
+            return
+        fuera = tag in ("script", "style", "blockquote", "q") or "articlebody" in (a.get("class") or "").split()
+        self._pila.append((tag, fuera))
+        self._fuera += fuera
+        self.trozos.append(" ")
+
+    def handle_endtag(self, tag):
+        if not any(t == tag for t, _ in self._pila):
+            return
+        while self._pila:
+            t, fuera = self._pila.pop()
+            self._fuera -= fuera
+            if t == tag:
+                break
+        self.trozos.append(" ")
+
+    def handle_data(self, data):
+        if not self._fuera:
+            self.trozos.append(data)
+
+
+def problemas_boletin(html_texto: str) -> list[str]:
+    """Fragmentos con «boletín» que no son un diario oficial ni el aviso neutro."""
+    p = _TextoPropio()
+    p.feed(html_texto)
+    p.close()
+    texto = " ".join("".join(p.trozos).split())
+    texto = BOLETIN_PERMITIDO.sub(" ", RE_CITA.sub(" ", texto))
+    return [texto[max(0, m.start() - 50):m.end() + 50] for m in RE_BOLETIN.finditer(texto)]
+
+
+def comprobar_boletin(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    hallazgos: list[dict] = []
+    for p in (paginas if paginas is not None else paginas_html(raiz)):
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception:                                     # noqa: BLE001
+            continue
+        for frag in problemas_boletin(texto)[:3]:
+            hallazgos.append(hallazgo(GRAVE, "boletin", f"Menciona un boletín: «…{frag}…».", _rel(raiz, p),
+                                      "la web no tiene boletín por correo ni lo promete; ofrece solo RSS "
+                                      "(/seguir/, /feed.xml). Quita la mención o usa el aviso neutro «por "
+                                      "ahora no hay boletín por correo»."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # d) Índice del buscador
 # ---------------------------------------------------------------------------
 
@@ -1084,6 +1169,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("compartir", lambda: comprobar_compartir(raiz)),
         ("canonicales", lambda: comprobar_canonicales(raiz)),
         ("alias_feed", lambda: comprobar_alias_feed(raiz)),
+        ("boletin", lambda: comprobar_boletin(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))
