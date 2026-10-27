@@ -20,7 +20,7 @@ import importlib
 import time
 
 API_SUMARIO = "https://www.boe.es/datosabiertos/api/boe/sumario/{aaaammdd}"
-EXTRACTORES = ("nombramientos", "provincias")
+EXTRACTORES = ("nombramientos", "provincias", "empleo")
 
 
 def sumario_api(fecha: dt.date, get, log=print, secciones=("2A", "2B")) -> list[dict] | None:
@@ -35,7 +35,12 @@ def sumario_api(fecha: dt.date, get, log=print, secciones=("2A", "2B")) -> list[
     except Exception as exc:                                  # noqa: BLE001
         log(f"sumario: la API del BOE no devolvió JSON legible ({exc})")
         return None
+    return entradas_de_sumario(datos, secciones)
 
+
+def entradas_de_sumario(datos: dict, secciones=("2A", "2B")) -> list[dict]:
+    """Las entradas de las secciones pedidas de un data.sumario ya descargado,
+    sin filtro ni deduplicado (lo usa también empleo.py en el pase diario)."""
     def lista(x):
         return x if isinstance(x, list) else ([x] if x else [])
 

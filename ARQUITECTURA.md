@@ -793,3 +793,20 @@ lee el recolector y años >= 2025) y se revisa el diff; el test
 `test_extracto_al_dia` falla si alguien lo edita a mano. Para consultar una URL:
 `python robots_boe.py URL…`.
 
+
+## Empleo público (TC-013, v1)
+
+`/empleo/` recoge **toda** la sección II.B del BOE (oposiciones y concursos) por
+organismo (`/empleo/<organismo>.html`) y provincia (`/empleo/provincia-<slug>.html`),
+con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
+
+- Captura: `build.capturar_empleo()` en el pase diario, sobre el **sumario completo**
+  de la API (`fetch_boe` devuelve ahora también `sumario`, sin recortar); no usa las
+  entradas filtradas de la edición, que deduplican por título y perderían plazas.
+- Estado: `state/empleo.json` (rama datos), 400 días; las páginas muestran 90.
+- Clasificación por título (regex, sin LLM): convocatoria, admitidos, tribunal,
+  resultados, provisión de puestos, otras.
+- Relleno hacia atrás: `archivo.yml` modo `reprocesar` con `extractores=empleo`
+  (la función común es `reproceso.entradas_de_sumario`).
+- JSON-LD: `CollectionPage` + `ItemList`. No se marca `JobPosting`: el BOE no da
+  salario ni fecha límite estructurados y Google exige ambos para ese tipo.

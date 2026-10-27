@@ -716,7 +716,7 @@ def comprobar_boletin(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = N
 
 CARPETAS_CON_MIGA = ("diputados", "personas", "normas", "temas", "provincias", "tramitacion",
                      "preguntas", "votaciones", "nombramientos", "seguimiento", "plazos",
-                     "rankings", "sesiones", "semana", "buscar", "mapa")
+                     "rankings", "sesiones", "semana", "buscar", "mapa", "empleo")
 RE_MIGA = re.compile(r'<nav class="miga"[^>]*>(.*?)</nav>', re.S)
 RE_CANONICAL_HREF = re.compile(r'<link rel="canonical" href="([^"]+)"')
 
