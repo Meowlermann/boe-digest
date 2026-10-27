@@ -20,7 +20,7 @@ import importlib
 import time
 
 API_SUMARIO = "https://www.boe.es/datosabiertos/api/boe/sumario/{aaaammdd}"
-EXTRACTORES = ("nombramientos", "provincias")
+EXTRACTORES = ("nombramientos", "provincias", "empleo")
 
 
 def sumario_api(fecha: dt.date, get, log=print, secciones=("2A", "2B")) -> list[dict] | None:
@@ -35,7 +35,12 @@ def sumario_api(fecha: dt.date, get, log=print, secciones=("2A", "2B")) -> list[
     except Exception as exc:                                  # noqa: BLE001
         log(f"sumario: la API del BOE no devolvió JSON legible ({exc})")
         return None
+    return entradas_de_sumario(datos, secciones)
 
+
+def entradas_de_sumario(datos: dict, secciones=("2A", "2B")) -> list[dict]:
+    """Las entradas de las secciones pedidas de un data.sumario ya descargado,
+    sin filtro ni deduplicado (lo usa también empleo.py en el pase diario)."""
     def lista(x):
         return x if isinstance(x, list) else ([x] if x else [])
 
@@ -80,6 +85,9 @@ def reprocesar(desde: dt.date, hasta: dt.date, get, log=print, pausa: float = 1.
     extractores pedidos. Devuelve los totales de cada extractor. La pausa es
     entre días: respeto a la web del BOE, como el resto del pipeline."""
     mods = {n: importlib.import_module(n) for n in extractores}
+    for m in mods.values():
+        if hasattr(m, "usar_get"):       # empleo lee el texto de cada convocatoria
+            m.usar_get(get)
     secciones = tuple(sorted({s for m in mods.values() for s in m.SECCIONES}))
     totales = {n: {"dias": 0, "incluidos": 0, "sin_boe": 0, "descartes": {}} for n in mods}
     d = desde

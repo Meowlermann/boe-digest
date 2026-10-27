@@ -731,3 +731,38 @@ class TestBoletin(unittest.TestCase):
             if isinstance(valor, str) and "<" in valor:
                 with self.subTest(constante=nombre):
                     self.assertEqual(v.problemas_boletin(valor), [])
+
+
+class TestNoindexSitemap(unittest.TestCase):
+    """TC-013: las páginas noindex (/empleo/) quedan fuera del sitemap a
+    propósito; (k) no lo cuenta como «fuera» y sí avisa si se cuelan."""
+    CAB = TestCanonicales.CAB
+    NOINDEX = '<meta name="robots" content="noindex, follow">'
+
+    def setUp(self):
+        self.s = Sitio()
+        self.s.escribir("empleo/index.html", pagina(canonical="https://terceracamara.es/empleo/").replace(
+            "</title>", "</title>\n" + self.NOINDEX))
+
+    def tearDown(self):
+        getattr(self.s, "limpiar", lambda: None)()
+
+    def sitemap(self, *urls):
+        self.s.escribir("sitemap.xml", self.CAB + "".join(f"<url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
+
+    def test_noindex_fuera_del_sitemap_es_correcto(self):
+        self.sitemap()
+        self.assertEqual(v.comprobar_canonicales(self.s.raiz, [self.s.raiz / "empleo" / "index.html"]), [])
+
+    def test_noindex_dentro_del_sitemap_es_grave(self):
+        self.sitemap("https://terceracamara.es/empleo/")
+        h = v.comprobar_canonicales(self.s.raiz, [self.s.raiz / "empleo" / "index.html"])
+        self.assertEqual(len(h), 1, h)
+        self.assertEqual(h[0]["nivel"], v.GRAVE)
+        self.assertIn("noindex", h[0]["detalle"])
+
+    def test_indexable_fuera_del_sitemap_sigue_fallando(self):
+        self.sitemap()
+        self.s.escribir("normas/index.html", pagina())
+        h = v.comprobar_canonicales(self.s.raiz, [self.s.raiz / "normas" / "index.html"])
+        self.assertTrue(any("no está en el sitemap" in x["detalle"] for x in h), h)

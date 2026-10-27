@@ -529,6 +529,9 @@ def urls_sitemap(raiz: pathlib.Path) -> set[str] | None:
     return urls
 
 
+RE_NOINDEX = re.compile(r"<meta\s+name=\"robots\"\s+content=\"[^\"]*\bnoindex\b", re.I)
+
+
 def comprobar_canonicales(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
     """Cada página completa lleva exactamente un canonical, absoluto, https, del
     dominio sin www, igual a su propia URL; esa URL está en el sitemap; no hay
@@ -569,6 +572,12 @@ def comprobar_canonicales(raiz: pathlib.Path, paginas: list[pathlib.Path] | None
             anotar("duplicado", f"Canonical «{href}» repetido (también en {vistos[href]}).", rel,
                    "dos ficheros publican la misma URL: quita uno.")
         vistos[href] = rel
+        if RE_NOINDEX.search(cab):
+            # noindex (p. ej. /empleo/, TC-013): fuera del sitemap a propósito.
+            if sitemap is not None and href in sitemap:
+                anotar("noindex", f"La página «{href}» lleva noindex pero está en el sitemap.", rel,
+                       "quítala de renderizar_sitemap(): el sitemap solo lista URLs indexables.")
+            continue
         if sitemap is not None and href not in sitemap:
             anotar("fuera", f"La URL canónica «{href}» no está en el sitemap.", rel,
                    "añádela en renderizar_sitemap() o no publiques la página.")
@@ -716,7 +725,7 @@ def comprobar_boletin(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = N
 
 CARPETAS_CON_MIGA = ("diputados", "personas", "normas", "temas", "provincias", "tramitacion",
                      "preguntas", "votaciones", "nombramientos", "seguimiento", "plazos",
-                     "rankings", "sesiones", "semana", "buscar", "mapa")
+                     "rankings", "sesiones", "semana", "buscar", "mapa", "empleo")
 RE_MIGA = re.compile(r'<nav class="miga"[^>]*>(.*?)</nav>', re.S)
 RE_CANONICAL_HREF = re.compile(r'<link rel="canonical" href="([^"]+)"')
 

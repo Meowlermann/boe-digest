@@ -63,6 +63,7 @@ BUSCAR_DIR = ROOT / "buscar"
 MAPA_DIR = ROOT / "mapa"
 RANKINGS_DIR = ROOT / "rankings"
 PREGUNTAS_DIR = ROOT / "preguntas"
+EMPLEO_DIR = ROOT / "empleo"
 SESIONES_DIR = ROOT / "sesiones"
 PERSONAS_DIR = ROOT / "personas"
 NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
@@ -420,6 +421,7 @@ def fetch_boe(fecha: dt.date, retroceder: bool = True) -> dict | None:
             return None
         if datos is None:
             continue
+        completo = datos          # sin recortar: empleo.py quiere toda la II.B del día
         if retroceder:
             # El pase diario cita solo el último número del día (como enseñaba
             # index.php); el archivo los junta todos, el ordinario primero.
@@ -431,7 +433,8 @@ def fetch_boe(fecha: dt.date, retroceder: bool = True) -> dict | None:
         url = PORTADA_BOE.format(a=d.year, m=d.month, d=d.day)
         log(f"BOE: {len(entradas)} disposiciones únicas para {d.isoformat()}")
         if entradas:
-            return {"fecha_boe": d, "numero": num, "sourceUrl": url, "entradas": entradas}
+            return {"fecha_boe": d, "numero": num, "sourceUrl": url, "entradas": entradas,
+                    "sumario": completo}
     return None
 
 
@@ -3453,6 +3456,25 @@ def capturar_provincias(boe_raw: dict | None) -> None:
         log(f"provincias: no se pudieron capturar ({exc})")
 
 
+def capturar_empleo(boe_raw: dict | None) -> None:
+    """Toda la sección II.B (oposiciones y concursos) a state/empleo.json
+    (TC-013). Lee el sumario completo de la API, no las entradas filtradas de
+    la edición. Como el resto de capturas, un fallo no tumba la edición."""
+    if not boe_raw or not boe_raw.get("sumario"):
+        return
+    try:
+        import empleo as em
+        regs = em.extraer(em.entradas_de_sumario(boe_raw["sumario"]), boe_raw["fecha_boe"], log)
+        try:
+            em.enriquecer(regs, get, log, em.cargar()["registros"])
+        except Exception as exc:                              # noqa: BLE001
+            log(f"empleo: no se pudieron leer los textos ({exc}); van sin plazo")
+        em.incorporar(regs, boe_raw["fecha_boe"], "api")
+        DIAG["empleo"] = {"fecha": boe_raw["fecha_boe"].isoformat(), "incluidos": len(regs)}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"empleo: no se pudo capturar ({exc})")
+
+
 def boe_vacio(fecha: dt.date, ultimo: dt.date | None) -> dict:
     """Sección BOE de una edición sin sumario propio. `ultimo` es la fecha del
     sumario más reciente, que tiene su edición: se enlaza, no se copia."""
@@ -3473,6 +3495,7 @@ def construir_dia(fecha: dt.date) -> dict | None:
     boe_raw = fetch_boe(fecha)
     nombres = capturar_nombramientos(boe_raw)
     capturar_provincias(boe_raw)
+    capturar_empleo(boe_raw)
     congreso = cortes_congreso(fecha)
     if SENADO_ACTIVO:
         senado = fetch_senado()
@@ -3553,6 +3576,7 @@ def construir_dia_archivo(fecha: dt.date) -> dict | None:
         return None
     nombres = capturar_nombramientos(boe_raw)
     capturar_provincias(boe_raw)
+    capturar_empleo(boe_raw)
     return {
         "id": fecha.isoformat(),
         "label": f"{fecha.day} {MES_ABBR[fecha.month-1]}",
@@ -5552,6 +5576,28 @@ def orales_de_ediciones(dias: list) -> list:
     return salida
 
 
+def renderizar_empleo() -> list:
+    """/empleo/ (TC-013): sección II.B del BOE por organismo y provincia, con
+    sus canales Atom. Lee state/empleo.json, que llena capturar_empleo()."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import empleo as em
+    import provincias as pv
+    h = {"esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
+         "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
+         "plantilla": re.sub(r'<meta name="robots" content="[^"]*">',
+                             f'<meta name="robots" content="{em.ROBOTS}">',
+                             TEMPLATE_NORMA.read_text(encoding="utf-8"), count=1),
+         "site_url": SITE_URL, "carpeta": EMPLEO_DIR, "escribir": escribir_si_cambia,
+         "ref_provincias": pv.cargar_referencia()["provincias"]}
+    estado = em.cargar()
+    FEEDS_PAGINA.update(em.canales(h, estado))
+    salidas = em.generar_paginas(h, estado)
+    log(f"empleo/: {len(salidas)} páginas; {em.generar_paginas.resumen}")
+    # noindex: no van al sitemap mientras ROBOTS diga noindex.
+    return [] if "noindex" in em.ROBOTS else salidas
+
+
 def renderizar_provincias(fichas_dip: list, dias: list) -> list:
     """/provincias/: una página por circunscripción con sus diputados, lo que se
     pregunta y se tramita sobre ella, cómo votan y qué publica el BOE. Las
@@ -6837,6 +6883,12 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         extras += renderizar_provincias(fichas_dip, todos)
     except Exception as exc:                                  # noqa: BLE001
         log(f"provincias/: no se pudo generar ({exc})")
+
+    # Empleo público (TC-013): su propio try.
+    try:
+        extras += renderizar_empleo()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"empleo/: no se pudo generar ({exc})")
 
     # Textos fijos: /seguir/, /privacidad.html y /aviso-legal.html.
     try:

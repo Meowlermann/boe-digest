@@ -27,7 +27,7 @@ on:
         options: [ediciones, reprocesar, nombramientos, repintar]
         default: ediciones
       extractores:
-        description: "Solo en modo reprocesar: nombramientos, provincias o nombramientos,provincias (una descarga por día para todos)"
+        description: "Solo en modo reprocesar: nombramientos, provincias, empleo o una lista separada por comas (una descarga por día para todos)"
         required: false
         default: "nombramientos,provincias"
 
