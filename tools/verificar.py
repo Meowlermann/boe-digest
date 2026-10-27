@@ -37,6 +37,8 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   l) alias_feed  rss.xml e index.xml idénticos a feed.xml; enlace RSS en cada página.
   m) boletin     Ninguna página promete un boletín: «boletín» solo como nombre
                  de un diario oficial o en el aviso neutro (TC-024).
+  n) migas       Miga visible y JSON-LD BreadcrumbList en todas las fichas,
+                 con los mismos pasos y la URL canónica al final (TC-005).
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -51,6 +53,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import html
 import datetime as dt
 import json
 import os
@@ -703,6 +706,61 @@ def comprobar_boletin(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = N
 
 
 # ---------------------------------------------------------------------------
+# n) Migas: visibles y en JSON-LD BreadcrumbList (TC-005)
+# ---------------------------------------------------------------------------
+#
+# Toda ficha (página dentro de una de estas carpetas) lleva la miga visible
+# <nav class="miga"> con al menos un enlace, y un BreadcrumbList con el mismo
+# número de pasos cuyo último elemento es la URL canónica de la página.
+# Las ediciones (/ediciones/) no llevan miga: su navegación es la tira de días.
+
+CARPETAS_CON_MIGA = ("diputados", "personas", "normas", "temas", "provincias", "tramitacion",
+                     "preguntas", "votaciones", "nombramientos", "seguimiento", "plazos",
+                     "rankings", "sesiones", "semana", "buscar", "mapa")
+RE_MIGA = re.compile(r'<nav class="miga"[^>]*>(.*?)</nav>', re.S)
+RE_CANONICAL_HREF = re.compile(r'<link rel="canonical" href="([^"]+)"')
+
+
+def problemas_migas(texto: str, exigir: bool) -> list[str]:
+    m = RE_MIGA.search(texto)
+    if not m:
+        return ["falta la miga visible <nav class=\"miga\">"] if exigir else []
+    miga = m.group(1)
+    pasos = len(re.findall(r"<a\s", miga)) + len(re.findall(r'aria-current="page"', miga))
+    if "<a " not in miga or pasos < 2:
+        return ["la miga visible no tiene enlaces"]
+    listas = [n for n in _nodos_jsonld(texto) if n.get("@type") == "BreadcrumbList"]
+    if not listas:
+        return ["falta el JSON-LD BreadcrumbList"]
+    elementos = listas[0].get("itemListElement") or []
+    faltan = []
+    if len(elementos) != pasos:
+        faltan.append(f"el BreadcrumbList tiene {len(elementos)} pasos y la miga visible {pasos}")
+    can = RE_CANONICAL_HREF.search(texto)
+    if elementos and can and elementos[-1].get("item") != html.unescape(can.group(1)):
+        faltan.append("el último paso del BreadcrumbList no es la URL canónica")
+    if any(not (e.get("name") and str(e.get("item", "")).startswith("https://")) for e in elementos):
+        faltan.append("un paso del BreadcrumbList no tiene nombre o URL absoluta")
+    return faltan
+
+
+def comprobar_migas(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    hallazgos: list[dict] = []
+    for p in (paginas if paginas is not None else paginas_html(raiz)):
+        rel = _rel(raiz, p)
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception:                                     # noqa: BLE001
+            continue
+        exigir = rel.split("/", 1)[0] in CARPETAS_CON_MIGA
+        for problema in problemas_migas(texto, exigir):
+            hallazgos.append(hallazgo(GRAVE, "migas", problema.capitalize() + ".", rel,
+                                      "pasa la miga en la clave MIGA del fragmento (build._replace_placeholders "
+                                      "genera el BreadcrumbList) o corrige el BreadcrumbList propio."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # d) Índice del buscador
 # ---------------------------------------------------------------------------
 
@@ -1170,6 +1228,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("canonicales", lambda: comprobar_canonicales(raiz)),
         ("alias_feed", lambda: comprobar_alias_feed(raiz)),
         ("boletin", lambda: comprobar_boletin(raiz)),
+        ("migas", lambda: comprobar_migas(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))

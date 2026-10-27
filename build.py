@@ -3754,7 +3754,33 @@ def baliza_analitica(token: str | None = None) -> str:
             f"data-cf-beacon='{{\"token\": \"{token}\"}}'></script>")
 
 
+def jsonld_migas(miga_html: str, canonical: str) -> dict | None:
+    """BreadcrumbList sacado de la miga visible (TC-005): mismos nombres, mismo
+    orden y los enlaces resueltos contra la URL canónica de la página. El
+    último elemento es la página actual (el <span aria-current="page">).
+    Así los datos estructurados coinciden siempre con lo que se ve."""
+    from urllib.parse import urljoin
+    partes = re.findall(r'<a\s[^>]*href="([^"]*)"[^>]*>(.*?)</a>|<span[^>]*aria-current="page"[^>]*>(.*?)</span>',
+                        miga_html or "", re.S)
+    elementos = []
+    for href, texto_a, texto_actual in partes:
+        nombre = html_mod.unescape(re.sub(r"<[^>]+>", "", texto_a or texto_actual)).strip()
+        if not nombre:
+            continue
+        url = urljoin(canonical, html_mod.unescape(href)) if href else canonical
+        elementos.append({"@type": "ListItem", "position": len(elementos) + 1, "name": nombre, "item": url})
+    if len(elementos) < 2:
+        return None
+    return {"@type": "BreadcrumbList", "itemListElement": elementos}
+
+
 def _replace_placeholders(html: str, frag: dict) -> str:
+    # Migas en JSON-LD (TC-005): toda página con miga visible y sin
+    # BreadcrumbList propio lo recibe aquí, derivado de la miga.
+    if frag.get("MIGA") and frag.get("CANONICAL") and "BreadcrumbList" not in frag.get("JSONLD", ""):
+        miga_ld = jsonld_migas(frag["MIGA"], html_mod.unescape(frag["CANONICAL"]))
+        if miga_ld:
+            frag = {**frag, "JSONLD": frag.get("JSONLD", "") + "\n" + jsonld_script([miga_ld])}
     # La navegación es la misma en todas las páginas: se pone aquí para que
     # ninguna plantilla ni ningún generador de páginas pueda olvidarla.
     if "__SSR_NAV__" in html:
