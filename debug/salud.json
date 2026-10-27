@@ -1,9 +1,9 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-26",
+  "fecha": "2026-10-27",
   "graves": 0,
-  "avisos": 2,
+  "avisos": 3,
   "hallazgos": [
     {
       "nivel": "aviso",
@@ -16,6 +16,12 @@
       "comprobacion": "html",
       "detalle": "Datos del titular pendientes (<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de cualquier actividad económica.",
       "fichero": "privacidad.html"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "titulares",
+      "detalle": "No hay edición del 2026-10-27.",
+      "fichero": "data/2026-10-27.json"
     }
   ]
 }
