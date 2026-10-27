@@ -483,6 +483,7 @@ el detalle de los graves acaba en «Qué hacer: …».
 | k | `canonicales`: cada página completa lleva exactamente un `<link rel="canonical">`, absoluto, `https://terceracamara.es` sin `www`, igual a su propia URL (`x/index.html` → `/x/`) y presente en el sitemap; no hay dos páginas con el mismo canonical y cada URL del sitemap tiene su página. El `www` → apex lo hace el proxy de Cloudflare con un 301 que conserva ruta y consulta (comprobado el 27-10-2026; no se puede comprobar en el CI) | grave |
 | l | `alias_feed`: `rss.xml` e `index.xml` existen y son copias idénticas de `feed.xml` (los escribe `build.renderizar_feed()` con `FEED_ALIAS`; GitHub Pages no hace 301); cada página completa lleva `<link rel="alternate" type="application/rss+xml">` | grave |
 | m | `boletin`: ninguna página (texto, `<title>` ni meta description) menciona un boletín salvo como nombre de un diario oficial (Boletín Oficial…, Boletín de las Cortes, boletines oficiales) o el aviso neutro «por ahora no hay boletín por correo»; no mira el texto de la fuente (`articlebody`, `<blockquote>`, `<q>`, «…») | grave |
+| o | `enlazado` (TC-006): ninguna página publicada es huérfana (0 enlaces entrantes visibles desde otra página), salvo la portada y las de `HUERFANAS_JUSTIFICADAS` (fragmentos de `datos/` que la portada carga por JavaScript), y ninguna ficha (página de una carpeta de `CARPETAS_CON_MIGA` que no es su índice) tiene menos de `MIN_ENLACES_FICHA` = 3 enlaces internos. Medido el 27-10-2026: 7.534 páginas, 0 huérfanas sin justificar, 0 fichas por debajo de 3; unos 5 s | grave |
 
 Las heurísticas de (e) están en constantes documentadas, cada una con el
 fallo real del que sale. Los fragmentos que otra página incrusta
@@ -504,7 +505,7 @@ incidencia en una rama de pruebas y solo lo lee `verificar.py`.
 En cada PR contra `main` (y a mano): trae los datos de la rama `datos`
 (`tools/datos.sh traer`, solo lectura), compila (`compileall`), pasa las
 pruebas, regenera el sitio con `python build.py --render --sin-red` y ejecuta
-`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j), (k), (l) y (m) sobre el
+`python tools/verificar.py --modo ci`: (a), (b), (c), (d), (g), (j), (k), (l), (m), (n) y (o) sobre el
 resultado y (e) y (f) sobre la edición más reciente de `data/`. Falla con
 cualquier grave, salvo los de (e) y (f), que en el CI cuentan como aviso: miran
 datos que escribió el pase diario y que ninguna PR puede corregir (la edición
