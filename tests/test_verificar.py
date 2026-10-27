@@ -616,10 +616,14 @@ class TestEjecucion(unittest.TestCase):
         # Igual con (n) migas, probada en test_migas.py.
         self.sin_migas = mock.patch.object(v, "comprobar_migas", return_value=[])
         self.sin_migas.start()
+        # Y con (o) enlazado, probada en test_enlazado.py.
+        self.sin_enlazado = mock.patch.object(v, "comprobar_enlazado", return_value=[])
+        self.sin_enlazado.start()
 
     def tearDown(self):
         self.sin_semana.stop()
         self.sin_migas.stop()
+        self.sin_enlazado.stop()
         self.s.cerrar()
 
     def test_ci_verde(self):
