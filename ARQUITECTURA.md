@@ -112,6 +112,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `provincias.py` | Qué provincias nombra cada disposición (sección I y III) y cada pregunta; páginas por circunscripción. | `state/provincias.json` | `/provincias/` |
 | `rankings.py` | Clasificaciones de diputados y grupos sobre `state/congreso.json`. | — | `/rankings/` |
 | `nombres.py` | Nombres populares («Verifactu», «ley mordaza») y títulos cortos, desde `curated/nombres_populares.json`. Solo para el buscador y los títulos. | — | — |
+| `observabilidad.py` | Observabilidad (TC-009): comprueba en producción la edición del día y su frescura (`observabilidad.yml`) y cuenta los días sin edición por mes. Solo biblioteca estándar. | — | `/datos/estado-ediciones.json` |
 | `aes_puro.py` | Descifrado AES en Python puro para que pypdf lea los PDF cifrados sin añadir `cryptography`. Se activa en `build.pdf_text`. | — | — |
 | `feeds.py` | Canales Atom por entidad (diputado, provincia, materia, iniciativa en tramitación, ministerio): formato, orden, tope de 50 y `id` estables. No importa `build.py`; lo usa `build.renderizar_feeds()` (§13). | — | `/diputados/<slug>.xml`, `/provincias/<slug>.xml`, `/temas/<slug>.xml`, `/tramitacion/<slug>.xml`, `/preguntas/ministerio-<slug>.xml` |
 | `semana.py` | Resumen semanal: `construir(semana_iso)` agrega lunes a domingo (leyes y reales decretos, votaciones ajustadas y disidencias, preguntas, tramitación, nombramientos, cifra de la semana); `asegurar()` congela las semanas cerradas; `generar_paginas()` las pinta (§13). | `data/semanas/AAAA-Snn.json` | `/semana/`, `/semana/AAAA-Snn.html`, `/semana/feed.xml` |
@@ -528,6 +529,31 @@ Después de publicar, `tools/incidencia_salud.sh` usa `gh` con el
 
 GitHub avisa por correo de las incidencias nuevas a quien vigila el
 repositorio (Watch › Custom › Issues, activado en octubre de 2026).
+
+### Observabilidad de producción (TC-009, `observabilidad.yml`)
+
+La salud diaria mira lo que se ha construido; `observabilidad.py` mira lo que
+de verdad sirve https://terceracamara.es/. `.github/workflows/observabilidad.yml`
+lo lanza cada día a las 09:50 UTC (10:50 en invierno, 11:50 en verano, más de
+2 h después del pase de la mañana) y a mano con `workflow_dispatch`, que
+admite una fecha simulada (`hoy`) para probar la incidencia.
+
+- Si hoy hay BOE (lo confirma la API de datos abiertos,
+  `/datosabiertos/api/boe/sumario/AAAAMMDD`; 404 = no hay sumario; si no
+  responde, se supone de lunes a sábado), `/ediciones/<hoy>.html` responde 200.
+- Frescura: la última entrada de `/feed.xml` y el enlace de la portada son
+  de la edición esperada (la de hoy, o la del último día con BOE).
+- Con graves, `tools/incidencia_salud.sh` abre o comenta la incidencia
+  «Edición ausente en producción» (etiqueta `produccion`, mismas reglas que
+  la de salud, con `INCIDENCIA_ETIQUETA`/`INCIDENCIA_TITULO`); sin graves, la
+  cierra.
+
+Cuenta mensual: en cada render, build.py escribe
+`datos/estado-ediciones.json` (se publica en `/datos/`) con, por mes, los
+días con BOE (lunes a sábado), cuántos se quedaron sin `data/<fecha>.json` y
+cuáles. Un festivo sin BOE en sábado cuenta como día sin edición: la lista de
+fechas permite revisarlo. No se recogen datos personales: solo se leen
+páginas públicas. Sin servicios externos ni secretos.
 
 ### Modo sin red (`--sin-red`)
 

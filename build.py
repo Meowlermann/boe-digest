@@ -6817,6 +6817,12 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         log(f"semana/: no se pudo generar ({exc})")
     renderizar_sitemap(entradas, fichas + extras)
     renderizar_feed([d for d in dias if not d.get("archivo")])
+    # Observabilidad (TC-009): días con BOE sin edición, por mes.
+    try:
+        import observabilidad
+        observabilidad.escribir_cuenta(DATA_DIR, DATOS_DIR / "estado-ediciones.json", dt.date.today())
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"datos/estado-ediciones.json: no se pudo generar ({exc})")
 
     # Portada y archivo cambian cada día; las ediciones, solo las que se han
     # regenerado de verdad. Se avisa de esas, no de las 300 del archivo.
