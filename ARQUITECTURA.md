@@ -827,6 +827,19 @@ con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
   (la función común es `reproceso.entradas_de_sumario`).
 - JSON-LD: `CollectionPage` + `ItemList`. No se marca `JobPosting`: el BOE no da
   salario ni fecha límite estructurados y Google exige ambos para ese tipo.
+- **Iteración 1** (PR #38):
+  - `noindex, follow` en todas las páginas de `/empleo/` (`empleo.ROBOTS`) y fuera
+    del sitemap; los canales Atom siguen publicados. `verificar.py` (k) no exige
+    sitemap a las páginas noindex y da **grave** si una noindex entra en él.
+  - Plazo de solicitudes **citado literal** del texto (`empleo.plazo_literal`); nunca
+    se calcula una fecha de cierre. Si no se reconoce la frase, no se muestra nada.
+  - Tipo de proceso (`empleo.proceso`): Oposición, Concurso-oposición, Concurso o
+    Libre designación; sin etiqueta si no consta o hay varios sistemas.
+  - El texto se lee de `diario_boe/txt.php?id=…` (el robots.txt del BOE excluye
+    todo `xml.php?`) con `build.get` (robots.txt y pausa mínima), una vez por
+    convocatoria: lo leído queda en el estado (`leido`). No se leen listas,
+    tribunales, correcciones, desiertas, modificaciones ni cursos.
+  - `/seguir/` enlaza `/empleo/index.xml` (o `/empleo/` si aún no hay canal).
 
 ## Lighthouse CI (TC-008)
 

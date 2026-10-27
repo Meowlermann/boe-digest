@@ -3465,6 +3465,10 @@ def capturar_empleo(boe_raw: dict | None) -> None:
     try:
         import empleo as em
         regs = em.extraer(em.entradas_de_sumario(boe_raw["sumario"]), boe_raw["fecha_boe"], log)
+        try:
+            em.enriquecer(regs, get, log, em.cargar()["registros"])
+        except Exception as exc:                              # noqa: BLE001
+            log(f"empleo: no se pudieron leer los textos ({exc}); van sin plazo")
         em.incorporar(regs, boe_raw["fecha_boe"], "api")
         DIAG["empleo"] = {"fecha": boe_raw["fecha_boe"].isoformat(), "incluidos": len(regs)}
     except Exception as exc:                                  # noqa: BLE001
@@ -5581,14 +5585,17 @@ def renderizar_empleo() -> list:
     import provincias as pv
     h = {"esc_html": esc_html, "esc_attr": esc_attr, "fmt_date_es": fmt_date_es,
          "jsonld_script": jsonld_script, "pagina_suelta": _pagina_suelta,
-         "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
+         "plantilla": re.sub(r'<meta name="robots" content="[^"]*">',
+                             f'<meta name="robots" content="{em.ROBOTS}">',
+                             TEMPLATE_NORMA.read_text(encoding="utf-8"), count=1),
          "site_url": SITE_URL, "carpeta": EMPLEO_DIR, "escribir": escribir_si_cambia,
          "ref_provincias": pv.cargar_referencia()["provincias"]}
     estado = em.cargar()
     FEEDS_PAGINA.update(em.canales(h, estado))
     salidas = em.generar_paginas(h, estado)
     log(f"empleo/: {len(salidas)} páginas; {em.generar_paginas.resumen}")
-    return salidas
+    # noindex: no van al sitemap mientras ROBOTS diga noindex.
+    return [] if "noindex" in em.ROBOTS else salidas
 
 
 def renderizar_provincias(fichas_dip: list, dias: list) -> list:

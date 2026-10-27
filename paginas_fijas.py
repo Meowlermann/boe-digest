@@ -49,6 +49,7 @@ darnos el correo ni crear una cuenta en esta web: nosotros no sabemos quién sig
 <li><a href="/temas/">Cada materia</a><span class="ref">lo que publica el BOE en subvenciones, fiscal, laboral y el resto de materias</span></li>
 <li><a href="/tramitacion/">Cada iniciativa en tramitación</a><span class="ref">sus cambios de estado y las ampliaciones del plazo de enmiendas</span></li>
 <li><a href="/preguntas/#ministerios">Cada ministerio</a><span class="ref">las preguntas orales de la sesión de control que contesta</span></li>
+<li><a href="/empleo/index.xml">Empleo público</a><span class="ref">las convocatorias de oposiciones y concursos de la sección II.B del BOE (canal Atom)</span></li>
 <li><a href="/feed.xml">La edición diaria</a><span class="ref">una entrada por edición</span></li>
 </ul>
 <p>En cada una de esas páginas verás el enlace <b>Seguir con RSS</b> debajo de la entradilla.
@@ -191,6 +192,14 @@ en su naturaleza o en los datos que se tratan.</p>
 """
 
 
+def seguir_con_empleo(html: str, hay_canal: bool) -> str:
+    """El canal de empleo (TC-013) solo se enlaza si existe: una ventana sin
+    II.B no lo genera y el enlace quedaría roto. Sin canal, a /empleo/."""
+    if hay_canal:
+        return html
+    return html.replace('<a href="/empleo/index.xml">', '<a href="/empleo/">')
+
+
 def generar_paginas(h: dict) -> list:
     """/seguir/index.html, /privacidad.html y /aviso-legal.html."""
     esc, attr = h["esc_html"], h["esc_attr"]
@@ -223,7 +232,7 @@ def generar_paginas(h: dict) -> list:
            "qué lectores usar y cuál es el canal de la edición diaria (/feed.xml).",
            "Alertas gratuitas", "Síguelo con RSS",
            "Solo RSS: sin cuentas, sin correo y sin algoritmo. Elige qué seguir y tu lector te avisa.",
-           SEGUIR, "WebPage")
+           seguir_con_empleo(SEGUIR, (raiz / "empleo" / "index.xml").exists()), "WebPage")
     pagina(raiz, "privacidad.html", "privacidad.html", "Política de privacidad",
            "Qué mide La Tercera Cámara (Cloudflare Web Analytics), qué servicios intervienen "
            "y cómo pedir correcciones o ejercer tus derechos.",

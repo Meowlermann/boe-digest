@@ -39,6 +39,11 @@ VENTANA_ESTADO = 400             # días que guarda el estado (regla 7: nada cre
 VENTANA_PAGINAS = 90             # días que enseñan las fichas
 DIAS_PORTADA = 14                # días que enseña /empleo/
 MAX_FILAS = 300                  # tope de filas por página
+# Se enseña la cita del plazo solo tras validarla a mano (TC-013, iteración 1).
+MOSTRAR_PLAZO = True
+# /empleo/ y sus fichas van en noindex (y fuera del sitemap) hasta que haya
+# fichas por convocatoria con valor propio: hoy son listados del sumario.
+ROBOTS = "noindex, follow"
 
 # Tipo de disposición, en orden de prioridad: la primera que encaja se queda.
 # Se busca en título + epígrafe, sin tildes y en minúscula.
@@ -134,6 +139,188 @@ def url_boe(ident: str) -> str:
     return f"https://www.boe.es/diario_boe/txt.php?id={ident}"
 
 
+# ------------------------------------------------------- plazo y tipo de proceso
+#
+# Iteración 1 (TC-013): para las convocatorias se lee el texto de la disposición
+# (txt.php: el BOE excluye /diario_boe/xml.php? entero en su robots.txt) y se
+# cita LITERAL la frase del plazo de solicitudes. Nunca se calcula una fecha de
+# cierre: el cómputo depende de hábiles/naturales, festivos y, a menudo, de otro
+# boletín. Si la frase no se reconoce, no se muestra nada. Validado a mano sobre
+# una muestra (ver la PR #38).
+
+_NUM = (r"(?:\d+|un|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|trece|catorce|"
+        r"quince|dieciséis|veinte|veinticinco|treinta|cuarenta(?:\s+y\s+cinco)?)")
+RE_PLAZO_DUR = re.compile(r"(?:dentro\s+de\s+los\s+(?=\S+\s+d[ií]as)|plazo\s+)(?:de\s+(?:presentaci[oó]n|admisi[oó]n)\s+de\s+(?:las\s+)?(?:solicitudes|instancias)"
+                          r"(?:\s+de\s+participaci[oó]n)?(?:\s+ser[aá])?,?\s+)?(?:de\s+)?(?:los\s+)?" + _NUM +
+                          r"\s+(?:d[ií]as|mes(?:es)?)\b", re.I)
+RE_SOLICITUD = re.compile(r"solicitud|instancia", re.I)
+RE_EXCLUIR = re.compile(r"recurso|retirar|alegaci|subsana|documentaci[oó]n|toma de posesi[oó]n|"
+                        r"plazo m[aá]ximo|reclamaci|inscripci[oó]n", re.I)
+RE_CABECERA = re.compile(r"^.{0,60}?\b\d+(?:\.\d+)+\.?\s+(?=[A-ZÁÉÍÓÚ])")
+ANTES, DESPUES = 60, 240
+
+
+def frases(texto):
+    out, prof, ini = [], 0, 0
+    for i, c in enumerate(texto):
+        if c == "«":
+            prof += 1
+        elif c == "»":
+            prof = max(0, prof - 1)
+        elif (c == "." and prof == 0 and i + 2 < len(texto) and texto[i + 1] == " " and texto[i + 2].isupper()
+              and not re.search(r"\b(?:Sr|Sra|Excmo|Excma|Ilmo|Ilma|núm|art|D|Dña|Avda|C)$", texto[max(0, i - 6):i])):
+            out.append(texto[ini:i + 1].strip())
+            ini = i + 1
+    if texto[ini:].strip():
+        out.append(texto[ini:].strip())
+    return out
+
+
+def plazo_literal(texto):
+    for f in frases(texto):
+        m = RE_PLAZO_DUR.search(f)
+        if not m or not RE_SOLICITUD.search(f) or RE_EXCLUIR.search(f[max(0, m.start() - 120):m.end() + 120]):
+            continue
+        f2 = RE_CABECERA.sub("", f)
+        f2 = re.sub(r"^(?:\d+(?:\.\d+)*\.?|[a-z]\)|[A-ZÁÉÍÓÚ][a-záéíóú]+\.)\s+", "", f2)
+        f2 = re.sub(r"\s+\d+(?:\.\d+)*\.?$", "", f2)
+        m = RE_PLAZO_DUR.search(f2)
+        ini = 0 if m.start() <= ANTES else m.start()
+        cierre = f2.find("»", m.end())
+        # «…en el «DOGC» o en el «BOE»»: la alternativa forma parte del plazo.
+        while cierre >= 0 and re.match(r"\s+o (?:en )?(?:el|la) «", f2[cierre + 1:cierre + 15]):
+            cierre = f2.find("»", f2.find("«", cierre + 1))
+        fin = cierre + 1 if 0 <= cierre <= m.end() + DESPUES else min(len(f2), m.end() + DESPUES)
+        if fin < len(f2) and f2[fin - 1] != "»":
+            fin = f2.rindex(" ", 0, fin)
+        if fin >= len(f2) - 1:
+            fin = len(f2)
+        return ("[…] " if ini else "") + f2[ini:fin].strip().rstrip(",;:") + (" […]" if fin < len(f2) else "")
+    return None
+
+
+PROCESOS = {"concurso-oposicion": "Concurso-oposición", "oposicion": "Oposición",
+            "concurso": "Concurso", "libre designacion": "Libre designación"}
+RE_PROCESO = re.compile(r"\b(?:sistema|procedimiento|turno)(?: selectivo)? (?:general )?(?:de (?:acceso libre,? (?:por|mediante) (?:el sistema de )?)?)?"
+                        r"(concurso-oposicion|oposicion libre|oposicion|concurso de meritos|concurso|libre designacion)\b"
+                        r"|\bpor (?:el sistema de )?(concurso-oposicion|oposicion|libre designacion)\b"
+                        r"|\b(?:convoca|convocan|convocatoria (?:de|del|para))\w* (?:el |un |la )?(concurso)\b"
+                        r"|\b(concurso) (?:general|especifico|de acceso|de traslados|para la provision)")
+RE_SISTEMA_BASES = re.compile(r"proceso selectivo se realizara mediante el sistema de "
+                              r"(concurso-oposicion|oposicion|concurso)\b,?( (?:para|en) (?:las personas|el turno|los aspirantes))?")
+RE_NO_CONVOCATORIA = re.compile(r"correccion de errores|desiert|se modifica|modifican?\b|se publica|amplia|"
+                                r"anula|deja sin efecto|suspende", re.I)
+
+
+def es_convocatoria(reg: dict) -> bool:
+    """Solo de las convocatorias de verdad se lee el texto: no de listas,
+    tribunales, correcciones, desiertas, modificaciones ni cursos."""
+    if reg.get("tipo") not in ("convocatoria", "provision"):
+        return False
+    t = _plano(reg.get("titulo", "")).lower()
+    return not RE_NO_CONVOCATORIA.search(t) and not re.search(r"\bcursos?\b", _plano(reg.get("epi", "")).lower())
+
+
+def _procesos(texto: str) -> set:
+    vistos = set()
+    for m in RE_PROCESO.finditer(_plano(texto).lower()):
+        p = next(g for g in m.groups() if g)
+        p = {"oposicion libre": "oposicion", "concurso de meritos": "concurso"}.get(p, p)
+        vistos.add(p)
+    return vistos
+
+
+def proceso(titulo: str, epigrafe: str, texto: str = "") -> str:
+    """Tipo de proceso según epígrafe, título y, si no, el arranque del texto.
+    Si no consta o hay varios distintos, cadena vacía (sin etiqueta)."""
+    if "libre designacion" in _plano(epigrafe + " " + titulo).lower():
+        return PROCESOS["libre designacion"]
+    for fuente in (titulo, texto[:6000]):
+        ps = _procesos(fuente)
+        if len(ps) == 1:
+            return PROCESOS[ps.pop()]
+        if len(ps) > 1:
+            return ""
+    # Convocatorias largas de la AGE: «6.1 El proceso selectivo se realizará
+    # mediante el sistema de oposición». Si distingue turnos («para las
+    # personas…»), no hay etiqueta única.
+    ps = set()
+    for m in RE_SISTEMA_BASES.finditer(_plano(texto).lower()):
+        if m.group(2):
+            return ""
+        ps.add(m.group(1))
+    return PROCESOS[ps.pop()] if len(ps) == 1 else ""
+
+
+def detalle(html: str, reg: dict) -> dict:
+    """{'plazo': cita literal o ausente, 'proc': etiqueta o ausente}."""
+    from bs4 import BeautifulSoup
+    cuerpo = BeautifulSoup(html, "html.parser").find(id="textoxslt")
+    texto = " ".join(cuerpo.get_text(" ", strip=True).split()) if cuerpo else ""
+    out = {}
+    pl = plazo_literal(texto) if texto else None
+    if pl:
+        out["plazo"] = pl
+    pr = proceso(reg.get("titulo", ""), reg.get("epi", ""), texto)
+    if pr:
+        out["proc"] = pr
+    return out
+
+
+def url_texto(ident: str) -> str:
+    return f"https://www.boe.es/diario_boe/txt.php?id={ident}"
+
+
+_get = None
+
+
+def usar_get(get) -> None:
+    """El recolector (build.get: robots.txt del BOE y pausa mínima) que usa
+    enriquecer() en el reprocesado. Sin él no se lee ningún texto."""
+    global _get
+    _get = get
+
+
+def enriquecer(regs: list[dict], get=None, log=print, previo: dict | None = None) -> dict:
+    """Añade plazo literal y tipo de proceso a las convocatorias. Reutiliza lo
+    ya leído en `previo` (estado). Una petición por convocatoria nueva, por
+    build.get (respeta robots.txt y el ritmo del colector)."""
+    get = get or _get
+    cuenta = {"leidas": 0, "reutilizadas": 0, "fallos": 0, "con_plazo": 0}
+    previo = previo or {}
+    for r in regs:
+        if not es_convocatoria(r):
+            continue
+        anterior = previo.get(r["id"]) or {}
+        if anterior.get("leido"):
+            for k in ("plazo", "proc", "leido"):
+                if k in anterior:
+                    r[k] = anterior[k]
+            cuenta["reutilizadas"] += 1
+        elif get is not None:
+            try:
+                resp = get(url_texto(r["id"]))
+            except Exception as exc:                          # noqa: BLE001  (p. ej. --sin-red)
+                log(f"empleo: sin lectura de textos ({type(exc).__name__}); el resto va sin plazo")
+                get, resp = None, None
+            if resp is None:
+                cuenta["fallos"] += 1
+                pr = proceso(r["titulo"], r.get("epi", ""))
+                if pr:
+                    r["proc"] = pr
+                continue
+            r.update(detalle(resp.text, r))
+            r["leido"] = 1
+            cuenta["leidas"] += 1
+        else:
+            pr = proceso(r["titulo"], r.get("epi", ""))
+            if pr:
+                r["proc"] = pr
+        cuenta["con_plazo"] += "plazo" in r
+    log(f"empleo: textos {cuenta}")
+    return cuenta
+
+
 # ---------------------------------------------------------------------- estado
 
 def cargar(ruta: pathlib.Path | None = None) -> dict:
@@ -187,6 +374,7 @@ def resumen_reproceso() -> dict:
 def procesar_dia(entradas: list[dict], fecha, fuente: str, log=print) -> tuple[int, dict]:
     """Lo que llama el reprocesado común (reproceso.py) con cada sumario."""
     regs = extraer(entradas, fecha, log)
+    enriquecer(regs, None, log, cargar()["registros"])
     incorporar(regs, fecha, fuente)
     return len(regs), dict(extraer.ultimos_descartes)
 
@@ -263,9 +451,12 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         enlace = r.get("url") or url_boe(r["id"])
         dept = f" · {esc(nombre_dept(r['dept']))}" if con_dept and r.get("dept") else ""
         epi = f" · {esc(r['epi'])}" if r.get("epi") else ""
+        proc = f" · {esc(r['proc'])}" if r.get("proc") else ""
+        plazo = (f'<span class="ref">Plazo, según el BOE: «{esc(r["plazo"])}»</span>'
+                 if r.get("plazo") and MOSTRAR_PLAZO else "")
         return (f'<li><a href="{attr(enlace)}" target="_blank" rel="noopener">{esc(r["titulo"])}</a>'
                 f'<span class="ref">{esc(r["id"])} · {esc(fecha_es(r["fecha"]))} · '
-                f'{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{dept}{epi}</span></li>')
+                f'{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}</li>')
 
     def por_tipo(filas: list, con_dept: bool = True) -> str:
         html = ""

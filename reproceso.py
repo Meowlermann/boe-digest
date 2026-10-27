@@ -85,6 +85,9 @@ def reprocesar(desde: dt.date, hasta: dt.date, get, log=print, pausa: float = 1.
     extractores pedidos. Devuelve los totales de cada extractor. La pausa es
     entre días: respeto a la web del BOE, como el resto del pipeline."""
     mods = {n: importlib.import_module(n) for n in extractores}
+    for m in mods.values():
+        if hasattr(m, "usar_get"):       # empleo lee el texto de cada convocatoria
+            m.usar_get(get)
     secciones = tuple(sorted({s for m in mods.values() for s in m.SECCIONES}))
     totales = {n: {"dias": 0, "incluidos": 0, "sin_boe": 0, "descartes": {}} for n in mods}
     d = desde

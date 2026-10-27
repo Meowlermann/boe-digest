@@ -147,6 +147,18 @@ class TestPaginas(unittest.TestCase):
         self.assertIn("CollectionPage", indice)
         self.assertNotIn("JobPosting", indice)
 
+    def test_fila_con_plazo_literal_y_proceso(self):
+        r = next(iter(self.estado["registros"].values()))
+        r.update({"plazo": "El plazo de presentación de solicitudes será de veinte días hábiles.",
+                  "proc": "Oposición", "tipo": "convocatoria"})
+        h, _ = h_prueba(self.carpeta)
+        em.generar_paginas(h, self.estado)
+        indice = (self.carpeta / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Plazo, según el BOE: «El plazo de presentación de solicitudes será de veinte días hábiles.»",
+                      indice)
+        self.assertIn(" · Oposición", indice)
+        self.assertNotIn("Cierra el", indice)
+
     def test_canales(self):
         h, escritos = h_prueba(self.carpeta)
         anuncios = em.canales(h, self.estado)
