@@ -153,17 +153,32 @@ class Verificador(unittest.TestCase):
             self.assertEqual([x["fichero"] for x in h], ["diputados/luis.xml"])
             self.assertEqual(h[0]["nivel"], v.GRAVE)
 
-    def test_titular_pendiente_es_aviso(self):
+    def _pagina(self, cuerpo):
         pagina = ('<!doctype html><html><head><title>t</title><meta name="description" content="d">'
                   '<link rel="canonical" href="https://terceracamara.es/aviso-legal.html"></head>'
-                  '<body>Titular: &lt;TITULAR_PENDIENTE&gt;</body></html>')
+                  f'<body>{cuerpo}<footer>Basado en datos de la <a href="https://www.boe.es">Agencia Estatal Boletín Oficial del Estado</a>. Medio no oficial.</footer></body></html>')
         with tempfile.TemporaryDirectory() as d:
             p = pathlib.Path(d) / "aviso-legal.html"
             p.write_text(pagina, encoding="utf-8")
-            h = v.comprobar_html(pathlib.Path(d), [p])
-        self.assertEqual([x["nivel"] for x in h], [v.AVISO])
-        self.assertIn("LSSI", h[0]["detalle"])
+            return [x for x in v.comprobar_html(pathlib.Path(d), [p]) if x["nivel"] == v.GRAVE]
 
+    def test_titular_pendiente_es_grave(self):
+        h = self._pagina("Titular: &lt;TITULAR_PENDIENTE&gt;")
+        self.assertEqual(len(h), 1)
+        self.assertIn("TITULAR_PENDIENTE", h[0]["detalle"])
+
+    def test_dato_privado(self):
+        import codecs
+        # Cadenas construidas en tiempo de ejecución: el nombre no va en claro.
+        nombre = codecs.decode("Kniv", "rot13") + codecs.decode("re", "rot13")
+        apellido = codecs.decode("Fvtny", "rot13") + "\u00e9s"
+        self.assertEqual(self._pagina("Contacto: contacto@terceracamara.es"), [])
+        self.assertEqual(self._pagina("Xavier Domènech y Ana Sigal"), [])
+        for malo in (f"Titular: {nombre} {apellido}", f"{nombre[:4]} {apellido}",
+                     "escribe a " + "alguien" + "@" + "gmail.com"):
+            h = self._pagina(malo)
+            self.assertEqual(len(h), 1, malo)
+            self.assertIn("mantenedor", h[0]["detalle"])
 
 if __name__ == "__main__":
     unittest.main()

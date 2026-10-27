@@ -29,7 +29,7 @@ PAGINA = """<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{jsonld}</script>
 <script>if (typeof x === "undefined" || isNaN(y)) {{}}</script>
-</head><body>{cuerpo}</body></html>
+</head><body>{cuerpo}<footer>Basado en datos de la <a href="https://www.boe.es">Agencia Estatal Boletín Oficial del Estado</a>. Medio no oficial.</footer></body></html>
 """
 
 BUILD = '''

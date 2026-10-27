@@ -173,15 +173,50 @@ MARCADORES = [
     ("NaN", re.compile(r"\bNaN\b")),
     ("<EMAIL_DE_CONTACTO>", re.compile(r"(<|&lt;)EMAIL_DE_CONTACTO(>|&gt;)")),
 ]
-# Marcadores que se publican a sabiendas y solo dan AVISO. <TITULAR_PENDIENTE>
-# ocupa en el aviso legal y en la privacidad el sitio del nombre y el NIF del
-# titular: mientras no haya actividad económica no se publican (decisión del
-# mantenedor, octubre de 2026), así que no es un fallo del código y no debe
-# bloquear el CI. Antes de cobrar o poner publicidad, la LSSI exige esos datos
-# (ARQUITECTURA.md §13): el aviso diario recuerda que sigue pendiente.
-MARCADORES_AVISO = [
-    ("<TITULAR_PENDIENTE>", re.compile(r"(<|&lt;)TITULAR_PENDIENTE(>|&gt;)")),
-]
+# Marcador del titular (TC-002): ya no debe aparecer en ninguna página.
+MARCADORES.append(("<TITULAR_PENDIENTE>", re.compile(r"(<|&lt;)TITULAR_PENDIENTE(>|&gt;)")))
+
+
+def _patron_privado() -> re.Pattern:
+    """Datos personales del mantenedor que nunca deben publicarse (TC-002).
+
+    El repo es público: el nombre no se escribe en claro. Se guarda en ROT13 y
+    por fragmentos, y el patrón se construye aquí. Cubre nombre y apellido
+    seguidos (con o sin acento, con entidad HTML o pegados, como en un usuario
+    de correo) y cualquier dirección @gmail.com.
+    """
+    import codecs
+    nombre = codecs.decode("kniv", "rot13")           # nombre de pila (abreviado)
+    resto = codecs.decode("re", "rot13")              # terminación opcional del nombre
+    apellido = codecs.decode("fvtny", "rot13")        # raíz del apellido
+    e = r"(?:e|é|&eacute;|&#233;|&#xe9;)"
+    return re.compile(rf"@gmail\.com|\b{nombre}(?:{resto})?[\s._\-]*{apellido}{e}s\b", re.I)
+
+
+PRIVADO = _patron_privado()
+
+# Atribución exigida por las condiciones de reutilización del BOE (TC-021,
+# https://www.boe.es/informacion/aviso_legal/index.php, condición cuarta):
+# cita de la fuente con enlace a https://www.boe.es, aviso de medio no oficial,
+# y prohibición de «framings» de la sede del BOE.
+RE_ATRIBUCION_BOE = re.compile(
+    r"(Basado en datos de la|Fuente de los datos:)\s*<a\b[^>]*href=\"https://www\.boe\.es/?\"[^>]*>"
+    r"\s*Agencia Estatal Bolet(?:í|&iacute;)n Oficial del Estado\s*</a>")
+RE_NO_OFICIAL = re.compile(r"Medio no oficial", re.I)
+RE_IFRAME_BOE = re.compile(r"<iframe\b[^>]*\bsrc=\"[^\"]*boe\.es", re.I)
+
+
+def problemas_atribucion(html: str) -> list[str]:
+    """Qué le falta a una página completa para cumplir la atribución del BOE."""
+    faltan = []
+    if not RE_ATRIBUCION_BOE.search(html):
+        faltan.append("atribución «Basado en datos de la Agencia Estatal Boletín Oficial del "
+                      "Estado» con enlace a https://www.boe.es")
+    if not RE_NO_OFICIAL.search(html):
+        faltan.append("aviso de medio no oficial")
+    if RE_IFRAME_BOE.search(html):
+        faltan.append("sin iframes de boe.es (prohibidos por su aviso legal)")
+    return faltan
 RE_SCRIPT = re.compile(r"<script\b([^>]*)>(.*?)</script>", re.S | re.I)
 RE_STYLE = re.compile(r"<style\b[^>]*>.*?</style>", re.S | re.I)
 RE_DOCUMENTO = re.compile(r"<!doctype html|<html[\s>]", re.I)
@@ -269,15 +304,20 @@ def comprobar_html(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None
             hallazgos.append(hallazgo(GRAVE, "html", f"Marcador sin sustituir {nombres}: …{ctx}…",
                                       rel, "busca qué plantilla o función deja ese valor y "
                                       "corrígela; no parchees el HTML generado."))
-        if any(patron.search(visible) for _n, patron in MARCADORES_AVISO):
-            hallazgos.append(hallazgo(AVISO, "html", "Datos del titular pendientes "
-                                      "(<TITULAR_PENDIENTE>): obligatorios por la LSSI antes de "
-                                      "cualquier actividad económica.", rel))
+        if PRIVADO.search(texto):
+            hallazgos.append(hallazgo(GRAVE, "html", "Dato personal del mantenedor publicado "
+                                      "(dirección @gmail.com o su nombre).", rel,
+                                      "quítalo de la plantilla o del dato; el único contacto "
+                                      "público es contacto@terceracamara.es."))
         cab = texto[:20000]
         # Un fragmento que otra página incrusta (datos/votaciones-banner.html)
         # no es una página: no lleva <title>, description ni canonical.
         if RE_DOCUMENTO.search(cab[:500]):
             hallazgos.extend(_cabecera(cab, rel))
+            if (faltan := problemas_atribucion(texto)):
+                hallazgos.append(hallazgo(GRAVE, "html", "Atribución del BOE incompleta: falta "
+                                          + "; ".join(faltan) + ".", rel,
+                                          "usa el pie común de template*.html (TC-021)."))
         for href in set(RE_HREF.findall(visible)):
             ruta = _ruta_interna(html_unescape(href), rel)
             if ruta and not destino_existe(raiz, ruta, cache):
