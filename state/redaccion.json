@@ -4902,17 +4902,9 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas parlamentarias acumulan más de 20 días hábiles desde su publicación sin que conste una contestación registrada en la ficha oficial.",
-   "claves": [
-    "Las preguntas pendientes corresponden al último año y han superado la fecha límite publicada por la Cámara, aunque podrían existir prórrogas o respuestas aún no registradas.",
-    "Sumar encabeza las iniciativas sin contestación con 24 preguntas, seguido por el PSOE con 7, el PP con 4, y EAJ-PNV, Junts y los diputados sin grupo con una cada uno.",
-    "La iniciativa escrita más antigua que supera el plazo reglamentario fue publicada el lunes 16 de febrero de 2026."
-   ],
-   "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-27"
+   "huella": "0ffb5472867d2876",
+   "descartado": "nombre «Partido» que no está en el texto oficial",
+   "intentos": 2
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -9395,9 +9387,213 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-26"
+  },
+  "BOE-A-2026-22503": {
+   "huella": "d8d2e2b0d8598608",
+   "fuente": "d6cf84a39c507b71",
+   "titular": "Justicia y Castilla y León prorrogan su convenio de datos sanitarios forenses",
+   "entradilla": "El acuerdo mantendrá su vigencia durante cuatro años más a partir del 21 de octubre de 2026 y limita el acceso a las historias clínicas del personal autorizado.",
+   "claves": [
+    "El convenio extendido fijará su vigencia por un periodo de cuatro años a partir del 21 de octubre de 2026.",
+    "El acceso a la herramienta de historia clínica quedará restringido a las direcciones de los IMLCF o al personal debidamente autorizado.",
+    "El sistema informático registrará una auditoría de todos los accesos realizados a los datos sanitarios de interés forense."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22504": {
+   "huella": "6fb88a5f6adc4c47",
+   "fuente": "928cf8893ca0866c",
+   "titular": "Patrimonio Nacional vende entradas a GetYourGuide para dos de sus espacios",
+   "entradilla": "La plataforma comercializará pases individuales para la Galería de las Colecciones Reales y el Monasterio de El Escorial sin superar el precio público básico.",
+   "claves": [
+    "GetYourGuide accederá a la tarifa de agencia si adquiere al menos 2.000 entradas individuales al año entre ambos monumentos.",
+    "Si la plataforma no alcanza las 2.000 entradas anuales, deberá abonar a Patrimonio Nacional la diferencia con la tarifa ordinaria.",
+    "Las entradas comercializadas en el marco de este convenio no permitirán la realización de visitas guiadas en grupo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22505": {
+   "huella": "ac3e99e451152b7d",
+   "fuente": "ad7edf54550be102",
+   "titular": "La Confederación Hidrográfica del Ebro y el CSIC aplican el modelo geotérmico Geoterz en Zaragoza",
+   "entradilla": "La CHE y el CSIC colaboran para mejorar la gestión y simulación de los aprovechamientos geotérmicos con aguas subterráneas en Zaragoza ante el cambio climático.",
+   "claves": [
+    "El convenio se suscribe entre la Confederación Hidrográfica del Ebro y la Agencia Estatal Consejo Superior de Investigaciones Científicas.",
+    "El objetivo es aplicar el modelo geotérmico Geoterz para estudiar los vertidos térmicos de instalaciones someras en la masa de agua del Aluvial del Ebro en Zaragoza.",
+    "La iniciativa busca optimizar la gestión de los recursos hídricos subterráneos y analizar el impacto del cambio climático a corto y medio plazo."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22506": {
+   "huella": "485ebf9608a3a199",
+   "fuente": "03e8e382ad2573ea",
+   "titular": "Cultura e ICEX destinarán 70.000 euros a promocionar la danza en China y EEUU",
+   "entradilla": "El acuerdo financiará la presencia de profesionales y empresas de danza españolas en los encuentros internacionales ChinaSPAF y APAP NYC en 2027.",
+   "claves": [
+    "La Dirección General de Artes Escénicas y Música aportará hasta 40.000 euros del presupuesto total de la iniciativa.",
+    "El ICEX asumirá la contratación de espacio y decoración en las ferias, así como la producción ejecutiva del proyecto.",
+    "La representación española acudirá a la feria APAP NYC en enero de 2027 y al encuentro ChinaSPAF en octubre de 2027."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22507": {
+   "huella": "9636380ba2d9c01e",
+   "fuente": "5b1e0ed2b65f705f",
+   "titular": "El Catastro y el Ayuntamiento de Jávea renuevan su acuerdo de gestión",
+   "entradilla": "La resolución sustituye el convenio vigente desde 1998 para coordinar las funciones de mantenimiento y actualización catastral en el municipio alicantino.",
+   "claves": [
+    "La firma de este documento extingue de forma definitiva el convenio de colaboración suscrito el 18 de marzo de 1998.",
+    "La colaboración se articulará a través de la Gerencia Territorial del Catastro de Alicante y el Ayuntamiento de Jávea."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22508": {
+   "huella": "e80b8e82e320f2ae",
+   "fuente": "73a9ca0b31ada5af",
+   "titular": "El Ministerio del Interior y Alange acuerdan coordinar sus fuerzas de seguridad",
+   "entradilla": "El convenio fija el marco operativo de colaboración entre la Guardia Civil y la Policía Local de este municipio de la provincia de Badajoz.",
+   "claves": [
+    "El documento formaliza la cooperación entre la Dirección General de la Guardia Civil y la corporación municipal pacense.",
+    "El acuerdo busca reforzar el diseño, la ejecución y el seguimiento de las políticas de seguridad ciudadana en la localidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22511": {
+   "huella": "9e5c0b664a8d11c7",
+   "fuente": "bb56fd584b84c03e",
+   "titular": "Educación y el Ayuntamiento de Cárcheles abren un Aula Mentor en Carchelejo",
+   "entradilla": "La alianza ofrecerá cursos telemáticos de formación no reglada para la población adulta en unas instalaciones habilitadas en la calle Jesús.",
+   "claves": [
+    "El Ayuntamiento de Cárcheles mantendrá los equipos informáticos, las instalaciones y la conexión a Internet necesarias.",
+    "El servicio presencial se ubicará en la calle Jesús número 14 de la localidad de Carchelejo, en Jaén.",
+    "La persona responsable designada por el ayuntamiento para administrar el aula no tendrá vínculo laboral con el Ministerio."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22512": {
+   "huella": "50a103275e59d677",
+   "fuente": "56ea1b826e19f8bd",
+   "titular": "El SEPE delega en sus direcciones provinciales las expulsiones del programa TándEM",
+   "entradilla": "Los responsables territoriales resolverán los expedientes disciplinarios en la etapa formativa tras el informe de la entidad promotora.",
+   "claves": [
+    "La competencia recaerá en las Direcciones Provinciales del SEPE del ámbito territorial donde se desarrolle la formación.",
+    "La expulsión requerirá propuesta motivada de la entidad promotora, trámite de audiencia al interesado y acuerdo del grupo mixto."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22513": {
+   "huella": "4ffb54d968ffba2d",
+   "fuente": "dc7f6a1c0d111afb",
+   "titular": "El Gobierno declara Lugar de Memoria el templo masónico de Santa Cruz de Tenerife",
+   "entradilla": "El inmueble de la calle San Lucas, perteneciente al ayuntamiento, pasa al inventario oficial por haber sido centro de represión franquista.",
+   "claves": [
+    "La titularidad del inmueble declarado Lugar de Memoria Democrática pertenece al Ayuntamiento de Santa Cruz de Tenerife.",
+    "La resolución prevé instalar placas explicativas y elementos de señalización sin alterar el uso actual de la edificación.",
+    "El edificio de la logia Añaza sufrió incautaciones, detenciones y fue usado como centro represivo durante la dictadura."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22514": {
+   "huella": "5dde3c619ad90c4a",
+   "fuente": "1e8a277abaeaa18b",
+   "titular": "El Gobierno y Castilla y León acuerdan el plan de exploración minera 2026-2030",
+   "entradilla": "El MITECO y la comunidad autónoma establecen los cauces de colaboración para investigar yacimientos y residuos mineros en el territorio castellano y leonés.",
+   "claves": [
+    "El Ministerio informará a la Consejería de Medio Ambiente y Energía antes de ejecutar cualquier acción del plan en la comunidad.",
+    "El Gobierno pedirá informe autonómico previo antes de declarar zonas de reserva minera a favor del Estado en Castilla y León.",
+    "El Ministerio financiará las actividades de investigación minera y sobre residuos según el presupuesto del plan nacional."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22515": {
+   "huella": "4e3c610834d27b63",
+   "fuente": "3caeddaeed17e3a7",
+   "titular": "El Ministerio para la Transición Ecológica aprueba el plan de implantación de contadores inteligentes",
+   "entradilla": "La orden establece el procedimiento y calendario para instalar contadores inteligentes en puntos de suministro de gas natural con consumo anual igual o inferior a 50.000 kWh.",
+   "claves": [
+    "La norma fija en 50.000 kWh el umbral de consumo anual que obliga a disponer de telemedida en puntos de suministro con presión de diseño inferior o igual a 60 bar.",
+    "Se definen requisitos simplificados para los módulos de telemedida en suministros con consumo superior a 50.000 kWh e igual o inferior a 5 GWh.",
+    "Los titulares de la red deberán instalar los nuevos equipos de medida conforme al calendario fijado en el anexo de la disposición."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22516": {
+   "huella": "6ae39893847eb503",
+   "fuente": "0a36091f7ce69bfe",
+   "titular": "La Dirección General de Calidad y Evaluación Ambiental emite el informe sobre el desmontaje",
+   "entradilla": "El proyecto, promovido por Exolum Aviation y con AESA como órgano sustantivo, prevé la demolición y retirada de los depósitos del aeropuerto en Granadilla de Abona.",
+   "claves": [
+    "Los trabajos comprenden la demolición, desmontaje, troceado para el transporte, retirada y limpieza de las instalaciones en el aeropuerto de Tenerife Sur.",
+    "El proyecto incluye la retirada de elementos enterrados y de las cimentaciones de los equipos y edificios ubicados en el municipio de Granadilla de Abona.",
+    "La tramitación ha requerido la consulta a diversos organismos estatales y del Gobierno de Canarias para evaluar los posibles impactos ambientales."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22517": {
+   "huella": "8b881bcadc24919e",
+   "fuente": "d183b8370aa6b160",
+   "titular": "El Ministerio de Cultura actualiza la Carta de Servicios del Museo del Traje",
+   "entradilla": "La resolución oficializa el nuevo compromiso de calidad del centro tras el informe favorable del Ministerio para la Transformación Digital.",
+   "claves": [
+    "La nueva Carta de Servicios del centro de investigación entrará en vigor al día siguiente de su publicación en el BOE.",
+    "El documento impreso podrá consultarse en el museo y estará accesible en la sede electrónica del Ministerio de Cultura."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22518": {
+   "huella": "a2b61c0ea506181e",
+   "fuente": "c535f651504e10b2",
+   "titular": "Cultura y Navarra invertirán 32.000 euros en su catálogo de patrimonio bibliográfico",
+   "entradilla": "El convenio financiará durante los ejercicios 2026, 2027 y 2028 los trabajos de catalogación de obras antiguas en bibliotecas públicas y privadas.",
+   "claves": [
+    "El Ministerio de Cultura asumirá el 65 por ciento del presupuesto total y la Comunidad Foral de Navarra aportará el 35 por ciento restante.",
+    "Las aportaciones del Ministerio sumarán 8.635,90 euros en 2026, y 6.082,05 euros en los años 2027 y 2028 respectivamente.",
+    "La catalogación se ejecutará sobre colecciones bibliográficas con especial valor histórico situadas en el territorio navarro."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22519": {
+   "huella": "5655e1291d583dbc",
+   "fuente": "2457d0f1cf133d86",
+   "titular": "El Museo del Prado y el Goethe-Institut se unen para el laboratorio urbano Flipas",
+   "entradilla": "La entidad cultural alemana costeará los traslados y el alojamiento de artistas para realizar talleres y residencias en la pinacoteca.",
+   "claves": [
+    "El Goethe-Institut Madrid financiará los gastos de transporte y manutención de los creadores procedentes de Alemania.",
+    "Las estancias principales tendrán una duración de ocho semanas durante los meses de octubre o noviembre.",
+    "Se contemplan residencias de investigación breves que no superarán los diez días consecutivos y no tendrán coste para el Museo del Prado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
+  },
+  "BOE-A-2026-22520": {
+   "huella": "3d222a1cb4f647f4",
+   "fuente": "cf771af9e50985b9",
+   "titular": "Cultura compra por 300 euros un libro de 1713 sobre la Antigua Roma",
+   "entradilla": "El Ministerio ejercita el derecho de tanteo sobre la obra de Heinrich Kipping para asignarla a la colección del Museo Arqueológico Nacional.",
+   "claves": [
+    "El bien mueble fue adjudicado en subasta pública en la sala El Remate por un importe de remate de 300 euros.",
+    "El ejemplar adquirido es un libro ilustrado impreso en Leiden en 1713 sobre antigüedades romanas firmado por Heinrich Kipping.",
+    "La obra será depositada en el Museo Arqueológico Nacional de Madrid para su inventariado e integración en la colección estatal."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-27"
   }
  },
  "uso": {
-  "2026-10-27": 1
+  "2026-10-27": 3
  }
 }
