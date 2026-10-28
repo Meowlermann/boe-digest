@@ -332,16 +332,23 @@ def chips(reg: dict) -> list[str]:
     t = c.get("turnos") or {}
     if t:
         out.append(" · ".join(f"{TURNOS.get(k, k)} {v}" for k, v in t.items()))
-    if c.get("sistema"):
+    # El sistema ya sale en la línea de la tarjeta si empleo.proceso lo dio.
+    if c.get("sistema") and c["sistema"] != reg.get("proc"):
         out.append(c["sistema"])
-    if c.get("boletin"):
-        out.append(f"Bases: {c['boletin']}")
     return out
+
+
+def bases(reg: dict) -> str:
+    """«Bases en el Boletín Oficial de la Provincia de Huesca» o ""."""
+    b = activos(reg).get("boletin")
+    return f"Bases en el «{b}»" if b else ""
 
 
 def etiqueta_no_oferta(reg: dict) -> str:
     """«Corrección», «Desierta»… si la familia lo tiene activo; si no, ""."""
-    no = reg.get("no_oferta")
+    # Las correcciones y desiertas no se leen (empleo.es_convocatoria): basta
+    # el título, con la misma regla que se aplica al texto.
+    no = reg.get("no_oferta") or no_oferta(reg.get("titulo", ""), "")
     if not no or familia(reg) not in NO_OFERTA_ACTIVA:
         return ""
     return ETIQUETA_NO_OFERTA.get(no, "")

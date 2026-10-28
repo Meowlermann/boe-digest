@@ -47,7 +47,8 @@ class TestLocal(unittest.TestCase):
         r = reg("BOE-A-2026-20555")
         self.assertEqual(C.titular(r), "2 plazas de Operario/a de brigada municipal de obras · Tamarite de Litera")
         self.assertIn("Turno libre 2", C.chips(r))
-        self.assertIn("Bases: Boletín Oficial de la Provincia de Huesca", C.chips(r))
+        self.assertEqual(C.bases(r), "Bases en el «Boletín Oficial de la Provincia de Huesca»")
+        self.assertNotIn("Concurso-oposición", C.chips(dict(r, proc="Concurso-oposición")))
 
     def test_turnos_mixtos(self):
         c = reg("BOE-A-2026-20418")["campos"]
@@ -83,6 +84,10 @@ class TestLocal(unittest.TestCase):
         self.assertEqual(C.etiqueta_no_oferta(r), "Corrección")
         self.assertEqual(C.titular(r), "")
         self.assertEqual(C.chips(r), [])
+
+    def test_correccion_sin_texto_por_titulo(self):
+        r = {"titulo": TEXTOS["BOE-A-2026-21716"]["titulo"], "dept": "ADMINISTRACIÓN LOCAL", "tipo": "correccion"}
+        self.assertEqual(C.etiqueta_no_oferta(r), "Corrección")
 
     def test_sin_nombres_en_campos(self):
         for i in TEXTOS:

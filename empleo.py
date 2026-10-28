@@ -528,6 +528,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         no = f'<span class="em-aviso">{esc(no)}</span>' if no else ""
         chips = "".join(f'<span class="em-chip">{esc(c)}</span>' for c in empleo_campos.chips(r))
         chips = f'<span class="em-chips">{chips}</span>' if chips else ""
+        bases = empleo_campos.bases(r)
+        bases = f'<span class="ref em-bases">{esc(bases)}</span>' if bases else ""
         dept = f" · {esc(nombre_dept(r['dept']))}" if con_dept and r.get("dept") else ""
         epi = f" · {esc(r['epi'])}" if r.get("epi") else ""
         proc = f" · {esc(r['proc'])}" if r.get("proc") else ""
@@ -537,7 +539,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                     f'<p>{esc(r["titulo"])}</p></details>') if recortado else ""
         return (f'<li class="em-card"><a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
                 f'{esc(corto)}</a>{no}{completo}{chips}'
-                f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}'
+                f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{bases}{plazo}'
                 f'<span class="ref em-pub">{esc(publicada(r["fecha"], ref))} · '
                 f'{esc(fecha_es(r["fecha"]))} · {esc(r["id"])}</span>'
                 f'<span class="em-bot"><a class="em-btn" href="{attr(enlace)}" target="_blank" rel="noopener">'
