@@ -1552,3 +1552,8 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-bot{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
 .em-btn{ display:inline-flex; align-items:center; min-height:36px; padding:6px 12px; border:1px solid var(--border);
   border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; }
+/* Extractor de empleo: datos leídos del texto del BOE (solo campos validados) */
+.em-chips{ display:flex; flex-wrap:wrap; gap:6px; }
+.em-chip{ font-size:13px; padding:2px 8px; border:1px solid var(--border); border-radius:999px; color:var(--ink-soft); }
+.em-aviso{ align-self:flex-start; font-size:13px; font-weight:600; padding:2px 8px; border-radius:6px;
+  background:var(--border); }
