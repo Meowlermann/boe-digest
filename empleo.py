@@ -399,6 +399,9 @@ def procesar_dia(entradas: list[dict], fecha, fuente: str, log=print) -> tuple[i
 def _regs(estado: dict, hoy: str, dias: int) -> list[dict]:
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=dias)).isoformat()
     regs = [{"id": k, **v} for k, v in estado["registros"].items() if v.get("fecha", "") >= corte]
+    for r in regs:
+        if r.get("tipo") in ORDEN_ABIERTOS and empleo_campos.fuera_de_abiertos(r):
+            r["tipo"] = "otras"
     return sorted(regs, key=lambda r: (r["fecha"], r["id"]), reverse=True)
 
 

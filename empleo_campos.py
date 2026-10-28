@@ -45,7 +45,9 @@ CAMPOS_ACTIVOS: dict[str, frozenset] = {
 # Familias en las que se rotula una disposición que no es oferta nueva
 # (corrección, modificación, desierta, anulación). Solo la etiqueta: nunca
 # cifras de lo corregido.
-NO_OFERTA_ACTIVA: frozenset = frozenset({"local"})
+# universidad y provision: validadas en la segunda muestra (25 y 38 textos,
+# 0 falsas, sin omisiones). estado NO: 2 de 28 no-ofertas sin detectar (92,9 %).
+NO_OFERTA_ACTIVA: frozenset = frozenset({"local", "universidad", "provision"})
 
 ETIQUETA_NO_OFERTA = {
     "correccion": "Corrección",
@@ -352,3 +354,9 @@ def etiqueta_no_oferta(reg: dict) -> str:
     if not no or familia(reg) not in NO_OFERTA_ACTIVA:
         return ""
     return ETIQUETA_NO_OFERTA.get(no, "")
+
+
+def fuera_de_abiertos(reg: dict) -> bool:
+    """Una desierta (familia activa) no es una oferta abierta: se saca de los
+    bloques de convocatorias y provisión y pasa a «Otras disposiciones»."""
+    return etiqueta_no_oferta(reg) == ETIQUETA_NO_OFERTA["desierta"]

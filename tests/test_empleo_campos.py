@@ -112,10 +112,30 @@ class TestInterruptor(unittest.TestCase):
         finally:
             C.CAMPOS_ACTIVOS["local"] = viejo
 
-    def test_no_oferta_apagada_fuera_de_local(self):
-        r = {"titulo": "Corrección de errores de la Resolución…", "dept": "UNIVERSIDADES",
-             "tipo": "convocatoria", "no_oferta": "correccion"}
-        self.assertEqual(C.etiqueta_no_oferta(r), "")
+    def test_no_oferta_por_familia(self):
+        # Títulos reales: BOE-A-2026-21582 (universidad), BOE-A-2026-22473 (provisión),
+        # BOE-A-2026-22110 (estado: apagada, no llega al 95 %).
+        univ = {"titulo": "Resolución de 29 de septiembre de 2026, de la Universidad de Cantabria, por la que se "
+                          "declara concluido el procedimiento y desierta plaza de Catedrático de Universidad.",
+                "dept": "UNIVERSIDADES", "tipo": "resultados"}
+        prov = {"titulo": "Resolución de 19 de octubre de 2026, de la Subsecretaría, por la que se declara desierta "
+                          "la convocatoria de libre designación, efectuada por Resolución de 13 de julio de 2026.",
+                "dept": "MINISTERIO DE HACIENDA", "tipo": "provision"}
+        est = {"titulo": "Resolución de 20 de octubre de 2026, de la Subdirección de Gerencia del Museo Nacional "
+                         "Centro de Arte Reina Sofía, por la que se corrigen errores en la de 2 de octubre de 2026.",
+               "dept": "MINISTERIO DE CULTURA", "tipo": "convocatoria"}
+        self.assertEqual(C.etiqueta_no_oferta(univ), "Desierta")
+        self.assertEqual(C.etiqueta_no_oferta(prov), "Desierta")
+        self.assertTrue(C.fuera_de_abiertos(prov))
+        self.assertEqual(C.etiqueta_no_oferta(est), "")
+        self.assertFalse(C.fuera_de_abiertos(est))
+
+    def test_desierta_sale_de_abiertos(self):
+        est = {"registros": {"BOE-A-2026-22473": {
+            "fecha": "2026-10-20", "dept": "MINISTERIO DE HACIENDA", "tipo": "provision",
+            "titulo": "Resolución de 19 de octubre de 2026, de la Subsecretaría, por la que se declara desierta "
+                      "la convocatoria de libre designación."}}}
+        self.assertEqual(em._regs(est, "2026-10-28", 90)[0]["tipo"], "otras")
 
 
 class TestDetalle(unittest.TestCase):
