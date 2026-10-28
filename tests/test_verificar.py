@@ -619,6 +619,9 @@ class TestEjecucion(unittest.TestCase):
         # Y con (q) menú, probada en test_menu.py.
         self.sin_menu = mock.patch.object(v, "comprobar_menu", return_value=[])
         self.sin_menu.start()
+        # Y con (r) contadores, probada en test_contadores.py.
+        self.sin_contadores = mock.patch.object(v, "comprobar_contadores", return_value=[])
+        self.sin_contadores.start()
         # Y con (p) correcciones, probada en test_correcciones.py.
         self.sin_corr = mock.patch.object(v, "comprobar_correcciones", return_value=[])
         self.sin_corr.start()
@@ -630,6 +633,7 @@ class TestEjecucion(unittest.TestCase):
         self.sin_semana.stop()
         self.sin_migas.stop()
         self.sin_menu.stop()
+        self.sin_contadores.stop()
         self.sin_corr.stop()
         self.sin_enlazado.stop()
         self.s.cerrar()
