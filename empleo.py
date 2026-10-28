@@ -68,6 +68,11 @@ ETIQUETA_TIPO = {t: e for t, e, _r in TIPOS}
 ORDEN_ABIERTOS = ("convocatoria", "provision")
 ORDEN_SEGUIMIENTO = ("admitidos", "tribunal", "resultados")
 ORDEN_RESTO = ("otras",)
+# A dónde lleva la nota de un listado recortado (rutas absolutas: sirven igual
+# en el índice que en las fichas por organismo y provincia).
+RSS_EMPLEO = "/empleo/index.xml"
+ENLACE_ORGANISMOS = "/empleo/#organismos"
+ENLACE_PROVINCIAS = "/empleo/#provincias"
 
 DEPT_LOCAL = "ADMINISTRACIÓN LOCAL"
 DEPT_UNIV = "UNIVERSIDADES"
@@ -463,11 +468,21 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}</li>')
 
     def bloque(t: str, filas: list, con_dept: bool, h: str = "h2") -> str:
-        xs = [r for r in filas if r["tipo"] == t][:MAX_FILAS]
+        todas = [r for r in filas if r["tipo"] == t]
+        xs = todas[:MAX_FILAS]
         if not xs:
             return ""
-        return (f'<{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} ({len(xs)})</{h}>'
-                f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>')
+        # Tope visible (UX-1): si el listado se recorta, el encabezado dice
+        # «N de M» y una nota lleva al resto (RSS y páginas por organismo y
+        # provincia), para que contador y encabezado nunca se contradigan.
+        recorte = len(todas) > len(xs)
+        n = f"{len(xs)} de {len(todas)}" if recorte else f"{len(xs)}"
+        nota = (f'<p class="aside-note">Se muestran {len(xs)} de {len(todas)}, las más recientes. '
+                f'El resto, en el <a href="{RSS_EMPLEO}">canal RSS de empleo</a> y en las páginas '
+                f'<a href="{ENLACE_ORGANISMOS}">por organismo</a> y '
+                f'<a href="{ENLACE_PROVINCIAS}">por provincia</a>.</p>') if recorte else ""
+        return (f'<{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} ({n})</{h}>'
+                f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>{nota}')
 
     def por_tipo(filas: list, con_dept: bool = True) -> str:
         # Orden de lectura (UX-1), distinto del de clasificación de TIPOS:
@@ -480,8 +495,14 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         return html + "".join(bloque(t, filas, con_dept) for t in ORDEN_RESTO)
 
     def recuento(filas: list) -> str:
-        return "".join(f"<dt>{esc(et)}</dt><dd>{n}</dd>" for t, et, _ in TIPOS
+        # Cada contador enlaza a su sección (UX-1).
+        return "".join(f'<dt>{esc(et)}</dt><dd><a href="#t-{t}">{n}</a></dd>' for t, et, _ in TIPOS
                        if (n := sum(1 for r in filas if r["tipo"] == t)))
+
+    def primero(filas: list) -> str:
+        """Tipo del primer bloque que se ve en la página (destino del total)."""
+        hay = {r["tipo"] for r in filas}
+        return next(t for t in ORDEN_ABIERTOS + ORDEN_SEGUIMIENTO + ORDEN_RESTO if t in hay)
 
     def item_list(filas: list) -> dict:
         return {"@type": "ItemList", "numberOfItems": len(filas),
@@ -508,7 +529,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             "KICKER": "Empleo público · BOE II.B",
             "HEADLINE": esc(h1),
             "STANDFIRST": esc(entradilla),
-            "FICHA": f"<dt>Disposiciones</dt><dd>{len(filas)}</dd>" + recuento(filas),
+            "FICHA": (f'<dt>Disposiciones</dt><dd><a href="#t-{primero(filas)}">{len(filas)}</a></dd>'
+                      if filas else "<dt>Disposiciones</dt><dd>0</dd>") + recuento(filas),
             "CUERPO": cuerpo,
             "FUENTE": ('Fuente: sumario del Boletín Oficial del Estado, sección II.B «Oposiciones y '
                        'concursos» (API de datos abiertos). Cada disposición enlaza a su texto en el BOE, '

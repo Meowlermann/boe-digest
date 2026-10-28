@@ -41,6 +41,9 @@ Comprobaciones (las letras son las de la PR que las introdujo):
                  con los mismos pasos y la URL canónica al final (TC-005).
   q) menu        Toda página completa enlaza a /empleo/ en la barra principal
                  y en la barra inferior móvil (UX-1).
+  r) contadores  En /empleo/, cada contador enlaza a su sección y coincide con
+                 su encabezado; si el listado se recorta, «N de M» y enlace al
+                 resto (UX-1).
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -809,6 +812,60 @@ def comprobar_menu(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None
 
 
 # ---------------------------------------------------------------------------
+# r) Contadores de /empleo/: enlazados y sin contradecir al encabezado (UX-1)
+# ---------------------------------------------------------------------------
+
+RE_CONTADOR = re.compile(r'<dd>(?:<a href="#(t-[a-z]+)">)?(\d+)(?:</a>)?</dd>')
+RE_ENCABEZADO_T = re.compile(r'<h[23] id="(t-[a-z]+)">[^<]*\((\d+)(?: de (\d+))?\)</h[23]>')
+RE_NOTA_RECORTE = re.compile(r'<p class="aside-note">Se muestran (\d+) de (\d+)[^<]*<a href="[^"]+\.xml"')
+
+
+def problemas_contadores(texto: str) -> list[str]:
+    """El primer contador es el total de la página («Disposiciones»); los
+    demás, uno por tipo, cada uno contra el encabezado de su sección."""
+    cabeceras = {m.group(1): (int(m.group(2)), int(m.group(3)) if m.group(3) else None)
+                 for m in RE_ENCABEZADO_T.finditer(texto)}
+    if not cabeceras:
+        return []
+    faltan = []
+    notas = {(int(a), int(b)) for a, b in RE_NOTA_RECORTE.findall(texto)}
+    contadores = [(a, int(n)) for a, n in RE_CONTADOR.findall(texto)]
+    for k, (ancla, n) in enumerate(contadores):
+        if not ancla:
+            faltan.append(f"un contador ({n}) no enlaza a su sección")
+            continue
+        if ancla not in cabeceras:
+            faltan.append(f"el contador #{ancla} apunta a una sección que no existe")
+            continue
+        if k == 0:
+            continue
+        vistos, total = cabeceras[ancla]
+        if total is None:
+            if vistos != n:
+                faltan.append(f"el contador de #{ancla} dice {n} y el encabezado {vistos}, sin «N de M»")
+        elif total != n:
+            faltan.append(f"el contador de #{ancla} dice {n} y el encabezado {vistos} de {total}")
+        elif (vistos, total) not in notas:
+            faltan.append(f"#{ancla} se recorta ({vistos} de {total}) sin nota con enlace al RSS")
+    return faltan
+
+
+def comprobar_contadores(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    hallazgos: list[dict] = []
+    if paginas is None:
+        paginas = sorted((raiz / "empleo").glob("*.html")) if (raiz / "empleo").is_dir() else []
+    for p in paginas:
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception:                                     # noqa: BLE001
+            continue
+        for problema in problemas_contadores(texto):
+            hallazgos.append(hallazgo(GRAVE, "contadores", problema.capitalize() + ".", _rel(raiz, p),
+                                      "empleo.generar_paginas: contador enlazado y encabezado «N de M»."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # p) Correcciones: cada pieza corregida enlaza a su corrección (TC-017)
 # ---------------------------------------------------------------------------
 #
@@ -1413,6 +1470,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("boletin", lambda: comprobar_boletin(raiz)),
         ("migas", lambda: comprobar_migas(raiz)),
         ("menu", lambda: comprobar_menu(raiz)),
+        ("contadores", lambda: comprobar_contadores(raiz)),
         ("correcciones", lambda: comprobar_correcciones(raiz)),
         ("enlazado", lambda: comprobar_enlazado(raiz)),
     ]
