@@ -4902,17 +4902,17 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin responder fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas parlamentarias del último año superan el límite de 20 días hábiles sin que se haya registrado su contestación.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas del último año fuera de plazo",
+   "entradilla": "Un total de 38 iniciativas parlamentarias por escrito llevan más de 20 días hábiles sin contestación registrada, con la pregunta más antigua publicada el 15 de diciembre de 2025.",
    "claves": [
-    "Sumar es la formación con más iniciativas pendientes con un total de 24 preguntas, seguida por el PSOE con 7 y el PP con 4.",
-    "Las iniciativas restantes fuera de plazo corresponden a EAJ-PNV, Junts y a un diputado sin grupo, con una pregunta cada uno.",
-    "La pregunta sin contestación registrada más antigua entre las contabilizadas se publicó el lunes 16 de febrero de 2026."
+    "Sumar acumula 30 de las preguntas escritas sin respuesta registrada, el PSOE cuatro, el PP dos, Junts una y la restante corresponde a diputados Sin grupo.",
+    "La iniciativa parlamentaria más antigua que ha rebasado el plazo de respuesta publicado por el Congreso fue registrada el lunes 15 de diciembre de 2025.",
+    "El recuento abarca preguntas del último año que superan los 20 días hábiles, aunque se señala la posibilidad de que existan prórrogas o respuestas aún no reflejadas."
    ],
    "modelo": "gemini-3.5-flash",
-   "fecha": "2026-10-27"
+   "fecha": "2026-10-28"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -9602,16 +9602,24 @@
   },
   "C-fa9552f432fd9368": {
    "huella": "08539be79c4346db",
-   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "ae894067a5dda303",
+   "titular": "El Gobierno contesta a Vox sobre el gasto en los aviones Falcon, Airbus y Cessna",
+   "entradilla": "El Gobierno publica su respuesta escrita al diputado Alberto Asarta Cuevas sobre el coste del anterior acuerdo marco para el mantenimiento de aeronaves.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
   },
   "C-3879f79cc3586d58": {
    "huella": "7d93b9bb0114f654",
-   "descartado": "nombre «Ejecutivo» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "7fe64ab87b0187ee",
+   "titular": "El Gobierno responde al PP sobre los expedientes a agentes de la Guardia Civil",
+   "entradilla": "El Gobierno registra su contestación escrita a una iniciativa parlamentaria de Carlos Rojas García sobre expedientes disciplinarios en la Guardia Civil.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
   }
  },
  "uso": {
-  "2026-10-27": 10
+  "2026-10-28": 2
  }
 }
