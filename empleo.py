@@ -441,6 +441,20 @@ def canales(h: dict, estado: dict | None = None) -> dict:
     return salida
 
 
+def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
+    """UX-2: dos listas plegables (<details>) con enlaces a las páginas por
+    provincia y por organismo, antes del listado. Sin JS: son enlaces."""
+    def plegable(clase: str, titulo: str, enlaces: list) -> str:
+        if not enlaces:
+            return ""
+        return (f'<details class="em-sel em-sel-{clase}"><summary>{titulo} '
+                f'<span class="ref">({len(enlaces)})</span></summary>'
+                f'<ul class="em-sel-l">{"".join(enlaces)}</ul></details>')
+    html = (plegable("prov", "Elegir provincia", enlaces_prov)
+            + plegable("org", "Elegir organismo convocante", enlaces_dept))
+    return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
+
+
 def generar_paginas(h: dict, estado: dict | None = None) -> list:
     """/empleo/index.html, una ficha por departamento y una por provincia."""
     estado = estado or cargar()
@@ -568,7 +582,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=DIAS_PORTADA)).isoformat()
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
     cuerpo = (f'<p>Disposiciones de los últimos {DIAS_PORTADA} días. Por organismo y por provincia, '
-              f'los últimos {VENTANA_PAGINAS}.</p>' + (por_tipo(recientes) or
+              f'los últimos {VENTANA_PAGINAS}.</p>' + selectores(enlaces_prov, enlaces_dept)
+              + (por_tipo(recientes) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
               + (f'<h2 id="provincias">Por provincia</h2><ul class="ix-lista">{"".join(enlaces_prov)}</ul>'
