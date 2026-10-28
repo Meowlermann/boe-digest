@@ -31,6 +31,8 @@ import pathlib
 import re
 import unicodedata
 
+import empleo_campos
+
 ROOT = pathlib.Path(__file__).parent
 ESTADO = ROOT / "state" / "empleo.json"
 VERSION = 1
@@ -262,11 +264,15 @@ def proceso(titulo: str, epigrafe: str, texto: str = "") -> str:
 
 
 def detalle(html: str, reg: dict) -> dict:
-    """{'plazo': cita literal o ausente, 'proc': etiqueta o ausente}."""
+    """{'plazo': cita literal o ausente, 'proc': etiqueta o ausente, y lo que
+    dé empleo_campos: 'campos' (dict) o 'no_oferta' (etiqueta)}. Todo
+    opcional: un registro sin estas claves se pinta como antes."""
     from bs4 import BeautifulSoup
     cuerpo = BeautifulSoup(html, "html.parser").find(id="textoxslt")
     texto = " ".join(cuerpo.get_text(" ", strip=True).split()) if cuerpo else ""
     out = {}
+    if cuerpo:
+        out.update(empleo_campos.extraer_campos(reg, cuerpo.get_text("\n", strip=True)))
     pl = plazo_literal(texto) if texto else None
     if pl:
         out["plazo"] = pl
@@ -302,7 +308,7 @@ def enriquecer(regs: list[dict], get=None, log=print, previo: dict | None = None
             continue
         anterior = previo.get(r["id"]) or {}
         if anterior.get("leido"):
-            for k in ("plazo", "proc", "leido"):
+            for k in ("plazo", "proc", "leido", "campos", "no_oferta"):
                 if k in anterior:
                     r[k] = anterior[k]
             cuenta["reutilizadas"] += 1
@@ -516,7 +522,12 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         # BOE y al PDF, «publicada hace N días» sobre la fecha del BOE. Nunca
         # una fecha de cierre: solo el plazo literal que cita el BOE.
         enlace = r.get("url") or url_boe(r["id"])
-        corto, recortado = titular_corto(r)
+        generado = empleo_campos.titular(r)
+        corto, recortado = (generado, True) if generado else titular_corto(r)
+        no = empleo_campos.etiqueta_no_oferta(r)
+        no = f'<span class="em-aviso">{esc(no)}</span>' if no else ""
+        chips = "".join(f'<span class="em-chip">{esc(c)}</span>' for c in empleo_campos.chips(r))
+        chips = f'<span class="em-chips">{chips}</span>' if chips else ""
         dept = f" · {esc(nombre_dept(r['dept']))}" if con_dept and r.get("dept") else ""
         epi = f" · {esc(r['epi'])}" if r.get("epi") else ""
         proc = f" · {esc(r['proc'])}" if r.get("proc") else ""
@@ -525,7 +536,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         completo = (f'<details class="em-completo"><summary>Título completo</summary>'
                     f'<p>{esc(r["titulo"])}</p></details>') if recortado else ""
         return (f'<li class="em-card"><a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
-                f'{esc(corto)}</a>{completo}'
+                f'{esc(corto)}</a>{no}{completo}{chips}'
                 f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}'
                 f'<span class="ref em-pub">{esc(publicada(r["fecha"], ref))} · '
                 f'{esc(fecha_es(r["fecha"]))} · {esc(r["id"])}</span>'

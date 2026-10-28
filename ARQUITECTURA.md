@@ -840,6 +840,25 @@ con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
     convocatoria: lo leído queda en el estado (`leido`). No se leen listas,
     tribunales, correcciones, desiertas, modificaciones ni cursos.
   - `/seguir/` enlaza `/empleo/index.xml` (o `/empleo/` si aún no hay canal).
+- **Extractor de campos** (`empleo_campos.py`, sin red, sin dependencias nuevas):
+  - `empleo.detalle()` añade al registro `campos` (dict) o `no_oferta`
+    (`correccion`, `modificacion`, `desierta`, `anulacion`) leídos del mismo texto
+    de `txt.php`. Claves **opcionales**: un registro sin ellas (anterior al
+    extractor o sin texto) se pinta como antes, con el titular corto.
+  - Familias (`empleo_campos.familia`): `local` (departamento Administración
+    Local, también sus puestos), `universidad`, `provision` y `estado` (resto).
+  - Solo se **enseña** lo que está en `CAMPOS_ACTIVOS[familia]`, y la etiqueta de
+    no-oferta solo en `NO_OFERTA_ACTIVA`. Umbral para activar un campo: ≥95 % de
+    acierto y 0 valores falsos, validado a mano en ≥20 textos nuevos de esa
+    familia. Lo que no llega queda apagado: ni guion ni estimación.
+  - Local (activo): nº de plazas (cifras y palabras; si palabra y cifra entre
+    paréntesis se contradicen, no hay cifra), cuerpo/categoría por línea, turno
+    (libre, promoción interna, discapacidad, movilidad), sistema, boletín de las
+    bases y localidad (del título, nunca de la firma: no se guardan nombres).
+    Si una línea de la lista no se entiende, no se dan plazas ni turnos.
+  - Titular generado (`empleo_campos.titular`): «2 plazas de Operario/a de
+    brigada municipal de obras · Tamarite de Litera»; si faltan datos fiables o
+    pasa de 120 caracteres, el titular corto de siempre.
 
 ## Lighthouse CI (TC-008)
 
