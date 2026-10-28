@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso registra 38 preguntas escritas fuera de plazo sin contestación",
-   "entradilla": "Un total de 38 preguntas escritas en el Congreso superan la fecha límite publicada al llevar más de 20 días hábiles sin contestación registrada.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso registra 38 preguntas escritas sin respuesta fuera de plazo",
+   "entradilla": "Un total de 38 preguntas formuladas en el último año superan los 20 días hábiles desde su publicación sin contestación registrada, la mayoría procedentes del grupo de Sumar.",
    "claves": [
-    "La pregunta escrita más antigua sin contestación registrada se publicó el lunes 16 de febrero de 2026.",
-    "Por grupo de quien pregunta, Sumar registra 24 preguntas, PSOE 7, PP 4, EAJ-PNV 1, Junts 1 y Sin grupo 1.",
-    "El recuento corresponde a las preguntas del último año con la fecha límite que publica el Congreso superada."
+    "De las iniciativas pendientes que rebasan la fecha límite, 30 corresponden a Sumar, cuatro al PSOE, dos al PP, una a Junts y una a los parlamentarios sin grupo.",
+    "La pregunta escrita más antigua sin contestación registrada en la ficha del expediente se publicó el lunes 15 de diciembre de 2025.",
+    "El recuento del Congreso señala que pueden existir prórrogas o respuestas emitidas que aún no se hayan reflejado en el sistema."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-28"
@@ -9816,6 +9816,6 @@
   }
  },
  "uso": {
-  "2026-10-28": 4
+  "2026-10-28": 5
  }
 }
