@@ -1541,3 +1541,14 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
   .pilar:has(.panel-ancho){ position:static; }
   .panel-ancho{ left:0; min-width:0; width:min(560px,100%); }
 }
+
+/* UX-2: tarjeta de convocatoria en /empleo/ */
+.ix-lista > li.em-card{ display:flex; flex-direction:column; gap:4px; background:var(--surface);
+  border:1px solid var(--border); border-radius:12px; padding:12px 14px; min-width:0; overflow-wrap:anywhere; }
+.em-card .em-tit{ font-weight:600; line-height:1.35; }
+.em-completo > summary{ cursor:pointer; font-size:13px; color:var(--ink-soft); }
+.em-completo p{ margin:4px 0 0; font-size:14px; }
+.em-card .ref{ display:block; }
+.em-bot{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
+.em-btn{ display:inline-flex; align-items:center; min-height:36px; padding:6px 12px; border:1px solid var(--border);
+  border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; }

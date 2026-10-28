@@ -454,6 +454,45 @@ def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
             + plegable("org", "Elegir organismo convocante", enlaces_dept))
     return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
 
+TITULAR_MAX = 120
+
+
+def titular_corto(r: dict, maximo: int = TITULAR_MAX) -> tuple[str, bool]:
+    """(titular, recortado). El cuerpo si el extractor lo diera (hoy no lo da:
+    no se toca el recolector); si no, el título cortado en un límite de
+    palabra, con «…», sin pasar de `maximo` caracteres en total."""
+    base = " ".join((r.get("cuerpo") or r.get("titulo") or "").split())
+    if r.get("cuerpo"):
+        return base, True
+    if len(base) <= maximo:
+        return base, False
+    corte = base[:maximo - 1]
+    if " " in corte:
+        corte = corte[:corte.rindex(" ")]
+    return corte.rstrip(" ,;:.-–(") + "…", True
+
+
+def url_pdf(r: dict) -> str:
+    """PDF oficial de la disposición en el BOE de su día (solo se enlaza)."""
+    a, m, d = r["fecha"].split("-")
+    return f"https://www.boe.es/boe/dias/{a}/{m}/{d}/pdfs/{r['id']}.pdf"
+
+
+def fecha_referencia(estado: dict, hoy: str) -> str:
+    """Fecha del BOE más reciente recogido (la de la edición del build). Así
+    «hace N días» es determinista: no depende del reloj ni del navegador."""
+    fechas = [v.get("fecha", "") for v in (estado.get("registros") or {}).values() if v.get("fecha")]
+    return max(fechas, default=hoy)
+
+
+def publicada(fecha: str, ref: str) -> str:
+    """El mismo día del BOE de referencia: «Publicada en el último BOE»;
+    después, «hace 1 día», «hace N días»."""
+    n = (dt.date.fromisoformat(ref) - dt.date.fromisoformat(fecha)).days
+    if n <= 0:
+        return "Publicada en el último BOE"
+    return "Publicada hace 1 día" if n == 1 else f"Publicada hace {n} días"
+
 
 def generar_paginas(h: dict, estado: dict | None = None) -> list:
     """/empleo/index.html, una ficha por departamento y una por provincia."""
@@ -470,16 +509,29 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     por_prov = {p: v for p, v in por_prov.items() if p in nombres_prov}
     salidas: list = []
 
+    ref = fecha_referencia(estado, hoy)
+
     def fila(r: dict, con_dept: bool = True) -> str:
+        # Tarjeta (UX-2): titular corto, título completo plegado, botones al
+        # BOE y al PDF, «publicada hace N días» sobre la fecha del BOE. Nunca
+        # una fecha de cierre: solo el plazo literal que cita el BOE.
         enlace = r.get("url") or url_boe(r["id"])
+        corto, recortado = titular_corto(r)
         dept = f" · {esc(nombre_dept(r['dept']))}" if con_dept and r.get("dept") else ""
         epi = f" · {esc(r['epi'])}" if r.get("epi") else ""
         proc = f" · {esc(r['proc'])}" if r.get("proc") else ""
-        plazo = (f'<span class="ref">Plazo, según el BOE: «{esc(r["plazo"])}»</span>'
+        plazo = (f'<span class="ref em-plazo">Plazo, según el BOE: «{esc(r["plazo"])}»</span>'
                  if r.get("plazo") and MOSTRAR_PLAZO else "")
-        return (f'<li><a href="{attr(enlace)}" target="_blank" rel="noopener">{esc(r["titulo"])}</a>'
-                f'<span class="ref">{esc(r["id"])} · {esc(fecha_es(r["fecha"]))} · '
-                f'{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}</li>')
+        completo = (f'<details class="em-completo"><summary>Título completo</summary>'
+                    f'<p>{esc(r["titulo"])}</p></details>') if recortado else ""
+        return (f'<li class="em-card"><a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
+                f'{esc(corto)}</a>{completo}'
+                f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}'
+                f'<span class="ref em-pub">{esc(publicada(r["fecha"], ref))} · '
+                f'{esc(fecha_es(r["fecha"]))} · {esc(r["id"])}</span>'
+                f'<span class="em-bot"><a class="em-btn" href="{attr(enlace)}" target="_blank" rel="noopener">'
+                f'Ver en el BOE</a><a class="em-btn" href="{attr(url_pdf(r))}" target="_blank" rel="noopener">'
+                f'PDF</a></span></li>')
 
     def bloque(t: str, filas: list, con_dept: bool, h: str = "h2") -> str:
         todas = [r for r in filas if r["tipo"] == t]
@@ -582,7 +634,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=DIAS_PORTADA)).isoformat()
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
     cuerpo = (f'<p>Disposiciones de los últimos {DIAS_PORTADA} días. Por organismo y por provincia, '
-              f'los últimos {VENTANA_PAGINAS}.</p>' + selectores(enlaces_prov, enlaces_dept)
+              f'los últimos {VENTANA_PAGINAS}. Los días desde la publicación se cuentan hasta el BOE '
+              f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
               + (por_tipo(recientes) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
