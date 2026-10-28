@@ -856,6 +856,9 @@ con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
     (libre, promoción interna, discapacidad, movilidad), sistema, boletín de las
     bases y localidad (del título, nunca de la firma: no se guardan nombres).
     Si una línea de la lista no se entiende, no se dan plazas ni turnos.
+  - No-oferta rotulada en Local, universidades y provisión (no en Estado: no
+    llega al 95 %). Las desiertas salen de los bloques abiertos (convocatorias
+    y provisión) y pasan a «Otras disposiciones» (`empleo_campos.fuera_de_abiertos`).
   - Titular generado (`empleo_campos.titular`): «2 plazas de Operario/a de
     brigada municipal de obras · Tamarite de Litera»; si faltan datos fiables o
     pasa de 120 caracteres, el titular corto de siempre.
