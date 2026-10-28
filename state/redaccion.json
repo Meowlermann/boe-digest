@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso acumula 38 preguntas escritas del último año fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas parlamentarias por escrito llevan más de 20 días hábiles sin contestación registrada, con la pregunta más antigua publicada el 15 de diciembre de 2025.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso registra 38 preguntas escritas fuera de plazo sin contestación",
+   "entradilla": "Un total de 38 preguntas escritas en el Congreso superan la fecha límite publicada al llevar más de 20 días hábiles sin contestación registrada.",
    "claves": [
-    "Sumar acumula 30 de las preguntas escritas sin respuesta registrada, el PSOE cuatro, el PP dos, Junts una y la restante corresponde a diputados Sin grupo.",
-    "La iniciativa parlamentaria más antigua que ha rebasado el plazo de respuesta publicado por el Congreso fue registrada el lunes 15 de diciembre de 2025.",
-    "El recuento abarca preguntas del último año que superan los 20 días hábiles, aunque se señala la posibilidad de que existan prórrogas o respuestas aún no reflejadas."
+    "La pregunta escrita más antigua sin contestación registrada se publicó el lunes 16 de febrero de 2026.",
+    "Por grupo de quien pregunta, Sumar registra 24 preguntas, PSOE 7, PP 4, EAJ-PNV 1, Junts 1 y Sin grupo 1.",
+    "El recuento corresponde a las preguntas del último año con la fecha límite que publica el Congreso superada."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-28"
@@ -9617,9 +9617,205 @@
    "claves": [],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22582": {
+   "huella": "345b5f755aa992a5",
+   "fuente": "feeef79373d78427",
+   "titular": "La Agencia Digital prestará servicios informáticos y de nube al Museo del Prado",
+   "entradilla": "El convenio articula el apoyo en infraestructuras tecnológicas, almacenamiento cloud y puesto de trabajo inteligente para modernizar el organismo cultural.",
+   "claves": [
+    "La Agencia Estatal de Administración Digital asumirá el diseño, implantación y gestión de los servicios comunes de sistemas de información del Museo Nacional del Prado.",
+    "El acuerdo se enmarca en la inversión de modernización de la Administración General del Estado, que incluye el despliegue de nubes híbridas y la consolidación de centros de datos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22583": {
+   "huella": "65be2b187878006c",
+   "fuente": "739344548dbfa67f",
+   "titular": "El Instituto de las Mujeres amplía los recursos informáticos de la nube NubeSARA",
+   "entradilla": "Una adenda al convenio suscrito con la Agencia Estatal de Administración Digital incorpora nuevos servicios y más capacidad durante el primer año de vigencia.",
+   "claves": [
+    "La modificación añade más recursos de computación y almacenamiento para el primer año tras una reunión de seguimiento celebrada en febrero de 2026.",
+    "El convenio original, suscrito en noviembre de 2024 y con tres años de vigencia, regula el uso de nodos de consolidación en centros de datos públicos y privados."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22584": {
+   "huella": "0c935789e55229b8",
+   "fuente": "ddc413f6f74cbe17",
+   "titular": "Migraciones y Correos modifican y prorrogan el convenio de presentación electrónica",
+   "entradilla": "La Secretaría de Estado de Migraciones y Correos acuerdan la modificación y prórroga del acuerdo para gestionar las solicitudes de autorización por vía electrónica.",
+   "claves": [
+    "El presupuesto del convenio se fija en 11.765.475,00 euros con cargo a los ejercicios presupuestarios de 2026 y 2027.",
+    "La primera liquidación parcial abarca gastos hasta el 30 de septiembre de 2026 con un máximo de 10.431.598 euros.",
+    "La segunda liquidación contempla gastos hasta el 30 de noviembre de 2026 con un límite de 910.763,75 euros.",
+    "La tercera liquidación cubrirá el periodo restante hasta 422.061,25 euros con cargo a la anualidad de 2027."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22585": {
+   "huella": "8ad0145a181b0618",
+   "fuente": "b7befd7bb2b99b01",
+   "titular": "Digitalización y ENISA renuevan los préstamos participativos para emprendedoras",
+   "entradilla": "La adenda da continuidad al programa de financiación destinado a proyectos empresariales tecnológicos e innovadores liderados por mujeres.",
+   "claves": [
+    "La línea de financiación utiliza la figura del préstamo participativo para impulsar emergentes tecnológicas con liderazgo femenino.",
+    "El acuerdo da continuidad para el ejercicio 2026 al convenio firmado entre las partes en diciembre de 2025 tras la prórroga presupuestaria."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22586": {
+   "huella": "e57b1733f3a9178b",
+   "fuente": "52724f4fea45420c",
+   "titular": "Dos fundaciones estatales cambian de nombre y modifican sus estatutos",
+   "entradilla": "El Registro de Fundaciones inscribe la modificación estatutaria de las entidades Anastasio de Gracia-Fitel y Global Salud.",
+   "claves": [
+    "La Fundación 72CUL Anastasio de Gracia-Fitel pasa a denominarse Fundación Manuel Pérez «Lito» y aprueba un nuevo texto refundido de sus estatutos.",
+    "La Fundación Global Salud cambia su nombre oficial a Fundación Aspe y modifica la composición de su patronato."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22587": {
+   "huella": "10b17e49e1bdefd2",
+   "fuente": "b26046d051bd9444",
+   "titular": "Justicia permite inscribir dos fincas a una viuda según su régimen matrimonial",
+   "entradilla": "La Dirección General de Seguridad Jurídica concluye que la adjudicación responde a la liquidación del régimen económico y no exige la firma de las hijas.",
+   "claves": [
+    "El recurso revoca la negativa del registrador de la propiedad de Eivissa n.º 4 a inscribir la adjudicación de dos inmuebles en Formentera.",
+    "El organismo determina que los bienes acordados mediante pacto matrimonial francés no forman parte de la herencia, por lo que no aplican las reglas sobre legítimas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22588": {
+   "huella": "b411332da93d69b5",
+   "fuente": "6f07b5532ec6a5cb",
+   "titular": "Defensa renueva a Instalaza la clasificación para transportar el sistema C90-CR-FIM",
+   "entradilla": "La Dirección General de Armamento extiende hasta el 1 de noviembre de 2028 los permisos de riesgo para el almacenamiento y transporte de este sistema.",
+   "claves": [
+    "La empresa aragonesa Instalaza mantendrá la clasificación oficial de riesgo para su producto C90-CR-FIM (M3) tras verificar que conserva sus características.",
+    "La renovación se extenderá hasta el 1 de noviembre de 2028 y la empresa podrá pedir una nueva prórroga seis meses antes de que venza el plazo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22589": {
+   "huella": "09838f5fb203eb52",
+   "fuente": "553f0d154247bd00",
+   "titular": "Defensa renueva la homologación de cuatro sistemas de armas de Instalaza",
+   "entradilla": "La resolución permite mantener la certificación militar de la familia de productos C90-CR fabricados en Zaragoza hasta el 12 de noviembre de 2028.",
+   "claves": [
+    "La renovación abarca los modelos C90-CR (M3), C90-CR-AM (M3), C90-CR-FIM (M3) y C90-CR-RB (M3) fabricados en sus plantas de Zaragoza y Cadrete.",
+    "La homologación estará vigente hasta el 12 de noviembre de 2028, con opción de solicitar una prórroga seis meses antes de su caducidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22590": {
+   "huella": "f5fc65b48571b454",
+   "fuente": "ad96e7844c4b7d83",
+   "titular": "Defensa renueva dos años la homologación del cartucho incendiario de Nammo Palencia",
+   "entradilla": "La fabricante palentina mantendrá durante dos ejercicios la certificación oficial para sus modelos de munición de calibre 12,7 x 99 mm OTAN.",
+   "claves": [
+    "La prórroga de homologación se aplica a los cartuchos 12,7 x 99 mm NATO API M8 y API-T M20 fabricados en la planta de Palencia.",
+    "Los productos se clasifican en la categoría de municiones incendiarias con o sin carga dispersora, expulsora o propulsora."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22591": {
+   "huella": "c29b31b4113a6e07",
+   "fuente": "fd7d9ee3aa15c7fd",
+   "titular": "Hacienda publica la lista de inmuebles estatales cedidos de forma gratuita en 2026",
+   "entradilla": "La Dirección General del Patrimonio del Estado hace relación de las cesiones patrimoniales acordadas durante la primera mitad del año.",
+   "claves": [
+    "La publicación abarca los acuerdos de cesión gratuita de bienes patrimoniales de la Administración General del Estado formalizados entre el 1 de enero y el 30 de junio de 2026.",
+    "La difusión del listado se realiza en cumplimiento del artículo 151.4 de la Ley del Patrimonio de las Administraciones Públicas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22592": {
+   "huella": "3a732c67bfd59d44",
+   "fuente": "19c8b6b9fbd29962",
+   "titular": "La Agencia Tributaria regula la firma y expedición de sus actas de inspección",
+   "entradilla": "La resolución fija los modelos oficiales de actas de conformidad, disconformidad y con acuerdo, permitiendo la firma por videoconferencia.",
+   "claves": [
+    "Las actas de inspección se confeccionarán por ordenador y podrán firmarse electrónicamente en comparecencias presenciales o por videoconferencia.",
+    "Se contemplan tres modalidades de acta: de conformidad (A01), de disconformidad (A02) y con acuerdo (A11) para conceptos indeterminados o estimaciones de datos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22593": {
+   "huella": "df575e4c7a3434ce",
+   "fuente": "b6529c0f937e6755",
+   "titular": "Marina Mercante reconoce a la escuela náutica de A Coruña para expedir títulos STCW",
+   "entradilla": "El centro docente gallego obtiene la homologación para impartir la formación de grados, másteres y certificados profesionales del convenio internacional marítimo.",
+   "claves": [
+    "El reconocimiento abarca los grados y másteres de Náutica, Transporte Marítimo e Ingeniería Marina que imparte la E.T.S. Náutica e Máquinas de A Coruña.",
+    "La resolución autoriza la impartición de certificados de suficiencia en seguridad, contra incendios, embarcaciones de rescate y mercancías peligrosas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22594": {
+   "huella": "ac6bbf0a4a9ee089",
+   "fuente": "acaf3fe1bc85eeee",
+   "titular": "Educación acuerda integrar en la red exterior al colegio Ntra. Sra. de Covadonga",
+   "entradilla": "El Ministerio de Educación, Formación Profesional y Deportes firma un convenio con el Centro Asturiano de Santa Fe para incorporar el colegio a la red española en el exterior.",
+   "claves": [
+    "El alumnado del centro podrá obtener los títulos españoles de Graduado en Educación Secundaria Obligatoria o de Bachiller.",
+    "El centro deberá emplear la denominación «Colegio Español» o «Colegio Hispano» en sus comunicaciones e identificación.",
+    "El Colegio Argentino Hispano «Ntra. Sra. de Covadonga» mantendrá y rehabilitará sus infraestructuras y asumirá la contratación del personal.",
+    "El colegio garantizará que el profesorado cuente con las titulaciones y experiencia idóneas exigidas por la normativa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22595": {
+   "huella": "37197e9bac08f7cc",
+   "fuente": "7088143e8f376305",
+   "titular": "Trabajo inscribe el nuevo convenio colectivo de la industria del calzado",
+   "entradilla": "La Dirección General de Trabajo ordena registrar y publicar en el BOE el acuerdo laboral pactado entre las patronales del sector y los sindicatos.",
+   "claves": [
+    "El texto fue suscrito por las patronales FICE y AEC junto con las organizaciones sindicales UGT-FICA y CC. OO.-Industria.",
+    "El acuerdo fue rectificado y completado mediante una última acta formalizada el 5 de octubre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22596": {
+   "huella": "37fffb3cdf21dcdb",
+   "fuente": "0640f78588f49402",
+   "titular": "Trabajo aprueba la publicación del convenio colectivo de Nokia Transformation",
+   "entradilla": "El Gobierno ordena la inscripción oficial del VII convenio de la filial española de servicios de ingeniería y consultoría de Nokia.",
+   "claves": [
+    "El acuerdo laboral fue pactado entre la dirección de la empresa y la representación de la plantilla a través del Comité Intercentros.",
+    "El convenio fue firmado el 28 de julio de 2026 y subsanado mediante acuerdo el 21 de septiembre del mismo año."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22597": {
+   "huella": "7ca3e9620473a5ab",
+   "fuente": "99ca1536f84b8cf7",
+   "titular": "El Gobierno declara Lugar de Memoria el Patronato de Protección a la Mujer",
+   "entradilla": "La resolución reconoce el valor histórico e intangible de esta institución franquista como símbolo del control y represión sobre miles de mujeres.",
+   "claves": [
+    "La declaración surtirá efecto desde su publicación en el BOE y conllevará su inclusión en el Inventario de Lugares de Memoria Democrática.",
+    "Se promoverá la instalación de placas y la creación de recursos explicativos para recordar la represión de género sufrida por las internadas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-28"
   }
  },
  "uso": {
-  "2026-10-28": 2
+  "2026-10-28": 4
  }
 }
