@@ -159,6 +159,25 @@ class TestPaginas(unittest.TestCase):
         self.assertIn(" · Oposición", indice)
         self.assertNotIn("Cierra el", indice)
 
+    def test_orden_convocatorias_primero_y_seguimiento(self):
+        """UX-1: el primer h2 del cuerpo es el de convocatorias; admitidos,
+        tribunales y resultados van como h3 bajo «Seguimiento de procesos»."""
+        import re
+        h, _ = h_prueba(self.carpeta)
+        em.generar_paginas(h, self.estado)
+        cuerpo = next(l for l in (self.carpeta / "index.html").read_text(encoding="utf-8").splitlines()
+                      if l.startswith("CUERPO="))
+        h2 = re.findall(r'<h2 id="([^"]+)"', cuerpo)
+        self.assertEqual(h2[0], "t-convocatoria")
+        self.assertIn("seguimiento", h2)
+        pos_seg = cuerpo.index('<h2 id="seguimiento">Seguimiento de procesos</h2>')
+        for t in ("admitidos", "tribunal", "resultados"):
+            m = re.search(rf'<(h[23]) id="t-{t}"', cuerpo)
+            if m:
+                self.assertEqual(m.group(1), "h3")
+                self.assertGreater(m.start(), pos_seg)
+        self.assertEqual(em.ROBOTS, "noindex, follow")
+
     def test_canales(self):
         h, escritos = h_prueba(self.carpeta)
         anuncios = em.canales(h, self.estado)

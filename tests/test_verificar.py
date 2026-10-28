@@ -616,6 +616,9 @@ class TestEjecucion(unittest.TestCase):
         # Igual con (n) migas, probada en test_migas.py.
         self.sin_migas = mock.patch.object(v, "comprobar_migas", return_value=[])
         self.sin_migas.start()
+        # Y con (q) menú, probada en test_menu.py.
+        self.sin_menu = mock.patch.object(v, "comprobar_menu", return_value=[])
+        self.sin_menu.start()
         # Y con (p) correcciones, probada en test_correcciones.py.
         self.sin_corr = mock.patch.object(v, "comprobar_correcciones", return_value=[])
         self.sin_corr.start()
@@ -626,6 +629,7 @@ class TestEjecucion(unittest.TestCase):
     def tearDown(self):
         self.sin_semana.stop()
         self.sin_migas.stop()
+        self.sin_menu.stop()
         self.sin_corr.stop()
         self.sin_enlazado.stop()
         self.s.cerrar()

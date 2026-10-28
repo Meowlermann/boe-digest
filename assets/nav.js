@@ -36,6 +36,7 @@
   /* ---------------------------------------------------------- estás aquí */
   var ruta = location.pathname;
   var seccion =
+    /^\/empleo\//.test(ruta) ? "empleo" :
     /^\/votaciones\//.test(ruta) ? "votaciones" :
     /^\/(seguimiento|tramitacion)\//.test(ruta) ? "seguimiento" :
     /^\/provincias\//.test(ruta) ? "parlamento" :
