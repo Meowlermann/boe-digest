@@ -36,6 +36,10 @@ import empleo_campos
 ROOT = pathlib.Path(__file__).parent
 ESTADO = ROOT / "state" / "empleo.json"
 VERSION = 1
+# Versión de la lectura del texto: sube cuando detalle() extrae algo nuevo,
+# para que enriquecer() relea lo leído con una versión anterior (1 = antes de
+# los campos de #45). Lo que ya está al día no se relee.
+LECTURA = 2
 SECCIONES = ("2B",)              # código de la II.B en la API de datos abiertos
 VENTANA_ESTADO = 400             # días que guarda el estado (regla 7: nada crece sin límite)
 VENTANA_PAGINAS = 90             # días que enseñan las fichas
@@ -296,6 +300,28 @@ def usar_get(get) -> None:
     _get = get
 
 
+def al_dia(anterior: dict) -> bool:
+    """¿Lectura guardada con la versión actual? `leido: 1` (o True) es previa."""
+    v = anterior.get("leido")
+    return isinstance(v, int) and not isinstance(v, bool) and v >= LECTURA
+
+
+def _copiar(anterior: dict, r: dict) -> bool:
+    if not anterior.get("leido"):
+        return False
+    for k in ("plazo", "proc", "leido", "campos", "no_oferta"):
+        if k in anterior:
+            r[k] = anterior[k]
+    return True
+
+
+def pendientes(regs: list[dict], previo: dict | None = None) -> int:
+    """Peticiones que haría enriquecer() con red (sin hacer ninguna)."""
+    previo = previo or {}
+    return sum(1 for r in regs if es_convocatoria(r)
+               and not al_dia(previo.get(r["id"]) or {}))
+
+
 def enriquecer(regs: list[dict], get=None, log=print, previo: dict | None = None) -> dict:
     """Añade plazo literal y tipo de proceso a las convocatorias. Reutiliza lo
     ya leído en `previo` (estado). Una petición por convocatoria nueva, por
@@ -307,10 +333,8 @@ def enriquecer(regs: list[dict], get=None, log=print, previo: dict | None = None
         if not es_convocatoria(r):
             continue
         anterior = previo.get(r["id"]) or {}
-        if anterior.get("leido"):
-            for k in ("plazo", "proc", "leido", "campos", "no_oferta"):
-                if k in anterior:
-                    r[k] = anterior[k]
+        if al_dia(anterior):
+            _copiar(anterior, r)
             cuenta["reutilizadas"] += 1
         elif get is not None:
             try:
@@ -320,13 +344,18 @@ def enriquecer(regs: list[dict], get=None, log=print, previo: dict | None = None
                 get, resp = None, None
             if resp is None:
                 cuenta["fallos"] += 1
+                if _copiar(anterior, r):      # lectura antigua: mejor que nada
+                    cuenta["con_plazo"] += "plazo" in r
+                    continue
                 pr = proceso(r["titulo"], r.get("epi", ""))
                 if pr:
                     r["proc"] = pr
                 continue
             r.update(detalle(resp.text, r))
-            r["leido"] = 1
+            r["leido"] = LECTURA
             cuenta["leidas"] += 1
+        elif _copiar(anterior, r):
+            cuenta["reutilizadas"] += 1
         else:
             pr = proceso(r["titulo"], r.get("epi", ""))
             if pr:

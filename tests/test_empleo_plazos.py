@@ -121,7 +121,7 @@ class TestEnriquecer(unittest.TestCase):
         self.assertEqual(cuenta["leidas"], 2)
 
     def test_reutiliza_lo_leido_y_tolera_fallos(self):
-        previo = {"BOE-A-1": {"plazo": "cita", "proc": "Oposición", "leido": 1}}
+        previo = {"BOE-A-1": {"plazo": "cita", "proc": "Oposición", "leido": em.LECTURA}}
         get = FalsoGet({})
         regs = self.regs()
         cuenta = em.enriquecer(regs, get, log=lambda *a: None, previo=previo)

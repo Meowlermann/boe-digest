@@ -196,3 +196,32 @@ class TestPaginas(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestVersionLectura(unittest.TestCase):
+    def test_relee_lecturas_previas_a_campos(self):
+        import empleo as em
+        regs = [{"id": "BOE-A-2026-1", "titulo": "Resolución de 1 de octubre de 2026, del Ayuntamiento de Prueba, referente a la convocatoria para proveer una plaza.", "tipo": "convocatoria", "epi": ""},
+                {"id": "BOE-A-2026-2", "titulo": "Resolución de 2 de octubre de 2026, del Ayuntamiento de Prueba, referente a la convocatoria para proveer una plaza.", "tipo": "convocatoria", "epi": ""}]
+        regs = [r for r in regs if em.es_convocatoria(r)]
+        assert len(regs) == 2
+        previo = {"BOE-A-2026-1": {"leido": 1, "proc": "Oposición"},
+                  "BOE-A-2026-2": {"leido": em.LECTURA, "campos": {"plazas": 1}}}
+        assert em.pendientes(regs, previo) == 1
+        pedidas = []
+
+        class R:
+            text = '<div id="textoxslt"><p>Texto.</p></div>'
+
+        def get(url):
+            pedidas.append(url)
+            return R()
+        c = em.enriquecer(regs, get, lambda *_: None, previo)
+        assert pedidas == [em.url_texto("BOE-A-2026-1")]
+        assert c["leidas"] == 1 and c["reutilizadas"] == 1
+        assert regs[0]["leido"] == em.LECTURA
+        assert regs[1]["campos"] == {"plazas": 1}
+        # Sin red: la lectura antigua se conserva.
+        r = dict(regs[0]); r.pop("leido")
+        em.enriquecer([r], None, lambda *_: None, {"BOE-A-2026-1": {"leido": True, "proc": "X"}})
+        assert r["proc"] == "X"
