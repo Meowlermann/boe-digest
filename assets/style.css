@@ -950,6 +950,13 @@ h1.display{
 }
 .pilar-b svg{ width:18px; height:18px; opacity:.75; }
 .pilar-b:hover, .pilar.abierto .pilar-b{ color:var(--red); }
+/* Seis pilares (UX-1, con Empleo): entre la barra inferior y el escritorio
+   ancho se aprietan, sin iconos, para que quepan con el buscador. */
+@media (min-width:721px) and (max-width:1100px){
+  .pilar-b{ padding:13px 7px 11px; gap:4px; font-size:14px; }
+  .pilar-b svg{ display:none; }
+  .nav-buscar{ width:auto; flex:1 1 120px; min-width:44px; }
+}
 .pilar.actual .pilar-b{ border-bottom-color:var(--red); }
 .pilar-b::after{
   content:""; width:6px; height:6px; margin-left:2px; margin-top:-3px;
@@ -1052,7 +1059,7 @@ h1.display{
   .nav-marca, .pilar-b, .nav-buscar{ display:none; }
 
   .tabbar{
-    display:grid; grid-template-columns:repeat(5,1fr);
+    display:grid; grid-template-columns:repeat(6,1fr);
     position:fixed; left:0; right:0; bottom:0; z-index:60;
     padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
     background:var(--surface); border-top:1px solid var(--border);

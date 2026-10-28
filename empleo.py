@@ -64,6 +64,10 @@ TIPOS = [
     ("otras", "Otras disposiciones", r""),
 ]
 ETIQUETA_TIPO = {t: e for t, e, _r in TIPOS}
+# Orden en que se enseñan los bloques en /empleo/ y sus fichas (UX-1).
+ORDEN_ABIERTOS = ("convocatoria", "provision")
+ORDEN_SEGUIMIENTO = ("admitidos", "tribunal", "resultados")
+ORDEN_RESTO = ("otras",)
 
 DEPT_LOCAL = "ADMINISTRACIÓN LOCAL"
 DEPT_UNIV = "UNIVERSIDADES"
@@ -458,14 +462,22 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'<span class="ref">{esc(r["id"])} · {esc(fecha_es(r["fecha"]))} · '
                 f'{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{plazo}</li>')
 
+    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2") -> str:
+        xs = [r for r in filas if r["tipo"] == t][:MAX_FILAS]
+        if not xs:
+            return ""
+        return (f'<{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} ({len(xs)})</{h}>'
+                f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>')
+
     def por_tipo(filas: list, con_dept: bool = True) -> str:
-        html = ""
-        for t, et, _rx in TIPOS:
-            xs = [r for r in filas if r["tipo"] == t][:MAX_FILAS]
-            if xs:
-                html += (f'<h2 id="t-{t}">{esc(et)} ({len(xs)})</h2>'
-                         f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>')
-        return html
+        # Orden de lectura (UX-1), distinto del de clasificación de TIPOS:
+        # primero lo que se puede solicitar; después, bajo «Seguimiento de
+        # procesos», las listas, tribunales y resultados de procesos en marcha.
+        html = "".join(bloque(t, filas, con_dept) for t in ORDEN_ABIERTOS)
+        seg = "".join(bloque(t, filas, con_dept, "h3") for t in ORDEN_SEGUIMIENTO)
+        if seg:
+            html += '<h2 id="seguimiento">Seguimiento de procesos</h2>' + seg
+        return html + "".join(bloque(t, filas, con_dept) for t in ORDEN_RESTO)
 
     def recuento(filas: list) -> str:
         return "".join(f"<dt>{esc(et)}</dt><dd>{n}</dd>" for t, et, _ in TIPOS

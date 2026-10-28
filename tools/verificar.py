@@ -39,6 +39,8 @@ Comprobaciones (las letras son las de la PR que las introdujo):
                  de un diario oficial o en el aviso neutro (TC-024).
   n) migas       Miga visible y JSON-LD BreadcrumbList en todas las fichas,
                  con los mismos pasos y la URL canónica al final (TC-005).
+  q) menu        Toda página completa enlaza a /empleo/ en la barra principal
+                 y en la barra inferior móvil (UX-1).
 
 Para añadir una comprobación: una función `comprobar_x(raiz, …) -> list`,
 su entrada en COMPROBACIONES_CI o en ejecutar(), sus constantes arriba y
@@ -770,6 +772,43 @@ def comprobar_migas(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = Non
 
 
 # ---------------------------------------------------------------------------
+# q) Menú: Empleo en las dos barras de todas las páginas (UX-1)
+# ---------------------------------------------------------------------------
+#
+# Los fragmentos (datos/*.html, sin <html>) no llevan navegación y no cuentan.
+
+RE_NAV_PRINCIPAL = re.compile(r'<nav class="nav"[^>]*>(.*?)</nav>', re.S)
+RE_TABBAR = re.compile(r'<nav class="tabbar"[^>]*>(.*?)</nav>', re.S)
+MENU_OBLIGATORIO = "/empleo/"
+
+
+def problemas_menu(texto: str) -> list[str]:
+    if "<html" not in texto:
+        return []
+    faltan = []
+    for nombre, rx in (("barra principal", RE_NAV_PRINCIPAL), ("barra inferior móvil", RE_TABBAR)):
+        m = rx.search(texto)
+        if not m:
+            faltan.append(f"falta la {nombre}")
+        elif len(re.findall(rf'href="{re.escape(MENU_OBLIGATORIO)}"', m.group(1))) != 1:
+            faltan.append(f"la {nombre} no enlaza a {MENU_OBLIGATORIO} exactamente una vez")
+    return faltan
+
+
+def comprobar_menu(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    hallazgos: list[dict] = []
+    for p in (paginas if paginas is not None else paginas_html(raiz)):
+        try:
+            texto = p.read_text(encoding="utf-8")
+        except Exception:                                     # noqa: BLE001
+            continue
+        for problema in problemas_menu(texto):
+            hallazgos.append(hallazgo(GRAVE, "menu", problema.capitalize() + ".", _rel(raiz, p),
+                                      "la página tiene que llevar __SSR_NAV__ (build.render_nav)."))
+    return hallazgos
+
+
+# ---------------------------------------------------------------------------
 # p) Correcciones: cada pieza corregida enlaza a su corrección (TC-017)
 # ---------------------------------------------------------------------------
 #
@@ -1373,6 +1412,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("alias_feed", lambda: comprobar_alias_feed(raiz)),
         ("boletin", lambda: comprobar_boletin(raiz)),
         ("migas", lambda: comprobar_migas(raiz)),
+        ("menu", lambda: comprobar_menu(raiz)),
         ("correcciones", lambda: comprobar_correcciones(raiz)),
         ("enlazado", lambda: comprobar_enlazado(raiz)),
     ]

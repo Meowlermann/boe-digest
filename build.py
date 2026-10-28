@@ -3648,6 +3648,7 @@ _ICO = {
     "cons": _svg('<path d="M4 5h16M4 12h16M4 19h10"/>'),
     "bus": _svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
     "vot": _svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8.5 12 2.5 2.5 4.5-5"/>'),
+    "emp": _svg('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>'),
     "seg": _svg('<circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M7 12h3M14 12h3"/>'),
 }
 
@@ -3697,6 +3698,11 @@ def render_nav() -> str:
         + enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados")
         + enlace("/seguir/", "Seguir con RSS", "Cada diputado, provincia, materia o ley, en tu lector")
         + '</ul></div></li>'
+
+        # Empleo va suelto (UX-1): /empleo/ ya reparte convocatorias y
+        # seguimiento de procesos, y no puede quedar fuera del menú.
+        f'<li class="pilar pilar-directo" data-pilar="empleo">'
+        f'<a class="pilar-b" href="/empleo/">{_ICO["emp"]}<span>Empleo</span></a></li>'
 
         f'<li class="pilar" data-pilar="parlamento">'
         f'<a class="pilar-b" href="/diputados/" aria-haspopup="true" aria-expanded="false">{_ICO["parl"]}<span>Parlamento</span></a>'
@@ -3748,6 +3754,7 @@ def render_nav() -> str:
         '</div></nav>'
         '<nav class="tabbar" aria-label="Navegación principal">'
         f'<a href="/" data-pilar="hoy">{_ICO["hoy"]}<span>Hoy</span></a>'
+        f'<a href="/empleo/" data-pilar="empleo">{_ICO["emp"]}<span>Empleo</span></a>'
         f'<a href="/diputados/" data-pilar="parlamento" data-abre="parlamento">{_ICO["parl"]}<span>Parlamento</span></a>'
         f'<a href="/votaciones/" data-pilar="votaciones">{_ICO["vot"]}<span>Votos</span></a>'
         f'<a href="/buscar/" data-abre="buscar">{_ICO["bus"]}<span>Buscar</span></a>'
