@@ -789,7 +789,7 @@ robots.txt vivo; si no se puede bajar, las del extracto commiteado
 igual longitud, `Allow`. Una URL excluida no se pide: se anota en el log y en
 `DIAG["peticiones"]` con `status: "robots.txt"` y la función devuelve `None`
 (la edición sigue, sin esa pieza). Entre dos peticiones al BOE hay al menos
-`PAUSA_MINIMA_BOE` (0,3 s), además de las pausas propias de cada recolector.
+`PAUSA_MINIMA_BOE` (1 s), además de las pausas propias de cada recolector.
 
 **Fallos.** `fetch_boe` hace hasta 3 intentos por día (pausas de 2 y 4 s). Un
 404 es «ese día no hay BOE» y retrocede un día (hasta 3 en el pase diario). Un

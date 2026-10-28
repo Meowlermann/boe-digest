@@ -152,3 +152,22 @@ class TestFetchBoe(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestPausaMinima(unittest.TestCase):
+    def test_constante_al_menos_un_segundo(self):
+        self.assertGreaterEqual(build.PAUSA_MINIMA_BOE, 1.0)
+
+    def test_respeta_la_pausa_entre_peticiones(self):
+        reloj = [100.0]
+        esperas = []
+        with mock.patch.object(robots_boe, "_reglas", REGLAS), \
+                mock.patch.object(robots_boe, "permitido", return_value=True), \
+                mock.patch.object(build.time, "monotonic", lambda: reloj[0]), \
+                mock.patch.object(build.time, "sleep", lambda s: esperas.append(s)), \
+                mock.patch.object(build, "_ultima_boe", 0.0):
+            self.assertTrue(build._boe_permitido("https://www.boe.es/a"))
+            reloj[0] += 0.2
+            self.assertTrue(build._boe_permitido("https://www.boe.es/b"))
+        self.assertEqual(len(esperas), 1)
+        self.assertAlmostEqual(esperas[0], build.PAUSA_MINIMA_BOE - 0.2)

@@ -219,7 +219,7 @@ _BLOQUEADOS: set[str] = set()
 # aquí. Se descarga el robots.txt vivo una vez por ejecución; si no responde,
 # vale el extracto commiteado (tools/robots_boe.txt). Entre dos peticiones al
 # BOE hay al menos PAUSA_MINIMA_BOE segundos.
-PAUSA_MINIMA_BOE = 0.3
+PAUSA_MINIMA_BOE = 1.0
 _ultima_boe = 0.0
 
 
