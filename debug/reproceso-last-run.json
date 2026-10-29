@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-10-28T12:52:33.942216+00:00",
+  "inicio": "2026-10-29T12:14:23.087485+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261001",
@@ -3145,7 +3145,7 @@
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22376",
       "status": 200,
-      "bytes": 15448
+      "bytes": 17511
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22377",
@@ -3370,7 +3370,7 @@
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261028",
       "status": 200,
-      "bytes": 264410
+      "bytes": 266881
     },
     {
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22556",
@@ -3494,17 +3494,17 @@
       "incluidos": 776,
       "sin_boe": 4,
       "descartes": {},
-      "registros": 776,
+      "registros": 809,
       "por_tipo": {
-        "convocatoria": 604,
-        "provision": 122,
+        "convocatoria": 632,
+        "provision": 127,
         "admitidos": 27,
         "resultados": 13,
         "tribunal": 7,
         "otras": 3
       },
-      "bytes": 572647
+      "bytes": 641730
     }
   },
-  "fin": "2026-10-28T12:56:49.023173+00:00"
+  "fin": "2026-10-29T12:26:23.275410+00:00"
 }
