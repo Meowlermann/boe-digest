@@ -97,7 +97,7 @@ class TestFlag(unittest.TestCase):
     def test_detalle_pasa_el_html(self):
         d = em.detalle(VARIOS, REG)
         self.assertEqual(len(d["campos"]["puestos"]), 4)
-        self.assertEqual(em.LECTURA, 3)
+        self.assertEqual(em.LECTURA, 4)
 
 
 ENCENDIDO = {"provision": frozenset({"puesto", "nivel", "localidad"})}
@@ -136,3 +136,32 @@ class TestTarjeta(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+TEXTOS = RAIZ / "tests" / "datos_empleo" / "textos"
+
+
+class TestNombreSobreCodigo(unittest.TestCase):
+    """BOE-A-2026-22467: el nombre va en la fila de unidad y la del puesto solo
+    dice «Código de puesto: NNN». Nunca debe mostrarse el código como nombre."""
+
+    def test_22467_real(self):
+        h = (TEXTOS / "22467.html").read_text(encoding="utf-8")
+        c = ec.campos_provision("", h)
+        self.assertEqual(c["puestos"], [{"puesto": "Vocal Asesor/Vocal Asesora", "nivel": 30, "localidad": "Madrid"}])
+
+    def test_codigo_solo_se_descarta(self):
+        for nombre in ("Código de puesto: 882380", "4711234", "A1-27"):
+            h = doc(("ANEXO", [fila(1, "1234567", nombre, 26, "MADRID")]))
+            self.assertFalse((ec.campos_provision("", h) or {}).get("puestos"), nombre)
+
+    def test_es_codigo(self):
+        self.assertTrue(ec._es_codigo("Código de puesto: 5087694"))
+        self.assertTrue(ec._es_codigo("5087694"))
+        self.assertFalse(ec._es_codigo("Jefe / Jefa de Sección"))
+
+    def test_nombre_en_dos_lineas(self):
+        h = doc(("ANEXO", [fila(1, "1234567", "Jefe / Jefa de Sección</p><p>de Atención al Ciudadano", 24, "MADRID")]))
+        ps = (ec.campos_provision("", h) or {}).get("puestos") or []
+        for p in ps:
+            self.assertFalse(ec._es_codigo(p["puesto"]))

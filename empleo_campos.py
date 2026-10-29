@@ -323,10 +323,21 @@ def _anexos_resultas(prosa: str) -> set:
     return out
 
 
-def _puesto_fila(cs, m, con_nivel: bool = False) -> str | None:
+def _es_codigo(p: str) -> bool:
+    """«Código de puesto: 882380», «(5680246)», «882380»: un código, no un
+    nombre de puesto (22467)."""
+    q = plano(p).strip(" .:-–")
+    return bool(_RE_COD_PUESTO.match(q) or _CODIGO.search(q) and not _CODIGO.sub("", q).strip(" .")
+                or not re.search(r"[^\W\d_]{3}", q))
+
+
+def _puesto_fila(cs, m, con_nivel: bool = False, previa: str = "") -> str | None:
     """Denominación del puesto; "" si la fila es un encabezado de unidad;
     None si la fila debería traer puesto y no se entiende. `con_nivel`: la
-    fila trae nivel (22346: filas sin n.º de orden, que sí son puestos)."""
+    fila trae nivel (22346: filas sin n.º de orden, que sí son puestos).
+    `previa`: última línea de la fila de encabezado inmediatamente anterior;
+    en 22467 el nombre va ahí y la fila del puesto solo trae «Código de
+    puesto: N»."""
     num = con_nivel or bool(re.match(r"\d", _cl(cs[0].get_text(" "))))
     if "merge" in m:
         ls = _lineas_celda(cs[m["merge"]])
@@ -341,6 +352,8 @@ def _puesto_fila(cs, m, con_nivel: bool = False) -> str | None:
             return None
         elif len(ic) == 1 and ic[0] > 0:
             p = ls[ic[0] - 1]
+        elif ic == [0] and len(ls) == 1 and previa:
+            p = previa
         elif num and ls:
             p = ls[-1]
         else:
@@ -353,6 +366,8 @@ def _puesto_fila(cs, m, con_nivel: bool = False) -> str | None:
         ic = [i for i, x in enumerate(ls) if _RE_COD_PUESTO.match(plano(x))]
         if len(ic) == 1 and ic[0] > 0:
             p = ls[ic[0] - 1]
+        elif ic == [0] and len(ls) == 1 and previa:
+            p = previa                                    # 22467
         elif len(ls) == 1:
             p = ls[0]
         elif not num:
@@ -364,6 +379,8 @@ def _puesto_fila(cs, m, con_nivel: bool = False) -> str | None:
     p = re.sub(r"\s*/\s*", "/", p).strip(" .–-")
     if num and not re.search(r"[^\W\d_]{3}", p):
         return None                                       # código o número suelto
+    if p and _es_codigo(p):
+        return None                                       # código por nombre: nada del documento
     return p
 
 
@@ -521,6 +538,7 @@ def campos_provision(texto: str, html: str = "") -> dict:
         if not (("puesto" in m or "merge" in m) and ("nivel" in m or "localidad" in m)):
             continue
         vista = True
+        previa = ""
         for cs in datos:
             if len({id(c) for c in cs}) == 1:
                 continue                                  # nota a todo lo ancho
@@ -536,11 +554,14 @@ def campos_provision(texto: str, html: str = "") -> dict:
             # «Madrid.» / «Madrid.» en dos <p> (provincia y localidad).
             lo = " - ".join(x.rstrip(".") for x in _lineas_celda(cs[m["localidad"]])) if "localidad" in m else ""
             if not (re.fullmatch(r"\d{1,2}", nv) or lo):
+                ls_prev = _lineas_celda(cs[col])
+                previa = re.sub(r"\s*/\s*", "/", ls_prev[-1]).strip(" .") if ls_prev else ""
                 continue                                  # encabezado de unidad
             if resultas or "a resultas" in plano(" ".join(c.get_text(" ") for c in cs)):
                 n_res += 1
                 continue
-            p = _puesto_fila(cs, m, bool(re.fullmatch(r"\d{1,2}", nv)))
+            p = _puesto_fila(cs, m, bool(re.fullmatch(r"\d{1,2}", nv)), previa)
+            previa = ""
             if not p or len(p) > MAX_PUESTO:
                 return {}
             x: dict = {"puesto": p}
