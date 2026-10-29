@@ -1548,6 +1548,9 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-card .em-tit{ font-weight:600; line-height:1.35; }
 .em-completo > summary{ cursor:pointer; font-size:13px; color:var(--ink-soft); }
 .em-completo p{ margin:4px 0 0; font-size:14px; }
+.em-puestos{ margin:6px 0 0; padding-left:18px; font-size:14px; overflow-wrap:anywhere; }
+.em-puestos li{ margin:2px 0; }
+.em-npuestos{ display:block; margin-top:6px; }
 .em-card .ref{ display:block; }
 .em-bot{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
 .em-btn{ display:inline-flex; align-items:center; min-height:36px; padding:6px 12px; border:1px solid var(--border);

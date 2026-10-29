@@ -862,6 +862,17 @@ con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
   - Titular generado (`empleo_campos.titular`): «2 plazas de Operario/a de
     brigada municipal de obras · Tamarite de Litera»; si faltan datos fiables o
     pasa de 120 caracteres, el titular corto de siempre.
+  - Provisión (**apagado**, `CAMPOS_ACTIVOS["provision"]` vacío): lista de
+    puestos `campos.puestos = [{puesto, nivel?, localidad?, plazas?}]` desde las
+    tablas HTML del anexo de `txt.php` (`empleo.detalle` pasa el HTML del cuerpo;
+    0 peticiones extra). Excluye anexos y filas de resultas (por título del
+    anexo o por la prosa que los declara condicionados a vacantes); si una
+    fila no se entiende, el documento no da campos y la tarjeta queda como hoy.
+    Localidad limpia («- MADRID - - MADRID» → «Madrid») u oculta si es dudosa
+    (extranjero, municipio no reconocido, errata): nunca se inventa. Tarjeta:
+    «Puesto · Nivel N · Localidad»; con varios, «N puestos», los 3 primeros y
+    «Ver todos los puestos (N)» plegado. Para encender: `"provision":
+    frozenset({"puesto", "nivel", "localidad"})` y releer con `LECTURA = 3`.
 
 ## Lighthouse CI (TC-008)
 

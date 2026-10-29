@@ -38,8 +38,9 @@ ESTADO = ROOT / "state" / "empleo.json"
 VERSION = 1
 # Versión de la lectura del texto: sube cuando detalle() extrae algo nuevo,
 # para que enriquecer() relea lo leído con una versión anterior (1 = antes de
-# los campos de #45). Lo que ya está al día no se relee.
-LECTURA = 2
+# los campos de #45; 2 = antes de los puestos de provisión). Lo que ya está
+# al día no se relee.
+LECTURA = 3
 SECCIONES = ("2B",)              # código de la II.B en la API de datos abiertos
 VENTANA_ESTADO = 400             # días que guarda el estado (regla 7: nada crece sin límite)
 VENTANA_PAGINAS = 90             # días que enseñan las fichas
@@ -276,7 +277,7 @@ def detalle(html: str, reg: dict) -> dict:
     texto = " ".join(cuerpo.get_text(" ", strip=True).split()) if cuerpo else ""
     out = {}
     if cuerpo:
-        out.update(empleo_campos.extraer_campos(reg, cuerpo.get_text("\n", strip=True)))
+        out.update(empleo_campos.extraer_campos(reg, cuerpo.get_text("\n", strip=True), str(cuerpo)))
     pl = plazo_literal(texto) if texto else None
     if pl:
         out["plazo"] = pl
@@ -549,6 +550,28 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
 
     ref = fecha_referencia(estado, hoy)
 
+    def linea_puesto(p: dict) -> str:
+        partes = [p["puesto"]]
+        if p.get("nivel"):
+            partes.append(f"Nivel {p['nivel']}")
+        if p.get("localidad"):
+            partes.append(p["localidad"])
+        return f'<li>{esc(" · ".join(partes))}</li>'
+
+    def bloque_puestos(ps: list) -> str:
+        # Provisión (tarjeta v2): «Puesto · Nivel · Localidad». Con varios,
+        # «N puestos», los 3 primeros y el resto plegado. Sin puestos activos
+        # (flag apagado o documento que no pasó la comprobación) no pinta nada.
+        if not ps:
+            return ""
+        if len(ps) == 1:
+            return f'<ul class="em-puestos">{linea_puesto(ps[0])}</ul>'
+        resto = (f'<details class="em-completo"><summary>Ver todos los puestos ({len(ps)})</summary>'
+                 f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps)}</ul></details>'
+                 if len(ps) > 3 else "")
+        return (f'<span class="ref em-npuestos">{len(ps)} puestos</span>'
+                f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps[:3])}</ul>{resto}')
+
     def fila(r: dict, con_dept: bool = True) -> str:
         # Tarjeta (UX-2): titular corto, título completo plegado, botones al
         # BOE y al PDF, «publicada hace N días» sobre la fecha del BOE. Nunca
@@ -562,6 +585,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         chips = f'<span class="em-chips">{chips}</span>' if chips else ""
         bases = empleo_campos.bases(r)
         bases = f'<span class="ref em-bases">{esc(bases)}</span>' if bases else ""
+        puestos = bloque_puestos(empleo_campos.puestos_activos(r))
         dept = f" · {esc(nombre_dept(r['dept']))}" if con_dept and r.get("dept") else ""
         epi = f" · {esc(r['epi'])}" if r.get("epi") else ""
         proc = f" · {esc(r['proc'])}" if r.get("proc") else ""
@@ -570,7 +594,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         completo = (f'<details class="em-completo"><summary>Título completo</summary>'
                     f'<p>{esc(r["titulo"])}</p></details>') if recortado else ""
         return (f'<li class="em-card"><a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
-                f'{esc(corto)}</a>{no}{completo}{chips}'
+                f'{esc(corto)}</a>{no}{completo}{chips}{puestos}'
                 f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{bases}{plazo}'
                 f'<span class="ref em-pub">{esc(publicada(r["fecha"], ref))} · '
                 f'{esc(fecha_es(r["fecha"]))} · {esc(r["id"])}</span>'

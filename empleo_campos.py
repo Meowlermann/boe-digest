@@ -39,6 +39,10 @@ CAMPOS_ACTIVOS: dict[str, frozenset] = {
     "local": frozenset({"plazas", "lineas", "turnos", "sistema", "localidad", "boletin"}),
     "universidad": frozenset(),
     "estado": frozenset(),
+    # Provisión: puesto, nivel y localidad validados (25 documentos, 258 filas,
+    # 0 erróneos) pero APAGADOS hasta que el mantenedor decida. Para encender:
+    #   "provision": frozenset({"puesto", "nivel", "localidad"}),
+    # «plazas» no está validado: no se enciende.
     "provision": frozenset(),
 }
 
@@ -244,8 +248,323 @@ def campos_estado(texto: str, titulo: str = "") -> dict:
     return {}
 
 
+# ---------------------------------------------------------------- Provisión
+#
+# Formato comprobado a mano el 28/29-10-2026 sobre 26 + 26 provisiones del BOE
+# II.B (txt.php, octubre de 2026). Los anexos de puestos llegan como tablas
+# HTML; cada celda trae una línea por <p>. Cabeceras vistas:
+#   - «Denominación del puesto» | «Nivel» | «Localidad» (columna propia);
+#   - una sola celda «Centro directivo - Unidad - Puesto de trabajo» con la
+#     unidad en unas líneas y el puesto en la que acaba en «(código)», o en la
+#     anterior a «Código del puesto: N», o (AEAT) en la última línea;
+#   - Interior/Defensa: filas de encabezado de unidad sin nivel ni localidad
+#     entre las filas de puesto (se saltan).
+# Los puestos «a resultas» no son vacantes: se descartan todas las tablas que
+# siguen a un anexo cuyo título dice «resultas» (22466, 22472) o que la prosa
+# señala como tal («anexos I-A y I-B (resultas)», 22559), hasta el siguiente
+# anexo, y cualquier fila que diga «a resultas».
+# No cubre: el puesto solo en prosa (Osakidetza, 21564), la tabla del CGPJ con
+# «Cuerpo» como puesto y sin nivel (21702), tablas sin cabecera reconocible.
+# En esos casos no se extrae nada y la tarjeta queda como antes.
+
+_COLS = (("puesto", r"^denominacion|^puestos? de trabajo$|^puesto$"),
+         ("merge", r"centro directivo.*(?:puesto|denominacion)|^centro\s*/\s*(?:denominacion )?puesto"),
+         ("nivel", r"^nivel|^nv\b|^c\.? ?d\.?$|^comp(?:lem(?:ento)?)?\.? (?:de )?destino"),
+         ("localidad", r"localidad"),
+         ("plazas", r"^n\.?\s?o?\.? ?(?:de )?(?:plazas|puestos)$|^numero de (?:plazas|puestos)$"))
+_SKIP = r"apellido|dni|destino actual|unidad de que depende|posesion|grado consol|adjudicad"
+_CODIGO = re.compile(r"\(\s*\d{5,8}\s*\)\.?$|^\d{5,8}\.?$")
+_RE_COD_PUESTO = re.compile(r"codigo de(?:l)? puesto")
+_ANEXO = re.compile(r"^anexo\s+([ivx]+(?:\s*-\s*[a-z0-9]\b|\s+[a-z]\b)?)")
+_ID_ANEXO = r"[ivx]+(?:\s*-\s*[a-z0-9]\b|\s+[a-z]\b)?\)?"
+# «anexos I-A y I-B (resultas)» (22559); «anexo I B), que solo podrán ser
+# adjudicados en el caso que queden vacantes tras…» (20937).
+_ANEXO_RESULTAS = (
+    re.compile(rf"anexos?\s+((?:{_ID_ANEXO})(?:\s*(?:,|y)\s*{_ID_ANEXO})*)\s*"
+               r"\(\s*(?:puestos\s+)?(?:a\s+)?resultas\s*\)"),
+    re.compile(rf"anexos?\s+({_ID_ANEXO}),?\s+que solo podran ser adjudicad\w+ (?:en el caso )?(?:de )?que queden vacantes"),
+)
+MAX_PUESTO = 160
+
+
+def _cl(s: str) -> str:
+    return " ".join((s or "").split())
+
+
+def _lineas_celda(td) -> list[str]:
+    ps = td.find_all("p")
+    ls = [_cl(p.get_text(" ")) for p in ps] if ps else [_cl(td.get_text(" "))]
+    return [x for x in ls if x]
+
+
+def _expandir(tr) -> list:
+    """Celdas de una fila con cada colspan repetido: así casan las columnas
+    de cabeceras a dos niveles («Adscripción» sobre Admón./Grupo)."""
+    out = []
+    for c in tr.find_all(["td", "th"], recursive=False) or tr.find_all(["td", "th"]):
+        try:
+            n = max(1, min(20, int(c.get("colspan") or 1)))
+        except ValueError:
+            n = 1
+        out.extend([c] * n)
+    return out
+
+
+def _id_anexo(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", plano(s))
+
+
+def _anexos_resultas(prosa: str) -> set:
+    out = set()
+    for rx in _ANEXO_RESULTAS:
+        for m in rx.finditer(plano(prosa)):
+            ids = re.split(r"\s*(?:,|\by\b)\s*", m.group(1))
+            out.add(_id_anexo(ids[-1]))
+    return out
+
+
+def _puesto_fila(cs, m, con_nivel: bool = False) -> str | None:
+    """Denominación del puesto; "" si la fila es un encabezado de unidad;
+    None si la fila debería traer puesto y no se entiende. `con_nivel`: la
+    fila trae nivel (22346: filas sin n.º de orden, que sí son puestos)."""
+    num = con_nivel or bool(re.match(r"\d", _cl(cs[0].get_text(" "))))
+    if "merge" in m:
+        ls = _lineas_celda(cs[m["merge"]])
+        cod = [x for x in ls if _CODIGO.search(x)]
+        ic = [i for i, x in enumerate(ls) if _RE_COD_PUESTO.match(plano(x))]
+        if len(cod) == 1:
+            p = _CODIGO.sub("", cod[0]).strip(" .")
+            # «Subdirector Adjunto/…» y «(5680246).» en dos <p> (21817).
+            if not p and ls.index(cod[0]) > 0:
+                p = ls[ls.index(cod[0]) - 1]
+        elif cod:
+            return None
+        elif len(ic) == 1 and ic[0] > 0:
+            p = ls[ic[0] - 1]
+        elif num and ls:
+            p = ls[-1]
+        else:
+            return ""
+    else:
+        # Columna «Denominación»/«Puestos de trabajo»: una línea, o unidades +
+        # puesto + «Código de puesto: N» (20486). Varias líneas sin esa marca
+        # pueden ser un nombre partido o unidad + puesto: no se adivina.
+        ls = _lineas_celda(cs[m["puesto"]])
+        ic = [i for i, x in enumerate(ls) if _RE_COD_PUESTO.match(plano(x))]
+        if len(ic) == 1 and ic[0] > 0:
+            p = ls[ic[0] - 1]
+        elif len(ls) == 1:
+            p = ls[0]
+        elif not num:
+            return ""
+        else:
+            return None
+    # «Consejero/a (1).»: llamada a nota al pie fuera.
+    p = re.sub(r"\s*\(\d\)\s*\.?$", "", _cl(p))
+    p = re.sub(r"\s*/\s*", "/", p).strip(" .–-")
+    if num and not re.search(r"[^\W\d_]{3}", p):
+        return None                                       # código o número suelto
+    return p
+
+
+_PROV_TERMINOS: dict | None = None
+
+
+_PROV_BILINGUES: dict = {}
+
+
+def _terminos_prov() -> dict:
+    """plano(nombre) -> forma con tildes, de curated/provincias.json:
+    provincias, variantes bilingües y capitales."""
+    global _PROV_TERMINOS
+    if _PROV_TERMINOS is None:
+        import json
+        import pathlib
+        d = json.loads((pathlib.Path(__file__).parent / "curated" / "provincias.json").read_text("utf-8"))
+        t: dict = {}
+        for p in d["provincias"]:
+            for n in [p["nombre"], p.get("capital", ""), p.get("circunscripcion", "")] + list(p.get("variantes") or []):
+                for x in [n] + n.split("/"):
+                    if x.strip():
+                        t.setdefault(plano(x), x.strip())
+                if n.count("/") == 1:
+                    a, b = (plano(x) for x in n.split("/"))
+                    _PROV_BILINGUES.setdefault(frozenset((a, b)), n.strip())
+        _PROV_TERMINOS = t
+    return _PROV_TERMINOS
+
+
+def _bilingues() -> dict:
+    """{plano(A), plano(B)} -> «A/B» oficial («Pamplona/Iruña»)."""
+    _terminos_prov()
+    return _PROV_BILINGUES
+
+
+def _dist(a: str, b: str) -> int:
+    if abs(len(a) - len(b)) > 2:
+        return 3
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+_MINUS = {"de", "del", "la", "las", "los", "el", "y", "i", "d", "da", "do", "das", "dos"}
+
+
+def _titulo(s: str) -> str:
+    m = re.fullmatch(r"(.+),\s*(a|o|el|la|los|las|l')", s, re.I)
+    if m:
+        s = f"{m.group(2)} {m.group(1)}"
+    ps = s.lower().split()
+    return " ".join(p if (i and p in _MINUS) else p[:1].upper() + p[1:] for i, p in enumerate(ps))
+
+
+def limpia_localidad(s: str) -> str:
+    """Localidad legible o "" si no es limpia. Formatos del BOE: «MADRID»,
+    «MADRID - MADRID», «- A CORUÑA - CORUÑA, A», «PONTEVEDRA/ VIGO»,
+    «MADRID-MADRID». Se toma el último tramo; se enseña si es una provincia o
+    capital conocida (con su forma oficial) o si va detrás de una provincia
+    conocida. Nunca se corrige: «MADRID/ MADRD» (errata) se descarta, igual
+    que el extranjero o un tramo suelto que no se puede comprobar."""
+    s = re.sub(r"\.(?=\s|$)", "", _cl(s)).strip(" .-–")
+    if not s or "extranjero" in plano(s) or len(s) > 80:
+        return ""
+    t = _terminos_prov()
+    # «PALMAS DE GRAN CANARIA (LAS)» -> «LAS PALMAS DE GRAN CANARIA».
+    s = re.sub(r"^(.+?)\s*\((las|los|la|el|a|o)\)$", r"\2 \1", s, flags=re.I)
+    # «Armilla (Granada)»: municipio y provincia conocida entre paréntesis.
+    m = re.fullmatch(r"([^\W\d_][\w' .]{1,50}?)\s*\(([^)]+)\)", s)
+    if m:
+        if plano(m.group(2)) in t and not _errata(plano(m.group(1)), t):
+            return f"{_titulo(m.group(1)) if m.group(1).isupper() else m.group(1)} ({t[plano(m.group(2))]})"
+        return ""
+    segs = [x.strip() for x in re.split(r"\s*[-–]+\s+|\s+[-–]+\s*|\s*/\s*", s) if x.strip(" -–")]
+    segs = [m.group(1) if (m := re.fullmatch(r"(.+?)\s*-\s*(.+)", x)) and plano(m.group(1)) == plano(m.group(2)) else x
+            for x in segs]
+    if not segs or any(not re.fullmatch(r"[^\W\d_][\w' .,]*", x) for x in segs):
+        return ""
+    planos = [plano(x) for x in segs]
+    if any(_errata(x, t) for x in planos):
+        return ""
+    ult = planos[-1]
+    # «PAMPLONA/IRUÑA», «ALACANT/ALICANTE»: nombre bilingüe pegado, entero.
+    if len(segs) >= 2 and (bil := _bilingues().get(frozenset(planos[-2:]))):
+        return bil
+    if ult in t:
+        return t[ult]
+    if len(segs) >= 2 and planos[-2] in t and len(ult) >= 3:
+        # «PAMPLONA/IRUÑA»: nombre bilingüe pegado, se enseña entero.
+        if re.search(re.escape(segs[-2]) + r"/" + re.escape(segs[-1]) + r"$", s):
+            return f"{t[planos[-2]]}/{_titulo(segs[-1])}"
+        return _titulo(segs[-1]) if segs[-1].isupper() else segs[-1]
+    return ""
+
+
+def _errata(x: str, t: dict) -> bool:
+    """Un tramo a una letra (dos si es largo) de un nombre conocido sin
+    serlo: «MADRD». Vigo/Lugo (dos letras, nombres cortos) no cuenta."""
+    if x in t or len(x) < 4:
+        return False
+    tope = 2 if len(x) >= 8 else 1
+    return any(_dist(x, k) <= tope for k in t if len(k) >= 4)
+
+
 def campos_provision(texto: str, html: str = "") -> dict:
-    return {}
+    """{'puestos': [{puesto, nivel?, localidad?, plazas?}], 'n_puestos': N,
+    'resultas': M} desde las tablas del anexo; {} si no hay tabla de puestos
+    reconocible o si una fila de puesto no se entiende (comprobación por
+    documento: mejor nada que una lista a medias)."""
+    if not html:
+        return {}
+    from bs4 import BeautifulSoup
+    s = BeautifulSoup(html, "html.parser")
+    prosa = " ".join(p.get_text(" ") for p in s.find_all("p") if not p.find_parent("table"))
+    res_ids = _anexos_resultas(prosa)
+    anexo, resultas, mirar = "", False, 0
+    puestos, n_res, vista = [], 0, False
+    for el in s.find_all(["p", "h2", "h3", "h4", "h5", "table"]):
+        if el.name != "table":
+            if el.find_parent("table"):
+                continue
+            t = plano(el.get_text(" "))
+            m = _ANEXO.match(t)
+            if m and len(t) < 120:
+                anexo = _id_anexo(m.group(1))
+                resultas, mirar = anexo in res_ids or "resultas" in t, 3
+            elif mirar:
+                mirar -= 1
+                if len(t) < 120 and "resultas" in t:
+                    resultas = True
+            continue
+        mirar = 0
+        filas = el.find_all("tr")
+        hdr, datos = None, []
+        for tr in filas:
+            cs = _expandir(tr)
+            if hdr is None:
+                if len(cs) >= 4:
+                    hdr = [plano(c.get_text(" ")) for c in cs]
+                continue
+            datos.append(cs)
+        if not hdr or re.search(_SKIP, " ".join(hdr)):
+            continue
+        m: dict = {}
+        for i, c in enumerate(hdr):
+            for k, rx in _COLS:
+                if k not in m and re.search(rx, c):
+                    m[k] = i
+                    break
+        if not (("puesto" in m or "merge" in m) and ("nivel" in m or "localidad" in m)):
+            continue
+        vista = True
+        for cs in datos:
+            if len({id(c) for c in cs}) == 1:
+                continue                                  # nota a todo lo ancho
+            if len(cs) != len(hdr):
+                if re.match(r"\d", _cl(cs[0].get_text(" "))):
+                    return {}
+                continue
+            col = m.get("merge", m.get("puesto"))
+            if any(id(cs[m[k]]) == id(cs[col]) for k in ("nivel", "localidad") if k in m):
+                continue                                  # unidad con colspan (20937)
+            g = (lambda k: _cl(cs[m[k]].get_text(" ")) if k in m else "")
+            nv, pl = g("nivel"), g("plazas")
+            # «Madrid.» / «Madrid.» en dos <p> (provincia y localidad).
+            lo = " - ".join(x.rstrip(".") for x in _lineas_celda(cs[m["localidad"]])) if "localidad" in m else ""
+            if not (re.fullmatch(r"\d{1,2}", nv) or lo):
+                continue                                  # encabezado de unidad
+            if resultas or "a resultas" in plano(" ".join(c.get_text(" ") for c in cs)):
+                n_res += 1
+                continue
+            p = _puesto_fila(cs, m, bool(re.fullmatch(r"\d{1,2}", nv)))
+            if not p or len(p) > MAX_PUESTO:
+                return {}
+            x: dict = {"puesto": p}
+            if re.fullmatch(r"\d{1,2}", nv) and 1 <= int(nv) <= 30:
+                x["nivel"] = int(nv)
+            if (loc := limpia_localidad(lo)):
+                x["localidad"] = loc
+            if re.fullmatch(r"\d{1,3}", pl) and int(pl) > 0:
+                x["plazas"] = int(pl)
+            puestos.append(x)
+    if not vista or not puestos:
+        return {}
+    n = sum(x["plazas"] for x in puestos) if all("plazas" in x for x in puestos) else len(puestos)
+    return {"puestos": puestos, "n_puestos": n, **({"resultas": n_res} if n_res else {})}
+
+
+def puestos_activos(reg: dict) -> list[dict]:
+    """Puestos de una provisión con solo los subcampos activos. Vacío si
+    «puesto» no está activo, si es una no-oferta o si no hay lista."""
+    ok = CAMPOS_ACTIVOS.get("provision", frozenset())
+    if reg.get("no_oferta") or familia(reg) != "provision" or "puesto" not in ok:
+        return []
+    ps = (reg.get("campos") or {}).get("puestos") or []
+    return [{k: v for k, v in x.items() if k in ok} for x in ps if x.get("puesto")]
 
 
 # ----------------------------------------------------------------- interfaz
