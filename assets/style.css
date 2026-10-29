@@ -1570,3 +1570,8 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-chip{ font-size:13px; padding:2px 8px; border:1px solid var(--border); border-radius:999px; color:var(--ink-soft); }
 .em-aviso{ align-self:flex-start; font-size:13px; font-weight:600; padding:2px 8px; border-radius:6px;
   background:var(--border); }
+/* UX-3: «Recibe avisos» de /empleo/ (solo canales Atom). */
+.em-avisos{ margin:24px 0; padding:16px; border:1px solid var(--border); border-radius:12px; background:var(--surface-2); }
+.em-avisos h2{ margin-top:0; }
+.em-avisos .em-btn{ min-height:44px; }
+.em-avisos .em-sel-l a{ display:block; min-height:44px; box-sizing:border-box; }

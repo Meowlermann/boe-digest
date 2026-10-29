@@ -493,6 +493,24 @@ def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
             + plegable("org", "Elegir organismo convocante", enlaces_dept))
     return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
 
+def avisos(enlaces_prov: list, enlaces_dept: list) -> str:
+    """UX-3: «Recibe avisos». Solo canales Atom (los que ya escribe canales()):
+    el general y uno por provincia y por organismo. Sin correo ni registro."""
+    def plegable(titulo: str, enlaces: list) -> str:
+        if not enlaces:
+            return ""
+        return (f'<details class="em-sel"><summary>{titulo} <span class="ref">({len(enlaces)})</span>'
+                f'</summary><ul class="em-sel-l">{"".join(enlaces)}</ul></details>')
+    return ('<section id="avisos" class="em-avisos" aria-labelledby="avisos-t">'
+            '<h2 id="avisos-t">Recibe avisos</h2>'
+            '<p>Suscríbete a un canal RSS (Atom) en tu lector de noticias y te avisará de cada disposición '
+            'nueva.<br>Sin correo ni registro: elige el canal general o el de una provincia u organismo. '
+            '<a href="/seguir/">Cómo usar un lector RSS</a>.</p>'
+            f'<p><a class="em-btn" href="{RSS_EMPLEO}">Canal de todo el empleo público</a></p>'
+            '<div class="em-filtros">' + plegable("Canal por provincia", enlaces_prov)
+            + plegable("Canal por organismo convocante", enlaces_dept) + '</div></section>')
+
+
 TITULAR_MAX = 120
 
 
@@ -678,7 +696,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         salidas.append({"url": url, "lastmod": lastmod})
 
     # Fichas por departamento.
-    enlaces_dept = []
+    enlaces_dept, feeds_dept, feeds_prov = [], [], []
     for s, (nombre, filas) in sorted(por_dept.items(), key=lambda x: x[1][0]):
         pagina(f"{s}.html", f"Empleo público: {nombre}",
                f"Oposiciones, concursos y listas de {nombre} publicadas en el BOE en los últimos "
@@ -688,6 +706,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                filas, por_tipo(filas, con_dept=False), nombre)
         enlaces_dept.append(f'<li><a href="{attr(s)}.html">{esc(nombre)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
+        feeds_dept.append(f'<li><a href="{attr(s)}.xml">{esc(nombre)}</a></li>')
     # Fichas por provincia.
     enlaces_prov = []
     for p, filas in sorted(por_prov.items(), key=lambda x: nombres_prov[x[0]]):
@@ -702,6 +721,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                f'en La Tercera Cámara</a></p>', n)
         enlaces_prov.append(f'<li><a href="provincia-{attr(p)}.html">{esc(n)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
+        feeds_prov.append(f'<li><a href="provincia-{attr(p)}.xml">{esc(n)}</a></li>')
     # Índice.
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=DIAS_PORTADA)).isoformat()
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
@@ -713,6 +733,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
               + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
               + (f'<h2 id="provincias">Por provincia</h2><ul class="ix-lista">{"".join(enlaces_prov)}</ul>'
                  if enlaces_prov else "")
+              + (avisos(feeds_prov, feeds_dept) if regs else "")
               + '<p class="aside-note">Cómo se clasifica: el tipo sale de palabras del título y del '
               'epígrafe del sumario («admitidos», «tribunal», «aprobados», «libre designación», '
               '«convoca»…), en ese orden de prioridad; la provincia, de que el título la nombre. '
