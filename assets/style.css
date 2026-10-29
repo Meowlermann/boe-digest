@@ -1570,3 +1570,14 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-chip{ font-size:13px; padding:2px 8px; border:1px solid var(--border); border-radius:999px; color:var(--ink-soft); }
 .em-aviso{ align-self:flex-start; font-size:13px; font-weight:600; padding:2px 8px; border-radius:6px;
   background:var(--border); }
+/* UX-3: filtro de /empleo/ por tipo y fecha (solo con JS; sin él, hidden). */
+.em-filtro{ margin:12px 0 16px; display:flex; flex-direction:column; gap:8px; }
+.em-filtro[hidden]{ display:none; }
+.em-fg{ display:flex; flex-wrap:wrap; gap:8px; }
+.em-fb{ min-height:44px; min-width:44px; padding:8px 14px; border:1px solid var(--border); border-radius:999px;
+  background:var(--surface); color:var(--ink); font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  max-width:100%; text-align:left; overflow-wrap:anywhere; }
+.em-fb[aria-pressed="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.em-fb:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
+.em-fn:empty{ display:none; }
+.em-sec[hidden], .em-card[hidden]{ display:none; }
