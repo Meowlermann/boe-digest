@@ -480,19 +480,6 @@ def canales(h: dict, estado: dict | None = None) -> dict:
     return salida
 
 
-def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
-    """UX-2: dos listas plegables (<details>) con enlaces a las páginas por
-    provincia y por organismo, antes del listado. Sin JS: son enlaces."""
-    def plegable(clase: str, titulo: str, enlaces: list) -> str:
-        if not enlaces:
-            return ""
-        return (f'<details class="em-sel em-sel-{clase}"><summary>{titulo} '
-                f'<span class="ref">({len(enlaces)})</span></summary>'
-                f'<ul class="em-sel-l">{"".join(enlaces)}</ul></details>')
-    html = (plegable("prov", "Elegir provincia", enlaces_prov)
-            + plegable("org", "Elegir organismo convocante", enlaces_dept))
-    return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
-
 def avisos(enlaces_prov: list, enlaces_dept: list) -> str:
     """UX-3: «Recibe avisos». Solo canales Atom (los que ya escribe canales()):
     el general y uno por provincia y por organismo. Sin correo ni registro."""
@@ -510,6 +497,19 @@ def avisos(enlaces_prov: list, enlaces_dept: list) -> str:
             '<div class="em-filtros">' + plegable("Canal por provincia", enlaces_prov)
             + plegable("Canal por organismo convocante", enlaces_dept) + '</div></section>')
 
+
+def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
+    """UX-2: dos listas plegables (<details>) con enlaces a las páginas por
+    provincia y por organismo, antes del listado. Sin JS: son enlaces."""
+    def plegable(clase: str, titulo: str, enlaces: list) -> str:
+        if not enlaces:
+            return ""
+        return (f'<details class="em-sel em-sel-{clase}"><summary>{titulo} '
+                f'<span class="ref">({len(enlaces)})</span></summary>'
+                f'<ul class="em-sel-l">{"".join(enlaces)}</ul></details>')
+    html = (plegable("prov", "Elegir provincia", enlaces_prov)
+            + plegable("org", "Elegir organismo convocante", enlaces_dept))
+    return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
 
 TITULAR_MAX = 120
 
