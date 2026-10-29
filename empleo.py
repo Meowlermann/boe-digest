@@ -38,9 +38,9 @@ ESTADO = ROOT / "state" / "empleo.json"
 VERSION = 1
 # Versión de la lectura del texto: sube cuando detalle() extrae algo nuevo,
 # para que enriquecer() relea lo leído con una versión anterior (1 = antes de
-# los campos de #45; 2 = antes de los puestos de provisión). Lo que ya está
+# los campos de #45; 2 = antes de los puestos de provisión; 3 = antes del nombre sobre «Código de puesto», 22467). Lo que ya está
 # al día no se relee.
-LECTURA = 3
+LECTURA = 4
 SECCIONES = ("2B",)              # código de la II.B en la API de datos abiertos
 VENTANA_ESTADO = 400             # días que guarda el estado (regla 7: nada crece sin límite)
 VENTANA_PAGINAS = 90             # días que enseñan las fichas
