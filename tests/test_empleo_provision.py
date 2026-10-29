@@ -78,9 +78,14 @@ class TestFlag(unittest.TestCase):
     def reg(self):
         return {**REG, **ec.extraer_campos(REG, "", VARIOS)}
 
-    def test_apagado_por_defecto(self):
-        self.assertEqual(ec.CAMPOS_ACTIVOS["provision"], frozenset())
-        self.assertEqual(ec.puestos_activos(self.reg()), [])
+    def test_activos_solo_validados(self):
+        self.assertEqual(ec.CAMPOS_ACTIVOS["provision"], frozenset({"puesto", "nivel", "localidad"}))
+        self.assertEqual(ec.CAMPOS_ACTIVOS["estado"], frozenset())
+        self.assertEqual(ec.CAMPOS_ACTIVOS["universidad"], frozenset())
+
+    def test_apagado(self):
+        with mock.patch.dict(ec.CAMPOS_ACTIVOS, {"provision": frozenset()}):
+            self.assertEqual(ec.puestos_activos(self.reg()), [])
 
     def test_estado_previo_sin_campos(self):
         # Un registro leído con LECTURA anterior (sin 'campos') se pinta como antes.
@@ -115,7 +120,8 @@ class TestTarjeta(unittest.TestCase):
         return (self.carpeta / "index.html").read_text(encoding="utf-8")
 
     def test_apagado_igual_que_hoy(self):
-        idx = self._indice(ec.campos_provision("", VARIOS))
+        with mock.patch.dict(ec.CAMPOS_ACTIVOS, {"provision": frozenset()}):
+            idx = self._indice(ec.campos_provision("", VARIOS))
         self.assertNotIn("em-puestos", idx)
 
     def test_varios_puestos_tres_y_ver_todos(self):

@@ -39,11 +39,10 @@ CAMPOS_ACTIVOS: dict[str, frozenset] = {
     "local": frozenset({"plazas", "lineas", "turnos", "sistema", "localidad", "boletin"}),
     "universidad": frozenset(),
     "estado": frozenset(),
-    # Provisión: puesto, nivel y localidad validados (25 documentos, 258 filas,
-    # 0 erróneos) pero APAGADOS hasta que el mantenedor decida. Para encender:
-    #   "provision": frozenset({"puesto", "nivel", "localidad"}),
-    # «plazas» no está validado: no se enciende.
-    "provision": frozenset(),
+    # Provisión: puesto, nivel y localidad validados (85 documentos, 505 filas contra PDF,
+    # 0 erróneos; validación v2). Encender solo tras reprocesar con LECTURA 4. «plazas» y «cuerpo» no están
+    # validados: siguen apagados.
+    "provision": frozenset({"puesto", "nivel", "localidad"}),
 }
 
 # Familias en las que se rotula una disposición que no es oferta nueva
