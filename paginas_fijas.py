@@ -50,6 +50,7 @@ darnos el correo ni crear una cuenta en esta web: nosotros no sabemos quién sig
 <li><a href="/tramitacion/">Cada iniciativa en tramitación</a><span class="ref">sus cambios de estado y las ampliaciones del plazo de enmiendas</span></li>
 <li><a href="/preguntas/#ministerios">Cada ministerio</a><span class="ref">las preguntas orales de la sesión de control que contesta</span></li>
 <li><a href="/empleo/index.xml">Empleo público</a><span class="ref">las convocatorias de oposiciones y concursos de la sección II.B del BOE (canal Atom)</span></li>
+<li><a href="/empleo/#avisos">Empleo público por provincia u organismo</a><span class="ref">un canal Atom por cada provincia y cada organismo convocante, para recibir avisos solo de lo que te interesa</span></li>
 <li><a href="/feed.xml">La edición diaria</a><span class="ref">una entrada por edición</span></li>
 </ul>
 <p>En cada una de esas páginas verás el enlace <b>Seguir con RSS</b> debajo de la entradilla.
@@ -197,7 +198,8 @@ def seguir_con_empleo(html: str, hay_canal: bool) -> str:
     II.B no lo genera y el enlace quedaría roto. Sin canal, a /empleo/."""
     if hay_canal:
         return html
-    return html.replace('<a href="/empleo/index.xml">', '<a href="/empleo/">')
+    return (html.replace('<a href="/empleo/index.xml">', '<a href="/empleo/">')
+            .replace('<a href="/empleo/#avisos">', '<a href="/empleo/">'))
 
 
 def generar_paginas(h: dict) -> list:
