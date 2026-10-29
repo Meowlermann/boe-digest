@@ -96,7 +96,7 @@ class TestLocal(unittest.TestCase):
 
 class TestInterruptor(unittest.TestCase):
     def test_familias_apagadas(self):
-        for fam in ("universidad", "estado"):
+        for fam in ("universidad", "estado", "provision"):
             self.assertEqual(C.CAMPOS_ACTIVOS[fam], frozenset())
         r = {"titulo": "x", "dept": "MINISTERIO DE HACIENDA", "tipo": "convocatoria",
              "campos": {"plazas": 3, "lineas": [{"cuerpo": "X", "clase": "plaza"}], "localidad": "Y"}}
