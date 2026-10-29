@@ -1549,8 +1549,18 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-completo > summary{ cursor:pointer; font-size:13px; color:var(--ink-soft); }
 .em-completo p{ margin:4px 0 0; font-size:14px; }
 .em-puestos{ margin:6px 0 0; padding-left:18px; font-size:14px; overflow-wrap:anywhere; }
-.em-puestos li{ margin:2px 0; }
+.em-puestos li{ margin:4px 0; line-height:1.5; }
 .em-npuestos{ display:block; margin-top:6px; }
+/* Tarjeta de provisión: puesto en negrita, nivel y localidad como etiquetas
+   suaves con los colores de la paleta (contraste AA medido en claro y oscuro). */
+.em-npuestos{ width:fit-content; padding:1px 8px; border-radius:999px; font-weight:600;
+  background:var(--gold-soft); color:var(--ink); }
+.em-p-puesto{ font-weight:600; margin-right:6px; }
+.em-tag{ display:inline-block; padding:0 7px; margin:1px 4px 1px 0; border-radius:6px; font-size:13px;
+  line-height:1.6; border:1px solid transparent; white-space:normal; }
+.em-tag-nivel{ background:var(--fiscal-soft); color:var(--fiscal); border-color:color-mix(in srgb, var(--fiscal) 30%, transparent); }
+.em-tag-loc{ background:var(--senado-soft); color:var(--senado); border-color:color-mix(in srgb, var(--senado) 30%, transparent); }
+.em-sep{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 .em-card .ref{ display:block; }
 .em-bot{ display:flex; flex-wrap:wrap; gap:8px; margin-top:4px; }
 .em-btn{ display:inline-flex; align-items:center; min-height:36px; padding:6px 12px; border:1px solid var(--border);

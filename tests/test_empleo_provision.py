@@ -2,6 +2,7 @@
 anexo del txt.php del BOE: resultas, correcciones, varios puestos, localidad
 sucia, documento que falla la comprobación y flag CAMPOS_ACTIVOS. Sin red."""
 import pathlib
+import re
 import sys
 import unittest
 from unittest import mock
@@ -128,14 +129,16 @@ class TestTarjeta(unittest.TestCase):
         with mock.patch.dict(ec.CAMPOS_ACTIVOS, ENCENDIDO):
             idx = self._indice(ec.campos_provision("", VARIOS))
         self.assertIn("4 puestos", idx)
-        self.assertIn("Jefe/Jefa de Sección · Nivel 26 · Madrid", idx)
+        self.assertIn("Jefe/Jefa de Sección · Nivel 26 · Madrid", re.sub(r"<[^>]+>", "", idx))
+        self.assertIn('<span class="em-tag em-tag-nivel">Nivel 26</span>', idx)
         self.assertIn("Ver todos los puestos (4)", idx)
-        self.assertIn("<li>Analista de Sistemas · Nivel 22</li>", idx)   # sin localidad dudosa
+        self.assertIn("Analista de Sistemas · Nivel 22\n", re.sub(r"<[^>]+>", "", idx.replace("</li>", "\n")))   # sin localidad dudosa
 
     def test_un_puesto(self):
         with mock.patch.dict(ec.CAMPOS_ACTIVOS, ENCENDIDO):
             idx = self._indice({"puestos": [{"puesto": "Jefe de Área", "nivel": 29}], "n_puestos": 1})
-        self.assertIn("<li>Jefe de Área · Nivel 29</li>", idx)
+        self.assertIn("Jefe de Área · Nivel 29\n", re.sub(r"<[^>]+>", "", idx.replace("</li>", "\n")))
+        self.assertNotIn("em-tag-loc", idx)
         self.assertNotIn("Ver todos", idx)
         self.assertNotIn("1 puestos", idx)
 

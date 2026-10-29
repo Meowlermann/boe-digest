@@ -551,12 +551,15 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     ref = fecha_referencia(estado, hoy)
 
     def linea_puesto(p: dict) -> str:
-        partes = [p["puesto"]]
+        # Cada dato en su etiqueta de color (UX, 29-10-2026); el « · » sigue en
+        # el texto (oculto a la vista) para que se lea y se copie igual.
+        sep = '<span class="em-sep"> · </span>'
+        partes = [f'<span class="em-p-puesto">{esc(p["puesto"])}</span>']
         if p.get("nivel"):
-            partes.append(f"Nivel {p['nivel']}")
+            partes.append(f'<span class="em-tag em-tag-nivel">Nivel {esc(p["nivel"])}</span>')
         if p.get("localidad"):
-            partes.append(p["localidad"])
-        return f'<li>{esc(" · ".join(partes))}</li>'
+            partes.append(f'<span class="em-tag em-tag-loc">{esc(p["localidad"])}</span>')
+        return f'<li>{sep.join(partes)}</li>'
 
     def bloque_puestos(ps: list) -> str:
         # Provisión (tarjeta v2): «Puesto · Nivel · Localidad». Con varios,
