@@ -4902,15 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas escritas acumulan más de 20 días hábiles desde su publicación sin contestación registrada, la mayoría formuladas por el grupo de Sumar.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso registra 38 preguntas escritas que superan el plazo sin contestación",
+   "entradilla": "Un total de 38 iniciativas parlamentarias acumulan más de 20 días hábiles desde su publicación sin que conste una respuesta registrada en la Cámara.",
    "claves": [
-    "Sumar encabeza el listado con 24 preguntas pendientes, seguido del PSOE con 7 y del PP con 4.",
-    "Las demás iniciativas sin contestar se reparten a razón de una cada una entre el GV (EAJ-PNV), Junts y los parlamentarios sin grupo.",
-    "La iniciativa escrita más antigua sin respuesta registrada en el Congreso se publicó el lunes 16 de febrero de 2026.",
-    "El recuento abarca las preguntas del último año que superan la fecha límite, si bien puede haber prórrogas o respuestas no reflejadas todavía."
+    "Por grupos parlamentarios, la mayoría de las preguntas pendientes corresponden a Sumar con 30, seguido del PSOE con 4, el PP con 2, Junts con 1 y el grupo Sin grupo con 1.",
+    "La iniciativa más antigua sin respuesta registrada se publicó el lunes 15 de diciembre de 2025."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-29"
@@ -9814,9 +9812,205 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-28"
+  },
+  "BOE-A-2026-22610": {
+   "huella": "4094d11db430fd99",
+   "fuente": "29b1207c823ad036",
+   "titular": "Correos entregará y recogerá en las mesas electorales los dispositivos para MiDNI",
+   "entradilla": "El Gobierno modifica las obligaciones del servicio postal público en las elecciones de 2026 para incluir el reparto y custodia de los equipos que permiten usar la aplicación MiDNI en la identificación de los votantes.",
+   "claves": [
+    "Correos entregará a las mesas electorales los dispositivos necesarios para garantizar el uso de la aplicación MiDNI por parte de los votantes en su identificación.",
+    "El operador postal recogerá dichos equipos tras la jornada electoral y custodiará los sobres con documentación electoral antes de enviarlos a la junta correspondiente.",
+    "Las tareas de entrega y recogida de los dispositivos de MiDNI se coordinarán con Interior, las Delegaciones del Gobierno y los Ayuntamientos con un sistema de trazabilidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22611": {
+   "huella": "b300cacddf4e1fd2",
+   "fuente": "bde3ae97755c0fbc",
+   "titular": "El Ministerio de Educación aprueba quince subvenciones directas para el deporte",
+   "entradilla": "El Real Decreto 920/2026 regula la concesión directa de ayudas de carácter singular destinadas a eventos deportivos de relevancia internacional e instalaciones de alto rendimiento durante el ejercicio 2026.",
+   "claves": [
+    "Las subvenciones financiarán la organización de competiciones internacionales en España, el fomento del deporte femenino y la práctica deportiva entre la población joven.",
+    "Entre las entidades beneficiarias figura el CAR de Sant Cugat, de la Generalitat de Cataluña, para cubrir gastos corrientes e inversiones en instalaciones deportivas.",
+    "El texto justifica la concesión directa por la exclusividad jurídica o técnica de los beneficiarios y la necesidad de garantizar la continuidad de infraestructuras públicas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22612": {
+   "huella": "1fc0de8416303616",
+   "fuente": "18bd43b6ef526880",
+   "titular": "Banyoles, Gandía y La Matanza recibirán subvenciones directas para obras deportivas",
+   "entradilla": "El Ministerio de Educación aprueba la concesión directa de tres subvenciones a estos tres ayuntamientos para ejecutar inversiones en sus infraestructuras deportivas públicas.",
+   "claves": [
+    "El Real Decreto aprueba tres subvenciones directas para financiar obras en instalaciones deportivas de los ayuntamientos de Banyoles, Gandía y La Matanza de Acentejo.",
+    "En el caso de Gandía, las nuevas instalaciones darán espacio de entrenamiento al Club de Básquet Gandía femenino y al Club de Voleibol Gandía."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22613": {
+   "huella": "bb8b7ec4bb71bc6a",
+   "fuente": "5c725b3f7c752aed",
+   "titular": "El Gobierno adelanta al 1 de octubre de 2026 el nuevo periodo regulatorio del gas",
+   "entradilla": "La modificación del marco económico del sistema gasista hace coincidir el inicio del tercer periodo regulatorio con el año de gas para reducir cargas administrativas a los usuarios.",
+   "claves": [
+    "El tercer periodo regulatorio para calcular las retribuciones y cargos del sistema gasista se adelanta del 1 de enero de 2027 al 1 de octubre de 2026.",
+    "El segundo periodo regulatorio finalizará el 30 de septiembre de 2026 para sincronizar la metodología económica con el año de gas.",
+    "Los cargos unitarios se aprobarán antes de cada año de gas por orden ministerial y, si no se publican nuevos valores, se entenderán prorrogados los del año anterior."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22614": {
+   "huella": "6cdeb109a87e99f8",
+   "fuente": "4df39f9a436c7dcf",
+   "titular": "El Gobierno fija las normas para gestionar la Red Nacional de Vías Pecuarias",
+   "entradilla": "Un nuevo real decreto regula la delimitación, planificación y difusión de las vías pecuarias de titularidad estatal y crea un programa de acción para garantizar su continuidad.",
+   "claves": [
+    "La norma atribuye a la Dirección General de Biodiversidad la coordinación e información de la Red Nacional de Vías Pecuarias en colaboración con las comunidades autónomas.",
+    "Se establece el Programa de Acción de la Red Nacional para diagnosticar y fijar los objetivos de estas rutas, además de regular el Fondo Documental de Vías Pecuarias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22615": {
+   "huella": "1b179c1e9ae99215",
+   "fuente": "82d4298278056969",
+   "titular": "El Gobierno regula el uso en cascada de la biomasa forestal para producir energía",
+   "entradilla": "El Real Decreto establece restricciones a las ayudas públicas para generar energía con biomasa forestal y aplica el principio de uso en cascada para evitar distorsiones en el mercado.",
+   "claves": [
+    "Las administraciones deberán garantizar que la producción energética con biomasa minimice las distorsiones en el mercado de esta materia prima y los efectos adversos.",
+    "La regulación afecta a la biomasa forestal empleada en España para generar electricidad, calefacción o combustibles, sin importar el origen de la materia prima."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22616": {
+   "huella": "2fd28f8b5913e480",
+   "fuente": "ff4e8b226a44c15d",
+   "titular": "Transición Ecológica concede subvenciones directas a entidades del medio ambiente",
+   "entradilla": "El Gobierno regula la concesión de ayudas singulares para financiar proyectos medioambientales y contra la despoblación a través del presupuesto prorrogado de 2026.",
+   "claves": [
+    "Las organizaciones beneficiarias deberán presentar su solicitud de subvención en el registro electrónico del ministerio en un plazo máximo de diez días.",
+    "Las ayudas se otorgarán de forma directa al tratarse de entidades de representatividad estatal y amplia trayectoria en medio ambiente y reto demográfico."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22617": {
+   "huella": "2ceb60f35aa2cd39",
+   "fuente": "3bf84250afb0504f",
+   "titular": "Vivienda otorgará subvenciones directas a concesionarias de alquiler asequible",
+   "entradilla": "El Real Decreto autoriza ayudas directas a las empresas adjudicatarias de los contratos de obras licitados por CASA 47 para construir y gestionar promociones de alquiler asequible.",
+   "claves": [
+    "Las subvenciones financiarán contratos de concesión de obras promovidos por la entidad pública CASA 47 dentro del Plan de Vivienda para el Alquiler Asequible.",
+    "Las promociones subvencionadas serán reconocidas como Servicio de Interés Económico General (SIEG) de vivienda asequible sobre suelo o inmuebles públicos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22618": {
+   "huella": "c337a06d9d393e7b",
+   "fuente": "779caaf315f0084c",
+   "titular": "El Real Instituto Elcano recibirá una ayuda directa para sus actividades en 2026",
+   "entradilla": "Un real decreto regula el otorgamiento directo de una ayuda económica para costear los gastos de funcionamiento y las investigaciones del centro de estudios internacionales durante 2026.",
+   "claves": [
+    "La subvención financiará las actividades y gastos operativos fijados en el Plan de Actuación 2026 de la Fundación Real Instituto Elcano.",
+    "La entidad dispondrá de un plazo máximo de un mes desde la entrada en vigor de la norma para presentar la solicitud y la aceptación formal de la ayuda."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22619": {
+   "huella": "5ce36060de9484d0",
+   "fuente": "518c9833415c40d8",
+   "titular": "Igualdad subvencionará a la FEMP y a la Fundación ANAR contra la violencia de género",
+   "entradilla": "El Gobierno aprueba la concesión directa de ayudas a ambas entidades para desarrollar proyectos de prevención de la violencia contra las mujeres y atención en el ámbito local.",
+   "claves": [
+    "La FEMP recibirá la subvención para impulsar medidas de prevención y lucha contra la violencia de género desde los ayuntamientos y entidades locales.",
+    "La financiación permite dar continuidad a la colaboración que el Ministerio de Igualdad mantiene con la FEMP y la Fundación ANAR en materia de igualdad y protección."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22620": {
+   "huella": "08e40ac2d1b19837",
+   "fuente": "96d511985902ff88",
+   "titular": "Igualdad concede nueve subvenciones directas a ONG y entidades LGTBI+",
+   "entradilla": "El real decreto regula ayudas dirigidas a colectivos vulnerables, como personas en asentamientos o víctimas de odio racista y LGTBIfóbico, y al fomento del autoempleo femenino.",
+   "claves": [
+    "Cinco subvenciones apoyarán la lucha contra la discriminación a través de Cruz Roja, ASNUCI, Andalucía Acoge, CEPAIM y FECONS.",
+    "Tres ayudas irán destinadas a proyectos LGTBI+ gestionados por FELGTBI+, la Plataforma por los Derechos Trans y la Fundación 26 de diciembre.",
+    "El Grupo Cooperativo Tangente recibirá una subvención del Instituto de las Mujeres para fomentar el emprendimiento femenino en la Escuela Juana Millán."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22674": {
+   "huella": "1555427eae688efe",
+   "fuente": "654a2e42eab47f6d",
+   "titular": "Justicia transferirá soluciones tecnológicas a la Administración de Cantabria",
+   "entradilla": "El convenio entre el Ministerio de la Presidencia, Justicia y Relaciones con las Cortes y Cantabria busca garantizar la interoperabilidad de las aplicaciones de la Administración Judicial Electrónica.",
+   "claves": [
+    "El acuerdo busca asegurar la compatibilidad e integración de los sistemas informáticos de la Administración de Justicia y las Fiscalías en Cantabria.",
+    "El Ministerio actuará como encargado del tratamiento de datos para garantizar la seguridad de las soluciones de la Administración Judicial Electrónica."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22675": {
+   "huella": "6d871a27de574e78",
+   "fuente": "bd7012510df030f5",
+   "titular": "Defensa renueva la clasificación del cartucho CAR.TR-ALC de Instalaza hasta 2028",
+   "entradilla": "La Dirección General de Armamento y Material prorroga la autorización de almacenamiento y transporte de este producto de la empresa aragonesa tras un informe técnico favorable.",
+   "claves": [
+    "La clasificación otorgada a la empresa Instalaza para el almacenamiento y transporte del cartucho CAR.TR-ALC queda renovada hasta el 30 de noviembre de 2028.",
+    "La empresa podrá solicitar una nueva renovación de la clasificación seis meses antes de que expire el plazo fijado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22676": {
+   "huella": "871a2c8ef6794533",
+   "fuente": "249b60fb2c32e7ac",
+   "titular": "Transportes fija el control de acceso obligatorio en las escuelas de conductores CAP",
+   "entradilla": "Las autoescuelas y centros autorizados deberán registrar el horario exacto de cada alumno y enviar los ficheros de asistencia al Ministerio de Transportes al día siguiente de las clases.",
+   "claves": [
+    "Los centros de formación CAP deberán registrar a diario la hora exacta de inicio y fin de cada periodo lectivo, tanto en aula como en vehículo.",
+    "Los ficheros de asistencia deberán remitirse al Ministerio al siguiente día hábil, ampliable a 48 horas en caso de incidencias técnicas justificadas.",
+    "Los registros de cada sesión de formación deberán conservarse durante dos años a disposición de los Servicios de Inspección de Transporte."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22677": {
+   "huella": "e4a4b10f90d49ddd",
+   "fuente": "9329ff66aa0ffe00",
+   "titular": "Trabajo publica el convenio colectivo de Unidad Editorial Información General",
+   "entradilla": "La Dirección General de Trabajo ordena la inscripción y publicación en el BOE del convenio laboral de la empresa, acordado entre la dirección y los sindicatos CCOO y FeSP.",
+   "claves": [
+    "El convenio colectivo fue suscrito por la dirección de Unidad Editorial Información General y los sindicatos CCOO y FeSP."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22679": {
+   "huella": "d9f5d697404c8ac2",
+   "fuente": "8406dcce6821a7e9",
+   "titular": "Trabajo publica la prórroga y tablas salariales del convenio marco de UGT hasta 2028",
+   "entradilla": "La resolución oficializa el acuerdo entre la representación de la empresa y la sección sindical para extender el convenio laboral del personal técnico y administrativo del sindicato.",
+   "claves": [
+    "El convenio marco del personal técnico y administrativo de la UGT queda prorrogado hasta el 31 de diciembre de 2028.",
+    "El acuerdo aprueba las tablas salariales de los trabajadores del sindicato para los años 2026, 2027 y 2028."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-29"
   }
  },
  "uso": {
-  "2026-10-29": 1
+  "2026-10-29": 3
  }
 }
