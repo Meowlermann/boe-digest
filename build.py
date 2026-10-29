@@ -3669,6 +3669,9 @@ def semanas_publicadas() -> bool:
     return any((DATA_DIR / "semanas").glob("*-S*.json"))
 
 
+MENU_MAX_ENLACES = 9          # UX-4: ningún nivel del menú con más enlaces
+
+
 def render_nav() -> str:
     global _NAV_HTML
     if _NAV_HTML:
@@ -3679,67 +3682,52 @@ def render_nav() -> str:
         sub = f'<span>{esc_html(sub)}</span>' if sub else ""
         return f'<li><a href="{href}"><b>{esc_html(titulo)}</b>{sub}</a></li>'
 
-    grupos = "".join(
-        f'<a class="chip-n" href="/diputados/grupo-{slug}.html"><i style="background:{color}"></i>'
-        f'{esc_html(corto)}</a>' for _l, corto, slug, color in cd.GRUPOS)
-    materias = "".join(
-        f'<a class="chip-n" href="/temas/{slug}.html">{esc_html(et)}</a>'
-        for slug, et, _k in MATERIAS)
+    # UX-4: cinco entradas (Hoy, Empleo, Parlamento, Buscar, Más), ningún nivel
+    # con más de MENU_MAX_ENLACES enlaces y ninguna URL repetida en la barra.
+    # Las entradas con panel son <button> (abren y cierran; aria-expanded
+    # cierto): cada URL sale una sola vez, dentro de su panel. Sin JS el panel
+    # se abre igual con el ratón o el tabulador (:hover / :focus-within) y en
+    # móvil la barra inferior enlaza a la portada de cada sección. Los grupos
+    # parlamentarios se listan en /diputados/ y las materias en /temas/.
+    def pilar(clave, ico, nombre, titulo, enlaces):
+        return (f'<li class="pilar" data-pilar="{clave}">'
+                f'<button type="button" class="pilar-b" aria-expanded="false" aria-controls="panel-{clave}">'
+                f'{_ICO[ico]}<span>{nombre}</span></button>'
+                f'<div class="panel" id="panel-{clave}"><p class="panel-t">{titulo}</p>'
+                f'<ul class="panel-l">{"".join(enlaces)}</ul></div></li>')
 
-    pilares = (
-        f'<li class="pilar" data-pilar="hoy">'
-        f'<a class="pilar-b" href="/" aria-haspopup="true" aria-expanded="false">{_ICO["hoy"]}<span>Hoy</span></a>'
-        f'<div class="panel"><p class="panel-t">El día a día del Estado</p><ul class="panel-l">'
-        + enlace("/", "Edición de hoy", "El BOE y las Cortes del día, explicados")
-        + enlace("/#h-boe", "El BOE de hoy", "Lo que se publica y a quién afecta")
-        + enlace("/#h-cortes", "Las Cortes hoy", "Qué registran, preguntan y votan")
-        + (enlace("/semana/", "La semana", "Cada lunes, la semana anterior en una página")
-           if semanas_publicadas() else "")
-        + enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados")
-        + enlace("/seguir/", "Seguir con RSS", "Cada diputado, provincia, materia o ley, en tu lector")
-        + '</ul></div></li>'
+    def directo(clave, ico, nombre, href):
+        return (f'<li class="pilar pilar-directo" data-pilar="{clave}">'
+                f'<a class="pilar-b" href="{href}">{_ICO[ico]}<span>{nombre}</span></a></li>')
 
-        # Empleo va suelto (UX-1): /empleo/ ya reparte convocatorias y
-        # seguimiento de procesos, y no puede quedar fuera del menú.
-        f'<li class="pilar pilar-directo" data-pilar="empleo">'
-        f'<a class="pilar-b" href="/empleo/">{_ICO["emp"]}<span>Empleo</span></a></li>'
+    hoy = [enlace("/", "Edición de hoy", "El BOE y las Cortes del día, explicados"),
+           enlace("/#h-boe", "El BOE de hoy", "Lo que se publica y a quién afecta"),
+           enlace("/#h-cortes", "Las Cortes hoy", "Qué registran, preguntan y votan")]
+    if semanas_publicadas():
+        hoy.append(enlace("/semana/", "La semana", "Cada lunes, la semana anterior en una página"))
+    hoy += [enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados"),
+            enlace("/seguir/", "Seguir con RSS", "Cada diputado, provincia, materia o ley, en tu lector")]
+    parlamento = [enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno, y cada grupo"),
+                  enlace("/seguimiento/", "Seguimiento", "Qué se tramita, cómo se vota y qué se pregunta"),
+                  enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado"),
+                  enlace("/tramitacion/", "Leyes en tramitación", "Qué se tramita, en qué fase y con qué plazos")]
+    if preguntas_publicadas():
+        parlamento.append(enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente"))
+    if sesiones_publicadas():
+        parlamento.append(enlace("/sesiones/", "Sesiones de control", "Qué se pregunta al Gobierno en el Pleno y qué contesta"))
+    parlamento += [enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos"),
+                   enlace("/provincias/", "Tu provincia", "Sus diputados, qué se pregunta sobre ella y qué publica el BOE")]
+    mas = [enlace("/normas/", "Normas, una a una", "Una ficha por disposición del BOE"),
+           enlace("/temas/", "Todas las materias", "El BOE ordenado por asunto"),
+           enlace("/plazos/", "Plazos que vencen", "Lo que aún se puede recurrir o solicitar"),
+           enlace("/nombramientos/", "Nombramientos y ceses", "Quién entra y quién sale de cada cargo público"),
+           enlace("/mapa/", "Todo el sitio", "Cada sección y cada página, en un solo lugar")]
 
-        f'<li class="pilar" data-pilar="parlamento">'
-        f'<a class="pilar-b" href="/diputados/" aria-haspopup="true" aria-expanded="false">{_ICO["parl"]}<span>Parlamento</span></a>'
-        f'<div class="panel"><p class="panel-t">Así vota y así trabaja cada diputado</p><ul class="panel-l">'
-        + enlace("/seguimiento/", "Seguimiento", "Qué se tramita, cómo se vota y qué se pregunta")
-        + enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado")
-        + enlace("/tramitacion/", "Leyes en tramitación", "Qué se tramita, en qué fase y con qué plazos")
-        + enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno")
-        + enlace("/rankings/", "Rankings", "Participación, disidencia, afinidad entre grupos")
-        + (enlace("/preguntas/", "Preguntas al Gobierno", "Qué contesta el Gobierno y qué sigue pendiente")
-           if preguntas_publicadas() else "")
-        + (enlace("/sesiones/", "Sesiones de control", "Qué se pregunta al Gobierno en el Pleno y qué contesta")
-           if sesiones_publicadas() else "")
-        + enlace("/diputados/#activos", "Quién interviene más", "Presencia en el pleno y en comisión")
-        + enlace("/provincias/", "Tu provincia", "Sus diputados, qué se pregunta sobre ella y qué publica el BOE")
-        + enlace("/diputados/#circunscripciones", "Por circunscripción", "Los diputados de tu provincia")
-        + f'</ul><p class="panel-t">Por grupo</p><div class="chips-n">{grupos}</div></div></li>'
-
-        # Votaciones va suelta, sin panel: es la sección que más se entiende
-        # de un vistazo y la que más se comparte, así que merece un clic.
-        f'<li class="pilar pilar-directo" data-pilar="votaciones">'
-        f'<a class="pilar-b" href="/votaciones/">{_ICO["vot"]}<span>Votaciones</span></a></li>'
-
-        # Seguimiento también va suelto: su portada ya reparte en tres bloques.
-        f'<li class="pilar pilar-directo" data-pilar="seguimiento">'
-        f'<a class="pilar-b" href="/seguimiento/">{_ICO["seg"]}<span>Seguimiento</span></a></li>'
-
-        f'<li class="pilar" data-pilar="consultar">'
-        f'<a class="pilar-b" href="/mapa/" aria-haspopup="true" aria-expanded="false">{_ICO["cons"]}<span>Consultar</span></a>'
-        f'<div class="panel panel-ancho"><p class="panel-t">Encontrar cualquier cosa</p><ul class="panel-l">'
-        + enlace("/buscar/", "Buscador", "Normas, leyes, votaciones, preguntas y diputados")
-        + enlace("/normas/", "Normas, una a una", "Una ficha por disposición del BOE")
-        + enlace("/plazos/", "Plazos que vencen", "Lo que aún se puede recurrir o solicitar")
-        + enlace("/nombramientos/", "Nombramientos y ceses", "Quién entra y quién sale de cada cargo público")
-        + enlace("/temas/", "Todas las materias", "El BOE ordenado por asunto")
-        + enlace("/mapa/", "Todo el sitio", "Cada sección y cada página, en un solo lugar")
-        + f'</ul><p class="panel-t">Materias</p><div class="chips-n">{materias}</div></div></li>')
+    pilares = (pilar("hoy", "hoy", "Hoy", "El día a día del Estado", hoy)
+               + directo("empleo", "emp", "Empleo", "/empleo/")
+               + pilar("parlamento", "parl", "Parlamento", "Así vota y así trabaja cada diputado", parlamento)
+               + directo("buscar", "bus", "Buscar", "/buscar/")
+               + pilar("mas", "cons", "Más", "Normas, materias, plazos y el resto del sitio", mas))
 
     _NAV_HTML = (
         '<nav class="nav" aria-label="Secciones"><div class="nav-in">'
@@ -3753,12 +3741,11 @@ def render_nav() -> str:
         '<div class="nav-res" role="listbox" hidden></div></form>'
         '</div></nav>'
         '<nav class="tabbar" aria-label="Navegación principal">'
-        f'<a href="/" data-pilar="hoy">{_ICO["hoy"]}<span>Hoy</span></a>'
+        f'<a href="/" data-pilar="hoy" data-abre="hoy">{_ICO["hoy"]}<span>Hoy</span></a>'
         f'<a href="/empleo/" data-pilar="empleo">{_ICO["emp"]}<span>Empleo</span></a>'
         f'<a href="/diputados/" data-pilar="parlamento" data-abre="parlamento">{_ICO["parl"]}<span>Parlamento</span></a>'
-        f'<a href="/votaciones/" data-pilar="votaciones">{_ICO["vot"]}<span>Votos</span></a>'
-        f'<a href="/buscar/" data-abre="buscar">{_ICO["bus"]}<span>Buscar</span></a>'
-        f'<a href="/mapa/" data-pilar="consultar" data-abre="consultar">{_ICO["cons"]}<span>Consultar</span></a>'
+        f'<a href="/buscar/" data-pilar="buscar" data-abre="buscar">{_ICO["bus"]}<span>Buscar</span></a>'
+        f'<a href="/mapa/" data-pilar="mas" data-abre="mas">{_ICO["cons"]}<span>Más</span></a>'
         '</nav>')
     return _NAV_HTML
 

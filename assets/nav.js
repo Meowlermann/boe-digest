@@ -18,7 +18,6 @@
   if (!nav) return;
   var tabbar = document.querySelector(".tabbar");
   var pilares = [].slice.call(nav.querySelectorAll(".pilar"));
-  var tactil = window.matchMedia("(hover: none)").matches;
   var velo = document.createElement("div");
   velo.className = "nav-velo";
   document.body.appendChild(velo);
@@ -37,11 +36,9 @@
   var ruta = location.pathname;
   var seccion =
     /^\/empleo\//.test(ruta) ? "empleo" :
-    /^\/votaciones\//.test(ruta) ? "votaciones" :
-    /^\/(seguimiento|tramitacion)\//.test(ruta) ? "seguimiento" :
-    /^\/provincias\//.test(ruta) ? "parlamento" :
-    /^\/(diputados|rankings)\//.test(ruta) ? "parlamento" :
-    /^\/(buscar|normas|temas|plazos|mapa)\//.test(ruta) ? "consultar" :
+    /^\/(diputados|rankings|provincias|votaciones|seguimiento|tramitacion|preguntas|sesiones)\//.test(ruta) ? "parlamento" :
+    /^\/buscar\//.test(ruta) ? "buscar" :
+    /^\/(normas|temas|plazos|nombramientos|mapa)\//.test(ruta) ? "mas" :
     "hoy";
   pilares.forEach(function (p) {
     if (p.dataset.pilar === seccion) p.classList.add("actual");
@@ -56,8 +53,10 @@
   });
 
   /* ------------------------------------------------------------- paneles */
+  // Solo los pilares con panel llevan aria-expanded; los enlaces directos no.
+  var conPanel = pilares.filter(function (p) { return p.querySelector(".panel"); });
   function cerrarTodo() {
-    pilares.forEach(function (p) {
+    conPanel.forEach(function (p) {
       p.classList.remove("abierto");
       p.querySelector(".pilar-b").setAttribute("aria-expanded", "false");
     });
@@ -71,19 +70,14 @@
     document.body.classList.add("hoja-abierta");
   }
 
-  pilares.forEach(function (p) {
-    var b = p.querySelector(".pilar-b");
-    if (!p.querySelector(".panel")) return;       // enlace directo, sin panel
-    b.addEventListener("click", function (e) {
-      // En táctil no hay «pasar el ratón»: el primer toque abre el panel y el
-      // segundo, ya abierto, sigue el enlace a la portada de la sección.
-      if (tactil && !p.classList.contains("abierto")) {
-        e.preventDefault();
-        abrir(p);
-      }
+  conPanel.forEach(function (p) {
+    var b = p.querySelector(".pilar-b");          // <button>: abre y cierra
+    b.addEventListener("click", function () {
+      if (p.classList.contains("abierto")) cerrarTodo();
+      else abrir(p);
     });
     b.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowDown" || e.key === " ") {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
         abrir(p);
         var primero = p.querySelector(".panel a");
