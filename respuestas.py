@@ -545,6 +545,18 @@ def _a_quien(cargo: str) -> str:
     return f"{art} {c[0].lower()}{c[1:]}"
 
 
+def hay_sesiones() -> bool:
+    """¿Generará generar_paginas() /sesiones/? Misma condición, leída del
+    estado (state/respuestas/) y no del HTML ya escrito: así el menú no
+    depende del orden del render ni de un checkout limpio."""
+    for a in anios():
+        alm = cargar(a)
+        orales = {r.get("s") for r in alm["orales"].values()}
+        if any(f in orales for f in alm["sesiones"]):
+            return True
+    return False
+
+
 def generar_paginas(h: dict) -> list:
     """/sesiones/: índice por años y una página por sesión de control, con
     cada pregunta, quién contesta y las tres citas del Diario de Sesiones."""
