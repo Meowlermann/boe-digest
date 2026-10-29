@@ -166,7 +166,7 @@ class TestTarjeta(unittest.TestCase):
         self.assertIn("2 plazas de Operario/a de brigada municipal de obras · Tamarite de Litera", idx)
         self.assertIn('class="em-chip"', idx)
         # Los registros sin 'campos' (anteriores al extractor) siguen pintándose
-        self.assertGreater(len(re.findall(r'<li class="em-card">', idx)), 1)
+        self.assertGreater(len(re.findall(r'<li class="em-card"[^>]*>', idx)), 1)
 
     def _fecha(self):
         return max(v["fecha"] for v in self.estado["registros"].values())

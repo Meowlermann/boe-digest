@@ -61,7 +61,7 @@ class TestTarjetaGenerada(unittest.TestCase):
 
     def test_tarjetas(self):
         idx = self._indice("2026-10-27")
-        tarjetas = re.findall(r'<li class="em-card">(.*?)</li>', idx)
+        tarjetas = re.findall(r'<li class="em-card"[^>]*>(.*?)</li>', idx)
         self.assertTrue(tarjetas)
         for t in tarjetas:
             tit = re.search(r'class="em-tit"[^>]*>([^<]*)</a>', t).group(1)

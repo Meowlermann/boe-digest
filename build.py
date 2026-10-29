@@ -5490,7 +5490,14 @@ def renderizar_sesiones() -> list:
 
 
 def sesiones_publicadas() -> bool:
-    return (SESIONES_DIR / "index.html").exists()
+    """¿Hay /sesiones/? Se decide con el estado (respuestas.hay_sesiones), no
+    con sesiones/index.html: el menú se pinta antes que /sesiones/ y en un
+    checkout limpio el primer render lo omitía."""
+    try:
+        import respuestas as rp
+        return rp.hay_sesiones()
+    except Exception:                                         # noqa: BLE001
+        return False
 
 
 def renderizar_nombramientos(fichas_dip: list | None = None) -> list:

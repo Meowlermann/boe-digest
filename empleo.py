@@ -44,7 +44,9 @@ LECTURA = 4
 SECCIONES = ("2B",)              # código de la II.B en la API de datos abiertos
 VENTANA_ESTADO = 400             # días que guarda el estado (regla 7: nada crece sin límite)
 VENTANA_PAGINAS = 90             # días que enseñan las fichas
-DIAS_PORTADA = 14                # días que enseña /empleo/
+DIAS_PORTADA = VENTANA_PAGINAS   # días que enseña /empleo/ (UX-3: los mismos que las fichas)
+DIAS_FILTRO = 30                 # chip «Últimos N días» de /empleo/ (UX-3)
+JS_FILTRO = "/assets/empleo.js"  # filtrado en cliente de /empleo/ (UX-3), <3 KB
 MAX_FILAS = 300                  # tope de filas por página
 # Se enseña la cita del plazo solo tras validarla a mano (TC-013, iteración 1).
 MOSTRAR_PLAZO = True
@@ -511,6 +513,28 @@ def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
             + plegable("org", "Elegir organismo convocante", enlaces_dept))
     return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
 
+def chips_filtro(filas: list, ref: str) -> str:
+    """UX-3: botones para filtrar /empleo/ por tipo (los de TIPOS que hay en la
+    página, en su orden de lectura) y por «Últimos N días». Salen con hidden:
+    solo JS_FILTRO los enseña, así que sin JS se ve el listado completo. El
+    estado se comparte con ?tipo=…&dias=… (o #tipo=…)."""
+    from html import escape as esc
+    hay = {r["tipo"] for r in filas}
+    tipos = [t for t in ORDEN_ABIERTOS + ORDEN_SEGUIMIENTO + ORDEN_RESTO if t in hay]
+    if not tipos:
+        return ""
+    boton = ('<button type="button" class="em-fb" data-f="{f}" data-v="{v}" '
+             'aria-pressed="{p}">{e}</button>')
+    bt = boton.format(f="tipo", v="", p="true", e="Todos") + "".join(
+        boton.format(f="tipo", v=t, p="false", e=esc(ETIQUETA_TIPO[t])) for t in tipos)
+    bd = boton.format(f="dias", v=DIAS_FILTRO, p="false", e=f"Últimos {DIAS_FILTRO} días")
+    return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" hidden>'
+            f'<div role="group" aria-label="Filtrar por tipo" class="em-fg">{bt}</div>'
+            f'<div role="group" aria-label="Filtrar por fecha" class="em-fg">{bd}</div>'
+            f'<p class="ref em-fn" role="status" aria-live="polite"></p></div>'
+            f'<script src="{JS_FILTRO}" defer></script>')
+
+
 TITULAR_MAX = 120
 
 
@@ -614,7 +638,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                  if r.get("plazo") and MOSTRAR_PLAZO else "")
         completo = (f'<details class="em-completo"><summary>Título completo</summary>'
                     f'<p>{esc(r["titulo"])}</p></details>') if recortado else ""
-        return (f'<li class="em-card"><a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
+        return (f'<li class="em-card" data-fecha="{attr(r["fecha"])}">'
+                f'<a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
                 f'{esc(corto)}</a>{no}{completo}{chips}{puestos}'
                 f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{bases}{plazo}'
                 f'<span class="ref em-pub">{esc(publicada(r["fecha"], ref))} · '
@@ -637,8 +662,9 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'El resto, en el <a href="{RSS_EMPLEO}">canal RSS de empleo</a> y en las páginas '
                 f'<a href="{ENLACE_ORGANISMOS}">por organismo</a> y '
                 f'<a href="{ENLACE_PROVINCIAS}">por provincia</a>.</p>') if recorte else ""
-        return (f'<{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} ({n})</{h}>'
-                f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>{nota}')
+        return (f'<section class="em-sec" data-tipo="{t}"><{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
+                f'({n})</{h}>'
+                f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>{nota}</section>')
 
     def por_tipo(filas: list, con_dept: bool = True) -> str:
         # Orden de lectura (UX-1), distinto del de clasificación de TIPOS:
@@ -647,7 +673,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         html = "".join(bloque(t, filas, con_dept) for t in ORDEN_ABIERTOS)
         seg = "".join(bloque(t, filas, con_dept, "h3") for t in ORDEN_SEGUIMIENTO)
         if seg:
-            html += '<h2 id="seguimiento">Seguimiento de procesos</h2>' + seg
+            html += ('<section class="em-sec em-grupo"><h2 id="seguimiento">Seguimiento de procesos</h2>'
+                     + seg + '</section>')
         return html + "".join(bloque(t, filas, con_dept) for t in ORDEN_RESTO)
 
     def recuento(filas: list) -> str:
@@ -725,9 +752,10 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     # Índice.
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=DIAS_PORTADA)).isoformat()
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
-    cuerpo = (f'<p>Disposiciones de los últimos {DIAS_PORTADA} días. Por organismo y por provincia, '
-              f'los últimos {VENTANA_PAGINAS}. Los días desde la publicación se cuentan hasta el BOE '
+    cuerpo = (f'<p>Disposiciones de los últimos {DIAS_PORTADA} días, también por organismo y por '
+              f'provincia. Los días desde la publicación se cuentan hasta el BOE '
               f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
+              + chips_filtro(recientes, ref)
               + (por_tipo(recientes) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
