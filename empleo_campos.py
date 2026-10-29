@@ -40,10 +40,9 @@ CAMPOS_ACTIVOS: dict[str, frozenset] = {
     "universidad": frozenset(),
     "estado": frozenset(),
     # Provisión: puesto, nivel y localidad validados (25 documentos, 258 filas,
-    # 0 erróneos) pero APAGADOS hasta que el mantenedor decida. Para encender:
-    #   "provision": frozenset({"puesto", "nivel", "localidad"}),
-    # «plazas» no está validado: no se enciende.
-    "provision": frozenset(),
+    # 0 erróneos). Encendidos el 29-10-2026. «plazas» y «cuerpo» no están
+    # validados: siguen apagados.
+    "provision": frozenset({"puesto", "nivel", "localidad"}),
 }
 
 # Familias en las que se rotula una disposición que no es oferta nueva
