@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas pendientes tras superar el plazo límite",
-   "entradilla": "Un total de 38 iniciativas formuladas durante el último año exceden el margen de 20 días hábiles sin que figure una contestación registrada en la ficha oficial.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "38 preguntas escritas en el Congreso superan el plazo límite sin contestación",
+   "entradilla": "Un total de 38 preguntas escritas presentadas en el Congreso superan los 20 días hábiles desde su publicación sin que se haya registrado contestación.",
    "claves": [
-    "La pregunta más antigua sin contestar que figura en el recuento se publicó el lunes 16 de febrero de 2026.",
-    "El grupo parlamentario con más iniciativas sin respuesta registrada es Sumar con 24, seguido del PSOE con 7 y del PP con 4.",
-    "Los grupos de EAJ-PNV, Junts y los diputados sin grupo tienen una pregunta pendiente cada uno en el recuento."
+    "Del total de preguntas sin respuesta, 30 corresponden al grupo Sumar y 4 al PSOE.",
+    "Las preguntas pendientes restantes se reparten entre el PP con 2, Junts con 1 y Sin grupo con 1.",
+    "La iniciativa más antigua sin contestación registrada fue publicada el lunes 15 de diciembre de 2025."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-30"
@@ -10009,9 +10009,208 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-29"
+  },
+  "BOE-A-2026-22716": {
+   "huella": "c3f198ce0da4537f",
+   "fuente": "b89710f7ab02d616",
+   "titular": "Industria concede préstamos a Navantia para programas navales de Defensa",
+   "entradilla": "El Ministerio de Industria y Turismo aprueba la concesión directa de anticipos reembolsables en forma de préstamos a Navantia para prefinanciar tres programas de modernización y capacidad naval.",
+   "claves": [
+    "El programa para la corbeta europea European Patrol Corvette recibirá un préstamo por un importe de 1.786.000.000 euros.",
+    "La modernización y desarrollo evolutivo de los cazaminas clase Segura se financiará con un préstamo de 210.000.000 euros.",
+    "La modernización y desarrollo evolutivo de Unidades de la flota dispondrá de una financiación de 200.000.000 euros."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22717": {
+   "huella": "e335fab0e2863876",
+   "fuente": "eb948b8e2b331a6b",
+   "titular": "Agricultura podrá retirar hasta un 20 % del aceite de oliva en la campaña 2026/2027",
+   "entradilla": "El Ministerio de Agricultura establece las normas de comercialización para la campaña 2026/2027 con el fin de estabilizar el mercado ante una eventual sobreoferta de producto.",
+   "claves": [
+    "La medida se activará si la suma de existencias iniciales y estimación de producción alcanza o supera el 120 % de la media de las seis campañas anteriores.",
+    "El porcentaje exacto a retirar se publicará en el BOE antes del 15 de noviembre de 2026 y no podrá rebasar el 20 % de la producción estimada.",
+    "La campaña de comercialización afectada abarcará desde el 1 de octubre de 2026 hasta el 30 de septiembre de 2027."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22718": {
+   "huella": "361345fdb35969cd",
+   "fuente": "84d734059bf61a6f",
+   "titular": "Sanidad financia a la Associació pels Drets Sexuals para reforzar «Quiero Abortar»",
+   "entradilla": "El Gobierno concede una subvención directa a la entidad para ampliar la plataforma web con datos territoriales actualizados y acompañar a los profesionales sanitarios.",
+   "claves": [
+    "La ayuda permitirá ofrecer información detallada sobre salud reproductiva por provincias para reducir las desigualdades territoriales.",
+    "Se reforzará el acompañamiento comunicativo a los profesionales de la salud que intervienen en la interrupción voluntaria del embarazo.",
+    "La plataforma orienta a las mujeres y personas trans con capacidad de gestar que requieran información o recursos sobre derechos reproductivos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22719": {
+   "huella": "9ca5d68ac05fae3f",
+   "fuente": "23fd9615c59f369f",
+   "titular": "Inclusión subvenciona al Comité Paralímpico para impulsar el deporte en la acogida",
+   "entradilla": "La ayuda directa busca fomentar la práctica deportiva inclusiva y la integración social de las personas residentes en las redes de la Secretaría de Estado de Migraciones.",
+   "claves": [
+    "El proyecto atenderá de forma especial a personas con discapacidad acogidas en el sistema de protección internacional.",
+    "Las actividades permitirán identificar y orientar a potenciales deportistas que tengan proyección hacia el movimiento paralímpico.",
+    "La iniciativa incluye formar al personal de los centros de acogida y realizar actuaciones de sensibilización social."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22720": {
+   "huella": "56ee9489d24575a9",
+   "fuente": "dc8e81503ffcc08c",
+   "titular": "El Banco de España refunde en una circular la regulación sobre la Central de Riesgos",
+   "entradilla": "El Banco de España aprueba la Circular 1/2026 para compilar en una única norma toda la regulación aplicable a la Central de Información de Riesgos y reforzar la seguridad jurídica.",
+   "claves": [
+    "La nueva circular compila la regulación de la Central de Información de Riesgos para superar la fragmentación normativa acumulada por sucesivas modificaciones.",
+    "La norma adapta el marco legal tras la anulación formal por la Sentencia del Tribunal Supremo 519/2025 de previsiones sobre crédito revolvente."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22766": {
+   "huella": "5aa523bfcebf27a4",
+   "fuente": "020a4ea28329fbf2",
+   "titular": "Justicia y Galicia colaborarán en servicios para sus aplicaciones tecnológicas",
+   "entradilla": "La Secretaría de Estado de Justicia hace público el convenio para ofrecer servicios adicionales sobre las herramientas cedidas a la Administración autonómica.",
+   "claves": [
+    "El acuerdo se suscribe entre el Ministerio de la Presidencia, Justicia y Relaciones con las Cortes y la Agencia para la Modernización Tecnológica de Galicia.",
+    "El texto da continuidad a la transferencia de soluciones tecnológicas para el funcionamiento del sistema judicial en la comunidad autónoma."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22767": {
+   "huella": "6b610d35e5a05ec0",
+   "fuente": "57f4b83fcfa58f47",
+   "titular": "Defensa prorroga cuatro años el convenio docente con la Universidad de Extremadura",
+   "entradilla": "La prórroga mantendrá la colaboración en docencia e investigación entre la Base Aérea de Talavera la Real y la Facultad de Medicina y Ciencias de la Salud de Badajoz.",
+   "claves": [
+    "La adenda extiende durante cuatro años más el acuerdo suscrito en 2022 entre el Ministerio de Defensa y la institución académica.",
+    "Se modifica la cláusula de confidencialidad para fijar el deber de reserva de la información no clasificada y el tratamiento de datos personales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22768": {
+   "huella": "6ef449cfb6d700ce",
+   "fuente": "22a6a0c5a7750c89",
+   "titular": "El Gobierno concede la Gran Cruz del Mérito Naval a Abel Caballero",
+   "entradilla": "El Consejo de Ministros otorga a Abel Ramón Caballero Álvarez la condecoración con distintivo blanco a propuesta de la ministra de Defensa.",
+   "claves": [
+    "La concesión de la Gran Cruz del Mérito Naval con distintivo blanco fue aprobada mediante real decreto tras la propuesta de la ministra de Defensa.",
+    "El otorgamiento de la distinción militar responde a los méritos y circunstancias que concurren en el galardonado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22769": {
+   "huella": "19a69665e6fdc2f0",
+   "fuente": "6f5dae4e019e83d7",
+   "titular": "Defensa crea la Mesa de Contratación permanente de la Gestión Económica",
+   "entradilla": "La Dirección General de Asuntos Económicos constituye este órgano colegiado con representación de Intendencia, el Cuerpo Jurídico Militar y la Intervención.",
+   "claves": [
+    "La mesa estará presidida por un oficial del Cuerpo de Intendencia del Área Económica Administrativa.",
+    "Contará con vocales de la Asesoría Jurídica Militar, la Intervención y la unidad que promueva cada expediente de contratación.",
+    "Las reuniones podrán celebrarse de forma electrónica con carácter excepcional siempre que se garantice la identificación de sus miembros."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22770": {
+   "huella": "2f563655f0f80ddf",
+   "fuente": "84d87a3991c55787",
+   "titular": "Los estudiantes de la Universidad de Barcelona podrán hacer prácticas en el Catastro",
+   "entradilla": "Hacienda publica el acuerdo que permitirá al alumnado universitario realizar prácticas curriculares y extracurriculares en los servicios del Catastro.",
+   "claves": [
+    "Las prácticas externas estarán supervisadas por la universidad para complementar los conocimientos teóricos y favorecer la inserción laboral.",
+    "El marco de colaboración cubre tanto las prácticas curriculares como las extracurriculares del estudiantado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22771": {
+   "huella": "68edb7650c2f4070",
+   "fuente": "1efd110c7c98efcf",
+   "titular": "Hacienda cita a los interesados en el recurso de CSIF contra el calendario laboral",
+   "entradilla": "La Agencia Tributaria emplaza a comparecer ante el Tribunal Superior de Justicia de Madrid a quienes quieran personarse en la impugnación del sindicato.",
+   "claves": [
+    "El sindicato CSIF recurrió la resolución de la AEAT que aprobó su calendario laboral ante la Sección Séptima de la Sala de lo Contencioso-Administrativo.",
+    "Las personas interesadas disponen de un plazo de nueve días a contar desde el día siguiente a la publicación para personarse en los autos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22772": {
+   "huella": "e13d1f960d1101d4",
+   "fuente": "5ec05304b8b8bb4d",
+   "titular": "Los alumnos de la Politécnica de Valencia harán prácticas en el Puerto de Santander",
+   "entradilla": "La Autoridad Portuaria publica el acuerdo de colaboración formativa para acoger en prácticas tuteladas al estudiantado de la universidad levantina.",
+   "claves": [
+    "El convenio responde a las competencias del organismo portuario para promover la formación y el desarrollo de estudios e investigaciones.",
+    "La Universitat Politècnica de València buscará promover que la formación práctica en entidades colaboradoras sea remunerada."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22773": {
+   "huella": "2e564b85c8343f81",
+   "fuente": "6e70801b3c4965f6",
+   "titular": "La Autoridad Portuaria de Baleares delega competencias en su presidente",
+   "entradilla": "El Consejo de Administración de la Autoridad Portuaria de Baleares acuerda delegar en su presidente la aprobación de la normativa de inteligencia artificial y la firma de convenios en el puerto de Eivissa.",
+   "claves": [
+    "El presidente podrá aprobar la normativa de uso de la inteligencia artificial elaborada por el Delegado de IA.",
+    "Se faculta al presidente para firmar el convenio con Ocibar, SA sobre buenas prácticas ambientales en el puerto de Eivissa.",
+    "También podrá suscribir el convenio con el Ayuntamiento de Eivissa para la gestión de parcelas en el puerto de Eivissa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22774": {
+   "huella": "104549d55b999470",
+   "fuente": "27feec52dd596645",
+   "titular": "Agricultura homologa el contrato tipo de cultivo de tabaco para la cosecha de 2026",
+   "entradilla": "El Ministerio aprueba el modelo contractual que regirá durante un año la compraventa entre productores y empresas de primera transformación.",
+   "claves": [
+    "El acuerdo mantendrá su homologación con una vigencia de un año a partir del día siguiente a su publicación en el Boletín Oficial del Estado.",
+    "Exige exclusividad al vendedor sobre toda su producción asignada e incluye la obligación de utilizar semillas no modificadas genéticamente.",
+    "Los agricultores dispondrán de diez días naturales tras la firma para enviar la información de parcelas con referencias SIG-PAC en formato Excel."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22775": {
+   "huella": "5fa04944164fc1f0",
+   "fuente": "629c7cc4bb1c480f",
+   "titular": "Agricultura rebautiza la variedad de limonero «Milenium» como «Milenio Forte»",
+   "entradilla": "La orden modifica oficialmente el nombre inscrito en el Registro de Variedades Comerciales de este tipo de cítrico a partir de su publicación en el BOE.",
+   "claves": [
+    "La variedad comercial de limonero denominada hasta ahora «Milenium» pasa a registrarse oficialmente con la denominación «Milenio Forte».",
+    "El cambio surtirá efectos desde el día siguiente a su publicación y agota la vía administrativa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22776": {
+   "huella": "5bb3bcb952ce108b",
+   "fuente": "96c74bfc0345d3b9",
+   "titular": "Agricultura inscribe nuevas variedades vegetales en el Registro Comercial",
+   "entradilla": "El departamento dispone la incorporación oficial de distintas especies agrícolas e incluye un apartado específico para variedades de conservación.",
+   "claves": [
+    "La norma aprueba la inclusión comercial tras verificar que las distintas especies han cumplido con los reglamentos técnicos de inscripción.",
+    "Determinadas especies quedan dadas de alta expresamente bajo la modalidad de variedades de conservación."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-10-30"
   }
  },
  "uso": {
-  "2026-10-30": 1
+  "2026-10-30": 3
  }
 }
