@@ -566,6 +566,26 @@ def fecha_referencia(estado: dict, hoy: str) -> str:
     return max(fechas, default=hoy)
 
 
+def convocatorias_del_dia(estado: dict, fecha_boe: str) -> int:
+    """UX-4 (8): cifra del módulo de empleo de la portada.
+
+    «Del día» es la fecha del BOE de la edición que enseña la portada
+    (data/<fecha>.json, boe.fechaISO). Solo cuenta si ese BOE es también el
+    último recogido en state/empleo.json (fecha_referencia); si no coinciden
+    (la captura de empleo de ese día falló o va por detrás) devuelve 0 y el
+    módulo no se pinta: nunca una cifra de otro día bajo la fecha de hoy.
+
+    Se cuentan los registros de esa fecha con tipo «convocatoria» (procesos
+    selectivos), con la misma regla que /empleo/: las desiertas no son oferta
+    abierta (empleo_campos.fuera_de_abiertos). Nada calculado: ni plazos ni
+    fechas de cierre."""
+    if not fecha_boe or fecha_referencia(estado, "") != fecha_boe:
+        return 0
+    return sum(1 for v in (estado.get("registros") or {}).values()
+               if v.get("fecha") == fecha_boe and v.get("tipo") == "convocatoria"
+               and not empleo_campos.fuera_de_abiertos(v))
+
+
 def publicada(fecha: str, ref: str) -> str:
     """El mismo día del BOE de referencia: «Publicada en el último BOE»;
     después, «hace 1 día», «hace N días»."""
