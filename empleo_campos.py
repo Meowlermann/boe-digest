@@ -612,7 +612,13 @@ def activos(reg: dict) -> dict:
     if reg.get("no_oferta"):
         return {}
     ok = CAMPOS_ACTIVOS.get(familia(reg), frozenset())
-    return {k: v for k, v in (reg.get("campos") or {}).items() if k in ok}
+    c = {k: v for k, v in (reg.get("campos") or {}).items() if k in ok}
+    # «localidad» de lo local sale solo del título (lugar()), que se guarda
+    # con el registro: se recalcula al pintar para que la corrección de
+    # lugar() llegue a lo ya leído sin subir LECTURA ni reprocesar.
+    if "localidad" in c and familia(reg) == "local":
+        c["localidad"] = lugar(reg) or c["localidad"]
+    return c
 
 
 def _plural(n: int, clase: str) -> str:
@@ -623,7 +629,7 @@ def _plural(n: int, clase: str) -> str:
 
 RE_ORGANO_LOCAL = re.compile(r"\bdel? (?:la )?(Ayuntamiento|Concello|Ajuntament|Diputaci[oó]n Provincial|"
                              r"Mancomunitat(?: de Municipis)?|Mancomunidad de Municipios|Consell Insular|Cabildo Insular|Mancomunidad|Comarca|Consorcio|"
-                             r"Entidad Local Aut[oó]noma)(?: de)? ([^,(]+?)(?: \(|,)")
+                             r"Entidad Local Aut[oó]noma)( de)? ([^,(]+?)(?: \(|,)")
 
 
 def lugar(reg: dict) -> str:
@@ -632,10 +638,14 @@ def lugar(reg: dict) -> str:
     m = RE_ORGANO_LOCAL.search(reg.get("titulo") or "")
     if not m:
         return ""
-    tipo_org, nombre = m.group(1), m.group(2).strip()
+    tipo_org, de, nombre = m.group(1), m.group(2) or "", m.group(3).strip()
     if tipo_org in ("Ayuntamiento", "Concello", "Ajuntament"):
         return nombre
-    return f"{tipo_org} de {nombre}" if not nombre.lower().startswith("de ") else f"{tipo_org} {nombre}"
+    # Tal cual lo escribe el título: «Consorcio Provincial contra Incendios…»
+    # (sin «de»), «Mancomunidad del Sur», «Diputación Provincial de Palencia».
+    # Antes se añadía un «de» que no estaba (31-10-2026: 6 casos en el estado,
+    # p. ej. «Consorcio de Provincial…», BOE-A-2026-22813).
+    return f"{tipo_org}{de} {nombre}"
 
 
 def titular(reg: dict, maximo: int = 120) -> str:
@@ -699,3 +709,69 @@ def fuera_de_abiertos(reg: dict) -> bool:
     """Una desierta (familia activa) no es una oferta abierta: se saca de los
     bloques de convocatorias y provisión y pasa a «Otras disposiciones»."""
     return etiqueta_no_oferta(reg) == ETIQUETA_NO_OFERTA["desierta"]
+
+
+# ------------------------------------------------- plazo en lenguaje llano
+
+# Lenguaje llano en /empleo/ (31-10-2026, maqueta aprobada). A partir de la
+# frase literal de plazo que ya guarda el estado («plazo»), y solo si es
+# inequívoca: habla de solicitudes, tiene UNA sola duración (N días hábiles o
+# naturales, o N meses) y el cómputo arranca el día siguiente a la publicación
+# EN EL BOE. En cualquier otro caso devuelve None y la tarjeta dice «Consulta
+# el plazo en el BOE». Nunca calcula fechas de cierre. Medido sobre 671
+# convocatorias: 536 claras; revisión manual contra el BOE en el PR.
+RE_DURACION = re.compile(rf"\b({RE_NUM.pattern})\s+(d[ií]as?)\s+(h[aá]biles|naturales)\b|"
+                         rf"\b({RE_NUM.pattern})\s+(mes(?:es)?)\b", re.I)
+RE_INICIO_BOE = re.compile(
+    r"(?:contad[oa]s?|a contar|computad[oa]s?|que se contar[aá]n?|desde|a partir)[^.;]{0,60}?"
+    r"(?:d[ií]a\s+)?siguiente\s+(?:a(?:l)?\s+(?:la|el|de la|del)?\s*)?(?:de\s+)?(?:la\s+)?"
+    r"(?:fecha\s+de\s+(?:la\s+)?)?publicaci[oó]n"
+    r"[^.;]{0,120}?(?:«\s*Bolet[ií]n Oficial del Estado\s*»|Bolet[ií]n Oficial del Estado|\bBOE\b)", re.I)
+RE_OTRO_BOLETIN = re.compile(r"Bolet[ií]n Oficial de (?:la|las|los)? ?(?!l Estado)|Diari|Diario Oficial|"
+                             r"DOG|BOP\b|BOCM|DOGV", re.I)
+
+
+# Interruptor del plazo en lenguaje llano. APAGADO: la revisión manual de 46
+# plazos (31-10) halló 1 error (BOE-A-2026-21686). Ya corregido arriba, pero la
+# regla manda apagar el campo hasta que Xavi lo reactive. Apagado ⇒ «Consulta el
+# plazo en el BOE» en todas las tarjetas.
+MOSTRAR_PLAZO_LLANO = False
+
+
+def plazo_llano_motivo(frase: str) -> tuple:
+    """(texto, motivo): texto None si el plazo no es claro (motivo dice por qué)."""
+    if not frase:
+        return None, "sin frase de plazo"
+    f = " ".join(frase.split())
+    # Revisión manual 31-10 (BOE-A-2026-21686): la frase guardada se cortó justo
+    # tras «Boletín Oficial del Estado» y ocultaba «y en el DOGC… último diario».
+    # Si la frase está truncada tras la mención al BOE no podemos asegurar el inicio.
+    if re.search(r"Estado»\s*\[…\]\s*$", f):
+        return None, "frase truncada tras el BOE"
+    if not re.search(r"solicitud|instancia|presentaci[oó]n|participar", f, re.I):
+        return None, "no es plazo de solicitud"
+    durs = []
+    for m in RE_DURACION.finditer(f):
+        if m.group(1):
+            n = numero(m.group(1))
+            u = ("día " if n == 1 else "días ") + ("hábil" if n == 1 else "hábiles") \
+                if m.group(3).lower().startswith("h") else ("día natural" if n == 1 else "días naturales")
+        else:
+            n = numero(m.group(4))
+            u = "mes" if n == 1 else "meses"
+        if n:
+            durs.append((n, u))
+    durs = list(dict.fromkeys(durs))
+    if len(durs) != 1:
+        return None, f"{len(durs)} duraciones"
+    ini = RE_INICIO_BOE.search(f)
+    if not ini:
+        return None, "inicio no anclado al BOE"
+    if RE_OTRO_BOLETIN.search(ini.group(0)):
+        return None, "otro boletín en el inicio"
+    n, u = durs[0]
+    return f"{n} {u} desde el día siguiente a su publicación en el BOE", "ok"
+
+
+def plazo_llano(frase: str) -> str | None:
+    return plazo_llano_motivo(frase)[0]
