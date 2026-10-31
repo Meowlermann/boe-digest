@@ -40,7 +40,11 @@ Comprobaciones (las letras son las de la PR que las introdujo):
   n) migas       Miga visible y JSON-LD BreadcrumbList en todas las fichas,
                  con los mismos pasos y la URL canónica al final (TC-005).
   q) menu        Toda página completa enlaza a /empleo/ en la barra principal
-                 y en la barra inferior móvil (UX-1).
+                 y en la barra inferior móvil (UX-1). Estructura del menú
+                 (UX-4): cinco entradas (Hoy, Empleo, Parlamento, Buscar,
+                 Más), ningún nivel con más de 9 enlaces, ninguna URL
+                 repetida, aria-expanded solo en los botones con panel, y
+                 cada enlace del menú (con su #ancla) apunta a algo que existe.
   r) contadores  En /empleo/, cada contador enlaza a su sección y coincide con
                  su encabezado; si el listado se recorta, «N de M» y enlace al
                  resto (UX-1).
@@ -785,6 +789,57 @@ RE_TABBAR = re.compile(r'<nav class="tabbar"[^>]*>(.*?)</nav>', re.S)
 MENU_OBLIGATORIO = "/empleo/"
 
 
+MENU_ENTRADAS = ("Hoy", "Empleo", "Parlamento", "Buscar", "Más")    # UX-4, en este orden
+MENU_MAX_ENLACES = 9
+RE_PILARES = re.compile(r'<ul class="nav-pilares">(.*)</ul>', re.S)
+RE_PILAR = re.compile(r'<li class="pilar[^"]*" data-pilar="([^"]+)">(.*?)</li>(?=<li class="pilar|$)', re.S)
+RE_PILAR_B = re.compile(r'<(a|button)\b([^>]*\bclass="pilar-b"[^>]*)>.*?<span>([^<]+)</span>', re.S)
+RE_PANEL_ID = re.compile(r'<div class="panel[^"]*" id="([^"]+)"')
+
+
+def problemas_estructura_menu(nav: str, tab: str) -> list[str]:
+    """UX-4: cinco entradas, ≤9 enlaces por nivel, ninguna URL repetida y
+    aria-expanded solo donde hay un panel que abrir."""
+    faltan = []
+    m = RE_PILARES.search(nav)
+    if not m:
+        return ["falta la lista de pilares (nav-pilares)"]
+    pilares = RE_PILAR.findall(m.group(1))
+    nombres = []
+    for clave, cuerpo in pilares:
+        b = RE_PILAR_B.search(cuerpo)
+        if not b:
+            faltan.append(f"el pilar «{clave}» no tiene botón ni enlace")
+            continue
+        etiqueta, attrs, nombre = b.groups()
+        nombres.append(nombre.strip())
+        panel = "<div class=\"panel" in cuerpo
+        enlaces = re.findall(r'href="([^"]+)"', cuerpo)
+        if panel:
+            if etiqueta != "button" or 'aria-expanded="false"' not in attrs:
+                faltan.append(f"el pilar «{clave}» abre un panel y no es un <button> con aria-expanded=\"false\"")
+            ctrl = re.search(r'aria-controls="([^"]+)"', attrs)
+            if not ctrl or ctrl.group(1) not in RE_PANEL_ID.findall(cuerpo):
+                faltan.append(f"el pilar «{clave}» no apunta (aria-controls) a su panel")
+            if len(enlaces) > MENU_MAX_ENLACES:
+                faltan.append(f"el panel «{clave}» tiene {len(enlaces)} enlaces (máximo {MENU_MAX_ENLACES})")
+        elif "aria-expanded" in attrs:
+            faltan.append(f"el enlace directo «{clave}» lleva aria-expanded sin panel")
+    if tuple(nombres) != MENU_ENTRADAS:
+        faltan.append(f"el menú tiene {nombres} y debe ser {list(MENU_ENTRADAS)}")
+    hrefs = re.findall(r'href="([^"]+)"', m.group(1))
+    if (rep := sorted({h for h in hrefs if hrefs.count(h) > 1})):
+        faltan.append("URL repetidas en el menú: " + ", ".join(rep))
+    th = re.findall(r'href="([^"]+)"', tab)
+    if len(th) != len(MENU_ENTRADAS) or len(set(th)) != len(th):
+        faltan.append(f"la barra inferior móvil tiene {len(th)} enlaces ({len(set(th))} distintos); "
+                      f"deben ser {len(MENU_ENTRADAS)} distintos")
+    claves = [c for c, _ in pilares]
+    if re.findall(r'data-pilar="([^"]+)"', tab) != claves:
+        faltan.append("la barra inferior móvil no sigue los pilares del menú en el mismo orden")
+    return faltan
+
+
 def problemas_menu(texto: str) -> list[str]:
     if "<html" not in texto:
         return []
@@ -795,11 +850,35 @@ def problemas_menu(texto: str) -> list[str]:
             faltan.append(f"falta la {nombre}")
         elif len(re.findall(rf'href="{re.escape(MENU_OBLIGATORIO)}"', m.group(1))) != 1:
             faltan.append(f"la {nombre} no enlaza a {MENU_OBLIGATORIO} exactamente una vez")
+    if RE_NAV_PRINCIPAL.search(texto) and RE_TABBAR.search(texto):
+        faltan += problemas_estructura_menu(RE_NAV_PRINCIPAL.search(texto).group(1),
+                                            RE_TABBAR.search(texto).group(1))
+    return faltan
+
+
+def problemas_destinos_menu(raiz: pathlib.Path, texto: str) -> list[str]:
+    """Cada enlace del menú apunta a un fichero publicado y, si lleva #ancla,
+    a un id que existe en esa página."""
+    faltan, cache = [], {}
+    menu = "".join(m.group(1) for rx in (RE_NAV_PRINCIPAL, RE_TABBAR) if (m := rx.search(texto)))
+    for href in dict.fromkeys(re.findall(r'href="([^"]+)"', menu)):
+        ruta = _ruta_interna(html_unescape(href), "index.html")
+        if not ruta:
+            continue
+        if not destino_existe(raiz, ruta, cache):
+            faltan.append(f"el menú enlaza a «{href}», que no existe")
+        elif "#" in href:
+            ancla = href.split("#", 1)[1]
+            rel = ruta.lstrip("/")
+            fich = raiz / (rel + "index.html" if rel == "" or rel.endswith("/") else rel)
+            if fich.is_file() and f'id="{ancla}"' not in fich.read_text(encoding="utf-8"):
+                faltan.append(f"el menú enlaza a «{href}» y esa página no tiene id=\"{ancla}\"")
     return faltan
 
 
 def comprobar_menu(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
     hallazgos: list[dict] = []
+    menus_vistos: set[str] = set()
     for p in (paginas if paginas is not None else paginas_html(raiz)):
         try:
             texto = p.read_text(encoding="utf-8")
@@ -808,6 +887,14 @@ def comprobar_menu(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None
         for problema in problemas_menu(texto):
             hallazgos.append(hallazgo(GRAVE, "menu", problema.capitalize() + ".", _rel(raiz, p),
                                       "la página tiene que llevar __SSR_NAV__ (build.render_nav)."))
+        # El menú es el mismo en casi todas las páginas: sus destinos se miran
+        # una vez por variante distinta.
+        menu = (m.group(0) if (m := RE_NAV_PRINCIPAL.search(texto)) else "")
+        if menu and menu not in menus_vistos:
+            menus_vistos.add(menu)
+            for problema in problemas_destinos_menu(raiz, texto):
+                hallazgos.append(hallazgo(GRAVE, "menu", problema.capitalize() + ".", _rel(raiz, p),
+                                          "corrige el enlace en build.render_nav o genera la página."))
     return hallazgos
 
 

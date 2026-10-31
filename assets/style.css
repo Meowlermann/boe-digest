@@ -946,11 +946,16 @@ h1.display{
   padding:13px 13px 11px;
   font-family:'Anton',sans-serif; font-size:15px; letter-spacing:.05em; text-transform:uppercase;
   color:var(--ink); text-decoration:none;
-  border-bottom:3px solid transparent;
+  border:0; border-bottom:3px solid transparent;
+  background:none; cursor:pointer; min-height:44px;
+}
+/* UX-4: foco visible en toda la navegación (teclado), claro y oscuro. */
+.pilar-b:focus-visible, .panel-l a:focus-visible, .tabbar a:focus-visible, .nav-marca:focus-visible{
+  outline:2px solid var(--red); outline-offset:2px;
 }
 .pilar-b svg{ width:18px; height:18px; opacity:.75; }
 .pilar-b:hover, .pilar.abierto .pilar-b{ color:var(--red); }
-/* Seis pilares (UX-1, con Empleo): entre la barra inferior y el escritorio
+/* Cinco pilares (UX-4): entre la barra inferior y el escritorio
    ancho se aprietan, sin iconos, para que quepan con el buscador. */
 @media (min-width:721px) and (max-width:1100px){
   .pilar-b{ padding:13px 7px 11px; gap:4px; font-size:14px; }
@@ -988,8 +993,8 @@ h1.display{
 }
 .panel-l{ list-style:none; margin:0 0 6px; padding:0; }
 .panel-ancho .panel-l{ display:grid; grid-template-columns:1fr 1fr; gap:0 6px; }
-.panel-l a{ display:block; padding:8px 10px; border-radius:8px; text-decoration:none; color:inherit; }
-.panel-l a:hover, .panel-l a:focus-visible{ background:var(--bg); outline:none; }
+.panel-l a{ display:block; min-height:44px; box-sizing:border-box; padding:8px 10px; border-radius:8px; text-decoration:none; color:inherit; }
+.panel-l a:hover, .panel-l a:focus-visible{ background:var(--bg); }
 .panel-l a[aria-current="page"]{ box-shadow:inset 3px 0 0 var(--red); }
 .panel-l b{ display:block; font-family:'Work Sans',sans-serif; font-weight:600; font-size:15px; }
 .panel-l span{ display:block; font-size:13px; line-height:1.35; color:var(--ink-soft); margin-top:1px; }
@@ -1007,7 +1012,7 @@ h1.display{
 .nav-buscar{ position:relative; margin-left:auto; display:flex; align-items:center; width:min(340px,40vw); }
 .nav-buscar > svg{ position:absolute; left:10px; width:17px; height:17px; color:var(--ink-soft); pointer-events:none; }
 .nav-buscar input{
-  width:100%; box-sizing:border-box; padding:8px 34px 8px 34px;
+  width:100%; min-height:44px; box-sizing:border-box; padding:8px 34px 8px 34px;
   font:inherit; font-size:14px; color:var(--ink);
   background:var(--surface); border:1px solid var(--border); border-radius:8px;
   -webkit-appearance:none; appearance:none;
@@ -1059,7 +1064,7 @@ h1.display{
   .nav-marca, .pilar-b, .nav-buscar{ display:none; }
 
   .tabbar{
-    display:grid; grid-template-columns:repeat(6,1fr);
+    display:grid; grid-template-columns:repeat(5,1fr);
     position:fixed; left:0; right:0; bottom:0; z-index:60;
     padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
     background:var(--surface); border-top:1px solid var(--border);
@@ -1067,7 +1072,7 @@ h1.display{
   }
   .tabbar a{
     display:flex; flex-direction:column; align-items:center; gap:3px;
-    padding:6px 0; text-decoration:none; color:var(--ink-soft);
+    padding:6px 0; min-height:44px; box-sizing:border-box; text-decoration:none; color:var(--ink-soft);
     font-size:11px; font-weight:600; letter-spacing:.02em;
   }
   .tabbar svg{ width:22px; height:22px; }
