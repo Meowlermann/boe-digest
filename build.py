@@ -3975,6 +3975,29 @@ def _leer_fragmento(nombre: str) -> str:
         return ""
 
 
+def render_empleo_portada_ssr(day0: dict, estado: dict | None = None) -> str:
+    """UX-4 (8): módulo de empleo de la portada: cuántas convocatorias de
+    procesos selectivos trae el BOE de la edición y un enlace a /empleo/. Sin
+    convocatorias ese día no se pinta nada (sin JS). Qué es «del día»:
+    empleo.convocatorias_del_dia."""
+    try:
+        import empleo as em
+        estado = estado if estado is not None else em.cargar()
+        fecha = str((day0.get("boe") or {}).get("fechaISO") or "")[:10]
+        n = em.convocatorias_del_dia(estado, fecha)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"  portada: sin módulo de empleo ({exc})")
+        return ""
+    if n <= 0:
+        return ""
+    cifra = "1 convocatoria" if n == 1 else f"{n} convocatorias"
+    return (f'<section class="empleo-hoy" aria-labelledby="eh-h">'
+            f'<h2 id="eh-h" class="eh-t"><b>{cifra}</b> de empleo público en el BOE del '
+            f'{esc_html(fmt_date_es(fecha))}</h2>'
+            f'<p class="eh-s">Oposiciones y procesos selectivos publicados ese día, por organismo '
+            f'y provincia. <a href="/empleo/">Ver en Empleo →</a></p></section>')
+
+
 def renderizar_index(dias: list[dict]) -> None:
     """Portada: escaparate, no archivo.
 
@@ -4016,6 +4039,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "PARLAMENTO_HIDDEN": "hidden" if parl_hidden else "",
         "PARLAMENTO": parl_html,
         "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
+        "EMPLEO_HOY": render_empleo_portada_ssr(day0),
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     escribir_si_cambia(OUTPUT, html)
