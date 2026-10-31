@@ -1,56 +1,79 @@
-// /empleo/ (UX-3): filtro por tipo y «Últimos N días» en el cliente.
-// Sin JS no corre y se ve el listado completo. Estado en ?tipo=&dias= o #tipo=.
+// /empleo/: pestañas y «Últimos N días»; sin JS, todo visible. ?tipo=&dias= o #tipo=
 (function () {
-  var c = document.getElementById("filtro-tipo");
-  if (!c) return;
-  var bs = c.querySelectorAll(".em-fb"), out = c.querySelector(".em-fn");
-  var q = new URLSearchParams(location.search), h = new URLSearchParams(location.hash.slice(1));
-  var st = { tipo: q.get("tipo") || h.get("tipo") || "", dias: q.get("dias") || h.get("dias") || "" };
-  var ok = { tipo: {}, dias: {} };
-  bs.forEach(function (b) { ok[b.dataset.f][b.dataset.v] = 1; });
-  if (!ok.tipo[st.tipo]) st.tipo = "";
-  if (!ok.dias[st.dias]) st.dias = "";
-  var ref = Date.parse(c.dataset.ref);
-
-  function pinta(guarda) {
-    var corte = st.dias ? ref - st.dias * 864e5 : -Infinity, total = 0;
-    bs.forEach(function (b) {
-      var on = b.dataset.f === "tipo" ? b.dataset.v === st.tipo : b.dataset.v === st.dias;
-      b.setAttribute("aria-pressed", on ? "true" : "false");
-    });
-    document.querySelectorAll("section.em-sec[data-tipo]").forEach(function (s) {
-      var n = 0;
-      s.querySelectorAll("li.em-card").forEach(function (li) {
-        var v = (!st.tipo || s.dataset.tipo === st.tipo) && Date.parse(li.dataset.fecha) >= corte;
-        li.hidden = !v;
-        if (v) n++;
-      });
-      var e = s.firstElementChild;
-      if (!e.dataset.o) e.dataset.o = e.textContent;
-      e.textContent = st.tipo || st.dias ? e.dataset.o.replace(/\([^)]*\)$/, "(" + n + ")") : e.dataset.o;
-      s.hidden = !n;
-      total += n;
-    });
-    document.querySelectorAll("section.em-grupo").forEach(function (g) {
-      g.hidden = !g.querySelector("section.em-sec[data-tipo]:not([hidden])");
-    });
-    out.textContent = st.tipo || st.dias ? total + (total === 1 ? " disposición" : " disposiciones") +
-      " con este filtro." : "";
-    if (guarda) {
-      var p = new URLSearchParams(location.search);
-      ["tipo", "dias"].forEach(function (k) { if (st[k]) p.set(k, st[k]); else p.delete(k); });
-      var s = p.toString();
-      history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + (h.get("tipo") ? "" : location.hash));
-    }
-  }
-
-  bs.forEach(function (b) {
-    b.addEventListener("click", function () {
-      var f = b.dataset.f;
-      st[f] = f === "dias" && st.dias ? "" : b.dataset.v;
-      pinta(true);
-    });
-  });
-  c.hidden = false;
-  pinta(false);
+var D = document;
+var c = D.getElementById("filtro-tipo");
+if (!c) return;
+var tabs = [].slice.call(c.querySelectorAll("[role=tab]")), dias = c.querySelector(".em-dias");
+var out = c.querySelector(".em-fn"), def = c.dataset.defecto;
+var q = new URLSearchParams(location.search), h = new URLSearchParams(location.hash.slice(1));
+var ok = {};
+tabs.forEach(function (b) { ok[b.dataset.v] = 1; });
+var st = { tipo: q.get("tipo") || h.get("tipo") || "", dias: q.get("dias") || h.get("dias") || "" };
+var m = /^#t-(\w+)$/.exec(location.hash);
+if (m && ok[m[1]]) st.tipo = m[1];
+if (!ok[st.tipo]) st.tipo = def;
+if (st.dias !== dias.dataset.v) st.dias = "";
+var ref = Date.parse(c.dataset.ref);
+var secs = [].slice.call(D.querySelectorAll("section.em-sec[data-tipo]"));
+secs.forEach(function (s) {
+s.setAttribute("role", "tabpanel");
+s.setAttribute("aria-labelledby", "tab-" + s.dataset.tipo);
+});
+function pinta(guarda) {
+var corte = st.dias ? ref - st.dias * 864e5 : -Infinity, total = 0, todas = st.tipo === "todas";
+tabs.forEach(function (b) {
+var on = b.dataset.v === st.tipo;
+b.setAttribute("aria-selected", on ? "true" : "false");
+b.tabIndex = on ? 0 : -1;
+});
+dias.setAttribute("aria-pressed", st.dias ? "true" : "false");
+secs.forEach(function (s) {
+var n = 0, vis = todas || s.dataset.tipo === st.tipo;
+s.querySelectorAll("li.em-card").forEach(function (li) {
+var v = vis && Date.parse(li.dataset.fecha) >= corte;
+li.hidden = !v;
+if (v) n++;
+});
+var e = s.querySelector("h2,h3");
+if (!e.dataset.o) e.dataset.o = e.textContent;
+e.textContent = st.dias ? e.dataset.o.replace(/\([^)]*\)$/, "(" + n + ")") : e.dataset.o;
+s.hidden = !vis;
+total += n;
+});
+D.querySelectorAll("section.em-grupo").forEach(function (g) {
+g.hidden = !g.querySelector("section.em-sec[data-tipo]:not([hidden])");
+});
+out.textContent = total + (total === 1 ? " disposición." : " disposiciones.");
+if (guarda) {
+var p = new URLSearchParams(location.search);
+if (st.tipo !== def) p.set("tipo", st.tipo); else p.delete("tipo");
+if (st.dias) p.set("dias", st.dias); else p.delete("dias");
+var s = p.toString(), hs = /^#(tipo=|t-)/.test(location.hash) ? "" : location.hash;
+history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + hs);
+}
+}
+function elige(b, foco) {
+st.tipo = b.dataset.v;
+pinta(true);
+if (foco) b.focus();
+}
+tabs.forEach(function (b, i) {
+b.addEventListener("click", function () { elige(b, false); });
+b.addEventListener("keydown", function (e) {
+var j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+if (j === undefined) return;
+e.preventDefault();
+elige(tabs[(j + tabs.length) % tabs.length], true);
+});
+});
+dias.addEventListener("click", function () {
+st.dias = st.dias ? "" : dias.dataset.v;
+pinta(true);
+});
+window.addEventListener("hashchange", function () {
+var m = /^#t-(\w+)$/.exec(location.hash);
+if (m && ok[m[1]]) { st.tipo = m[1]; pinta(false); }
+});
+c.hidden = false;
+pinta(false);
 })();
