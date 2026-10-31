@@ -1,8 +1,15 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-10-30",
+  "fecha": "2026-10-31",
   "graves": 0,
-  "avisos": 0,
-  "hallazgos": []
+  "avisos": 1,
+  "hallazgos": [
+    {
+      "nivel": "aviso",
+      "comprobacion": "titulares",
+      "detalle": "No hay edición del 2026-10-31.",
+      "fichero": "data/2026-10-31.json"
+    }
+  ]
 }
