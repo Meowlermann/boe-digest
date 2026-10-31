@@ -4902,16 +4902,12 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "38 preguntas escritas en el Congreso superan el plazo de 20 días sin respuesta",
-   "entradilla": "El Congreso acumula 38 preguntas escritas del último año que superan el plazo límite de 20 días hábiles sin contestación registrada.",
-   "claves": [
-    "La pregunta más antigua sin respuesta se publicó el lunes 15 de diciembre de 2025.",
-    "Por grupos parlamentarios, Sumar acumula 30 preguntas pendientes, el PSOE 4, el PP 2, Junts 1 y los diputados sin grupo 1.",
-    "El recuento refleja la situación con la fecha límite superada, aunque pueden existir prórrogas o respuestas aún no reflejadas en la ficha oficial."
-   ],
-   "modelo": "gemini-3.5-flash-lite",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso tiene 38 preguntas escritas sin respuesta tras vencer el plazo de 20 días",
+   "entradilla": "Las iniciativas proceden de varios grupos parlamentarios y la respuesta más antigua pendiente se remonta al lunes 16 de febrero de 2026.",
+   "claves": [],
+   "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-31"
   },
   "BOE-A-2026-20822": {
@@ -10208,9 +10204,197 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-10-30"
+  },
+  "BOE-A-2026-22790": {
+   "huella": "976e4052b74c00ac",
+   "fuente": "5db21f9d7adeebb2",
+   "titular": "El Ministerio de Hacienda actualiza los precios de venta de determinadas labores de tabaco",
+   "entradilla": "Se fijan los nuevos precios de venta al público para varios tipos de tabaco en expendedurías de la Península, Illes Balears, Ceuta y Melilla.",
+   "claves": [
+    "Los nuevos precios se aplican en las expendedurías de tabaco y timbre de la Península e Illes Balears para cigarros, cigarrillos, picaduras de liar y de pipa.",
+    "En el caso de Ceuta y Melilla, la resolución actualiza los precios específicos para las picaduras de liar.",
+    "La resolución entra en vigor el mismo día de su publicación en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22791": {
+   "huella": "925f8f8df4a69f41",
+   "fuente": "7eea7190afeaf1e3",
+   "titular": "El Ministerio de Política Territorial regula subvenciones para proyectos juveniles",
+   "entradilla": "Se aprueba la concesión directa de ayudas dirigidas a reforzar los valores democráticos entre la población joven y combatir la desinformación.",
+   "claves": [
+    "Las ayudas se destinan a entidades con proyectos orientados a jóvenes de entre 16 y 35 años y alumnado de educación primaria y secundaria de 10 a 16 años.",
+    "Los proyectos buscan afianzar la confianza en las instituciones públicas, frenar la polarización ideológica y combatir la desinformación.",
+    "La concesión se realiza de forma directa por concurrir razones de interés público que impiden la convocatoria pública ordinaria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22792": {
+   "huella": "7b6e9632666e2aed",
+   "descartado": "acaba en el número «2027» sin decir de qué",
+   "intentos": 2
+  },
+  "BOE-A-2026-22793": {
+   "huella": "b5c7898f9a2155c7",
+   "fuente": "1a9360ad598abeb9",
+   "titular": "El Ministerio de Sanidad corrige errores en la actualización de precios de referencia de medicamentos",
+   "entradilla": "Se publican las rectificaciones oportunas detectadas en la orden que actualiza el sistema de precios de referencia en el Sistema Nacional de Salud.",
+   "claves": [
+    "La corrección afecta a la Orden SND/1053/2026, de 1 de octubre, publicada previamente en el Boletín Oficial del Estado.",
+    "Se modifican los textos de las páginas concretas señaladas sin alterar el contenido material de la normativa inicial."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22837": {
+   "huella": "a0ee51bc0ada4709",
+   "fuente": "2ad6a610662393f3",
+   "titular": "La Dirección General de Seguridad Jurídica publica la extinción de varias fundaciones",
+   "entradilla": "Se oficializa la liquidación de cuatro fundaciones de competencia estatal y el destino final de sus bienes a otras entidades sin ánimo de lucro.",
+   "claves": [
+    "Se extingue la Fundación de la Sociedad Española de Epidemiología, cuyos bienes se destinan a la entidad valenciana de investigación sanitaria y a la Fundación Estatal Salud, Infancia y Bienestar Social.",
+    "La Fundación Para el Fomento y Desarrollo de la Investigación Clínica traslada sus bienes resultantes al Consorcio Centro de Investigación Biomédica en Red.",
+    "Se cancelan también la Fundación Doctor Antonio Esteve y la Fundación de Doctores del Hospital del Aire, asignando sus patrimonios a fundaciones e instituciones académicas y sanitarias."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22838": {
+   "huella": "bf4f643241eac690",
+   "fuente": "5f59a4d46e406204",
+   "titular": "La Dirección General de Seguridad Jurídica resuelve un recurso sobre reversión de donaciones",
+   "entradilla": "Se aborda la calificación registral de una finca donada con cláusula de reversión y las condiciones para su reinscripción a favor de los donantes.",
+   "claves": [
+    "El caso analiza una escritura de donación gratuita de un inmueble efectuada por unos cónyuges a su hija con expresa condición de reversión.",
+    "La norma detalla las circunstancias previstas en el Código Civil para la reversión, como la superveniencia de necesidades que comprometan la subsistencia o el fallecimiento de la donataria sin descendencia."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22839": {
+   "huella": "d0355afd9cd678bd",
+   "fuente": "ded6e5ba2d9f3c0c",
+   "titular": "La Dirección General de Seguridad Jurídica analiza un cambio de uso de local a vivienda",
+   "entradilla": "Se examina la suspensión de inscripción registral de una escritura que adapta la realidad física de un local a su uso prolongado como vivienda.",
+   "claves": [
+    "El procedimiento surge tras la presentación de una escritura para formalizar el cambio de destino de una finca con más de diez años de antigüedad.",
+    "La registradora suspendió la inscripción al advertir discrepancias en la cuota de participación de la finca respecto a los antecedentes del Registro."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22841": {
+   "huella": "b418005eed84c329",
+   "fuente": "85721faa8cfa106a",
+   "titular": "La Dirección General de Seguridad Jurídica rechaza anular una inscripción hipotecaria en Marbella",
+   "entradilla": "Se confirma la plena vigencia de los asientos registrales protegidos por los tribunales frente a solicitudes de anulación extemporáneas.",
+   "claves": [
+    "El recurso pretendía la anulación de una inscripción sobre una finca adquirida mediante disolución y liquidación de una sociedad mercantil en Marbella.",
+    "La resolución recuerda que los asientos registrales están bajo la salvaguardia de los tribunales mientras no se declare judicialmente su inexactitud."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22842": {
+   "huella": "4a48de9433cfe6c8",
+   "fuente": "e779fb2e78acb773",
+   "titular": "La Dirección General de Seguridad Jurídica revisa un préstamo hipotecario en Valladolid",
+   "entradilla": "Se detalla la representación acreditada por gestorías y entidades bancarias en la formalización de escrituras de préstamo con garantía hipotecaria.",
+   "claves": [
+    "La escritura formaliza un préstamo concedido por el Banco Bilbao Vizcaya Argentaria para la adquisición de una vivienda en Valladolid.",
+    "El documento recoge los poderes conferidos a través de distintas escrituras notariales debidamente inscritas en el Registro Mercantil."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22843": {
+   "huella": "b8e6bde5b3cf88ca",
+   "fuente": "d2395eb048fd4498",
+   "titular": "La Dirección General de Seguridad Jurídica frena un decreto de adjudicación en San Roque",
+   "entradilla": "Se suspende la inscripción de una ejecución hipotecaria por falta de menciones sobre arrendamientos y mandamientos de cancelación de cargas.",
+   "claves": [
+    "El registrador apreció defectos en la documentación presentada al no incluir una declaración expresa sobre la situación arrendataria de la finca adjudicada.",
+    "Tampoco se aportó el mandamiento preceptivo de cancelación de cargas posteriores exigido por la normativa hipotecaria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22844": {
+   "huella": "3ce10b4d3790b00e",
+   "fuente": "a719888935131db2",
+   "titular": "La Dirección General de Seguridad Jurídica frena una segregación en Montefrío",
+   "entradilla": "Se confirma la suspensión de una escritura de segregación por ausencia de licencias urbanísticas firmes y bases georreferenciadas.",
+   "claves": [
+    "El Registro de la Propiedad exigió aportar resolución administrativa firme que autorice la operación de segregación conforme a la normativa urbanística aplicable.",
+    "Se requiere la presentación de bases gráficas georreferenciadas en formato GML validadas catastralmente que coincidan con la descripción literaria."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22847": {
+   "huella": "ecd7809ed7bd1b0d",
+   "fuente": "d603d3b68ba3347b",
+   "titular": "La Dirección General de Seguridad Jurídica examina una anotación hereditaria en Premià de Dalt",
+   "entradilla": "Se tramita el recurso contra una anotación preventiva de derecho hereditario sobre una finca que la propietaria actual intenta vender.",
+   "claves": [
+    "La propietaria de la finca en Premià de Dalt denunció perjuicios económicos al verse imposibilitada para materializar la venta de su propiedad valorada en unos 700.000 euros.",
+    "El recurso cuestiona la validez de la anotación al no figurar la finca en la escritura pública de aceptación de herencia y no haberse notificado previamente a la titular."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22848": {
+   "huella": "ce4a9feda28fe9a5",
+   "fuente": "33b6e1dc583f2f6d",
+   "titular": "La Dirección General de Seguridad Jurídica analiza la responsabilidad hipotecaria de fincas vinculadas",
+   "entradilla": "Se debate la obligatoriedad de distribuir la responsabilidad hipotecaria entre dos fincas independientes vinculadas estatutariamente.",
+   "claves": [
+    "La registradora suspendió la inscripción por considerar improcedente distribuir la responsabilidad hipotecaria entre dos fincas con vinculación ob rem.",
+    "El notario recurrente defiende la aplicación imperativa de las normas de la Ley Hipotecaria que exigen repartir la responsabilidad en fincas registrales independientes."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22849": {
+   "huella": "05d0f234715d8a4b",
+   "fuente": "0431329d19fd8d0a",
+   "titular": "La Dirección General de Seguridad Jurídica valida notificaciones edictales en una ejecución hipotecaria",
+   "entradilla": "Se examina el procedimiento de requerimiento de pago por edictos a deudores y herederos fallecidos en Valladolid.",
+   "claves": [
+    "El procedimiento deriva de una ejecución hipotecaria seguida ante un juzgado de Valladolid sobre una deuda suscrita por un titular fallecido durante el proceso.",
+    "La resolución detalla los intentos infructuosos de notificación personal y la posterior aplicación de las comunicaciones por edictos conforme a la legislación procesal vigente en aquel momento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22850": {
+   "huella": "fb24b8869c8d89c1",
+   "fuente": "f175b7e9688c7611",
+   "titular": "La Dirección General de Seguridad Jurídica revisa una segregación rústica en Jerez de los Caballeros",
+   "entradilla": "Se suspende la inscripción de una escritura de herencia y segregación al resultar la superficie restante inferior a la unidad mínima de cultivo.",
+   "claves": [
+    "La escritura pretendía segregar dos porciones de una finca matriz rústica situada en Valuengo, en el término municipal de Jerez de los Caballeros.",
+    "El resto de la finca matriz resultante quedaba por debajo de 1,5 hectáreas, superficie fijada como unidad mínima de cultivo en regadío para dicho municipio."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22854": {
+   "huella": "0dc291d1f34c1450",
+   "fuente": "484d2d0b36b7089d",
+   "titular": "La Dirección General de Seguridad Jurídica examina la cancelación de embargos en Orgaz",
+   "entradilla": "Se analiza un recurso sobre la cancelación de cargas y notas marginales tras decretarse el sobreseimiento de una ejecución hipotecaria por cláusulas abusivas.",
+   "claves": [
+    "El procedimiento judicial declaró la nulidad de una cláusula por abusividad, ordenando el sobreseimiento de la ejecución hipotecaria y la cancelación de su nota marginal.",
+    "El recurrente solicitaba la supresión registral de los embargos posteriores vinculados al procedimiento que quedaron sin efecto."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-10-31"
   }
  },
  "uso": {
-  "2026-10-31": 2
+  "2026-10-31": 4
  }
 }
