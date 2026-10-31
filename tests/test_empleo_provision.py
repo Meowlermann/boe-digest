@@ -137,7 +137,7 @@ class TestTarjeta(unittest.TestCase):
     def test_un_puesto(self):
         with mock.patch.dict(ec.CAMPOS_ACTIVOS, ENCENDIDO):
             idx = self._indice({"puestos": [{"puesto": "Jefe de Área", "nivel": 29}], "n_puestos": 1})
-        self.assertIn("Jefe de Área · Nivel 29\n", re.sub(r"<[^>]+>", "", idx.replace("</li>", "\n")))
+        self.assertIn('<dd class="em-que">Jefe de Área · nivel 29</dd>', idx)
         self.assertNotIn("em-tag-loc", idx)
         self.assertNotIn("Ver todos", idx)
         self.assertNotIn("1 puestos", idx)

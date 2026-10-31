@@ -49,7 +49,6 @@ DIAS_FILTRO = 30                 # chip «Últimos N días» de /empleo/ (UX-3)
 JS_FILTRO = "/assets/empleo.js"  # filtrado en cliente de /empleo/ (UX-3), <3 KB
 MAX_FILAS = 300                  # tope de filas por página
 # Se enseña la cita del plazo solo tras validarla a mano (TC-013, iteración 1).
-MOSTRAR_PLAZO = True
 # /empleo/ y sus fichas van en noindex (y fuera del sitemap) hasta que haya
 # fichas por convocatoria con valor propio: hoy son listados del sumario.
 ROBOTS = "noindex, follow"
@@ -104,12 +103,67 @@ def tipo(titulo: str, epigrafe: str = "") -> str:
     return "otras"
 
 
+# Regla de nombres de organismo (lenguaje llano, 31-10-2026). Determinista:
+# - solo convierte si el nombre llega ENTERO en mayúsculas; si no, tal cual;
+# - artículos, preposiciones y conjunciones en minúscula (salvo la primera);
+# - siglas conocidas (SIGLAS), palabras con cifras («2030») y palabras sin
+#   vocal («CSN») se dejan como están;
+# - cada parte de «A-B» o «A/B» lleva su mayúscula;
+# - ante cualquier carácter inesperado, el original (en la duda, lo del BOE).
+MENORES = frozenset({"de", "del", "la", "las", "el", "los", "y", "e", "o", "u", "para", "con", "en",
+                     "a", "al", "por", "sobre", "contra", "entre", "sin"})
+SIGLAS = frozenset({"CNMC", "CSN", "CGPJ", "UNED", "CSIC", "AEAT", "SEPE", "INSS", "DGT", "BOE",
+                    "UE", "II", "III", "IV", "VI", "VII", "VIII", "IX", "XI"})
+RE_NOMBRE_OK = re.compile(r"^[A-ZÁÉÍÓÚÜÑÇÀÈÒÏ0-9 ,.\-/'·()]+$")
+
+
+def _palabra(p: str, primera: bool) -> str:
+    if not p:
+        return p
+    if not primera and p.lower().strip(",.()") in MENORES:
+        return p.lower()
+    if p.strip(",.()") in SIGLAS or any(ch.isdigit() for ch in p) or \
+            not re.search(r"[AEIOUÁÉÍÓÚÜÀÈÒÏ]", p):
+        return p
+    for sep in ("-", "/"):
+        if sep in p:
+            return sep.join(_palabra(x, primera and i == 0) for i, x in enumerate(p.split(sep)))
+    b = p.lower()
+    nucleo = b.strip(",.()")
+    if not primera and nucleo in MENORES:
+        return b
+    i = len(b) - len(b.lstrip("(")) if b else 0
+    return b[:i] + b[i:i + 1].upper() + b[i + 1:]
+
+
 def nombre_dept(dept: str) -> str:
-    """«MINISTERIO DEL INTERIOR» -> «Ministerio del Interior»."""
-    menores = {"de", "del", "la", "las", "el", "los", "y", "e", "para", "con", "en", "a"}
-    palabras = " ".join((dept or "").split()).lower().split(" ")
-    out = [p if (i and p in menores) else p[:1].upper() + p[1:] for i, p in enumerate(palabras)]
-    return " ".join(out)
+    """«MINISTERIO DEL INTERIOR» -> «Ministerio del Interior»; «CONSEJO DE
+    SEGURIDAD NUCLEAR» -> «Consejo de Seguridad Nuclear». Ver la regla arriba."""
+    d = " ".join((dept or "").split())
+    if not d or d != d.upper() or not RE_NOMBRE_OK.match(d):
+        return d
+    return " ".join(_palabra(p, i == 0) for i, p in enumerate(d.split(" ")))
+
+
+RE_UNIV = re.compile(r"\bde la (Universi(?:dad|tat|dade)\b[^,(]*?)(?:,| \()")
+
+
+def nombre_organismo(reg: dict) -> str:
+    """Quién convoca, en llano. Local: el órgano del título (lugar():
+    «Tamarite de Litera», «Consorcio Provincial…»), o «Administración Local».
+    Universidades: la universidad del título, o «Universidades». Resto: el
+    departamento con la regla de mayúsculas."""
+    d = reg.get("dept") or ""
+    if d.upper() == DEPT_LOCAL:
+        lg = empleo_campos.lugar(reg)
+        m = empleo_campos.RE_ORGANO_LOCAL.search(reg.get("titulo") or "")
+        if lg and m and m.group(1) in ("Ayuntamiento", "Concello", "Ajuntament"):
+            return f"{m.group(1)} de {lg}"   # como el título: «Ajuntament de Olot»
+        return lg or "Administración Local"
+    if d.upper() == DEPT_UNIV:
+        m = RE_UNIV.search(reg.get("titulo") or "")
+        return m.group(1).strip() if m else "Universidades"
+    return nombre_dept(d)
 
 
 # ------------------------------------------------------------------ extracción
@@ -514,22 +568,26 @@ def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
     return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
 
 def chips_filtro(filas: list, ref: str) -> str:
-    """UX-3: botones para filtrar /empleo/ por tipo (los de TIPOS que hay en la
-    página, en su orden de lectura) y por «Últimos N días». Salen con hidden:
-    solo JS_FILTRO los enseña, así que sin JS se ve el listado completo. El
-    estado se comparte con ?tipo=…&dias=… (o #tipo=…)."""
+    """Pestañas de /empleo/ (lenguaje llano, 31-10-2026; antes, los botones de
+    UX-3). Un tablist con una pestaña por tipo presente (Convocatorias primero)
+    y «Todas»; el botón «Últimos N días» sigue aparte (aria-pressed). Todo sale
+    con hidden: solo JS_FILTRO lo enseña, y sin JS se ven todas las secciones
+    (las cabeceras enlazan con #t-…). Estado compartido con ?tipo=…&dias=… o
+    #tipo=… (los mismos valores de siempre)."""
     from html import escape as esc
     hay = {r["tipo"] for r in filas}
     tipos = [t for t in ORDEN_ABIERTOS + ORDEN_SEGUIMIENTO + ORDEN_RESTO if t in hay]
     if not tipos:
         return ""
-    boton = ('<button type="button" class="em-fb" data-f="{f}" data-v="{v}" '
-             'aria-pressed="{p}">{e}</button>')
-    bt = boton.format(f="tipo", v="", p="true", e="Todos") + "".join(
-        boton.format(f="tipo", v=t, p="false", e=esc(ETIQUETA_TIPO[t])) for t in tipos)
-    bd = boton.format(f="dias", v=DIAS_FILTRO, p="false", e=f"Últimos {DIAS_FILTRO} días")
-    return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" hidden>'
-            f'<div role="group" aria-label="Filtrar por tipo" class="em-fg">{bt}</div>'
+    tab = ('<button type="button" role="tab" class="em-fb em-tab" id="tab-{v}" data-f="tipo" data-v="{v}" '
+           'aria-controls="{c}" aria-selected="{p}" tabindex="{ti}">{e}</button>')
+    bt = "".join(tab.format(v=t, c=f"p-{t}", p="true" if i == 0 else "false", ti="0" if i == 0 else "-1",
+                            e=esc(PESTANAS.get(t, ETIQUETA_TIPO[t]))) for i, t in enumerate(tipos))
+    bt += tab.format(v="todas", c=" ".join(f"p-{t}" for t in tipos), p="false", ti="-1", e="Todas")
+    bd = (f'<button type="button" class="em-fb em-dias" data-f="dias" data-v="{DIAS_FILTRO}" '
+          f'aria-pressed="false">Últimos {DIAS_FILTRO} días</button>')
+    return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" data-defecto="{tipos[0]}" hidden>'
+            f'<div role="tablist" aria-label="Tipo de disposición" class="em-fg em-tabs">{bt}</div>'
             f'<div role="group" aria-label="Filtrar por fecha" class="em-fg">{bd}</div>'
             f'<p class="ref em-fn" role="status" aria-live="polite"></p></div>'
             f'<script src="{JS_FILTRO}" defer></script>')
@@ -595,6 +653,83 @@ def publicada(fecha: str, ref: str) -> str:
     return "Publicada hace 1 día" if n == 1 else f"Publicada hace {n} días"
 
 
+# ---------------------------------------------------- tarjeta en lenguaje llano
+
+# Plazo en llano en la tarjeta: APAGADO (ver empleo_campos.MOSTRAR_PLAZO_LLANO).
+PERSONAL_LLANO = {"Personal funcionario": "Personal funcionario", "Personal laboral": "Personal laboral"}
+EPI_GENERICOS = frozenset({"", "Personal funcionario y laboral", "Personal funcionario", "Personal laboral",
+                           "Personal de administración y servicios", "Cuerpos docentes universitarios"})
+ETIQUETA_LLANA = {"provision": ("Cambio de puesto", "provision"), "admitidos": ("Lista de admitidos", "admitidos"),
+                  "tribunal": ("Tribunal", "tribunal"), "resultados": ("Resultado", "resultados"),
+                  "otras": ("Otra disposición", "otras")}
+# Pestañas (tablist) de /empleo/: mismo valor que ?tipo= / #tipo=.
+PESTANAS = {"convocatoria": "Convocatorias", "provision": "Cambio de puesto", "admitidos": "Listas de admitidos",
+            "tribunal": "Tribunales", "resultados": "Resultados", "otras": "Otras"}
+
+
+def etiqueta_llana(r: dict) -> tuple[str, str]:
+    """(texto, clase de color) de la etiqueta de la tarjeta."""
+    if r.get("tipo") == "convocatoria":
+        proc = r.get("proc") or ""
+        if proc == "Oposición":
+            return "Oposición", "oposicion"
+        if proc in ("Concurso", "Concurso-oposición"):
+            return "Concurso", "concurso"
+        return "Convocatoria", "convocatoria"
+    return ETIQUETA_LLANA.get(r.get("tipo"), ("Otra disposición", "otras"))
+
+
+def _epi_especifico(r: dict) -> str:
+    e = " ".join((r.get("epi") or "").split())
+    return "" if e in EPI_GENERICOS else e
+
+
+def que_es(r: dict, ps: list | None = None) -> str:
+    """«Qué es» de la tarjeta: solo con datos del BOE (título, epígrafe y
+    campos activos), sin inventar nada; en la duda, el titular corto."""
+    t, epi = r.get("tipo"), _epi_especifico(r)
+    tit = _plano(r.get("titulo") or "").lower()
+    corto = titular_corto(r)[0]
+    ps = ps if ps is not None else empleo_campos.puestos_activos(r)
+    if t == "convocatoria":
+        gen = empleo_campos.titular(r)
+        if gen:
+            return gen.rsplit(" · ", 1)[0]
+        return epi or corto
+    if t == "provision":
+        if len(ps) == 1:
+            p = ps[0]
+            return p["puesto"] + (f" · nivel {p['nivel']}" if p.get("nivel") else "")
+        if ps:
+            return f"{len(ps)} puestos"
+        return epi or corto
+    if t == "admitidos":
+        base = ("Lista provisional de admitidos y excluidos" if "provisional" in tit else
+                "Lista definitiva de admitidos y excluidos" if "definitiva" in tit else
+                "Lista de admitidos y excluidos")
+        return f"{base}: {epi}" if epi else base
+    if t == "tribunal":
+        return f"Tribunal: {epi}" if epi else corto
+    if t == "resultados":
+        if "aprobados de la fase de oposicion" in tit or "aprobados en la fase de oposicion" in tit:
+            base = "Aprobados de la fase de oposición"
+        elif "aprobados" in tit:
+            base = "Lista de aprobados"
+        else:
+            base = "Resultado del proceso"
+        return f"{base}: {epi}" if epi else base
+    return corto
+
+
+def plazo_tarjeta(r: dict, mostrar: bool | None = None) -> str | None:
+    """Plazo en llano o None (⇒ «Consulta el plazo en el BOE»). Con la flag
+    apagada, siempre None. Nunca una fecha de cierre."""
+    mostrar = empleo_campos.MOSTRAR_PLAZO_LLANO if mostrar is None else mostrar
+    if not mostrar or r.get("no_oferta"):
+        return None
+    return empleo_campos.plazo_llano(r.get("plazo") or "")
+
+
 def generar_paginas(h: dict, estado: dict | None = None) -> list:
     """/empleo/index.html, una ficha por departamento y una por provincia."""
     estado = estado or cargar()
@@ -638,35 +773,40 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps[:3])}</ul>{resto}')
 
     def fila(r: dict, con_dept: bool = True) -> str:
-        # Tarjeta (UX-2): titular corto, título completo plegado, botones al
-        # BOE y al PDF, «publicada hace N días» sobre la fecha del BOE. Nunca
-        # una fecha de cierre: solo el plazo literal que cita el BOE.
+        # Tarjeta en lenguaje llano (maqueta aprobada 31-10-2026): etiqueta de
+        # color, «Qué es», «Quién y dónde», «Cuándo» y un único «Ver en el BOE».
+        # Nunca una fecha de cierre calculada: el plazo, solo en llano con la
+        # regla estricta y si MOSTRAR_PLAZO_LLANO; si no, «Consulta…».
         enlace = r.get("url") or url_boe(r["id"])
-        generado = empleo_campos.titular(r)
-        corto, recortado = (generado, True) if generado else titular_corto(r)
+        et, clase = etiqueta_llana(r)
         no = empleo_campos.etiqueta_no_oferta(r)
         no = f'<span class="em-aviso">{esc(no)}</span>' if no else ""
         chips = "".join(f'<span class="em-chip">{esc(c)}</span>' for c in empleo_campos.chips(r))
         chips = f'<span class="em-chips">{chips}</span>' if chips else ""
-        bases = empleo_campos.bases(r)
-        bases = f'<span class="ref em-bases">{esc(bases)}</span>' if bases else ""
-        puestos = bloque_puestos(empleo_campos.puestos_activos(r))
-        dept = f" · {esc(nombre_dept(r['dept']))}" if con_dept and r.get("dept") else ""
-        epi = f" · {esc(r['epi'])}" if r.get("epi") else ""
-        proc = f" · {esc(r['proc'])}" if r.get("proc") else ""
-        plazo = (f'<span class="ref em-plazo">Plazo, según el BOE: «{esc(r["plazo"])}»</span>'
-                 if r.get("plazo") and MOSTRAR_PLAZO else "")
-        completo = (f'<details class="em-completo"><summary>Título completo</summary>'
-                    f'<p>{esc(r["titulo"])}</p></details>') if recortado else ""
+        ps = empleo_campos.puestos_activos(r)
+        que = que_es(r, ps)
+        lista = bloque_puestos(ps) if len(ps) > 1 else ""
+        quien = [nombre_organismo(r)] if (con_dept or r.get("dept", "").upper() in (DEPT_LOCAL, DEPT_UNIV)) else []
+        if r.get("epi") in PERSONAL_LLANO:
+            quien.append(PERSONAL_LLANO[r["epi"]])
+        if len(ps) == 1 and ps[0].get("localidad"):
+            quien.append(ps[0]["localidad"])
+        quien = [q for q in quien if q]
+        cuando = f'Publicada el {esc(fecha_es(r["fecha"]))} <span class="em-hace">({esc(publicada(r["fecha"], ref).replace("Publicada ", ""))})</span>'
+        plazo = ""
+        if r["tipo"] in ORDEN_ABIERTOS and not no:
+            pl = plazo_tarjeta(r)
+            plazo = (f'<span class="em-ll-plazo">Plazo: {esc(pl)}</span>' if pl else
+                     '<span class="em-ll-plazo em-ll-consulta">Consulta el plazo en el BOE</span>')
+        filas_ll = (f'<dt>Qué es</dt><dd class="em-que">{esc(que)}{lista}</dd>'
+                    + (f'<dt>Quién y dónde</dt><dd>{esc(" · ".join(quien))}</dd>' if quien else "")
+                    + f'<dt>Cuándo</dt><dd>{cuando}{"<br>" + plazo if plazo else ""}</dd>')
         return (f'<li class="em-card" data-fecha="{attr(r["fecha"])}">'
-                f'<a class="em-tit" href="{attr(enlace)}" target="_blank" rel="noopener">'
-                f'{esc(corto)}</a>{no}{completo}{chips}{puestos}'
-                f'<span class="ref">{esc(ETIQUETA_TIPO.get(r["tipo"], ""))}{proc}{dept}{epi}</span>{bases}{plazo}'
-                f'<span class="ref em-pub">{esc(publicada(r["fecha"], ref))} · '
-                f'{esc(fecha_es(r["fecha"]))} · {esc(r["id"])}</span>'
-                f'<span class="em-bot"><a class="em-btn" href="{attr(enlace)}" target="_blank" rel="noopener">'
-                f'Ver en el BOE</a><a class="em-btn" href="{attr(url_pdf(r))}" target="_blank" rel="noopener">'
-                f'PDF</a></span></li>')
+                f'<span class="em-etq em-etq-{clase}">{esc(et)}</span>{no}'
+                f'<dl class="em-ll">{filas_ll}</dl>{chips}'
+                f'<a class="em-btn em-boe" href="{attr(enlace)}" target="_blank" rel="noopener" '
+                f'aria-label="Ver en el BOE: {attr(titular_corto(r, 90)[0])} ({attr(r["id"])})">'
+                f'Ver en el BOE</a></li>')
 
     def bloque(t: str, filas: list, con_dept: bool, h: str = "h2") -> str:
         todas = [r for r in filas if r["tipo"] == t]
@@ -682,7 +822,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'El resto, en el <a href="{RSS_EMPLEO}">canal RSS de empleo</a> y en las páginas '
                 f'<a href="{ENLACE_ORGANISMOS}">por organismo</a> y '
                 f'<a href="{ENLACE_PROVINCIAS}">por provincia</a>.</p>') if recorte else ""
-        return (f'<section class="em-sec" data-tipo="{t}"><{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
+        return (f'<section class="em-sec" id="p-{t}" data-tipo="{t}"><{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
                 f'({n})</{h}>'
                 f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>{nota}</section>')
 

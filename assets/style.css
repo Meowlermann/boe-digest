@@ -1592,6 +1592,26 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-fn:empty{ display:none; }
 .em-sec[hidden], .em-card[hidden]{ display:none; }
 
+/* Lenguaje llano (31-10-2026): pestañas, etiqueta de color y tarjeta Qué/Quién/Cuándo. */
+.em-tabs{ display:flex; flex-wrap:wrap; gap:6px; }
+.em-fb[aria-selected="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.em-etq{ align-self:flex-start; font:600 .78rem 'Work Sans',sans-serif; padding:3px 10px; border-radius:999px; }
+.em-etq-oposicion{ background:var(--fiscal-soft); color:var(--fiscal); }
+.em-etq-concurso,.em-etq-convocatoria{ background:var(--senado-soft); color:var(--senado); }
+.em-etq-provision{ background:var(--mercantil-soft); color:var(--mercantil); }
+.em-etq-admitidos{ background:var(--gold-soft); color:var(--gold); }
+.em-etq-tribunal,.em-etq-otras{ background:var(--otros-soft); color:var(--otros); }
+.em-etq-resultados{ background:var(--laboral-soft); color:var(--laboral); }
+.em-ll{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:2px 10px; }
+.em-ll dt{ font:600 .78rem 'Work Sans',sans-serif; color:var(--ink-soft); padding-top:.2em; }
+.em-ll dd{ margin:0; overflow-wrap:anywhere; color:var(--ink); }
+.em-ll .em-que{ font-weight:600; }
+.em-hace,.em-ll-consulta{ color:var(--ink-soft); }
+.em-card .em-boe{ min-height:44px; align-self:flex-start; margin-top:4px; }
+.em-card .em-boe:focus-visible,.em-card summary:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
+.em-card summary{ min-height:44px; display:flex; align-items:center; }
+@media (max-width:480px){ .em-ll{ grid-template-columns:1fr; } .em-ll dd{ margin-bottom:4px; } .em-card .em-boe{ align-self:stretch; justify-content:center; } }
+
 /* --- Portada: módulo de empleo (UX-4) ------------------------------------ */
 .empleo-hoy{ margin:0 0 22px; padding:14px 18px; border-radius:14px;
   background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--red); }

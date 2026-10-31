@@ -154,9 +154,10 @@ class TestPaginas(unittest.TestCase):
         h, _ = h_prueba(self.carpeta)
         em.generar_paginas(h, self.estado)
         indice = (self.carpeta / "index.html").read_text(encoding="utf-8")
-        self.assertIn("Plazo, según el BOE: «El plazo de presentación de solicitudes será de veinte días hábiles.»",
-                      indice)
-        self.assertIn(" · Oposición", indice)
+        # Lenguaje llano: plazo apagado ⇒ «Consulta…»; nunca la cita literal.
+        self.assertIn("Consulta el plazo en el BOE", indice)
+        self.assertNotIn("Plazo, según el BOE", indice)
+        self.assertIn('em-etq-oposicion">Oposición<', indice)
         self.assertNotIn("Cierra el", indice)
 
     def test_orden_convocatorias_primero_y_seguimiento(self):

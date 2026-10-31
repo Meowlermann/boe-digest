@@ -64,14 +64,18 @@ class TestTarjetaGenerada(unittest.TestCase):
         tarjetas = re.findall(r'<li class="em-card"[^>]*>(.*?)</li>', idx)
         self.assertTrue(tarjetas)
         for t in tarjetas:
-            tit = re.search(r'class="em-tit"[^>]*>([^<]*)</a>', t).group(1)
-            self.assertLessEqual(len(tit), 120)
-            self.assertEqual("<details" in t, tit.endswith("…"))
-            self.assertIn(">Ver en el BOE</a>", t)
-            self.assertRegex(t, r'href="https://www\.boe\.es/boe/dias/\d{4}/\d\d/\d\d/pdfs/BOE-A-\d{4}-\d+\.pdf"[^>]*>PDF</a>')
-            self.assertRegex(t, r"Publicada (en el último BOE|hace \d+ días?)")
-        self.assertIn("Publicada en el último BOE", idx)
-        self.assertIn("Publicada hace 3 días", idx)        # 24-oct frente al 27-oct
+            # Lenguaje llano: etiqueta, Qué es / Quién y dónde / Cuándo y un
+            # único «Ver en el BOE»; sin PDF, sin ID suelto, sin título plegado.
+            self.assertRegex(t, r'^<span class="em-etq em-etq-\w+">')
+            self.assertIn("<dt>Qué es</dt>", t)
+            self.assertIn("<dt>Cuándo</dt><dd>Publicada el ", t)
+            self.assertEqual(t.count(">Ver en el BOE</a>"), 1)
+            self.assertEqual(t.count("<a "), 1)
+            self.assertNotIn(">PDF</a>", t)
+            self.assertNotIn("Título completo", t)
+            self.assertRegex(t, r'aria-label="Ver en el BOE: [^"]+\(BOE-A-\d{4}-\d+\)"')
+        self.assertIn("(en el último BOE)", idx)
+        self.assertIn("(hace 3 días)", idx)        # 24-oct frente al 27-oct
 
     def test_determinista_y_sin_fecha_de_cierre(self):
         a = self._indice("2026-10-27")

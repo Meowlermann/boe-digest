@@ -39,26 +39,36 @@ class TestFiltro(unittest.TestCase):
         # Las 8 tarjetas están en el HTML (también las de más de 30 días) y el
         # filtro sale oculto: sin JS no hay botones que no hagan nada.
         self.assertEqual(len(re.findall(r'<li class="em-card"', self.idx)), 8)
-        self.assertRegex(self.idx, r'<div id="filtro-tipo" class="em-filtro" data-ref="[\d-]+" hidden>')
+        self.assertRegex(self.idx, r'<div id="filtro-tipo" class="em-filtro" data-ref="[\d-]+" data-defecto="convocatoria" hidden>')
         self.assertIn(f'<script src="{em.JS_FILTRO}" defer></script>', self.idx)
 
     def test_botones_de_los_tipos_existentes(self):
         tipos = re.findall(r'data-f="tipo" data-v="(\w*)"', self.idx)
-        self.assertEqual(tipos, ["", "convocatoria", "admitidos"])
-        for t in tipos[1:]:
+        # Pestañas (lenguaje llano): los mismos valores de ?tipo= que UX-3,
+        # Convocatorias primero y seleccionada, y «Todas» al final.
+        self.assertEqual(tipos, ["convocatoria", "admitidos", "todas"])
+        for t in tipos[:-1]:
             self.assertIn(t, em.ETIQUETA_TIPO)
         self.assertIn(f'data-f="dias" data-v="{em.DIAS_FILTRO}" aria-pressed="false">'
                       f'Últimos {em.DIAS_FILTRO} días</button>', self.idx)
-        self.assertEqual(self.idx.count('role="group"'), 2)
-        self.assertIn('data-v="" aria-pressed="true">Todos', self.idx)
+        self.assertEqual(self.idx.count('role="tablist"'), 1)
+        self.assertEqual(self.idx.count('role="group"'), 1)
+        tabs = re.findall(r'<button[^>]*role="tab"[^>]*>', self.idx)
+        self.assertEqual(len(tabs), 3)
+        self.assertEqual(sum('aria-selected="true"' in b for b in tabs), 1)
+        self.assertIn('id="tab-convocatoria"', tabs[0])
+        self.assertIn('aria-controls="p-convocatoria"', tabs[0])
+        self.assertIn('tabindex="0"', tabs[0])
+        self.assertTrue(all('tabindex="-1"' in b for b in tabs[1:]))
+        self.assertIn('id="p-convocatoria"', self.idx)
         for b in re.findall(r"<button[^>]*>", self.idx):
             self.assertIn('type="button"', b)
-            self.assertRegex(b, r'aria-pressed="(true|false)"')
+            self.assertRegex(b, r'aria-(pressed|selected)="(true|false)"')
 
     def test_tarjetas_con_fecha_y_secciones_con_tipo(self):
         for li in re.findall(r'<li class="em-card"[^>]*>', self.idx):
             self.assertRegex(li, r'data-fecha="\d{4}-\d\d-\d\d"')
-        self.assertIn('<section class="em-sec" data-tipo="convocatoria">', self.idx)
+        self.assertIn('<section class="em-sec" id="p-convocatoria" data-tipo="convocatoria">', self.idx)
 
     def test_fichas_sin_filtro(self):
         ficha = (self.carpeta / "ministerio-x.html").read_text(encoding="utf-8")
@@ -70,6 +80,8 @@ class TestFiltro(unittest.TestCase):
         self.assertNotRegex(js, r"\b(import|require|fetch|XMLHttpRequest|eval)\b")
         self.assertIn("replaceState", js)
         self.assertIn('location.hash', js)
+        for k in ("ArrowRight", "ArrowLeft", "Home", "End", "tabpanel", "aria-selected", "hashchange"):
+            self.assertIn(k, js)
 
 
 if __name__ == "__main__":
