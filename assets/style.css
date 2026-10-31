@@ -1600,3 +1600,10 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .eh-s{ margin:0; font-size:14px; color:var(--ink-soft); }
 .eh-s a{ display:inline-block; min-height:44px; line-height:44px; font-weight:600; }
 .empleo-hoy a:focus-visible{ outline:2px solid var(--red); outline-offset:2px; }
+
+/* --- Enlaces a materias: ficha de norma y pie de la portada --------------- */
+.pie-materias{ margin:10px 0 4px; line-height:1.9; }
+@media (max-width:760px){
+  .pie-materias a, .ficha-materias a{ display:inline-flex; align-items:center; min-height:44px; }
+}
+.pie-materias a:focus-visible, .ficha-materias a:focus-visible{ outline:2px solid var(--red); outline-offset:2px; }

@@ -4040,6 +4040,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "PARLAMENTO": parl_html,
         "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
         "EMPLEO_HOY": render_empleo_portada_ssr(day0),
+        "PIE_MATERIAS": pie_materias(),
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     escribir_si_cambia(OUTPUT, html)
@@ -4249,6 +4250,27 @@ def ficha_link(story: dict, prefijo: str = "../normas/") -> str:
     return (f'<a class="srclink fichalink" href="{prefijo}{r}.html">Ficha completa</a>')
 
 
+def materias_enlaces(s: dict, prefijo: str = "../") -> str:
+    """Fila «Materias» de la ficha de una norma: enlaces a /temas/<slug>.html
+    de las materias en que cae (las mismas reglas que llenan esas páginas,
+    materias_de), sin repetir ninguna. Vacío si no cae en ninguna."""
+    nombres = {slug: nombre for slug, nombre, _ in MATERIAS}
+    slugs = list(dict.fromkeys(materias_de(titulo_oficial_de(s), s.get("headline", ""))))
+    enlaces = [f'<a href="{prefijo}temas/{slug}.html">{esc_html(nombres[slug])}</a>'
+               for slug in slugs if slug in nombres]
+    if not enlaces:
+        return ""
+    return f'<dt>Materias</dt><dd class="ficha-materias">{" · ".join(enlaces)}</dd>'
+
+
+def pie_materias(prefijo: str = "") -> str:
+    """Línea discreta del pie de la portada con las 17 materias, una vez cada
+    una. El índice /temas/ ya está en la línea de enlaces del pie."""
+    enlaces = " · ".join(f'<a class="srclink" href="{prefijo}temas/{slug}.html">{esc_html(nombre)}</a>'
+                         for slug, nombre, _ in MATERIAS)
+    return f'<nav class="pie-materias" aria-label="Materias">Por materias: {enlaces}</nav>'
+
+
 def _ficha_filas(s: dict, day: dict) -> str:
     """La tabla de datos duros. Es lo que un buscador y un agente de IA pueden
     leer sin interpretar prosa, y lo que busca quien llega desde Google."""
@@ -4377,7 +4399,7 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
                     "KICKER": esc_html(CAT_LABEL.get(s.get("cat") or "otros", "Varios")),
                     "HEADLINE": esc_html(s.get("headline", "")),
                     "STANDFIRST": esc_html(primera_mayuscula(oficial)),
-                    "FICHA": _ficha_filas(s, day),
+                    "FICHA": _ficha_filas(s, day) + materias_enlaces(s),
                     "CUERPO": cuerpo_boe_ssr(s),
                     "FUENTE": (f'Texto oficial: <a class="srclink" href="{esc_attr(s.get("url",""))}" '
                                f'target="_blank" rel="noopener">{esc_html(s.get("ref",""))} en el BOE ↗</a>'
