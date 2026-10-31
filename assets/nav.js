@@ -231,7 +231,13 @@
   document.addEventListener("keydown", function (e) {
     var escribiendo = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target || {}).tagName || "") ||
                       (e.target && e.target.isContentEditable);
-    if (e.key === "Escape") { cerrarTodo(); return; }
+    if (e.key === "Escape") {
+      // Si el foco estaba dentro de un panel, vuelve a su botón (WAI-ARIA).
+      var dentro = e.target && e.target.closest && e.target.closest(".pilar");
+      cerrarTodo();
+      if (dentro && dentro.querySelector(".panel")) dentro.querySelector(".pilar-b").focus();
+      return;
+    }
     // La página del buscador tiene su propia caja grande y su propio «/».
     if (document.getElementById("buscador-app")) return;
     if ((e.key === "/" && !escribiendo) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
