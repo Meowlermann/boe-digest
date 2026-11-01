@@ -139,7 +139,7 @@ class TestTarjeta(unittest.TestCase):
             idx = self._indice({"puestos": [{"puesto": "Jefe de Área", "nivel": 29}], "n_puestos": 1})
         self.assertIn('<dd class="em-que">Jefe de Área · nivel 29</dd>', idx)
         self.assertNotIn("em-tag-loc", idx)
-        self.assertNotIn("Ver todos", idx)
+        self.assertNotIn("Ver todos los puestos", idx)
         self.assertNotIn("1 puestos", idx)
 
 

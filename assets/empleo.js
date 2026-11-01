@@ -1,4 +1,4 @@
-// /empleo/: pestañas y «Últimos N días»; sin JS, todo visible. ?tipo=&dias= o #tipo=
+// /empleo/: pestañas, «Últimos N días» y carriles por clase; sin JS, todo visible. ?tipo=&dias= o #tipo=
 (function () {
 var D = document;
 var c = D.getElementById("filtro-tipo");
@@ -38,6 +38,10 @@ var e = s.querySelector("h2,h3");
 if (!e.dataset.o) e.dataset.o = e.textContent;
 e.textContent = st.dias ? e.dataset.o.replace(/\([^)]*\)$/, "(" + n + ")") : e.dataset.o;
 s.hidden = !vis;
+s.querySelectorAll(".em-carril").forEach(function (k) {
+k.hidden = !k.querySelector("li.em-card:not([hidden])");
+if (k._u) k._u();
+});
 total += n;
 });
 D.querySelectorAll("section.em-grupo").forEach(function (g) {
@@ -71,9 +75,37 @@ st.dias = st.dias ? "" : dias.dataset.v;
 pinta(true);
 });
 window.addEventListener("hashchange", function () {
-var m = /^#t-(\w+)$/.exec(location.hash);
-if (m && ok[m[1]]) { st.tipo = m[1]; pinta(false); }
+var m = /^#t-(\w+)$/.exec(location.hash), t = new URLSearchParams(location.hash.slice(1)).get("tipo");
+if (m && ok[m[1]]) t = m[1];
+if (t && ok[t]) { st.tipo = t; pinta(false); }
+});
+// Carriles: ‹ › desplazan una pantalla; «Ver todos» despliega la fila como lista.
+D.querySelectorAll(".em-carril").forEach(function (k) {
+var p = k.querySelector(".em-pista"), nav = k.querySelector(".em-carril-nav"), v = k.querySelector(".em-vertodos");
+var a = nav.children[0], b = nav.children[1], txt = v.textContent;
+function upd() {
+var todo = p.classList.contains("em-pista-todo"), cabe = p.scrollWidth <= p.clientWidth + 4;
+nav.hidden = todo || cabe;
+a.disabled = p.scrollLeft < 4;
+b.disabled = p.scrollLeft + p.clientWidth >= p.scrollWidth - 4;
+v.hidden = cabe && !todo;
+}
+function mueve(d) { p.scrollBy({ left: d * p.clientWidth * 0.9, behavior: "smooth" }); }
+a.addEventListener("click", function () { mueve(-1); });
+b.addEventListener("click", function () { mueve(1); });
+v.addEventListener("click", function () {
+var todo = p.classList.toggle("em-pista-todo");
+v.setAttribute("aria-expanded", todo ? "true" : "false");
+v.textContent = todo ? "Ver en fila" : txt;
+p.scrollLeft = 0;
+upd();
+});
+p.addEventListener("scroll", upd, { passive: true });
+window.addEventListener("resize", upd);
+k._u = upd;
+upd();
 });
 c.hidden = false;
 pinta(false);
+D.querySelectorAll(".em-carril").forEach(function (k) { if (k._u) k._u(); });
 })();

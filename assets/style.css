@@ -1612,6 +1612,26 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-card summary{ min-height:44px; display:flex; align-items:center; }
 @media (max-width:480px){ .em-ll{ grid-template-columns:1fr; } .em-ll dd{ margin-bottom:4px; } .em-card .em-boe{ align-self:stretch; justify-content:center; } }
 
+/* Carriles por clase en /empleo/ (01-11-2026): una fila deslizable por
+   etiqueta; sin JS, la fila desliza igual (scroll-snap) y todo está visible. */
+.em-carril{ margin:8px 0 20px; }
+.em-carril[hidden]{ display:none; }
+.em-carril-cab{ display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; }
+.em-carril-t{ margin:0; font:700 1rem 'Work Sans',sans-serif; }
+.em-carril-nav{ display:flex; gap:6px; margin-left:auto; }
+.em-carril-nav[hidden]{ display:none; }
+.em-carril-nav .em-fb{ padding:0; justify-content:center; text-align:center; font-size:1.3rem; line-height:1; }
+.em-carril-nav .em-fb:disabled{ opacity:.4; cursor:default; }
+.ix-lista.em-pista{ grid-auto-flow:column; grid-auto-columns:min(86%,320px); overflow-x:auto;
+  scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:4px 2px 10px;
+  position:relative; /* contiene los .em-sep absolutos: si no, desbordan la página sin JS */ }
+.em-pista > li.em-card{ scroll-snap-align:start; }
+.em-pista:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
+.ix-lista.em-pista.em-pista-todo{ grid-auto-flow:row; grid-auto-columns:auto; overflow-x:visible; }
+.em-vertodos{ width:100%; text-align:center; margin-top:4px; }
+.em-vertodos[hidden]{ display:none; }
+@media (min-width:760px){ .ix-lista.em-pista.em-pista-todo{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
 /* --- Portada: módulo de empleo (UX-4) ------------------------------------ */
 .empleo-hoy{ margin:0 0 22px; padding:14px 18px; border-radius:14px;
   background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--red); }

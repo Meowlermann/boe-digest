@@ -808,7 +808,34 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'aria-label="Ver en el BOE: {attr(titular_corto(r, 90)[0])} ({attr(r["id"])})">'
                 f'Ver en el BOE</a></li>')
 
-    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2") -> str:
+    def carriles(t: str, xs: list, con_dept: bool, h: str) -> str:
+        # Carriles deslizables por clase (maqueta 2 de la ronda 2, elegida el
+        # 01-11-2026): una fila horizontal por etiqueta (Oposición, Concurso…),
+        # con ‹ › y «Ver todos» (despliega la misma fila como lista, sin URL
+        # nueva). Sin JS, las filas siguen deslizándose y todo está en el HTML.
+        grupos: dict = {}
+        for r in xs:
+            grupos.setdefault(etiqueta_llana(r), []).append(r)
+        sub = "h3" if h == "h2" else "h4"
+        html = []
+        for (et, clase), rs in grupos.items():
+            cab = (f'<{sub} class="em-carril-t" id="c-{t}-{clase}">{esc(et)} ({len(rs)})</{sub}>'
+                   if len(grupos) > 1 else "")
+            nombre = et if len(grupos) > 1 else ETIQUETA_TIPO[t]
+            html.append(
+                f'<div class="em-carril" data-clase="{attr(clase)}">'
+                f'<div class="em-carril-cab">{cab}<span class="em-carril-nav" hidden>'
+                f'<button type="button" class="em-fb em-ant"><span aria-hidden="true">‹</span>'
+                f'<span class="em-sep">Anteriores: {esc(nombre)}</span></button>'
+                f'<button type="button" class="em-fb em-sig"><span aria-hidden="true">›</span>'
+                f'<span class="em-sep">Siguientes: {esc(nombre)}</span></button></span></div>'
+                f'<ul class="ix-lista em-pista" tabindex="0" aria-label="{attr(nombre)}: fila deslizable">'
+                f'{"".join(fila(r, con_dept) for r in rs)}</ul>'
+                f'<button type="button" class="em-fb em-vertodos" aria-expanded="false" hidden>'
+                f'Ver todos ({len(rs)})</button></div>')
+        return "".join(html)
+
+    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2", en_carril: bool = False) -> str:
         todas = [r for r in filas if r["tipo"] == t]
         xs = todas[:MAX_FILAS]
         if not xs:
@@ -823,19 +850,20 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'<a href="{ENLACE_ORGANISMOS}">por organismo</a> y '
                 f'<a href="{ENLACE_PROVINCIAS}">por provincia</a>.</p>') if recorte else ""
         return (f'<section class="em-sec" id="p-{t}" data-tipo="{t}"><{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
-                f'({n})</{h}>'
-                f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>{nota}</section>')
+                f'({n})</{h}>' +
+                (carriles(t, xs, con_dept, h) if en_carril else
+                 f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>') + f'{nota}</section>')
 
-    def por_tipo(filas: list, con_dept: bool = True) -> str:
+    def por_tipo(filas: list, con_dept: bool = True, en_carril: bool = False) -> str:
         # Orden de lectura (UX-1), distinto del de clasificación de TIPOS:
         # primero lo que se puede solicitar; después, bajo «Seguimiento de
         # procesos», las listas, tribunales y resultados de procesos en marcha.
-        html = "".join(bloque(t, filas, con_dept) for t in ORDEN_ABIERTOS)
-        seg = "".join(bloque(t, filas, con_dept, "h3") for t in ORDEN_SEGUIMIENTO)
+        html = "".join(bloque(t, filas, con_dept, en_carril=en_carril) for t in ORDEN_ABIERTOS)
+        seg = "".join(bloque(t, filas, con_dept, "h3", en_carril) for t in ORDEN_SEGUIMIENTO)
         if seg:
             html += ('<section class="em-sec em-grupo"><h2 id="seguimiento">Seguimiento de procesos</h2>'
                      + seg + '</section>')
-        return html + "".join(bloque(t, filas, con_dept) for t in ORDEN_RESTO)
+        return html + "".join(bloque(t, filas, con_dept, en_carril=en_carril) for t in ORDEN_RESTO)
 
     def recuento(filas: list) -> str:
         # Cada contador enlaza a su sección (UX-1).
@@ -916,7 +944,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
               f'provincia. Los días desde la publicación se cuentan hasta el BOE '
               f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
               + chips_filtro(recientes, ref)
-              + (por_tipo(recientes) or
+              + (por_tipo(recientes, en_carril=True) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
               + (f'<h2 id="provincias">Por provincia</h2><ul class="ix-lista">{"".join(enlaces_prov)}</ul>'
