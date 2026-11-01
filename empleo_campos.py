@@ -731,11 +731,13 @@ RE_OTRO_BOLETIN = re.compile(r"Bolet[ií]n Oficial de (?:la|las|los)? ?(?!l Esta
                              r"DOG|BOP\b|BOCM|DOGV", re.I)
 
 
-# Interruptor del plazo en lenguaje llano. APAGADO: la revisión manual de 46
-# plazos (31-10) halló 1 error (BOE-A-2026-21686). Ya corregido arriba, pero la
-# regla manda apagar el campo hasta que Xavi lo reactive. Apagado ⇒ «Consulta el
-# plazo en el BOE» en todas las tarjetas.
-MOSTRAR_PLAZO_LLANO = False
+# Interruptor del plazo en lenguaje llano. ENCENDIDO (01-11-2026, OK de Xavi).
+# Historia: apagado el 31-10 porque la revisión manual de 46 plazos halló 1
+# error (BOE-A-2026-21686, frase truncada; ya se descarta arriba). Revisión del
+# 01-11: 50 plazos leídos a mano contra el texto oficial guardado y cotejo
+# automático de los 475 con texto guardado: 0 errores. Para volver atrás, False
+# ⇒ «Consulta el plazo en el BOE» en todas las tarjetas.
+MOSTRAR_PLAZO_LLANO = True
 
 
 def plazo_llano_motivo(frase: str) -> tuple:
