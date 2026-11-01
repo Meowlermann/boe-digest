@@ -108,10 +108,14 @@ class TestPlazoLlano(unittest.TestCase):
             with self.subTest(f=f[:60]):
                 self.assertIsNone(ec.plazo_llano(f))
 
-    def test_flag_apagada_por_defecto(self):
-        self.assertFalse(ec.MOSTRAR_PLAZO_LLANO)
+    def test_flag_encendida_por_defecto(self):
+        # Encendida el 01-11-2026 (OK de Xavi); se revierte poniendo False.
+        self.assertTrue(ec.MOSTRAR_PLAZO_LLANO)
         r = {"tipo": "convocatoria", "plazo": f"El plazo de presentación de solicitudes será de veinte días hábiles a contar desde el siguiente al de la publicación en el {self.BOE}."}
-        self.assertIsNone(em.plazo_tarjeta(r))
+        self.assertEqual(em.plazo_tarjeta(r), "20 días hábiles desde el día siguiente a su publicación en el BOE")
+        self.assertIsNone(em.plazo_tarjeta(r, mostrar=False))
+        # Frase truncada tras el BOE (BOE-A-2026-21686): nunca plazo, aun encendida.
+        self.assertIsNone(em.plazo_tarjeta({"tipo": "convocatoria", "plazo": "El plazo de presentación de solicitudes será de veinte días hábiles a contar desde el siguiente al de la publicación en el «Boletín Oficial del Estado» […]"}))
         self.assertEqual(em.plazo_tarjeta(r, mostrar=True),
                          "20 días hábiles desde el día siguiente a su publicación en el BOE")
         self.assertIsNone(em.plazo_tarjeta(dict(r, no_oferta="desierta"), mostrar=True))
@@ -156,7 +160,8 @@ class TestTarjetaLlana(unittest.TestCase):
         return (self.carpeta / "index.html").read_text(encoding="utf-8")
 
     def test_apagada_consulta(self):
-        idx = self._idx()
+        with mock.patch.object(ec, "MOSTRAR_PLAZO_LLANO", False):
+            idx = self._idx()
         self.assertIn("Consulta el plazo en el BOE", idx)
         self.assertNotIn("Plazo: 20 días", idx)
 

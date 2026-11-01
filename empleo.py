@@ -655,7 +655,7 @@ def publicada(fecha: str, ref: str) -> str:
 
 # ---------------------------------------------------- tarjeta en lenguaje llano
 
-# Plazo en llano en la tarjeta: APAGADO (ver empleo_campos.MOSTRAR_PLAZO_LLANO).
+# Plazo en llano en la tarjeta: ENCENDIDO (ver empleo_campos.MOSTRAR_PLAZO_LLANO).
 PERSONAL_LLANO = {"Personal funcionario": "Personal funcionario", "Personal laboral": "Personal laboral"}
 EPI_GENERICOS = frozenset({"", "Personal funcionario y laboral", "Personal funcionario", "Personal laboral",
                            "Personal de administración y servicios", "Cuerpos docentes universitarios"})
