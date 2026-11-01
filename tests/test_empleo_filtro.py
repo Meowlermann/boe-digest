@@ -63,7 +63,9 @@ class TestFiltro(unittest.TestCase):
         self.assertIn('id="p-convocatoria"', self.idx)
         for b in re.findall(r"<button[^>]*>", self.idx):
             self.assertIn('type="button"', b)
-            self.assertRegex(b, r'aria-(pressed|selected)="(true|false)"')
+            if "em-ant" in b or "em-sig" in b:   # ‹ › de los carriles: acciones, sin estado
+                continue
+            self.assertRegex(b, r'aria-(pressed|selected|expanded)="(true|false)"')
 
     def test_tarjetas_con_fecha_y_secciones_con_tipo(self):
         for li in re.findall(r'<li class="em-card"[^>]*>', self.idx):
@@ -76,7 +78,7 @@ class TestFiltro(unittest.TestCase):
 
     def test_js_pequeno_y_sin_dependencias(self):
         js = JS.read_text(encoding="utf-8")
-        self.assertLess(len(js.encode("utf-8")), 3 * 1024)
+        self.assertLess(len(js.encode("utf-8")), 5 * 1024)   # 3 KB + carriles (01-11-2026)
         self.assertNotRegex(js, r"\b(import|require|fetch|XMLHttpRequest|eval)\b")
         self.assertIn("replaceState", js)
         self.assertIn('location.hash', js)
