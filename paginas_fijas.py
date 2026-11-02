@@ -26,7 +26,7 @@ de 2026 en sus propias webs; solo los que tienen uso gratuito.
 
 from __future__ import annotations
 
-REVISION = "2026-10-27"
+REVISION = "2026-11-02"
 CONTACTO = "contacto@terceracamara.es"
 
 
@@ -148,8 +148,9 @@ institución</b>: el BOE en <a href="https://www.boe.es/" rel="noopener" target=
 y el Congreso en <a href="https://www.congreso.es/" rel="noopener" target="_blank">congreso.es</a>.
 Cada pieza enlaza al documento oficial del que sale. Lo que va entre comillas es literal de la
 fuente; el resto son plantillas sobre datos oficiales y, en la edición diaria, titulares y
-entradillas redactados con ayuda de IA y verificados de forma automática, que van marcados como
-editoriales. Puede haber errores: si encuentras uno, escríbenos. Nada de lo publicado es
+entradillas, que van marcados como editoriales. <b>Titulares generados con IA y revisados por la redacción</b>:
+así se indica también al pie de cada edición. Las entradillas se redactan con ayuda de IA y se
+verifican de forma automática. Puede haber errores: si encuentras uno, escríbenos. Nada de lo publicado es
 asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 
 <h2 class="rotulo">Fuentes y condiciones de reutilización</h2>
@@ -167,9 +168,15 @@ BOE; los textos de legislación consolidada que se citen tienen carácter merame
 insertan páginas del BOE dentro de esta web.</li>
 <li><b>Congreso de los Diputados</b>: datos abiertos, buscador de iniciativas, Diario de
 Sesiones y Boletín Oficial de las Cortes Generales de congreso.es, reutilizados con las mismas
-condiciones: cita de la fuente, sin desnaturalizar el sentido de la información y con la fecha
-de la última actualización.</li>
-<li><b>Senado</b>: no ofrece por ahora acceso automatizado a sus datos y no se recoge.</li>
+<a href="https://www.congreso.es/cem/aviso-legal" rel="noopener" target="_blank">condiciones</a>: sin alterar
+el contenido ni desnaturalizar el sentido de la información, citando la fuente y con la fecha de la
+última actualización, que figura en la línea de fuente de cada página.</li>
+<li><b>Senado</b>: algunas ediciones diarias citan y enlazan publicaciones oficiales del Senado
+(Boletín Oficial de las Cortes Generales, sección Senado). Se reutilizan conforme a su
+<a href="https://www.senado.es/web/avisojuridico/index.html" rel="noopener" target="_blank">aviso jurídico</a> y a sus
+<a href="https://www.senado.es/web/relacionesciudadanos/datosabiertos/reutilizacion/index.html" rel="noopener" target="_blank">condiciones de reutilización</a>:
+se cita la fuente con enlace al documento, no se altera su contenido ni sus metadatos ni se
+desnaturaliza su sentido, y se indica la fecha del documento.</li>
 </ul>
 <p>Este es un medio no oficial, sin relación con la Agencia Estatal Boletín Oficial del Estado ni con
 las Cortes Generales. Ninguna de estas instituciones participa en este proyecto, lo patrocina ni lo respalda.</p>
@@ -185,7 +192,9 @@ de su contenido.</p>
 <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
 
 <h2 class="rotulo">Privacidad</h2>
-<p>Qué se mide y qué datos se tratan está en la <a href="/privacidad.html">política de privacidad</a>.</p>
+<p>Para contar visitas se usa Cloudflare Web Analytics, que, según la documentación de Cloudflare,
+no usa cookies ni otro almacenamiento en el navegador para medir las visitas. Qué se mide y qué
+datos se tratan está en la <a href="/privacidad.html">política de privacidad</a>.</p>
 
 <h2 class="rotulo">Cambios en este aviso</h2>
 <p>Este aviso describe la web tal como funciona hoy y se actualizará antes de cualquier cambio
