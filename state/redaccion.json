@@ -4902,14 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso registra 38 preguntas escritas sin contestar fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas presentadas por los grupos parlamentarios superan los 20 días hábiles reglamentarios sin que se haya registrado su contestación oficial.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso registra 38 preguntas escritas pendientes de respuesta fuera de plazo",
+   "entradilla": "Las cuestiones llevan más de 20 días hábiles desde su publicación sin contestación registrada, correspondiendo la formulación de 30 de ellas a representantes de Sumar.",
    "claves": [
-    "Sumar encabeza las iniciativas pendientes con 24 preguntas, seguida del PSOE con 7 y el PP con 4.",
-    "Los grupos parlamentarios GV (EAJ-PNV), Junts y los diputados sin grupo cuentan con una pregunta pendiente cada uno.",
-    "La pregunta sin respuesta más antigua entre las contabilizadas se publicó el lunes 16 de febrero de 2026."
+    "Las iniciativas corresponden a Sumar (30), PSOE (4), PP (2), Junts (1) y el grupo de Sin grupo (1).",
+    "La pregunta sobre la que más tiempo se ha superado la fecha límite fue publicada el lunes 15 de diciembre de 2025."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-02"
@@ -10396,9 +10395,203 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-10-31"
+  },
+  "BOE-A-2026-22888": {
+   "huella": "49215ff82f470705",
+   "fuente": "6777caecb97f1b70",
+   "titular": "Transición Ecológica actualizará cada trimestre la retribución a la cogeneración",
+   "entradilla": "El Ministerio para la Transición Ecológica modifica la orden sobre actualización retributiva para fijar una revisión trimestral y definir la fórmula aplicable a las plantas de cogeneración de biomasa.",
+   "claves": [
+    "La actualización de la retribución a la operación de estas plantas eléctricas se aprobará trimestralmente por la Secretaría de Estado de Energía previa comunicación al Ministerio de Hacienda.",
+    "Los nuevos valores retributivos surtirán efecto desde el primer día del primer mes del trimestre natural al que correspondan.",
+    "La orden añade una metodología específica para actualizar trimestralmente la retribución a la operación de las instalaciones tipo de cogeneración de biomasa."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22959": {
+   "huella": "3a0b8fee92b7900d",
+   "fuente": "4634581536593b0b",
+   "titular": "El Tribunal Supremo ajusta la composición de su Sala Segunda tras dos jubilaciones",
+   "entradilla": "El Consejo General del Poder Judicial publica la reorganización de la Sala de lo Penal del Tribunal Supremo para el año judicial 2026 tras el retiro por edad de dos de sus magistrados.",
+   "claves": [
+    "El ajuste responde a la jubilación por edad de los magistrados Andrés Palomo del Arco y Juan Ramón Berdugo Gómez de la Torre en la Sala Segunda del Supremo.",
+    "La norma fija la composición de la presidencia y secciones de la Sala Segunda para el periodo del 1 de octubre de 2026 al 31 de enero de 2027."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22962": {
+   "huella": "fce49c944ccd119e",
+   "fuente": "bdde6c9b14cbb938",
+   "titular": "El Ejército de Tierra ofrece prácticas en Valencia a la Universidad CEU UCH",
+   "entradilla": "El Ministerio de Defensa y la institución académica firman un convenio para la realización de prácticas externas de sus estudiantes en el Regimiento de Operaciones de Información núm. 1.",
+   "claves": [
+    "Las prácticas académicas externas, tanto curriculares como extracurriculares, se desarrollarán en el Regimiento de Operaciones de Información núm. 1 (ROI 1), con sede en Valencia.",
+    "El número de alumnos acogidos para complementar su formación de Grado y Máster se fijará anualmente de común acuerdo entre las partes."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22963": {
+   "huella": "49a9fdd7a5871f67",
+   "fuente": "c0b798b9de281202",
+   "titular": "La Armada extiende hasta 2030 el uso de sus espacios por la Fundación Museo Naval",
+   "entradilla": "El Ministerio de Defensa prorroga durante cuatro años adicionales el convenio que permite a la Fundación Museo Naval celebrar eventos y actividades en instalaciones de la Armada.",
+   "claves": [
+    "La prórroga del convenio suscrito en 2022 mantendrá la colaboración vigente hasta el 19 de octubre de 2030.",
+    "El acuerdo permite que la Fundación Museo Naval disponga de espacio suficiente en las instalaciones de la Armada para el desarrollo de sus actividades."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22964": {
+   "huella": "cfa89d2f1439ff40",
+   "fuente": "e263589922e40818",
+   "titular": "Defensa actualiza las normas de sus anticipos de Caja fija y pagos a justificar",
+   "entradilla": "El Ministerio de Defensa aprueba nuevas reglas para regular la gestión de pagos mediante anticipos de Caja fija y la expedición de libramientos a justificar en sus distintas unidades.",
+   "claves": [
+    "La nueva orden sustituye a la normativa aprobada en 2006 para adaptar el sistema a la realidad y necesidades de los centros gestores.",
+    "La organización de la Tesorería se estructurará a través de una Unidad Central en la Subdirección General de Contabilidad de la Dirección General de Asuntos Económicos.",
+    "Al frente de cada Caja pagadora se designará un Cajero pagador, preferiblemente perteneciente a los cuerpos de Intendencia de los Ejércitos y la Armada."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22965": {
+   "huella": "a2ec27d78fb7f206",
+   "fuente": "d1db168cd520d1f3",
+   "titular": "La Guardia Civil ofrecerá prácticas de FP a alumnos de centros públicos de Madrid",
+   "entradilla": "Interior y la Comunidad de Madrid acuerdan realizar la fase de formación práctica de los grados D y E de formación profesional en las instalaciones del Servicio de Material Móvil de la Guardia Civil.",
+   "claves": [
+    "El acuerdo beneficia a estudiantes de centros docentes públicos que cursen grados D y E de Formación Profesional en la Comunidad de Madrid.",
+    "Las prácticas se realizarán en el Servicio de Material Móvil de la Guardia Civil, encargado del mantenimiento de sus medios de automoción."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22966": {
+   "huella": "c136c67464baf4b0",
+   "fuente": "b7013dfd59b5fd03",
+   "titular": "La Policía Local de Albox se integra en el seguimiento de la violencia de género",
+   "entradilla": "El Ayuntamiento de Albox y la Secretaría de Estado de Seguridad acuerdan la incorporación del cuerpo policial municipal al Sistema de Seguimiento Integral de los casos de Violencia de Género.",
+   "claves": [
+    "La medida busca coordinar las actuaciones entre la Administración General del Estado y la entidad local para mejorar la protección y prevenir nuevas agresiones a las víctimas.",
+    "La policía local dispondrá de una base de datos común que permite realizar una valoración del riesgo objetivo y mantener un seguimiento de las circunstancias de cada víctima."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22967": {
+   "huella": "e3574f580a7d5f67",
+   "fuente": "34c58db4f6ddcf71",
+   "titular": "Palma del Río incorpora su Policía Local al seguimiento de la violencia de género",
+   "entradilla": "El acuerdo suscrito entre la Secretaría de Estado de Seguridad y el ayuntamiento cordobés suma al cuerpo municipal al Sistema de Seguimiento Integral de los casos de Violencia de Género.",
+   "claves": [
+    "La incorporación permite contar con un registro con la información necesaria para el seguimiento individualizado de las circunstancias de las víctimas y de la evolución de su riesgo.",
+    "El convenio desarrolla el Catálogo de medidas urgentes en la lucha contra la violencia de género aprobado por el Consejo de Ministros en 2006."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22971": {
+   "huella": "d0f4a9136463a58c",
+   "fuente": "d9db6b771b3f80c9",
+   "titular": "La Policía Local de A Rúa se integra en el seguimiento de la violencia de género",
+   "entradilla": "El Ayuntamiento de A Rúa y la Secretaría de Estado de Seguridad firman la incorporación del cuerpo policial al Sistema de Seguimiento Integral de los casos de Violencia de Género.",
+   "claves": [
+    "El acuerdo establece una coordinación entre la Administración General del Estado y el municipio para evitar el riesgo de nuevas agresiones en el ámbito familiar.",
+    "Los agentes locales tendrán acceso a la base de datos común destinada a realizar valoraciones objetivas del riesgo y un seguimiento continuo de cada caso."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22979": {
+   "huella": "a8da5c796a1f13ab",
+   "fuente": "e914cf886caa5c5a",
+   "titular": "Marina Mercante regulará la titulación náutica del personal portuario balear",
+   "entradilla": "Transportes y Ports de les Illes Balears fijan la capacitación necesaria para que los trabajadores portuarios puedan gobernar embarcaciones fuera de sus puertos base.",
+   "claves": [
+    "El personal de PortsIB necesita desplazarse en embarcaciones para tareas de control, inspección y vigilancia en campos de fondeo con boyas e instalaciones secundarias.",
+    "La Dirección General de la Marina Mercante fijará la formación requerida para garantizar la seguridad en la navegación del personal autonómico."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22980": {
+   "huella": "662043f3686aef6f",
+   "fuente": "41830177dd2500ec",
+   "titular": "La Autoridad Portuaria de Cartagena delega en su Presidente las labores de personal",
+   "entradilla": "El Consejo de Administración de la Autoridad Portuaria de Cartagena delega en el Presidente las funciones de selección, contratación, régimen disciplinario y extinción laboral.",
+   "claves": [
+    "La delegación abarca la aprobación de convocatorias, nombramiento de órganos de selección, firma de contratos de trabajo y resolución de excedencias o licencias.",
+    "El Presidente podrá también iniciar y resolver expedientes disciplinarios, aplicar el régimen retributivo y representar a la entidad en negociaciones laborales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22981": {
+   "huella": "f3ed4482edc69e42",
+   "fuente": "9cb2aaccb7f26d2c",
+   "titular": "Educación y Canarias organizan en Gran Canaria el X Congreso de Convivencia Escolar",
+   "entradilla": "El Ministerio de Educación y la Consejería canaria acuerdan la celebración presencial del evento en Gran Canaria durante el último trimestre del año 2026.",
+   "claves": [
+    "El Ministerio de Educación, Formación Profesional y Deportes aportará un máximo de sesenta mil euros (60.000,00 euros) para ponentes, diseño, vídeos e interpretación.",
+    "La Consejería de Educación, Formación Profesional, Actividad Física y Deportes de Canarias aportará los espacios, el mobiliario, el servicio de cáterin y los medios audiovisuales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22982": {
+   "huella": "73fc3ca5f01bcff3",
+   "fuente": "3d82a12f01a0ca8d",
+   "titular": "Educación y Renedo de Esgueva implantan el programa de formación Aula Mentor",
+   "entradilla": "El Ayuntamiento de Renedo de Esgueva y el Ministerio de Educación colaborarán para ofrecer cursos de formación telemática para adultos a través de la iniciativa Aula Mentor.",
+   "claves": [
+    "El consistorio acondicionará las instalaciones en la calle Lucio Muñoz Tacones s/n para albergar los medios tecnológicos del Aula Mentor.",
+    "El programa facilitará formación no reglada por internet y orientación profesional a la ciudadanía de la localidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22983": {
+   "huella": "97bddc472eecb770",
+   "fuente": "0a365ff1f962ff72",
+   "titular": "Educación y Villanueva de los Castillejos abren un Aula Mentor de formación",
+   "entradilla": "El Ministerio de Educación y el Ayuntamiento de Villanueva de los Castillejos se alían para ofertar cursos telemáticos de formación para personas adultas en el municipio.",
+   "claves": [
+    "El centro de formación se ubicará en la Plaza de España de Villanueva de los Castillejos (Huelva), con el equipamiento necesario a cargo del municipio.",
+    "La iniciativa facilitará formación no reglada online, orientación profesional y la acreditación de competencias profesionales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22984": {
+   "huella": "be50fc00e396915e",
+   "fuente": "965a57d483eb59fd",
+   "titular": "Agricultura e Ingenieros Agrónomos organizarán conjuntamente su VI Congreso Nacional",
+   "entradilla": "El Ministerio de Agricultura, Pesca y Alimentación y la ANIA formalizan un convenio para coordinar la celebración del encuentro científico del colectivo profesional en 2026.",
+   "claves": [
+    "El evento científico se titulará «Diseñando la nueva era de los sistemas vivos: sostener, innovar y transformar los sectores que nos dan la vida».",
+    "La Subdirección General de Innovación y Digitalización actuará como órgano de interlocución en el diseño y contenido del encuentro."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-22985": {
+   "huella": "bb21b2599fc41db1",
+   "fuente": "e559c0f885d54f03",
+   "titular": "El Gobierno declara a la ciudad de Ferrol como Lugar de Memoria Democrática",
+   "entradilla": "La Secretaría de Estado de Memoria Democrática reconoce de forma oficial diversos espacios de Ferrol vinculados a la represión franquista y la defensa de la democracia.",
+   "claves": [
+    "La declaración incluye espacios emblemáticos como el Castillo de San Felipe, la prisión naval de Caranza o el monumento del 10 de marzo de 1972.",
+    "El reconocimiento obedece a la represión sufrida en Ferrol desde julio de 1936 y al papel de la ciudad en la resistencia democrática."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-02"
   }
  },
  "uso": {
-  "2026-11-02": 1
+  "2026-11-02": 3
  }
 }
