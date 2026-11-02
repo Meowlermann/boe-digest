@@ -1539,6 +1539,44 @@ def ultima_edicion(raiz: pathlib.Path) -> str | None:
 COMPROBACIONES_DE_DATOS = {"titulares", "duplicados"}
 
 
+
+_RE_ASSET_REF = re.compile(r'(?:\.\./|\./|/)*assets/([\w.-]+\.(?:css|js))(\?v=([0-9a-f]+))?(?=["\'])')
+
+
+def problemas_assets(texto: str, huellas: dict) -> list[str]:
+    """CSS y JS propios sin ?v= o con un hash que no es el del fichero."""
+    out = []
+    for m in _RE_ASSET_REF.finditer(texto):
+        nombre, v = m.group(1), m.group(3)
+        if nombre not in huellas:
+            continue
+        if not v:
+            out.append(f"assets/{nombre} sin ?v=")
+        elif v != huellas[nombre]:
+            out.append(f"assets/{nombre}?v={v} no coincide con {huellas[nombre]}")
+    return out
+
+
+def comprobar_assets(raiz: pathlib.Path, paginas: list[pathlib.Path] | None = None) -> list[dict]:
+    """(TC-assets) La URL de cada CSS/JS propio lleva la versión de su contenido,
+    para que la caché de horas no sirva CSS viejo con HTML nuevo."""
+    import hashlib
+    carpeta = raiz / "assets"
+    huellas = {f.name: hashlib.sha256(f.read_bytes()).hexdigest()[:10]
+               for f in sorted(carpeta.glob("*")) if f.suffix in (".css", ".js") and f.is_file()}
+    hallazgos, malas = [], 0
+    for p in paginas if paginas is not None else paginas_html(raiz):
+        probs = problemas_assets(p.read_text(encoding="utf-8", errors="replace"), huellas)
+        if probs:
+            malas += 1
+            if malas <= 20:
+                hallazgos.append(hallazgo(GRAVE, "assets", "; ".join(sorted(set(probs))), _rel(raiz, p),
+                                          "regenera con build.py (versionar_assets)."))
+    if malas > 20:
+        hallazgos.append(hallazgo(GRAVE, "assets", f"{malas} páginas con assets sin versión correcta.", "",
+                                  "regenera con build.py (versionar_assets)."))
+    return hallazgos
+
 def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
     """Corre todas las comprobaciones y devuelve el informe."""
     fecha = fecha or ultima_edicion(raiz)
@@ -1560,6 +1598,7 @@ def ejecutar(raiz: pathlib.Path, modo: str, fecha: str | None = None) -> dict:
         ("contadores", lambda: comprobar_contadores(raiz)),
         ("correcciones", lambda: comprobar_correcciones(raiz)),
         ("enlazado", lambda: comprobar_enlazado(raiz)),
+        ("assets", lambda: comprobar_assets(raiz)),
     ]
     if modo == "diario":
         comprobaciones.append(("semana", lambda: comprobar_semana(raiz, fecha)))

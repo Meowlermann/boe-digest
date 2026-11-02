@@ -4119,7 +4119,7 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
             # y, si no lo hay (primer pase con este registro), no se da por
             # cambiada, para no anunciar como nuevas cientos de ediciones.
             cambio = (ident not in manifiesto_prev
-                      or (destino.exists() and destino.read_text(encoding="utf-8") != html))
+                      or (destino.exists() and _sin_version(destino.read_text(encoding="utf-8")) != html))
         huellas[ident] = huella
         escribir_si_cambia(destino, html)
         if cambio:
@@ -4587,6 +4587,59 @@ def _slug_txt(t: str) -> str:
     base = unicodedata.normalize("NFKD", t or "").encode("ascii", "ignore").decode()
     return re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-")[:50] or "sin-nombre"
 
+
+
+# ------------------------------------------------------------ versión de assets
+# assets/ se sirve con caché de horas y la URL no cambiaba: tras un cambio de
+# diseño se veía HTML nuevo con CSS viejo. Al final del pase, cada referencia a
+# un CSS/JS propio en el HTML publicado lleva «?v=<hash corto del contenido>».
+# Es determinista (mismo fichero, mismo hash) y se aplica sobre el disco, después
+# de huellas, sitemap e IndexNow: esos siguen viendo el HTML sin versión, así que
+# un cambio de CSS no marca páginas como nuevas.
+ASSETS_DIR = ROOT / "assets"
+_RE_ASSET = re.compile(r'((?:\.\./|\./|/)*assets/([\w.-]+\.(?:css|js)))(?:\?v=[0-9a-f]+)?(?=["\'])')
+
+
+def _sin_version(html: str) -> str:
+    return _RE_ASSET.sub(lambda m: m.group(1), html)
+
+
+def huellas_assets(carpeta: pathlib.Path | None = None) -> dict:
+    """{nombre: hash corto} de los CSS y JS de assets/."""
+    import hashlib
+    carpeta = carpeta or ASSETS_DIR
+    return {f.name: hashlib.sha256(f.read_bytes()).hexdigest()[:10]
+            for f in sorted(carpeta.glob("*")) if f.suffix in (".css", ".js") and f.is_file()}
+
+
+def versionar_html(html: str, huellas: dict) -> str:
+    def sub(m):
+        h = huellas.get(m.group(2))
+        return f"{m.group(1)}?v={h}" if h else m.group(0)
+    return _RE_ASSET.sub(sub, html)
+
+
+def versionar_assets(raiz: pathlib.Path = ROOT) -> int:
+    """Pone ?v= en todo el HTML publicable. Devuelve cuántos ficheros cambian."""
+    huellas = huellas_assets(raiz / "assets")
+    sys.path.insert(0, str(raiz / "tools"))
+    from montar_sitio import leer_publicables
+    vistos, n = set(), 0
+    for patron, _oblig in leer_publicables():
+        for base in raiz.glob(patron):
+            ficheros = base.rglob("*.html") if base.is_dir() else [base]
+            for f in ficheros:
+                if f.suffix != ".html" or f in vistos or not f.is_file():
+                    continue
+                vistos.add(f)
+                texto = f.read_text(encoding="utf-8")
+                if "assets/" in texto:
+                    nuevo = versionar_html(texto, huellas)
+                    if nuevo != texto:
+                        f.write_text(nuevo, encoding="utf-8")
+                        n += 1
+    log(f"assets: ?v= en {n} páginas ({', '.join(f'{k}={v}' for k, v in huellas.items())})")
+    return n
 
 def escribir_si_cambia(ruta: pathlib.Path, texto: str) -> bool:
     """Escribe solo si el contenido es distinto. Git ya ignora los ficheros
@@ -7097,6 +7150,7 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
         "urlList": urls,
     }, ensure_ascii=False), encoding="utf-8")
     log(f"indexnow.json: {len(urls)} URLs para notificar")
+    versionar_assets()
 
 
 # Sube cuando cambie lo que materia_redaccion() extrae: las piezas ya
