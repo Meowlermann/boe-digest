@@ -1149,30 +1149,73 @@ def generar_paginas(h: dict) -> list:
              "url": f"{site}tramitacion/antiguedad.html"}])
 
     # ----------------------------------------------------------------- índice
-    resumen = "".join(
-        f'<li><a href="estado-{s}.html">{esc(e_)}</a><span class="ref">{len(por_estado.get(s, []))}</span></li>'
-        for s, e_, _d in ESTADOS)
-    aut = "".join(f'<li><a href="autor-{attr(slug_autor(a))}.html">{esc(grupo_corto(a))}</a>'
-                  f'<span class="ref">{len(l)}</span></li>' for a, l in sorted(autores.items(), key=lambda x: -len(x[1])))
-    recientes = "".join(f'<li><a href="/{attr(r)}">{esc(t)}</a><span class="ref">{esc(fecha(f))}</span></li>'
-                        for f, t, r in novedades(e, 30))
+    # Diseño propio (clases tr-ix-*, CSS acotado en style.css): resumen, rejilla
+    # «Por estado», filas de últimos movimientos, tabla por autor y lateral
+    # «En cifras». Solo cifras que salen de los datos; sin subrayados.
+    n_ini = len(ini)
     abiertas_n = sum(len(por_estado.get(s, [])) for s in ABIERTOS)
+    congelador_n = sum(1 for v in ini.values() if congelada(v, hoy))
+    leyes_n = len(e.get("leyes") or [])
+    tope = max((len(por_estado.get(s, [])) for s, _e, _d in ESTADOS), default=0) or 1
+    celdas = "".join(
+        f'<li><a href="estado-{s}.html"><span class="tr-ix-et">{esc(e_)}</span>'
+        f'<span class="tr-ix-n">{len(por_estado.get(s, []))}</span>'
+        f'<span class="tr-ix-barra" aria-hidden="true"><i style="width:{round(100 * len(por_estado.get(s, [])) / tope)}%"></i></span></a></li>'
+        for s, e_, _d in ESTADOS)
+    movs = []
+    for exp, v in ini.items():
+        if v.get("hitos"):
+            movs.append((v["hitos"][-1]["f"], exp, v, v["hitos"][-1]["h"]))
+    movs.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    filas_mov = "".join(
+        f'<li><a href="/tramitacion/{attr(slug(exp))}.html">'
+        f'<time class="tr-ix-f" datetime="{attr(f)}">{esc(fecha(f))}</time>'
+        f'<span class="tr-ix-cuerpo"><span class="tr-ix-t">{esc(titulo_corto(exp, v["t"]))}</span>'
+        f'<span class="tr-ix-meta">{esc(hito)} · {esc(tipo_corto(v["tipo"]))} · {esc(grupo_corto(v["a"]))} · {esc(exp)}</span></span>'
+        f'<span class="tr-ix-chip tr-{attr(v["est"])}">{esc(ETIQUETA[v["est"]])}</span>'
+        f'<span class="tr-ix-flecha" aria-hidden="true">→</span></a></li>'
+        for f, exp, v, hito in movs[:30])
+
+    def cuenta(lista, estados):
+        return sum(1 for _k, v in lista if v["est"] in estados)
+    filas_aut = "".join(
+        f'<tr><th scope="row"><a href="autor-{attr(slug_autor(a))}.html">{esc(grupo_corto(a))}</a></th>'
+        f'<td>{len(l)}</td><td>{cuenta(l, {"aprobada"})}</td><td>{cuenta(l, {"rechazada"})}</td>'
+        f'<td>{cuenta(l, {"caducada"})}</td><td>{cuenta(l, ABIERTOS)}</td>'
+        f'<td class="tr-ix-pct">{f"{100 * len(l) / n_ini:.1f}".replace(".", ",")} %'
+        f'<span class="tr-ix-barra" aria-hidden="true"><i style="width:{round(100 * len(l) / n_ini)}%"></i></span></td></tr>'
+        for a, l in sorted(autores.items(), key=lambda x: (-len(x[1]), x[0])))
+    cerradas_n = n_ini - abiertas_n
+    cuerpo = (
+        '<div class="tr-ix"><div class="tr-ix-main">'
+        '<section class="tr-ix-resumen" aria-label="Resumen">'
+        f'<dl class="tr-ix-cifras"><dt>Iniciativas</dt><dd>{n_ini}</dd><dt>Abiertas</dt><dd>{abiertas_n}</dd>'
+        f'<dt>En el congelador</dt><dd>{congelador_n}</dd></dl>'
+        f'<p class="tr-ix-leyes"><span>Leyes aprobadas</span><b>{leyes_n}</b></p></section>'
+        f'<h2 class="rotulo">Por estado</h2><ul class="tr-ix-estados">{celdas}</ul>'
+        '<p class="tr-ix-nota"><b>En el congelador:</b> '
+        '<a href="ampliaciones.html">más ampliaciones del plazo de enmiendas</a> · '
+        '<a href="antiguedad.html">más tiempo en tramitación</a> · '
+        '<a href="metodologia.html">cómo se hace</a></p>'
+        f'<h2 class="rotulo">Últimos movimientos</h2><ul class="tr-ix-movs">{filas_mov}</ul>'
+        '<h2 class="rotulo">Por autor</h2><div class="tr-ix-tabla" role="region" tabindex="0" aria-label="Iniciativas por autor">'
+        '<table><thead><tr><th scope="col">Autor</th><th scope="col">Iniciativas</th><th scope="col">Aprobadas</th>'
+        '<th scope="col">Rechazadas</th><th scope="col">Caducadas</th><th scope="col">Abiertas</th>'
+        f'<th scope="col">% del total</th></tr></thead><tbody>{filas_aut}</tbody></table></div>'
+        '</div><aside class="tr-ix-lado" aria-label="En cifras"><h2>En cifras</h2>'
+        f'<p class="tr-ix-gr"><b>{n_ini}</b><span>iniciativas en la legislatura</span></p>'
+        f'<p class="tr-ix-gr"><b>{cerradas_n}</b><span>ya cerradas (aprobadas, rechazadas, retiradas, caducadas, convalidadas o derogadas)</span></p>'
+        f'<p class="tr-ix-gr"><b>{len(autores)}</b><span>autores distintos</span></p>'
+        '<h3>Sobre la tramitación</h3><p>Cada estado sale de la situación oficial de la iniciativa en los datos '
+        'abiertos del Congreso o, si está cerrada, de su resultado.</p>'
+        '<p><a href="metodologia.html">Cómo se hace →</a></p></aside></div>')
     pagina("index.html", "Qué se tramita en el Congreso y en qué punto está | La Tercera Cámara",
-           f"Seguimiento de las {len(ini)} iniciativas legislativas de la legislatura: {abiertas_n} abiertas, "
+           f"Seguimiento de las {n_ini} iniciativas legislativas de la legislatura: {abiertas_n} abiertas, "
            "en qué estado está cada una, plazos de enmiendas y leyes resultantes.",
            "Qué se tramita", "Seguimiento",
            "Cada proyecto y proposición de ley de la legislatura, y los reales decretos-ley votados: "
            "en qué estado está, qué plazos tiene y cómo acaba.",
-           f"<dt>Iniciativas</dt><dd>{len(ini)}</dd><dt>Abiertas</dt><dd>{abiertas_n}</dd>"
-           f"<dt>En el congelador</dt><dd>{sum(1 for v in ini.values() if congelada(v, hoy))}</dd>"
-           f"<dt>Leyes aprobadas</dt><dd>{len(e.get('leyes') or [])}</dd>",
-           (f'<h2 class="rotulo">Por estado</h2><ul class="provincias">{resumen}</ul>'
-            f'<p class="aside-note"><a class="srclink" href="ampliaciones.html">En el congelador: más ampliaciones del plazo de enmiendas</a> · '
-            f'<a class="srclink" href="antiguedad.html">Más tiempo en tramitación</a> · '
-            f'<a class="srclink" href="metodologia.html">Cómo se hace</a></p>'
-            f'<h2 class="rotulo">Últimos movimientos</h2><ul class="indice">{recientes}</ul>'
-            f'<h2 class="rotulo">Por autor</h2><ul class="provincias">{aut}</ul>'),
-           lm_total, miga(),
+           "", cuerpo, lm_total, miga(),
            [{"@type": "CollectionPage", "name": "Qué se tramita en el Congreso",
              "url": f"{site}tramitacion/", "inLanguage": "es-ES", "dateModified": lm_total}])
 
