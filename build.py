@@ -4618,10 +4618,35 @@ def _anunciar_feed(html: str, carpeta: pathlib.Path, nombre: str) -> str:
     return html.replace('<dl class="ficha">', fd.boton(feed[0]) + '<dl class="ficha">', 1)
 
 
+def fecha_datos_congreso() -> str:
+    """Último día en que se consultaron los datos abiertos del Congreso
+    (state/congreso.json, «dias_mirados»), como DD/MM/AAAA. Es un dato real del
+    estado, no la fecha del pase: si hoy no se consultó, no se dice hoy. Sin
+    estado legible devuelve "" y no se pinta ninguna fecha."""
+    try:
+        estado = json.loads(ESTADO_CONGRESO.read_text(encoding="utf-8"))
+        dias = [dt.datetime.strptime(d, "%d/%m/%Y").date()
+                for d in estado.get("dias_mirados") or []]
+    except (OSError, ValueError, TypeError, AttributeError):
+        return ""
+    return max(dias).strftime("%d/%m/%Y") if dias else ""
+
+
+def _fuente_con_fecha(fuente: str, fecha: str) -> str:
+    """Condiciones de reutilización del Congreso (congreso.es/cem/aviso-legal):
+    citar la fuente y la fecha de la última actualización. Si la línea de fuente
+    cita al Congreso y aún no lleva fecha, se le añade una vez."""
+    if not fecha or "Congreso" not in fuente or "actualizad" in fuente.lower():
+        return fuente
+    return f"{fuente} Datos del Congreso actualizados el {fecha}."
+
+
 def _pagina_suelta(plantilla: str, carpeta: pathlib.Path, nombre: str, frag: dict) -> None:
     """Todas las páginas auxiliares comparten la plantilla de ficha: un diseño,
     un sitio donde tocarlo."""
     carpeta.mkdir(exist_ok=True)
+    if frag.get("FUENTE"):
+        frag = {**frag, "FUENTE": _fuente_con_fecha(frag["FUENTE"], fecha_datos_congreso())}
     escribir_si_cambia(carpeta / nombre,
                        _anunciar_feed(_replace_placeholders(plantilla, frag), carpeta, nombre))
 
