@@ -5795,24 +5795,89 @@ def renderizar_seguimiento(dias: list) -> list:
         n_escritas = len(pq.cargar_escritas().get("exp") or {})
     except Exception:                                         # noqa: BLE001
         n_escritas = 0
-    ficha = (f"<dt>En tramitación</dt><dd>{abiertas} iniciativas</dd>"
-             f"<dt>Aprobadas</dt><dd>{cuenta.get('aprobada', 0)} leyes</dd>"
-             f"<dt>Votaciones</dt><dd>{len(detalle)} en el Pleno</dd>"
-             + (f"<dt>Preguntas escritas</dt><dd>{n_escritas} registradas</dd>" if n_escritas else ""))
+    ini = e.get("ini") or {}
+    try:
+        import preguntas as pq
+        n_contestadas = sum(1 for v in (pq.cargar_escritas().get("exp") or {}).values() if v.get("c"))
+    except Exception:                                         # noqa: BLE001
+        n_contestadas = 0
+
+    def filas_seg(filas):
+        """filas (fecha, título, enlace, meta, chip, clase) con el aspecto de
+        «Últimos movimientos» de /tramitacion/ (.tr-ix-movs)."""
+        out = ""
+        for f, t, u, meta, chip, cls in filas:
+            u = u if u.startswith(("http", "/")) else "/" + u
+            out += (f'<li><a href="{esc_attr(u)}"'
+                    + (' target="_blank" rel="noopener"' if u.startswith("http") else "")
+                    + f'><time class="tr-ix-f" datetime="{esc_attr(f)}">{esc_html(fmt_date_es(f))}</time>'
+                    f'<span class="tr-ix-cuerpo"><span class="tr-ix-t">{esc_html(recortar(t))}</span>'
+                    + (f'<span class="tr-ix-meta">{esc_html(meta)}</span>' if meta else "")
+                    + '</span>'
+                    + (f'<span class="tr-ix-chip {cls}">{esc_html(chip)}</span>' if chip else '<span></span>')
+                    + '<span class="tr-ix-flecha" aria-hidden="true">→</span></a></li>')
+        return (f'<ul class="tr-ix-movs">{out}</ul>' if out
+                else '<p class="ref">Sin novedades todavía.</p>')
+
+    def bloque(titulo, entradilla, filas, mas, mas_txt):
+        return (f'<h2 class="rotulo">{esc_html(titulo)}</h2><p>{esc_html(entradilla)}</p>'
+                + filas_seg(filas)
+                + f'<p class="tr-ix-mas"><a href="{mas}">{esc_html(mas_txt)} →</a></p>')
+
+    # Qué se tramita: el último paso de cada iniciativa (lo mismo que tr.novedades).
+    f_tr = []
+    for exp, v in ini.items():
+        if v.get("hitos"):
+            hh = v["hitos"][-1]
+            f_tr.append((hh["f"], tr.titulo_corto(exp, v["t"]), f"tramitacion/{tr.slug(exp)}.html",
+                         hh["h"], tr.ETIQUETA.get(v["est"], ""), f'tr-{v["est"]}'))
+    f_tr = sorted(f_tr, key=lambda x: x[0], reverse=True)[:5]
+    f_vot = []
+    for f, asunto, u in nov_vot:
+        d = next((x for x in detalle if x["f"] == f and (x.get("a") or x.get("t") or "Votación") == asunto), {})
+        tot = d.get("tot") or []
+        meta = ("Por asentimiento" if d.get("asent") else
+                (f"Sí {tot[0]} · No {tot[1]} · Abstención {tot[2]}" if len(tot) >= 3 and tot[0] is not None else ""))
+        f_vot.append((f, asunto, u, meta, "", ""))
+    f_pre = []
+    for f, t, u in nov_pre:
+        chip = "Contestada" if t.startswith("Contestada: ") else ("Registrada" if t.startswith("Registrada: ") else "Oral")
+        t = t.split(": ", 1)[1] if chip != "Oral" else t
+        f_pre.append((f, t, u, "Pregunta escrita" if chip != "Oral" else "Pregunta oral", chip,
+                      "tr-aprobada" if chip == "Contestada" else ""))
+    tarjetas = "".join(
+        f'<li><span class="tr-ix-et">{a_}</span><b>{n_}</b><span>{b_}</span></li>'
+        for a_, n_, b_ in [("En tramitación", abiertas, "iniciativas"),
+                           ("Aprobadas", cuenta.get("aprobada", 0), "leyes"),
+                           ("Votaciones", len(detalle), "en el Pleno")]
+        + ([("Preguntas escritas", n_escritas, "registradas")] if n_escritas else []))
+    lado = ('<aside class="tr-ix-lado" aria-labelledby="seg-cifras"><h2 id="seg-cifras">En cifras</h2>'
+            f'<p class="tr-ix-gr"><b>{len(ini)}</b><span>iniciativas en la legislatura</span></p>'
+            f'<p class="tr-ix-gr"><b>{len(ini) - abiertas}</b><span>ya cerradas</span></p>'
+            + (f'<p class="tr-ix-gr"><b>{n_contestadas}</b><span>preguntas escritas contestadas</span></p>'
+               if n_escritas else "")
+            + '<h3>Sobre el seguimiento</h3><p>Los datos salen de los datos abiertos del Congreso y se '
+              'actualizan cada día: iniciativas, votaciones del Pleno y preguntas al Gobierno.</p>'
+              '<p><a href="/tramitacion/metodologia.html">Cómo se hace →</a></p></aside>')
+    ficha = ""
     cuerpo = (
-        bloque("Qué se tramita",
-               f"{abiertas} proyectos y proposiciones de ley siguen abiertos en el Congreso. "
-               "Los últimos pasos:", nov_tr, "/tramitacion/", "Todas las iniciativas, por estado")
+        '<div class="tr-ix tr-ix-seg"><div class="tr-ix-main">'
+        '<h2 class="rotulo">Resumen de cifras</h2>'
+        f'<ul class="tr-ix-tarjetas">{tarjetas}</ul>'
+        + bloque("Qué se tramita",
+                 f"{abiertas} proyectos y proposiciones de ley siguen abiertos en el Congreso. "
+                 "Los últimos pasos:", f_tr, "/tramitacion/", "Todas las iniciativas, por estado")
         + bloque("Cómo se vota", "Las últimas votaciones del Pleno, con el voto de cada diputado:",
-                 nov_vot, "/votaciones/", "Todas las votaciones")
+                 f_vot, "/votaciones/", "Todas las votaciones")
         + bloque("Qué se pregunta", "Las últimas preguntas al Gobierno, orales y escritas:",
-                 nov_pre, "/preguntas/" if preguntas_publicadas() else
+                 f_pre, "/preguntas/" if preguntas_publicadas() else
                  ("/sesiones/" if sesiones_publicadas() else "/diputados/"),
                  "Preguntas al Gobierno" if preguntas_publicadas() else
                  ("Sesiones de control" if sesiones_publicadas() else "Los diputados, uno a uno"))
         + '<h2 class="rotulo">Tu provincia</h2><p>Lo mismo, provincia a provincia: sus diputados, lo '
           'que se pregunta y se tramita sobre ella y lo que publica el BOE.</p>'
-          '<p><a class="srclink" href="/provincias/">Elegir provincia →</a></p>')
+          '<p><a class="tr-ix-boton" href="/provincias/">Elegir provincia →</a></p>'
+          '</div>' + lado + '</div>')
     url = f"{SITE_URL}seguimiento/"
     titulo = "Seguimiento del Congreso: qué se tramita, cómo se vota y qué se pregunta"
     desc = ("Las leyes en tramitación, las votaciones del Pleno y las preguntas al Gobierno, "
