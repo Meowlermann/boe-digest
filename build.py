@@ -5061,12 +5061,12 @@ def _tarjeta_diputado(f, prefijo=""):
 
 
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
-                    url, miga, kicker, ficha_extra="", cuerpo_extra=""):
+                    url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None):
     filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
         "TITLE": esc_html(titulo),
-        "META_DESC": esc_attr(entradilla[:155]),
+        "META_DESC": esc_attr((meta_desc or entradilla)[:155]),
         "CANONICAL": url,
         "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": h1, "url": url,
                                   "inLanguage": "es-ES", "dateModified": hoy}]),
@@ -6039,14 +6039,17 @@ def renderizar_diputados(fichas: list) -> list:
         url = f"{SITE_URL}diputados/grupo-{slug}.html"
         salidas.append(_pagina_listado(
             plantilla, DIPUTADOS_DIR, f"grupo-{slug}.html",
-            f"Diputados de {corto} — actividad y votos | La Tercera Cámara",
-            f"Diputados de {corto}",
+            # Prueba de títulos (docs/pruebas-titulos.md, desde el 2026-11-02).
+            f"Grupo {corto} en el Congreso: sus {len(gente)} diputados | La Tercera Cámara",
+            f"Grupo {corto} en el Congreso",
             f"Los {len(gente)} diputados del {largo}, con sus intervenciones y sus votos.",
             gente, url,
             f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
             f'<span aria-current="page">{esc_html(corto)}</span>',
             "Grupo parlamentario",
-            f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>{esc_html(largo)}</dd>"))
+            f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>{esc_html(largo)}</dd>",
+            meta_desc=(f"Ficha de cada uno de los {len(gente)} diputados del {largo}: sus "
+                       f"intervenciones y sus votos en el Pleno.")))
 
     # --- una página por provincia ----------------------------------------
     por_prov = {}
