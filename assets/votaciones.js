@@ -8,7 +8,8 @@
  *      un pleno puede traer sesenta votaciones.
  *   2. Al pasar el ratón (o tocar) un escaño: quién es y qué votó.
  *   3. «¿Qué votó tu diputado?»: se elige a alguien y cada votación dice qué
- *      votó y marca su escaño. Queda en la URL (?d=slug) para compartirlo.
+ *      votó y marca su escaño. Queda en el fragmento (#d=slug) para compartirlo;
+ *      se sigue aceptando el antiguo ?d=slug, que se pasa a fragmento.
  */
 (function () {
   "use strict";
@@ -172,8 +173,9 @@
     if (borrar) borrar.hidden = elegido === null;
     try {
       var u = new URL(location.href);
-      if (elegido === null) u.searchParams.delete("d"); else u.searchParams.set("d", slug);
-      history.replaceState(null, "", u);
+      u.searchParams.delete("d");
+      u.hash = elegido === null ? "" : "d=" + encodeURIComponent(slug);
+      history.replaceState(null, "", elegido === null ? u.href.replace(/#$/, "") : u.href);
     } catch (e) { /* sin URL API: no pasa nada */ }
   }
 
@@ -194,12 +196,28 @@
       else if (!caja.value.trim()) elegir(null);
     });
     if (borrar) borrar.addEventListener("click", function () { caja.value = ""; elegir(null); caja.focus(); });
-    var inicial = null;
-    try { inicial = new URL(location.href).searchParams.get("d"); } catch (e) {}
+    // Fragmento #d=slug (enlaces de las fichas) o, por compatibilidad,
+    // el antiguo ?d=slug.
+    var desdeUrl = function () {
+      var d = null;
+      try {
+        var m = /(?:^#|&)d=([^&]+)/.exec(location.hash);
+        d = m ? decodeURIComponent(m[1]) : new URL(location.href).searchParams.get("d");
+      } catch (e) {}
+      return d;
+    };
+    var inicial = desdeUrl();
     if (inicial && porSlug[inicial] !== undefined) {
       caja.value = A[porSlug[inicial]][4];
       elegir(inicial);
     }
+    window.addEventListener("hashchange", function () {
+      var d = desdeUrl();
+      if (d && porSlug[d] !== undefined && porSlug[d] !== elegido) {
+        caja.value = A[porSlug[d]][4];
+        elegir(d);
+      }
+    });
   }
   }
 })();

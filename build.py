@@ -5936,7 +5936,10 @@ def renderizar_diputados(fichas: list) -> list:
             for v in f["ultimos_votos"]:
                 distinto = not v.get("con_su_grupo", True)
                 asunto = esc_html(v.get("asunto") or "Votación")
-                destino = (v.get("enlace") + "?d=" + f["slug"]) if v.get("enlace") else ""
+                # Fragmento, no query: «#d=slug» no crea una URL rastreable nueva
+                # (Search Console contaba cientos de «alternativas con canónica»);
+                # votaciones.js lo lee y marca el voto del diputado.
+                destino = (v.get("enlace") + "#d=" + f["slug"]) if v.get("enlace") else ""
                 enlace = (f'<a href="../votaciones/{esc_attr(destino)}">{asunto}</a>'
                           if destino else asunto)
                 que = (f'<span class="vd-que">{esc_html(v["que"])}</span>'
