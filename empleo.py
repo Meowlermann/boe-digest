@@ -945,19 +945,19 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     # las cifras reales de la ventana. Los carriles (PR #66) no cambian.
     resumen = "" if not recientes else (f'<div class="tr-ix-resumen tr-ix-em-resumen"><dl class="tr-ix-cifras">'
                f'{recuento(recientes)}</dl>'
-               f'<p class="tr-ix-leyes"><span>Últimos {DIAS_PORTADA} días</span><b><a href="#t-{primero(recientes)}">{len(recientes)}</a></b>'
+               f'<p class="tr-ix-leyes"><span>Últimos {DIAS_PORTADA} días</span><b>{len(recientes)}</b>'
                f'<span>disposiciones de empleo público</span></p></div>')
     convoc = sum(1 for r in recientes if r["tipo"] == "convocatoria")
     lado = ('<aside class="tr-ix-lado" aria-labelledby="em-cifras"><h2 id="em-cifras">En cifras</h2>'
-            f'<p class="tr-ix-gr"><b>{convoc}</b><span>convocatorias de procesos selectivos en '
+            f'<p class="tr-ix-gr tr-ix-em-rep"><b>{convoc}</b><span>convocatorias de procesos selectivos en '
             f'{DIAS_PORTADA} días</span></p>'
             f'<p class="tr-ix-gr"><b>{sum(1 for r in regs if r["fecha"] == ref)}</b><span>disposiciones '
             f'en el BOE del {esc(fecha_es(ref))}</span></p>'
             f'<p class="tr-ix-gr"><b>{len(por_dept)}</b><span>organismos convocantes</span></p>'
             f'<p class="tr-ix-gr"><b>{len(por_prov)}</b><span>provincias nombradas en los títulos</span></p>'
-            '<h3>Canales</h3>'
-            f'<p><a href="{RSS_EMPLEO}">Todo el empleo público (RSS) →</a></p>'
-            '<p><a href="#avisos">Canales por provincia y organismo →</a></p></aside>')
+            '<h3 class="tr-ix-em-rep">Canales</h3>'
+            f'<p class="tr-ix-em-rep"><a href="{RSS_EMPLEO}">Todo el empleo público (RSS) →</a></p>'
+            '<p class="tr-ix-em-rep"><a href="#avisos">Canales por provincia y organismo →</a></p></aside>')
     listas = ('<div class="tr-ix-em-dos">'
               f'<section aria-labelledby="organismos"><h2 id="organismos">Por organismo convocante</h2>'
               f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_dept)}</ul></section>'
