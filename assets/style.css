@@ -1751,3 +1751,25 @@ body:has(.tr-ix) .fuente a,.tr-ix-nota a,.tr-ix-lado a{color:var(--red-ink);font
 body:has(.tr-ix-seg) footer a{color:var(--red-ink);font-weight:700;padding:0 2px;border-radius:2px}
 body:has(.tr-ix-seg) footer a:hover{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
 /* --- fin /seguimiento/ ---------------------------------------------------- */
+/* --- /empleo/ (reutiliza .tr-ix de /tramitacion/ y /seguimiento/) ---------
+   Solo el índice: caja de resumen, en cifras y listas en dos columnas. Los
+   carriles, selectores y filtros conservan su CSS (.em-*). Sin subrayados. */
+.tr-ix-em .tr-ix-cifras dd a,.tr-ix-em .tr-ix-leyes a{color:inherit;padding:0 3px;border-radius:2px}
+.tr-ix-em .tr-ix-cifras dd a{color:var(--red-ink)}
+.tr-ix-em .tr-ix-main a:not(.em-btn):hover,.tr-ix-em .tr-ix-lado a:hover{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
+.tr-ix-em .tr-ix-main{min-width:0}
+.tr-ix-em-dos{display:grid;gap:8px 32px;margin:26px 0}
+@media (min-width:760px){ .tr-ix-em-dos{grid-template-columns:1fr 1fr} }
+.tr-ix-em-dos section{min-width:0}
+.tr-ix-em-dos h2{margin-top:0 !important}
+.tr-ix-em-lista{list-style:none;padding:0;margin:0;border-top:1px solid var(--border)}
+.tr-ix-em-lista li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 !important;margin:0 !important;
+  border-bottom:1px solid var(--border);font-family:"Work Sans",system-ui,sans-serif}
+.tr-ix-em-lista a{flex:1;min-width:0;padding:7px 4px;color:var(--ink);font-weight:600;font-size:14px;overflow-wrap:anywhere}
+.tr-ix-em-lista a:hover{color:var(--red-ink)}
+.tr-ix-em-lista .ref{font:600 12px/1.4 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-soft);white-space:nowrap}
+.tr-ix-em .em-sel-l a{color:var(--ink);font-weight:600;border-radius:2px}
+body:has(.tr-ix-em) .seguir-rss a{border-bottom:0;font-weight:700;padding:0 2px;border-radius:2px}
+body:has(.tr-ix-em) .seguir-rss a:hover,body:has(.tr-ix-em) footer a:hover{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
+body:has(.tr-ix-em) footer a{color:var(--red-ink);font-weight:700;padding:0 2px;border-radius:2px}
+/* --- fin /empleo/ -------------------------------------------------------- */
