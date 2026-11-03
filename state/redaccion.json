@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso acumula 38 preguntas escritas que superan el plazo sin respuesta",
-   "entradilla": "Un total de 38 iniciativas escritas presentadas en el último año llevan más de 20 días hábiles publicadas sin que conste contestación en las fichas oficiales del Congreso.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso registra 38 preguntas escritas con más de 20 días hábiles sin contestar",
+   "entradilla": "Un recuento sobre el último año refleja que 38 preguntas escritas superan la fecha límite fijada por el Congreso sin contestación registrada.",
    "claves": [
-    "Sumar concentra 30 de las preguntas pendientes, el PSOE acumula cuatro, el PP tiene dos, Junts cuenta con una y existe una correspondiente al grupo Sin grupo.",
-    "La iniciativa más antigua sin contestación registrada en el Congreso se publicó el lunes 15 de diciembre de 2025.",
-    "La lista incluye preguntas cuya fecha límite oficial ha sido superada, si bien puede haber prórrogas o respuestas no reflejadas todavía."
+    "La pregunta más antigua sin contestación registrada se publicó el lunes 16 de febrero de 2026.",
+    "Por grupo de quien pregunta, las iniciativas corresponden a Sumar (24), PSOE (7), PP (4), GV (EAJ-PNV 1), Junts (1) y Sin grupo (1).",
+    "El recuento abarca las preguntas del último año y señala que puede haber prórrogas o respuestas no reflejadas en la ficha."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-03"
@@ -10590,9 +10590,207 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-02"
+  },
+  "BOE-A-2026-23064": {
+   "huella": "bc4c08b78d4df2d3",
+   "fuente": "9966d9313214a123",
+   "titular": "La ONCE emitirá cinco millones de cupones por la XXX Cumbre Iberoamericana",
+   "entradilla": "La organización pondrá a la venta cinco millones de ejemplares el 5 de noviembre de 2026 y asesorará a la organización del evento en materia de accesibilidad universal.",
+   "claves": [
+    "El cupón conmemorativo saldrá a la venta el 5 de noviembre de 2026 con un precio de 2 euros y una tirada de 5.000.000 de ejemplares.",
+    "La ONCE colaborará a requerimiento de la Oficina de la Cumbre en aspectos relativos a la accesibilidad universal antes y durante el evento.",
+    "En caso de incluirse actos de sensibilización sobre discapacidad, la ONCE asesorará sobre los contenidos de dichas sesiones."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23065": {
+   "huella": "5e45c2b1a1a23c15",
+   "fuente": "160906ec16113f71",
+   "titular": "La Audiencia Nacional cambia el reparto de demandas de asilo por los casos de Ceuta",
+   "entradilla": "La Sala Contencioso-Administrativa distribuirá mensualmente los recursos de protección internacional entre todas sus secciones para afrontar el incremento de expedientes.",
+   "claves": [
+    "Los recursos sobre asilo y apátrida se repartirán de forma mensual consecutiva entre todas las secciones de la Sala Contencioso-Administrativa.",
+    "Si concurren circunstancias excepcionales por una entrada masiva de asuntos, la distribución podrá hacerse por número de expedientes y no por meses.",
+    "La modificación busca dar respuesta a la acumulación de causas de protección internacional surgidas ante la situación generada en Ceuta."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23066": {
+   "huella": "c047cd682633ede8",
+   "fuente": "f19ccc88fcdd8e7f",
+   "titular": "El TSJ de Madrid fija las nuevas normas de reparto para su Sala de lo Social",
+   "entradilla": "El Tribunal Superior de Justicia de Madrid aprueba la clasificación de asuntos laborales e impugnaciones que se distribuirán correlativamente entre sus secciones.",
+   "claves": [
+    "El reparto de demandas y recursos que entren en la Sala de lo Social se realizará de manera correlativa y por materias entre sus secciones funcionales.",
+    "Las demandas en instancia se organizan en áreas como conflictos colectivos, despidos colectivos, tutela de derechos fundamentales e impugnaciones de convenios.",
+    "Los recursos de suplicación se dividirán según su materia, abarcando despidos individuales, sanciones, extinciones de contrato y reclamaciones de cantidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23067": {
+   "huella": "dab6b6475e64ed1f",
+   "fuente": "bb38019135c30d02",
+   "titular": "El Tribunal de Instancia de Pontevedra aprueba las normas de reparto contencioso",
+   "entradilla": "El órgano judicial clasifica los expedientes por materias y establece un turno específico para la atención de casos urgentes y recursos electorales.",
+   "claves": [
+    "Los asuntos contencioso-administrativos se asignarán a cada plaza por turno según grupos como personal, tributos, extranjería y licencias urbanísticas.",
+    "Los recursos urgentes presentados entre las 09:00 y las 14:00 horas hábiles los asumirá la sección contenciosa; fuera de ese horario irán a la plaza de guardia de instrucción.",
+    "En materia de procesos electorales, los recursos presentados durante cada convocatoria se turnarán a la plaza judicial que corresponda por orden."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23068": {
+   "huella": "c0d4bdbb77bc177e",
+   "fuente": "193191388084590c",
+   "titular": "El Tribunal de Instancia de Valladolid publica las normas de reparto contencioso",
+   "entradilla": "La Sección de lo Contencioso-Administrativo regulariza la asignación de expedientes entre sus plazas para garantizar una distribución igualitaria.",
+   "claves": [
+    "Los escritos de inicio de procedimiento se atribuirán por clases de forma rotatoria entre todas las plazas judiciales de la sección hasta completar la vuelta.",
+    "Los asuntos declarados urgentes por ley o por alegación apreciada se repartirán el mismo día de su presentación y se entregarán ese día o el hábil siguiente.",
+    "Los recursos electorales de una misma convocatoria se asignarán a una única plaza judicial para agilizar su resolución conjunta."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23070": {
+   "huella": "95b44fd77fda1c77",
+   "fuente": "a83ce48c47667ef3",
+   "titular": "El TSJ de Canarias asigna los pleitos de función pública a la Sección Segunda",
+   "entradilla": "El Tribunal Superior de Justicia de Canarias modifica de forma temporal durante seis meses las normas de reparto contencioso-administrativo.",
+   "claves": [
+    "Los asuntos relativos a función pública pasarán a tramitarse en la Sección Segunda de la Sala de lo Contencioso-Administrativo.",
+    "Esta reordenación del trabajo judicial tiene carácter temporal y una duración prevista de seis meses desde el 1 de octubre de 2026."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23071": {
+   "huella": "92aa86f113d293c3",
+   "fuente": "71addf964800fd91",
+   "titular": "El Catastro y la Universidad Autónoma de Barcelona pactan prácticas para alumnos",
+   "entradilla": "El convenio permitirá a los estudiantes de la universidad realizar prácticas curriculares y extracurriculares en la Dirección General del Catastro.",
+   "claves": [
+    "El acuerdo ofrece a los alumnos de la Universidad Autónoma de Barcelona la posibilidad de aplicar conocimientos teóricos en el ámbito del Catastro.",
+    "Las prácticas académicas externas abarcarán modalidades tanto curriculares como extracurriculares bajo supervisión universitaria."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23072": {
+   "huella": "ff98510549fdbb2f",
+   "fuente": "ac31994cd131e51d",
+   "titular": "Hacienda cita a los interesados por un recurso de GESTHA sobre provisión de puestos",
+   "entradilla": "La Agencia Tributaria abre un plazo de nueve días para personarse ante el Tribunal Central de Instancia por el proceso de selección del Cuerpo Técnico.",
+   "claves": [
+    "El sindicato GESTHA ha presentado un recurso contencioso-administrativo contra la resolución sobre candidatos del panel de provisión de puestos de carrera horizontal.",
+    "Las personas interesadas en el procedimiento disponen de un plazo de nueve días desde la publicación para personarse ante la Sección de lo Contencioso-Administrativo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23073": {
+   "huella": "6d3f3504315dca70",
+   "fuente": "a39aace9bc0b57ac",
+   "titular": "La Policía Local de Peñarroya-Pueblonuevo se integra en el sistema VioGén",
+   "entradilla": "El Ministerio del Interior y el Ayuntamiento cordobés acuerdan coordinar sus actuaciones para mejorar el seguimiento y la protección de víctimas de violencia de género.",
+   "claves": [
+    "El convenio permite la incorporación de la Policía Local del municipio al Sistema de Seguimiento Integral de los Casos de Violencia de Género.",
+    "Las partes buscan disponer de un registro centralizado que evalúe la evolución del riesgo y prevenga posibles agresiones machistas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23074": {
+   "huella": "9ce514d33dd001b9",
+   "fuente": "56af57e799e8ced0",
+   "titular": "El Ayuntamiento de Cala ejecutará las obras del cuartel de la Guardia Civil",
+   "entradilla": "El Ministerio del Interior encomienda al municipio la reforma del inmueble estatal con cargo al Programa de Fomento de Empleo Agrario.",
+   "claves": [
+    "El Ayuntamiento de Cala asumirá la ejecución material de las obras de reforma y rehabilitación de la casa-cuartel de titularidad estatal.",
+    "Los trabajos se financiarán en el marco del Programa de Fomento de Empleo Agrario para incentivar la contratación de trabajadores desempleados agrarios.",
+    "La encomienda de gestión no supone la transferencia de la titularidad de las instalaciones ni de la competencia de planificación del Ministerio del Interior."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23075": {
+   "huella": "dce574c4dd25cc33",
+   "fuente": "80522f2f8c6a4aca",
+   "titular": "Tráfico cita a los afectados por el recurso contra su concurso de personal",
+   "entradilla": "La Dirección General de Tráfico otorga nueve días de plazo para personarse ante el Tribunal Superior de Justicia de Madrid.",
+   "claves": [
+    "El procedimiento judicial recurre la resolución que convocó el concurso general para proveer puestos de trabajo en la Jefatura Central de Tráfico.",
+    "Las personas interesadas disponen de un plazo de nueve días para personarse ante la Sección Séptima de lo Contencioso-Administrativo del TSJ de Madrid."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23076": {
+   "huella": "5c21f9f0b3007416",
+   "fuente": "871a0c3663ceaa32",
+   "titular": "Educación y la Diputación de Castellón impulsan el Aula Mentor en dos municipios",
+   "entradilla": "El Ministerio y la institución provincial colaborarán para ofrecer formación no reglada para adultos a través de internet con tutorías telemáticas.",
+   "claves": [
+    "La Diputación de Castellón facilitará los locales y equipos en Lucena del Cid y Vall d'Alba para el desarrollo de los cursos telemáticos.",
+    "El programa Aula Mentor facilitará formación no reglada a adultos con asistencia tutorial y orientación profesional para la acreditación de competencias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23077": {
+   "huella": "bf3fa07279efb6bd",
+   "fuente": "4bc99144a244e0a3",
+   "titular": "Celanova se suma al programa de formación para adultos Aula Mentor",
+   "entradilla": "El Ayuntamiento orensano y el Ministerio de Educación firman un convenio para ofrecer cursos no reglados a distancia con apoyo informático.",
+   "claves": [
+    "El Ayuntamiento de Celanova aportará la sede del Parque das Triguerizas y la tecnología precisa para realizar las actividades formativas.",
+    "El programa Aula Mentor permite a la población adulta acceder a formación abierta a través de internet con asistencia tutorial telemática y presencial."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23078": {
+   "huella": "4ddda80822f95900",
+   "fuente": "f9af11a9415d6978",
+   "titular": "El Ayuntamiento de Novés impartirá cursos de adultos mediante el Aula Mentor",
+   "entradilla": "El municipio toledano y Educación acuerdan poner a disposición de los vecinos formación no reglada a través de internet con asistencia tutorial.",
+   "claves": [
+    "El Ayuntamiento de Novés habilitará las instalaciones de la Plaza de España para impartir la oferta formativa del catálogo oficial de Aula Mentor.",
+    "La iniciativa busca facilitar la formación a distancia de la población adulta y apoyar los itinerarios de acreditación de competencias profesionales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23079": {
+   "huella": "a2da478586e8f96a",
+   "fuente": "ea1faac26c7a20cf",
+   "titular": "La Bobadilla implantará el programa de formación de adultos Aula Mentor",
+   "entradilla": "La Entidad Local Autónoma jiennense y Educación firman un acuerdo para ofrecer formación a distancia orientada al aprendizaje y desarrollo profesional.",
+   "claves": [
+    "La Bobadilla dispondrá el inmueble de la calle Campo para la realización de los cursos telemáticos dirigidos a personas adultas.",
+    "El Ministerio aportará la oferta oficial de cursos telemáticos y el asesoramiento tutorial para la formación abierta de los ciudadanos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
+  },
+  "BOE-A-2026-23080": {
+   "huella": "63be2993c3181f4b",
+   "fuente": "c88ff3b16314fe13",
+   "titular": "Fuendejalón ofrecerá formación para adultos mediante el programa Aula Mentor",
+   "entradilla": "El municipio zaragozano y el Ministerio de Educación acuerdan colaborar para impartir cursos a distancia a través de internet.",
+   "claves": [
+    "El Ayuntamiento de Fuendejalón acondicionará las instalaciones de la calle Ramón y Cajal para acoger la plataforma de aprendizaje.",
+    "Los alumnos contarán con tutorías telemáticas y orientación para mejorar sus itinerarios formativos y profesionales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-03"
   }
  },
  "uso": {
-  "2026-11-03": 1
+  "2026-11-03": 3
  }
 }
