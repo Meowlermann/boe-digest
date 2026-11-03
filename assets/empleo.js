@@ -100,7 +100,7 @@ b.disabled = p.scrollLeft + p.clientWidth >= p.scrollWidth - 4;
 v.hidden = cabe && !todo;
 up.hidden = !todo;
 mas.hidden = !q;
-mas.textContent = "Cargar más (" + Math.min(LOTE, q) + " de " + q + " restantes)";
+mas.textContent = q > LOTE ? "Cargar más (" + LOTE + " de " + q + " restantes)" : q > 1 ? "Cargar las " + q + " restantes" : "Cargar la última";
 pos.hidden = todo || cabe || !n;
 if (pos.hidden) return;
 var w = n > 1 ? xs[1].offsetLeft - xs[0].offsetLeft : xs[0].offsetWidth, i = Math.min(n - 1, Math.round(p.scrollLeft / w));

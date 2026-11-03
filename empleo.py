@@ -585,7 +585,7 @@ def chips_filtro(filas: list, ref: str) -> str:
                             e=esc(PESTANAS.get(t, ETIQUETA_TIPO[t]))) for i, t in enumerate(tipos))
     bt += tab.format(v="todas", c=" ".join(f"p-{t}" for t in tipos), p="false", ti="-1", e="Todas")
     bd = (f'<button type="button" class="em-fb em-dias" data-f="dias" data-v="{DIAS_FILTRO}" '
-          f'aria-pressed="false">Últimos {DIAS_FILTRO} días</button>')
+          f'aria-pressed="false">Solo los últimos {DIAS_FILTRO} días</button>')
     return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" data-defecto="{tipos[0]}" hidden>'
             f'<div role="tablist" aria-label="Tipo de disposición" class="em-fg em-tabs">{bt}</div>'
             f'<div role="group" aria-label="Filtrar por fecha" class="em-fg">{bd}</div>'
