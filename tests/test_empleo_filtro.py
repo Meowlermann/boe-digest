@@ -50,7 +50,7 @@ class TestFiltro(unittest.TestCase):
         for t in tipos[:-1]:
             self.assertIn(t, em.ETIQUETA_TIPO)
         self.assertIn(f'data-f="dias" data-v="{em.DIAS_FILTRO}" aria-pressed="false">'
-                      f'Últimos {em.DIAS_FILTRO} días</button>', self.idx)
+                      f'Solo los últimos {em.DIAS_FILTRO} días</button>', self.idx)
         self.assertEqual(self.idx.count('role="tablist"'), 1)
         self.assertEqual(self.idx.count('role="group"'), 1)
         tabs = re.findall(r'<button[^>]*role="tab"[^>]*>', self.idx)
