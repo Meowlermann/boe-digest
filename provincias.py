@@ -94,24 +94,6 @@ ETIQUETA_CATEGORIA = {c: e for c, e, _r in CATEGORIAS}
 
 # ---------------------------------------------------------------- referencia
 
-
-# Prueba de títulos (docs/pruebas-titulos.md, desde el 2026-11-02): solo cambia
-# <title>, meta description y H1 de estas fichas; el resto de provincias es el
-# grupo de control. Solo usa cifras que la página ya muestra en su ficha.
-PRUEBA_TITULOS = frozenset({"murcia", "asturias", "madrid", "ceuta", "burgos",
-                            "cantabria", "melilla"})
-
-
-def textos_prueba(nombre: str, n_dip: int, n_preg: int, n_boe: int) -> tuple:
-    """(título, descripción, H1) de la variante de prueba."""
-    uno = n_dip == 1
-    titulo = (f"{'Diputado' if uno else 'Diputados'} por {nombre} ({n_dip}), "
-              f"preguntas al Gobierno y BOE")
-    desc = (f"{nombre} tiene {n_dip} {'diputado' if uno else 'diputados'} en el Congreso. "
-            f"{n_preg} {'pregunta' if n_preg == 1 else 'preguntas'} al Gobierno la nombran y el BOE "
-            f"publica {n_boe} {'disposición' if n_boe == 1 else 'disposiciones'} sobre ella. Datos oficiales.")
-    return titulo, desc, f"{nombre}: diputados, preguntas y BOE"
-
 def _plano(t: str) -> str:
     """Sin tildes, conservando mayúsculas y longitud (Ñ → N): las posiciones
     del texto plano sirven para el original."""
@@ -859,9 +841,6 @@ def generar_paginas(h: dict) -> list:
         titulo = f"{nombre} en las Cortes y en el BOE: diputados, preguntas y votaciones"
         desc = (f"{nombre}: {len(fichas)} diputados, {n_preg} preguntas al Gobierno que la nombran y "
                 f"{len(propios)} disposiciones del BOE sobre la provincia, con datos oficiales.")
-        h1 = nombre
-        if slug in PRUEBA_TITULOS:
-            titulo, desc, h1 = textos_prueba(nombre, len(fichas), n_preg, len(propios))
         url = f"{site}provincias/{slug}.html"
         ficha = (f"<dt>Comunidad</dt><dd>{esc(ccaa_nombre)}</dd><dt>Capital</dt><dd>{esc(p['capital'])}</dd>"
                  f"<dt>Diputados</dt><dd>{len(fichas)}</dd><dt>Preguntas</dt><dd>{n_preg}</dd>"
@@ -879,7 +858,7 @@ def generar_paginas(h: dict) -> list:
             "EDITION_DATE": esc(f"Datos al {fecha(lastmod)}"),
             "MIGA": ('<a href="../">Portada</a> › <a href="./">Tu provincia</a> › '
                      f'<span aria-current="page">{esc(nombre)}</span>'),
-            "KICKER": "Tu provincia en las Cortes y en el BOE", "HEADLINE": esc(h1),
+            "KICKER": "Tu provincia en las Cortes y en el BOE", "HEADLINE": esc(nombre),
             "STANDFIRST": esc(f"Qué hacen los diputados de {nombre} en el Congreso y qué publica el "
                               f"Estado que le afecte."),
             "FICHA": ficha, "CUERPO": "".join(bloques), "FUENTE": fuente,

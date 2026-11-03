@@ -5990,6 +5990,32 @@ def nota_diputacion_permanente(fichas: list, dp: set | None, prefijo: str = "") 
             f'cuyas fichas y votaciones se conservan.</p>')
 
 
+# Prueba de títulos (docs/pruebas-titulos.md): desde la tanda SEO 1b vive en
+# /diputados/provincia-X.html, que es la que recibe el tráfico de búsqueda. Solo
+# cambia <title>, meta description y H1; el resto de provincias es el control.
+PRUEBA_TITULOS_DIP = frozenset({"murcia", "asturias", "madrid", "ceuta", "burgos",
+                                "cantabria", "melilla"})
+
+
+def textos_prueba_dip(prov: str, reparto: list) -> tuple:
+    """(título, descripción, H1) de la variante de prueba. reparto: [(n, grupo corto)]
+    de mayor a menor, sacado de las mismas fichas que lista la página."""
+    n = sum(k for k, _ in reparto)
+    uno = n == 1
+    titulo = (f"Diputado por {prov} (1): quién es y cómo vota | La Tercera Cámara" if uno else
+              f"Diputados por {prov} ({n}): quiénes son y cómo votan | La Tercera Cámara")
+    partes = [f"{g} {k}" for k, g in reparto]
+    rep = partes[0] if len(partes) == 1 else ", ".join(partes[:-1]) + " y " + partes[-1]
+    cola = (" Su ficha, con intervenciones y votos en el Pleno." if uno else
+            " Ficha de cada uno, con intervenciones y votos en el Pleno.")
+    base = f"{prov} tiene {n} {'diputado' if uno else 'diputados'} en el Congreso"
+    desc = f"{base}: {rep}.{cola}"
+    if len(desc) > 155:
+        desc = f"{base}.{cola}"
+    h1 = f"Diputado por {prov}" if uno else f"Diputados por {prov}: quiénes son y cómo votan"
+    return titulo, desc, h1
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -6177,10 +6203,20 @@ def renderizar_diputados(fichas: list) -> list:
     for prov, gente in sorted(por_prov.items()):
         ps = _slug_txt(prov)
         url = f"{SITE_URL}diputados/provincia-{ps}.html"
+        titulo_p, h1_p, desc_p = (f"Diputados por {prov} — quiénes son y cómo votan | La Tercera Cámara",
+                                  f"Diputados por {prov}", None)
+        if ps in PRUEBA_TITULOS_DIP:
+            cortos = {largo: corto for largo, corto, _s, _c in cd.GRUPOS}
+            cuenta = {}
+            for f in gente:
+                g = cortos.get(f["grupo"], f["grupo"] or "sin grupo")
+                cuenta[g] = cuenta.get(g, 0) + 1
+            reparto = sorted(((k, g) for g, k in cuenta.items()), key=lambda x: (-x[0], x[1]))
+            titulo_p, desc_p, h1_p = textos_prueba_dip(prov, reparto)
         salidas.append(_pagina_listado(
             plantilla, DIPUTADOS_DIR, f"provincia-{ps}.html",
-            f"Diputados por {prov} — quiénes son y cómo votan | La Tercera Cámara",
-            f"Diputados por {prov}",
+            titulo_p,
+            h1_p,
             f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
             f"con su actividad y sus votos.",
             gente, url,
@@ -6191,7 +6227,8 @@ def renderizar_diputados(fichas: list) -> list:
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
             cuerpo_extra=(f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
-                          f'tramita, cómo votan y qué publica el BOE →</a></p>')))
+                          f'tramita, cómo votan y qué publica el BOE →</a></p>'),
+            meta_desc=desc_p))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}

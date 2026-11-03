@@ -1,38 +1,51 @@
-# Prueba de títulos (tanda SEO 1, ítem 2)
+# Prueba de títulos (tanda SEO 1 y 1b)
 
-**Fecha del cambio:** 2026-11-02 (en vigor desde el despliegue tras la fusión).
+**Fechas:** tanda 1 (#70) el 2026-11-02. Tanda 1b: preparada el 2026-11-03, **pendiente de fusión**; en vigor desde el despliegue tras fusionar (anotar aquí la fecha real).
 
-Solo cambian `<title>`, meta description y H1. No cambian canonical, noindex, sitemap (ni lastmod: idéntico byte a byte), feeds ni el texto visible (en las páginas de grupo, la entradilla visible se mantiene; la meta description va aparte). Las cifras salen de la ficha que ya muestra la página.
+**Tanda 1b — cambio de URL:** la prueba de provincias pasa de /provincias/X.html a /diputados/provincia-X.html, que es la URL que recibe impresiones y clics en Search Console (línea base del 02-11). Las 7 /provincias/X.html de prueba vuelven a su título, descripción y H1 anteriores a #70, para que no compartan título con la ficha de diputados. Los 9 grupos parlamentarios de #70 siguen igual.
 
-**Selección:** no hay datos de Search Console disponibles; se toman las provincias citadas por Dirección (Murcia, Asturias, Madrid, Ceuta, Burgos) más Cantabria y Melilla (tamaño similar a Asturias y Ceuta). Grupos: los 9 grupos parlamentarios, con la misma plantilla para todos.
+Solo cambian `<title>`, meta description y H1. No cambian canonical, noindex, sitemap, feeds ni el texto visible (la entradilla visible se mantiene; la meta description va aparte). Las cifras salen de las fichas que ya lista la página: número de diputados y reparto por grupo. Con 1 diputado, en singular. Si la descripción supera 155 caracteres, se omite el reparto.
 
-**Grupo de control (sin tocar):** /provincias/barcelona.html, alicante-alacant, navarra, salamanca, valladolid, soria, coruna-a.
+**Prueba:** /diputados/provincia-murcia, asturias, madrid, ceuta, burgos, cantabria, melilla.
 
-**Pendiente tras el despliegue:** comprobar en producción estas URL (título, descripción, H1) y comparar en Search Console prueba frente a control (CTR e impresiones) a las 4–6 semanas.
+**Grupo de control (sin tocar):** /diputados/provincia-barcelona.html, alicante-alacant, navarra, salamanca, valladolid, soria, coruna-a (y sus /provincias/ correspondientes).
+
+**Pendiente tras el despliegue:** comprobar en producción estas URL (título, descripción, H1) y comparar en Search Console prueba frente a control (CTR e impresiones) a las 4–6 semanas desde la fecha de despliegue de la 1b.
+
+## Tanda 1b: /diputados/provincia-X.html
 
 | URL | Campo | Antes | Después |
 |---|---|---|---|
-| /provincias/murcia.html | title | Murcia en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputados por Murcia (10), preguntas al Gobierno y BOE |
-| /provincias/murcia.html | description | Murcia: 10 diputados, 78 preguntas al Gobierno que la nombran y 68 disposiciones del BOE sobre la provincia, con datos oficiales. | Murcia tiene 10 diputados en el Congreso. 78 preguntas al Gobierno la nombran y el BOE publica 68 disposiciones sobre ella. Datos oficiales. |
-| /provincias/murcia.html | H1 | Murcia | Murcia: diputados, preguntas y BOE |
-| /provincias/asturias.html | title | Asturias en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputados por Asturias (7), preguntas al Gobierno y BOE |
-| /provincias/asturias.html | description | Asturias: 7 diputados, 59 preguntas al Gobierno que la nombran y 95 disposiciones del BOE sobre la provincia, con datos oficiales. | Asturias tiene 7 diputados en el Congreso. 59 preguntas al Gobierno la nombran y el BOE publica 95 disposiciones sobre ella. Datos oficiales. |
-| /provincias/asturias.html | H1 | Asturias | Asturias: diputados, preguntas y BOE |
-| /provincias/madrid.html | title | Madrid en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputados por Madrid (37), preguntas al Gobierno y BOE |
-| /provincias/madrid.html | description | Madrid: 37 diputados, 107 preguntas al Gobierno que la nombran y 586 disposiciones del BOE sobre la provincia, con datos oficiales. | Madrid tiene 37 diputados en el Congreso. 107 preguntas al Gobierno la nombran y el BOE publica 586 disposiciones sobre ella. Datos oficiales. |
-| /provincias/madrid.html | H1 | Madrid | Madrid: diputados, preguntas y BOE |
-| /provincias/ceuta.html | title | Ceuta en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputado por Ceuta (1), preguntas al Gobierno y BOE |
-| /provincias/ceuta.html | description | Ceuta: 1 diputados, 215 preguntas al Gobierno que la nombran y 298 disposiciones del BOE sobre la provincia, con datos oficiales. | Ceuta tiene 1 diputado en el Congreso. 215 preguntas al Gobierno la nombran y el BOE publica 298 disposiciones sobre ella. Datos oficiales. |
-| /provincias/ceuta.html | H1 | Ceuta | Ceuta: diputados, preguntas y BOE |
-| /provincias/burgos.html | title | Burgos en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputados por Burgos (4), preguntas al Gobierno y BOE |
-| /provincias/burgos.html | description | Burgos: 4 diputados, 59 preguntas al Gobierno que la nombran y 32 disposiciones del BOE sobre la provincia, con datos oficiales. | Burgos tiene 4 diputados en el Congreso. 59 preguntas al Gobierno la nombran y el BOE publica 32 disposiciones sobre ella. Datos oficiales. |
-| /provincias/burgos.html | H1 | Burgos | Burgos: diputados, preguntas y BOE |
-| /provincias/cantabria.html | title | Cantabria en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputados por Cantabria (5), preguntas al Gobierno y BOE |
-| /provincias/cantabria.html | description | Cantabria: 5 diputados, 70 preguntas al Gobierno que la nombran y 78 disposiciones del BOE sobre la provincia, con datos oficiales. | Cantabria tiene 5 diputados en el Congreso. 70 preguntas al Gobierno la nombran y el BOE publica 78 disposiciones sobre ella. Datos oficiales. |
-| /provincias/cantabria.html | H1 | Cantabria | Cantabria: diputados, preguntas y BOE |
-| /provincias/melilla.html | title | Melilla en las Cortes y en el BOE: diputados, preguntas y votaciones | Diputado por Melilla (1), preguntas al Gobierno y BOE |
-| /provincias/melilla.html | description | Melilla: 1 diputados, 64 preguntas al Gobierno que la nombran y 244 disposiciones del BOE sobre la provincia, con datos oficiales. | Melilla tiene 1 diputado en el Congreso. 64 preguntas al Gobierno la nombran y el BOE publica 244 disposiciones sobre ella. Datos oficiales. |
-| /provincias/melilla.html | H1 | Melilla | Melilla: diputados, preguntas y BOE |
+| /diputados/provincia-murcia.html | title | Diputados por Murcia — quiénes son y cómo votan \| La Tercera Cámara | Diputados por Murcia (10): quiénes son y cómo votan \| La Tercera Cámara |
+| /diputados/provincia-murcia.html | description | Los 10 diputados que representan a Murcia en el Congreso, con su actividad y sus votos. | Murcia tiene 10 diputados en el Congreso: PP 4, PSOE 3, Vox 2 y Mixto 1. Ficha de cada uno, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-murcia.html | H1 | Diputados por Murcia | Diputados por Murcia: quiénes son y cómo votan |
+| /diputados/provincia-asturias.html | title | Diputados por Asturias — quiénes son y cómo votan \| La Tercera Cámara | Diputados por Asturias (7): quiénes son y cómo votan \| La Tercera Cámara |
+| /diputados/provincia-asturias.html | description | Los 7 diputados que representan a Asturias en el Congreso, con su actividad y sus votos. | Asturias tiene 7 diputados en el Congreso: PP 3, PSOE 2, Sumar 1 y Vox 1. Ficha de cada uno, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-asturias.html | H1 | Diputados por Asturias | Diputados por Asturias: quiénes son y cómo votan |
+| /diputados/provincia-madrid.html | title | Diputados por Madrid — quiénes son y cómo votan \| La Tercera Cámara | Diputados por Madrid (37): quiénes son y cómo votan \| La Tercera Cámara |
+| /diputados/provincia-madrid.html | description | Los 37 diputados que representan a Madrid en el Congreso, con su actividad y sus votos. | Madrid tiene 37 diputados en el Congreso: PP 16, PSOE 10, Sumar 5, Vox 4 y Mixto 2. Ficha de cada uno, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-madrid.html | H1 | Diputados por Madrid | Diputados por Madrid: quiénes son y cómo votan |
+| /diputados/provincia-ceuta.html | title | Diputados por Ceuta — quiénes son y cómo votan \| La Tercera Cámara | Diputado por Ceuta (1): quién es y cómo vota \| La Tercera Cámara |
+| /diputados/provincia-ceuta.html | description | Los 1 diputados que representan a Ceuta en el Congreso, con su actividad y sus votos. | Ceuta tiene 1 diputado en el Congreso: PP 1. Su ficha, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-ceuta.html | H1 | Diputados por Ceuta | Diputado por Ceuta |
+| /diputados/provincia-burgos.html | title | Diputados por Burgos — quiénes son y cómo votan \| La Tercera Cámara | Diputados por Burgos (4): quiénes son y cómo votan \| La Tercera Cámara |
+| /diputados/provincia-burgos.html | description | Los 4 diputados que representan a Burgos en el Congreso, con su actividad y sus votos. | Burgos tiene 4 diputados en el Congreso: PP 2 y PSOE 2. Ficha de cada uno, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-burgos.html | H1 | Diputados por Burgos | Diputados por Burgos: quiénes son y cómo votan |
+| /diputados/provincia-cantabria.html | title | Diputados por Cantabria — quiénes son y cómo votan \| La Tercera Cámara | Diputados por Cantabria (5): quiénes son y cómo votan \| La Tercera Cámara |
+| /diputados/provincia-cantabria.html | description | Los 5 diputados que representan a Cantabria en el Congreso, con su actividad y sus votos. | Cantabria tiene 5 diputados en el Congreso: PP 2, PSOE 2 y Vox 1. Ficha de cada uno, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-cantabria.html | H1 | Diputados por Cantabria | Diputados por Cantabria: quiénes son y cómo votan |
+| /diputados/provincia-melilla.html | title | Diputados por Melilla — quiénes son y cómo votan \| La Tercera Cámara | Diputado por Melilla (1): quién es y cómo vota \| La Tercera Cámara |
+| /diputados/provincia-melilla.html | description | Los 1 diputados que representan a Melilla en el Congreso, con su actividad y sus votos. | Melilla tiene 1 diputado en el Congreso: PP 1. Su ficha, con intervenciones y votos en el Pleno. |
+| /diputados/provincia-melilla.html | H1 | Diputados por Melilla | Diputado por Melilla |
+
+## Tanda 1b: /provincias/X.html vuelven a su texto anterior a #70
+
+Título «X en las Cortes y en el BOE: diputados, preguntas y votaciones», descripción «X: N diputados, P preguntas al Gobierno que la nombran y D disposiciones del BOE sobre la provincia, con datos oficiales.» y H1 «X» (texto original, igual que el resto de provincias).
+
+## Tanda 1 (#70): grupos parlamentarios (se mantienen)
+
+| URL | Campo | Antes | Después |
+|---|---|---|---|
 | /diputados/grupo-bildu.html | title | Diputados de EH Bildu — actividad y votos \| La Tercera Cámara | Grupo EH Bildu en el Congreso: sus 6 diputados \| La Tercera Cámara |
 | /diputados/grupo-bildu.html | description | Los 6 diputados del Grupo Parlamentario Euskal Herria Bildu, con sus intervenciones y sus votos. | Ficha de cada uno de los 6 diputados del Grupo Parlamentario Euskal Herria Bildu: sus intervenciones y sus votos en el Pleno. |
 | /diputados/grupo-bildu.html | H1 | Diputados de EH Bildu | Grupo EH Bildu en el Congreso |
