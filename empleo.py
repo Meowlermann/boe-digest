@@ -882,7 +882,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                                     for i, r in enumerate(filas[:50])]}
 
     def pagina(nombre: str, titulo: str, desc: str, h1: str, entradilla: str, filas: list,
-               cuerpo: str, miga_final: str) -> None:
+               cuerpo: str, miga_final: str, ficha: str | None = None) -> None:
         url = f"{site}empleo/{'' if nombre == 'index.html' else nombre}"
         lastmod = max((r["fecha"] for r in filas), default=hoy)
         miga = ('<a href="../">Portada</a> › '
@@ -900,7 +900,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             "KICKER": "Empleo público · BOE II.B",
             "HEADLINE": esc(h1),
             "STANDFIRST": esc(entradilla),
-            "FICHA": (f'<dt>Disposiciones</dt><dd><a href="#t-{primero(filas)}">{len(filas)}</a></dd>'
+            "FICHA": ficha if ficha is not None else (f'<dt>Disposiciones</dt><dd><a href="#t-{primero(filas)}">{len(filas)}</a></dd>'
                       if filas else "<dt>Disposiciones</dt><dd>0</dd>") + recuento(filas),
             "CUERPO": cuerpo,
             "FUENTE": ('Fuente: sumario del Boletín Oficial del Estado, sección II.B «Oposiciones y '
@@ -940,26 +940,49 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     # Índice.
     corte = (dt.date.fromisoformat(hoy) - dt.timedelta(days=DIAS_PORTADA)).isoformat()
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
-    cuerpo = (f'<p>Disposiciones de los últimos {DIAS_PORTADA} días, también por organismo y por '
+    # Índice con el lenguaje de /tramitacion/ y /seguimiento/ (.tr-ix): el
+    # recuento por tipo pasa de la ficha a una caja de resumen y al lado van
+    # las cifras reales de la ventana. Los carriles (PR #66) no cambian.
+    resumen = "" if not recientes else (f'<div class="tr-ix-resumen tr-ix-em-resumen"><dl class="tr-ix-cifras">'
+               f'{recuento(recientes)}</dl>'
+               f'<p class="tr-ix-leyes"><span>Últimos {DIAS_PORTADA} días</span><b><a href="#t-{primero(recientes)}">{len(recientes)}</a></b>'
+               f'<span>disposiciones de empleo público</span></p></div>')
+    convoc = sum(1 for r in recientes if r["tipo"] == "convocatoria")
+    lado = ('<aside class="tr-ix-lado" aria-labelledby="em-cifras"><h2 id="em-cifras">En cifras</h2>'
+            f'<p class="tr-ix-gr"><b>{convoc}</b><span>convocatorias de procesos selectivos en '
+            f'{DIAS_PORTADA} días</span></p>'
+            f'<p class="tr-ix-gr"><b>{sum(1 for r in regs if r["fecha"] == ref)}</b><span>disposiciones '
+            f'en el BOE del {esc(fecha_es(ref))}</span></p>'
+            f'<p class="tr-ix-gr"><b>{len(por_dept)}</b><span>organismos convocantes</span></p>'
+            f'<p class="tr-ix-gr"><b>{len(por_prov)}</b><span>provincias nombradas en los títulos</span></p>'
+            '<h3>Canales</h3>'
+            f'<p><a href="{RSS_EMPLEO}">Todo el empleo público (RSS) →</a></p>'
+            '<p><a href="#avisos">Canales por provincia y organismo →</a></p></aside>')
+    listas = ('<div class="tr-ix-em-dos">'
+              f'<section aria-labelledby="organismos"><h2 id="organismos">Por organismo convocante</h2>'
+              f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_dept)}</ul></section>'
+              + (f'<section aria-labelledby="provincias"><h2 id="provincias">Por provincia</h2>'
+                 f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_prov)}</ul></section>'
+                 if enlaces_prov else "") + '</div>')
+    cuerpo = ('<div class="tr-ix tr-ix-em"><div class="tr-ix-main">' + (resumen if recientes else "")
+              + f'<p>Disposiciones de los últimos {DIAS_PORTADA} días, también por organismo y por '
               f'provincia. Los días desde la publicación se cuentan hasta el BOE '
               f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
               + chips_filtro(recientes, ref)
               + (por_tipo(recientes, en_carril=True) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
-              + f'<h2 id="organismos">Por organismo convocante</h2><ul class="ix-lista">{"".join(enlaces_dept)}</ul>'
-              + (f'<h2 id="provincias">Por provincia</h2><ul class="ix-lista">{"".join(enlaces_prov)}</ul>'
-                 if enlaces_prov else "")
+              + listas
               + (avisos(feeds_prov, feeds_dept) if regs else "")
               + '<p class="aside-note">Cómo se clasifica: el tipo sale de palabras del título y del '
               'epígrafe del sumario («admitidos», «tribunal», «aprobados», «libre designación», '
               '«convoca»…), en ese orden de prioridad; la provincia, de que el título la nombre. '
-              'Es una ayuda para encontrar, no un dato oficial.</p>')
+              'Es una ayuda para encontrar, no un dato oficial.</p></div>' + lado + '</div>')
     pagina("index.html", "Empleo público: oposiciones y concursos del BOE",
            "Oposiciones, concursos, listas de admitidos y tribunales publicados en el BOE (sección II.B), "
            "por organismo y provincia, con enlace a cada disposición y canal RSS.",
            "Empleo público en el BOE",
            "Todas las disposiciones de la sección II.B del BOE, «Oposiciones y concursos»: "
-           "convocatorias, listas, tribunales y resultados.", recientes, cuerpo, "")
+           "convocatorias, listas, tribunales y resultados.", recientes, cuerpo, "", ficha="")
     generar_paginas.resumen = {"departamentos": len(por_dept), "provincias": len(por_prov),
                                "disposiciones": len(regs)}
     return salidas
