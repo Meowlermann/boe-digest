@@ -712,9 +712,11 @@ def generar_paginas(h: dict) -> list:
             f'<p>{len(fichas)} {"diputado" if len(fichas) == 1 else "diputados"} en el Congreso por '
             f'{esc(nombre)}. <a class="srclink" href="/diputados/provincia-{attr(slug)}.html">'
             f'Sus fichas, una a una</a></p>{comparacion}'
-            + ('<table class="rk-tabla"><thead><tr><th>Diputado</th><th>Grupo</th><th>Participación</th>'
+            # Contenedor con scroll propio: overflow-x en la <table> no hace nada y,
+            # a 375 px, la tabla ensanchaba toda la página.
+            + ('<div class="tabla-ancha"><table class="rk-tabla"><thead><tr><th>Diputado</th><th>Grupo</th><th>Participación</th>'
                '<th>Votos contra su grupo</th><th>Intervenciones</th></tr></thead><tbody>'
-               + "".join(filas_dip) + '</tbody></table>' if filas_dip else "")
+               + "".join(filas_dip) + '</tbody></table></div>' if filas_dip else "")
             + f'<p class="rk-nota">Mismos cálculos que <a href="/rankings/">los rankings</a>: '
               f'participación = 1 − («no vota» ÷ votaciones en que figura) y votos contra su grupo '
               f'sobre toda la legislatura; la media nacional y la provincial solo cuentan a quien '
