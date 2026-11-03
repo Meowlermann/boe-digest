@@ -1772,4 +1772,41 @@ body:has(.tr-ix-seg) footer a:hover{background:var(--gold-soft);box-shadow:inset
 body:has(.tr-ix-em) .seguir-rss a{border-bottom:0;font-weight:700;padding:0 2px;border-radius:2px}
 body:has(.tr-ix-em) .seguir-rss a:hover,body:has(.tr-ix-em) footer a:hover{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
 body:has(.tr-ix-em) footer a{color:var(--red-ink);font-weight:700;padding:0 2px;border-radius:2px}
+/* Auditoría UX 03-11-2026 (regresiones de #74). Enlaces en texto corrido:
+   sin subrayado, se distinguen por peso 700 y color de énfasis; al pasar o
+   enfocar, fondo y borde inferior (regla de arriba). */
+.tr-ix-em .tr-ix-main p a:not(.em-btn),.tr-ix-em .aside-note a,.tr-ix-em .tr-ix-lado p a{color:var(--red-ink);font-weight:700;padding:0 2px;border-radius:2px}
+.tr-ix-em .aside-note a:hover,.tr-ix-em .tr-ix-main p a:not(.em-btn):focus-visible{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
+/* El total de la caja ya no es un enlace-bloque: cifra, no botón. */
+.tr-ix-em .tr-ix-leyes b{font-size:40px}
+/* «N disposiciones.» repetía el encabezado «(N de M)»: se lee (role=status), no se ve. */
+.tr-ix-em .em-fn{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Bajo 980 px «En cifras» sube como franja compacta, sin la cifra que repite
+   la caja de resumen ni los canales (están en «Recibe avisos»). */
+@media (max-width:979.98px){
+  .tr-ix-em > .tr-ix-lado{order:-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 16px;
+    padding:8px 0 0;margin:0 0 -12px}
+  .tr-ix-em > .tr-ix-lado h2{grid-column:1/-1;font-size:13px;margin:0}
+  .tr-ix-em > .tr-ix-lado .tr-ix-em-rep{display:none}
+  .tr-ix-em > .tr-ix-lado .tr-ix-gr{margin:0}
+}
+/* Listas por organismo y por provincia: una debajo de otra; cada una en dos
+   columnas de flujo (filas alineadas dentro de su lista). */
+.tr-ix-em .tr-ix-em-dos{grid-template-columns:1fr !important}
+@media (min-width:760px){ .tr-ix-em .tr-ix-em-lista{display:block;column-count:2;column-gap:32px} .tr-ix-em .tr-ix-em-lista li{break-inside:avoid} }
+/* «Ver en el BOE» siempre al pie de la tarjeta. */
+.tr-ix-em .em-card .em-boe{margin-top:auto}
+.tr-ix-em .em-card .em-ll{margin-bottom:8px}
+/* «Últimos 30 días» es un filtro (casilla), no otra pestaña. */
+.tr-ix-em .em-dias{border-radius:8px;border-style:dashed;background:transparent;display:inline-flex;align-items:center;gap:8px}
+.tr-ix-em .em-dias::before{content:"";width:14px;height:14px;border:2px solid currentColor;border-radius:3px;flex:none}
+.tr-ix-em .em-dias[aria-pressed="true"]{background:var(--gold-soft);color:var(--ink);border-color:var(--gold);border-style:solid}
+.tr-ix-em .em-dias[aria-pressed="true"]::before{background:var(--ink);box-shadow:inset 0 0 0 2px var(--gold-soft)}
+/* <details>: icono propio (chevrón dibujado con bordes), sin el ▶ nativo. */
+.tr-ix-em summary{list-style:none;display:flex;align-items:center;gap:10px}
+.tr-ix-em summary::-webkit-details-marker{display:none}
+.tr-ix-em summary::after{content:"";flex:none;margin-left:auto;width:7px;height:7px;border-right:2px solid currentColor;
+  border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .15s}
+.tr-ix-em details[open] > summary::after{transform:translateY(2px) rotate(-135deg)}
+@media (prefers-reduced-motion:reduce){ .tr-ix-em summary::after{transition:none} }
 /* --- fin /empleo/ -------------------------------------------------------- */
