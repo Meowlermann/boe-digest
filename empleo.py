@@ -684,12 +684,56 @@ def _epi_especifico(r: dict) -> str:
     return "" if e in EPI_GENERICOS else e
 
 
+RE_CONECTOR = re.compile(r",\s*(referente a (?:la |las |los |el )?|relativa a (?:la |las )?|"
+                         r"relativo a (?:la |el )?|por (?:la|el) que se )", re.I)
+
+
+def resumen_limpio(r: dict, maximo: int = TITULAR_MAX) -> str:
+    """«Qué es» sin el encabezado administrativo del título («Resolución de
+    <fecha>, del Ayuntamiento de X, referente a la convocatoria para proveer una
+    plaza.» → «Convocatoria para proveer una plaza.»). Quién convoca ya va en
+    «Quién y dónde». Solo recorta el título del BOE: no añade nada. Sin
+    conector reconocible, el titular corto de siempre."""
+    t = " ".join((r.get("titulo") or "").split())
+    m = RE_CONECTOR.search(t)
+    resto = t[m.end():].strip() if m else ""
+    if not resto:
+        return titular_corto(r, maximo)[0]
+    resto = ("Se " + resto) if m.group(1).lower().startswith("por") else resto[:1].upper() + resto[1:]
+    return titular_corto({"titulo": resto}, maximo)[0]
+
+
+TIPOS_LOCAL = [  # (patrón en el título, nombre en plural); el primero que casa
+    (re.compile(r"\b(?:Ayuntamiento|Concello|Ajuntament)\b"), "ayuntamientos"),
+    (re.compile(r"\bDiputaci[oó]n\b"), "diputaciones"),
+    (re.compile(r"\b(?:Cabildo|Consell Insular|Consejo Insular)\b"), "cabildos y consejos insulares"),
+    (re.compile(r"\b(?:Comarca|Consell Comarcal|Consejo Comarcal)\b"), "comarcas"),
+    (re.compile(r"\b(?:Mancomunidad|Mancomunitat)\b"), "mancomunidades"),
+    (re.compile(r"\bConsorci[oa]?\b"), "consorcios"),
+    (re.compile(r"\bEntidad Local Aut[oó]noma\b"), "entidades locales autónomas"),
+]
+
+
+def desglose_local(regs: list[dict]) -> list[tuple[str, int]]:
+    """Administración Local por tipo de entidad, leído del título del BOE.
+    Orden: más disposiciones primero; «otras entidades» siempre al final."""
+    from collections import Counter
+    c: Counter = Counter()
+    for r in regs:
+        if (r.get("dept") or "").upper() != DEPT_LOCAL:
+            continue
+        t = r.get("titulo") or ""
+        c[next((n for rx, n in TIPOS_LOCAL if rx.search(t)), "otras entidades")] += 1
+    otras = c.pop("otras entidades", 0)
+    return sorted(c.items(), key=lambda x: (-x[1], x[0])) + ([("otras entidades", otras)] if otras else [])
+
+
 def que_es(r: dict, ps: list | None = None) -> str:
     """«Qué es» de la tarjeta: solo con datos del BOE (título, epígrafe y
     campos activos), sin inventar nada; en la duda, el titular corto."""
     t, epi = r.get("tipo"), _epi_especifico(r)
     tit = _plano(r.get("titulo") or "").lower()
-    corto = titular_corto(r)[0]
+    corto = resumen_limpio(r)
     ps = ps if ps is not None else empleo_campos.puestos_activos(r)
     if t == "convocatoria":
         gen = empleo_campos.titular(r)
@@ -769,8 +813,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         resto = (f'<details class="em-completo"><summary>Ver todos los puestos ({len(ps)})</summary>'
                  f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps)}</ul></details>'
                  if len(ps) > 3 else "")
-        return (f'<span class="ref em-npuestos">{len(ps)} puestos</span>'
-                f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps[:3])}</ul>{resto}')
+        # «N puestos» ya es el «Qué es» de la tarjeta: no se repite aquí.
+        return (f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps[:3])}</ul>{resto}')
 
     def fila(r: dict, con_dept: bool = True) -> str:
         # Tarjeta en lenguaje llano (maqueta aprobada 31-10-2026): etiqueta de
@@ -958,9 +1002,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             '<h3 class="tr-ix-em-rep">Canales</h3>'
             f'<p class="tr-ix-em-rep"><a href="{RSS_EMPLEO}">Todo el empleo público (RSS) →</a></p>'
             '<p class="tr-ix-em-rep"><a href="#avisos">Canales por provincia y organismo →</a></p></aside>')
+    local = desglose_local(regs)
     listas = ('<div class="tr-ix-em-dos">'
               f'<section aria-labelledby="organismos"><h2 id="organismos">Por organismo convocante</h2>'
-              f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_dept)}</ul></section>'
+              f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_dept)}</ul>'
+              + (f'<p class="ref tr-ix-em-local"><b>Administración Local</b>, por tipo de entidad: '
+                 + ", ".join(f"{n} {esc(t)}" for t, n in local) + '.</p>' if local else '')
+              + '</section>'
               + (f'<section aria-labelledby="provincias"><h2 id="provincias">Por provincia</h2>'
                  f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_prov)}</ul></section>'
                  if enlaces_prov else "") + '</div>')
