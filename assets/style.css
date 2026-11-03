@@ -1631,6 +1631,15 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-vertodos{ width:100%; text-align:center; margin-top:4px; }
 .em-vertodos[hidden]{ display:none; }
 @media (min-width:760px){ .ix-lista.em-pista.em-pista-todo{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+/* Posición «12–15 de 196», «Ver en fila» arriba y «Cargar más» (lotes de 24). */
+.em-pos{ margin-left:auto; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.em-pos[hidden]{ display:none; }
+.em-pos + .em-carril-nav{ margin-left:0; }
+.em-enfila{ margin-left:auto; }
+.em-enfila[hidden], .em-mas[hidden]{ display:none; }
+.em-pista > li.em-card.em-oculta{ display:none; }
+.em-mas{ width:100%; text-align:center; justify-content:center; margin-top:4px; font-weight:700; }
+.tr-ix-em-local{ margin:10px 0 0; }
 
 /* --- Portada: módulo de empleo (UX-4) ------------------------------------ */
 .empleo-hoy{ margin:0 0 22px; padding:14px 18px; border-radius:14px;

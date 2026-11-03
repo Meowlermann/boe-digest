@@ -79,27 +79,51 @@ var m = /^#t-(\w+)$/.exec(location.hash), t = new URLSearchParams(location.hash.
 if (m && ok[m[1]]) t = m[1];
 if (t && ok[t]) { st.tipo = t; pinta(false); }
 });
-// Carriles: ‹ › desplazan una pantalla; «Ver todos» despliega la fila como lista.
+// Carriles: ‹ ›, «a–b de N», «Ver todos» en lotes («Cargar más») y «Ver en fila» arriba.
+var LOTE = 24;
+function el(t, k, x) { var e = D.createElement(t); e.className = k; if (t == "button") e.type = t; e.hidden = !0; e.textContent = x || ""; return e; }
 D.querySelectorAll(".em-carril").forEach(function (k) {
 var p = k.querySelector(".em-pista"), nav = k.querySelector(".em-carril-nav"), v = k.querySelector(".em-vertodos");
-var a = nav.children[0], b = nav.children[1], txt = v.textContent;
+var a = nav.children[0], b = nav.children[1], txt = v.textContent, lim = LOTE, cab = nav.parentNode;
+var pos = el("span", "ref em-pos"), up = el("button", "em-fb em-enfila", "Ver en fila"), mas = el("button", "em-fb em-mas");
+cab.insertBefore(pos, nav);
+cab.appendChild(up);
+k.insertBefore(mas, v);
+function vis() { return [].slice.call(p.querySelectorAll("li.em-card:not([hidden])")); }
 function upd() {
-var todo = p.classList.contains("em-pista-todo"), cabe = p.scrollWidth <= p.clientWidth + 4;
+var todo = p.classList.contains("em-pista-todo"), xs = vis(), n = xs.length, q = todo ? Math.max(0, n - lim) : 0;
+p.querySelectorAll("li.em-card").forEach(function (li) { li.classList.toggle("em-oculta", todo && xs.indexOf(li) >= lim); });
+var cabe = p.scrollWidth <= p.clientWidth + 4;
 nav.hidden = todo || cabe;
 a.disabled = p.scrollLeft < 4;
 b.disabled = p.scrollLeft + p.clientWidth >= p.scrollWidth - 4;
 v.hidden = cabe && !todo;
+up.hidden = !todo;
+mas.hidden = !q;
+mas.textContent = "Cargar más (" + Math.min(LOTE, q) + " de " + q + " restantes)";
+pos.hidden = todo || cabe || !n;
+if (pos.hidden) return;
+var w = n > 1 ? xs[1].offsetLeft - xs[0].offsetLeft : xs[0].offsetWidth, i = Math.min(n - 1, Math.round(p.scrollLeft / w));
+pos.textContent = (i + 1) + "–" + Math.min(n, Math.max(i + 1, Math.floor((p.scrollLeft + p.clientWidth + 8) / w))) + " de " + n;
 }
-function mueve(d) { p.scrollBy({ left: d * p.clientWidth * 0.9, behavior: "smooth" }); }
-a.addEventListener("click", function () { mueve(-1); });
-b.addEventListener("click", function () { mueve(1); });
-v.addEventListener("click", function () {
+function alt() {
 var todo = p.classList.toggle("em-pista-todo");
-v.setAttribute("aria-expanded", todo ? "true" : "false");
+lim = LOTE;
+v.setAttribute("aria-expanded", todo);
 v.textContent = todo ? "Ver en fila" : txt;
 p.scrollLeft = 0;
 upd();
-});
+}
+a.onclick = function () { p.scrollBy({ left: -p.clientWidth * 0.9, behavior: "smooth" }); };
+b.onclick = function () { p.scrollBy({ left: p.clientWidth * 0.9, behavior: "smooth" }); };
+v.onclick = alt;
+up.onclick = function () { alt(); p.focus(); };
+mas.onclick = function () {
+var s = vis()[lim];
+lim += LOTE;
+upd();
+if (s) (s.querySelector("a,button") || s).focus();
+};
 p.addEventListener("scroll", upd, { passive: true });
 window.addEventListener("resize", upd);
 k._u = upd;
