@@ -1,8 +1,15 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-11-02",
+  "fecha": "2026-11-03",
   "graves": 0,
-  "avisos": 0,
-  "hallazgos": []
+  "avisos": 1,
+  "hallazgos": [
+    {
+      "nivel": "aviso",
+      "comprobacion": "titulares",
+      "detalle": "No hay edición del 2026-11-03.",
+      "fichero": "data/2026-11-03.json"
+    }
+  ]
 }
