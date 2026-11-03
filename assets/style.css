@@ -1640,6 +1640,31 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-pista > li.em-card.em-oculta{ display:none; }
 .em-mas{ width:100%; text-align:center; justify-content:center; margin-top:4px; font-weight:700; }
 .tr-ix-em-local{ margin:10px 0 0; }
+/* Carriles anchos (UX-carriles, 03-11-2026): el carril sale de la columna de
+   lectura hasta casi el ancho de la ventana (máx. 1440 px) y enseña 2 tarjetas
+   y un asomo hasta 1099 px, 3 desde 1100 y 4 desde 1400. A 375 llega a los
+   bordes y deja ver la siguiente. «En cifras» va arriba (align-self:start),
+   así que el carril pasa por debajo sin tocarlo. */
+.tr-ix-em > .tr-ix-lado{ align-self:start; }
+@media (max-width:759.98px){
+  .tr-ix-em .em-carril{ margin-inline:-16px; }
+  .tr-ix-em .em-carril-cab{ padding-inline:16px; }
+  .tr-ix-em .ix-lista.em-pista{ padding-inline:16px; scroll-padding-inline:16px; }
+  .tr-ix-em .em-vertodos, .tr-ix-em .em-mas{ width:calc(100% - 32px); margin-inline:16px; }
+}
+@media (min-width:760px){
+  .tr-ix-em .em-carril{ --em-n:2; width:calc(100vw - 64px); margin-left:calc(50% - 50vw + 24px); }
+  .tr-ix-em .ix-lista.em-pista{ gap:10px; scroll-padding-inline:2px;
+    grid-auto-columns:calc((100% - var(--em-n) * 10px) / (var(--em-n) + .25)); }
+  .tr-ix-em .ix-lista.em-pista.em-pista-todo{ grid-template-columns:repeat(var(--em-n),minmax(0,1fr)); }
+  .tr-ix-em .em-pista > li.em-card{ padding:10px 12px; }
+}
+@media (min-width:980px){
+  .tr-ix-em .em-carril{ width:min(100vw - 64px, 1440px);
+    margin-left:calc((min(100vw - 64px, 1056px) - min(100vw - 64px, 1440px)) / 2); }
+}
+@media (min-width:1100px){ .tr-ix-em .em-carril{ --em-n:3; } }
+@media (min-width:1400px){ .tr-ix-em .em-carril{ --em-n:4; } }
 
 /* --- Portada: módulo de empleo (UX-4) ------------------------------------ */
 .empleo-hoy{ margin:0 0 22px; padding:14px 18px; border-radius:14px;
