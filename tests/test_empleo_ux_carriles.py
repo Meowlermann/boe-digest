@@ -58,16 +58,11 @@ class DesgloseLocal(unittest.TestCase):
         self.assertEqual(em.desglose_local([]), [])
 
 
-class CarrilesJS(unittest.TestCase):
-    def test_cargar_mas_y_en_fila_arriba(self):
-        for t in ("Cargar más", "em-enfila", "Ver en fila", "LOTE = 24", "em-oculta"):
+class CargarMasJS(unittest.TestCase):
+    def test_cargar_mas_en_rejilla(self):
+        for t in ("Cargar más", "LOTE = 24", "em-oculta"):
             self.assertIn(t, JS)
-        self.assertIn(".em-pista > li.em-card.em-oculta{ display:none; }", CSS)
-
-    def test_posicion(self):
-        self.assertIn('" de " + n', JS)
-        self.assertIn("em-pos", JS)
-        self.assertIn(".em-pos[hidden]{ display:none; }", CSS)
+        self.assertIn(".em-rejilla > li.em-card.em-oculta{ display:none; }", CSS)
 
 
 if __name__ == "__main__":

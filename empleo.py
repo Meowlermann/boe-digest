@@ -852,34 +852,24 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'aria-label="Ver en el BOE: {attr(titular_corto(r, 90)[0])} ({attr(r["id"])})">'
                 f'Ver en el BOE</a></li>')
 
-    def carriles(t: str, xs: list, con_dept: bool, h: str) -> str:
-        # Carriles deslizables por clase (maqueta 2 de la ronda 2, elegida el
-        # 01-11-2026): una fila horizontal por etiqueta (Oposición, Concurso…),
-        # con ‹ › y «Ver todos» (despliega la misma fila como lista, sin URL
-        # nueva). Sin JS, las filas siguen deslizándose y todo está en el HTML.
+    def rejilla(t: str, xs: list, con_dept: bool, h: str) -> str:
+        # Rejilla de tarjetas por clase (variante A, aprobada el 04-11-2026):
+        # sustituye a los carriles deslizables. Un bloque por etiqueta
+        # (Oposición, Concurso…) con su encabezado; el JS enseña 24 y añade
+        # «Cargar más». Sin JS se ve todo.
         grupos: dict = {}
         for r in xs:
             grupos.setdefault(etiqueta_llana(r), []).append(r)
         sub = "h3" if h == "h2" else "h4"
         html = []
         for (et, clase), rs in grupos.items():
-            cab = (f'<{sub} class="em-carril-t" id="c-{t}-{clase}">{esc(et)} ({len(rs)})</{sub}>'
+            cab = (f'<{sub} class="em-bloque-t" id="c-{t}-{clase}">{esc(et)} ({len(rs)})</{sub}>'
                    if len(grupos) > 1 else "")
-            nombre = et if len(grupos) > 1 else ETIQUETA_TIPO[t]
-            html.append(
-                f'<div class="em-carril" data-clase="{attr(clase)}">'
-                f'<div class="em-carril-cab">{cab}<span class="em-carril-nav" hidden>'
-                f'<button type="button" class="em-fb em-ant"><span aria-hidden="true">‹</span>'
-                f'<span class="em-sep">Anteriores: {esc(nombre)}</span></button>'
-                f'<button type="button" class="em-fb em-sig"><span aria-hidden="true">›</span>'
-                f'<span class="em-sep">Siguientes: {esc(nombre)}</span></button></span></div>'
-                f'<ul class="ix-lista em-pista" tabindex="0" aria-label="{attr(nombre)}: fila deslizable">'
-                f'{"".join(fila(r, con_dept) for r in rs)}</ul>'
-                f'<button type="button" class="em-fb em-vertodos" aria-expanded="false" hidden>'
-                f'Ver todos ({len(rs)})</button></div>')
+            html.append(f'<div class="em-bloque" data-clase="{attr(clase)}">{cab}'
+                        f'<ul class="ix-lista em-rejilla">{"".join(fila(r, con_dept) for r in rs)}</ul></div>')
         return "".join(html)
 
-    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2", en_carril: bool = False) -> str:
+    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2", en_rejilla: bool = False) -> str:
         todas = [r for r in filas if r["tipo"] == t]
         xs = todas[:MAX_FILAS]
         if not xs:
@@ -895,19 +885,19 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'<a href="{ENLACE_PROVINCIAS}">por provincia</a>.</p>') if recorte else ""
         return (f'<section class="em-sec" id="p-{t}" data-tipo="{t}"><{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
                 f'({n})</{h}>' +
-                (carriles(t, xs, con_dept, h) if en_carril else
+                (rejilla(t, xs, con_dept, h) if en_rejilla else
                  f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>') + f'{nota}</section>')
 
-    def por_tipo(filas: list, con_dept: bool = True, en_carril: bool = False) -> str:
+    def por_tipo(filas: list, con_dept: bool = True, en_rejilla: bool = False) -> str:
         # Orden de lectura (UX-1), distinto del de clasificación de TIPOS:
         # primero lo que se puede solicitar; después, bajo «Seguimiento de
         # procesos», las listas, tribunales y resultados de procesos en marcha.
-        html = "".join(bloque(t, filas, con_dept, en_carril=en_carril) for t in ORDEN_ABIERTOS)
-        seg = "".join(bloque(t, filas, con_dept, "h3", en_carril) for t in ORDEN_SEGUIMIENTO)
+        html = "".join(bloque(t, filas, con_dept, en_rejilla=en_rejilla) for t in ORDEN_ABIERTOS)
+        seg = "".join(bloque(t, filas, con_dept, "h3", en_rejilla) for t in ORDEN_SEGUIMIENTO)
         if seg:
             html += ('<section class="em-sec em-grupo"><h2 id="seguimiento">Seguimiento de procesos</h2>'
                      + seg + '</section>')
-        return html + "".join(bloque(t, filas, con_dept, en_carril=en_carril) for t in ORDEN_RESTO)
+        return html + "".join(bloque(t, filas, con_dept, en_rejilla=en_rejilla) for t in ORDEN_RESTO)
 
     def recuento(filas: list) -> str:
         # Cada contador enlaza a su sección (UX-1).
@@ -986,7 +976,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     recientes = [r for r in regs if r["fecha"] >= corte] or regs[:MAX_FILAS]
     # Índice con el lenguaje de /tramitacion/ y /seguimiento/ (.tr-ix): el
     # recuento por tipo pasa de la ficha a una caja de resumen y al lado van
-    # las cifras reales de la ventana. Los carriles (PR #66) no cambian.
+    # las cifras reales de la ventana. La rejilla por clase (04-11-2026) no cambia.
     resumen = "" if not recientes else (f'<div class="tr-ix-resumen tr-ix-em-resumen"><dl class="tr-ix-cifras">'
                f'{recuento(recientes)}</dl>'
                f'<p class="tr-ix-leyes"><span>Últimos {DIAS_PORTADA} días</span><b>{len(recientes)}</b>'
@@ -1017,7 +1007,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
               f'provincia. Los días desde la publicación se cuentan hasta el BOE '
               f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
               + chips_filtro(recientes, ref)
-              + (por_tipo(recientes, en_carril=True) or
+              + (por_tipo(recientes, en_rejilla=True) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + listas
               + (avisos(feeds_prov, feeds_dept) if regs else "")
