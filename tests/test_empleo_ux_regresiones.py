@@ -1,3 +1,4 @@
+import pathlib
 """/empleo/: arreglos de la auditoría UX del 03-11-2026 (regresiones de #74,
 botón al pie, filtro de días y <details> con icono propio). Sin subrayados."""
 import re
@@ -34,7 +35,9 @@ class RegresionesEmpleo(unittest.TestCase):
         self.assertIn("column-count:2", BLOQUE)
 
     def test_boton_al_pie(self):
-        self.assertIn(".tr-ix-em .em-card .em-boe{margin-top:auto}", BLOQUE)
+        # Desde la tarjeta compacta (E-1) el pie (BOE-A + botón) va abajo.
+        css = (pathlib.Path(__file__).resolve().parent.parent / "assets" / "style.css").read_text(encoding="utf-8")
+        self.assertRegex(css, r"\.em-c-pie\{[^}]*margin-top:auto")
 
     def test_filtro_dias_no_parece_pestana(self):
         self.assertRegex(BLOQUE, r"\.tr-ix-em \.em-dias\{border-radius:8px;border-style:dashed")

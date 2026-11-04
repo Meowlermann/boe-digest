@@ -61,14 +61,15 @@ class TestTarjetaGenerada(unittest.TestCase):
 
     def test_tarjetas(self):
         idx = self._indice("2026-10-27")
-        tarjetas = re.findall(r'<li class="em-card"[^>]*>(.*?)</li>', idx)
+        tarjetas = re.findall(r'<li class="em-card[ "][^>]*>(.*?)</li>', idx)
         self.assertTrue(tarjetas)
         for t in tarjetas:
-            # Lenguaje llano: etiqueta, Qué es / Quién y dónde / Cuándo y un
-            # único «Ver en el BOE»; sin PDF, sin ID suelto, sin título plegado.
-            self.assertRegex(t, r'^<span class="em-etq em-etq-\w+">')
-            self.assertIn("<dt>Qué es</dt>", t)
-            self.assertIn("<dt>Cuándo</dt><dd>Publicada el ", t)
+            # Tarjeta compacta (E-1): tipo, fecha, título llano, BOE-A al pie y
+            # un único «Ver en el BOE»; sin PDF ni título plegado.
+            self.assertRegex(t, r'^<div class="em-c-cab"><span class="em-etq em-etq-\w+">')
+            self.assertIn('<p class="em-c-tit">', t)
+            self.assertIn('<span class="em-sep">Publicada el </span><time datetime="', t)
+            self.assertRegex(t, r'<span class="em-c-id">BOE-A-\d{4}-\d+</span>')
             self.assertEqual(t.count(">Ver en el BOE</a>"), 1)
             self.assertEqual(t.count("<a "), 1)
             self.assertNotIn(">PDF</a>", t)
