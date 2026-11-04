@@ -319,32 +319,8 @@
       "legislatura": "XV Legislatura (2023– )",
       "sede": "Bailén, 3, Madrid"
     },
-    "scoreboard": {
-      "note": "Preguntas escritas con el plazo superado y sin contestación registrada, por grupo de quien pregunta.",
-      "rows": [
-        {
-          "g": "ERC",
-          "n": 2
-        }
-      ]
-    },
-    "feed": [
-      {
-        "chamber": "congreso",
-        "type": "Preguntas pendientes",
-        "date": "miércoles 4 de noviembre de 2026",
-        "headline": "2 preguntas escritas llevan más de 20 días hábiles desde su publicación sin contestación registrada",
-        "standfirst": "Recuento sobre las preguntas del último año con la fecha límite que publica el Congreso ya superada. Puede haber prórrogas o respuestas aún no reflejadas en la ficha.",
-        "body": [
-          "La más antigua se publicó el martes 6 de octubre de 2026.",
-          "Por grupo de quien pregunta: ERC 2."
-        ],
-        "source": {
-          "label": "Pendientes más antiguas",
-          "url": "https://terceracamara.es/preguntas/#pendientes"
-        }
-      }
-    ],
+    "scoreboard": null,
+    "feed": [],
     "coverage": {
       "congreso": true,
       "senado": false,
