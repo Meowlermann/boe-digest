@@ -38,7 +38,7 @@ class TestFiltro(unittest.TestCase):
     def test_sin_js_listado_completo(self):
         # Las 8 tarjetas están en el HTML (también las de más de 30 días) y el
         # filtro sale oculto: sin JS no hay botones que no hagan nada.
-        self.assertEqual(len(re.findall(r'<li class="em-card"', self.idx)), 8)
+        self.assertEqual(len(re.findall(r'<li class="em-card[ \"]', self.idx)), 8)
         self.assertRegex(self.idx, r'<div id="filtro-tipo" class="em-filtro" data-ref="[\d-]+" data-defecto="convocatoria" hidden>')
         self.assertIn(f'<script src="{em.JS_FILTRO}" defer></script>', self.idx)
 
@@ -68,7 +68,7 @@ class TestFiltro(unittest.TestCase):
             self.assertRegex(b, r'aria-(pressed|selected|expanded)="(true|false)"')
 
     def test_tarjetas_con_fecha_y_secciones_con_tipo(self):
-        for li in re.findall(r'<li class="em-card"[^>]*>', self.idx):
+        for li in re.findall(r'<li class="em-card[ "][^>]*>', self.idx):
             self.assertRegex(li, r'data-fecha="\d{4}-\d\d-\d\d"')
         self.assertIn('<section class="em-sec" id="p-convocatoria" data-tipo="convocatoria">', self.idx)
 

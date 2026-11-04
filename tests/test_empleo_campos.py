@@ -164,11 +164,11 @@ class TestTarjeta(unittest.TestCase):
         em.generar_paginas(h, self.estado)
         idx = (self.carpeta / "index.html").read_text(encoding="utf-8")
         # «Qué es» sin el lugar; el lugar va en «Quién y dónde».
-        self.assertIn('<dd class="em-que">2 plazas de Operario/a de brigada municipal de obras</dd>', idx)
-        self.assertIn("<dd>Ayuntamiento de Tamarite de Litera", idx)
+        self.assertIn('<p class="em-c-tit">2 plazas de Operario/a de brigada municipal de obras</p>', idx)
+        self.assertIn("<p class=\"em-c-org\">Ayuntamiento de Tamarite de Litera", idx)
         self.assertIn('class="em-chip"', idx)
         # Los registros sin 'campos' (anteriores al extractor) siguen pintándose
-        self.assertGreater(len(re.findall(r'<li class="em-card"[^>]*>', idx)), 1)
+        self.assertGreater(len(re.findall(r'<li class="em-card[ "][^>]*>', idx)), 1)
 
     def _fecha(self):
         return max(v["fecha"] for v in self.estado["registros"].values())

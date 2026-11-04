@@ -1602,15 +1602,28 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-etq-admitidos{ background:var(--gold-soft); color:var(--gold); }
 .em-etq-tribunal,.em-etq-otras{ background:var(--otros-soft); color:var(--otros); }
 .em-etq-resultados{ background:var(--laboral-soft); color:var(--laboral); }
-.em-ll{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:2px 10px; }
-.em-ll dt{ font:600 .78rem 'Work Sans',sans-serif; color:var(--ink-soft); padding-top:.2em; }
-.em-ll dd{ margin:0; overflow-wrap:anywhere; color:var(--ink); }
-.em-ll .em-que{ font-weight:600; }
-.em-hace,.em-ll-consulta{ color:var(--ink-soft); }
-.em-card .em-boe{ min-height:44px; align-self:flex-start; margin-top:4px; }
+/* Tarjeta compacta (E-1, 04-11-2026): borde superior del color del tipo,
+   fecha en mono, título llano, organismo, plazo literal y pie con BOE-A. */
+.ix-lista > li.em-card.em-c-oposicion{ border-top:3px solid var(--fiscal); }
+.ix-lista > li.em-card.em-c-concurso,.ix-lista > li.em-card.em-c-convocatoria{ border-top:3px solid var(--senado); }
+.ix-lista > li.em-card.em-c-provision{ border-top:3px solid var(--mercantil); }
+.ix-lista > li.em-card.em-c-admitidos{ border-top:3px solid var(--gold); }
+.ix-lista > li.em-card.em-c-tribunal,.ix-lista > li.em-card.em-c-otras{ border-top:3px solid var(--otros); }
+.ix-lista > li.em-card.em-c-resultados{ border-top:3px solid var(--laboral); }
+.ix-lista .em-card p{ margin:0; font-family:'Work Sans',sans-serif; font-size:15px; line-height:1.4; }
+.em-c-cab{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+.em-c-cab .em-etq{ align-self:center; }
+.ix-lista .em-card p.em-c-fecha{ font:500 12px/1.4 'IBM Plex Mono',ui-monospace,monospace; color:var(--ink-soft); }
+.ix-lista .em-card p.em-c-tit{ margin:2px 0 0; font-weight:600; line-height:1.35; color:var(--ink); overflow-wrap:anywhere; }
+.ix-lista .em-card p.em-c-org{ margin:0; font-size:14px; color:var(--ink); }
+.ix-lista .em-card p.em-c-plazo{ margin:0; font-size:14px; color:var(--ink); }
+.em-c-plazo b{ font-weight:700; }
+.ix-lista .em-card p.em-c-sin,.em-hace{ color:var(--ink-soft); }
+.em-c-pie{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; padding-top:8px; }
+.em-c-id{ font:500 12px/1.4 'IBM Plex Mono',ui-monospace,monospace; color:var(--ink-soft); }
+.em-card .em-boe{ min-height:44px; min-width:44px; }
 .em-card .em-boe:focus-visible,.em-card summary:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
 .em-card summary{ min-height:44px; display:flex; align-items:center; }
-@media (max-width:480px){ .em-ll{ grid-template-columns:1fr; } .em-ll dd{ margin-bottom:4px; } .em-card .em-boe{ align-self:stretch; justify-content:center; } }
 
 /* Carriles por clase en /empleo/ (01-11-2026): una fila deslizable por
    etiqueta; sin JS, la fila desliza igual (scroll-snap) y todo está visible. */
@@ -1745,7 +1758,7 @@ body:has(.tr-ix-seg) footer a{color:var(--red-ink);font-weight:700;padding:0 2px
 body:has(.tr-ix-seg) footer a:hover{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
 /* --- fin /seguimiento/ ---------------------------------------------------- */
 /* --- /empleo/ (reutiliza .tr-ix de /tramitacion/ y /seguimiento/) ---------
-   Solo el índice: caja de resumen, en cifras y listas en dos columnas. Los
+   Solo el índice: caja de resumen, en cifras y listas en dos columnas. La
    rejilla, selectores y filtros conservan su CSS (.em-*). Sin subrayados. */
 .tr-ix-em .tr-ix-cifras dd a,.tr-ix-em .tr-ix-leyes a{color:inherit;padding:0 3px;border-radius:2px}
 .tr-ix-em .tr-ix-cifras dd a{color:var(--red-ink)}
@@ -1788,9 +1801,6 @@ body:has(.tr-ix-em) .wrap,body:has(.tr-ix-em) .norma{max-width:1280px}
    columnas de flujo (filas alineadas dentro de su lista). */
 .tr-ix-em .tr-ix-em-dos{grid-template-columns:1fr !important}
 @media (min-width:760px){ .tr-ix-em .tr-ix-em-lista{display:block;column-count:2;column-gap:32px} .tr-ix-em .tr-ix-em-lista li{break-inside:avoid} }
-/* «Ver en el BOE» siempre al pie de la tarjeta. */
-.tr-ix-em .em-card .em-boe{margin-top:auto}
-.tr-ix-em .em-card .em-ll{margin-bottom:8px}
 /* «Últimos 30 días» es un filtro (casilla), no otra pestaña. */
 .tr-ix-em .em-dias{border-radius:8px;border-style:dashed;background:transparent;display:inline-flex;align-items:center;gap:8px}
 .tr-ix-em .em-dias::before{content:"";width:14px;height:14px;border:2px solid currentColor;border-radius:3px;flex:none}

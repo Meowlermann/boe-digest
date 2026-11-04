@@ -37,7 +37,7 @@ class TestRejilla(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_todas_las_tarjetas_en_rejilla(self):
-        self.assertEqual(len(re.findall(r'<li class="em-card"', self.idx)), 9)
+        self.assertEqual(len(re.findall(r'<li class="em-card[ \"]', self.idx)), 9)
         self.assertGreaterEqual(self.idx.count('<ul class="ix-lista em-rejilla">'), 2)
 
     def test_sin_carriles(self):

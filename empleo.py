@@ -765,8 +765,12 @@ def que_es(r: dict, ps: list | None = None) -> str:
     return corto
 
 
+# Texto fijo cuando el resumen no trae plazo literal (E-1, 04-11-2026).
+SIN_PLAZO = "No figura en el resumen: consúltalo en el BOE"
+
+
 def plazo_tarjeta(r: dict, mostrar: bool | None = None) -> str | None:
-    """Plazo en llano o None (⇒ «Consulta el plazo en el BOE»). Con la flag
+    """Plazo en llano o None (⇒ SIN_PLAZO). Con la flag
     apagada, siempre None. Nunca una fecha de cierre."""
     mostrar = empleo_campos.MOSTRAR_PLAZO_LLANO if mostrar is None else mostrar
     if not mostrar or r.get("no_oferta"):
@@ -817,10 +821,9 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         return (f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps[:3])}</ul>{resto}')
 
     def fila(r: dict, con_dept: bool = True) -> str:
-        # Tarjeta en lenguaje llano (maqueta aprobada 31-10-2026): etiqueta de
-        # color, «Qué es», «Quién y dónde», «Cuándo» y un único «Ver en el BOE».
-        # Nunca una fecha de cierre calculada: el plazo, solo en llano con la
-        # regla estricta y si MOSTRAR_PLAZO_LLANO; si no, «Consulta…».
+        # Tarjeta en lenguaje llano. Nunca una fecha de cierre calculada: el
+        # plazo, solo el literal con la regla estricta y si MOSTRAR_PLAZO_LLANO;
+        # si no, SIN_PLAZO.
         enlace = r.get("url") or url_boe(r["id"])
         et, clase = etiqueta_llana(r)
         no = empleo_campos.etiqueta_no_oferta(r)
@@ -836,21 +839,26 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         if len(ps) == 1 and ps[0].get("localidad"):
             quien.append(ps[0]["localidad"])
         quien = [q for q in quien if q]
-        cuando = f'Publicada el {esc(fecha_es(r["fecha"]))} <span class="em-hace">({esc(publicada(r["fecha"], ref).replace("Publicada ", ""))})</span>'
+        # Tarjeta compacta (E-1, 04-11-2026): tipo y fecha arriba, título
+        # llano, organismo, plazo LITERAL (nunca calculado) y, al pie, BOE-A y
+        # «Ver en el BOE». Mismos datos que la tarjeta Qué/Quién/Cuándo.
+        hace = esc(publicada(r["fecha"], ref).replace("Publicada ", ""))
+        cuando = (f'<p class="em-c-fecha"><span class="em-sep">Publicada el </span>'
+                  f'<time datetime="{attr(r["fecha"])}">{esc(fecha_es(r["fecha"]))}</time> '
+                  f'<span class="em-hace">({hace})</span></p>')
         plazo = ""
         if r["tipo"] in ORDEN_ABIERTOS and not no:
             pl = plazo_tarjeta(r)
-            plazo = (f'<span class="em-ll-plazo">Plazo: {esc(pl)}</span>' if pl else
-                     '<span class="em-ll-plazo em-ll-consulta">Consulta el plazo en el BOE</span>')
-        filas_ll = (f'<dt>Qué es</dt><dd class="em-que">{esc(que)}{lista}</dd>'
-                    + (f'<dt>Quién y dónde</dt><dd>{esc(" · ".join(quien))}</dd>' if quien else "")
-                    + f'<dt>Cuándo</dt><dd>{cuando}{"<br>" + plazo if plazo else ""}</dd>')
-        return (f'<li class="em-card" data-fecha="{attr(r["fecha"])}">'
-                f'<span class="em-etq em-etq-{clase}">{esc(et)}</span>{no}'
-                f'<dl class="em-ll">{filas_ll}</dl>{chips}'
+            plazo = (f'<p class="em-c-plazo"><b>Plazo:</b> {esc(pl)}</p>' if pl else
+                     f'<p class="em-c-plazo em-c-sin">{SIN_PLAZO}</p>')
+        org = f'<p class="em-c-org">{esc(" · ".join(quien))}</p>' if quien else ""
+        return (f'<li class="em-card em-c-{clase}" data-fecha="{attr(r["fecha"])}">'
+                f'<div class="em-c-cab"><span class="em-etq em-etq-{clase}">{esc(et)}</span>{no}</div>'
+                f'{cuando}<p class="em-c-tit">{esc(que)}</p>{lista}{org}{plazo}{chips}'
+                f'<div class="em-c-pie"><span class="em-c-id">{esc(r["id"])}</span>'
                 f'<a class="em-btn em-boe" href="{attr(enlace)}" target="_blank" rel="noopener" '
                 f'aria-label="Ver en el BOE: {attr(titular_corto(r, 90)[0])} ({attr(r["id"])})">'
-                f'Ver en el BOE</a></li>')
+                f'Ver en el BOE</a></div></li>')
 
     def rejilla(t: str, xs: list, con_dept: bool, h: str) -> str:
         # Rejilla de tarjetas por clase (variante A, aprobada el 04-11-2026):

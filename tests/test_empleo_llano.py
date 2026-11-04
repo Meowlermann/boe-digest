@@ -162,13 +162,13 @@ class TestTarjetaLlana(unittest.TestCase):
     def test_apagada_consulta(self):
         with mock.patch.object(ec, "MOSTRAR_PLAZO_LLANO", False):
             idx = self._idx()
-        self.assertIn("Consulta el plazo en el BOE", idx)
-        self.assertNotIn("Plazo: 20 días", idx)
+        self.assertIn("No figura en el resumen: consúltalo en el BOE", idx)
+        self.assertNotIn("<b>Plazo:</b> 20 días", idx)
 
     def test_encendida_plazo_llano(self):
         with mock.patch.object(ec, "MOSTRAR_PLAZO_LLANO", True):
             idx = self._idx()
-        self.assertIn("Plazo: 20 días hábiles desde el día siguiente a su publicación en el BOE", idx)
+        self.assertIn("<b>Plazo:</b> 20 días hábiles desde el día siguiente a su publicación en el BOE", idx)
         for prohibido in ("Cierra", "Fecha de cierre", "Fin de plazo", "Termina el"):
             self.assertNotIn(prohibido, idx)
 
