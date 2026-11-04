@@ -23,8 +23,9 @@ class RegresionesEmpleo(unittest.TestCase):
         self.assertIn('role="status" aria-live="polite"', SRC)
         self.assertRegex(BLOQUE, r"\.tr-ix-em \.em-fn\{position:absolute;width:1px")
 
-    def test_en_cifras_compacto_bajo_980(self):
-        self.assertIn("@media (max-width:979.98px)", BLOQUE)
+    def test_en_cifras_compacto_arriba(self):
+        # Desde la rejilla (04-11-2026) la franja compacta va a todos los anchos.
+        self.assertIn(".tr-ix.tr-ix-em{grid-template-columns:minmax(0,1fr)}", BLOQUE)
         self.assertIn(".tr-ix-em > .tr-ix-lado{order:-1", BLOQUE)
         self.assertEqual(SRC.count("tr-ix-em-rep"), 4)
 

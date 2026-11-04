@@ -1,5 +1,5 @@
 """/empleo/: mismo lenguaje que /tramitacion/ y /seguimiento/, sin subrayados,
-acotado, y sin perder los carriles (PR #66)."""
+acotado, y con la rejilla por clase (04-11-2026)."""
 import re
 import unittest
 from pathlib import Path
@@ -35,16 +35,16 @@ class EmpleoIndice(unittest.TestCase):
                 if s:
                     self.assertTrue(s.startswith((".tr-ix", "body:has(.tr-ix")), s)
 
-    def test_empleo_usa_clases_y_conserva_carriles(self):
+    def test_empleo_usa_clases_y_rejilla(self):
         src = (RAIZ / "empleo.py").read_text(encoding="utf-8")
         for c in ("tr-ix tr-ix-em", "tr-ix-resumen", "tr-ix-cifras", "tr-ix-lado", "tr-ix-em-dos",
                   'id="organismos"', 'id="provincias"',
-                  # Carriles de PR #66 y filtros: intactos.
-                  "em-carril", "em-pista", "em-ant", "em-sig", "em-vertodos", "em-carril-nav",
+                  # Rejilla por clase y filtros.
+                  "em-bloque", "em-rejilla",
                   "em-tab", "em-dias", 'id="filtros"', "em-sel-{clase}"):
             self.assertIn(c, src, c)
         js = (RAIZ / "assets" / "empleo.js").read_text(encoding="utf-8")
-        for c in ("hashchange", "em-pista-todo", "em-vertodos", "tipo="):
+        for c in ("hashchange", "em-bloque", "em-mas", "tipo="):
             self.assertIn(c, js, c)
 
 

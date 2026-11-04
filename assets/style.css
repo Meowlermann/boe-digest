@@ -1614,31 +1614,15 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 
 /* Carriles por clase en /empleo/ (01-11-2026): una fila deslizable por
    etiqueta; sin JS, la fila desliza igual (scroll-snap) y todo está visible. */
-.em-carril{ margin:8px 0 20px; }
-.em-carril[hidden]{ display:none; }
-.em-carril-cab{ display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; }
-.em-carril-t{ margin:0; font:700 1rem 'Work Sans',sans-serif; }
-.em-carril-nav{ display:flex; gap:6px; margin-left:auto; }
-.em-carril-nav[hidden]{ display:none; }
-.em-carril-nav .em-fb{ padding:0; justify-content:center; text-align:center; font-size:1.3rem; line-height:1; }
-.em-carril-nav .em-fb:disabled{ opacity:.4; cursor:default; }
-.ix-lista.em-pista{ grid-auto-flow:column; grid-auto-columns:min(86%,320px); overflow-x:auto;
-  scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:4px 2px 10px;
-  position:relative; /* contiene los .em-sep absolutos: si no, desbordan la página sin JS */ }
-.em-pista > li.em-card{ scroll-snap-align:start; }
-.em-pista:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
-.ix-lista.em-pista.em-pista-todo{ grid-auto-flow:row; grid-auto-columns:auto; overflow-x:visible; }
-.em-vertodos{ width:100%; text-align:center; margin-top:4px; }
-.em-vertodos[hidden]{ display:none; }
-@media (min-width:760px){ .ix-lista.em-pista.em-pista-todo{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
-/* Posición «12–15 de 196», «Ver en fila» arriba y «Cargar más» (lotes de 24). */
-.em-pos{ margin-left:auto; white-space:nowrap; font-variant-numeric:tabular-nums; }
-.em-pos[hidden]{ display:none; }
-.em-pos + .em-carril-nav{ margin-left:0; }
-.em-enfila{ margin-left:auto; }
-.em-enfila[hidden], .em-mas[hidden]{ display:none; }
-.em-pista > li.em-card.em-oculta{ display:none; }
-.em-mas{ width:100%; text-align:center; justify-content:center; margin-top:4px; font-weight:700; }
+/* Rejilla por clase (variante A, 04-11-2026): sustituye a los carriles. */
+.em-bloque{ margin:8px 0 20px; }
+.em-bloque[hidden]{ display:none; }
+.em-bloque-t{ margin:0 0 8px; font:700 1rem 'Work Sans',sans-serif; }
+.ix-lista.em-rejilla{ grid-template-columns:1fr; gap:14px; }
+@media (min-width:600px){ .ix-lista.em-rejilla{ grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); } }
+.em-rejilla > li.em-card.em-oculta{ display:none; }
+.em-mas{ width:100%; text-align:center; justify-content:center; margin-top:10px; font-weight:700; }
+.em-mas[hidden]{ display:none; }
 .tr-ix-em-local{ margin:10px 0 0; }
 
 /* --- Portada: módulo de empleo (UX-4) ------------------------------------ */
@@ -1762,7 +1746,7 @@ body:has(.tr-ix-seg) footer a:hover{background:var(--gold-soft);box-shadow:inset
 /* --- fin /seguimiento/ ---------------------------------------------------- */
 /* --- /empleo/ (reutiliza .tr-ix de /tramitacion/ y /seguimiento/) ---------
    Solo el índice: caja de resumen, en cifras y listas en dos columnas. Los
-   carriles, selectores y filtros conservan su CSS (.em-*). Sin subrayados. */
+   rejilla, selectores y filtros conservan su CSS (.em-*). Sin subrayados. */
 .tr-ix-em .tr-ix-cifras dd a,.tr-ix-em .tr-ix-leyes a{color:inherit;padding:0 3px;border-radius:2px}
 .tr-ix-em .tr-ix-cifras dd a{color:var(--red-ink)}
 .tr-ix-em .tr-ix-main a:not(.em-btn):hover,.tr-ix-em .tr-ix-lado a:hover{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--red)}
@@ -1790,15 +1774,16 @@ body:has(.tr-ix-em) footer a{color:var(--red-ink);font-weight:700;padding:0 2px;
 .tr-ix-em .tr-ix-leyes b{font-size:40px}
 /* «N disposiciones.» repetía el encabezado «(N de M)»: se lee (role=status), no se ve. */
 .tr-ix-em .em-fn{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-/* Bajo 980 px «En cifras» sube como franja compacta, sin la cifra que repite
-   la caja de resumen ni los canales (están en «Recibe avisos»). */
-@media (max-width:979.98px){
-  .tr-ix-em > .tr-ix-lado{order:-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 16px;
-    padding:8px 0 0;margin:0 0 -12px}
-  .tr-ix-em > .tr-ix-lado h2{grid-column:1/-1;font-size:13px;margin:0}
-  .tr-ix-em > .tr-ix-lado .tr-ix-em-rep{display:none}
-  .tr-ix-em > .tr-ix-lado .tr-ix-gr{margin:0}
-}
+/* Rejilla (04-11-2026): /empleo/ ocupa hasta 1280 px y «En cifras» va
+   siempre arriba como franja compacta (sin la cifra que repite la caja de
+   resumen ni los canales), para que la rejilla use todo el ancho. */
+body:has(.tr-ix-em) .wrap,body:has(.tr-ix-em) .norma{max-width:1280px}
+.tr-ix.tr-ix-em{grid-template-columns:minmax(0,1fr)}
+.tr-ix-em > .tr-ix-lado{order:-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 16px;
+  padding:8px 0 0;margin:0 0 -12px}
+.tr-ix-em > .tr-ix-lado h2{grid-column:1/-1;font-size:13px;margin:0}
+.tr-ix-em > .tr-ix-lado .tr-ix-em-rep{display:none}
+.tr-ix-em > .tr-ix-lado .tr-ix-gr{margin:0}
 /* Listas por organismo y por provincia: una debajo de otra; cada una en dos
    columnas de flujo (filas alineadas dentro de su lista). */
 .tr-ix-em .tr-ix-em-dos{grid-template-columns:1fr !important}
