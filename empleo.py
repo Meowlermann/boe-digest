@@ -573,14 +573,16 @@ PLURAL_GRUPO = {"oposicion": "oposiciones", "concurso": "concursos", "convocator
                 "resultados": "resultados", "otras": "otras disposiciones"}
 
 
-def _select(ident: str, titulo: str, todos: str, opciones: list) -> str:
+def _select(ident: str, titulo: str, todos: str, opciones: list, ayuda: str = "") -> str:
     """<select> de la barra de /empleo/: (valor, texto, n). Sin opciones, nada."""
     from html import escape as esc
     if not opciones:
         return ""
     ops = "".join(f'<option value="{esc(v)}">{esc(t)} ({n})</option>' for v, t, n in opciones)
+    nota = f'<span class="ref em-ayuda" id="{ident}-ayuda">{ayuda}</span>' if ayuda else ""
+    desc = f' aria-describedby="{ident}-ayuda"' if ayuda else ""
     return (f'<label class="em-campo" for="{ident}"><span>{titulo}</span>'
-            f'<select id="{ident}"><option value="">{todos}</option>{ops}</select></label>')
+            f'<select id="{ident}"{desc}><option value="">{todos}</option>{ops}</select>{nota}</label>')
 
 
 def chips_filtro(filas: list, ref: str, provincias: list | None = None, organismos: list | None = None) -> str:
@@ -616,7 +618,8 @@ def chips_filtro(filas: list, ref: str, provincias: list | None = None, organism
              'placeholder="Municipio, cuerpo, organismo o BOE-A…" aria-describedby="em-q-ayuda">'
              '<span id="em-q-ayuda" class="ref">Busca en las tarjetas de esta página; da igual tildes y mayúsculas.</span></div>')
     sels = (_select("em-clase", "Proceso", "Todos", proc)
-            + _select("em-prov", "Provincia", "Todas", provincias or [])
+            + _select("em-prov", "Provincia", "Todas", provincias or [],
+                      "Solo cuenta las disposiciones cuyo título nombra la provincia.")
             + _select("em-org", "Organismo convocante", "Todos", organismos or []))
     return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" data-defecto="{tipos[0]}" hidden>'
             f'{busca}'
@@ -625,7 +628,10 @@ def chips_filtro(filas: list, ref: str, provincias: list | None = None, organism
             f'<div role="group" aria-label="Filtrar por fecha" class="em-fg em-campo-dias">{bd}</div></div>'
             '<div class="em-activos-w" hidden><span class="ref" id="em-act-t">Filtros activos:</span>'
             '<div class="em-activos" aria-labelledby="em-act-t"></div></div>'
-            f'<p class="ref em-fn" role="status" aria-live="polite"></p></div>'
+            f'<p class="ref em-fn" role="status" aria-live="polite"></p>'
+            f'<p class="aside-note em-recorte" hidden><span></span> Las anteriores están en las páginas '
+            f'<a href="{ENLACE_PROVINCIAS}">por provincia</a> y <a href="{ENLACE_ORGANISMOS}">por organismo</a> '
+            f'y en el <a href="{RSS_EMPLEO}">canal RSS</a>.</p></div>'
             f'<script src="{JS_FILTRO}" defer></script>')
 
 
@@ -934,7 +940,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f'El resto, en el <a href="{RSS_EMPLEO}">canal RSS de empleo</a> y en las páginas '
                 f'<a href="{ENLACE_ORGANISMOS}">por organismo</a> y '
                 f'<a href="{ENLACE_PROVINCIAS}">por provincia</a>.</p>') if recorte else ""
-        return (f'<section class="em-sec" id="p-{t}" data-tipo="{t}"><{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
+        # Totales reales del periodo (E-2 ítem 2): el JS escribe «N de M» y avisa
+        # si el filtro deja fuera disposiciones no cargadas.
+        c30 = (dt.date.fromisoformat(ref) - dt.timedelta(days=DIAS_FILTRO)).isoformat()
+        return (f'<section class="em-sec" id="p-{t}" data-tipo="{t}" data-m="{len(todas)}" '
+                f'data-m30="{sum(1 for r in todas if r["fecha"] >= c30)}" '
+                f'data-et="{attr(ETIQUETA_TIPO[t])}" data-desde="{attr(fecha_es(xs[-1]["fecha"]))}">'
+                f'<{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
                 f'({n})</{h}>' +
                 (rejilla(t, xs, con_dept, h) if en_rejilla else
                  f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>') + f'{nota}</section>')
@@ -1053,10 +1065,21 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
               + (f'<section aria-labelledby="provincias"><h2 id="provincias">Por provincia</h2>'
                  f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_prov)}</ul></section>'
                  if enlaces_prov else "") + '</div>')
+    # Qué cuenta cada cifra (E-2 ítem 2): total del periodo, convocatorias y
+    # tarjetas cargadas (tope de MAX_FILAS por tipo), con los números reales.
+    pint = {t: min(MAX_FILAS, sum(1 for r in recientes if r["tipo"] == t)) for t in {r["tipo"] for r in recientes}}
+    total_pint = sum(pint.values())
+    fuera = len(recientes) - total_pint
+    cifras = ("" if not fuera else
+              f'<p class="aside-note em-cifras-nota">Cómo leer las cifras: en {DIAS_PORTADA} días hay '
+              f'<b>{len(recientes)}</b> disposiciones, de ellas <b>{convoc}</b> convocatorias. Esta página carga '
+              f'<b>{total_pint}</b>: como mucho las {MAX_FILAS} más recientes de cada tipo, así que «Todas» '
+              f'y los filtros cuentan sobre esas {total_pint}; las {fuera} restantes, más antiguas, están '
+              f'en las páginas por provincia y por organismo y en el canal RSS.</p>')
     cuerpo = ('<div class="tr-ix tr-ix-em"><div class="tr-ix-main">' + (resumen if recientes else "")
               + f'<p>Disposiciones de los últimos {DIAS_PORTADA} días, también por organismo y por '
               f'provincia. Los días desde la publicación se cuentan hasta el BOE '
-              f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
+              f'del {esc(fecha_es(ref))}, el último recogido.</p>' + cifras + selectores(enlaces_prov, enlaces_dept)
               + chips_filtro(recientes, ref,
                              [(p, nombres_prov[p], len(fs)) for p, fs in sorted(por_prov.items(), key=lambda x: nombres_prov[x[0]])],
                              [(s, n, len(fs)) for s, (n, fs) in sorted(por_dept.items(), key=lambda x: x[1][0])])
