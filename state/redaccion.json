@@ -4902,14 +4902,14 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "Sumar encabeza las 38 preguntas escritas del Congreso que siguen sin respuesta",
-   "entradilla": "Un total de 38 iniciativas parlamentarias han superado el límite de 20 días hábiles desde su publicación sin que conste la respuesta escrita en la cámara.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta fuera de plazo",
+   "entradilla": "Las iniciativas superan el margen habitual de contestación y corresponden principalmente al grupo parlamentario de Sumar.",
    "claves": [
-    "El grupo de Sumar es el más afectado por los retrasos en las contestaciones, con 24 iniciativas pendientes de respuesta.",
-    "El resto de preguntas se reparten entre el PSOE con 7, el PP con 4, EAJ-PNV con 1, Junts con 1 y sin grupo con 1.",
-    "La iniciativa escrita más antigua que sobrepasa la fecha límite fijada se publicó el lunes 16 de febrero de 2026."
+    "Treinta y ocho preguntas por escrito han superado el plazo de 20 días hábiles establecido sin que conste contestación oficial.",
+    "El grupo Sumar acumula 30 de las preguntas pendientes, el PSOE cuatro, el PP dos, Junts una y el colectivo Sin grupo una.",
+    "La solicitud de información más antigua que figura sin respuesta fue publicada el lunes 15 de diciembre de 2025."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-04"
@@ -10800,9 +10800,204 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23104": {
+   "huella": "090fe1d22aea1b84",
+   "fuente": "2fe863e706465116",
+   "titular": "La Jefatura del Estado aprueba ayudas urgentes para las víctimas del accidente ferroviario de Urda",
+   "entradilla": "El real decreto-ley establece compensaciones económicas complementarias para los afectados y sus familiares directos por el siniestro ocurrido en Toledo.",
+   "claves": [
+    "La norma regula la concesión de ayudas para las víctimas y los familiares de los fallecidos y heridos en el accidente del 28 de octubre de 2026.",
+    "Las empresas ferroviarias implicadas deben remitir al órgano instructor el listado de pasajeros en el plazo de 15 días desde la entrada en vigor.",
+    "Estas indemnizaciones son complementarias a las ya previstas por la normativa comunitaria y nacional para los derechos de los viajeros."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23105": {
+   "huella": "c4fa6e1f0218c3c9",
+   "fuente": "b65406d21e662534",
+   "titular": "El Ministerio de Educación regula la organización y el funcionamiento de la inspección educativa",
+   "entradilla": "La orden detalla las funciones, el ámbito de actuación y los mecanismos de evaluación de los inspectores en Ceuta, Melilla y centros en el exterior.",
+   "claves": [
+    "El ámbito de actuación comprende los centros educativos de Ceuta y Melilla, la acción educativa en el exterior, las enseñanzas militares y el centro a distancia.",
+    "Los inspectores e inspectoras de educación tendrán libre acceso a los centros docentes no universitarios e instalaciones autorizadas.",
+    "La inspección ejercerá sus funciones de oficio, por orden superior o a solicitud razonada de la comunidad educativa."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23155": {
+   "huella": "5f9935153ef37580",
+   "fuente": "fb9fd665f4e78e73",
+   "titular": "La Presidencia del Tribunal Constitucional determina la composición de su Mesa de Contratación",
+   "entradilla": "La resolución nombra a los miembros titulares y suplentes con carácter permanente para la contratación del sector público.",
+   "claves": [
+    "El puesto de presidente titular recae sobre el gerente del Tribunal Constitucional.",
+    "Los vocales titulares son el interventor, un letrado designado por la Secretaría General, el archivero jefe y la jefa de Asuntos Económicos y Contabilidad.",
+    "Como suplente de la presidencia actuará el letrado jefe del Servicio de Doctrina Constitucional."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23156": {
+   "huella": "5c59ae80cab8cba7",
+   "fuente": "f48c950d82abbae8",
+   "titular": "La Agencia Tributaria publica la rehabilitación de números de identificación fiscal",
+   "entradilla": "El Departamento de Gestión Tributaria oficializa la reactivación de varios NIF conforme a la normativa contra el fraude fiscal.",
+   "claves": [
+    "La medida se ampara en la Ley General Tributaria y en la normativa de prevención y lucha contra el fraude fiscal.",
+    "El listado completo con los números rehabilitados figura en el anexo de la resolución."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23157": {
+   "huella": "d8e05f561575ac10",
+   "fuente": "f9bfb803eca7d2ee",
+   "titular": "La Secretaría de Estado de Seguridad determina los servicios mínimos de seguridad privada para la huelga",
+   "entradilla": "Se fija el porcentaje de personal adscrito a servicios esenciales para garantizar la seguridad durante la huelga general del 11 de noviembre de 2026.",
+   "claves": [
+    "La resolución afecta a los servicios de seguridad privada que actúan de forma complementaria y subordinada a las Fuerzas y Cuerpos de Seguridad.",
+    "La medida busca garantizar los servicios esenciales de la comunidad y proteger las infraestructuras críticas del Estado frente a posibles interrupciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23158": {
+   "huella": "7b2df82c1ce5e6bd",
+   "fuente": "de31ba61115cc883",
+   "titular": "La Autoridad Portuaria de Vigo aprueba la ordenanza para sus instalaciones pesqueras",
+   "entradilla": "La nueva normativa regula los usos, la digitalización de operaciones, las subastas y los controles higiénico-sanitarios en el puerto.",
+   "claves": [
+    "El texto establece las reglas para el acceso, la circulación de vehículos, el uso de muelles y la maquinaria auxiliar en la zona de servicio.",
+    "Se regulan las operaciones de primera venta de pesca fresca, el mercado mayorista de segunda venta y los horarios de las lonjas.",
+    "Se incluye un régimen específico sobre gestión de residuos, suministro de combustibles, infracciones y sanciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23159": {
+   "huella": "4bb9a374c8f35e53",
+   "fuente": "1d6c4dce58e1c596",
+   "titular": "La Comisión Bilateral abre negociaciones sobre el decreto de urbanismo y vivienda en Extremadura",
+   "entradilla": "El Estado y la comunidad autónoma designan un grupo de trabajo para resolver las discrepancias en varios artículos de la norma autonómica.",
+   "claves": [
+    "El acuerdo afecta a los artículos 2, 4, 5, 6, 7, 8 y 9 del Decreto-ley 4/2026 de actuaciones urgentes en materia de urbanismo.",
+    "Se ha comunicado la decisión al Tribunal Constitucional de conformidad con la Ley Orgánica del Tribunal Constitucional."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23160": {
+   "huella": "370a9dfc12ac8007",
+   "fuente": "2f28b942c0dde7d5",
+   "titular": "Autorizan a Pradamap una línea subterránea y un centro de transformación en La Mudarra",
+   "entradilla": "Las infraestructuras eléctricas servirán para alimentar los servicios auxiliares de la subestación Villalba 220 kV en Valladolid.",
+   "claves": [
+    "El proyecto contempla una línea subterránea de corriente alterna trifásica a 13,2 kV con una longitud de 323 metros.",
+    "Se incluye una conexión de 15 metros con la línea aérea L-07 Medina de Rioseco y un centro de transformación de 100 kVA.",
+    "Las instalaciones se ubican íntegramente en el término municipal vallisoletano de La Mudarra."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23161": {
+   "huella": "0c9ce253c9030004",
+   "fuente": "d756ad3abe771a28",
+   "titular": "Autorizan a Red Eléctrica una línea y un centro de transformación en Maguilla",
+   "entradilla": "El Ministerio para la Transición Ecológica otorga los permisos y declara la utilidad pública para garantizar el suministro en Badajoz.",
+   "claves": [
+    "La instalación incluye un tramo aéreo de 241 metros con tres apoyos metálicos y un tramo subterráneo de 45 metros a 15 kV.",
+    "Se construye un centro de medida y transformación en superficie con un transformador trifásico de 160 kVA en un edificio prefabricado.",
+    "La declaración de utilidad pública incluye la relación individualizada de los bienes y derechos afectados en el municipio pacense de Maguilla."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23162": {
+   "huella": "bb1dde2a9c97a230",
+   "fuente": "6f73daf027c890d9",
+   "titular": "Fijan el precio medio de la energía para el servicio de interrumpibilidad en territorios no peninsulares",
+   "entradilla": "La Dirección General de Política Energética establece en 107,62 euros por MWh el valor aplicable durante el cuarto trimestre de 2026.",
+   "claves": [
+    "El precio se calcula combinando al 50 por ciento la media del mercado diario del tercer trimestre y los contratos a plazo de OMIP.",
+    "La cantidad se emplea para calcular la retribución anual del servicio de gestión de demanda para grandes consumidores industriales en estas zonas."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23163": {
+   "huella": "f0a80c88bb246419",
+   "fuente": "7fdad4867df521b9",
+   "titular": "El Imserso convoca 199.000 plazas para el Programa de Termalismo de 2027",
+   "entradilla": "Las estancias se desarrollarán entre febrero y diciembre de 2027 en turnos de diez días a pensión completa con tratamientos termales incluidos.",
+   "claves": [
+    "Los turnos durarán diez días con nueve pernoctaciones en régimen de pensión completa e incluirán tratamientos termales básicos y seguro.",
+    "El Imserso aportará a la financiación entre 178,43 y 201,63 euros por plaza, abonados directamente al establecimiento termal.",
+    "Las personas usuarias pagarán el precio directamente al balneario y deberán asumir sus propios desplazamientos de ida y vuelta."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23164": {
+   "huella": "0e8a8da0d84f4948",
+   "fuente": "b19a1fba1d8605c0",
+   "titular": "Publican el convenio estadístico entre la Seguridad Social y el Principado de Asturias",
+   "entradilla": "El INSS y el Instituto Social de la Marina cederán datos periódicos sobre pensionistas al servicio estadístico autonómico.",
+   "claves": [
+    "El intercambio incluye información de los titulares de pensiones contributivas de jubilación, incapacidad, viudedad, orfandad y a favor de familiares.",
+    "Se ceden datos identificativos, de residencia, la situación administrativa, el importe bruto mensual y los años de cotización acreditados."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23165": {
+   "huella": "201d5bdb655f84fb",
+   "fuente": "9bb1495eea329c10",
+   "titular": "El Banco de España publica los cambios oficiales del euro del día 2 de noviembre de 2026",
+   "entradilla": "La resolución oficializa las cotizaciones de la moneda europea frente a distintas divisas proporcionadas por el Banco Central Europeo.",
+   "claves": [
+    "Los tipos de cambio se adoptan en virtud de lo dispuesto en la Ley sobre la Introducción del Euro."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23166": {
+   "huella": "b3211e5ef500ac54",
+   "fuente": "4503b3d4c3a50d03",
+   "titular": "El Banco de España publica los cambios oficiales del euro del día 3 de noviembre de 2026",
+   "entradilla": "Se comunican las equivalencias oficiales de la moneda europea establecidas por el Banco Central Europeo.",
+   "claves": [
+    "Las cotizaciones tienen la consideración de cambios oficiales conforme a la legislación vigente sobre la introducción del euro."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23167": {
+   "huella": "773d2319a9284944",
+   "fuente": "8d2ffce3f95e4c72",
+   "titular": "El Banco de España publica el tipo de rendimiento de la deuda pública de octubre de 2026",
+   "entradilla": "Se oficializa el tipo de interés oficial correspondiente a los plazos de entre dos y seis años en el mercado secundario.",
+   "claves": [
+    "El índice se publica de acuerdo con la normativa de transparencia y protección del cliente de servicios bancarios."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23168": {
+   "huella": "c4faf5aef4147929",
+   "fuente": "af882ffa7d2a5723",
+   "titular": "El Banco de España publica los tipos de interés oficiales del mercado hipotecario de octubre",
+   "entradilla": "Se difunden los índices de referencia correspondientes al mes de octubre de 2026 para su aplicación en el sector financiero.",
+   "claves": [
+    "Los datos se publican conforme a la orden ministerial de transparencia y protección de los clientes de servicios bancarios."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-04"
   }
  },
  "uso": {
-  "2026-11-04": 1
+  "2026-11-04": 3
  }
 }
