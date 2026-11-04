@@ -78,7 +78,7 @@ class TestFiltro(unittest.TestCase):
 
     def test_js_pequeno_y_sin_dependencias(self):
         js = JS.read_text(encoding="utf-8")
-        self.assertLess(len(js.encode("utf-8")), 6 * 1024)   # 3 KB + carriles (01-11-2026) + posición y «Cargar más» (UX-2)
+        self.assertLess(len(js.encode("utf-8")), 9 * 1024)   # 3 KB + carriles + «Cargar más» (UX-2) + barra única y búsqueda (E-2, ~7,7 KB)
         self.assertNotRegex(js, r"\b(import|require|fetch|XMLHttpRequest|eval)\b")
         self.assertIn("replaceState", js)
         self.assertIn('location.hash', js)

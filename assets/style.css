@@ -1591,6 +1591,19 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-fb:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
 .em-fn:empty{ display:none; }
 .em-sec[hidden], .em-card[hidden]{ display:none; }
+/* Barra única de /empleo/ (E-2, 04-11-2026): búsqueda, selects, etiquetas activas. */
+.em-busca{ flex-direction:column; gap:4px; }
+.em-busca label, .em-campo > span{ font:600 14px 'Work Sans',sans-serif; color:var(--ink); }
+.em-busca input, .em-campo select{ box-sizing:border-box; width:100%; max-width:100%; min-height:44px; padding:8px 12px;
+  border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); font:inherit; font-size:15px; }
+.em-busca input:focus-visible, .em-campo select:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
+.em-sels{ display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); align-items:end; }
+.em-campo{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+.em-campo[hidden], .em-activos-w[hidden], .em-atajos[hidden], .em-bloque[hidden]{ display:none; }
+.em-activos-w{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.em-activos{ display:flex; flex-wrap:wrap; gap:6px; min-width:0; }
+.em-atajos{ font-size:14px; margin:0 0 8px; display:flex; flex-wrap:wrap; gap:4px 12px; align-items:center; }
+.em-atajos a{ display:inline-flex; align-items:center; min-height:44px; color:var(--ink); font-weight:600; text-decoration:none; }
 
 /* Lenguaje llano (31-10-2026): pestañas, etiqueta de color y tarjeta Qué/Quién/Cuándo. */
 .em-tabs{ display:flex; flex-wrap:wrap; gap:6px; }
