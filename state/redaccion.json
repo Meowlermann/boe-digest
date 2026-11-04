@@ -4902,17 +4902,17 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "38 preguntas escritas en el Congreso superan los 20 días hábiles sin respuesta",
-   "entradilla": "Un total de 38 iniciativas parlamentarias del último año han superado la fecha límite de contestación publicada por la Cámara baja sin contar aún con respuesta registrada.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "Sumar encabeza las 38 preguntas escritas del Congreso que siguen sin respuesta",
+   "entradilla": "Un total de 38 iniciativas parlamentarias han superado el límite de 20 días hábiles desde su publicación sin que conste la respuesta escrita en la cámara.",
    "claves": [
-    "El grupo parlamentario Sumar concentra la mayoría de las iniciativas pendientes de contestación, con un total de 30 preguntas registradas sin respuesta.",
-    "Las demás preguntas fuera de plazo corresponden a los grupos del PSOE, con cuatro; del PP, con dos; de Junts, con una; y de la categoría Sin grupo, con una.",
-    "La iniciativa escrita más antigua que ha rebasado la fecha límite de contestación fijada por el Congreso fue publicada el lunes 15 de diciembre de 2025."
+    "El grupo de Sumar es el más afectado por los retrasos en las contestaciones, con 24 iniciativas pendientes de respuesta.",
+    "El resto de preguntas se reparten entre el PSOE con 7, el PP con 4, EAJ-PNV con 1, Junts con 1 y sin grupo con 1.",
+    "La iniciativa escrita más antigua que sobrepasa la fecha límite fijada se publicó el lunes 16 de febrero de 2026."
    ],
    "modelo": "gemini-3.5-flash",
-   "fecha": "2026-11-03"
+   "fecha": "2026-11-04"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -10788,9 +10788,21 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-03"
+  },
+  "C-1cf13453b8c2aac8": {
+   "huella": "1d0bce61fbf4859a",
+   "fuente": "13223d14943d4a6b",
+   "titular": "El Gobierno deja sin responder dos preguntas escritas de ERC en el Congreso",
+   "entradilla": "Dos iniciativas registradas por el grupo parlamentario de ERC acumulan más de 20 días hábiles sin que se haya registrado contestación oficial.",
+   "claves": [
+    "La pregunta más antigua entre las pendientes de contestación fue publicada el martes 6 de octubre de 2026.",
+    "Las dos iniciativas escritas sin respuesta registrada en el plazo reglamentario pertenecen al grupo de ERC."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-04"
   }
  },
  "uso": {
-  "2026-11-03": 8
+  "2026-11-04": 1
  }
 }
