@@ -4902,14 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "El Congreso registra 38 preguntas escritas sin responder fuera de plazo",
-   "entradilla": "Un total de 38 iniciativas parlamentarias por escrito han superado el límite de 20 días hábiles para ser contestadas, siendo la más antigua del 15 de diciembre de 2025.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "Un total de 38 preguntas parlamentarias llevan más de 20 días hábiles sin respuesta",
+   "entradilla": "El Congreso registra el retraso en la contestación de 38 iniciativas escritas del último año presentadas por seis grupos parlamentarios diferentes.",
    "claves": [
-    "Sumar es el grupo parlamentario con más preguntas sin contestar en plazo, con 30 de las 38 iniciativas registradas.",
-    "Las 8 preguntas restantes corresponden al PSOE (4), al PP (2), a Junts (1) y al grupo de Sin grupo (1).",
-    "La iniciativa más antigua sin respuesta registrada se publicó el lunes 15 de diciembre de 2025."
+    "Sumar encabeza el recuento con 24 preguntas sin responder, seguido del PSOE con siete y del PP con cuatro peticiones pendientes.",
+    "La iniciativa acumulada más antigua con el plazo ya superado fue publicada el 16 de febrero de 2026."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-05"
@@ -10995,9 +10994,201 @@
    ],
    "modelo": "gemini-3.5-flash-lite",
    "fecha": "2026-11-04"
+  },
+  "BOE-A-2026-23174": {
+   "huella": "b5d38f9d497d7dc4",
+   "fuente": "daa4d4e8af215618",
+   "titular": "Hacienda regula los módulos de IRPF y el IVA simplificado para el año 2027",
+   "entradilla": "La nueva orden ministerial fija las actividades y condiciones aplicables a la estimación objetiva del IRPF y al régimen especial simplificado del IVA durante el ejercicio 2027.",
+   "claves": [
+    "El método de estimación objetiva del IRPF y el régimen especial simplificado del IVA se aplicarán a las actividades y sectores económicos que determine Hacienda para 2027.",
+    "Las actividades de los anexos I y II comprenden operaciones accesorias, considerándose en el anexo II aquellas con ingresos de hasta el 40 por ciento del volumen principal.",
+    "El régimen de estimación objetiva alcanzará también a las actividades acogidas al régimen especial de agricultura, ganadería y pesca o al recargo de equivalencia de IVA."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23175": {
+   "huella": "a89df8c5eb979128",
+   "fuente": "b54b2b01ed40de2d",
+   "titular": "El Ministerio de Cultura impone el uso de medios electrónicos para las ayudas de Artes Escénicas",
+   "entradilla": "Las solicitudes y comunicaciones de las ayudas del Ministerio de Cultura para música, danza, teatro y circo deberán realizarse de forma telemática.",
+   "claves": [
+    "La orden afecta a las ayudas a la música y la lírica, la danza y la creación interdisciplinar, y a las giras e infraestructuras de teatro y circo.",
+    "Las solicitudes deberán presentarse exclusivamente ante el registro electrónico del Ministerio de Cultura.",
+    "Las notificaciones se pondrán a disposición del interesado a través de la Dirección Electrónica Habilitada única."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23176": {
+   "huella": "45346032183fdfa7",
+   "fuente": "7b4ba7a6a8f949ed",
+   "titular": "El Gobierno regula las ayudas por cuidado de menores con cáncer o enfermedad grave",
+   "entradilla": "El nuevo real decreto fija el régimen jurídico de la prestación compensatoria para progenitores o acogedores que reduzcan su jornada laboral por hospitalización o tratamiento de menores a su cargo.",
+   "claves": [
+    "La prestación compensa la pérdida de ingresos sufrida al reducir la jornada laboral para el cuidado directo, continuo y permanente de menores con cáncer u otra enfermedad grave.",
+    "La situación protegida requiere que ambos progenitores trabajen, o uno solo en familias monoparentales, e implica un ingreso hospitalario o situación asimilada de la persona menor.",
+    "Quedan equiparadas a la adopción y al acogimiento la tutela de menores constituida por familiares que no puedan adoptar y las instituciones declaradas por resoluciones extranjeras."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23177": {
+   "huella": "59f7eb454f0de230",
+   "fuente": "11941eca41b93f00",
+   "titular": "La radio digital terrestre de ámbito estatal se emitirá solo con tecnología DAB+",
+   "entradilla": "El Gobierno aprueba medidas para impulsar la emisión sonora digital en DAB+, lo que permitirá ampliar hasta doce el número de canales radiofónicos integrados en cada red.",
+   "claves": [
+    "El servicio de radiodifusión sonora digital terrestre de ámbito estatal se prestará exclusivamente mediante el estándar de tecnología DAB+.",
+    "Las redes donde las emisiones sean exclusivamente en tecnología DAB+ podrán integrar hasta doce canales radiofónicos, frente a los seis permitidos en la tecnología DAB.",
+    "Los titulares de las licencias podrán destinar hasta un 20 por ciento de la capacidad asignada a la prestación de servicios adicionales o complementarios."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23178": {
+   "huella": "88a0bf4452dfe448",
+   "fuente": "673895a3f909a83f",
+   "titular": "El Tribunal de Cuentas fiscalizará las elecciones generales del 29 de noviembre",
+   "entradilla": "El organismo aprueba las instrucciones y criterios técnicos que deberán cumplir las formaciones políticas para remitir sus contabilidades sobre las elecciones a Cortes Generales del 29 de noviembre de 2026.",
+   "claves": [
+    "El Tribunal de Cuentas fiscalizará la regularidad de los ingresos y gastos electorales de las formaciones políticas tras las elecciones generales del 29 de noviembre de 2026.",
+    "Si se aprecian irregularidades, el órgano podrá incoar un expediente sancionador o proponer la reducción y no adjudicación de la subvención pública a la formación afectada.",
+    "La remisión de la contabilidad electoral, el envío de informes y la tramitación de alegaciones y sanciones se realizarán por medios informáticos y telemáticos."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23179": {
+   "huella": "24844732f51ab1f2",
+   "fuente": "128de6d5f78ab67b",
+   "titular": "Baleares prohíbe vender alcohol, tabaco y bebidas energéticas a los menores de edad",
+   "entradilla": "El decreto-ley modifica la normativa de drogodependencias de las Illes Balears para vetar la entrega de estas sustancias a menores y restringir ciertos inhalantes.",
+   "claves": [
+    "Se prohíbe el ofrecimiento, la venta o la entrega de bebidas alcohólicas, tabaco y bebidas energéticas a personas menores de edad en el territorio de la comunidad autónoma.",
+    "Se consideran bebidas energéticas las no alcohólicas que contienen cafeína en alta concentración combinada con azúcares y otros estimulantes como taurina, guaraná o glucurolactona.",
+    "Se prohíbe la venta al por menor de óxido nitroso y su publicidad cuando su destino sea el consumo por inhalación."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23180": {
+   "huella": "d78d179cae288498",
+   "fuente": "bcdaa005a0a62236",
+   "titular": "Baleares asumirá en 2027 la nómina del personal de educación infantil concertada",
+   "entradilla": "La Consejería de Educación incluirá a los docentes y técnicos de infantil en el pago delegado o directo a partir de enero de 2027 y regula el destino de los fondos del concierto educativo.",
+   "claves": [
+    "Durante el segundo semestre de 2026 se realizarán los trámites para incluir desde enero de 2027 al personal docente y técnico en el sistema de pago delegado o directo.",
+    "Las cantidades abonadas para el primer ciclo de educación infantil deberán justificarse anualmente y destinarse a cubrir los gastos del concierto educativo.",
+    "Los remanentes de las ayudas se podrán usar para la viabilidad y calidad del centro, pero se prohíbe la doble financiación con gastos cubiertos por cuotas de las familias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23216": {
+   "huella": "e3cd6bc311295203",
+   "fuente": "e1b1c0b8e3c95c55",
+   "titular": "El registro de Solsona frena una hipoteca por omitir el estado civil del prestatario",
+   "entradilla": "La calificación registral exige indicar el estado civil del prestatario y cumplir la Ley de contratos de crédito inmobiliario tras constatar que el prestamista ya había concedido otro préstamo hipotecario en Girona.",
+   "claves": [
+    "El registrador denegó la inscripción de la hipoteca sobre una finca en Sant Llorenç de Morunys al no constar en la escritura el estado civil de la parte prestataria.",
+    "Al figurar el prestamista con dos operaciones tras conceder otro préstamo en Girona, la calificación lo considera profesional e impone cumplir las normas de crédito inmobiliario."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23217": {
+   "huella": "57a77c77c4d6fee3",
+   "fuente": "4db777d23f461a51",
+   "titular": "Una propietaria recurre la omisión del precio en la certificación de su hipoteca",
+   "entradilla": "La titular de una vivienda en Villanueva del Pardillo reclama que la certificación registral detalle el precio pagado por los fondos en la cesión de sus dos créditos hipotecarios para ejercer sus derechos legales.",
+   "claves": [
+    "La solicitante pidió certificación literal de las inscripciones correspondientes a las cesiones de sus créditos hipotecarios del Banco Sabadell y Caixabank a dos entidades.",
+    "La recurrente alega tener interés legítimo para conocer el desglose del precio de la cesión de la hipoteca sobre su vivienda habitual.",
+    "La registradora defendió la certificación emitida sosteniendo que el precio no fue interesado expresamente en la solicitud inicial y no constaba expresado en el asiento."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23218": {
+   "huella": "223944bd194f6b2e",
+   "fuente": "2fc75c8454e62d72",
+   "titular": "El Registro de Motilla del Palancar suspende una servidumbre de paso homologada",
+   "entradilla": "El registrador denegó inscribir el acuerdo judicial que fijaba un paso de 3 metros de ancho y 100 de largo en Villagarcía del Llano al no detallar la duración de la servidumbre acordada entre las partes.",
+   "claves": [
+    "El propietario de una parcela enclavada en Villagarcía del Llano acordó judicialmente en 2008 la constitución de una servidumbre de paso a cambio de 800 euros.",
+    "La calificación del registrador en febrero de 2026 suspendió la inscripción al apreciar la falta de determinación de la duración de la servidumbre.",
+    "El recurso de la representación del afectado sostiene la validez del acuerdo transaccional homologado mediante auto por el Juzgado de Primera Instancia número 1."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23219": {
+   "huella": "455be98ab1632761",
+   "fuente": "d92aebbda9a2d2ff",
+   "titular": "El Registro Mercantil deniega usar la marca Cecopi para una sociedad limitada",
+   "entradilla": "La calificación rechaza la reserva de la denominación «Cecopi Suministros Industriales SL» para evitar la confusión en el tráfico mercantil con el organismo público encargado de la coordinación de emergencias.",
+   "claves": [
+    "El Registrador Mercantil Central I denegó la reserva del nombre al entender que el término Cecopi alude al Centro de Coordinación Cooperativa Integrada.",
+    "La decisión argumenta que la denominación solicitada podría inducir a error sobre si se trata de un organismo estatal o autonómico dedicado a la gestión de emergencias.",
+    "El Reglamento del Registro Mercantil prohíbe incluir en la denominación social términos o expresiones que induzcan a confusión sobre la naturaleza o identidad de la entidad."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23221": {
+   "huella": "430f9a287cb02824",
+   "fuente": "6ae2658b71f85cbf",
+   "titular": "Recurren a Justicia la negativa a validar telemáticamente el ITP en Sahagún",
+   "entradilla": "Una compradora reclama ante la Dirección General tras suspenderse la inscripción de su vivienda en Sahagún por no presentar en formato físico el justificante del impuesto que aportó con código de verificación.",
+   "claves": [
+    "La escrituración de la compraventa efectuada en 2020 ante notario en Sahagún fue enviada al Registro en abril de 2026 sin acompañar la acreditación del impuesto.",
+    "La registradora suspendió la calificación exigiendo probar el pago, pero rechazó verificar de oficio el justificante aportado con Código Seguro de Verificación.",
+    "El recurso invoca la digitalización registral para defender que la presentación telemática del Modelo 600 con código de verificación es copia auténtica suficiente."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23222": {
+   "huella": "0afdf4327ac15d28",
+   "fuente": "ed77bcd6ff7961e0",
+   "titular": "La registradora de la propiedad de Vilanova i la Geltrú suspende la legalización de un libro de actas",
+   "entradilla": "El Registro frena la legalización del libro de actas de una comunidad de propietarios debido a la existencia de controversia sobre su representación y a una denuncia judicial.",
+   "claves": [
+    "La solicitud fue presentada por una representante en nombre del presidente de la comunidad para legalizar el segundo libro de actas del edificio.",
+    "La documentación aportada refleja un conflicto sobre quién ostenta la presidencia y la convocatoria de las juntas.",
+    "La situación ha sido denunciada ante los tribunales en funciones de guardia de Vilanova i la Geltrú por supuesta apropiación indebida y coacciones."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23223": {
+   "huella": "71438a81e03e5bc1",
+   "fuente": "a10dfa3b70dca4ca",
+   "titular": "El Registro de Madrid rechaza dividir en propiedad horizontal un hotel",
+   "entradilla": "La registradora frena la constitución de un régimen de división en 57 locales de uso hotelero de un edificio destinado a establecimiento hostelero en la capital.",
+   "claves": [
+    "La empresa promotora pretendía dividir en régimen de propiedad horizontal 57 fincas descritas individualmente como locales de uso hotelero.",
+    "El Ayuntamiento de Madrid señaló que la división horizontal es ajena al derecho urbanístico y que carece de competencia para emitir licencias sobre la misma."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23228": {
+   "huella": "82e9a3de1062f117",
+   "fuente": "46a473aeb6322283",
+   "titular": "El Registro Mercantil de Madrid rechaza la inscripción del liquidador de una sociedad",
+   "entradilla": "La calificación desestima la validez del acta para registrar el nombramiento del liquidador de Constructora Cadarso XXI al prevalecer las declaraciones del presidente de la junta sobre la constitución de la mesa.",
+   "claves": [
+    "El registrador mercantil denegó inscribir a M. F. C. como liquidador tras evaluar las discrepancias sobre la representación de las sociedades participantes.",
+    "La doctrina determina que la formación de la lista de asistentes corresponde al presidente de la mesa y exoneró a la notaria de calificar la veracidad de lo manifestado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
   }
  },
  "uso": {
-  "2026-11-05": 1
+  "2026-11-05": 3
  }
 }
