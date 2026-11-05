@@ -20,9 +20,11 @@ class RegresionesEmpleo(unittest.TestCase):
         self.assertNotRegex(SRC, r'tr-ix-leyes"><span>[^\n]*<a href=')
         self.assertIn("<b>{len(recientes)}</b>", SRC)
 
-    def test_estado_visualmente_oculto_pero_leido(self):
+    def test_estado_visible_con_role_status(self):
+        # E-2b (05-11-2026): el aviso «Ninguna coincide» debe verse; role=status se mantiene.
         self.assertIn('role="status" aria-live="polite"', SRC)
-        self.assertRegex(BLOQUE, r"\.tr-ix-em \.em-fn\{position:absolute;width:1px")
+        self.assertRegex(BLOQUE, r"\.tr-ix-em \.em-fn\{position:static")
+        self.assertNotRegex(BLOQUE, r"\.tr-ix-em \.em-fn\{[^}]*width:1px")
 
     def test_en_cifras_compacto_arriba(self):
         # Desde la rejilla (04-11-2026) la franja compacta va a todos los anchos.
