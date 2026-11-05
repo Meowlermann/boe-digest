@@ -21,7 +21,7 @@ class Contador(unittest.TestCase):
     def test_nota_provincia(self):
         h = em.chips_filtro([{"id": "BOE-A-2026-1", "tipo": "convocatoria", "titulo": "x", "dept": "X", "prov": [], "fecha": "2026-11-03", "proc": "", "url": "", "plazo": ""}], "2026-11-04", [("granada", "Granada", 3)], [])
         self.assertIn('aria-describedby="em-prov-ayuda"', h)
-        self.assertIn("Solo cuenta las disposiciones cuyo título nombra la provincia.", h)
+        self.assertIn("Solo cuenta las que nombran la provincia en el título.", h)
 
     def test_nota_cifras_en_fuente(self):
         src = pathlib.Path(em.__file__).read_text(encoding="utf-8")

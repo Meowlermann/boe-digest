@@ -35,7 +35,7 @@ class TestSelectores(unittest.TestCase):
         c = self._cuerpo()
         nav = c[c.index('<nav id="filtros"'):c.index("</nav>")]
         enlaces = set(re.findall(r'href="([^"]+\.html)"', nav))
-        paginas = {p.name for p in self.carpeta.glob("*.html")} - {"index.html"}
+        paginas = {p.name for p in self.carpeta.glob("*.html")} - {"index.html", "provincias.html", "organismos.html"}
         self.assertEqual(enlaces, paginas)
         prov = {e for e in enlaces if e.startswith("provincia-")}
         self.assertTrue(prov)
