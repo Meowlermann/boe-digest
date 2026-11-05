@@ -567,7 +567,23 @@ def selectores(enlaces_prov: list, enlaces_dept: list) -> str:
             + plegable("org", "Elegir organismo convocante", enlaces_dept))
     return f'<nav id="filtros" class="em-filtros" aria-label="Filtrar por provincia u organismo">{html}</nav>' if html else ""
 
-def chips_filtro(filas: list, ref: str) -> str:
+# «Cargar más» con el nombre del grupo (E-2): «Cargar más concursos (24 de 26 restantes)».
+PLURAL_GRUPO = {"oposicion": "oposiciones", "concurso": "concursos", "convocatoria": "convocatorias",
+                "provision": "cambios de puesto", "admitidos": "listas de admitidos", "tribunal": "tribunales",
+                "resultados": "resultados", "otras": "otras disposiciones"}
+
+
+def _select(ident: str, titulo: str, todos: str, opciones: list) -> str:
+    """<select> de la barra de /empleo/: (valor, texto, n). Sin opciones, nada."""
+    from html import escape as esc
+    if not opciones:
+        return ""
+    ops = "".join(f'<option value="{esc(v)}">{esc(t)} ({n})</option>' for v, t, n in opciones)
+    return (f'<label class="em-campo" for="{ident}"><span>{titulo}</span>'
+            f'<select id="{ident}"><option value="">{todos}</option>{ops}</select></label>')
+
+
+def chips_filtro(filas: list, ref: str, provincias: list | None = None, organismos: list | None = None) -> str:
     """Pestañas de /empleo/ (lenguaje llano, 31-10-2026; antes, los botones de
     UX-3). Un tablist con una pestaña por tipo presente (Convocatorias primero)
     y «Todas»; el botón «Últimos N días» sigue aparte (aria-pressed). Todo sale
@@ -586,9 +602,29 @@ def chips_filtro(filas: list, ref: str) -> str:
     bt += tab.format(v="todas", c=" ".join(f"p-{t}" for t in tipos), p="false", ti="-1", e="Todas")
     bd = (f'<button type="button" class="em-fb em-dias" data-f="dias" data-v="{DIAS_FILTRO}" '
           f'aria-pressed="false">Solo los últimos {DIAS_FILTRO} días</button>')
+    # Barra única (E-2, 04-11-2026): búsqueda, tipo (pestañas), proceso
+    # (oposición / concurso), provincia, organismo y «30 días», con las
+    # etiquetas de filtros activos debajo. Todo sobre las tarjetas ya pintadas.
+    clases: dict = {}
+    for r in filas:
+        if r["tipo"] == "convocatoria":
+            et, cl = etiqueta_llana(r)
+            clases.setdefault(cl, [et, 0])[1] += 1
+    proc = [(cl, et, n) for cl, (et, n) in sorted(clases.items(), key=lambda x: -x[1][1])] if len(clases) > 1 else []
+    busca = ('<div class="em-fg em-busca" role="search"><label for="em-q">Buscar en empleo</label>'
+             '<input type="search" id="em-q" autocomplete="off" spellcheck="false" '
+             'placeholder="Municipio, cuerpo, organismo o BOE-A…" aria-describedby="em-q-ayuda">'
+             '<span id="em-q-ayuda" class="ref">Busca en las tarjetas de esta página; da igual tildes y mayúsculas.</span></div>')
+    sels = (_select("em-clase", "Proceso", "Todos", proc)
+            + _select("em-prov", "Provincia", "Todas", provincias or [])
+            + _select("em-org", "Organismo convocante", "Todos", organismos or []))
     return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" data-defecto="{tipos[0]}" hidden>'
+            f'{busca}'
             f'<div role="tablist" aria-label="Tipo de disposición" class="em-fg em-tabs">{bt}</div>'
-            f'<div role="group" aria-label="Filtrar por fecha" class="em-fg">{bd}</div>'
+            f'<div class="em-sels">{sels}'
+            f'<div role="group" aria-label="Filtrar por fecha" class="em-fg em-campo-dias">{bd}</div></div>'
+            '<div class="em-activos-w" hidden><span class="ref" id="em-act-t">Filtros activos:</span>'
+            '<div class="em-activos" aria-labelledby="em-act-t"></div></div>'
             f'<p class="ref em-fn" role="status" aria-live="polite"></p></div>'
             f'<script src="{JS_FILTRO}" defer></script>')
 
@@ -852,7 +888,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             plazo = (f'<p class="em-c-plazo"><b>Plazo:</b> {esc(pl)}</p>' if pl else
                      f'<p class="em-c-plazo em-c-sin">{SIN_PLAZO}</p>')
         org = f'<p class="em-c-org">{esc(" · ".join(quien))}</p>' if quien else ""
-        return (f'<li class="em-card em-c-{clase}" data-fecha="{attr(r["fecha"])}">'
+        return (f'<li class="em-card em-c-{clase}" data-fecha="{attr(r["fecha"])}" data-o="{attr(slug(r["dept"]))}"'
+                f' data-p="{attr(" ".join(r.get("prov") or []))}">'
                 f'<div class="em-c-cab"><span class="em-etq em-etq-{clase}">{esc(et)}</span>{no}</div>'
                 f'{cuando}<p class="em-c-tit">{esc(que)}</p>{lista}{org}{plazo}{chips}'
                 f'<div class="em-c-pie"><span class="em-c-id">{esc(r["id"])}</span>'
@@ -870,10 +907,16 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             grupos.setdefault(etiqueta_llana(r), []).append(r)
         sub = "h3" if h == "h2" else "h4"
         html = []
+        if len(grupos) > 1:
+            # Atajo por grupo (E-2): sin JS, salto al grupo; con JS, filtra.
+            html.append('<p class="em-atajos">Ir a: ' + " ".join(
+                f'<a href="#c-{t}-{cl}" data-clase="{attr(cl)}">{esc(et)} ({len(rs)})</a>'
+                for (et, cl), rs in grupos.items()) + '</p>')
         for (et, clase), rs in grupos.items():
             cab = (f'<{sub} class="em-bloque-t" id="c-{t}-{clase}">{esc(et)} ({len(rs)})</{sub}>'
                    if len(grupos) > 1 else "")
-            html.append(f'<div class="em-bloque" data-clase="{attr(clase)}">{cab}'
+            html.append(f'<div class="em-bloque" data-clase="{attr(clase)}" '
+                        f'data-n="{attr(PLURAL_GRUPO.get(clase, "disposiciones"))}">{cab}'
                         f'<ul class="ix-lista em-rejilla">{"".join(fila(r, con_dept) for r in rs)}</ul></div>')
         return "".join(html)
 
@@ -1014,7 +1057,9 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
               + f'<p>Disposiciones de los últimos {DIAS_PORTADA} días, también por organismo y por '
               f'provincia. Los días desde la publicación se cuentan hasta el BOE '
               f'del {esc(fecha_es(ref))}, el último recogido.</p>' + selectores(enlaces_prov, enlaces_dept)
-              + chips_filtro(recientes, ref)
+              + chips_filtro(recientes, ref,
+                             [(p, nombres_prov[p], len(fs)) for p, fs in sorted(por_prov.items(), key=lambda x: nombres_prov[x[0]])],
+                             [(s, n, len(fs)) for s, (n, fs) in sorted(por_dept.items(), key=lambda x: x[1][0])])
               + (por_tipo(recientes, en_rejilla=True) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + listas

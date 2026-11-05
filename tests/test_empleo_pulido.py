@@ -19,9 +19,8 @@ class ChipDias(unittest.TestCase):
 
 class CargarMas(unittest.TestCase):
     def test_textos(self):
-        self.assertIn('q > LOTE ? "Cargar más (" + LOTE + " de " + q + " restantes)"', JS)
-        self.assertIn('"Cargar las " + q + " restantes"', JS)
-        self.assertIn('"Cargar la última"', JS)
+        # E-2: el botón nombra su grupo: «Cargar más concursos (24 de 26 restantes)».
+        self.assertIn('"Cargar más " + k.dataset.n + " (" + Math.min(LOTE, q) + " de " + q + " restantes)"', JS)
 
 
 if __name__ == "__main__":
