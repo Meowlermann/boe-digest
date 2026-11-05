@@ -89,7 +89,7 @@ class TestGenerado(unittest.TestCase):
         html = self.renderizado()
         self.assertIn("(2 de 4)", html)
         self.assertIn('href="/empleo/index.xml"', html)
-        self.assertIn('href="/empleo/#organismos"', html)
+        self.assertIn('href="/empleo/organismos.html"', html)
         self.assertEqual(v.problemas_contadores(html), [])
         self.assertEqual(v.problemas_contadores(self.renderizado("ministerio-x.html")), [])
 
