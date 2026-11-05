@@ -79,8 +79,8 @@ ORDEN_RESTO = ("otras",)
 # A dónde lleva la nota de un listado recortado (rutas absolutas: sirven igual
 # en el índice que en las fichas por organismo y provincia).
 RSS_EMPLEO = "/empleo/index.xml"
-ENLACE_ORGANISMOS = "/empleo/#organismos"
-ENLACE_PROVINCIAS = "/empleo/#provincias"
+ENLACE_ORGANISMOS = "/empleo/organismos.html"
+ENLACE_PROVINCIAS = "/empleo/provincias.html"
 
 DEPT_LOCAL = "ADMINISTRACIÓN LOCAL"
 DEPT_UNIV = "UNIVERSIDADES"
@@ -585,7 +585,8 @@ def _select(ident: str, titulo: str, todos: str, opciones: list, ayuda: str = ""
             f'<select id="{ident}"{desc}><option value="">{todos}</option>{ops}</select>{nota}</label>')
 
 
-def chips_filtro(filas: list, ref: str, provincias: list | None = None, organismos: list | None = None) -> str:
+def chips_filtro(filas: list, ref: str, provincias: list | None = None, organismos: list | None = None,
+                 alcance: tuple[int, int] | None = None) -> str:
     """Pestañas de /empleo/ (lenguaje llano, 31-10-2026; antes, los botones de
     UX-3). Un tablist con una pestaña por tipo presente (Convocatorias primero)
     y «Todas»; el botón «Últimos N días» sigue aparte (aria-pressed). Todo sale
@@ -604,23 +605,31 @@ def chips_filtro(filas: list, ref: str, provincias: list | None = None, organism
     bt += tab.format(v="todas", c=" ".join(f"p-{t}" for t in tipos), p="false", ti="-1", e="Todas")
     bd = (f'<button type="button" class="em-fb em-dias" data-f="dias" data-v="{DIAS_FILTRO}" '
           f'aria-pressed="false">Solo los últimos {DIAS_FILTRO} días</button>')
-    # Barra única (E-2, 04-11-2026): búsqueda, tipo (pestañas), proceso
-    # (oposición / concurso), provincia, organismo y «30 días», con las
-    # etiquetas de filtros activos debajo. Todo sobre las tarjetas ya pintadas.
+    # Barra única (E-2, 04-11-2026) + alcance honesto (E-2b, 05-11-2026):
+    # búsqueda, tipo, proceso, provincia, organismo y «30 días». Los números
+    # de los desplegables cuentan solo las tarjetas cargadas (no el total del
+    # periodo). Alcance = (convocatorias cargadas, total en el periodo).
     clases: dict = {}
     for r in filas:
         if r["tipo"] == "convocatoria":
             et, cl = etiqueta_llana(r)
             clases.setdefault(cl, [et, 0])[1] += 1
     proc = [(cl, et, n) for cl, (et, n) in sorted(clases.items(), key=lambda x: -x[1][1])] if len(clases) > 1 else []
+    n_carga, n_total = alcance or (sum(1 for r in filas if r["tipo"] == "convocatoria"), 0)
+    alcance_txt = (f"las {n_carga} de {n_total} convocatorias cargadas (las más recientes)"
+                   if n_total > n_carga else
+                   f"las {n_carga} convocatorias de esta página")
     busca = ('<div class="em-fg em-busca" role="search"><label for="em-q">Buscar en empleo</label>'
              '<input type="search" id="em-q" autocomplete="off" spellcheck="false" '
              'placeholder="Municipio, cuerpo, organismo o BOE-A…" aria-describedby="em-q-ayuda">'
-             '<span id="em-q-ayuda" class="ref">Busca en las tarjetas de esta página; da igual tildes y mayúsculas.</span></div>')
-    sels = (_select("em-clase", "Proceso", "Todos", proc)
+             f'<span id="em-q-ayuda" class="ref">Busca en {alcance_txt}; da igual tildes y mayúsculas. '
+             f'Si no aparece un ayuntamiento, ábrelo en su '
+             f'<a href="{ENLACE_PROVINCIAS}">página de provincia</a>.</span></div>')
+    base_cuenta = "Cifras: tarjetas cargadas en esta página."
+    sels = (_select("em-clase", "Proceso", "Todos", proc, base_cuenta)
             + _select("em-prov", "Provincia", "Todas", provincias or [],
-                      "Solo cuenta las disposiciones cuyo título nombra la provincia.")
-            + _select("em-org", "Organismo convocante", "Todos", organismos or []))
+                      base_cuenta + " Solo cuenta las que nombran la provincia en el título.")
+            + _select("em-org", "Organismo convocante", "Todos", organismos or [], base_cuenta))
     return (f'<div id="filtro-tipo" class="em-filtro" data-ref="{esc(ref)}" data-defecto="{tipos[0]}" hidden>'
             f'{busca}'
             f'<div role="tablist" aria-label="Tipo de disposición" class="em-fg em-tabs">{bt}</div>'
@@ -1070,6 +1079,22 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     pint = {t: min(MAX_FILAS, sum(1 for r in recientes if r["tipo"] == t)) for t in {r["tipo"] for r in recientes}}
     total_pint = sum(pint.values())
     fuera = len(recientes) - total_pint
+    # Filas realmente cargadas (E-2b): mismos topes que bloque(); los
+    # desplegables cuentan sobre ellas, no sobre el total del periodo.
+    pintadas: list = []
+    for t in ORDEN_ABIERTOS + ORDEN_SEGUIMIENTO + ORDEN_RESTO:
+        # Mismo orden que clasificar()/bloque(): fecha, id descendente.
+        pintadas.extend([r for r in recientes if r["tipo"] == t][:MAX_FILAS])
+    prov_pint: dict = {}
+    org_pint: dict = {}
+    nomb_dept = {s: n for s, (n, _) in por_dept.items()}
+    for r in pintadas:
+        for p in r.get("prov") or []:
+            if p in nombres_prov:
+                prov_pint[p] = prov_pint.get(p, 0) + 1
+        s = slug(r["dept"])
+        if s in nomb_dept:
+            org_pint[s] = org_pint.get(s, 0) + 1
     cifras = ("" if not fuera else
               f'<p class="aside-note em-cifras-nota">Cómo leer las cifras: en {DIAS_PORTADA} días hay '
               f'<b>{len(recientes)}</b> disposiciones, de ellas <b>{convoc}</b> convocatorias. Esta página carga '
@@ -1080,9 +1105,10 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
               + f'<p>Disposiciones de los últimos {DIAS_PORTADA} días, también por organismo y por '
               f'provincia. Los días desde la publicación se cuentan hasta el BOE '
               f'del {esc(fecha_es(ref))}, el último recogido.</p>' + cifras + selectores(enlaces_prov, enlaces_dept)
-              + chips_filtro(recientes, ref,
-                             [(p, nombres_prov[p], len(fs)) for p, fs in sorted(por_prov.items(), key=lambda x: nombres_prov[x[0]])],
-                             [(s, n, len(fs)) for s, (n, fs) in sorted(por_dept.items(), key=lambda x: x[1][0])])
+              + chips_filtro(pintadas, ref,
+                             [(p, nombres_prov[p], n) for p, n in sorted(prov_pint.items(), key=lambda x: nombres_prov[x[0]])],
+                             [(s, nomb_dept[s], n) for s, n in sorted(org_pint.items(), key=lambda x: nomb_dept[x[0]])],
+                             (pint.get("convocatoria", 0), convoc))
               + (por_tipo(recientes, en_rejilla=True) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + listas
@@ -1097,6 +1123,26 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
            "Empleo público en el BOE",
            "Todas las disposiciones de la sección II.B del BOE, «Oposiciones y concursos»: "
            "convocatorias, listas, tribunales y resultados.", recientes, cuerpo, "", ficha="")
+    # Índices ligeros (E-2b): el aviso del buscador enlaza aquí, no a un ancla
+    # de la misma página (con la búsqueda activa el salto no limpiaba el filtro).
+    if enlaces_prov:
+        pagina("provincias.html", "Empleo público por provincia",
+               "Provincias nombradas en los títulos de oposiciones y concursos del BOE.",
+               "Empleo público por provincia",
+               f"Disposiciones de los últimos {DIAS_PORTADA} días cuyo título nombra la provincia. "
+               "Cada enlace abre el listado completo de esa provincia (sin el tope de la portada).",
+               recientes,
+               f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_prov)}</ul>',
+               "Por provincia", ficha="")
+    if enlaces_dept:
+        pagina("organismos.html", "Empleo público por organismo convocante",
+               "Organismos convocantes de oposiciones y concursos del BOE.",
+               "Empleo público por organismo convocante",
+               f"Disposiciones de los últimos {DIAS_PORTADA} días por organismo. "
+               "Cada enlace abre el listado completo de ese organismo.",
+               recientes,
+               f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_dept)}</ul>',
+               "Por organismo", ficha="")
     generar_paginas.resumen = {"departamentos": len(por_dept), "provincias": len(por_prov),
                                "disposiciones": len(regs)}
     return salidas
