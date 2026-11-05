@@ -4902,13 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "Un total de 38 preguntas parlamentarias llevan más de 20 días hábiles sin respuesta",
-   "entradilla": "El Congreso registra el retraso en la contestación de 38 iniciativas escritas del último año presentadas por seis grupos parlamentarios diferentes.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso mantiene 38 preguntas escritas sin responder tras vencer el plazo límite",
+   "entradilla": "Un total de 38 preguntas escritas presentadas en el Congreso llevan más de 20 días hábiles sin responder a pesar de haber superado la fecha límite publicada por la cámara en el último año.",
    "claves": [
-    "Sumar encabeza el recuento con 24 preguntas sin responder, seguido del PSOE con siete y del PP con cuatro peticiones pendientes.",
-    "La iniciativa acumulada más antigua con el plazo ya superado fue publicada el 16 de febrero de 2026."
+    "Sumar encabeza las iniciativas pendientes con 30 preguntas sin responder, seguida por el PSOE con cuatro, el PP con dos, Junts con una y una del grupo de sin grupo.",
+    "La pregunta registrada más antigua sin contestar se publicó el lunes 15 de diciembre de 2025."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-05"
@@ -11186,9 +11186,22 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23229": {
+   "huella": "605e728870a2907a",
+   "fuente": "833b114020edc165",
+   "titular": "La Dirección General aborda el rechazo a inscribir una herencia sin rúbrica en Gandía",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública tramita un recurso tras la negativa a inscribir en el Registro de la Propiedad de Gandía n.º 4 una escritura de herencia que no estaba rubricada en todas sus páginas por el notario.",
+   "claves": [
+    "La registradora de la propiedad de Gandía n.º 4 calificó como defecto subsanable que la copia en papel no contuviera la rúbrica notarial en cada página.",
+    "El notario subsanó la falta firmando todas las hojas, lo que requirió retirar la escritura y volver a presentarla físicamente.",
+    "La falta de rúbrica del notario en todas las hojas impide la inscripción registral por no ajustarse a las formas reglamentarias."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-05"
   }
  },
  "uso": {
-  "2026-11-05": 3
+  "2026-11-05": 4
  }
 }
