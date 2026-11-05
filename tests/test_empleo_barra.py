@@ -24,7 +24,7 @@ class Barra(unittest.TestCase):
         self.assertIn('<label for="em-q">Buscar en empleo</label>', h)
         self.assertIn('type="search" id="em-q"', h)
         self.assertIn('aria-describedby="em-q-ayuda"', h)
-        self.assertIn('<select id="em-prov"><option value="">Todas</option><option value="granada">Granada (3)</option>', h)
+        self.assertIn('<select id="em-prov" aria-describedby="em-prov-ayuda"><option value="">Todas</option><option value="granada">Granada (3)</option>', h)
         self.assertIn('<select id="em-org">', h)
         self.assertIn('class="em-activos" aria-labelledby="em-act-t"', h)
         self.assertEqual(h.count('role="group"'), 1)

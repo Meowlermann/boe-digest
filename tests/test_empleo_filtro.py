@@ -70,7 +70,7 @@ class TestFiltro(unittest.TestCase):
     def test_tarjetas_con_fecha_y_secciones_con_tipo(self):
         for li in re.findall(r'<li class="em-card[ "][^>]*>', self.idx):
             self.assertRegex(li, r'data-fecha="\d{4}-\d\d-\d\d"')
-        self.assertIn('<section class="em-sec" id="p-convocatoria" data-tipo="convocatoria">', self.idx)
+        self.assertIn('<section class="em-sec" id="p-convocatoria" data-tipo="convocatoria" data-m=', self.idx)
 
     def test_fichas_sin_filtro(self):
         ficha = (self.carpeta / "ministerio-x.html").read_text(encoding="utf-8")

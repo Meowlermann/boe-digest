@@ -34,14 +34,15 @@ secs.forEach(function (s) {
 s.setAttribute("role", "tabpanel");
 s.setAttribute("aria-labelledby", "tab-" + s.dataset.tipo);
 });
-function cuenta(e, n, f) {
+function cuenta(e, n, f, m) {
 if (!e) return;
 if (!e.dataset.o) e.dataset.o = e.textContent;
-e.textContent = f ? e.dataset.o.replace(/\([^)]*\)$/, "(" + n + ")") : e.dataset.o;
+e.textContent = f ? e.dataset.o.replace(/\([^)]*\)$/, "(" + n + (m ? " de " + m : "") + ")") : e.dataset.o;
 }
+var rc = $(".em-recorte");
 function pinta(guarda) {
 fija();
-var corte = st.dias ? ref - st.dias * 864e5 : -Infinity, total = 0, todas = st.tipo === "todas";
+var corte = st.dias ? ref - st.dias * 864e5 : -Infinity, total = 0, tm = 0, av = [], todas = st.tipo === "todas";
 var ws = nz(st.q).split(/\s+/).filter(Boolean), f = !!(st.dias || st.clase || st.prov || st.org || ws.length);
 tabs.forEach(function (b) {
 var on = b.dataset.v === st.tipo;
@@ -52,7 +53,7 @@ dias.setAttribute("aria-pressed", st.dias ? "true" : "false");
 if (sel.clase) sel.clase.parentNode.hidden = !(todas || st.tipo === "convocatoria");
 if (qi.value !== st.q) qi.value = st.q;
 secs.forEach(function (s) {
-var n = 0, vis = todas || s.dataset.tipo === st.tipo;
+var n = 0, nv = 0, vis = todas || s.dataset.tipo === st.tipo, M = +s.dataset[st.dias ? "m30" : "m"];
 s.querySelectorAll("li.em-card").forEach(function (li) {
 if (!li._t) li._t = nz(li.textContent + " " + (li.querySelector("a").getAttribute("aria-label") || ""));
 var v = vis && Date.parse(li.dataset.fecha) >= corte && (!st.clase || li.classList.contains("em-c-" + st.clase)) &&
@@ -60,8 +61,14 @@ var v = vis && Date.parse(li.dataset.fecha) >= corte && (!st.clase || li.classLi
 ws.every(function (w) { return li._t.indexOf(w) >= 0; });
 li.hidden = !v;
 if (v) n++;
+if (Date.parse(li.dataset.fecha) >= corte) nv++;
 });
-cuenta(s.querySelector("h2,h3"), n, f);
+cuenta(s.querySelector("h2,h3"), n, f, M);
+if (vis) {
+tm += M;
+// Aviso de recorte (E-2): más disposiciones en el periodo que tarjetas cargadas.
+if (M > nv) av.push(s.dataset.et + ": se cargan " + nv + " de " + M + ", las publicadas desde el " + s.dataset.desde + ".");
+}
 s.hidden = !vis || (f && !n);
 s.querySelectorAll(".em-bloque").forEach(function (k) {
 var nb = k.querySelectorAll("li.em-card:not([hidden])").length;
@@ -76,7 +83,9 @@ total += n;
 D.querySelectorAll("section.em-grupo").forEach(function (g) {
 g.hidden = !g.querySelector("section.em-sec[data-tipo]:not([hidden])");
 });
-out.textContent = (total === 1 ? "1 disposición." : total + " disposiciones.") + (f && !total ? " Ninguna coincide: quita algún filtro." : "");
+rc.hidden = !av.length;
+rc.firstChild.textContent = av.join(" ") + (f && av.length ? " Los filtros y la búsqueda solo miran las cargadas." : "");
+out.textContent = total + " de " + tm + (tm === 1 ? " disposición" : " disposiciones") + (st.dias ? " de los últimos " + st.dias + " días." : " de los últimos 90 días.") + (f && !total ? " Ninguna coincide: quita algún filtro." : "");
 etiquetas();
 if (guarda) {
 var p = new URLSearchParams(location.search);

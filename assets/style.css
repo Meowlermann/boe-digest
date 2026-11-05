@@ -1597,9 +1597,11 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-busca input, .em-campo select{ box-sizing:border-box; width:100%; max-width:100%; min-height:44px; padding:8px 12px;
   border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--ink); font:inherit; font-size:15px; }
 .em-busca input:focus-visible, .em-campo select:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
-.em-sels{ display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); align-items:end; }
+.em-sels{ display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); align-items:start; }
 .em-campo{ display:flex; flex-direction:column; gap:4px; min-width:0; }
-.em-campo[hidden], .em-activos-w[hidden], .em-atajos[hidden], .em-bloque[hidden]{ display:none; }
+@media (min-width:600px){ .em-sels > .em-campo-dias{ padding-top:22px; } }
+.em-campo > span.em-ayuda{ font-weight:400; font-size:13px; line-height:1.35; color:var(--ink-soft); order:3; }
+.em-recorte[hidden], .em-campo[hidden], .em-activos-w[hidden], .em-atajos[hidden], .em-bloque[hidden]{ display:none; }
 .em-activos-w{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
 .em-activos{ display:flex; flex-wrap:wrap; gap:6px; min-width:0; }
 .em-atajos{ font-size:14px; margin:0 0 8px; display:flex; flex-wrap:wrap; gap:4px 12px; align-items:center; }
