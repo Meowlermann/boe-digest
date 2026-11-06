@@ -4902,15 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta tras superar el plazo",
-   "entradilla": "Un recuento del último año muestra que 38 iniciativas escritas superan los 20 días hábiles desde su publicación sin que conste una contestación registrada en sus fichas.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "El Congreso acumula 38 preguntas escritas sin respuesta tras más de 20 días hábiles",
+   "entradilla": "Un total de 38 iniciativas parlamentarias sobrepasan el tiempo máximo sin haber obtenido contestación registrada en la ficha de la Cámara.",
    "claves": [
-    "La iniciativa sin contestación registrada más antigua se publicó en la cámara el lunes 16 de febrero de 2026.",
-    "Por grupo de origen, Sumar acumula 24 de las preguntas pendientes, el PSOE registra 7 y el PP cuenta con 4.",
-    "El recuento suma también 1 pregunta a nombre de GV (EAJ-PNV), 1 a Junts y 1 registrada bajo la categoría Sin grupo.",
-    "El listado advierte de que el recuento puede no reflejar respuestas aún no incorporadas a la ficha o prórrogas concedidas."
+    "La iniciativa más antigua sin contestar registrada fue publicada el lunes 15 de diciembre de 2025.",
+    "Sumar encabeza las iniciativas pendientes con 30 preguntas, seguido del PSOE con 4, el PP con 2, Junts con 1 y Sin grupo con 1."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-06"
@@ -11201,9 +11199,215 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-05"
+  },
+  "BOE-A-2026-23264": {
+   "huella": "cc40b2a09a583b89",
+   "fuente": "d3845322f40e686b",
+   "titular": "España y Andorra acuerdan el acceso mutuo a la educación secundaria postobligatoria",
+   "entradilla": "Ambos países reconocerán de forma recíproca los títulos y certificados requeridos para acceder a la educación secundaria postobligatoria y a la educación superior no universitaria en sus respectivos sistemas educativos.",
+   "claves": [
+    "El acuerdo abarca el reconocimiento recíproco de los títulos, diplomas y certificados necesarios para acceder a las enseñanzas postobligatorias y superiores no universitarias de ambos países.",
+    "El reconocimiento de requisitos de acceso no garantiza la admisión automática en centros o enseñanzas donde exista concurrencia competitiva, que se resolverá según la normativa de cada Estado.",
+    "Para hacer efectivo el reconocimiento se requerirá la presentación de los documentos expedidos por las autoridades educativas competentes conforme a la legislación de cada país.",
+    "Para velar por la aplicación del acuerdo, resolver controversias y proponer posibles reformas, se constituye un grupo de trabajo compuesto por cuatro representantes de cada país."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23265": {
+   "huella": "7b2223a791e55711",
+   "fuente": "2c9e59197e4ae5bf",
+   "titular": "El Gobierno exige menús saludables en los centros públicos y de dependencia",
+   "entradilla": "Un nuevo real decreto fija los criterios mínimos de calidad nutricional y sostenibilidad que deben cumplirse en la contratación de suministros y servicios de restauración en dependencias públicas y centros privados de dependencia.",
+   "claves": [
+    "La norma regula las exigencias de calidad nutricional y sostenibilidad en la oferta de alimentos y bebidas, incluidas las máquinas de venta automática, en las administraciones y centros públicos.",
+    "Los criterios también se aplicarán a los centros y servicios sanitarios y sociosanitarios de titularidad privada que atiendan a personas en situación de dependencia o con necesidades especiales.",
+    "Quedan excluidos del ámbito de aplicación los comedores de embajadas fuera de España, los buques oceanográficos, los buques de la Armada y las instalaciones alimentarias militares temporales.",
+    "En casos excepcionales y motivados, los poderes adjudicadores podrán solicitar adaptaciones de estos criterios, que deberá aprobar la Presidencia de la Agencia Española de Seguridad Alimentaria y Nutrición."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23266": {
+   "huella": "49c2ea4eb59b3f64",
+   "fuente": "f2288b581af08992",
+   "titular": "El Gobierno regula la jornada de 35 horas y descansos de los residentes sanitarios",
+   "entradilla": "La reforma de la relación laboral de los residentes de Ciencias de la Salud limita la jornada ordinaria a 35 horas semanales de promedio semestral, establece un descanso entre jornadas de 12 horas y regula sus incompatividades.",
+   "claves": [
+    "La jornada ordinaria no podrá superar las 35 horas semanales de promedio en cómputo semestral, salvo que mediante convenio, pacto o acuerdo se fije otro cómputo distinto.",
+    "Entre el final de una jornada y el comienzo de la siguiente deberá transcurrir un periodo de descanso continuo de al menos 12 horas, y se reconoce un descanso semanal mínimo de 24 horas.",
+    "Los residentes deberán ser informados de la distribución de su jornada con al menos dos meses de antelación en caso de que se introduzca alguna modificación.",
+    "Se autoriza la compatibilidad con actividades de creación literaria, artística o científica fuera de la jornada laboral, siempre que no constituyan una relación laboral ni profesional y se comuniquen por escrito."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23267": {
+   "huella": "306e596b7905a859",
+   "fuente": "da1f29fb017bdbeb",
+   "titular": "El Gobierno aprueba un nuevo reglamento para la fabricación y venta de biocidas",
+   "entradilla": "La norma fija las condiciones específicas para autorizar, fabricar, almacenar, comercializar y usar biocidas en España, además de regular el funcionamiento de su Registro Oficial y las exigencias de formación del personal.",
+   "claves": [
+    "El real decreto regula el marco nacional de autorización, envasado, almacenamiento, uso y régimen sancionador de los biocidas, en desarrollo del Reglamento europeo sobre la materia.",
+    "Quedan fuera de la norma las instalaciones dedicadas a la fabricación de biocidas destinados exclusivamente a la exportación a países de fuera de la Unión Europea.",
+    "Tampoco se aplicará a los antisépticos destinados al campo quirúrgico preoperatorio y a la desinfección del punto de inyección, al estar regulados como medicamentos.",
+    "La norma define las categorías de usuario, reconociendo la figura del personal profesional especializado, equiparable a la de técnico aplicador de tratamientos biocidas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23268": {
+   "huella": "6f5b7da24d3f09b8",
+   "fuente": "c9355b579852c3f8",
+   "titular": "Los ayuntamientos deberán remitir sus sanciones para dar por implantadas las ZBE",
+   "entradilla": "Los ayuntamientos deberán enviar al Ministerio para la Transición Ecológica y al órgano autonómico la documentación que acredite la aplicación efectiva de restricciones, controles y sanciones para considerar validada su ZBE.",
+   "claves": [
+    "Las entidades locales dispondrán de un plazo máximo de un mes desde el establecimiento de la ZBE para informar de su superficie, delimitación, medidas y calendario a Transición Ecológica y a la comunidad autónoma.",
+    "Para considerar correctamente implantada la ZBE, los ayuntamientos deberán remitir la norma municipal aprobada, el sistema de control de accesos y la integración con el Punto de Acceso Nacional de Tráfico.",
+    "Las entidades locales deberán certificar la aplicación del régimen sancionador, lo que excluye de forma expresa cualquier sistema transitorio de avisos previamente contemplado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23269": {
+   "huella": "8af1e3442020b3c9",
+   "fuente": "c5a00c0e68253d69",
+   "titular": "Transportes subvenciona a la Real Sociedad Geográfica y al Observatorio del Ebro",
+   "entradilla": "Un real decreto regula la concesión directa de subvenciones en 2026 a ambas entidades para apoyar el impulso de la información geográfica y la investigación en geofísica, sismicidad y campo magnético.",
+   "claves": [
+    "La Real Sociedad Geográfica recibirá la ayuda directa para impulsar y difundir la información geográfica.",
+    "El Observatorio del Ebro empleará la subvención para mejorar la investigación en geofísica, especialmente en la determinación de la sismicidad y del campo magnético en la península ibérica.",
+    "Las dos entidades beneficiarias dispondrán de un plazo de diez días hábiles desde la entrada en vigor de la norma para tramitar sus solicitudes por vía electrónica."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23270": {
+   "huella": "83470b73c21d5b55",
+   "fuente": "325eebb46b9d21a0",
+   "titular": "Vivienda fija los controles de gestión del Plan Estatal de Vivienda 2026-2030",
+   "entradilla": "Las comunidades autónomas y las ciudades de Ceuta y Melilla deberán remitir al Ministerio de Vivienda y Agenda Urbana la información sobre la ejecución del plan a través de un sistema informático y un cuadro de mando único.",
+   "claves": [
+    "Las autonomías y las ciudades autónomas deberán realizar transmisiones mensuales de datos e informar ante cualquier actualización relevante de los indicadores de gestión o económico-financieros.",
+    "El intercambio de información se canalizará mediante el modelo de datos y las instrucciones técnicas desarrolladas por la Dirección General de Planificación y la División de Tecnologías de la Información."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23271": {
+   "huella": "c5a97ad7002e133e",
+   "fuente": "38297c64040a050a",
+   "titular": "Asturias aprueba su ley de derechos LGTBI y crea el Conseyu de Participación",
+   "entradilla": "El Principado de Asturias establece un marco regulatorio autonómico para prevenir y erradicar la discriminación por orientación e identidad sexual, garantizando la atención integral a las personas trans e intersexuales.",
+   "claves": [
+    "La ley sustituye el anterior Observatorio Asturiano contra la LGTBI-fobia por el Conseyu de Participación LGTBI como órgano de consulta, asesoramiento y participación institucional.",
+    "La norma fija medidas en los ámbitos público y privado de Asturias para proteger la diversidad familiar y prevenir prácticas sanitarias nocivas o de violencia sobre personas intersexuales.",
+    "Las obligaciones contempladas en la norma vinculan a todo el sector público del Principado de Asturias, así como a las personas físicas y jurídicas del ámbito público o privado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23272": {
+   "huella": "e68d0980fef9017c",
+   "fuente": "e6e8b8c715dc3334",
+   "titular": "El Principado de Asturias amplía a los 16 años la iniciativa legislativa popular",
+   "entradilla": "La nueva Ley de Infancia y Adolescencia asturiana establece el marco de protección para menores de dieciocho años y modifica la norma de iniciativa legislativa en la comunidad.",
+   "claves": [
+    "La norma permite presentar proposiciones de ley mediante iniciativa popular a partir de los 16 años de edad, modificando la Ley 4/1984.",
+    "El ámbito de aplicación abarca a todas las personas menores de dieciocho años que residan o se encuentren en la comunidad autónoma.",
+    "Las medidas contempladas se implementarán conforme a las disponibilidades presupuestarias y contarán con financiación suficiente."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23273": {
+   "huella": "d22b7dd00e5b768f",
+   "fuente": "6eb596944b8f5d28",
+   "titular": "Cantabria reconoce como equipamiento educativo las incubadoras y 'hubs' en los campus",
+   "entradilla": "Una modificación de la ley urbanística autonómica clasifica como equipamiento educativo las oficinas de 'coworking', 'hubs' digitales e incubadoras de empresas destinadas a transferir tecnología entre universidad y empresa.",
+   "claves": [
+    "El planeamiento municipal de Cantabria deberá prever suelo y edificabilidad para servicios generales, equipamientos sociales, alojamientos rotacionales, colaborativos y vivienda dotacional.",
+    "Se definen los alojamientos rotacionales como edificaciones públicas habitadas de forma temporal por personas con dificultades de acceso a vivienda, estudiantes o colectivos tutelados.",
+    "Los alojamientos colaborativos se conciben como residencias promovidas en cooperativa para apoyo mutuo que combinen zonas privativas y espacios comunes sanitarios, médicos y de rehabilitación."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23274": {
+   "huella": "fe1dce1865723669",
+   "fuente": "d5a39e4be95fa5af",
+   "titular": "La Región de Murcia regula la figura de los Bienes de Interés Turístico",
+   "entradilla": "La nueva ley establece el procedimiento para declarar, modificar y revocar esta distinción para productos y recursos gastronómicos, culturales o naturales.",
+   "claves": [
+    "Podrán ser declarados aquellos recursos o productos materiales o inmateriales que formen parte del patrimonio regional y generen atractivo turístico.",
+    "Los bienes se clasificarán en espacios turísticos, acontecimientos, itinerarios o rutas, productos gastronómicos y manifestaciones culturales.",
+    "Los eventos ya declarados fiesta de interés turístico regional no podrán optar a esta nueva declaración."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23314": {
+   "huella": "ff666d8143786524",
+   "fuente": "a87a23548b438568",
+   "titular": "El Gobierno concede la nacionalidad española por carta de naturaleza a Félix Maradiaga",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad española con vecindad civil de Derecho común a Félix Alejandro Maradiaga Blandón en atención a sus circunstancias excepcionales.",
+   "claves": [
+    "La concesión de la nacionalidad a Félix Alejandro Maradiaga Blandón se ha aprobado a propuesta del ministro de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "El real decreto surtirá efectos tras el cumplimiento de los requisitos, condiciones y plazos fijados en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23315": {
+   "huella": "e9f9d132b0bcc083",
+   "fuente": "dfc1acec9d64380e",
+   "titular": "El Gobierno concede la nacionalidad española por carta de naturaleza a Umanzor López",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad española con vecindad civil de Derecho común a Umanzor López Baltodano en atención a sus circunstancias excepcionales.",
+   "claves": [
+    "La medida se adopta mediante real decreto a propuesta del ministro de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "La concesión de la nacionalidad producirá efectos una vez cumplidos los requisitos, condiciones y plazos previstos en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23316": {
+   "huella": "228d19da97c8915f",
+   "fuente": "f8a66957a57c9033",
+   "titular": "El Gobierno concede la nacionalidad por carta de naturaleza a Rosa Villavicencio",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad española con vecindad civil de Derecho común a Rosa Yolanda Villavicencio Mapy en atención a sus circunstancias excepcionales.",
+   "claves": [
+    "La concesión de la nacionalidad a Rosa Yolanda Villavicencio Mapy se formaliza mediante real decreto tras la deliberación del Consejo de Ministros.",
+    "La medida se efectúa con la vecindad civil de Derecho común y quedará sujeta a los trámites previstos en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23317": {
+   "huella": "cdb1ec66077504d7",
+   "fuente": "72a3c21899010843",
+   "titular": "El Gobierno otorga la nacionalidad por carta de naturaleza a Stefano Mandozzi",
+   "entradilla": "El Consejo de Ministros aprueba la concesión de la nacionalidad española con vecindad civil de Derecho común a Stefano Mandozzi por circunstancias excepcionales.",
+   "claves": [
+    "El otorgamiento se ha aprobado a propuesta del ministro de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "La eficacia de la concesión queda condicionada a los requisitos, plazos y formalidades establecidas en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23318": {
+   "huella": "0a48f8eda1826d89",
+   "fuente": "c281cc36555a01d0",
+   "titular": "El Gobierno concede la nacionalidad por carta de naturaleza a Julissa Reynoso",
+   "entradilla": "El Consejo de Ministros otorga la nacionalidad española con vecindad civil de Derecho común a Julissa Reynoso Pantaleón tras valorar sus circunstancias excepcionales.",
+   "claves": [
+    "La concesión de la nacionalidad a Julissa Reynoso Pantaleón se ha acordado a propuesta del Ministerio de la Presidencia, Justicia y Relaciones con las Cortes.",
+    "La medida producirá efectos conforme a las condiciones, requisitos y plazos regulados en el Código Civil."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-06"
   }
  },
  "uso": {
-  "2026-11-06": 1
+  "2026-11-06": 3
  }
 }
