@@ -6016,6 +6016,39 @@ def textos_prueba_dip(prov: str, reparto: list) -> tuple:
     return titulo, desc, h1
 
 
+# Aviso de legislatura disuelta (tanda 1-B, 06-11-2026). Real Decreto 806/2026
+# (BOE-A-2026-20742): disuelve las Cortes elegidas el 23-7-2023 y convoca
+# elecciones el 29-11-2026. Plan de paso a electos en la descripción de la PR.
+# Al constituirse la XVI Legislatura (23-12-2026) se quita o se cambia aquí.
+RD_DISOLUCION_URL = "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742"
+LEGISLATURA_DISUELTA = "XV Legislatura"
+AVISO_LEGISLATURA = (
+    '<p class="aviso-leg" role="note"><b>Legislatura disuelta.</b> El Real Decreto 806/2026 '
+    'disolvió las Cortes de la XV Legislatura y convocó elecciones generales para el 29 de '
+    'noviembre de 2026. Estos datos son de los diputados de la legislatura disuelta. '
+    f'<a href="{RD_DISOLUCION_URL}" rel="noopener" target="_blank">Real Decreto 806/2026 en el BOE</a></p>')
+
+
+def _sin_tildes(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", t) if unicodedata.category(c) != "Mn").lower()
+
+
+def frase_grupo(largo: str, gente: list) -> str:
+    """«Cuántos diputados tiene X»: la cifra del censo y el reparto por
+    circunscripción, sacados de las fichas (mismo formato para todos)."""
+    cuenta: dict = {}
+    for f in gente:
+        if f.get("circunscripcion"):
+            cuenta[f["circunscripcion"]] = cuenta.get(f["circunscripcion"], 0) + 1
+    reparto = " · ".join(f"{esc_html(p)} {n}" for p, n in
+                         sorted(cuenta.items(), key=lambda x: (-x[1], _sin_tildes(x[0]))))
+    n = len(gente)
+    return (f'<p class="frase-grupo">El {esc_html(largo)} tenía <b>{n}</b> '
+            f'{"diputado" if n == 1 else "diputados"} en el Congreso al disolverse la '
+            f'{LEGISLATURA_DISUELTA}.' + (f' Por circunscripción: {reparto}.' if reparto else "") + '</p>')
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -6164,7 +6197,7 @@ def renderizar_diputados(fichas: list) -> list:
                 f"Diputado por {f['circunscripcion']}. Todo lo que consta de su actividad "
                 f"en las publicaciones oficiales del Congreso."),
             "FICHA": ficha,
-            "CUERPO": "".join(cuerpo),
+            "CUERPO": AVISO_LEGISLATURA + "".join(cuerpo),
             "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados. Recuentos de "
                        "actos públicos; ninguna cifra es una valoración."),
             "RELACIONADAS": ("<li>" + " ".join(rel) + "</li>") if rel else "",
@@ -6192,8 +6225,9 @@ def renderizar_diputados(fichas: list) -> list:
             f'<span aria-current="page">{esc_html(corto)}</span>',
             "Grupo parlamentario",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>{esc_html(largo)}</dd>",
-            meta_desc=(f"Ficha de cada uno de los {len(gente)} diputados del {largo}: sus "
-                       f"intervenciones y sus votos en el Pleno.")))
+            cuerpo_extra=AVISO_LEGISLATURA + frase_grupo(largo, gente),
+            meta_desc=(f"{largo}: {len(gente)} diputados en el Congreso al disolverse la "
+                       f"{LEGISLATURA_DISUELTA}. Ficha de cada uno con sus votos.")))
 
     # --- una página por provincia ----------------------------------------
     por_prov = {}
@@ -6225,7 +6259,7 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=(f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+            cuerpo_extra=AVISO_LEGISLATURA + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             meta_desc=desc_p))
