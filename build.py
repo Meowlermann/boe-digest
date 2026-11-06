@@ -5719,8 +5719,10 @@ def renderizar_empleo() -> list:
     FEEDS_PAGINA.update(em.canales(h, estado))
     salidas = em.generar_paginas(h, estado)
     log(f"empleo/: {len(salidas)} páginas; {em.generar_paginas.resumen}")
-    # noindex: no van al sitemap mientras ROBOTS diga noindex.
-    return [] if "noindex" in em.ROBOTS else salidas
+    # Al sitemap solo van las indexables: hoy, las fichas de provincia con
+    # convocatorias (ROBOTS_PROVINCIA); el resto sigue en noindex.
+    return [{"url": s["url"], "lastmod": s["lastmod"]} for s in salidas
+            if s.get("indexable") or "noindex" not in em.ROBOTS]
 
 
 def renderizar_provincias(fichas_dip: list, dias: list) -> list:
