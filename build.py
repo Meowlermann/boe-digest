@@ -6025,13 +6025,28 @@ LEGISLATURA_DISUELTA = "XV Legislatura"
 AVISO_LEGISLATURA = (
     '<p class="aviso-leg" role="note"><b>Legislatura disuelta.</b> El Real Decreto 806/2026 '
     'disolvió las Cortes de la XV Legislatura y convocó elecciones generales para el 29 de '
-    'noviembre de 2026. Estos datos son de los diputados de la legislatura disuelta. '
+    'noviembre de 2026. Estos datos son de los diputados de la legislatura disuelta; las '
+    'nuevas Cortes se constituirán el 23 de diciembre. '
     f'<a href="{RD_DISOLUCION_URL}" rel="noopener" target="_blank">Real Decreto 806/2026 en el BOE</a></p>')
 
 
 def _sin_tildes(t: str) -> str:
     import unicodedata
     return "".join(c for c in unicodedata.normalize("NFD", t) if unicodedata.category(c) != "Mn").lower()
+
+
+def nombre_grupo(largo: str) -> str:
+    """Un solo nombre visible por grupo en las fichas: «Grupo {corto}», el
+    mismo de los titles de grupo («Grupo PSOE en el Congreso»)."""
+    import congreso_datos as cd
+    corto = cd.GRUPO_CORTO.get(largo or "")
+    return f"Grupo {corto}" if corto else (largo or "")
+
+
+def plantilla_con_aviso(plantilla: str) -> str:
+    """El aviso va bajo la entradilla y antes de la tabla (dl.ficha), igual en
+    las fichas de diputado, de grupo y de provincia."""
+    return plantilla.replace('<dl class="ficha">', AVISO_LEGISLATURA + '<dl class="ficha">', 1)
 
 
 def frase_grupo(largo: str, gente: list) -> str:
@@ -6044,6 +6059,7 @@ def frase_grupo(largo: str, gente: list) -> str:
     reparto = " · ".join(f"{esc_html(p)} {n}" for p, n in
                          sorted(cuenta.items(), key=lambda x: (-x[1], _sin_tildes(x[0]))))
     n = len(gente)
+    # `largo` es el nombre visible del grupo en la ficha («Grupo PSOE»).
     return (f'<p class="frase-grupo">El {esc_html(largo)} tenía <b>{n}</b> '
             f'{"diputado" if n == 1 else "diputados"} en el Congreso al disolverse la '
             f'{LEGISLATURA_DISUELTA}.' + (f' Por circunscripción: {reparto}.' if reparto else "") + '</p>')
@@ -6062,7 +6078,8 @@ def renderizar_diputados(fichas: list) -> list:
         import congreso_datos as cd
     except Exception:                                          # noqa: BLE001
         return []
-    plantilla = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    plantilla_base = TEMPLATE_NORMA.read_text(encoding="utf-8")
+    plantilla = plantilla_con_aviso(plantilla_base)
     hoy = dt.date.today().isoformat()
     salidas = []
 
@@ -6081,7 +6098,7 @@ def renderizar_diputados(fichas: list) -> list:
             f"<dt>{esc_html(o)}</dt><dd>{n}</dd>"
             for o, n in sorted(f["organos"].items(), key=lambda x: -x[1])[:5])
         ficha = (
-            f'<dt>Grupo</dt><dd>{esc_html(f["grupo"] or "—")}</dd>'
+            f'<dt>Grupo</dt><dd>{esc_html(nombre_grupo(f["grupo"]) or "—")}</dd>'
             f'<dt>Partido</dt><dd>{esc_html(f["partido"] or "—")}</dd>'
             f'<dt>Circunscripción</dt><dd>{esc_html(f["circunscripcion"] or "—")}</dd>'
             f'<dt>Escaño desde</dt><dd>{esc_html(f["alta"] or "—")}</dd>'
@@ -6160,7 +6177,7 @@ def renderizar_diputados(fichas: list) -> list:
         rel = []
         if gslug:
             rel.append(f'<a class="srclink" href="grupo-{esc_attr(gslug)}.html">'
-                       f'Todo el grupo {esc_html(cd.GRUPO_CORTO.get(f["grupo"], ""))}</a>')
+                       f'Todo el {esc_html(nombre_grupo(f["grupo"]))}</a>')
         if f["circunscripcion"]:
             ps_dip = _slug_txt(f["circunscripcion"])
             rel.append(f'<a class="srclink" href="provincia-{esc_attr(ps_dip)}.html">'
@@ -6191,13 +6208,13 @@ def renderizar_diputados(fichas: list) -> list:
             "EDITION_DATE": esc_html(fmt_date_es(hoy)),
             "MIGA": (f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
                      f'<span aria-current="page">{esc_html(f["natural"])}</span>'),
-            "KICKER": esc_html(cd.GRUPO_CORTO.get(f["grupo"], f["partido"] or "Congreso")),
+            "KICKER": esc_html(nombre_grupo(f["grupo"]) or f["partido"] or "Congreso"),
             "HEADLINE": esc_html(f["natural"]),
             "STANDFIRST": esc_html(
-                f"Diputado por {f['circunscripcion']}. Todo lo que consta de su actividad "
-                f"en las publicaciones oficiales del Congreso."),
+                f"Diputado por {f['circunscripcion']} en la {LEGISLATURA_DISUELTA}, con lo que "
+                f"consta de su actividad en las publicaciones oficiales del Congreso."),
             "FICHA": ficha,
-            "CUERPO": AVISO_LEGISLATURA + "".join(cuerpo),
+            "CUERPO": "".join(cuerpo),
             "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados. Recuentos de "
                        "actos públicos; ninguna cifra es una valoración."),
             "RELACIONADAS": ("<li>" + " ".join(rel) + "</li>") if rel else "",
@@ -6219,14 +6236,14 @@ def renderizar_diputados(fichas: list) -> list:
             # Prueba de títulos (docs/pruebas-titulos.md, desde el 2026-11-02).
             f"Grupo {corto} en el Congreso: sus {len(gente)} diputados | La Tercera Cámara",
             f"Grupo {corto} en el Congreso",
-            f"Los {len(gente)} diputados del {largo}, con sus intervenciones y sus votos.",
+            f"Diputados del Grupo {corto} en la {LEGISLATURA_DISUELTA}, con su actividad y sus votos.",
             gente, url,
             f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
             f'<span aria-current="page">{esc_html(corto)}</span>',
             "Grupo parlamentario",
-            f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>{esc_html(largo)}</dd>",
-            cuerpo_extra=AVISO_LEGISLATURA + frase_grupo(largo, gente),
-            meta_desc=(f"{largo}: {len(gente)} diputados en el Congreso al disolverse la "
+            f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>Grupo {esc_html(corto)}</dd>",
+            cuerpo_extra=frase_grupo(f"Grupo {corto}", gente),
+            meta_desc=(f"Grupo {corto}: {len(gente)} diputados en el Congreso al disolverse la "
                        f"{LEGISLATURA_DISUELTA}. Ficha de cada uno con sus votos.")))
 
     # --- una página por provincia ----------------------------------------
@@ -6251,7 +6268,7 @@ def renderizar_diputados(fichas: list) -> list:
             plantilla, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
             h1_p,
-            f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
+            f"Los {len(gente)} diputados por {prov} en la {LEGISLATURA_DISUELTA}, "
             f"con su actividad y sus votos.",
             gente, url,
             f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
@@ -6259,7 +6276,7 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=AVISO_LEGISLATURA + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+            cuerpo_extra=(f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             meta_desc=desc_p))

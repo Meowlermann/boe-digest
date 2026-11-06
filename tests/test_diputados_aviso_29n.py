@@ -33,3 +33,20 @@ class Aviso(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Ajustes(unittest.TestCase):
+    def test_aviso_antes_de_la_tabla(self):
+        pl = build.plantilla_con_aviso('<p class="entradilla">x</p>\n<dl class="ficha">y</dl>')
+        self.assertLess(pl.index("aviso-leg"), pl.index('<dl class="ficha">'))
+        self.assertGreater(pl.index("aviso-leg"), pl.index("entradilla"))
+        self.assertIn("23 de diciembre", build.AVISO_LEGISLATURA)
+
+    def test_un_nombre_por_grupo(self):
+        self.assertEqual(build.nombre_grupo("Grupo Parlamentario Socialista"), "Grupo PSOE")
+        self.assertEqual(build.nombre_grupo("Grupo Parlamentario Mixto"), "Grupo Mixto")
+
+    def test_entradillas_atadas_a_la_xv(self):
+        src = (RAIZ / "build.py").read_text(encoding="utf-8")
+        self.assertNotIn("diputados que representan a", src)
+        self.assertIn("en la {LEGISLATURA_DISUELTA}, con su actividad y sus votos.", src)
