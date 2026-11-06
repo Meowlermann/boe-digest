@@ -6049,7 +6049,7 @@ def plantilla_con_aviso(plantilla: str) -> str:
     return plantilla.replace('<dl class="ficha">', AVISO_LEGISLATURA + '<dl class="ficha">', 1)
 
 
-def frase_grupo(largo: str, gente: list) -> str:
+def frase_grupo(largo: str, gente: list, oficial: str = "") -> str:
     """«Cuántos diputados tiene X»: la cifra del censo y el reparto por
     circunscripción, sacados de las fichas (mismo formato para todos)."""
     cuenta: dict = {}
@@ -6060,7 +6060,12 @@ def frase_grupo(largo: str, gente: list) -> str:
                          sorted(cuenta.items(), key=lambda x: (-x[1], _sin_tildes(x[0]))))
     n = len(gente)
     # `largo` es el nombre visible del grupo en la ficha («Grupo PSOE»).
-    return (f'<p class="frase-grupo">El {esc_html(largo)} tenía <b>{n}</b> '
+    # Nombre oficial (congreso_datos.GRUPOS) una vez, entre paréntesis, salvo
+    # que sea el mismo que el visible («Grupo Parlamentario Mixto» ~ «Grupo Mixto»).
+    corto = largo[len("Grupo "):] if largo.startswith("Grupo ") else largo
+    redundante = oficial.lower() in ("", largo.lower(), f"grupo parlamentario {corto}".lower())
+    nombre = esc_html(largo) + ("" if redundante else f" ({esc_html(oficial)})")
+    return (f'<p class="frase-grupo">El {nombre} tenía <b>{n}</b> '
             f'{"diputado" if n == 1 else "diputados"} en el Congreso al disolverse la '
             f'{LEGISLATURA_DISUELTA}.' + (f' Por circunscripción: {reparto}.' if reparto else "") + '</p>')
 
@@ -6242,9 +6247,10 @@ def renderizar_diputados(fichas: list) -> list:
             f'<span aria-current="page">{esc_html(corto)}</span>',
             "Grupo parlamentario",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd><dt>Grupo</dt><dd>Grupo {esc_html(corto)}</dd>",
-            cuerpo_extra=frase_grupo(f"Grupo {corto}", gente),
-            meta_desc=(f"Grupo {corto}: {len(gente)} diputados en el Congreso al disolverse la "
-                       f"{LEGISLATURA_DISUELTA}. Ficha de cada uno con sus votos.")))
+            cuerpo_extra=frase_grupo(f"Grupo {corto}", gente, largo),
+            # Description byte a byte como en main (prueba de títulos): solo cambia lo visible.
+            meta_desc=(f"Ficha de cada uno de los {len(gente)} diputados del {largo}: sus "
+                       f"intervenciones y sus votos en el Pleno.")))
 
     # --- una página por provincia ----------------------------------------
     por_prov = {}
@@ -6279,7 +6285,9 @@ def renderizar_diputados(fichas: list) -> list:
             cuerpo_extra=(f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
-            meta_desc=desc_p))
+            # Description desacoplada de la entradilla: el texto de main (prueba de #75).
+            meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
+                                 f"con su actividad y sus votos.")))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}

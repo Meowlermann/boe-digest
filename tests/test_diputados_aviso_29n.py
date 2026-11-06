@@ -42,11 +42,21 @@ class Ajustes(unittest.TestCase):
         self.assertGreater(pl.index("aviso-leg"), pl.index("entradilla"))
         self.assertIn("23 de diciembre", build.AVISO_LEGISLATURA)
 
+    def test_nombre_oficial_una_vez(self):
+        g = [{"circunscripcion": "Madrid"}]
+        self.assertIn("El Grupo PSOE (Grupo Parlamentario Socialista) tenía",
+                      build.frase_grupo("Grupo PSOE", g, "Grupo Parlamentario Socialista"))
+        self.assertIn("El Grupo Mixto tenía", build.frase_grupo("Grupo Mixto", g, "Grupo Parlamentario Mixto"))
+        self.assertIn("El Grupo Vox tenía", build.frase_grupo("Grupo Vox", g, "Grupo Parlamentario VOX"))
+
     def test_un_nombre_por_grupo(self):
         self.assertEqual(build.nombre_grupo("Grupo Parlamentario Socialista"), "Grupo PSOE")
         self.assertEqual(build.nombre_grupo("Grupo Parlamentario Mixto"), "Grupo Mixto")
 
     def test_entradillas_atadas_a_la_xv(self):
         src = (RAIZ / "build.py").read_text(encoding="utf-8")
-        self.assertNotIn("diputados que representan a", src)
+        # La entradilla ya no usa el presente; la description de main sí (desacoplada).
+        self.assertEqual(src.count("diputados que representan a {prov} en el Congreso"), 1)
+        self.assertIn("meta_desc=desc_p or (", src)
+        self.assertIn('f"Ficha de cada uno de los {len(gente)} diputados del {largo}: sus "', src)
         self.assertIn("en la {LEGISLATURA_DISUELTA}, con su actividad y sus votos.", src)
