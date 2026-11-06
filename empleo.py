@@ -1042,10 +1042,12 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         n = nombres_prov[p]
         nc = sum(1 for r in filas if r["tipo"] == "convocatoria")
         pl = "convocatoria" if nc == 1 else "convocatorias"
+        # Title sin cifra (informe-05): la cifra va en la description, con su
+        # alcance; no se calculan plazos abiertos.
         pagina(f"provincia-{p}.html",
-               f"Empleo público en {n}: {nc} {pl} en el BOE" if nc else f"Empleo público en {n}",
-               (f"{nc} {pl} de oposiciones y concursos del BOE que nombran {n} en el título, "
-                f"últimos {VENTANA_PAGINAS} días, con enlace a cada disposición." if nc else
+               f"Oposiciones y empleo público en {n}" if nc else f"Empleo público en {n}",
+               (f"{nc} {pl} {'publicada' if nc == 1 else 'publicadas'} en el BOE en los últimos {VENTANA_PAGINAS} días que "
+                f"nombran {n} en el título: oposiciones y concursos, con enlace a cada una." if nc else
                 f"Oposiciones y concursos del BOE que nombran {n} en el título, últimos "
                 f"{VENTANA_PAGINAS} días."),
                f"Empleo público en {n}",

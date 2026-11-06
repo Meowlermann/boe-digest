@@ -40,12 +40,13 @@ class Indexables(TestPaginas):
                 self.assertIn("noindex", html)
         self.assertTrue(any(s["indexable"] for s in salidas))
 
-    def test_title_con_cifra(self):
+    def test_title_sin_cifra_y_cifra_en_description(self):
         for s in self._generar():
             if s["indexable"]:
                 nombre = s["url"].rsplit("/", 1)[-1]
                 html = (self.carpeta / nombre).read_text(encoding="utf-8")
-                self.assertRegex(html, r"Empleo público en [^:]+: \d+ convocatorias?")
+                self.assertRegex(html, r"TITLE=Oposiciones y empleo público en [^|:\d]+ \| La Tercera Cámara")
+                self.assertRegex(html, r"META_DESC=\d+ convocatorias? publicadas? en el BOE en los últimos 90 días")
                 self.assertIsNotNone(re.search(r"\d{4}-\d{2}-\d{2}", s["lastmod"]))
 
     def test_portada_sigue_noindex(self):
