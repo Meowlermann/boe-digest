@@ -1076,7 +1076,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f"{VENTANA_PAGINAS} días."),
                f"Empleo público en {n}",
                texto_recuento_provincia(nc, n),
-               filas, por_tipo(filas) + f'<p><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
+               filas, por_tipo(filas) + f'<p class="tr-ix-em-prov"><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
                f'en La Tercera Cámara</a></p>', n, indexable=nc > 0,
                edicion=texto_fecha_provincia(filas, fecha_es),
                kicker="Empleo público · Oposiciones y concursos del BOE",

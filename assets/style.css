@@ -1835,4 +1835,8 @@ body:has(.tr-ix-em) .wrap,body:has(.tr-ix-em) .norma{max-width:1280px}
   border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .15s}
 .tr-ix-em details[open] > summary::after{transform:translateY(2px) rotate(-135deg)}
 @media (prefers-reduced-motion:reduce){ .tr-ix-em summary::after{transition:none} }
+/* Ficha /empleo/provincia-*.html (tanda 2-A): números de la tabla y «Todo lo de…» sin subrayado; enlace por color y peso, foco visible. */
+body:has(.tr-ix-em-prov) .ficha dd a, .tr-ix-em-prov a{text-decoration:none;color:var(--red-ink);font-weight:700}
+body:has(.tr-ix-em-prov) .ficha dd a:hover, .tr-ix-em-prov a:hover{color:var(--red)}
+body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
 /* --- fin /empleo/ -------------------------------------------------------- */

@@ -49,5 +49,13 @@ class FichaProvincia(TestPaginas):
             "1 convocatoria publicada en el BOE en los últimos 90 días"))
 
 
+class CSSProvincia(unittest.TestCase):
+    def test_sin_subrayado_y_con_foco(self):
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        self.assertIn("body:has(.tr-ix-em-prov) .ficha dd a, .tr-ix-em-prov a{text-decoration:none;", css)
+        self.assertIn(".tr-ix-em-prov a:focus-visible{outline:2px solid var(--red)", css)
+        self.assertIn('<p class="tr-ix-em-prov">', (RAIZ / "empleo.py").read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
