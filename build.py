@@ -6055,15 +6055,14 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
                       for f in sorted(fichas, key=lambda f: _sin_tildes(f["natural"])))
     return (
         '<section class="dip-busca" aria-labelledby="dip-busca-t">'
-        '<h2 class="rotulo" id="dip-busca-t">Busca a tus diputados</h2>'
-        f'<p class="dip-busca-leg"><b>{LEGISLATURA_DISUELTA} (disuelta)</b> · '
+        f'<p class="dip-busca-leg" id="dip-busca-t"><b>Busca a tus diputados</b> · <b>{LEGISLATURA_DISUELTA} (disuelta)</b> · '
         f'<a href="{RD_DISOLUCION_URL}" rel="noopener" target="_blank">Real Decreto 806/2026 en el BOE</a></p>'
         '<form id="dip-busca-prov" class="dip-busca-f" action="#circunscripciones" role="search" aria-label="Por circunscripción">'
-        '<label for="dip-prov">Por circunscripción</label>'
+        '<label for="dip-prov">Provincia</label>'
         f'<span class="dip-busca-c"><select id="dip-prov" name="p"><option value="">Elige una…</option>{provs}</select>'
         '<button type="submit">Ir</button></span></form>'
         '<form id="dip-busca-nom" class="dip-busca-f" action="#circunscripciones" role="search" aria-label="Por nombre">'
-        '<label for="dip-nom">Por nombre</label>'
+        '<label for="dip-nom">Nombre</label>'
         '<span class="dip-busca-c"><input id="dip-nom" name="n" type="search" list="dip-nombres" autocomplete="off" '
         f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
         '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
@@ -6349,7 +6348,6 @@ def renderizar_diputados(fichas: list) -> list:
     # añaden la capa interactiva encima. Si el script no carga, lo de debajo
     # sigue siendo una página completa.
     cuerpo = (
-        buscador_diputados(fichas, por_prov) +
         nota_diputacion_permanente(fichas, dp) +
         f'<div class="hemi-caja">{hemi}<ul class="leyenda-grupos">{leyenda}</ul></div>'
         f'<div id="hemiciclo-app" data-src="../datos/parlamento.json"></div>'
@@ -6366,7 +6364,12 @@ def renderizar_diputados(fichas: list) -> list:
         f'<ul class="provincias">{provincias}</ul>'
         f'<script src="../assets/parlamento.js" defer></script>')
     url = f"{SITE_URL}diputados/"
-    _pagina_suelta(plantilla, DIPUTADOS_DIR, "index.html", {
+    # Tanda 3-A v2: SOLO en el índice, el buscador va bajo la entradilla y
+    # antes del aviso de legislatura y de la tabla (fichas de provincia y
+    # grupo intactas: prueba #75).
+    plantilla_indice = plantilla.replace(AVISO_LEGISLATURA, buscador_diputados(fichas, por_prov)
+                                         + AVISO_LEGISLATURA, 1)
+    _pagina_suelta(plantilla_indice, DIPUTADOS_DIR, "index.html", {
         "TITLE": "Así vota y así trabaja cada diputado | La Tercera Cámara",
         "META_DESC": esc_attr("Los 350 diputados del Congreso, uno a uno: intervenciones, "
                               "votaciones, asistencia y votos distintos a los de su grupo, "

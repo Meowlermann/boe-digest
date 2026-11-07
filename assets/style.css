@@ -1845,21 +1845,19 @@ body:has(.tr-ix-em-prov) .ficha dd{margin:3px 0}
 body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
 /* --- fin /empleo/ -------------------------------------------------------- */
 
-/* --- /diputados/ buscador arriba (tanda 3-A). Sin cajas: tipografía, una línea fina; enlaces sin subrayado. */
-.dip-busca{margin:0 0 22px;padding:0 0 14px;border-bottom:1px solid var(--border)}
-.dip-busca .rotulo{margin-top:0}
-.dip-busca-leg{margin:0 0 10px;font-size:.92rem;color:var(--ink-soft)}
+/* --- /diputados/ buscador arriba (tanda 3-A v2: bajo la entradilla, antes del aviso). Sin cajas; enlaces sin subrayado. */
+.dip-busca{margin:0 0 14px;padding:0 0 10px;border-bottom:1px solid var(--border)}
+.dip-busca-leg{margin:0 0 8px;font-size:.9rem;line-height:1.35;color:var(--ink-soft)}
 .dip-busca-leg b{color:var(--ink)}
 .dip-busca a{text-decoration:none;color:var(--red-ink);font-weight:600}
 .dip-busca a:hover{color:var(--red)}
 .dip-busca a:focus-visible,.dip-busca select:focus-visible,.dip-busca input:focus-visible,.dip-busca button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
-.dip-busca-f{display:grid;grid-template-columns:11rem minmax(0,1fr);align-items:center;gap:6px 12px;margin:0 0 10px;max-width:40rem}
+.dip-busca-f{display:grid;grid-template-columns:5.5rem minmax(0,1fr);align-items:center;gap:6px 10px;margin:0 0 8px;max-width:40rem}
 .dip-busca-f label{font-weight:700}
 .dip-busca-c{display:flex;gap:8px;min-width:0}
 .dip-busca select,.dip-busca input{flex:1;min-width:0;min-height:44px;padding:6px 10px;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:4px}
-.dip-busca button{min-height:44px;min-width:56px;padding:6px 14px;font:inherit;font-weight:700;color:var(--surface);background:var(--ink);border:0;border-radius:4px;cursor:pointer}
-.dip-busca-msg{margin:0;min-height:0;color:var(--ink)}
+.dip-busca button{min-height:44px;min-width:52px;padding:6px 12px;font:inherit;font-weight:700;color:var(--surface);background:var(--ink);border:0;border-radius:4px;cursor:pointer}
+.dip-busca-msg{margin:0 0 6px;color:var(--ink)}
 .dip-busca-msg:empty{display:none}
-.dip-busca-sin{margin:4px 0 0}
-@media (max-width:640px){.dip-busca-f{grid-template-columns:1fr}}
+.dip-busca-sin{margin:2px 0 0;font-size:.9rem}
 /* --- fin /diputados/ buscador */

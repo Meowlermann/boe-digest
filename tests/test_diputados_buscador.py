@@ -37,10 +37,12 @@ class Buscador(unittest.TestCase):
         self.assertIn('href="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742"', self.h)
         self.assertTrue((RAIZ / "assets" / "dip-busca.js").exists())
 
-    def test_va_antes_del_hemiciclo(self):
+    def test_solo_en_el_indice_y_antes_del_aviso(self):
         src = (RAIZ / "build.py").read_text(encoding="utf-8")
-        i = src.index("buscador_diputados(fichas, por_prov) +")
-        self.assertLess(i, src.index("f'<div class=\"hemi-caja\">{hemi}", i))
+        self.assertEqual(src.count("buscador_diputados(fichas, por_prov)"), 1)
+        self.assertIn("plantilla.replace(AVISO_LEGISLATURA, buscador_diputados(fichas, por_prov)\n"
+                      "                                         + AVISO_LEGISLATURA, 1)", src)
+        self.assertIn('_pagina_suelta(plantilla_indice, DIPUTADOS_DIR, "index.html"', src)
 
     def test_css_sin_subrayado_y_tactil(self):
         css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
