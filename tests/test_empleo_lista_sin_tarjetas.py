@@ -45,7 +45,7 @@ class Piloto(TestPaginas):
                 vistas += 1
                 self.assertNotIn(em.SIN_PLAZO, li)
                 self.assertNotRegex(li, r"Plazo:</b>\s*<")
-                self.assertNotRegex(li, r"hace \d+ d|cierra|abiert[oa]|cerrad[oa]|quedan")
+                self.assertNotRegex(li, r"cierra|abiert[oa]|cerrad[oa]|quedan")
                 self.assertEqual(li.count("<a "), 1)
                 self.assertRegex(li, r'<a class="em-f-a" href="https://www\.boe\.es/')
         self.assertTrue(vistas)
@@ -75,12 +75,53 @@ class Piloto(TestPaginas):
                 self.assertNotIn("em-etq", li)
                 if objetivo in li:
                     vistos += 1
-                    self.assertIn('<span class="em-f-turno">Turno libre 2 · Promoción interna 1</span>', li)
+                    self.assertIn('<span class="em-f-turno">Turno libre · Promoción interna</span>', li)
                     self.assertNotIn("discapacidad", li)
                 else:
                     self.assertNotIn("em-f-turno", li)
                     self.assertNotIn("Turno libre", li)
         self.assertTrue(vistos)
+
+    def test_texto_turnos(self):
+        pl = {"lineas": [{"n": 1, "clase": "plaza"}, {"n": 2, "clase": "plaza"}]}
+        self.assertEqual(em.texto_turnos({"libre": 1}, pl), "Turno libre: 1 plaza")
+        self.assertEqual(em.texto_turnos({"libre": 2, "promocion interna": 1}, pl),
+                         "Turno libre: 2 plazas · Promoción interna: 1 plaza")
+        # Si alguna línea es de «puestos» o no hay líneas, sin número.
+        self.assertEqual(em.texto_turnos({"libre": 2}, {"lineas": [{"n": 2, "clase": "puesto"}]}), "Turno libre")
+        self.assertEqual(em.texto_turnos({"libre": 2}, {}), "Turno libre")
+
+    def test_tipo_y_antiguedad_como_la_tarjeta(self):
+        todas = self.generar(())
+        con = self.generar(set(todas))
+        regs = {r["id"]: r for r in self.todos}
+        vistos = 0
+        for p, c in con.items():
+            for li in re.findall(r'<li class="em-fila".*?</li>', c["CUERPO"], re.S):
+                bid = re.search(r"BOE-A-\d{4}-\d+", li).group(0)
+                r = regs.get(bid)
+                if not r:
+                    continue
+                vistos += 1
+                et, clase = em.etiqueta_llana(r)
+                if clase in ("oposicion", "concurso"):
+                    self.assertIn(f'<span class="em-f-tipo">{et}</span>', li)
+                else:
+                    self.assertNotIn("em-f-tipo", li)
+                # La antigüedad es la misma que pintaba la tarjeta de main.
+                tarjeta = re.search(r'<li class="em-card[^>]*>.*?' + re.escape(bid), todas[p]["CUERPO"], re.S)
+                if tarjeta:
+                    hace = re.findall(r'<span class="em-hace">([^<]*)</span>', tarjeta.group(0))[-1]
+                    self.assertIn(f'<span class="em-hace">{hace}</span>', li)
+        self.assertTrue(vistos)
+
+    def test_nota_turnos_solo_si_aparecen(self):
+        self.assertEqual(em.NOTA_TURNOS["Turno libre"],
+                         "Turno libre: abierto a cualquiera que cumpla los requisitos.")
+        con = self.generar(set(self.generar(())))
+        for c in con.values():
+            hay = "em-f-turno\">Turno libre" in c["CUERPO"]
+            self.assertEqual(em.NOTA_TURNOS["Turno libre"] in c["CUERPO"], hay)
 
     def test_css_sin_cajas(self):
         css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")

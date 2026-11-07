@@ -858,6 +858,23 @@ ACLARA_PROVINCIA = {
 }
 
 
+NOTA_TURNOS = {"Turno libre": "Turno libre: abierto a cualquiera que cumpla los requisitos.",
+               "Promoción interna": "Promoción interna: solo para quien ya trabaja en esa administración."}
+
+
+def texto_turnos(turnos: dict, campos: dict | None = None) -> str:
+    """«Turno libre: 2 plazas». El número es la suma de las líneas «N plazas de
+    … en turno X» del texto (empleo_campos.campos_local, que solo da turnos si
+    TODAS las líneas casan). Si alguna línea es de «puestos», sin número."""
+    lineas = (campos or {}).get("lineas") or []
+    con_n = bool(lineas) and all(x.get("clase") == "plaza" for x in lineas)
+    out = []
+    for k, v in turnos.items():
+        et = empleo_campos.TURNOS.get(k, k)
+        out.append(f"{et}: {v} {'plaza' if v == 1 else 'plazas'}" if con_n else et)
+    return " · ".join(out)
+
+
 def texto_recuento_provincia(nc: int, n: str, otras: dict | None = None) -> str:
     """Entradilla. nc = tipo «convocatoria» (la cifra de la description);
     otras = {etiqueta: cuántas} del resto de bloques que se listan debajo,
@@ -936,15 +953,22 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         meta = []
         if quien:
             meta.append(f'<span class="em-f-org">{esc(" · ".join(quien))}</span>')
+        # v3: el tipo de la tarjeta anterior («Oposición»/«Concurso», de
+        # r["proc"]) solo si consta; y la antigüedad «(hace N días)» igual
+        # que en la tarjeta (misma función publicada()).
+        et, clase = etiqueta_llana(r)
+        if clase in ("oposicion", "concurso"):
+            meta.insert(0, f'<span class="em-f-tipo">{esc(et)}</span>')
+        hace = esc(publicada(r["fecha"], ref).replace("Publicada ", ""))
         meta.append(f'<span class="em-f-fecha">Publicada el <time datetime="{attr(r["fecha"])}">'
-                    f'{esc(fecha_es(r["fecha"]))}</time></span>')
+                    f'{esc(fecha_es(r["fecha"]))}</time> <span class="em-hace">({hace})</span></span>')
         # Turnos (v2): el mismo campo que los chips de la tarjeta (literal del
         # BOE, regla estricta de empleo_campos); en texto pequeño, sin chip. Solo
         # «Turno libre» y «Promoción interna».
         turnos = {k: v for k, v in (empleo_campos.activos(r).get("turnos") or {}).items()
                   if k in ("libre", "promocion interna")}
         if turnos:
-            meta.append(f'<span class="em-f-turno">{esc(" · ".join(f"{empleo_campos.TURNOS.get(k, k)} {v}" for k, v in turnos.items()))}</span>')
+            meta.append(f'<span class="em-f-turno">{esc(texto_turnos(turnos, empleo_campos.activos(r)))}</span>')
         plazo = f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else ""
         aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
         return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'
@@ -1131,7 +1155,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             modo["lista"] = False
         if p in LISTA_SIN_TARJETAS:
             html = f'<div class="tr-ix-em-lista">{html}</div>'
-        notas = " ".join(v for k, v in ACLARA_PROVINCIA.items() if k in html)
+        if p in LISTA_SIN_TARJETAS:
+            vistos = re.findall(r'em-f-turno">([^<]*)', html)
+            notas = " ".join(v for k, v in NOTA_TURNOS.items() if any(k in x for x in vistos))
+            notas = " ".join(x for x in [notas] + [v for k, v in ACLARA_PROVINCIA.items()
+                                                    if k not in NOTA_TURNOS and k in html] if x)
+        else:
+            notas = " ".join(v for k, v in ACLARA_PROVINCIA.items() if k in html)
         return (html + (f'<p class="aside-note">{esc(notas)}</p>' if notas else "")
                 + f'<p class="tr-ix-em-prov"><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
                 f'en La Tercera Cámara →</a></p>')
