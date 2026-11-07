@@ -6045,6 +6045,32 @@ def nombre_grupo(largo: str) -> str:
     return f"Grupo {corto}" if corto else (largo or "")
 
 
+def buscador_diputados(fichas: list, por_prov: dict) -> str:
+    """Tanda 3-A: arriba de /diputados/, antes del hemiciclo. Formularios
+    nativos con <label>; assets/dip-busca.js resuelve la navegación (no hay
+    backend). Sin JS queda la lista de enlaces de #circunscripciones."""
+    provs = "".join(f'<option value="provincia-{esc_attr(_slug_txt(p))}.html">{esc_html(p)}</option>'
+                    for p in sorted(por_prov))
+    nombres = "".join(f'<option value="{esc_attr(f["natural"])}" data-s="{esc_attr(f["slug"])}">'
+                      for f in sorted(fichas, key=lambda f: _sin_tildes(f["natural"])))
+    return (
+        '<section class="dip-busca" aria-labelledby="dip-busca-t">'
+        '<h2 class="rotulo" id="dip-busca-t">Busca a tus diputados</h2>'
+        f'<p class="dip-busca-leg"><b>{LEGISLATURA_DISUELTA} (disuelta)</b> · '
+        f'<a href="{RD_DISOLUCION_URL}" rel="noopener" target="_blank">Real Decreto 806/2026 en el BOE</a></p>'
+        '<form id="dip-busca-prov" class="dip-busca-f" action="#circunscripciones" role="search" aria-label="Por circunscripción">'
+        '<label for="dip-prov">Por circunscripción</label>'
+        f'<span class="dip-busca-c"><select id="dip-prov" name="p"><option value="">Elige una…</option>{provs}</select>'
+        '<button type="submit">Ir</button></span></form>'
+        '<form id="dip-busca-nom" class="dip-busca-f" action="#circunscripciones" role="search" aria-label="Por nombre">'
+        '<label for="dip-nom">Por nombre</label>'
+        '<span class="dip-busca-c"><input id="dip-nom" name="n" type="search" list="dip-nombres" autocomplete="off" '
+        f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
+        '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
+        f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a></p>'
+        '<script src="../assets/dip-busca.js" defer></script></section>')
+
+
 def plantilla_con_aviso(plantilla: str) -> str:
     """El aviso va bajo la entradilla y antes de la tabla (dl.ficha), igual en
     las fichas de diputado, de grupo y de provincia."""
@@ -6323,6 +6349,7 @@ def renderizar_diputados(fichas: list) -> list:
     # añaden la capa interactiva encima. Si el script no carga, lo de debajo
     # sigue siendo una página completa.
     cuerpo = (
+        buscador_diputados(fichas, por_prov) +
         nota_diputacion_permanente(fichas, dp) +
         f'<div class="hemi-caja">{hemi}<ul class="leyenda-grupos">{leyenda}</ul></div>'
         f'<div id="hemiciclo-app" data-src="../datos/parlamento.json"></div>'
