@@ -43,7 +43,6 @@ class Filas(TestPaginas):
         for c in prov.values():
             for li in re.findall(FILA, c["CUERPO"], re.S):
                 vistas += 1
-                self.assertNotIn(em.SIN_PLAZO, li)
                 self.assertNotRegex(li, r"Plazo:</b>\s*<")
                 self.assertNotRegex(li, r"cierra|abiert[oa] hasta|cerrad[oa]|quedan")
                 self.assertEqual(li.count("<a "), 1)
@@ -96,6 +95,30 @@ class Filas(TestPaginas):
                 self.assertEqual(c["CUERPO"].count(em.NOTA_TURNOS["Turno libre"]), 1)
             else:
                 self.assertNotIn("em-f-nota", c["CUERPO"])
+
+    def test_plazo_literal_o_aviso_como_la_tarjeta(self):
+        prov, _ = self.generar()
+        regs = {r["id"]: r for r in self.todos}
+        con_aviso = 0
+        for c in prov.values():
+            for li in re.findall(FILA, c["CUERPO"], re.S):
+                r = regs.get(re.search(r"BOE-A-\d{4}-\d+", li).group(0))
+                if not r:
+                    continue
+                abierta = r["tipo"] in em.ORDEN_ABIERTOS and not em.empleo_campos.etiqueta_no_oferta(r)
+                literal = em.plazo_tarjeta(r)
+                if abierta and literal:
+                    self.assertIn("<b>Plazo:</b>", li)
+                    self.assertNotIn(em.SIN_PLAZO, li)
+                elif abierta:
+                    con_aviso += 1
+                    self.assertIn(f'<span class="em-f-plazo em-f-sin">{em.SIN_PLAZO}</span>', li)
+                    self.assertNotIn("<b>Plazo:</b>", li)
+                else:
+                    self.assertNotIn("em-f-plazo", li)
+                if abierta:
+                    self.assertRegex(li, r'<a class="em-f-a" href="https://www\.boe\.es/')
+        self.assertTrue(con_aviso)
 
     def test_texto_turnos(self):
         pl = {"lineas": [{"n": 1, "clase": "plaza"}, {"n": 2, "clase": "plaza"}]}

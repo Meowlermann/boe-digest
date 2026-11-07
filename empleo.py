@@ -977,7 +977,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                       and k not in notas_vistas]
             notas_vistas.update(k for k in NOTA_TURNOS if any(x.startswith(k) for x in partes))
             nota = "".join(f'<span class="em-f-nota">{esc(v)}</span>' for v in nuevas)
-        plazo = f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else ""
+        # Como la tarjeta (main): en convocatorias y traslados (ORDEN_ABIERTOS)
+        # sin aviso de no-oferta, plazo LITERAL o, si no se extrajo, SIN_PLAZO.
+        # La fila entera ya enlaza al BOE (misma URL que «Ver en el BOE»).
+        plazo = ""
+        if r["tipo"] in ORDEN_ABIERTOS and not no:
+            plazo = (f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else
+                     f'<span class="em-f-plazo em-f-sin">{SIN_PLAZO}</span>')
         aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
         return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'
                 f'<a class="em-f-a" href="{attr(enlace)}" target="_blank" rel="noopener">'
