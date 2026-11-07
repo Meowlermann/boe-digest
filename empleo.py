@@ -52,6 +52,10 @@ MAX_FILAS = 300                  # tope de filas por página
 # /empleo/ y sus fichas van en noindex (y fuera del sitemap) hasta que haya
 # fichas por convocatoria con valor propio: hoy son listados del sumario.
 ROBOTS = "noindex, follow"
+# Excepción (tanda 1-A, 06-11-2026): las fichas /empleo/provincia-*.html con al
+# menos una convocatoria de proceso selectivo son indexables y van al sitemap.
+# Las que solo tienen listas, tribunales o resultados siguen en noindex.
+ROBOTS_PROVINCIA = "index, follow"
 
 # Tipo de disposición, en orden de prioridad: la primera que encaja se queda.
 # Se busca en título + epígrafe, sin tildes y en minúscula.
@@ -988,13 +992,17 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                                     for i, r in enumerate(filas[:50])]}
 
     def pagina(nombre: str, titulo: str, desc: str, h1: str, entradilla: str, filas: list,
-               cuerpo: str, miga_final: str, ficha: str | None = None) -> None:
+               cuerpo: str, miga_final: str, ficha: str | None = None, indexable: bool = False) -> None:
         url = f"{site}empleo/{'' if nombre == 'index.html' else nombre}"
         lastmod = max((r["fecha"] for r in filas), default=hoy)
         miga = ('<a href="../">Portada</a> › '
                 + ('<span aria-current="page">Empleo público</span>' if nombre == "index.html" else
                    f'<a href="./">Empleo público</a> › <span aria-current="page">{esc(miga_final)}</span>'))
-        h["pagina_suelta"](h["plantilla"], carpeta, nombre, {
+        plantilla = h["plantilla"]
+        if indexable:
+            plantilla = plantilla.replace(f'<meta name="robots" content="{ROBOTS}">',
+                                          f'<meta name="robots" content="{ROBOTS_PROVINCIA}">', 1)
+        h["pagina_suelta"](plantilla, carpeta, nombre, {
             "TITLE": esc(f"{titulo} | La Tercera Cámara"),
             "META_DESC": attr(desc),
             "CANONICAL": url,
@@ -1014,7 +1022,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                        'que es el único que da fe: plazos y requisitos, allí.'),
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
-        salidas.append({"url": url, "lastmod": lastmod})
+        salidas.append({"url": url, "lastmod": lastmod, "indexable": indexable})
 
     # Fichas por departamento.
     enlaces_dept, feeds_dept, feeds_prov = [], [], []
@@ -1032,14 +1040,21 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
     enlaces_prov = []
     for p, filas in sorted(por_prov.items(), key=lambda x: nombres_prov[x[0]]):
         n = nombres_prov[p]
-        pagina(f"provincia-{p}.html", f"Empleo público en {n}",
-               f"Oposiciones y concursos del BOE que nombran {n} en el título, últimos "
-               f"{VENTANA_PAGINAS} días.",
+        nc = sum(1 for r in filas if r["tipo"] == "convocatoria")
+        pl = "convocatoria" if nc == 1 else "convocatorias"
+        # Title sin cifra (informe-05): la cifra va en la description, con su
+        # alcance; no se calculan plazos abiertos.
+        pagina(f"provincia-{p}.html",
+               f"Oposiciones y empleo público en {n}" if nc else f"Empleo público en {n}",
+               (f"{nc} {pl} {'publicada' if nc == 1 else 'publicadas'} en el BOE en los últimos {VENTANA_PAGINAS} días que "
+                f"nombran {n} en el título: oposiciones y concursos, con enlace a cada una." if nc else
+                f"Oposiciones y concursos del BOE que nombran {n} en el título, últimos "
+                f"{VENTANA_PAGINAS} días."),
                f"Empleo público en {n}",
                f"Disposiciones de la sección II.B del BOE cuyo título nombra {n} (ayuntamientos, "
                f"diputación, universidades y plazas con destino en la provincia).",
                filas, por_tipo(filas) + f'<p><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
-               f'en La Tercera Cámara</a></p>', n)
+               f'en La Tercera Cámara</a></p>', n, indexable=nc > 0)
         enlaces_prov.append(f'<li><a href="provincia-{attr(p)}.html">{esc(n)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_prov.append(f'<li><a href="provincia-{attr(p)}.xml">{esc(n)}</a></li>')
