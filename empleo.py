@@ -284,7 +284,10 @@ RE_PROCESO = re.compile(r"\b(?:sistema|procedimiento|turno)(?: selectivo)? (?:ge
                         r"|\b(concurso) (?:general|especifico|de acceso|de traslados|para la provision)")
 RE_SISTEMA_BASES = re.compile(r"proceso selectivo se realizara mediante el sistema de "
                               r"(concurso-oposicion|oposicion|concurso)\b,?( (?:para|en) (?:las personas|el turno|los aspirantes))?")
-RE_NO_CONVOCATORIA = re.compile(r"correccion de errores|desiert|se modifica|modifican?\b|se publica|amplia|"
+# «por la que se publica la convocatoria…» (universidades, AGE) SÍ es una
+# convocatoria: antes se descartaba con «se publica» y su texto no se leía.
+RE_NO_CONVOCATORIA = re.compile(r"correccion de errores|desiert|se modifica|modifican?\b|"
+                                r"se publica(?!n?\s+(?:la\s+)?convocatoria)|amplia|"
                                 r"anula|deja sin efecto|suspende", re.I)
 
 
@@ -328,6 +331,22 @@ def proceso(titulo: str, epigrafe: str, texto: str = "") -> str:
     return PROCESOS[ps.pop()] if len(ps) == 1 else ""
 
 
+# Turno LITERAL del arranque del texto («por el turno de promoción interna»,
+# «por el turno de acceso libre», «en turno libre»). Solo si el texto nombra
+# UN único turno; si nombra varios o ninguno, nada. Sin número: el número de
+# plazas por turno solo sale de empleo_campos (Administración Local).
+RE_TURNO_LIT = re.compile(r"\b(?:por|en|mediante)\s+(?:el\s+)?turno\s+(?:de\s+)?"
+                          r"(acceso\s+libre|libre|promocion\s+interna)\b")
+
+
+def turno_literal(texto: str) -> str:
+    vistos = {("libre" if "libre" in m.group(1) else "promocion interna")
+              for m in RE_TURNO_LIT.finditer(_plano(texto[:3000]).lower())}
+    otros = re.search(r"\bturno\s+(?:de\s+)?(?:reserva|discapacidad|movilidad)|personas con discapacidad",
+                      _plano(texto[:3000]).lower())
+    return vistos.pop() if len(vistos) == 1 and not otros else ""
+
+
 def detalle(html: str, reg: dict) -> dict:
     """{'plazo': cita literal o ausente, 'proc': etiqueta o ausente, y lo que
     dé empleo_campos: 'campos' (dict) o 'no_oferta' (etiqueta)}. Todo
@@ -344,6 +363,9 @@ def detalle(html: str, reg: dict) -> dict:
     pr = proceso(reg.get("titulo", ""), reg.get("epi", ""), texto)
     if pr:
         out["proc"] = pr
+    tu = turno_literal(texto) if texto else ""
+    if tu:
+        out["turno"] = tu
     return out
 
 
@@ -370,7 +392,7 @@ def al_dia(anterior: dict) -> bool:
 def _copiar(anterior: dict, r: dict) -> bool:
     if not anterior.get("leido"):
         return False
-    for k in ("plazo", "proc", "leido", "campos", "no_oferta"):
+    for k in ("plazo", "proc", "leido", "campos", "no_oferta", "turno"):
         if k in anterior:
             r[k] = anterior[k]
     return True
@@ -868,7 +890,7 @@ def texto_turnos(turnos: dict, campos: dict | None = None) -> str:
     out = []
     for k, v in turnos.items():
         et = empleo_campos.TURNOS.get(k, k)
-        out.append(f"{et}: {v} {'plaza' if v == 1 else 'plazas'}" if con_n else et)
+        out.append(f"{et}: {v} {'plaza' if v == 1 else 'plazas'}" if con_n and v else et)
     return " · ".join(out)
 
 
@@ -966,6 +988,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         # «Turno libre» y «Promoción interna».
         turnos = {k: v for k, v in (empleo_campos.activos(r).get("turnos") or {}).items()
                   if k in ("libre", "promocion interna")}
+        if not turnos and r.get("turno") in ("libre", "promocion interna"):
+            turnos = {r["turno"]: None}      # literal del texto, sin número
         turno = ""
         nota = ""
         if turnos:
