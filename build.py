@@ -6045,6 +6045,31 @@ def nombre_grupo(largo: str) -> str:
     return f"Grupo {corto}" if corto else (largo or "")
 
 
+def buscador_diputados(fichas: list, por_prov: dict) -> str:
+    """Tanda 3-A: arriba de /diputados/, antes del hemiciclo. Formularios
+    nativos con <label>; assets/dip-busca.js resuelve la navegación (no hay
+    backend). Sin JS queda la lista de enlaces de #circunscripciones."""
+    provs = "".join(f'<option value="provincia-{esc_attr(_slug_txt(p))}.html">{esc_html(p)}</option>'
+                    for p in sorted(por_prov))
+    nombres = "".join(f'<option value="{esc_attr(f["natural"])}" data-s="{esc_attr(f["slug"])}">'
+                      for f in sorted(fichas, key=lambda f: _sin_tildes(f["natural"])))
+    return (
+        '<section class="dip-busca" aria-labelledby="dip-busca-t">'
+        f'<p class="dip-busca-leg" id="dip-busca-t"><b>Busca a tus diputados</b> · <b>{LEGISLATURA_DISUELTA} (disuelta)</b> · '
+        f'<a href="{RD_DISOLUCION_URL}" rel="noopener" target="_blank">Real Decreto 806/2026 en el BOE</a></p>'
+        '<form id="dip-busca-prov" class="dip-busca-f" action="#circunscripciones" role="search" aria-label="Por circunscripción">'
+        '<label for="dip-prov">Provincia</label>'
+        f'<span class="dip-busca-c"><select id="dip-prov" name="p"><option value="">Elige una…</option>{provs}</select>'
+        '<button type="submit">Ir</button></span></form>'
+        '<form id="dip-busca-nom" class="dip-busca-f" action="#circunscripciones" role="search" aria-label="Por nombre">'
+        '<label for="dip-nom">Nombre</label>'
+        '<span class="dip-busca-c"><input id="dip-nom" name="n" type="search" list="dip-nombres" autocomplete="off" '
+        f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
+        '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
+        f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a></p>'
+        '<script src="../assets/dip-busca.js" defer></script></section>')
+
+
 def plantilla_con_aviso(plantilla: str) -> str:
     """El aviso va bajo la entradilla y antes de la tabla (dl.ficha), igual en
     las fichas de diputado, de grupo y de provincia."""
@@ -6339,7 +6364,12 @@ def renderizar_diputados(fichas: list) -> list:
         f'<ul class="provincias">{provincias}</ul>'
         f'<script src="../assets/parlamento.js" defer></script>')
     url = f"{SITE_URL}diputados/"
-    _pagina_suelta(plantilla, DIPUTADOS_DIR, "index.html", {
+    # Tanda 3-A v2: SOLO en el índice, el buscador va bajo la entradilla y
+    # antes del aviso de legislatura y de la tabla (fichas de provincia y
+    # grupo intactas: prueba #75).
+    plantilla_indice = plantilla.replace(AVISO_LEGISLATURA, buscador_diputados(fichas, por_prov)
+                                         + AVISO_LEGISLATURA, 1)
+    _pagina_suelta(plantilla_indice, DIPUTADOS_DIR, "index.html", {
         "TITLE": "Así vota y así trabaja cada diputado | La Tercera Cámara",
         "META_DESC": esc_attr("Los 350 diputados del Congreso, uno a uno: intervenciones, "
                               "votaciones, asistencia y votos distintos a los de su grupo, "
