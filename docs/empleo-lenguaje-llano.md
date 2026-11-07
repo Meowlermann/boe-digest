@@ -54,3 +54,15 @@ se releen una sola vez (sin subir LECTURA).
 
 La tarjeta dice el proceso literal («Concurso» o «Concurso-oposición»); el
 grupo y el filtro los reúnen como «Concurso y concurso-oposición».
+
+### Citas excluidas
+
+`empleo_campos.DIARIO_EXCLUIDO` lista las citas que no se muestran, con id,
+motivo y fuente. Se omite la cita (número y fecha); el plazo literal se queda.
+Nunca se corrige el número.
+
+- BOE-A-2026-22137 (Ciutadilla): el BOE imprime DOGC «número 9974, de 16 de
+  octubre de 2026»; según CIDO, el DOGC del 16-10-2026 es el 9774.
+
+En las filas, bajo la cita, una línea de ayuda sin enlace: «Búscalo por número
+y fecha en la web del diario.» No va en las tarjetas (ocuparía dos líneas).

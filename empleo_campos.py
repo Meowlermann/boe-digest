@@ -832,6 +832,16 @@ def diario_literal(texto: str, bol: str) -> dict | None:
     return {"bol": bol, "num": num, "fecha": fecha}
 
 
+# Citas del BOE que no se muestran (se queda solo el plazo literal). No se
+# corrige nada: si el número que imprime el BOE no cuadra con la fuente del
+# propio diario, se omite la cita. Cada entrada: id, motivo y fuente.
+DIARIO_EXCLUIDO = {
+    "BOE-A-2026-22137": ("El BOE imprime DOGC «número 9974, de 16 de octubre de 2026»; el DOGC "
+                         "del 16-10-2026 es el 9774 (errata probable del BOE).",
+                         "CIDO (Diputació de Barcelona), consultado el 07-11-2026"),
+}
+
+
 def texto_diario(d) -> str:
     """«Publicado en el «X» número N, de <fecha>» o ''. Sin enlace: ver docs."""
     if not isinstance(d, dict) or not all(d.get(k) for k in ("bol", "num", "fecha")):

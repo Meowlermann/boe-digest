@@ -1858,6 +1858,7 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .tr-ix-em-filas .em-f-nota{display:block;margin:0;padding:0 4px 10px;font-size:.85rem;color:var(--ink-soft);background:none;border:0}
 .tr-ix-em-filas .em-f-plazo,.tr-ix-em-filas .em-f-aviso{display:block;margin-top:4px;font-size:.95rem;color:var(--ink)}
 .tr-ix-em-filas .em-f-diario{display:block;margin-top:2px;font-size:.85rem;color:var(--ink-soft)}
+.tr-ix-em-filas .em-f-diario-ayuda{display:block;font-size:.78rem;color:var(--ink-soft);opacity:.85}
 .tr-ix-em-filas .em-f-id{display:block;margin-top:4px;font-family:var(--mono,monospace);font-size:.8rem;color:var(--ink-soft)}
 /* --- fin /empleo/ -------------------------------------------------------- */
 

@@ -43,6 +43,19 @@ class TestDiario(unittest.TestCase):
         self.assertEqual(empleo.diario_html(r, None, "span", "x"), "")
         self.assertEqual(empleo.diario_html(r, "20 días desde su publicación en el BOE", "span", "x"), "")
 
+    def test_excluida_ciutadilla(self):
+        r = {"id": "BOE-A-2026-22137", "diario": {"bol": DOGC, "num": "9974", "fecha": "16 de octubre de 2026"}}
+        self.assertEqual(empleo.diario_html(r, f"20 días hábiles desde el «{DOGC}»", "span", "x"), "")
+        motivo, fuente = ec.DIARIO_EXCLUIDO["BOE-A-2026-22137"]
+        self.assertIn("9774", motivo); self.assertIn("CIDO", fuente)
+
+    def test_ayuda_solo_en_fila(self):
+        r = {"id": "BOE-A-2026-23211", "diario": {"bol": DOGC, "num": "9784", "fecha": "30 de octubre de 2026"}}
+        pl = f"20 días desde el «{DOGC}»"
+        self.assertIn(empleo.AYUDA_DIARIO, empleo.diario_html(r, pl, "span", "em-f-diario"))
+        self.assertNotIn(empleo.AYUDA_DIARIO, empleo.diario_html(r, pl, "p", "em-c-diario"))
+        self.assertNotIn("href", empleo.diario_html(r, pl, "span", "em-f-diario"))
+
     def test_etiqueta_proceso_literal(self):
         self.assertEqual(empleo.etiqueta_llana({"tipo": "convocatoria", "proc": "Concurso-oposición"}),
                          ("Concurso y concurso-oposición", "concurso"))

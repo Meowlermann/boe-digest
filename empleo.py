@@ -863,10 +863,19 @@ SIN_PLAZO = "No figura en el resumen: consúltalo en el BOE"
 def diario_html(r: dict, pl: str | None, tag: str, cls: str) -> str:
     """Fecha literal del boletín citado en el plazo mostrado, o ''. Sin enlace."""
     d = r.get("diario")
+    if r.get("id") in empleo_campos.DIARIO_EXCLUIDO:
+        return ""
     if not pl or not isinstance(d, dict) or f"«{d.get('bol')}»" not in pl:
         return ""
     t = empleo_campos.texto_diario(d)
-    return f'<{tag} class="{cls}">{html.escape(t, quote=False)}</{tag}>' if t else ""
+    if not t:
+        return ""
+    ayuda = f'<{tag} class="{cls}-ayuda">{AYUDA_DIARIO}</{tag}>' if tag == "span" else ""
+    return f'<{tag} class="{cls}">{html.escape(t, quote=False)}</{tag}>{ayuda}'
+
+
+# Solo en las filas (una línea a 375 px); en la tarjeta, estrecha, serían dos.
+AYUDA_DIARIO = "Búscalo por número y fecha en la web del diario."
 
 
 def plazo_tarjeta(r: dict, mostrar: bool | None = None) -> str | None:
