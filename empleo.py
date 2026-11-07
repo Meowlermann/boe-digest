@@ -821,6 +821,10 @@ def que_es(r: dict, ps: list | None = None) -> str:
 
 
 # Texto fijo cuando el resumen no trae plazo literal (E-1, 04-11-2026).
+# Piloto «lista sin tarjetas» (tanda 3-B, 07-11-2026): solo estas fichas de
+# provincia pintan cada disposición como fila tipográfica. Vaciar para apagar.
+LISTA_SIN_TARJETAS = frozenset({"zaragoza"})
+
 SIN_PLAZO = "No figura en el resumen: consúltalo en el BOE"
 
 
@@ -916,7 +920,37 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         # «N puestos» ya es el «Qué es» de la tarjeta: no se repite aquí.
         return (f'<ul class="em-puestos">{"".join(linea_puesto(p) for p in ps[:3])}</ul>{resto}')
 
+    def fila_lista(r: dict, con_dept: bool = True) -> str:
+        """Fila tipográfica (piloto 3-B): el título llano es el enlace al BOE;
+        debajo, organismo y plazo LITERAL. Lo que no consta no se pinta: ni
+        «sin plazo», ni fechas de cierre ni estados calculados."""
+        enlace = r.get("url") or url_boe(r["id"])
+        ps = empleo_campos.puestos_activos(r)
+        que = que_es(r, ps)
+        quien = [nombre_organismo(r)] if (con_dept or r.get("dept", "").upper() in (DEPT_LOCAL, DEPT_UNIV)) else []
+        if len(ps) == 1 and ps[0].get("localidad"):
+            quien.append(ps[0]["localidad"])
+        quien = [q for q in quien if q]
+        no = empleo_campos.etiqueta_no_oferta(r)
+        pl = plazo_tarjeta(r) if (r["tipo"] in ORDEN_ABIERTOS and not no) else None
+        meta = []
+        if quien:
+            meta.append(f'<span class="em-f-org">{esc(" · ".join(quien))}</span>')
+        meta.append(f'<span class="em-f-fecha">Publicada el <time datetime="{attr(r["fecha"])}">'
+                    f'{esc(fecha_es(r["fecha"]))}</time></span>')
+        plazo = f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else ""
+        aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
+        return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'
+                f'<a class="em-f-a" href="{attr(enlace)}" target="_blank" rel="noopener">'
+                f'<span class="em-f-tit">{esc(que)}</span>'
+                f'<span class="em-f-meta">{"".join(meta)}</span>{plazo}{aviso}'
+                f'<span class="em-f-id">{esc(r["id"])} · Ver en el BOE →</span></a></li>')
+
+    modo = {"lista": False}
+
     def fila(r: dict, con_dept: bool = True) -> str:
+        if modo["lista"]:
+            return fila_lista(r, con_dept)
         # Tarjeta en lenguaje llano. Nunca una fecha de cierre calculada: el
         # plazo, solo el literal con la regla estricta y si MOSTRAR_PLAZO_LLANO;
         # si no, SIN_PLAZO.
@@ -1083,7 +1117,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_dept.append(f'<li><a href="{attr(s)}.xml">{esc(nombre)}</a></li>')
     def cuerpo_provincia(filas: list, p: str, n: str) -> str:
-        html = por_tipo(filas, et=ETIQUETA_PROVINCIA)
+        modo["lista"] = p in LISTA_SIN_TARJETAS
+        try:
+            html = por_tipo(filas, et=ETIQUETA_PROVINCIA)
+        finally:
+            modo["lista"] = False
+        if p in LISTA_SIN_TARJETAS:
+            html = f'<div class="tr-ix-em-lista">{html}</div>'
         notas = " ".join(v for k, v in ACLARA_PROVINCIA.items() if k in html)
         return (html + (f'<p class="aside-note">{esc(notas)}</p>' if notas else "")
                 + f'<p class="tr-ix-em-prov"><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
