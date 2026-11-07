@@ -31,7 +31,7 @@ class FichaProvincia(TestPaginas):
         for f in fichas:
             with self.subTest(f.name):
                 c = campos(f)
-                m = re.match(r"(\d+) convocatorias? publicadas? en el BOE en los últimos 90 días", c["STANDFIRST"])
+                m = re.match(r"(\d+) (?:oposición u otra convocatoria de plazas publicada|oposiciones y otras convocatorias de plazas publicadas) en el BOE en los últimos 90 días", c["STANDFIRST"])
                 self.assertIsNotNone(m, c["STANDFIRST"])
                 n = int(m.group(1))
                 if n:
@@ -46,7 +46,32 @@ class FichaProvincia(TestPaginas):
                  {"tipo": "admitidos", "fecha": "2026-10-30"}]
         self.assertEqual(em.texto_fecha_provincia(filas), "Última convocatoria publicada el 2026-10-20")
         self.assertTrue(em.texto_recuento_provincia(1, "Soria").startswith(
-            "1 convocatoria publicada en el BOE en los últimos 90 días"))
+            "1 oposición u otra convocatoria de plazas publicada en el BOE en los últimos 90 días"))
+
+
+class CoherenciaRecuentoLista(TestPaginas):
+    """Lo que dice la entradilla y lo que se lista debajo salen de la misma fuente
+    (caso Zamora: 0 oposiciones y, debajo, un traslado) en TODAS las fichas."""
+    def test_entradilla_tabla_y_bloques_cuadran(self):
+        h, _ = h_prueba(self.carpeta)
+        em.generar_paginas(h, self.estado)
+        for f in sorted(self.carpeta.glob("provincia-*.html")):
+            with self.subTest(f.name):
+                c = campos(f)
+                cuerpo, ficha = c["CUERPO"], c["FICHA"]
+                n = int(re.match(r"\d+", c["STANDFIRST"]).group(0))
+                bloques = dict(re.findall(r'<h[23] id="t-(\w+)">[^<]*\((\d+)\)</h[23]>', cuerpo))
+                self.assertEqual(int(bloques.get("convocatoria", 0)), n)
+                tabla = dict(re.findall(r'<dd><a href="#t-(\w+)">(\d+)</a></dd>', ficha.split("</dd>", 1)[1]))
+                self.assertEqual({k: int(v) for k, v in tabla.items()}, {k: int(v) for k, v in bloques.items()})
+                self.assertIn(f">{sum(map(int, bloques.values()))}</a></dd>", ficha.split("</dd>", 1)[0] + "</dd>")
+                self.assertTrue(c["FICHA"].startswith(f"<dt>{em.TOTAL_PROVINCIA}</dt>"))
+                otros = {k: v for k, v in bloques.items() if k != "convocatoria"}
+                if not n and otros:
+                    for k, v in otros.items():
+                        self.assertIn(f"{em.ETIQUETA_PROVINCIA[k]}: {v}", c["STANDFIRST"])
+                self.assertIn("La Tercera Cámara →</a>", cuerpo)
+                self.assertNotIn("II.B", c.get("FUENTE", ""))
 
 
 class CSSProvincia(unittest.TestCase):
@@ -55,6 +80,11 @@ class CSSProvincia(unittest.TestCase):
         self.assertIn("body:has(.tr-ix-em-prov) .ficha dd a, .tr-ix-em-prov a{text-decoration:none;", css)
         self.assertIn(".tr-ix-em-prov a:focus-visible{outline:2px solid var(--red)", css)
         self.assertIn('<p class="tr-ix-em-prov">', (RAIZ / "empleo.py").read_text(encoding="utf-8"))
+        bloque = css.split("/* --- /empleo/")[1].split("/* --- fin /empleo/")[0]
+        for linea in bloque.splitlines():
+            if "tr-ix-em-prov" in linea:
+                self.assertNotIn("underline", linea)
+        self.assertIn("min-width:44px;min-height:32px", css)
 
 
 if __name__ == "__main__":
