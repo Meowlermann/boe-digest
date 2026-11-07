@@ -821,10 +821,6 @@ def que_es(r: dict, ps: list | None = None) -> str:
 
 
 # Texto fijo cuando el resumen no trae plazo literal (E-1, 04-11-2026).
-# Piloto «lista sin tarjetas» (tanda 3-B, 07-11-2026): solo estas fichas de
-# provincia pintan cada disposición como fila tipográfica. Vaciar para apagar.
-LISTA_SIN_TARJETAS = frozenset({"zaragoza"})
-
 SIN_PLAZO = "No figura en el resumen: consúltalo en el BOE"
 
 
@@ -858,6 +854,7 @@ ACLARA_PROVINCIA = {
 }
 
 
+PROC_LISTA = ("Oposición", "Concurso-oposición", "Concurso")
 NOTA_TURNOS = {"Turno libre": "Turno libre: abierto a cualquiera que cumpla los requisitos.",
                "Promoción interna": "Promoción interna: solo para quien ya trabaja en esa administración."}
 
@@ -953,12 +950,14 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         meta = []
         if quien:
             meta.append(f'<span class="em-f-org">{esc(" · ".join(quien))}</span>')
-        # v3: el tipo de la tarjeta anterior («Oposición»/«Concurso», de
-        # r["proc"]) solo si consta; y la antigüedad «(hace N días)» igual
-        # que en la tarjeta (misma función publicada()).
-        et, clase = etiqueta_llana(r)
-        if clase in ("oposicion", "concurso"):
-            meta.insert(0, f'<span class="em-f-tipo">{esc(et)}</span>')
+        # Procedimiento LITERAL de r["proc"] (empleo.proceso, sacado del texto
+        # del BOE) solo en convocatorias y si consta. Tanda 4: «Concurso-
+        # oposición» ya no se resume en «Concurso», para no confundirlo con
+        # los concursos de traslados de «Traslados y puestos para personal fijo».
+        # La antigüedad «(hace N días)», igual que en la tarjeta (publicada()).
+        proc = r.get("proc") if r["tipo"] == "convocatoria" else None
+        if proc in PROC_LISTA:
+            meta.insert(0, f'<span class="em-f-tipo">{esc(proc)}</span>')
         hace = esc(publicada(r["fecha"], ref).replace("Publicada ", ""))
         meta.append(f'<span class="em-f-fecha">Publicada el <time datetime="{attr(r["fecha"])}">'
                     f'{esc(fecha_es(r["fecha"]))}</time> <span class="em-hace">({hace})</span></span>')
@@ -967,17 +966,27 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         # «Turno libre» y «Promoción interna».
         turnos = {k: v for k, v in (empleo_campos.activos(r).get("turnos") or {}).items()
                   if k in ("libre", "promocion interna")}
+        turno = ""
+        nota = ""
         if turnos:
-            meta.append(f'<span class="em-f-turno">{esc(texto_turnos(turnos, empleo_campos.activos(r)))}</span>')
+            partes = texto_turnos(turnos, empleo_campos.activos(r)).split(" · ")
+            turno = ('<span class="em-f-turno">' + " · ".join(
+                f'<span class="em-f-nw">{esc(x)}</span>' for x in partes) + '</span>')
+            # Nota breve junto a la PRIMERA fila de la ficha que menciona el turno.
+            nuevas = [v for k, v in NOTA_TURNOS.items() if any(x.startswith(k) for x in partes)
+                      and k not in notas_vistas]
+            notas_vistas.update(k for k in NOTA_TURNOS if any(x.startswith(k) for x in partes))
+            nota = "".join(f'<span class="em-f-nota">{esc(v)}</span>' for v in nuevas)
         plazo = f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else ""
         aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
         return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'
                 f'<a class="em-f-a" href="{attr(enlace)}" target="_blank" rel="noopener">'
                 f'<span class="em-f-tit">{esc(que)}</span>'
-                f'<span class="em-f-meta">{"".join(meta)}</span>{plazo}{aviso}'
-                f'<span class="em-f-id">{esc(r["id"])} · Ver en el BOE →</span></a></li>')
+                f'<span class="em-f-meta">{"".join(meta)}</span>{turno}{plazo}{aviso}'
+                f'<span class="em-f-id">{esc(r["id"])} · Ver en el BOE →</span></a>{nota}</li>')
 
     modo = {"lista": False}
+    notas_vistas: set = set()
 
     def fila(r: dict, con_dept: bool = True) -> str:
         if modo["lista"]:
@@ -1148,20 +1157,16 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_dept.append(f'<li><a href="{attr(s)}.xml">{esc(nombre)}</a></li>')
     def cuerpo_provincia(filas: list, p: str, n: str) -> str:
-        modo["lista"] = p in LISTA_SIN_TARJETAS
+        # Tanda 4: todas las fichas de provincia en filas (sin tarjetas). Las
+        # tarjetas siguen en /empleo/ y en las fichas por organismo.
+        modo["lista"] = True
+        notas_vistas.clear()
         try:
             html = por_tipo(filas, et=ETIQUETA_PROVINCIA)
         finally:
             modo["lista"] = False
-        if p in LISTA_SIN_TARJETAS:
-            html = f'<div class="tr-ix-em-lista">{html}</div>'
-        if p in LISTA_SIN_TARJETAS:
-            vistos = re.findall(r'em-f-turno">([^<]*)', html)
-            notas = " ".join(v for k, v in NOTA_TURNOS.items() if any(k in x for x in vistos))
-            notas = " ".join(x for x in [notas] + [v for k, v in ACLARA_PROVINCIA.items()
-                                                    if k not in NOTA_TURNOS and k in html] if x)
-        else:
-            notas = " ".join(v for k, v in ACLARA_PROVINCIA.items() if k in html)
+        html = f'<div class="tr-ix-em-filas">{html}</div>'
+        notas = " ".join(v for k, v in ACLARA_PROVINCIA.items() if k not in NOTA_TURNOS and k in html)
         return (html + (f'<p class="aside-note">{esc(notas)}</p>' if notas else "")
                 + f'<p class="tr-ix-em-prov"><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
                 f'en La Tercera Cámara →</a></p>')
