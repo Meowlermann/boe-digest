@@ -833,6 +833,47 @@ def plazo_tarjeta(r: dict, mostrar: bool | None = None) -> str | None:
     return empleo_campos.plazo_llano(r.get("plazo") or "")
 
 
+# Ficha de provincia en lenguaje llano (tanda 2-A, 07-11-2026). La cifra es la
+# misma de la description: convocatorias (tipo «convocatoria») en VENTANA_PAGINAS.
+FUENTE_PROVINCIA = ("Fuente: oposiciones y concursos del Boletín Oficial del Estado (API de datos "
+                    "abiertos). Cada disposición enlaza a su texto en el BOE, "
+                    "que es el único que da fe: plazos y requisitos, allí.")
+
+
+# Rótulos llanos solo en la ficha de provincia (tanda 2-A v3). «provision»
+# agrupa concursos de traslados, concursos de méritos y libre designación:
+# puestos que se cubren con personal que ya es fijo (funcionario o estatutario).
+ETIQUETA_PROVINCIA = {**ETIQUETA_TIPO, "convocatoria": "Oposiciones y otras convocatorias de plazas",
+                      "provision": "Traslados y puestos para personal fijo"}
+TOTAL_PROVINCIA = "Total publicado"
+PIE_GENERAL = "Cada pieza enlaza al documento oficial e indica su fecha de publicación; la fecha de la página va en la cabecera."
+PIE_PROVINCIA = "Cada pieza enlaza al documento oficial e indica su fecha de publicación. Se actualiza cada día con el BOE."
+ACLARA_PROVINCIA = {
+    "Turno libre": "«Turno libre»: plazas abiertas a cualquiera que cumpla los requisitos.",
+    "Libre designación": "«Libre designación»: puesto para personal que ya es funcionario; se elige entre quienes lo solicitan.",
+}
+
+
+def texto_recuento_provincia(nc: int, n: str, otras: dict | None = None) -> str:
+    """Entradilla. nc = tipo «convocatoria» (la cifra de la description);
+    otras = {etiqueta: cuántas} del resto de bloques que se listan debajo,
+    para que recuento y lista salgan de la misma fuente."""
+    pl = "oposición u otra convocatoria de plazas publicada" if nc == 1 else "oposiciones y otras convocatorias de plazas publicadas"
+    base = f"{nc} {pl} en el BOE en los últimos {VENTANA_PAGINAS} días"
+    if nc:
+        return f"{base} cuyo título nombra {n}."
+    resto = "; ".join(f"{k}: {v}" for k, v in (otras or {}).items())
+    return (f"{base} que nombren {n} en el título." +
+            (f" Abajo, otras disposiciones que sí la nombran ({resto})." if resto else ""))
+
+
+def texto_fecha_provincia(filas: list, fecha_es=lambda f: f) -> str:
+    fechas = [r["fecha"] for r in filas if r["tipo"] == "convocatoria"]
+    if not fechas:
+        return f"Sin oposiciones en los últimos {VENTANA_PAGINAS} días"
+    return f"Última convocatoria publicada el {fecha_es(max(fechas))}"
+
+
 def generar_paginas(h: dict, estado: dict | None = None) -> list:
     """/empleo/index.html, una ficha por departamento y una por provincia."""
     estado = estado or cargar()
@@ -939,7 +980,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                         f'<ul class="ix-lista em-rejilla">{"".join(fila(r, con_dept) for r in rs)}</ul></div>')
         return "".join(html)
 
-    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2", en_rejilla: bool = False) -> str:
+    def bloque(t: str, filas: list, con_dept: bool, h: str = "h2", en_rejilla: bool = False,
+               et: dict = ETIQUETA_TIPO) -> str:
         todas = [r for r in filas if r["tipo"] == t]
         xs = todas[:MAX_FILAS]
         if not xs:
@@ -958,26 +1000,27 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         c30 = (dt.date.fromisoformat(ref) - dt.timedelta(days=DIAS_FILTRO)).isoformat()
         return (f'<section class="em-sec" id="p-{t}" data-tipo="{t}" data-m="{len(todas)}" '
                 f'data-m30="{sum(1 for r in todas if r["fecha"] >= c30)}" '
-                f'data-et="{attr(ETIQUETA_TIPO[t])}" data-desde="{attr(fecha_es(xs[-1]["fecha"]))}">'
-                f'<{h} id="t-{t}">{esc(ETIQUETA_TIPO[t])} '
+                f'data-et="{attr(et[t])}" data-desde="{attr(fecha_es(xs[-1]["fecha"]))}">'
+                f'<{h} id="t-{t}">{esc(et[t])} '
                 f'({n})</{h}>' +
                 (rejilla(t, xs, con_dept, h) if en_rejilla else
                  f'<ul class="ix-lista">{"".join(fila(r, con_dept) for r in xs)}</ul>') + f'{nota}</section>')
 
-    def por_tipo(filas: list, con_dept: bool = True, en_rejilla: bool = False) -> str:
+    def por_tipo(filas: list, con_dept: bool = True, en_rejilla: bool = False,
+                 et: dict = ETIQUETA_TIPO) -> str:
         # Orden de lectura (UX-1), distinto del de clasificación de TIPOS:
         # primero lo que se puede solicitar; después, bajo «Seguimiento de
         # procesos», las listas, tribunales y resultados de procesos en marcha.
-        html = "".join(bloque(t, filas, con_dept, en_rejilla=en_rejilla) for t in ORDEN_ABIERTOS)
-        seg = "".join(bloque(t, filas, con_dept, "h3", en_rejilla) for t in ORDEN_SEGUIMIENTO)
+        html = "".join(bloque(t, filas, con_dept, en_rejilla=en_rejilla, et=et) for t in ORDEN_ABIERTOS)
+        seg = "".join(bloque(t, filas, con_dept, "h3", en_rejilla, et) for t in ORDEN_SEGUIMIENTO)
         if seg:
             html += ('<section class="em-sec em-grupo"><h2 id="seguimiento">Seguimiento de procesos</h2>'
                      + seg + '</section>')
-        return html + "".join(bloque(t, filas, con_dept, en_rejilla=en_rejilla) for t in ORDEN_RESTO)
+        return html + "".join(bloque(t, filas, con_dept, en_rejilla=en_rejilla, et=et) for t in ORDEN_RESTO)
 
-    def recuento(filas: list) -> str:
+    def recuento(filas: list, et: dict = ETIQUETA_TIPO) -> str:
         # Cada contador enlaza a su sección (UX-1).
-        return "".join(f'<dt>{esc(et)}</dt><dd><a href="#t-{t}">{n}</a></dd>' for t, et, _ in TIPOS
+        return "".join(f'<dt>{esc(et[t])}</dt><dd><a href="#t-{t}">{n}</a></dd>' for t, _e, _ in TIPOS
                        if (n := sum(1 for r in filas if r["tipo"] == t)))
 
     def primero(filas: list) -> str:
@@ -992,13 +1035,16 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                                     for i, r in enumerate(filas[:50])]}
 
     def pagina(nombre: str, titulo: str, desc: str, h1: str, entradilla: str, filas: list,
-               cuerpo: str, miga_final: str, ficha: str | None = None, indexable: bool = False) -> None:
+               cuerpo: str, miga_final: str, ficha: str | None = None, indexable: bool = False,
+               edicion: str | None = None, kicker: str | None = None, fuente: str | None = None) -> None:
         url = f"{site}empleo/{'' if nombre == 'index.html' else nombre}"
         lastmod = max((r["fecha"] for r in filas), default=hoy)
         miga = ('<a href="../">Portada</a> › '
                 + ('<span aria-current="page">Empleo público</span>' if nombre == "index.html" else
                    f'<a href="./">Empleo público</a> › <span aria-current="page">{esc(miga_final)}</span>'))
         plantilla = h["plantilla"]
+        if fuente == FUENTE_PROVINCIA:
+            plantilla = plantilla.replace(PIE_GENERAL, PIE_PROVINCIA, 1)
         if indexable:
             plantilla = plantilla.replace(f'<meta name="robots" content="{ROBOTS}">',
                                           f'<meta name="robots" content="{ROBOTS_PROVINCIA}">', 1)
@@ -1009,15 +1055,15 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             "JSONLD": h["jsonld_script"]([{"@type": "CollectionPage", "url": url, "name": titulo,
                                            "inLanguage": "es-ES", "dateModified": lastmod,
                                            "mainEntity": item_list(filas)}]),
-            "EDITION_DATE": esc(f"Datos al {fecha_es(lastmod)}"),
+            "EDITION_DATE": esc(edicion or f"Datos al {fecha_es(lastmod)}"),
             "MIGA": miga,
-            "KICKER": "Empleo público · BOE II.B",
+            "KICKER": esc(kicker) if kicker else "Empleo público · BOE II.B",
             "HEADLINE": esc(h1),
             "STANDFIRST": esc(entradilla),
             "FICHA": ficha if ficha is not None else (f'<dt>Disposiciones</dt><dd><a href="#t-{primero(filas)}">{len(filas)}</a></dd>'
                       if filas else "<dt>Disposiciones</dt><dd>0</dd>") + recuento(filas),
             "CUERPO": cuerpo,
-            "FUENTE": ('Fuente: sumario del Boletín Oficial del Estado, sección II.B «Oposiciones y '
+            "FUENTE": fuente or ('Fuente: sumario del Boletín Oficial del Estado, sección II.B «Oposiciones y '
                        'concursos» (API de datos abiertos). Cada disposición enlaza a su texto en el BOE, '
                        'que es el único que da fe: plazos y requisitos, allí.'),
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
@@ -1036,6 +1082,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         enlaces_dept.append(f'<li><a href="{attr(s)}.html">{esc(nombre)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_dept.append(f'<li><a href="{attr(s)}.xml">{esc(nombre)}</a></li>')
+    def cuerpo_provincia(filas: list, p: str, n: str) -> str:
+        html = por_tipo(filas, et=ETIQUETA_PROVINCIA)
+        notas = " ".join(v for k, v in ACLARA_PROVINCIA.items() if k in html)
+        return (html + (f'<p class="aside-note">{esc(notas)}</p>' if notas else "")
+                + f'<p class="tr-ix-em-prov"><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
+                f'en La Tercera Cámara →</a></p>')
+
     # Fichas por provincia.
     enlaces_prov = []
     for p, filas in sorted(por_prov.items(), key=lambda x: nombres_prov[x[0]]):
@@ -1051,10 +1104,14 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f"Oposiciones y concursos del BOE que nombran {n} en el título, últimos "
                 f"{VENTANA_PAGINAS} días."),
                f"Empleo público en {n}",
-               f"Disposiciones de la sección II.B del BOE cuyo título nombra {n} (ayuntamientos, "
-               f"diputación, universidades y plazas con destino en la provincia).",
-               filas, por_tipo(filas) + f'<p><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
-               f'en La Tercera Cámara</a></p>', n, indexable=nc > 0)
+               texto_recuento_provincia(nc, n, {ETIQUETA_PROVINCIA[t]: k for t, _e, _ in TIPOS if t != "convocatoria"
+                                                 and (k := sum(1 for r in filas if r["tipo"] == t))}),
+               filas, cuerpo_provincia(filas, p, n), n, indexable=nc > 0,
+               ficha=f'<dt>{TOTAL_PROVINCIA}</dt><dd><a href="#t-{primero(filas)}">{len(filas)}</a></dd>'
+                     + recuento(filas, ETIQUETA_PROVINCIA),
+               edicion=texto_fecha_provincia(filas, fecha_es),
+               kicker="Empleo público · Oposiciones y concursos del BOE",
+               fuente=FUENTE_PROVINCIA)
         enlaces_prov.append(f'<li><a href="provincia-{attr(p)}.html">{esc(n)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_prov.append(f'<li><a href="provincia-{attr(p)}.xml">{esc(n)}</a></li>')
