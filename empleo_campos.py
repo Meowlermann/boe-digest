@@ -795,3 +795,45 @@ def plazo_llano_motivo(frase: str) -> tuple:
 
 def plazo_llano(frase: str) -> str | None:
     return plazo_llano_motivo(frase)[0]
+
+
+# Fecha del diario autonómico o provincial (tanda 6, 07-11-2026). Solo la cita
+# LITERAL del texto del BOE: «<boletín>» número N, de D de <mes> de AAAA, del
+# MISMO boletín del que cuenta el plazo. Nada se calcula: si el boletín sale
+# con dos números o fechas distintos, o sin número, no se muestra nada.
+RE_DIARIO_CITA = re.compile(
+    r"«(?P<bol>[^»]{3,90}?)(?:\s*\((?P<s1>[A-ZÑ]{2,8})\))?»(?:\s*\((?P<s2>[A-ZÑ]{2,8})\))?,?\s*"
+    r"(?:n[úu]mero|n[úu]m\.|n\.?\s?º)\s*(?P<num>\d{1,6}),?\s+de\s+(?:fecha\s+)?"
+    r"(?P<fecha>\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|"
+    r"octubre|noviembre|diciembre)\s+de\s+\d{4})\b")
+
+
+def boletin_del_plazo(plazo: str) -> str:
+    """El boletín (no el BOE) del que cuenta el plazo, si la regla estricta
+    del plazo lo aceptó; si no, ''."""
+    pl, motivo = plazo_llano_motivo(plazo or "")
+    if motivo != "ok otro boletín" or not pl:
+        return ""
+    m = re.search(r"«([^»]+)»$", pl)
+    return m.group(1) if m else ""
+
+
+def diario_literal(texto: str, bol: str) -> dict | None:
+    """{'bol', 'num', 'fecha'} literales del texto o None si falta o hay duda."""
+    if not texto or not bol:
+        return None
+    vistos = set()
+    for m in RE_DIARIO_CITA.finditer(texto):
+        if " ".join(m.group("bol").split()) == " ".join(bol.split()):
+            vistos.add((m.group("num"), " ".join(m.group("fecha").split())))
+    if len(vistos) != 1:
+        return None
+    num, fecha = vistos.pop()
+    return {"bol": bol, "num": num, "fecha": fecha}
+
+
+def texto_diario(d) -> str:
+    """«Publicado en el «X» número N, de <fecha>» o ''. Sin enlace: ver docs."""
+    if not isinstance(d, dict) or not all(d.get(k) for k in ("bol", "num", "fecha")):
+        return ""
+    return f"Publicado en el «{d['bol']}» número {d['num']}, de {d['fecha']}"

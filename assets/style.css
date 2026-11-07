@@ -1637,6 +1637,7 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .ix-lista .em-card p.em-c-org{ margin:0; font-size:14px; color:var(--ink); }
 .ix-lista .em-card p.em-c-plazo{ margin:0; font-size:14px; color:var(--ink); }
 .em-c-plazo b{ font-weight:700; }
+.ix-lista .em-card p.em-c-diario{ margin:0; font-size:13px; color:var(--ink-soft); }
 .ix-lista .em-card p.em-c-sin,.em-hace{ color:var(--ink-soft); }
 .em-c-pie{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; padding-top:8px; }
 .em-c-id{ font:500 12px/1.4 'IBM Plex Mono',ui-monospace,monospace; color:var(--ink-soft); }
@@ -1856,6 +1857,7 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .tr-ix-em-filas .em-f-nw{white-space:nowrap}
 .tr-ix-em-filas .em-f-nota{display:block;margin:0;padding:0 4px 10px;font-size:.85rem;color:var(--ink-soft);background:none;border:0}
 .tr-ix-em-filas .em-f-plazo,.tr-ix-em-filas .em-f-aviso{display:block;margin-top:4px;font-size:.95rem;color:var(--ink)}
+.tr-ix-em-filas .em-f-diario{display:block;margin-top:2px;font-size:.85rem;color:var(--ink-soft)}
 .tr-ix-em-filas .em-f-id{display:block;margin-top:4px;font-family:var(--mono,monospace);font-size:.8rem;color:var(--ink-soft)}
 /* --- fin /empleo/ -------------------------------------------------------- */
 

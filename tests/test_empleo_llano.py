@@ -144,7 +144,7 @@ class TestQueEs(unittest.TestCase):
 
     def test_etiquetas(self):
         self.assertEqual(em.etiqueta_llana({"tipo": "convocatoria", "proc": "Oposición"})[0], "Oposición")
-        self.assertEqual(em.etiqueta_llana({"tipo": "convocatoria", "proc": "Concurso-oposición"})[0], "Concurso")
+        self.assertEqual(em.etiqueta_llana({"tipo": "convocatoria", "proc": "Concurso-oposición"})[0], "Concurso y concurso-oposición")
         self.assertEqual(em.etiqueta_llana({"tipo": "convocatoria", "proc": None})[0], "Convocatoria")
         self.assertEqual(em.etiqueta_llana({"tipo": "provision"})[0], "Cambio de puesto")
 
