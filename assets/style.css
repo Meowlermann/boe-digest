@@ -1334,6 +1334,10 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 
 /* ------------------------------------------------------------- Tu provincia */
 .indice li.propia{border-left:3px solid var(--congreso);padding-left:.6rem}
+/* Aviso de legislatura disuelta y frase de grupo en /diputados/ (tanda 1-B). */
+.aviso-leg{margin:0 0 1rem;padding:.7rem .9rem;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--ink);font-size:15px;line-height:1.5}
+.aviso-leg a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
+.frase-grupo{margin:0 0 1.2rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
 .tabla-ancha{overflow-x:auto;max-width:100%}
 
