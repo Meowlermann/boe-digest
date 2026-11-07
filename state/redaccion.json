@@ -4902,15 +4902,13 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "0ffb5472867d2876",
-   "fuente": "fce995420a0973e3",
-   "titular": "Sumar concentra 30 de las 38 preguntas del Congreso fuera de plazo sin contestar",
-   "entradilla": "Un total de 38 preguntas escritas publicadas en el último año superan el límite de 20 días hábiles sin contestación registrada, la gran mayoría formuladas por el grupo parlamentario de Sumar.",
+   "huella": "d5cdf02c8277a60c",
+   "fuente": "6327dbb1622cb5fc",
+   "titular": "El Congreso suma 38 preguntas escritas que superan los 20 días sin contestación",
+   "entradilla": "Las iniciativas parlamentarias pendientes han superado el plazo de 20 días hábiles desde su publicación sin que conste una respuesta oficial.",
    "claves": [
-    "El recuento sobre iniciativas del último año revela 38 preguntas escritas que superan los 20 días hábiles desde su publicación sin contestación registrada.",
-    "Por grupos parlamentarios, Sumar acumula 30 preguntas sin respuesta, el PSOE 4, el PP 2, Junts 1 y el colectivo Sin grupo 1.",
-    "La iniciativa escrita más antigua pendiente de respuesta se publicó el lunes 15 de diciembre de 2025.",
-    "El recuento contempla que puedan existir prórrogas aplicadas o respuestas aún no reflejadas en la ficha oficial del Congreso."
+    "La pregunta escrita más antigua acumulada sin contestación registrada en la ficha del Congreso se publicó el lunes 16 de febrero de 2026.",
+    "Por formación política, las iniciativas corresponden a Sumar con 24, PSOE con 7, PP con 4, EAJ-PNV con 1, Junts con 1 y Sin grupo con 1."
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-07"
@@ -11407,9 +11405,212 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-06"
+  },
+  "BOE-A-2026-23341": {
+   "huella": "2346da57a5fec391",
+   "fuente": "526baff59e6e2cfc",
+   "titular": "Hacienda fija los nuevos precios de venta del tabaco en la Península y Baleares",
+   "entradilla": "El Comisionado para el Mercado de Tabacos publica las tarifas oficiales de venta al público para cigarrillos, cigarros, picaduras de liar y de pipa en expendedurías.",
+   "claves": [
+    "Los precios de venta al público fijados incluyen todos los tributos aplicables en las estanqueras de la Península e Illes Balears.",
+    "Las tarifas se aplican a cigarrillos, cigarros, cigarritos, picaduras de liar y picaduras de pipa a propuesta de fabricantes e importadores.",
+    "La resolución entra en vigor el mismo día de su publicación en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23361": {
+   "huella": "6ae5167641e3c783",
+   "fuente": "c4c57a2641fb11ed",
+   "titular": "La Audiencia Nacional reorganiza la asignación de recursos en la Sección Quinta",
+   "entradilla": "El Consejo General del Poder Judicial publica la nueva distribución de ponencias entre los magistrados de la Sección Quinta de lo Contencioso-Administrativo, con efectos desde el 1 de octubre de 2026.",
+   "claves": [
+    "La magistrada Alicia Sánchez Cordero presidirá la Sección Quinta y asumirá los recursos cuya terminación sea en 7 y 8.",
+    "El reparto asigna los recursos terminados en 1 y 2 a Fátima Blanca de la Cruz Mera, los terminados en 3 y 4 a Margarita Pazos Pita y los de 5 y 6 a Alicia Esther Ortuño Rodríguez.",
+    "Eduardo Hinojosa Martínez resolverá los recursos acabados en 9 y 0, mientras que M.ª Yolanda de la Fuente Guerrero asumirá las terminaciones dobles del 00 al 99."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23362": {
+   "huella": "8587dea32935f985",
+   "fuente": "e32442a2bfd8bf46",
+   "titular": "El Catastro facilitará datos a los ingenieros agrícolas de A Coruña y Pontevedra",
+   "entradilla": "La Dirección General del Catastro suscribe un acuerdo de colaboración con el Colegio Oficial de Ingenieros Técnicos Agrícolas y Peritos Agrícolas para agilizar el intercambio de información geográfica y tributaria.",
+   "claves": [
+    "Los profesionales colegiados dispondrán de cartografía catastral digital actualizada y georreferenciada para elaborar proyectos, tasaciones y dictámenes.",
+    "El acuerdo permitirá a los ingenieros y peritos agrícolas obtener por vía electrónica los datos necesarios para la confección y presentación de declaraciones catastrales.",
+    "La Dirección General del Catastro ejerce estas competencias delegadas a través de fórmulas de colaboración con corporaciones públicas como los colegios profesionales."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23363": {
+   "huella": "1883333230a44c1a",
+   "fuente": "a9ac6ff52e67100d",
+   "titular": "Instituciones Penitenciarias da nueve días a los interesados en un recurso",
+   "entradilla": "La notificación se dirige a los afectados por el recurso contra el Expediente de Desahucio Administrativo 2/2025 tramitado ante el Tribunal Superior de Justicia de Madrid.",
+   "claves": [
+    "El recurso contencioso-administrativo 1068/2026, interpuesto por Araceli Muñoz Sevillano, se tramita ante la Sección Séptima del Tribunal Superior de Justicia de Madrid.",
+    "Los interesados disponen de nueve días a contar desde el día siguiente a la publicación de la resolución para comparecer en el procedimiento."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23364": {
+   "huella": "220c8f217f364f3f",
+   "fuente": "04384bdcf89d8e5e",
+   "titular": "El Ministerio de Trabajo publica el III Convenio colectivo de LogiRAIL",
+   "entradilla": "La Dirección General de Trabajo ordena la inscripción y publicación oficial del acuerdo laboral pactado entre la dirección de la sociedad y los sindicatos UGT y SFF-CGT.",
+   "claves": [
+    "El texto fue pactado originalmente el 17 de septiembre de 2026 y posteriormente subsanado mediante un acuerdo alcanzado el 20 de octubre de 2026.",
+    "El acuerdo cuenta con la autorización preceptiva de la Secretaría de Estado de Presupuestos y Gastos del Ministerio de Hacienda."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23365": {
+   "huella": "6641b10ba8e4bb8e",
+   "fuente": "fd6372fc728efd2e",
+   "titular": "Trabajo actualiza los calendarios de conservación de expedientes judiciales y ERE",
+   "entradilla": "La Subsecretaría autoriza la eliminación y transferencia de series documentales del departamento con un plazo de demora de tres meses antes de su ejecución.",
+   "claves": [
+    "Los dictámenes aprobados afectan a series comunes de la Administración de Justicia, convenios colectivos, elecciones sindicales y procedimientos de regulación de empleo.",
+    "La autorización alcanza al Archivo Central, servicios periféricos, organismos autónomos y archivos de las comunidades autónomas con documentación del ministerio.",
+    "La eficacia del proceso quedará suspendida durante tres meses y en caso de recurso administrativo no se podrá destruir ningún expediente hasta que la resolución sea firme."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23366": {
+   "huella": "884d107345ecc577",
+   "fuente": "a6d98d04f9cb5351",
+   "titular": "Agricultura ajusta los periodos de veda para la pesca de cerco en el Mediterráneo",
+   "entradilla": "El Ministerio de Agricultura modifica la norma que regula el plan de gestión del subcaladero para adaptar los paros temporales a las circunstancias de la flota de cerco.",
+   "claves": [
+    "En la zona de Girona la prohibición de pescar regirá del 4 de diciembre al 10 de enero y del 27 de febrero al 13 de abril.",
+    "Para los puertos de Arenys de Mar y Barcelona la veda abarcará del 9 de noviembre al 8 de enero y del 30 de marzo al 14 de abril.",
+    "En Vilanova i la Geltrú el paro se extenderá del 21 de diciembre al 7 de marzo, mientras que en Tarragona abarcará del 21 de diciembre al 21 de febrero y del 5 al 18 de abril."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23367": {
+   "huella": "5563814dd51c3771",
+   "fuente": "214ae49616ae2fc2",
+   "titular": "Transición Ecológica incentivará cambiar calderas por bombas de calor en residencias",
+   "entradilla": "El Ministerio establece coeficientes correctores multiplicadores en los certificados de ahorro energético para la renovación de instalaciones de calefacción en edificios residenciales.",
+   "claves": [
+    "La medida beneficia a las actuaciones iniciadas a partir del 22 de marzo de 2026 y finalizadas antes del 30 de noviembre de 2027.",
+    "En el caso de las comunidades de propietarios, el plazo límite para completar la sustitución se extiende hasta el 31 de diciembre de 2027.",
+    "Durante 2027 el tope máximo de certificados de ahorro energético con incentivo multiplicador será de 1.286.876.082 kWh."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23368": {
+   "huella": "b1c3c36f65cdd11e",
+   "fuente": "6fbe64017ab1a7f6",
+   "titular": "Transición Ecológica evalúa el almacenamiento con baterías de Cañada Vellida",
+   "entradilla": "La Dirección General de Calidad y Evaluación Ambiental emite la evaluación de impacto del proyecto de almacenamiento destinado a hibridarse con la instalación fotovoltaica La Estación.",
+   "claves": [
+    "El proyecto promovido por Planta Solar OPDE 7, SL contempla una potencia instalada de 19,1 MW limitados a 18 MW en el municipio turolense de Cañada Vellida.",
+    "El sistema dispondrá de un almacenamiento en baterías que ocupará una superficie de 1,04 hectáreas y aportará una capacidad de almacenaje de 72 MWh.",
+    "El promotor aceptó las modificaciones requeridas por los organismos consultados para mitigar los impactos sobre la fauna, la calidad del agua y el patrimonio."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23369": {
+   "huella": "d5819bba07693541",
+   "fuente": "193d7ce6b5b1049d",
+   "titular": "El Gobierno rechaza la planta fotovoltaica Aliaga Solar II en Almogía",
+   "entradilla": "La Dirección General de Política Energética y Minas deniega la autorización previa y la declaración de utilidad pública requeridas por VE Sonnedix SPV Gamma para el proyecto en la provincia de Málaga.",
+   "claves": [
+    "La instalación proyectada por el promotor contemplaba una capacidad de generación de 80 MWp en el término municipal de Almogía.",
+    "La resolución desestima tanto las autorizaciones administrativas previas y de construcción como la infraestructura de evacuación asociada al parque solar."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23370": {
+   "huella": "5bccb754c3e1ffb9",
+   "fuente": "e70e0a406115ab7e",
+   "titular": "El Gobierno fija los servicios mínimos del gas ante la huelga del 11 de noviembre",
+   "entradilla": "El Ministerio para la Transición Ecológica establece retenes obligatorios en el transporte de gas natural, refinado y almacenamiento para garantizar el suministro energético.",
+   "claves": [
+    "Las empresas comercializadoras y distribuidoras deberán mantener en funcionamiento la red de gasoductos e instalaciones de compresión.",
+    "Los servicios mínimos obligan a concluir la descarga de buques metaneros ya iniciada y a mantener operativos los cargaderos de cisternas de GNL.",
+    "Las actividades de refino y almacenamiento subterráneo deberán contar con personal suficiente para preservar la seguridad de instalaciones y personas."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23371": {
+   "huella": "9f97247ddd602bb4",
+   "fuente": "4e039581a96a2835",
+   "titular": "El Gobierno fija los servicios mínimos del sector eléctrico ante la huelga general",
+   "entradilla": "Transición Ecológica dicta la regulación que asegura el mantenimiento y suministro del sistema eléctrico ante las convocatorias de paro general del 11 de noviembre de 2026.",
+   "claves": [
+    "La huelga convocada por sindicatos como CGT, CCOO, UGT y Confederación Intersindical abarca las 24 horas de la jornada.",
+    "En los centros de trabajo organizados a turnos el paro comenzará en el primer turno anterior y concluirá al finalizar el último turno correspondiente."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23372": {
+   "huella": "1b99c81f9095e422",
+   "fuente": "c02f5796d4629b3e",
+   "titular": "El Gobierno fija servicios mínimos en la extinción de incendios el 11 de noviembre",
+   "entradilla": "El Ministerio para la Transición Ecológica aprueba la disponibilidad de aeronaves y personal de mando ante el paro convocado por CC. OO. y UGT.",
+   "claves": [
+    "Se exige la totalidad del personal y la tripulación necesaria para garantizar la aeronavegabilidad y operatividad de los medios aéreos de apoyo.",
+    "El centro de control del CCINIF deberá mantener el 100 % de los operadores de sala y del personal de guardia durante las 24 horas del paro.",
+    "Los servicios informáticos y de atención al usuario de los sistemas deberán contar con una cobertura del 75 % de su plantilla habitual."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23373": {
+   "huella": "be22baf2402313d4",
+   "fuente": "458102980430d5bf",
+   "titular": "El INAEM y la Agencia Andaluza organizarán siete conciertos de Andalucía Flamenca",
+   "entradilla": "Las actuaciones se celebrarán en la Sala de Cámara del Auditorio Nacional de Música entre octubre de 2026 y junio de 2027 como parte de la temporada del Centro Nacional de Difusión Musical.",
+   "claves": [
+    "El programa del ciclo «Andalucía Flamenca» contempla siete actuaciones en el Auditorio Nacional de Música entre octubre de 2026 y junio de 2027.",
+    "Entre los espectáculos incluidos destacan «Zambomba Jerezana», «Esperanza Fernández en concierto», «De Morente al 27», «Tres Momentos para un concierto» y «Chano y Antonio».",
+    "El INAEM asumirá un gasto máximo de 40.535,00 € mediante contrataciones artísticas específicas repartidas entre los ejercicios 2026 y 2027."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23374": {
+   "huella": "d7947e0e4670740d",
+   "fuente": "c1f84bc76329feca",
+   "titular": "Cultura compra por 3.900 euros un plato de esmalte atribuido a Pierre Reymond",
+   "entradilla": "El Ministerio de Cultura ejerce el derecho de tanteo sobre una obra renacentista de Limoges en una subasta celebrada en Madrid para asignarla al Museo Nacional de Artes Decorativas.",
+   "claves": [
+    "El plato de grisalla esmaltada data de entre 1570 y 1584 y representa una escena alegórica del mes de agosto.",
+    "La pieza se adquirió en la sala de subastas La Suite de Madrid por un precio de remate de 3.900 euros más tributos y gastos de gestión.",
+    "La obra se integrará en el inventario del Museo Nacional de Artes Decorativas tras ser calificada favorablemente por la Junta de Bienes del Patrimonio Histórico."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
+  },
+  "BOE-A-2026-23375": {
+   "huella": "733d0e725422591a",
+   "fuente": "ca0bce61fd3ab6dd",
+   "titular": "Aida dos Santos gana el Premio Nacional de Ensayo por 'Hijas del hormigón'",
+   "entradilla": "El Ministerio de Cultura concede el galardón correspondiente a 2026 a la autora por su obra sobre la intersección de desigualdad, violencia y género en las periferias urbanas españolas.",
+   "claves": [
+    "El jurado ha destacado la forma original y documentada con la que el libro aborda la realidad de las mujeres que sostienen los sectores esenciales desde el extrarradio.",
+    "La obra galardonada analiza los testimonios de las trabajadoras combate las visiones miserabilistas y la perspectiva tradicionalmente masculina de la clase obrera."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-07"
   }
  },
  "uso": {
-  "2026-11-07": 1
+  "2026-11-07": 3
  }
 }
