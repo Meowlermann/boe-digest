@@ -1843,18 +1843,20 @@ body:has(.tr-ix-em-prov) .ficha dd a{display:inline-flex;align-items:center;just
 body:has(.tr-ix-em-prov) .ficha dd a:hover{border-color:currentColor}
 body:has(.tr-ix-em-prov) .ficha dd{margin:3px 0}
 body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
-/* Piloto «lista sin tarjetas» (tanda 3-B): filas tipográficas, separador fino; sin cajas, sombras ni subrayado. */
-.tr-ix-em-lista .ix-lista{list-style:none;margin:0;padding:0;border-top:1px solid var(--border)}
-.tr-ix-em-lista .em-fila{margin:0;padding:0;border-bottom:1px solid var(--border);background:none;box-shadow:none}
-.tr-ix-em-lista .em-f-a{display:block;min-height:44px;padding:12px 4px;text-decoration:none;color:var(--ink)}
-.tr-ix-em-lista .em-f-tit{display:block;font-weight:700;font-size:1.05rem;line-height:1.3;color:var(--red-ink)}
-.tr-ix-em-lista .em-f-a:hover .em-f-tit{color:var(--red)}
-.tr-ix-em-lista .em-f-a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
-.tr-ix-em-lista .em-f-meta{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:4px;font-size:.92rem;color:var(--ink-soft)}
-.tr-ix-em-lista .em-f-turno,.tr-ix-em-lista .em-f-tipo{font-size:.85rem;color:var(--ink-soft)}
-.tr-ix-em-lista .em-f-tipo{font-weight:700}
-.tr-ix-em-lista .em-f-plazo,.tr-ix-em-lista .em-f-aviso{display:block;margin-top:4px;font-size:.95rem;color:var(--ink)}
-.tr-ix-em-lista .em-f-id{display:block;margin-top:4px;font-family:var(--mono,monospace);font-size:.8rem;color:var(--ink-soft)}
+/* Fichas de provincia en filas (tanda 3-B / 4): tipográficas, separador fino; sin cajas, sombras ni subrayado. */
+.tr-ix-em-filas .ix-lista{list-style:none;margin:0;padding:0;border-top:1px solid var(--border)}
+.tr-ix-em-filas .em-fila{margin:0;padding:0;border-bottom:1px solid var(--border);background:none;box-shadow:none}
+.tr-ix-em-filas .em-f-a{display:block;min-height:44px;padding:12px 4px;text-decoration:none;color:var(--ink)}
+.tr-ix-em-filas .em-f-tit{display:block;font-weight:700;font-size:1.05rem;line-height:1.3;color:var(--red-ink)}
+.tr-ix-em-filas .em-f-a:hover .em-f-tit{color:var(--red)}
+.tr-ix-em-filas .em-f-a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
+.tr-ix-em-filas .em-f-meta{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:4px;font-size:.92rem;color:var(--ink-soft)}
+.tr-ix-em-filas .em-f-tipo{font-size:.85rem;font-weight:700;color:var(--ink-soft)}
+.tr-ix-em-filas .em-f-turno{display:block;margin-top:4px;font-size:.85rem;color:var(--ink-soft)}
+.tr-ix-em-filas .em-f-nw{white-space:nowrap}
+.tr-ix-em-filas .em-f-nota{display:block;margin:0;padding:0 4px 10px;font-size:.85rem;color:var(--ink-soft);background:none;border:0}
+.tr-ix-em-filas .em-f-plazo,.tr-ix-em-filas .em-f-aviso{display:block;margin-top:4px;font-size:.95rem;color:var(--ink)}
+.tr-ix-em-filas .em-f-id{display:block;margin-top:4px;font-family:var(--mono,monospace);font-size:.8rem;color:var(--ink-soft)}
 /* --- fin /empleo/ -------------------------------------------------------- */
 
 /* --- /diputados/ buscador arriba (tanda 3-A v2: bajo la entradilla, antes del aviso). Sin cajas; enlaces sin subrayado. */
