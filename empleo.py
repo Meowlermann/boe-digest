@@ -833,6 +833,30 @@ def plazo_tarjeta(r: dict, mostrar: bool | None = None) -> str | None:
     return empleo_campos.plazo_llano(r.get("plazo") or "")
 
 
+# Ficha de provincia en lenguaje llano (tanda 2-A, 07-11-2026). La cifra es la
+# misma de la description: convocatorias (tipo «convocatoria») en VENTANA_PAGINAS.
+FUENTE_PROVINCIA = ("Fuente: oposiciones y concursos del Boletín Oficial del Estado (sección II.B del "
+                    "sumario, API de datos abiertos). Cada disposición enlaza a su texto en el BOE, "
+                    "que es el único que da fe: plazos y requisitos, allí.")
+
+
+def texto_recuento_provincia(nc: int, n: str) -> str:
+    pl = "convocatoria publicada" if nc == 1 else "convocatorias publicadas"
+    base = f"{nc} {pl} en el BOE en los últimos {VENTANA_PAGINAS} días"
+    if nc:
+        return (f"{base}. Son oposiciones y concursos cuyo título nombra {n}: ayuntamientos, "
+                f"diputación, universidades y plazas con destino en la provincia.")
+    return (f"{base}. Abajo, las listas de admitidos, tribunales y resultados que nombran {n} "
+            f"en el título.")
+
+
+def texto_fecha_provincia(filas: list, fecha_es=lambda f: f) -> str:
+    fechas = [r["fecha"] for r in filas if r["tipo"] == "convocatoria"]
+    if not fechas:
+        return f"Sin convocatorias en los últimos {VENTANA_PAGINAS} días"
+    return f"Última convocatoria publicada el {fecha_es(max(fechas))}"
+
+
 def generar_paginas(h: dict, estado: dict | None = None) -> list:
     """/empleo/index.html, una ficha por departamento y una por provincia."""
     estado = estado or cargar()
@@ -992,7 +1016,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                                     for i, r in enumerate(filas[:50])]}
 
     def pagina(nombre: str, titulo: str, desc: str, h1: str, entradilla: str, filas: list,
-               cuerpo: str, miga_final: str, ficha: str | None = None, indexable: bool = False) -> None:
+               cuerpo: str, miga_final: str, ficha: str | None = None, indexable: bool = False,
+               edicion: str | None = None, kicker: str | None = None, fuente: str | None = None) -> None:
         url = f"{site}empleo/{'' if nombre == 'index.html' else nombre}"
         lastmod = max((r["fecha"] for r in filas), default=hoy)
         miga = ('<a href="../">Portada</a> › '
@@ -1009,15 +1034,15 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             "JSONLD": h["jsonld_script"]([{"@type": "CollectionPage", "url": url, "name": titulo,
                                            "inLanguage": "es-ES", "dateModified": lastmod,
                                            "mainEntity": item_list(filas)}]),
-            "EDITION_DATE": esc(f"Datos al {fecha_es(lastmod)}"),
+            "EDITION_DATE": esc(edicion or f"Datos al {fecha_es(lastmod)}"),
             "MIGA": miga,
-            "KICKER": "Empleo público · BOE II.B",
+            "KICKER": esc(kicker) if kicker else "Empleo público · BOE II.B",
             "HEADLINE": esc(h1),
             "STANDFIRST": esc(entradilla),
             "FICHA": ficha if ficha is not None else (f'<dt>Disposiciones</dt><dd><a href="#t-{primero(filas)}">{len(filas)}</a></dd>'
                       if filas else "<dt>Disposiciones</dt><dd>0</dd>") + recuento(filas),
             "CUERPO": cuerpo,
-            "FUENTE": ('Fuente: sumario del Boletín Oficial del Estado, sección II.B «Oposiciones y '
+            "FUENTE": fuente or ('Fuente: sumario del Boletín Oficial del Estado, sección II.B «Oposiciones y '
                        'concursos» (API de datos abiertos). Cada disposición enlaza a su texto en el BOE, '
                        'que es el único que da fe: plazos y requisitos, allí.'),
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
@@ -1051,10 +1076,12 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                 f"Oposiciones y concursos del BOE que nombran {n} en el título, últimos "
                 f"{VENTANA_PAGINAS} días."),
                f"Empleo público en {n}",
-               f"Disposiciones de la sección II.B del BOE cuyo título nombra {n} (ayuntamientos, "
-               f"diputación, universidades y plazas con destino en la provincia).",
+               texto_recuento_provincia(nc, n),
                filas, por_tipo(filas) + f'<p><a href="/provincias/{attr(p)}.html">Todo lo de {esc(n)} '
-               f'en La Tercera Cámara</a></p>', n, indexable=nc > 0)
+               f'en La Tercera Cámara</a></p>', n, indexable=nc > 0,
+               edicion=texto_fecha_provincia(filas, fecha_es),
+               kicker="Empleo público · Oposiciones y concursos del BOE",
+               fuente=FUENTE_PROVINCIA)
         enlaces_prov.append(f'<li><a href="provincia-{attr(p)}.html">{esc(n)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_prov.append(f'<li><a href="provincia-{attr(p)}.xml">{esc(n)}</a></li>')
