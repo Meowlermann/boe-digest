@@ -4902,17 +4902,18 @@
    "fecha": "2026-10-06"
   },
   "C-04ab2ddc383b1c34": {
-   "huella": "d5cdf02c8277a60c",
-   "fuente": "6327dbb1622cb5fc",
-   "titular": "El Congreso acumula 38 preguntas escritas sin responder fuera de plazo",
-   "entradilla": "Las iniciativas superan los 20 días hábiles desde su publicación sin respuesta registrada. Sumar concentra la mayoría de las cuestiones pendientes, con 24 solicitudes.",
+   "huella": "0ffb5472867d2876",
+   "fuente": "fce995420a0973e3",
+   "titular": "Sumar concentra 30 de las 38 preguntas del Congreso fuera de plazo sin contestar",
+   "entradilla": "Un total de 38 preguntas escritas publicadas en el último año superan el límite de 20 días hábiles sin contestación registrada, la gran mayoría formuladas por el grupo parlamentario de Sumar.",
    "claves": [
-    "Un total de 38 preguntas escritas presentadas en el Congreso superan el límite de 20 días hábiles sin que figure una contestación registrada.",
-    "Por grupos parlamentarios, Sumar acumula 24 preguntas pendientes, el PSOE 7, el PP 4, mientras que EAJ-PNV, Junts y los diputados sin grupo tienen una cada uno.",
-    "La iniciativa sin respuesta más antigua contabilizada en el último año se publicó el lunes 16 de febrero de 2026."
+    "El recuento sobre iniciativas del último año revela 38 preguntas escritas que superan los 20 días hábiles desde su publicación sin contestación registrada.",
+    "Por grupos parlamentarios, Sumar acumula 30 preguntas sin respuesta, el PSOE 4, el PP 2, Junts 1 y el colectivo Sin grupo 1.",
+    "La iniciativa escrita más antigua pendiente de respuesta se publicó el lunes 15 de diciembre de 2025.",
+    "El recuento contempla que puedan existir prórrogas aplicadas o respuestas aún no reflejadas en la ficha oficial del Congreso."
    ],
    "modelo": "gemini-3.5-flash",
-   "fecha": "2026-11-06"
+   "fecha": "2026-11-07"
   },
   "BOE-A-2026-20822": {
    "huella": "e8551a989f9df9e1",
@@ -11409,6 +11410,6 @@
   }
  },
  "uso": {
-  "2026-11-06": 9
+  "2026-11-07": 1
  }
 }
