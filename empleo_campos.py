@@ -727,6 +727,10 @@ RE_INICIO_BOE = re.compile(
     r"(?:d[ií]a\s+)?siguiente\s+(?:a(?:l)?\s+(?:la|el|de la|del)?\s*)?(?:de\s+)?(?:la\s+)?"
     r"(?:fecha\s+de\s+(?:la\s+)?)?publicaci[oó]n"
     r"[^.;]{0,120}?(?:«\s*Bolet[ií]n Oficial del Estado\s*»|Bolet[ií]n Oficial del Estado|\bBOE\b)", re.I)
+RE_INICIO_OTRO = re.compile(
+    r"(?:a contar|contad[oa]s?|computad[oa]s?|a partir)\s+(?:desde\s+)?(?:el\s+|del?\s+)?(?:d[ií]a\s+)?siguiente\s+"
+    r"al\s+de\s+(?:la\s+)?publicaci[oó]n\s+en\s+el\s+«(?P<bol>(?:Bolet[ií]n Oficial de|Diari Oficial de|"
+    r"Diario Oficial de)[^»]{3,80})»\.?$", re.I)
 RE_OTRO_BOLETIN = re.compile(r"Bolet[ií]n Oficial de (?:la|las|los)? ?(?!l Estado)|Diari|Diario Oficial|"
                              r"DOG|BOP\b|BOCM|DOGV", re.I)
 
@@ -764,10 +768,24 @@ def plazo_llano_motivo(frase: str) -> tuple:
         if n:
             durs.append((n, u))
     durs = list(dict.fromkeys(durs))
+    # «veinte o treinta días»: dos duraciones posibles en una sola expresión.
+    if re.search(rf"\b(?:{RE_NUM.pattern})\s+o\s+(?:{RE_NUM.pattern})\s+(?:d[ií]as|mes)", f, re.I):
+        return None, "duración alternativa"
     if len(durs) != 1:
         return None, f"{len(durs)} duraciones"
     ini = RE_INICIO_BOE.search(f)
     if not ini:
+        # Tanda 5: cómputo desde UN solo boletín distinto del BOE, nombrado
+        # literalmente entre comillas («Diari Oficial de la Generalitat de
+        # Catalunya»). Se cita tal cual, sin decir de qué texto es la
+        # publicación ni calcular nada. Si hay «última publicación», varios
+        # boletines, frase recortada o no empieza en «El plazo…», nada.
+        otro = RE_INICIO_OTRO.search(f)
+        if (otro and f.startswith("El plazo") and not f.startswith("[…]") and not f.endswith("[…]")
+                and f.count("«") == 1 and not re.search(r"\b[uú]ltima\b|\bo en (?:el|la)\b", f, re.I)
+                and not re.search(r"Bolet[ií]n Oficial del Estado|\bBOE\b", otro.group("bol"))):
+            n, u = durs[0]
+            return f"{n} {u} desde el día siguiente al de la publicación en el «{otro.group('bol')}»", "ok otro boletín"
         return None, "inicio no anclado al BOE"
     if RE_OTRO_BOLETIN.search(ini.group(0)):
         return None, "otro boletín en el inicio"

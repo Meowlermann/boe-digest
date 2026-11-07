@@ -98,12 +98,15 @@ class TestPlazoLlano(unittest.TestCase):
         self.assertEqual(ec.plazo_llano(f), "20 días hábiles desde el día siguiente a su publicación en el BOE")
         f = f"Las solicitudes se presentarán en el plazo de quince días naturales, contados a partir del siguiente al de la publicación en el {self.BOE}."
         self.assertEqual(ec.plazo_llano(f), "15 días naturales desde el día siguiente a su publicación en el BOE")
+        f = "El plazo de presentación de solicitudes será de veinte días hábiles a contar desde el siguiente al de la publicación en el «Diario Oficial de Galicia»."
+        self.assertEqual(ec.plazo_llano(f), "20 días hábiles desde el día siguiente al de la publicación en el «Diario Oficial de Galicia»")
 
     def test_dudosos_consulta(self):
         for f in ("", "Contra la presente resolución cabe recurso en el plazo de un mes.",
                   # 21686: la frase guardada se corta justo tras el BOE y oculta el DOGC.
                   f"Las solicitudes deben presentarse en el plazo de quince días naturales contados a partir del día siguiente al de la publicación de las Resoluciones de convocatoria en el {self.BOE} […]",
-                  f"El plazo de presentación de solicitudes será de veinte días hábiles a contar desde el siguiente al de la publicación en el «Diario Oficial de Galicia».",
+                  # Tanda 5: otro boletín sí se cita (literal), salvo «última publicación… o en…».
+                  f"El plazo de presentación de solicitudes será de veinte días hábiles a contar desde el siguiente al de la última publicación en el «Diario Oficial de Galicia» o en el {self.BOE}.",
                   "El plazo de presentación de solicitudes será de veinte días hábiles."):
             with self.subTest(f=f[:60]):
                 self.assertIsNone(ec.plazo_llano(f))
