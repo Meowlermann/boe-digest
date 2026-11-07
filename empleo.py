@@ -861,8 +861,7 @@ def texto_recuento_provincia(nc: int, n: str, otras: dict | None = None) -> str:
     pl = "oposición u otra convocatoria de plazas publicada" if nc == 1 else "oposiciones y otras convocatorias de plazas publicadas"
     base = f"{nc} {pl} en el BOE en los últimos {VENTANA_PAGINAS} días"
     if nc:
-        return (f"{base}, cuyo título nombra {n}: ayuntamientos, "
-                f"diputación, universidades y plazas con destino en la provincia.")
+        return f"{base} cuyo título nombra {n}."
     resto = "; ".join(f"{k}: {v}" for k, v in (otras or {}).items())
     return (f"{base} que nombren {n} en el título." +
             (f" Abajo, otras disposiciones que sí la nombran ({resto})." if resto else ""))
@@ -871,7 +870,7 @@ def texto_recuento_provincia(nc: int, n: str, otras: dict | None = None) -> str:
 def texto_fecha_provincia(filas: list, fecha_es=lambda f: f) -> str:
     fechas = [r["fecha"] for r in filas if r["tipo"] == "convocatoria"]
     if not fechas:
-        return f"Sin convocatorias en los últimos {VENTANA_PAGINAS} días"
+        return f"Sin oposiciones en los últimos {VENTANA_PAGINAS} días"
     return f"Última convocatoria publicada el {fecha_es(max(fechas))}"
 
 

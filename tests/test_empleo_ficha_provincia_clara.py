@@ -38,7 +38,8 @@ class FichaProvincia(TestPaginas):
                     self.assertTrue(c["META_DESC"].startswith(f"{n} convocatoria"), c["META_DESC"])
                     self.assertRegex(c["EDITION_DATE"], r"^Última convocatoria publicada el \d{4}-\d{2}-\d{2}$")
                 else:
-                    self.assertEqual(c["EDITION_DATE"], "Sin convocatorias en los últimos 90 días")
+                    self.assertEqual(c["EDITION_DATE"], "Sin oposiciones en los últimos 90 días")
+                self.assertNotRegex(c["STANDFIRST"], r"ayuntamientos|diputaci|universidades")
                 self.assertNotIn("II.B", c["STANDFIRST"] + c["KICKER"] + c["EDITION_DATE"])
 
     def test_fecha_es_la_mas_reciente(self):
