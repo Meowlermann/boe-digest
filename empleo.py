@@ -846,8 +846,7 @@ def texto_recuento_provincia(nc: int, n: str) -> str:
     if nc:
         return (f"{base}. Son oposiciones y concursos cuyo título nombra {n}: ayuntamientos, "
                 f"diputación, universidades y plazas con destino en la provincia.")
-    return (f"{base}. Abajo, las listas de admitidos, tribunales y resultados que nombran {n} "
-            f"en el título.")
+    return f"{base}. Abajo, el resto de disposiciones que nombran {n} en el título."
 
 
 def texto_fecha_provincia(filas: list, fecha_es=lambda f: f) -> str:
