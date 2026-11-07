@@ -50,6 +50,38 @@ class Piloto(TestPaginas):
                 self.assertRegex(li, r'<a class="em-f-a" href="https://www\.boe\.es/')
         self.assertTrue(vistas)
 
+    def test_turno_solo_si_consta(self):
+        """Solo donde el campo literal «turnos» está activo; nunca inferido;
+        solo Turno libre / Promoción interna; sin chip ni etiqueta."""
+        base = self.generar(set(self.generar(())))
+        ids = [m for c in base.values() for m in re.findall(
+            r'<li class="em-fila"[^>]*>.*?(BOE-A-\d{4}-\d+)', c["CUERPO"], re.S)]
+        self.assertTrue(ids)
+        objetivo = ids[0]
+        original = em.empleo_campos.activos
+
+        def falso(reg):
+            c = dict(original(reg))
+            c.pop("turnos", None)
+            if reg.get("id") == objetivo:
+                c["turnos"] = {"libre": 2, "promocion interna": 1, "discapacidad": 1}
+            return c
+        with mock.patch.object(em.empleo_campos, "activos", side_effect=falso):
+            con = self.generar(set(self.generar(())))
+        vistos = 0
+        for c in con.values():
+            for li in re.findall(r'<li class="em-fila".*?</li>', c["CUERPO"], re.S):
+                self.assertNotIn("em-chip", li)
+                self.assertNotIn("em-etq", li)
+                if objetivo in li:
+                    vistos += 1
+                    self.assertIn('<span class="em-f-turno">Turno libre 2 · Promoción interna 1</span>', li)
+                    self.assertNotIn("discapacidad", li)
+                else:
+                    self.assertNotIn("em-f-turno", li)
+                    self.assertNotIn("Turno libre", li)
+        self.assertTrue(vistos)
+
     def test_css_sin_cajas(self):
         css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
         reglas = [l for l in css.splitlines() if l.startswith(".tr-ix-em-lista")]

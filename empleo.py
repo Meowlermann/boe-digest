@@ -938,6 +938,13 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             meta.append(f'<span class="em-f-org">{esc(" · ".join(quien))}</span>')
         meta.append(f'<span class="em-f-fecha">Publicada el <time datetime="{attr(r["fecha"])}">'
                     f'{esc(fecha_es(r["fecha"]))}</time></span>')
+        # Turnos (v2): el mismo campo que los chips de la tarjeta (literal del
+        # BOE, regla estricta de empleo_campos); en texto pequeño, sin chip. Solo
+        # «Turno libre» y «Promoción interna».
+        turnos = {k: v for k, v in (empleo_campos.activos(r).get("turnos") or {}).items()
+                  if k in ("libre", "promocion interna")}
+        if turnos:
+            meta.append(f'<span class="em-f-turno">{esc(" · ".join(f"{empleo_campos.TURNOS.get(k, k)} {v}" for k, v in turnos.items()))}</span>')
         plazo = f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else ""
         aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
         return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'

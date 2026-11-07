@@ -1851,6 +1851,7 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .tr-ix-em-lista .em-f-a:hover .em-f-tit{color:var(--red)}
 .tr-ix-em-lista .em-f-a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:2px}
 .tr-ix-em-lista .em-f-meta{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:4px;font-size:.92rem;color:var(--ink-soft)}
+.tr-ix-em-lista .em-f-turno{font-size:.85rem;color:var(--ink-soft)}
 .tr-ix-em-lista .em-f-plazo,.tr-ix-em-lista .em-f-aviso{display:block;margin-top:4px;font-size:.95rem;color:var(--ink)}
 .tr-ix-em-lista .em-f-id{display:block;margin-top:4px;font-family:var(--mono,monospace);font-size:.8rem;color:var(--ink-soft)}
 /* --- fin /empleo/ -------------------------------------------------------- */
