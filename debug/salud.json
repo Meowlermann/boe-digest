@@ -1,21 +1,15 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-11-07",
+  "fecha": "2026-11-08",
   "graves": 0,
-  "avisos": 2,
+  "avisos": 1,
   "hallazgos": [
     {
       "nivel": "aviso",
-      "comprobacion": "duplicados",
-      "detalle": "[boe] titular repetido del 2026-10-31: «CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS».",
-      "fichero": "data/2026-11-07.json"
-    },
-    {
-      "nivel": "aviso",
-      "comprobacion": "duplicados",
-      "detalle": "[boe] titular repetido del 2026-11-03: «SE PUBLICA EL ACUERDO DE LA SALA DE GOBIERNO DE LA AUDIENCIA NACIONAL».",
-      "fichero": "data/2026-11-07.json"
+      "comprobacion": "titulares",
+      "detalle": "No hay edición del 2026-11-08.",
+      "fichero": "data/2026-11-08.json"
     }
   ]
 }
