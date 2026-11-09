@@ -2783,7 +2783,7 @@ def render_boe_grid_ssr(day: dict) -> str:
             f'<p class="standfirst">{esc_html(s.get("standfirst"))}</p>'
             f'{articulo}'
             f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
-            f'{ficha_link(s)}'
+            f'{pie_enlaces_boe(s)}'
             f'<span class="ref">{esc_html(s.get("ref",""))}</span></div>'
             f'</article>')
     return "".join(out)
@@ -3036,6 +3036,7 @@ def render_boe_lead_ssr(day: dict, permalink: str) -> str:
         f'<span class="ref mono">{esc_html(s.get("ref",""))}</span></div>'
         f'<h3 class="lead-h">{esc_html(s.get("headline"))}</h3>'
         f'{_parrafo("lead-sub", una_linea(s, 190))}'
+        f'{("<p class=\"ia-pieza-wrap\">" + marca_ia_html(s) + "</p>") if s.get("redaccion_ia") else ""}'
         f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
         f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer la pieza completa →</a></div>'
         f'</article>')
@@ -3057,7 +3058,7 @@ def render_boe_destacados_ssr(day: dict, permalink: str) -> str:
             f'<h3>{esc_html(s.get("headline"))}</h3>'
             f'{_parrafo("linea", una_linea(s, 120))}'
             f'<div class="foot"><span>{esc_html(recortar(s.get("dept",""), 44))}</span>'
-            f'{ficha_link(s, "normas/")}'
+            f'{pie_enlaces_boe(s, "normas/")}'
             f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer →</a></div>'
             f'</article>')
     return "".join(out)
@@ -3138,12 +3139,9 @@ def fecha_boe_iso(day: dict) -> str:
     return (day.get("boe", {}) or {}).get("fechaISO") or day["id"]
 
 
-# Etiqueta visible (tanda 7, 09-11-2026) en páginas con texto de Gemini.
-# Gemini (redaccion.py) escribe titular Y entradilla; cada pieza enlaza al BOE.
-ETIQUETA_IA_TEXTO = (
-    "Titulares y entradillas redactados con IA a partir del BOE; "
-    "el texto oficial está enlazado."
-)
+# Marca por pieza (tanda 7b, 09-11-2026). Gemini escribe titular y entradilla;
+# la línea global de página se retiró: la marca va en cada pieza con IA.
+MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE →"
 
 
 def dia_con_ia(day: dict) -> bool:
@@ -3151,11 +3149,21 @@ def dia_con_ia(day: dict) -> bool:
     return any(s.get("redaccion_ia") for s in ((day.get("boe") or {}).get("stories") or []))
 
 
-def etiqueta_ia_html(con_ia: bool) -> str:
-    """Una línea discreta, o '' si la página no lleva texto de Gemini."""
-    if not con_ia:
+def marca_ia_html(story: dict) -> str:
+    """Marca de una pieza con redacción de Gemini, o ''. Enlaza al BOE oficial
+    (no sustituye «Ficha completa», que apunta a nuestra ficha)."""
+    if not story.get("redaccion_ia"):
         return ""
-    return (f'<p class="ia-etiqueta" role="note">{esc_html(ETIQUETA_IA_TEXTO)}</p>')
+    url = (story.get("url") or "").strip()
+    if url:
+        return (f'<a class="srclink ia-pieza" href="{esc_attr(url)}" target="_blank" '
+                f'rel="noopener">{esc_html(MARCA_IA_TEXTO)}</a>')
+    return f'<span class="ia-pieza">{esc_html(MARCA_IA_TEXTO)}</span>'
+
+
+def etiqueta_ia_html(con_ia: bool) -> str:
+    """Compat: la línea global ya no se usa (marca por pieza). Siempre ''."""
+    return ""
 
 
 def build_title(day: dict, edicion: bool = False) -> str:
@@ -3829,6 +3837,9 @@ def _replace_placeholders(html: str, frag: dict) -> str:
     # quita el marcador SIN dejar línea en blanco (si no, cambian miles de
     # páginas que reutilizan template_norma sin texto de Gemini).
     frag.setdefault("IA_ETIQUETA", "")
+    frag.setdefault("IA_MARCA", "")
+    if not frag.get("IA_MARCA"):
+        html = re.sub(r"\n[ \t]*__SSR_IA_MARCA__[ \t]*", "", html)
     if not frag.get("IA_ETIQUETA"):
         html = re.sub(r"\n[ \t]*__SSR_IA_ETIQUETA__[ \t]*", "", html)
     # Un titular largo (un título oficial de ley, un asunto votado) no puede ir
@@ -4067,7 +4078,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
         "EMPLEO_HOY": render_empleo_portada_ssr(day0),
         "PIE_MATERIAS": pie_materias(),
-        "IA_ETIQUETA": etiqueta_ia_html(dia_con_ia(day0)),
+        "IA_ETIQUETA": "",
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     escribir_si_cambia(OUTPUT, html)
@@ -4119,7 +4130,7 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
             frag["CANONICAL"] = page_url
             frag["JSONLD"] = jsonld_for_day(day, page_url)
             frag["LABEL_LARGO"] = esc_html(fmt_date_es(ident))
-            frag["IA_ETIQUETA"] = etiqueta_ia_html(dia_con_ia(day))
+            frag["IA_ETIQUETA"] = ""
 
             i = pos.get(ident, 0)
             anterior = ids_todas[i - 1] if i > 0 else None
@@ -4220,11 +4231,7 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         }])
 
     plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
-    # `dias` aquí suele ser `todos` (otra carga): no llevan redaccion_ia.
-    # Si este pase aplicó Gemini a la ventana, el archivo enseña titulares
-    # de casa de esos días al pinchar; la etiqueta va igual.
-    aplicadas = int((DIAG.get("redaccion") or {}).get("aplicadas") or 0)
-    ia_archivo = etiqueta_ia_html(any(dia_con_ia(d) for d in dias) or aplicadas > 0)
+    ia_archivo = ""  # marca por pieza en la edición; el listado no lleva titulares IA
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE y las Cortes, cada una con su enlace permanente.")
     frag = {
@@ -4283,6 +4290,18 @@ def ficha_link(story: dict, prefijo: str = "../normas/") -> str:
     if not r:
         return ""
     return (f'<a class="srclink fichalink" href="{prefijo}{r}.html">Ficha completa</a>')
+
+
+def pie_enlaces_boe(story: dict, prefijo_ficha: str = "../normas/") -> str:
+    """Marca IA (si toca) + Ficha completa, sin duplicar enlaces."""
+    partes = []
+    m = marca_ia_html(story)
+    if m:
+        partes.append(m)
+    f = ficha_link(story, prefijo_ficha)
+    if f:
+        partes.append(f)
+    return "".join(partes)
 
 
 def materias_enlaces(s: dict, prefijo: str = "../") -> str:
@@ -4433,7 +4452,8 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
                              f' › <span aria-current="page">{esc_html(s.get("ref",""))}</span>'),
                     "KICKER": esc_html(CAT_LABEL.get(s.get("cat") or "otros", "Varios")),
                     "HEADLINE": esc_html(s.get("headline", "")),
-                    "IA_ETIQUETA": etiqueta_ia_html(bool(s.get("redaccion_ia"))),
+                    "IA_ETIQUETA": "",
+                    "IA_MARCA": (f'<p class="ia-pieza-wrap">{marca_ia_html(s)}</p>' if s.get("redaccion_ia") else ""),
                     "STANDFIRST": esc_html(primera_mayuscula(oficial)),
                     "FICHA": _ficha_filas(s, day) + materias_enlaces(s),
                     "CUERPO": cuerpo_boe_ssr(s),

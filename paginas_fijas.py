@@ -149,7 +149,7 @@ y el Congreso en <a href="https://www.congreso.es/" rel="noopener" target="_blan
 Cada pieza enlaza al documento oficial del que sale. Lo que va entre comillas es literal de la
 fuente; el resto son plantillas sobre datos oficiales y, en la edición diaria, titulares y
 entradillas, que van marcados como editoriales. <b>Titulares generados con IA y revisados por la redacción</b>:
-así se indica también al pie de cada edición. Las entradillas se redactan con ayuda de IA y se
+así se indica en cada pieza con titular o entradilla de IA. Las entradillas se redactan con ayuda de IA y se
 verifican de forma automática. Puede haber errores: si encuentras uno, escríbenos. Nada de lo publicado es
 asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 
@@ -157,7 +157,7 @@ asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 <p>En la edición diaria, un modelo de lenguaje (Gemini) redacta el <b>titular</b> y la
 <b>entradilla</b> de cada disposición del BOE a partir de su texto oficial. Antes de
 publicarse se verifican de forma automática cifras, fechas y nombres contra la fuente;
-si no pasan, se publica la redacción determinista. El texto con valor oficial es siempre
+si no pasan, se publica un resumen automático sin IA. El texto con valor oficial es siempre
 el del BOE, enlazado en cada pieza. Los titulares de las Cortes (preguntas, votaciones)
 no los escribe la IA. Contacto: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
 
