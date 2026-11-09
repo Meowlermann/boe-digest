@@ -3825,8 +3825,12 @@ def _replace_placeholders(html: str, frag: dict) -> str:
         html = html.replace("__SSR_NAV__", render_nav())
     if "__SSR_ANALITICA__" in html:
         html = html.replace("__SSR_ANALITICA__", baliza_analitica())
-    # Etiqueta de IA: si la plantilla la pide y el render no la rellenó, vacío.
+    # Etiqueta de IA: si la plantilla la pide y el render no la rellenó, se
+    # quita el marcador SIN dejar línea en blanco (si no, cambian miles de
+    # páginas que reutilizan template_norma sin texto de Gemini).
     frag.setdefault("IA_ETIQUETA", "")
+    if not frag.get("IA_ETIQUETA"):
+        html = re.sub(r"\n[ \t]*__SSR_IA_ETIQUETA__[ \t]*", "", html)
     # Un titular largo (un título oficial de ley, un asunto votado) no puede ir
     # en el cuerpo y las mayúsculas del de portada: se le pone una clase para
     # que vaya en letra normal y más pequeña. El umbral es de caracteres vistos.
@@ -4216,8 +4220,11 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         }])
 
     plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
-    # Los titulares del listado son los de Gemini cuando el día los tiene.
-    ia_archivo = etiqueta_ia_html(any(dia_con_ia(d) for d in dias))
+    # `dias` aquí suele ser `todos` (otra carga): no llevan redaccion_ia.
+    # Si este pase aplicó Gemini a la ventana, el archivo enseña titulares
+    # de casa de esos días al pinchar; la etiqueta va igual.
+    aplicadas = int((DIAG.get("redaccion") or {}).get("aplicadas") or 0)
+    ia_archivo = etiqueta_ia_html(any(dia_con_ia(d) for d in dias) or aplicadas > 0)
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE y las Cortes, cada una con su enlace permanente.")
     frag = {
