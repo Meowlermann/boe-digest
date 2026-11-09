@@ -76,6 +76,9 @@
   .brand .title1{ font-family:'Anton',sans-serif; text-transform:uppercase; font-size:clamp(26px,5.4vw,44px); line-height:1; }
   .brand .title1 span{ color:var(--red); }
   .tagline{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; margin-top:6px; }
+  /* Etiqueta de titulares/entradillas con IA (tanda 7). Sin tarjeta ni icono. */
+  .ia-etiqueta{ margin:10px 0 8px; padding:0; font:500 13px/1.4 'Work Sans',system-ui,sans-serif;
+    color:var(--ink-soft); max-width:68ch; }
   .edition-date{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); text-align:right; }
   .tabs{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
   .tab{

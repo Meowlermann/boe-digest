@@ -153,6 +153,14 @@ así se indica también al pie de cada edición. Las entradillas se redactan con
 verifican de forma automática. Puede haber errores: si encuentras uno, escríbenos. Nada de lo publicado es
 asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 
+<h2 class="rotulo">Uso de inteligencia artificial</h2>
+<p>En la edición diaria, un modelo de lenguaje (Gemini) redacta el <b>titular</b> y la
+<b>entradilla</b> de cada disposición del BOE a partir de su texto oficial. Antes de
+publicarse se verifican de forma automática cifras, fechas y nombres contra la fuente;
+si no pasan, se publica la redacción determinista. El texto con valor oficial es siempre
+el del BOE, enlazado en cada pieza. Los titulares de las Cortes (preguntas, votaciones)
+no los escribe la IA. Contacto: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
+
 <h2 class="rotulo">Fuentes y condiciones de reutilización</h2>
 <ul>
 <li><b>Boletín Oficial del Estado</b>: documentos de la sede electrónica de la Agencia Estatal

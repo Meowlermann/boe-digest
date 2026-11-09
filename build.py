@@ -3138,6 +3138,26 @@ def fecha_boe_iso(day: dict) -> str:
     return (day.get("boe", {}) or {}).get("fechaISO") or day["id"]
 
 
+# Etiqueta visible (tanda 7, 09-11-2026) en páginas con texto de Gemini.
+# Gemini (redaccion.py) escribe titular Y entradilla; cada pieza enlaza al BOE.
+ETIQUETA_IA_TEXTO = (
+    "Titulares y entradillas redactados con IA a partir del BOE; "
+    "el texto oficial está enlazado."
+)
+
+
+def dia_con_ia(day: dict) -> bool:
+    """¿Alguna disposición del BOE de este día trae redacción de Gemini?"""
+    return any(s.get("redaccion_ia") for s in ((day.get("boe") or {}).get("stories") or []))
+
+
+def etiqueta_ia_html(con_ia: bool) -> str:
+    """Una línea discreta, o '' si la página no lleva texto de Gemini."""
+    if not con_ia:
+        return ""
+    return (f'<p class="ia-etiqueta" role="note">{esc_html(ETIQUETA_IA_TEXTO)}</p>')
+
+
 def build_title(day: dict, edicion: bool = False) -> str:
     fecha = fmt_date_es(day["id"])
     if edicion and day.get("archivo"):
@@ -3805,6 +3825,8 @@ def _replace_placeholders(html: str, frag: dict) -> str:
         html = html.replace("__SSR_NAV__", render_nav())
     if "__SSR_ANALITICA__" in html:
         html = html.replace("__SSR_ANALITICA__", baliza_analitica())
+    # Etiqueta de IA: si la plantilla la pide y el render no la rellenó, vacío.
+    frag.setdefault("IA_ETIQUETA", "")
     # Un titular largo (un título oficial de ley, un asunto votado) no puede ir
     # en el cuerpo y las mayúsculas del de portada: se le pone una clase para
     # que vaya en letra normal y más pequeña. El umbral es de caracteres vistos.
@@ -4041,6 +4063,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
         "EMPLEO_HOY": render_empleo_portada_ssr(day0),
         "PIE_MATERIAS": pie_materias(),
+        "IA_ETIQUETA": etiqueta_ia_html(dia_con_ia(day0)),
     }
     html = _replace_placeholders(TEMPLATE.read_text(encoding="utf-8"), frag)
     escribir_si_cambia(OUTPUT, html)
@@ -4092,6 +4115,7 @@ def renderizar_ediciones(dias: list[dict]) -> list[dict]:
             frag["CANONICAL"] = page_url
             frag["JSONLD"] = jsonld_for_day(day, page_url)
             frag["LABEL_LARGO"] = esc_html(fmt_date_es(ident))
+            frag["IA_ETIQUETA"] = etiqueta_ia_html(dia_con_ia(day))
 
             i = pos.get(ident, 0)
             anterior = ids_todas[i - 1] if i > 0 else None
@@ -4192,6 +4216,8 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         }])
 
     plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
+    # Los titulares del listado son los de Gemini cuando el día los tiene.
+    ia_archivo = etiqueta_ia_html(any(dia_con_ia(d) for d in dias))
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE y las Cortes, cada una con su enlace permanente.")
     frag = {
@@ -4203,6 +4229,7 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         "LISTA": indice_meses + ("\n" + lista(meses[0]) if meses else ""),
         "JSONLD": jsonld("Archivo de ediciones — La Tercera Cámara", f"{SITE_URL}ediciones/",
                          sorted(entradas, key=lambda x: x["id"], reverse=True)),
+        "IA_ETIQUETA": ia_archivo,
     }
     escribir_si_cambia(EDICIONES_DIR / "index.html", _replace_placeholders(plantilla, frag))
 
@@ -4226,6 +4253,7 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
             "TOTAL": f"{len(por_mes[m])} ediciones este mes",
             "LISTA": f'<p class="aside-note">{" · ".join(nav)}</p>\n' + lista(m),
             "JSONLD": jsonld(titulo, url, por_mes[m]),
+            "IA_ETIQUETA": ia_archivo,
         }
         escribir_si_cambia(EDICIONES_DIR / f"{m}.html", _replace_placeholders(plantilla, frag_m))
         # lastmod estable: la edición más reciente del mes.
@@ -4398,6 +4426,7 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
                              f' › <span aria-current="page">{esc_html(s.get("ref",""))}</span>'),
                     "KICKER": esc_html(CAT_LABEL.get(s.get("cat") or "otros", "Varios")),
                     "HEADLINE": esc_html(s.get("headline", "")),
+                    "IA_ETIQUETA": etiqueta_ia_html(bool(s.get("redaccion_ia"))),
                     "STANDFIRST": esc_html(primera_mayuscula(oficial)),
                     "FICHA": _ficha_filas(s, day) + materias_enlaces(s),
                     "CUERPO": cuerpo_boe_ssr(s),
