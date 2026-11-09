@@ -158,8 +158,9 @@ asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 <b>entradilla</b> de cada disposición del BOE a partir de su texto oficial. Antes de
 publicarse se verifican de forma automática cifras, fechas y nombres contra la fuente;
 si no pasan, se publica un resumen automático sin IA. El texto con valor oficial es siempre
-el del BOE, enlazado en cada pieza. Los titulares de las Cortes (preguntas, votaciones)
-no los escribe la IA. Contacto: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
+el del BOE, enlazado en cada pieza. Lo que no redacta la IA es la sección Parlamento
+(preguntas, votaciones, diputados); las disposiciones del BOE emitidas por las Cortes
+Generales sí pueden llevar titular de IA y lo marcan. Contacto: <a href="mailto:{CONTACTO}">{CONTACTO}</a>.</p>
 
 <h2 class="rotulo">Fuentes y condiciones de reutilización</h2>
 <ul>

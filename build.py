@@ -3142,7 +3142,13 @@ def fecha_boe_iso(day: dict) -> str:
 # Marca por pieza (tanda 7b, 09-11-2026). Gemini escribe titular y entradilla;
 # la línea global de página se retiró: la marca va en cada pieza con IA.
 MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE →"
-MARCA_IA_CORTA = "Titular con IA"  # listas sin enlace BOE propio (archivo, buscar…)
+MARCA_IA_CORTA = "Titular con IA"  # listas sin enlace BOE propio
+ARCHIVO_NOTA_TITULARES = (
+    "Títulos del resumen automático, sin IA; "
+    "el titular de cada pieza puede variar dentro de la edición"
+)
+
+
 
 
 def dia_con_ia(day: dict) -> bool:
@@ -3183,6 +3189,18 @@ def marca_ia_corta_html(story: dict | None = None, *, con_ia: bool | None = None
     if not con_ia:
         return ""
     return f'<span class="ia-pieza">{esc_html(MARCA_IA_CORTA)}</span>'
+
+
+def nota_archivo_titulares_html(ids: list[str], por_dia: dict) -> str:
+    """Cabecera del archivo: solo si NINGUNA fila muestra un titular con redaccion_ia."""
+    for did in ids:
+        d = por_dia.get(did)
+        if not d:
+            continue
+        lead = lead_story(d)
+        if lead and lead.get("redaccion_ia"):
+            return ""  # no afirmaría lo falso; esas filas ya llevan marca
+    return f'<p class="archivo-nota-ia">{esc_html(ARCHIVO_NOTA_TITULARES)}</p>'
 
 
 def etiqueta_ia_html(con_ia: bool) -> str:
@@ -4260,7 +4278,8 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         }])
 
     plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
-    ia_archivo = ""  # marca corta por fila si el lead trae redaccion_ia; si no, nada
+    ids_archivo = [e["id"] for e in entradas]
+    ia_archivo = nota_archivo_titulares_html(ids_archivo, por_dia)
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE y las Cortes, cada una con su enlace permanente.")
     frag = {
@@ -4296,7 +4315,7 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
             "TOTAL": f"{len(por_mes[m])} ediciones este mes",
             "LISTA": f'<p class="aside-note">{" · ".join(nav)}</p>\n' + lista(m),
             "JSONLD": jsonld(titulo, url, por_mes[m]),
-            "IA_ETIQUETA": ia_archivo,
+            "IA_ETIQUETA": nota_archivo_titulares_html([e["id"] for e in por_mes[m]], por_dia),
         }
         escribir_si_cambia(EDICIONES_DIR / f"{m}.html", _replace_placeholders(plantilla, frag_m))
         # lastmod estable: la edición más reciente del mes.
@@ -6591,12 +6610,16 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
                     s.get("ref", "") + " " + (s.get("dept") or ""),
                     ia=bool(s.get("redaccion_ia"))))
                 idx[-1]["_texto"] = oficial or ""
+                if s.get("redaccion_ia") and ref:
+                    idx[-1]["r"] = ref
             else:
                 idx.append(_entrada_indice(
                     s.get("headline", ""), primera_mayuscula(oficial),
                     f"ediciones/{day['id']}.html", "norma", day["id"],
                     s.get("dept") or "",
                     ia=bool(s.get("redaccion_ia"))))
+                if s.get("redaccion_ia") and s.get("ref"):
+                    idx[-1]["r"] = s["ref"]
         # Las Cortes no van en «stories» sino en «feed», con otra forma: aquí
         # el subtítulo útil es el standfirst, que ya resume la sesión.
         for it in (day.get("cortes", {}) or {}).get("feed") or []:
@@ -6706,7 +6729,7 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         for k, v in sorted(por_clase.items(), key=lambda kv: -kv[1]))
     recientes = "".join(
         f'<li><a href="{esc_attr(e["u"] if e["u"].startswith("http") else "../" + e["u"])}">{esc_html(e["t"])}</a>'
-        + (f' {marca_ia_corta_html(con_ia=True)}' if e.get("ia") else "")
+        + (f' {marca_ia_html({"redaccion_ia": True, "ref": e.get("r") or ""})}' if e.get("ia") else "")
         + f'<span class="ref">{esc_html(ETIQUETA_CLASE.get(e["k"], e["k"]))}'
         + (f' · {esc_html(fmt_date_es(e["d"]))}' if e["d"] else "") + '</span></li>'
         for e in limpio[:40])

@@ -115,18 +115,35 @@ function enlace(u) {
   return /^https?:/.test(u) ? u : "../" + u;
 }
 
+const MARCA_IA = "Titular con IA · Texto oficial en el BOE →";
+const BOE_TXT = (ref) =>
+  ref ? `https://www.boe.es/diario_boe/txt.php?id=${ref}` : "";
+
+function MarcaIA({ item }) {
+  if (!item.ia) return null;
+  const href = BOE_TXT(item.r);
+  if (href) {
+    return (
+      <a className="srclink ia-pieza" href={href} target="_blank" rel="noopener">
+        {MARCA_IA}
+      </a>
+    );
+  }
+  return <span className="ia-pieza">{MARCA_IA}</span>;
+}
+
 function Resultado({ item, terminos, activo }) {
   return (
     <li className={"res" + (activo ? " res-activo" : "")}>
       <a href={enlace(item.u)}>
         <span className={"res-clase res-" + item.k}>{ETIQUETA[item.k] || item.k}</span>
         <span className="res-titulo"><Marca texto={item.t} terminos={terminos} /></span>
-        {item.ia ? <span className="ia-pieza">Titular con IA</span> : null}
         {item.s ? (
           <span className="res-sub"><Marca texto={item.s} terminos={terminos} /></span>
         ) : null}
         {item.d ? <span className="res-fecha">{fechaEs(item.d)}</span> : null}
       </a>
+      <MarcaIA item={item} />
     </li>
   );
 }

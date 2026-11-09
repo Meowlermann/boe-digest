@@ -24,6 +24,11 @@ class TextoYAviso(unittest.TestCase):
         self.assertNotIn("al pie de cada edición", pf.AVISO_LEGAL)
         self.assertEqual(pf.CONTACTO, "contacto@terceracamara.es")
         self.assertNotIn("@gmail", pf.AVISO_LEGAL)
+        self.assertIn("sección Parlamento", pf.AVISO_LEGAL)
+        self.assertIn("preguntas, votaciones, diputados", pf.AVISO_LEGAL)
+        self.assertIn("Cortes", pf.AVISO_LEGAL)
+        self.assertIn("sí pueden llevar titular de IA y lo marcan", pf.AVISO_LEGAL)
+        self.assertNotIn("Los titulares de las Cortes (preguntas, votaciones)", pf.AVISO_LEGAL)
 
 
 class MarcaPorPieza(unittest.TestCase):
@@ -139,3 +144,52 @@ class ListasConMarca(unittest.TestCase):
         self.assertIn("ia-pieza", html)
         self.assertIn("txt.php?id=BOE-A-2026-1", html)
         self.assertIn("CON IA", html)
+
+    def test_nota_archivo_solo_si_ninguna_fila_ia(self):
+        self.assertEqual(
+            build.ARCHIVO_NOTA_TITULARES,
+            "Títulos del resumen automático, sin IA; "
+            "el titular de cada pieza puede variar dentro de la edición",
+        )
+        dia_no = {"id": "2026-11-07", "boe": {"stories": [
+            {"headline": "CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS", "size": "lead",
+             "ref": "BOE-A-2026-23341"}]}}
+        html = build.nota_archivo_titulares_html(["2026-11-07"], {"2026-11-07": dia_no})
+        self.assertIn("archivo-nota-ia", html)
+        self.assertIn(build.ARCHIVO_NOTA_TITULARES, html)
+        dia_ia = {"id": "2026-11-09", "boe": {"stories": [
+            {"headline": "TITULAR GEMINI", "size": "lead", "redaccion_ia": True,
+             "ref": "BOE-A-2026-1"}]}}
+        self.assertEqual(
+            build.nota_archivo_titulares_html(["2026-11-09"], {"2026-11-09": dia_ia}), "")
+
+    def test_archivo_render_incluye_nota_cuando_sin_ia(self):
+        dia_no = {"id": "2026-11-07", "boe": {"stories": [
+            {"headline": "CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS", "size": "lead",
+             "ref": "BOE-A-2026-23341", "url": "https://www.boe.es/x", "cat": "otros"}]}}
+        entradas = [{"id": "2026-11-07", "url": "https://x/ediciones/2026-11-07.html"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            ed = pathlib.Path(tmp) / "ediciones"
+            ed.mkdir()
+            with mock.patch.object(build, "EDICIONES_DIR", ed), \
+                 mock.patch.object(build, "TEMPLATE_ARCHIVO", ROOT / "template_archivo.html"), \
+                 mock.patch.object(build, "escribir_si_cambia",
+                                   lambda path, texto: path.write_text(texto, encoding="utf-8")):
+                build.renderizar_archivo(entradas, [dia_no])
+            html = (ed / "index.html").read_text(encoding="utf-8")
+        self.assertIn(build.ARCHIVO_NOTA_TITULARES, html)
+        self.assertIn("archivo-nota-ia", html)
+        self.assertNotIn(">Titular con IA<", html)
+
+    def test_buscar_marca_completa_con_txt_php(self):
+        html = build.marca_ia_html({"redaccion_ia": True, "ref": "BOE-A-2026-23384"})
+        self.assertEqual(html.count(build.MARCA_IA_TEXTO), 1)
+        self.assertIn("https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23384", html)
+        src = (ROOT / "app" / "buscar.jsx").read_text(encoding="utf-8")
+        self.assertIn("Titular con IA · Texto oficial en el BOE →", src)
+        self.assertIn("txt.php?id=", src)
+        self.assertIn("item.r", src)
+
+
+if __name__ == "__main__":
+    unittest.main()
