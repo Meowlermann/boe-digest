@@ -121,6 +121,7 @@ function Resultado({ item, terminos, activo }) {
       <a href={enlace(item.u)}>
         <span className={"res-clase res-" + item.k}>{ETIQUETA[item.k] || item.k}</span>
         <span className="res-titulo"><Marca texto={item.t} terminos={terminos} /></span>
+        {item.ia ? <span className="ia-pieza">Titular con IA</span> : null}
         {item.s ? (
           <span className="res-sub"><Marca texto={item.s} terminos={terminos} /></span>
         ) : null}

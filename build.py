@@ -3142,6 +3142,7 @@ def fecha_boe_iso(day: dict) -> str:
 # Marca por pieza (tanda 7b, 09-11-2026). Gemini escribe titular y entradilla;
 # la línea global de página se retiró: la marca va en cada pieza con IA.
 MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE →"
+MARCA_IA_CORTA = "Titular con IA"  # listas sin enlace BOE propio (archivo, buscar…)
 
 
 def dia_con_ia(day: dict) -> bool:
@@ -3149,16 +3150,39 @@ def dia_con_ia(day: dict) -> bool:
     return any(s.get("redaccion_ia") for s in ((day.get("boe") or {}).get("stories") or []))
 
 
+def _url_boe_pieza(story: dict) -> str:
+    """Documento concreto en boe.es: txt.php por identificador, si no el url de la pieza."""
+    ref = (story.get("ref") or "").strip()
+    if ref.startswith("BOE-"):
+        return f"https://www.boe.es/diario_boe/txt.php?id={ref}"
+    return (story.get("url") or "").strip()
+
+
 def marca_ia_html(story: dict) -> str:
     """Marca de una pieza con redacción de Gemini, o ''. Enlaza al BOE oficial
     (no sustituye «Ficha completa», que apunta a nuestra ficha)."""
     if not story.get("redaccion_ia"):
         return ""
-    url = (story.get("url") or "").strip()
+    url = _url_boe_pieza(story)
     if url:
         return (f'<a class="srclink ia-pieza" href="{esc_attr(url)}" target="_blank" '
                 f'rel="noopener">{esc_html(MARCA_IA_TEXTO)}</a>')
     return f'<span class="ia-pieza">{esc_html(MARCA_IA_TEXTO)}</span>'
+
+
+def marca_ia_wrap(story: dict) -> str:
+    """Párrafo con la marca completa, o ''."""
+    m = marca_ia_html(story)
+    return f'<p class="ia-pieza-wrap">{m}</p>' if m else ""
+
+
+def marca_ia_corta_html(story: dict | None = None, *, con_ia: bool | None = None) -> str:
+    """Marca corta sin enlace al BOE (filas de archivo/buscar sin URL propia)."""
+    if con_ia is None:
+        con_ia = bool(story and story.get("redaccion_ia"))
+    if not con_ia:
+        return ""
+    return f'<span class="ia-pieza">{esc_html(MARCA_IA_CORTA)}</span>'
 
 
 def etiqueta_ia_html(con_ia: bool) -> str:
@@ -4205,12 +4229,17 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         t = f"{MESES[int(m) - 1]} de {a}"
         return t[:1].upper() + t[1:]
 
+    por_dia = {d["id"]: d for d in dias}
+
     def lista(clave: str) -> str:
         filas = [f'<h2>{esc_html(nombre_mes(clave))}</h2><ul class="archivo">']
         for e in por_mes[clave]:
             titular = titulares.get(e["id"], "")
             extra = f' — <span class="arch-tit">{esc_html(recortar(titular, 90))}</span>' if titular else ""
-            filas.append(f'<li><a href="{e["id"]}.html">{esc_html(fmt_date_es(e["id"]))}</a>{extra}</li>')
+            # Solo si el titular mostrado viene de Gemini (redaccion_ia en el lead).
+            lead = lead_story(por_dia[e["id"]]) if e["id"] in por_dia else None
+            marca = (" " + marca_ia_corta_html(lead)) if lead and lead.get("redaccion_ia") else ""
+            filas.append(f'<li><a href="{e["id"]}.html">{esc_html(fmt_date_es(e["id"]))}</a>{extra}{marca}</li>')
         filas.append("</ul>")
         return "\n".join(filas)
 
@@ -4231,7 +4260,7 @@ def renderizar_archivo(entradas: list[dict], dias: list[dict]) -> list[dict]:
         }])
 
     plantilla = TEMPLATE_ARCHIVO.read_text(encoding="utf-8")
-    ia_archivo = ""  # marca por pieza en la edición; el listado no lleva titulares IA
+    ia_archivo = ""  # marca corta por fila si el lead trae redaccion_ia; si no, nada
     desc = (f"Archivo completo de La Tercera Cámara: {len(entradas)} ediciones "
             f"diarias del BOE y las Cortes, cada una con su enlace permanente.")
     frag = {
@@ -4436,7 +4465,9 @@ def renderizar_normas(dias: list[dict]) -> list[dict]:
             oficial = titulo_oficial_de(s)
             try:
                 relacionadas = "".join(
-                    f'<li><a href="{esc_attr(ref_norma(o))}.html">{esc_html(o.get("headline",""))}</a></li>'
+                    f'<li><a href="{esc_attr(ref_norma(o))}.html">{esc_html(o.get("headline",""))}</a>'
+                    + (marca_ia_wrap(o) if o.get("redaccion_ia") else "")
+                    + '</li>'
                     for o in conocidas if ref_norma(o) != ref)[:12000]
                 frag = {
                     "TITLE": esc_html(cerrar(primera_mayuscula(oficial) or s.get("headline", ""), 88)
@@ -4499,7 +4530,8 @@ def _indice_normas(dias: list[dict], plantilla: str) -> None:
             if len(g) > 1:
                 html += ix.fila_serie(g, lambda x: x.get("headline", ""), lambda x: f'{ref_norma(x)}.html',
                                       lambda x: x.get("ref", ""), tipo=c, color=c,
-                                      meta_extra=ix.organo(g[0].get("dept", "")))
+                                      meta_extra=ix.organo(g[0].get("dept", "")),
+                                      marca=lambda x: marca_ia_wrap(x))
                 continue
             x = g[0]
             dept = ix.organo(x.get("dept", ""))
@@ -4508,7 +4540,8 @@ def _indice_normas(dias: list[dict], plantilla: str) -> None:
                             + ([f'<span>{esc_html(dept)}</span>'] if dept else [])
                             + [f'<span class="ix-mono">{esc_html(x["ref"])}</span>'],
                             tipo=c, color=c, clase="ix-norma",
-                            texto=ix.texto_filtro(x.get("headline", ""), dept, x["ref"]))
+                            texto=ix.texto_filtro(x.get("headline", ""), dept, x["ref"]),
+                            despues=marca_ia_wrap(x))
         bloques.append(ix.grupo(fmt_date_es(fecha_boe_iso(day) or day["id"]), len(xs), html))
     orden_c = sorted(cats.items(), key=lambda kv: -kv[1])
     cuerpo = ((ix.cifras([(total, f"normas en {len(bloques)} días", True)]
@@ -6455,18 +6488,22 @@ def renderizar_diputados(fichas: list) -> list:
     return salidas
 
 
-def _entrada_indice(titulo, sub, url, clase, fecha="", extra="", largo=90):
+def _entrada_indice(titulo, sub, url, clase, fecha="", extra="", largo=90, ia=False):
     """Una fila del índice del buscador. Campos de una letra porque esto viaja
     por la red entero: con quinientas normas, cada nombre de campo largo son
-    kilobytes que el lector paga sin ver nada a cambio."""
+    kilobytes que el lector paga sin ver nada a cambio. `ia` marca titulares
+    de Gemini para la etiqueta corta en resultados y en «Lo más reciente»."""
     def cortar(t, n):
         t = " ".join((t or "").split())
         if len(t) <= n:
             return t
         corte = t[:n].rsplit(" ", 1)[0]
         return (corte or t[:n]).rstrip(" ,;:") + "…"
-    return {"t": cortar(titulo, 140), "s": cortar(sub, 120),
-            "u": url, "k": clase, "d": fecha, "x": " ".join((extra or "").split())[:largo]}
+    e = {"t": cortar(titulo, 140), "s": cortar(sub, 120),
+         "u": url, "k": clase, "d": fecha, "x": " ".join((extra or "").split())[:largo]}
+    if ia:
+        e["ia"] = 1
+    return e
 
 
 INDICE_PRINCIPALES = ("norma", "iniciativa", "diputado", "provincia")   # lo primero que se carga
@@ -6551,13 +6588,15 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
                 idx.append(_entrada_indice(
                     s.get("headline", ""), primera_mayuscula(oficial),
                     f"normas/{ref}.html", "norma", day["id"],
-                    s.get("ref", "") + " " + (s.get("dept") or "")))
+                    s.get("ref", "") + " " + (s.get("dept") or ""),
+                    ia=bool(s.get("redaccion_ia"))))
                 idx[-1]["_texto"] = oficial or ""
             else:
                 idx.append(_entrada_indice(
                     s.get("headline", ""), primera_mayuscula(oficial),
                     f"ediciones/{day['id']}.html", "norma", day["id"],
-                    s.get("dept") or ""))
+                    s.get("dept") or "",
+                    ia=bool(s.get("redaccion_ia"))))
         # Las Cortes no van en «stories» sino en «feed», con otra forma: aquí
         # el subtítulo útil es el standfirst, que ya resume la sesión.
         for it in (day.get("cortes", {}) or {}).get("feed") or []:
@@ -6667,7 +6706,8 @@ def renderizar_buscador(dias: list, fichas_dip: list) -> list:
         for k, v in sorted(por_clase.items(), key=lambda kv: -kv[1]))
     recientes = "".join(
         f'<li><a href="{esc_attr(e["u"] if e["u"].startswith("http") else "../" + e["u"])}">{esc_html(e["t"])}</a>'
-        f'<span class="ref">{esc_html(ETIQUETA_CLASE.get(e["k"], e["k"]))}'
+        + (f' {marca_ia_corta_html(con_ia=True)}' if e.get("ia") else "")
+        + f'<span class="ref">{esc_html(ETIQUETA_CLASE.get(e["k"], e["k"]))}'
         + (f' · {esc_html(fmt_date_es(e["d"]))}' if e["d"] else "") + '</span></li>'
         for e in limpio[:40])
     url = f"{SITE_URL}buscar/"
