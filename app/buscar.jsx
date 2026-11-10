@@ -115,6 +115,23 @@ function enlace(u) {
   return /^https?:/.test(u) ? u : "../" + u;
 }
 
+const MARCA_IA = "Titular con IA · Texto oficial en el BOE →";
+const BOE_TXT = (ref) =>
+  ref ? `https://www.boe.es/diario_boe/txt.php?id=${ref}` : "";
+
+function MarcaIA({ item }) {
+  if (!item.ia) return null;
+  const href = BOE_TXT(item.r);
+  if (href) {
+    return (
+      <a className="srclink ia-pieza" href={href} target="_blank" rel="noopener">
+        {MARCA_IA}
+      </a>
+    );
+  }
+  return <span className="ia-pieza">{MARCA_IA}</span>;
+}
+
 function Resultado({ item, terminos, activo }) {
   return (
     <li className={"res" + (activo ? " res-activo" : "")}>
@@ -126,6 +143,7 @@ function Resultado({ item, terminos, activo }) {
         ) : null}
         {item.d ? <span className="res-fecha">{fechaEs(item.d)}</span> : null}
       </a>
+      <MarcaIA item={item} />
     </li>
   );
 }

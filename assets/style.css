@@ -32,7 +32,7 @@
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#11131a; --surface:#1a1d24; --surface-2:#20242c; --ink:#ece9e1; --ink-soft:#a8adb6;
+      --bg:#11131a; --surface:#1a1d24; --surface-2:#20242c; --ink:#ece9e1; --ink-soft:#a8adb6; --ia-marca:#b4b9c1;
       --border:#2c303a; --red:#ff6b5e; --red-ink:#ffb3a9; --gold:#dab35a; --gold-soft:#3a3220;
       --fiscal:#3fb3a8; --fiscal-soft:#183330; --laboral:#e2954a; --laboral-soft:#3a2a16;
       --mercantil:#a292d6; --mercantil-soft:#2a2440; --otros:#9aa1ab; --otros-soft:#242730;
@@ -41,7 +41,7 @@
     }
   }
   :root[data-theme="dark"]{
-      --bg:#11131a; --surface:#1a1d24; --surface-2:#20242c; --ink:#ece9e1; --ink-soft:#a8adb6;
+      --bg:#11131a; --surface:#1a1d24; --surface-2:#20242c; --ink:#ece9e1; --ink-soft:#a8adb6; --ia-marca:#b4b9c1;
       --border:#2c303a; --red:#ff6b5e; --red-ink:#ffb3a9; --gold:#dab35a; --gold-soft:#3a3220;
       --fiscal:#3fb3a8; --fiscal-soft:#183330; --laboral:#e2954a; --laboral-soft:#3a2a16;
       --mercantil:#a292d6; --mercantil-soft:#2a2440; --otros:#9aa1ab; --otros-soft:#242730;
@@ -76,6 +76,18 @@
   .brand .title1{ font-family:'Anton',sans-serif; text-transform:uppercase; font-size:clamp(26px,5.4vw,44px); line-height:1; }
   .brand .title1 span{ color:var(--red); }
   .tagline{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; margin-top:6px; }
+  /* Marca por pieza con IA (tanda 7b). Sin tarjeta ni icono; WCAG AA. */
+  :root{ --ia-marca:#3f454c; } /* claro: 9,69:1 sobre #fff */
+  .ia-pieza, a.ia-pieza{ display:inline; margin:0; padding:0; font:600 13px/1.35 'Work Sans',system-ui,sans-serif;
+    color:var(--ia-marca); text-decoration:none; max-width:68ch; }
+  a.ia-pieza:hover{ color:var(--red-ink); }
+  .ia-pieza-wrap{ margin:6px 0 0; }
+  .archivo-nota-ia{ margin:6px 0 14px; font:600 13px/1.45 'Work Sans',system-ui,sans-serif;
+    color:var(--ia-marca); text-decoration:none; max-width:68ch; }
+  /* Buscar / índices: la marca completa en una sola línea a 375 px (~284 px). */
+  #buscar-recientes .ia-pieza, .indice .ia-pieza, .res .ia-pieza, .res-lista .ia-pieza{
+    white-space:nowrap; }
+  .foot .ia-pieza{ display:inline; margin-right:10px; }
   .edition-date{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); text-align:right; }
   .tabs{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
   .tab{

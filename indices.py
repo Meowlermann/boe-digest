@@ -134,19 +134,24 @@ def series(elementos: list, firma) -> list[list]:
     return salida
 
 
-def fila_serie(grupo_: list, titular, href, ref, *, tipo: str, color: str, meta_extra: str) -> str:
-    """Una tarjeta apilada que se despliega con las N disposiciones."""
+def fila_serie(grupo_: list, titular, href, ref, *, tipo: str, color: str, meta_extra: str,
+               marca=None) -> str:
+    """Una tarjeta apilada que se despliega con las N disposiciones.
+    `marca` es callable(x)->html ya escapado (p. ej. wrap de Titular con IA)."""
     x0 = grupo_[0]
     texto = texto_filtro(*(titular(x) + " " + ref(x) for x in grupo_), meta_extra.lower())
+    m0 = (marca(x0) if marca else "") or ""
     items = "".join(
-        f'<li><a href="{_e(href(x))}">{_e(titular(x))}</a><span class="ix-mono">{_e(ref(x))}</span></li>'
+        f'<li><a href="{_e(href(x))}">{_e(titular(x))}</a>'
+        + ((marca(x) if marca else "") or "")
+        + f'<span class="ix-mono">{_e(ref(x))}</span></li>'
         for x in grupo_)
     return (f'<li class="ix-fila ix-serie" data-f="{_e(tipo)}" data-t="{_e(texto)}"'
             + (f' style="--c:var(--{color})"' if color else "") + '>'
             f'<details><summary><div class="ix-cuerpo"><span class="ix-tit">{_e(titular(x0))}</span>'
             f'<div class="ix-meta">{etiqueta(f"Serie · {len(grupo_)} disposiciones", "ix-cat")}'
             f'<span>{_e(meta_extra)}</span><span class="ix-mas">y {len(grupo_) - 1} más como esta</span>'
-            f'</div></div></summary><ol class="ix-sub">{items}</ol></details></li>')
+            f'</div>{m0}</div></summary><ol class="ix-sub">{items}</ol></details></li>')
 
 
 def histograma(conteos: list[int], etiquetas: list[str], anclas: list[str], titulo: str,
