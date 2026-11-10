@@ -25,6 +25,7 @@ BOE quien lo publica y por su función pública. No se lee el texto.
 
 from __future__ import annotations
 
+import html
 import datetime as dt
 import json
 import pathlib
@@ -366,6 +367,11 @@ def detalle(html: str, reg: dict) -> dict:
     tu = turno_literal(texto) if texto else ""
     if tu:
         out["turno"] = tu
+    # Fecha literal del boletín del que cuenta el plazo. Se guarda siempre la
+    # clave (vacía si no hay cita clara) para no releer el texto.
+    bol = empleo_campos.boletin_del_plazo(pl or "")
+    if bol:
+        out["diario"] = empleo_campos.diario_literal(texto, bol) or {}
     return out
 
 
@@ -386,13 +392,19 @@ def usar_get(get) -> None:
 def al_dia(anterior: dict) -> bool:
     """¿Lectura guardada con la versión actual? `leido: 1` (o True) es previa."""
     v = anterior.get("leido")
-    return isinstance(v, int) and not isinstance(v, bool) and v >= LECTURA
+    if not (isinstance(v, int) and not isinstance(v, bool) and v >= LECTURA):
+        return False
+    # Tanda 6: plazo contado desde otro boletín y aún sin la fecha de ese
+    # boletín ⇒ releer solo esa convocatoria (no se sube LECTURA).
+    if "diario" not in anterior and empleo_campos.boletin_del_plazo(anterior.get("plazo") or ""):
+        return False
+    return True
 
 
 def _copiar(anterior: dict, r: dict) -> bool:
     if not anterior.get("leido"):
         return False
-    for k in ("plazo", "proc", "leido", "campos", "no_oferta", "turno"):
+    for k in ("plazo", "proc", "leido", "campos", "no_oferta", "turno", "diario"):
         if k in anterior:
             r[k] = anterior[k]
     return True
@@ -751,7 +763,9 @@ def etiqueta_llana(r: dict) -> tuple[str, str]:
         if proc == "Oposición":
             return "Oposición", "oposicion"
         if proc in ("Concurso", "Concurso-oposición"):
-            return "Concurso", "concurso"
+            # Grupo y filtro: los dos procesos juntos (mismo color). La tarjeta
+            # dice el proceso literal (ver fila()).
+            return "Concurso y concurso-oposición", "concurso"
         return "Convocatoria", "convocatoria"
     return ETIQUETA_LLANA.get(r.get("tipo"), ("Otra disposición", "otras"))
 
@@ -844,6 +858,24 @@ def que_es(r: dict, ps: list | None = None) -> str:
 
 # Texto fijo cuando el resumen no trae plazo literal (E-1, 04-11-2026).
 SIN_PLAZO = "No figura en el resumen: consúltalo en el BOE"
+
+
+def diario_html(r: dict, pl: str | None, tag: str, cls: str) -> str:
+    """Fecha literal del boletín citado en el plazo mostrado, o ''. Sin enlace."""
+    d = r.get("diario")
+    if r.get("id") in empleo_campos.DIARIO_EXCLUIDO:
+        return ""
+    if not pl or not isinstance(d, dict) or f"«{d.get('bol')}»" not in pl:
+        return ""
+    t = empleo_campos.texto_diario(d)
+    if not t:
+        return ""
+    ayuda = f'<{tag} class="{cls}-ayuda">{AYUDA_DIARIO}</{tag}>' if tag == "span" else ""
+    return f'<{tag} class="{cls}">{html.escape(t, quote=False)}</{tag}>{ayuda}'
+
+
+# Solo en las filas (una línea a 375 px); en la tarjeta, estrecha, serían dos.
+AYUDA_DIARIO = "Búscalo por número y fecha en la web del diario."
 
 
 def plazo_tarjeta(r: dict, mostrar: bool | None = None) -> str | None:
@@ -1008,6 +1040,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         if r["tipo"] in ORDEN_ABIERTOS and not no:
             plazo = (f'<span class="em-f-plazo"><b>Plazo:</b> {esc(pl)}</span>' if pl else
                      f'<span class="em-f-plazo em-f-sin">{SIN_PLAZO}</span>')
+            plazo += diario_html(r, pl, "span", "em-f-diario")
         aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
         return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'
                 f'<a class="em-f-a" href="{attr(enlace)}" target="_blank" rel="noopener">'
@@ -1026,6 +1059,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         # si no, SIN_PLAZO.
         enlace = r.get("url") or url_boe(r["id"])
         et, clase = etiqueta_llana(r)
+        if r.get("tipo") == "convocatoria" and r.get("proc") in ("Concurso", "Concurso-oposición"):
+            et = r["proc"]                # literal del proceso (mismo color)
         no = empleo_campos.etiqueta_no_oferta(r)
         no = f'<span class="em-aviso">{esc(no)}</span>' if no else ""
         chips = "".join(f'<span class="em-chip">{esc(c)}</span>' for c in empleo_campos.chips(r))
@@ -1051,6 +1086,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             pl = plazo_tarjeta(r)
             plazo = (f'<p class="em-c-plazo"><b>Plazo:</b> {esc(pl)}</p>' if pl else
                      f'<p class="em-c-plazo em-c-sin">{SIN_PLAZO}</p>')
+            plazo += diario_html(r, pl, "p", "em-c-diario")
         org = f'<p class="em-c-org">{esc(" · ".join(quien))}</p>' if quien else ""
         return (f'<li class="em-card em-c-{clase}" data-fecha="{attr(r["fecha"])}" data-o="{attr(slug(r["dept"]))}"'
                 f' data-p="{attr(" ".join(r.get("prov") or []))}">'

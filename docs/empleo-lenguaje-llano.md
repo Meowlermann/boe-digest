@@ -31,3 +31,38 @@ aceptan como «Consulta».
 Medición sobre el estado entero (convocatoria + provisión, sin no_oferta):
 529 claros y 273 «Consulta» si la flag se activase (antes de la corrección,
 572 claros).
+
+
+## Fecha del diario autonómico o provincial (tanda 6)
+
+Cuando el plazo cuenta desde la publicación en otro boletín (regla «ok otro
+boletín»), la fila y la tarjeta añaden la cita literal del BOE: «Publicado en
+el «Diari Oficial de la Generalitat de Catalunya» número 9784, de 30 de
+octubre de 2026». Solo si el texto cita ESE boletín con número y fecha, una
+única vez (o siempre igual). Si falta el número, la fecha o hay dos citas
+distintas, no se muestra nada. No se calcula ninguna fecha.
+
+Sin enlace al boletín: ningún diario tiene una URL que se pueda construir de
+forma fiable solo con lo que dice el texto. El sumario del DOGC por número
+(`?numDOGC=`) se pinta con JavaScript y no se puede comprobar; además el BOE
+trae erratas en el número (BOE-A-2026-22137 cita el DOGC «número 9974, de 16
+de octubre de 2026»), y un enlace construido con él llevaría a otro diario.
+Los BOP no tienen una URL por número estable. Se copia la cita tal cual.
+
+Las convocatorias ya leídas con plazo de otro boletín y sin la clave `diario`
+se releen una sola vez (sin subir LECTURA).
+
+La tarjeta dice el proceso literal («Concurso» o «Concurso-oposición»); el
+grupo y el filtro los reúnen como «Concurso y concurso-oposición».
+
+### Citas excluidas
+
+`empleo_campos.DIARIO_EXCLUIDO` lista las citas que no se muestran, con id,
+motivo y fuente. Se omite la cita (número y fecha); el plazo literal se queda.
+Nunca se corrige el número.
+
+- BOE-A-2026-22137 (Ciutadilla): el BOE imprime DOGC «número 9974, de 16 de
+  octubre de 2026»; según CIDO, el DOGC del 16-10-2026 es el 9774.
+
+En las filas, bajo la cita, una línea de ayuda sin enlace: «Búscalo por número
+y fecha en la web del diario.» No va en las tarjetas (ocuparía dos líneas).
