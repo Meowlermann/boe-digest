@@ -3803,6 +3803,7 @@ def render_nav() -> str:
     hoy += [enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados"),
             enlace("/seguir/", "Seguir con RSS", "Cada diputado, provincia, materia o ley, en tu lector")]
     parlamento = [enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno, y cada grupo"),
+                  enlace("/diputados/todos/", "Los 350 diputados", "Uno a uno, en orden alfabético de apellido"),
                   enlace("/seguimiento/", "Seguimiento", "Qué se tramita, cómo se vota y qué se pregunta"),
                   enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado"),
                   enlace("/tramitacion/", "Leyes en tramitación", "Qué se tramita, en qué fase y con qué plazos")]
@@ -6195,7 +6196,7 @@ def nombre_grupo(largo: str) -> str:
 def buscador_diputados(fichas: list, por_prov: dict) -> str:
     """Tanda 3-A: arriba de /diputados/, antes del hemiciclo. Formularios
     nativos con <label>; assets/dip-busca.js resuelve la navegación (no hay
-    backend). Sin JS quedan #circunscripciones y el listado completo (#todos)."""
+    backend). Sin JS quedan #circunscripciones y el listado en /diputados/todos/."""
     provs = "".join(f'<option value="provincia-{esc_attr(_slug_txt(p))}.html">{esc_html(nombre_circunscripcion(p))}</option>'
                     for p in sorted(por_prov))
     nombres = "".join(
@@ -6215,7 +6216,7 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
         f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
         '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
         f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a>'
-        f' · <a href="#todos">Los {len(fichas)} diputados, uno a uno →</a></p>'
+        f' · <a href="todos/">Los {len(fichas)} diputados, uno a uno →</a></p>'
         '<script src="../assets/dip-busca.js" defer></script></section>')
 
 
@@ -6229,9 +6230,10 @@ def letra_apellido(nombre: str) -> str:
     return ""
 
 
-def lista_completa_diputados(fichas: list) -> str:
+def lista_completa_diputados(fichas: list, prefijo: str = "", con_cabecera: bool = True) -> str:
     """Todos los diputados, enlazados en el HTML, por apellido.
-    Usa el campo oficial «nombre» («Santana Aguilera, Ada»). Sin JS ni details."""
+    Usa el campo oficial «nombre» («Santana Aguilera, Ada»). Sin JS ni details.
+    `prefijo` antepone la ruta a cada ficha (p. ej. «../» en /diputados/todos/)."""
     if not fichas:
         return ""
 
@@ -6248,7 +6250,7 @@ def lista_completa_diputados(fichas: list) -> str:
         circ = esc_html(nombre_circunscripcion(f.get("circunscripcion") or ""))
         meta = " · ".join(x for x in (grupo, circ) if x)
         return (
-            f'<li><a href="{esc_attr(f["slug"])}.html" title="{esc_attr(mostrado(f))}">{esc_html(mostrado(f))}</a>'
+            f'<li><a href="{esc_attr(prefijo + f["slug"])}.html" title="{esc_attr(mostrado(f))}">{esc_html(mostrado(f))}</a>'
             + (f'<span class="ref">{meta}</span>' if meta else "")
             + "</li>")
 
@@ -6267,11 +6269,13 @@ def lista_completa_diputados(fichas: list) -> str:
             f'<ul class="dip-lista">{lis}</ul>'
             "</div>")
     n = len(fichas)
+    cuerpo = f'<nav class="dip-az" aria-label="Índice por letra">{az}</nav>' + "".join(bloques)
+    if not con_cabecera:
+        return f'<div id="todos">{cuerpo}</div>'
     return (
         f'<h2 class="rotulo" id="todos">Los {n} diputados</h2>'
         f'<p class="dip-lista-nota">Uno a uno, en orden alfabético de apellido.</p>'
-        f'<nav class="dip-az" aria-label="Índice por letra">{az}</nav>'
-        + "".join(bloques))
+        + cuerpo)
 
 
 def plantilla_con_aviso(plantilla: str) -> str:
@@ -6345,7 +6349,7 @@ def lastmod_diputado(ficha: dict, resumen_preguntas: dict | None = None) -> str:
 
 
 def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
-    """Para /diputados/ y los índices de grupo (y provincia): el máximo de sus fichas."""
+    """Para /diputados/, /diputados/todos/ y los índices de grupo (y provincia): el máximo de sus fichas."""
     fechas = [lastmod_diputado(f, resumen_preguntas) for f in (fichas or [])]
     return max((x for x in fechas if x), default="")
 
@@ -6469,6 +6473,7 @@ def renderizar_diputados(fichas: list) -> list:
                        f'Diputados por {esc_html(nombre_circunscripcion(f["circunscripcion"]))}</a>')
             rel.append(f'<a class="srclink" href="../provincias/{esc_attr(ps_dip)}.html">'
                        f'Todo sobre {esc_html(nombre_provincia(ps_dip, f["circunscripcion"]))}</a>')
+        rel.append(f'<a class="srclink" href="todos/">Los {len(fichas)} diputados, uno a uno</a>')
 
         _pagina_suelta(plantilla, DIPUTADOS_DIR, f"{f['slug']}.html", {
             "TITLE": esc_html(f"{f['natural']} — cómo vota y qué hace | La Tercera Cámara"),
@@ -6617,7 +6622,6 @@ def renderizar_diputados(fichas: list) -> list:
         f'<ul class="provincias">{grupos_lista}</ul>'
         f'<h2 class="rotulo" id="circunscripciones">Por circunscripción</h2>'
         f'<ul class="provincias">{provincias}</ul>'
-        + lista_completa_diputados(fichas)
         + f'<script src="../assets/parlamento.js" defer></script>')
     url = f"{SITE_URL}diputados/"
     # Tanda 3-A v2: SOLO en el índice, el buscador va bajo la entradilla y
@@ -6650,7 +6654,48 @@ def renderizar_diputados(fichas: list) -> list:
                    "intervenciones cubren toda la legislatura."),
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     })
-    salidas.append({"url": url, "lastmod": lastmod_listado_diputados(fichas, resumen_preguntas)})
+    lastmod_lista = lastmod_listado_diputados(fichas, resumen_preguntas)
+    salidas.append({"url": url, "lastmod": lastmod_lista})
+
+    # /diputados/todos/: el listado completo, indexable, con lastmod = máximo de las fichas.
+    # Página nueva: no toca title, description, canonical ni robots de /diputados/ (prueba #75).
+    n = len(fichas)
+    url_todos = f"{SITE_URL}diputados/todos/"
+    plantilla_todos = (plantilla.replace('href="../', 'href="../../')
+                                 .replace('src="../', 'src="../../'))
+    _pagina_suelta(plantilla_todos, DIPUTADOS_DIR / "todos", "index.html", {
+        "TITLE": f"Los {n} diputados, uno a uno | La Tercera Cámara",
+        "META_DESC": esc_attr(
+            f"Los {n} diputados del Congreso, en orden alfabético de apellido, "
+            f"con su grupo y circunscripción, y enlace a cada ficha."),
+        "CANONICAL": url_todos,
+        "JSONLD": jsonld_script([
+            {"@type": "CollectionPage", "name": f"Los {n} diputados, uno a uno",
+             "url": url_todos, "inLanguage": "es-ES", "dateModified": lastmod_lista or hoy},
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Portada", "item": SITE_URL},
+                {"@type": "ListItem", "position": 2, "name": "Parlamentarios",
+                 "item": f"{SITE_URL}diputados/"},
+                {"@type": "ListItem", "position": 3, "name": f"Los {n} diputados",
+                 "item": url_todos}]}]),
+        "EDITION_DATE": esc_html(fmt_date_es(hoy)),
+        "MIGA": ('<a href="../../">Portada</a> › <a href="../">Parlamentarios</a> › '
+                 f'<span aria-current="page">Los {n} diputados</span>'),
+        "KICKER": "Parlamentarios",
+        "HEADLINE": f"Los {n} diputados, uno a uno",
+        "STANDFIRST": ("Uno a uno, en orden alfabético de apellido. Cada nombre abre su ficha, "
+                       "con lo que consta de su actividad en el Congreso."),
+        "FICHA": (f"<dt>Diputados</dt><dd>{n}</dd>"
+                  f"<dt>Grupos</dt><dd>{len(conteo)}</dd>"
+                  f"<dt>Circunscripciones</dt><dd>{len(por_prov)}</dd>"),
+        "CUERPO": lista_completa_diputados(fichas, prefijo="../", con_cabecera=False),
+        "FUENTE": ("Fuente: datos abiertos del Congreso de los Diputados. Las cifras de "
+                   "votación se acumulan desde que empezamos a registrarlas; las de "
+                   "intervenciones cubren toda la legislatura."),
+        "RELACIONADAS": '<li><a class="srclink" href="../">El hemiciclo y el buscador de diputados</a></li>',
+        "RELACIONADAS_HIDDEN": "",
+    })
+    salidas.append({"url": url_todos, "lastmod": lastmod_lista})
     log(f"diputados/: {len(fichas)} fichas, {len(conteo)} grupos, {len(por_prov)} provincias")
     return salidas
 
@@ -6974,6 +7019,7 @@ def renderizar_mapa(dias: list, fichas_dip: list) -> list:
                 + ediciones)
         + '<h2 class="rotulo">Parlamento</h2>'
         + lista([("/diputados/", "El hemiciclo: los 350 diputados", len(fichas_dip or []) or ""),
+                 ("/diputados/todos/", "Los 350 diputados, uno a uno", len(fichas_dip or []) or ""),
                  ("/votaciones/", "Votaciones del Pleno: quién votó qué", ""),
                  ("/seguimiento/", "Seguimiento: qué se tramita, cómo se vota y qué se pregunta", ""),
                  ("/provincias/", "Tu provincia en las Cortes y en el BOE", ""),

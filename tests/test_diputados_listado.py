@@ -1,4 +1,4 @@
-"""Listado completo de diputados en el HTML de /diputados/, sin JS. Sin red."""
+"""Listado completo de diputados en /diputados/todos/, sin JS. Sin red."""
 import pathlib
 import re
 import sys
@@ -97,11 +97,25 @@ class Listado(unittest.TestCase):
     def test_vacio(self):
         self.assertEqual(build.lista_completa_diputados([]), "")
 
+    def test_prefijo_en_los_enlaces(self):
+        h = build.lista_completa_diputados(FICHAS, prefijo="../")
+        self.assertIn('href="../ana-perez.html"', h)
+        self.assertNotIn('href="ana-perez.html"', h)
+
+    def test_sin_cabecera_conserva_el_ancla(self):
+        h = build.lista_completa_diputados(FICHAS, con_cabecera=False)
+        self.assertIn('id="todos"', h)
+        self.assertNotIn('<h2 class="rotulo"', h)
+        self.assertIn('class="dip-az"', h)
+
     def test_en_el_indice_y_en_el_buscador(self):
         src = (RAIZ / "build.py").read_text(encoding="utf-8")
-        self.assertEqual(src.count("lista_completa_diputados(fichas)"), 1)
-        self.assertIn('href="#todos"', src)
+        # La lista vive en /diputados/todos/; el índice solo enlaza.
+        self.assertIn('lista_completa_diputados(fichas, prefijo="../", con_cabecera=False)', src)
+        self.assertNotIn("lista_completa_diputados(fichas)\n", src)
+        self.assertIn('href="todos/"', src)
         self.assertIn("Los {len(fichas)} diputados, uno a uno", src)
+        self.assertIn('f"{SITE_URL}diputados/todos/"', src)
         # Title, description y canonical del índice no se tocan (prueba #75).
         self.assertIn(
             '"TITLE": "Así vota y así trabaja cada diputado | La Tercera Cámara"', src)
@@ -109,6 +123,13 @@ class Listado(unittest.TestCase):
             '"META_DESC": esc_attr("Los 350 diputados del Congreso, uno a uno: intervenciones, "',
             src)
         self.assertIn('"CANONICAL": url,', src)
+        # La página nueva tiene title, description y canonical propios.
+        self.assertIn("Los {n} diputados, uno a uno | La Tercera Cámara", src)
+        self.assertIn('"CANONICAL": url_todos,', src)
+        # Enlazada desde las fichas, el mapa y el menú de la sección.
+        self.assertIn('href="todos/">Los {len(fichas)} diputados, uno a uno', src)
+        self.assertIn('("/diputados/todos/", "Los 350 diputados, uno a uno"', src)
+        self.assertIn('enlace("/diputados/todos/", "Los 350 diputados"', src)
 
     def test_css_compacto_sin_subrayado_ni_tarjetas(self):
         css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
@@ -122,6 +143,8 @@ class Listado(unittest.TestCase):
         self.assertIn(":focus-visible", bloque)
         self.assertIn("column-count:2", bloque)
         self.assertIn("min-width:760px", bloque)
+        self.assertIn("min-width:44px", bloque)
+        self.assertIn("min-height:44px", bloque)
         self.assertNotIn("<details", bloque)
 
 

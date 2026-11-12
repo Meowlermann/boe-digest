@@ -1893,8 +1893,8 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 /* --- /diputados/ listado completo (enlazado interno). Sin tarjetas, subrayado ni details. */
 .dip-lista-nota{margin:0 0 8px;font-size:.9rem;line-height:1.45;color:var(--ink-soft)}
 .dip-az{display:flex;flex-wrap:wrap;gap:0;margin:0 0 10px;padding:0;border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border)}
-.dip-az a{display:inline-flex;align-items:center;justify-content:center;min-width:28px;min-height:36px;
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2;background:var(--surface)}
+.dip-az a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;
   padding:0 6px;font:600 13px/1 'Work Sans',system-ui,sans-serif;color:var(--ink);text-decoration:none}
 .dip-az a:hover{color:var(--red-ink)}
 .dip-az a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
