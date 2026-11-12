@@ -1071,6 +1071,7 @@ h1.display{
 /* --- Móvil: barra inferior y hojas --------------------------------------- */
 @media (max-width:720px){
   body{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
+  html{ scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
   .nav{ position:static; border:0; margin:0; min-height:0; background:none; }
   .nav-in{ min-height:0; }
   .nav-marca, .pilar-b, .nav-buscar{ display:none; }
@@ -1894,6 +1895,8 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .dip-lista-nota{margin:0 0 8px;font-size:.9rem;line-height:1.45;color:var(--ink-soft)}
 .dip-az{display:flex;flex-wrap:wrap;gap:0;margin:0 0 10px;padding:0;border-top:1px solid var(--border);
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2;background:var(--surface)}
+/* Anclas: la A–Z es sticky (~90 px en escritorio; 3 filas a 375 px). */
+.dip-letra, #todos{scroll-margin-top:calc(90px + 8px)}
 .dip-az a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;
   padding:0 6px;font:600 13px/1 'Work Sans',system-ui,sans-serif;color:var(--ink);text-decoration:none}
 .dip-az a:hover{color:var(--red-ink)}
@@ -1917,6 +1920,22 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 @media (min-width:760px){
   .dip-lista{column-count:2;column-gap:28px}
   .dip-lista li{break-inside:avoid}
+}
+@media (max-width:720px){
+  /* Barra inferior y A–Z sticky: no deben tapar letras ni anclas. */
+  .dip-az{scroll-margin-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  /* A 375 px el cuerpo deja 343 px; 8×44 no caben y la Z queda bajo la barra.
+     A ancho completo caben 8 letras (3 filas) y P–Z quedan por encima. */
+  .dip-az{margin-left:-16px;margin-right:-16px;width:calc(100% + 32px)}
+  .dip-letra, #todos{
+    scroll-margin-top:calc(3 * 44px + 8px);
+    scroll-margin-bottom:calc(76px + env(safe-area-inset-bottom,0px));
+  }
+  /* En /diputados/todos/: compacta un poco la cabecera para que quepan
+     más filas de la A–Z por encima de la barra inferior, sin quitar texto. */
+  article:has(.dip-az) .entradilla{margin-bottom:8px}
+  article:has(.dip-az) .aviso-leg{margin-bottom:8px;padding:.5rem .8rem;line-height:1.4}
+  article:has(.dip-az) .ficha{margin-bottom:8px;padding:8px 12px;gap:4px 16px}
 }
 /* --- fin /diputados/ listado completo */
 

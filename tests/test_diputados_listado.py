@@ -146,6 +146,17 @@ class Listado(unittest.TestCase):
         self.assertIn("min-width:44px", bloque)
         self.assertIn("min-height:44px", bloque)
         self.assertNotIn("<details", bloque)
+        # Barra inferior y A–Z sticky: anclas y tercera fila visibles a 375 px.
+        self.assertIn("scroll-margin-top:calc(90px + 8px)", bloque)
+        self.assertIn("scroll-margin-top:calc(3 * 44px + 8px)", bloque)
+        self.assertIn(
+            "scroll-margin-bottom:calc(76px + env(safe-area-inset-bottom,0px))",
+            bloque)
+        self.assertIn(
+            "scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))",
+            css)
+        self.assertIn("margin-left:-16px", bloque)
+        self.assertIn("width:calc(100% + 32px)", bloque)
 
 
 if __name__ == "__main__":
