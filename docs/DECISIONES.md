@@ -1,0 +1,70 @@
+# Decisiones
+
+Registro de decisiones de producto, operación y editorial, reconstruido
+desde el historial de pull requests y commits. Las fechas son el día de
+fusión (o del commit, si no hubo PR) en la zona Europe/Madrid. Si no se
+ha podido fechar, se marca «fecha por confirmar», sin inventar.
+
+Toda PR que cambie el comportamiento, la operación o una decisión añade
+una fila aquí, en la misma PR.
+
+| Fecha | Decisión | Motivo | PR o mensaje |
+|---|---|---|---|
+| 2026-09-27 | La edición incluye preguntas orales de control y preguntas escritas al Gobierno | Cubrir también lo que hacen las Cortes, no solo el BOE | [#1](https://github.com/Meowlermann/boe-digest/pull/1) |
+| 2026-09-28 | Archivo histórico de ediciones del BOE, determinista y sin LLM | Poder publicar el año sin reescribir el pasado con un modelo | [#2](https://github.com/Meowlermann/boe-digest/pull/2) |
+| 2026-09-28 | Fichas de nombramientos y ceses del BOE, por persona y por órgano | Una sección propia a partir de la sección II | [#3](https://github.com/Meowlermann/boe-digest/pull/3) |
+| 2026-09-28 | No enlazar `/preguntas/` mientras no hay páginas | Evitar enlaces rotos | [#4](https://github.com/Meowlermann/boe-digest/pull/4) |
+| 2026-09-28 | Seguimiento de la tramitación de leyes, con portada y buscador por tipos | Ver en qué punto está cada iniciativa | [#5](https://github.com/Meowlermann/boe-digest/pull/5) |
+| 2026-09-29 | Página de provincias: la circunscripción en las Cortes y en el BOE | Entrada territorial al sitio | [#6](https://github.com/Meowlermann/boe-digest/pull/6) |
+| 2026-09-29 | Tres pases al día (en verano, 07:40, 14:40 y 21:40 hora de Madrid) | El BOE por la mañana, preguntas y tramitación a mediodía, votaciones por la noche | [#9](https://github.com/Meowlermann/boe-digest/pull/9) |
+| 2026-09-29 | Los domingos no se republica el BOE del sábado | No hay BOE en domingo; evitar duplicarlo | [#12](https://github.com/Meowlermann/boe-digest/pull/12) |
+| 2026-10-04 | El Senado queda fuera de la automatización (`SENADO_ACTIVO = False`). Sin proxies, sin cabeceras que aparenten otro cliente y sin relés | El WAF de Akamai devuelve 403 desde centros de datos, también a los datos abiertos. El Senado no ofrece API ni conexión para reutilización automatizada. Diagnóstico en la PR #8, que se cerró sin fusionar | [#16](https://github.com/Meowlermann/boe-digest/pull/16), [#8](https://github.com/Meowlermann/boe-digest/pull/8) |
+| 2026-10-04 | Integración continua y chequeo de salud de cada edición | Fase A de robustez: que un fallo de una fuente no tumbe el día y que los graves se vean | [#16](https://github.com/Meowlermann/boe-digest/pull/16) |
+| 2026-10-05 | La web se publica como artefacto de GitHub Pages; los datos viven en la rama huérfana `datos` | Separar código y datos; el bot deja de escribir la web en una rama | [#19](https://github.com/Meowlermann/boe-digest/pull/19) |
+| 2026-10-06 | `main` solo lleva código: fuera el HTML generado y los datos de `main` | Segunda mitad de la publicación por artefacto | [#20](https://github.com/Meowlermann/boe-digest/pull/20) |
+| 2026-10-07 | Con las Cortes disueltas, el hemiciclo usa el censo de la XV y resalta la Diputación Permanente | El censo oficial de activos baja de 300 y no debe sustituir al completo | [#22](https://github.com/Meowlermann/boe-digest/pull/22) |
+| 2026-10-08 | Analítica sin cookies, canales RSS por entidad y primeras páginas legales | Audiencia sin rastreo de usuario y atribución clara | [#23](https://github.com/Meowlermann/boe-digest/pull/23) |
+| 2026-10-08 | Resumen semanal en la web | Una página por semana cerrada, congelada el lunes | [#24](https://github.com/Meowlermann/boe-digest/pull/24) |
+| 2026-10-15 | Vigilante de despliegues atascados | Detectar un Pages que no termina | [#25](https://github.com/Meowlermann/boe-digest/pull/25) |
+| 2026-10-26 | Tarjetas para compartir y JSON-LD por tipo de página | SEO: que cada URL explique qué es | [#26](https://github.com/Meowlermann/boe-digest/pull/26) |
+| 2026-10-27 | Fechas JSON-LD en ISO 8601 con zona Europe/Madrid | Evitar fechas ambiguas en buscadores | [#27](https://github.com/Meowlermann/boe-digest/pull/27) |
+| 2026-10-27 | Un canonical absoluto `https://terceracamara.es/…` por página, auditado en el CI | TC-007 | [#28](https://github.com/Meowlermann/boe-digest/pull/28) |
+| 2026-10-27 | Alias `/rss.xml` e `/index.xml` de `feed.xml` | TC-004: los lectores prueban esas rutas | [#29](https://github.com/Meowlermann/boe-digest/pull/29) |
+| 2026-10-27 | Páginas legales neutras y atribución del BOE, con comprobaciones en el CI | TC-002 mínima y TC-021 | [#30](https://github.com/Meowlermann/boe-digest/pull/30) |
+| 2026-10-27 | El sumario del BOE se lee por la API de datos abiertos, respetando `robots.txt` | TC-023 | [#31](https://github.com/Meowlermann/boe-digest/pull/31) |
+| 2026-10-27 | `/seguir/` solo ofrece RSS, sin formulario de boletín | TC-024: el boletín está aplazado | [#32](https://github.com/Meowlermann/boe-digest/pull/32) |
+| 2026-10-27 | Observabilidad de lo que sirve producción y cuenta de días sin edición | TC-009 | [#33](https://github.com/Meowlermann/boe-digest/pull/33) |
+| 2026-10-27 | Migas con `BreadcrumbList` en todas las fichas | TC-005 | [#34](https://github.com/Meowlermann/boe-digest/pull/34) |
+| 2026-10-27 | Comprobación de páginas huérfanas y de fichas con pocos enlaces internos | TC-006 | [#35](https://github.com/Meowlermann/boe-digest/pull/35) |
+| 2026-10-27 | Página `/correcciones/` y aviso en cada pieza corregida | TC-017: las correcciones se registran, no se borran | [#36](https://github.com/Meowlermann/boe-digest/pull/36) |
+| 2026-10-27 | Horario de la edición diaria documentado en UTC fijo, con la hora de Madrid en invierno y en verano | TC-025: los cron no cambian con el horario de verano | [#37](https://github.com/Meowlermann/boe-digest/pull/37) |
+| 2026-10-27 | Empleo público v1 a partir de la sección II.B del BOE | TC-013 | [#38](https://github.com/Meowlermann/boe-digest/pull/38) |
+| 2026-10-27 | Lighthouse CI semanal, con aviso y sin bloquear | TC-008 | [#39](https://github.com/Meowlermann/boe-digest/pull/39) |
+| 2026-10-28 | Pausa mínima de 1 s entre peticiones al BOE | No saturar la fuente | [#50](https://github.com/Meowlermann/boe-digest/pull/50) |
+| 2026-10-29 | En provisión, apagar puesto, nivel y localidad cuando el dato sale erróneo; reactivarlos solo con un OK posterior | El extractor llegó a publicar un dato incorrecto | [#55](https://github.com/Meowlermann/boe-digest/pull/55), [#58](https://github.com/Meowlermann/boe-digest/pull/58) |
+| 2026-10-31 | Menú de cinco entradas (Hoy, Empleo, Parlamento, Buscar, Más) y módulo de empleo en la portada | UX-4: empleo como una de las entradas principales | [#62](https://github.com/Meowlermann/boe-digest/pull/62), [#63](https://github.com/Meowlermann/boe-digest/pull/63) |
+| 2026-10-31 | Lenguaje llano en empleo (el plazo, apagado de entrada) | No calcular fechas de cierre; en la duda, remitir al BOE | [#65](https://github.com/Meowlermann/boe-digest/pull/65) |
+| 2026-11-01 | Carriles deslizables por clase en `/empleo/` | Primera maqueta de recorridos por tipo | [#66](https://github.com/Meowlermann/boe-digest/pull/66) |
+| 2026-11-02 | Activar el plazo en lenguaje llano (`MOSTRAR_PLAZO_LLANO = True`), solo cuando la frase pasa la regla estricta | Con OK expreso, mostrar el plazo literal ya comprobado, nunca uno calculado | [#67](https://github.com/Meowlermann/boe-digest/pull/67) |
+| 2026-11-02 | Lema de titulares con IA, analítica sin cookies y condiciones de las fuentes del Congreso y del Senado | Aviso legal alineado con lo que el sitio hace de verdad | [#68](https://github.com/Meowlermann/boe-digest/pull/68) |
+| 2026-11-02 | Los enlaces de la ficha de diputado a votaciones usan `#d=` y no `?d=` | Evitar canónicas distintas por la consulta | [#69](https://github.com/Meowlermann/boe-digest/pull/69) |
+| 2026-11-02 | Prueba de títulos y H1 en una muestra de provincias y grupos | Medir el SEO de esas URLs sin cambiar el resto | [#70](https://github.com/Meowlermann/boe-digest/pull/70) |
+| 2026-11-02 | Rediseño de `/tramitacion/` y `/seguimiento/` sin subrayados, con el mismo lenguaje de listas y cifras | Unificar el diseño y evitar el abuso de tarjetas | [#71](https://github.com/Meowlermann/boe-digest/pull/71), [#72](https://github.com/Meowlermann/boe-digest/pull/72) |
+| 2026-11-03 | Los CSS y JS propios llevan `?v=` con la huella del contenido | Evitar cachés viejas al cambiar el estilo | [#73](https://github.com/Meowlermann/boe-digest/pull/73) |
+| 2026-11-03 | Rediseño de `/empleo/` con el lenguaje de `/tramitacion/` | Resumen, en cifras y listas, sin subrayados | [#74](https://github.com/Meowlermann/boe-digest/pull/74) |
+| 2026-11-03 | Prueba de títulos en `/diputados/provincia-X.html` (SEO 1b). Esas etiquetas no se tocan hasta que termine la prueba | No invalidar la medición en curso (prevista hasta mediados de diciembre) | [#75](https://github.com/Meowlermann/boe-digest/pull/75) |
+| 2026-11-04 | En `/empleo/`, rejilla en lugar de carriles | Los carriles más anchos (#80) se cerraron sin fusionar; la rejilla sustituye ese enfoque | [#81](https://github.com/Meowlermann/boe-digest/pull/81) |
+| 2026-11-07 | Fichas de provincia de empleo indexables, con title sin cifra | La cifra va en la description, con su alcance | [#88](https://github.com/Meowlermann/boe-digest/pull/88) |
+| 2026-11-07 | Listas de diputados para el 29-N y buscador de circunscripción y nombre arriba | Tanda 3A, con las elecciones a la vista | [#89](https://github.com/Meowlermann/boe-digest/pull/89), [#91](https://github.com/Meowlermann/boe-digest/pull/91) |
+| 2026-11-07 | Lista sin tarjetas en las fichas de provincia de empleo (piloto en Zaragoza y luego el resto) | Tanda 3B: filas tipográficas, más ligeras que las tarjetas | [#92](https://github.com/Meowlermann/boe-digest/pull/92), [#93](https://github.com/Meowlermann/boe-digest/pull/93) |
+| 2026-11-07 | El extractor de empleo guarda el plazo y el turno literales | No inferir ni calcular lo que el BOE ya dice | [#94](https://github.com/Meowlermann/boe-digest/pull/94) |
+| 2026-11-10 | Tras timeouts de Pages en el SHA `c7b38243`, un commit vacío (`2a398ecc`) fuerza un identificador de despliegue nuevo | El primer despliegue de ese SHA se quedó en `syncing_files` hasta el timeout (upstream #406). El commit nuevo también agotó el tiempo aquel día; más tarde los despliegues volvieron a salir | commit `2a398ecc`, tras [#96](https://github.com/Meowlermann/boe-digest/pull/96) |
+| 2026-11-10 | Cita literal de la fecha y el diario autonómico o provincial cuando el plazo cuenta desde ese boletín | Sin enlace inventado y sin calcular fechas; si la cita es ambigua o tiene errata, no se muestra | [#96](https://github.com/Meowlermann/boe-digest/pull/96) |
+| 2026-11-10 | Etiqueta de titulares redactados con IA, por pieza, y aviso alineado en archivo y buscador | Dejar claro qué ha pasado por Gemini y qué no | [#97](https://github.com/Meowlermann/boe-digest/pull/97) |
+| 2026-11-12 | Quitar del índice de ediciones la frase antigua sobre la IA | El aviso tiene que describir el sistema actual | [#99](https://github.com/Meowlermann/boe-digest/pull/99) |
+| 2026-11-12 | Sitemap por secciones, con `lastmod` real de cada página | Un índice (`sitemapindex`) y sitemaps hijos; las páginas sin fecha clara guardan huella en `state/sitemap_lastmod.json` | [#101](https://github.com/Meowlermann/boe-digest/pull/101) |
+| 2026-11-12 | En modo reproceso o nombramientos no se abre la incidencia de salud | La #100 fue una falsa alarma: esos modos no pintan una edición completa | [#103](https://github.com/Meowlermann/boe-digest/pull/103) |
+| 2026-11-12 | Se cierra sin fusionar la prueba de descarga del Senado (#105) | Las 13 URLs de la muestra devolvieron 403 de Akamai desde el runner. Se repetirá cuando se constituya el Senado nuevo | [#105](https://github.com/Meowlermann/boe-digest/pull/105) |
+| 2026-11-12 | Toda PR que cambie el comportamiento, la operación o una decisión actualiza `docs/DECISIONES.md` en la misma PR, y también `OPERACION.md` u `HOJA-DE-RUTA.md` si les afecta | Que los documentos de traspaso se alimenten con lo que se va haciendo, no solo con una copia inicial | [#107](https://github.com/Meowlermann/boe-digest/pull/107) |
+| fecha por confirmar | El boletín por correo y el cobro quedan aplazados | Faltan decisiones y datos legales (titular, dominio de envío, secretos). `/seguir/` se quedó en RSS (#32). Consta como bloqueado en el backlog de octubre de 2026 | backlog TC-010, TC-011 y TC-012; [#32](https://github.com/Meowlermann/boe-digest/pull/32) |
+| fecha por confirmar | Plan B: si GitHub Pages no despliega, servir el mismo `_site` en Cloudflare (plan gratuito), sin activarlo todavía | Documentado el 10 de noviembre de 2026. No hay proyecto, token ni cambio de DNS | documento interno de plan B; no hay PR |
