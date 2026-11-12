@@ -39,7 +39,7 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   página general `/empleo/` usa las filas compactas de las fichas de
   provincia, sin tocar el `noindex`, el title, la description ni el
   canonical. El peso se valida antes de quitar el `noindex`.
-- **Docs de traspaso** (`OPERACION.md`, `DECISIONES.md`,
+- **#107 «Docs: traspaso»**, sin fusionar (`OPERACION.md`, `DECISIONES.md`,
   `REGLAS-EDITORIALES.md`, `HOJA-DE-RUTA.md`) y la regla de
   mantenerlos al día en cada PR.
 - **Tanda 9 (Fable):** clasificador de interés público y extractor de
