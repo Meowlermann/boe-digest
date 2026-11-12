@@ -3,6 +3,7 @@
 // Estado en ?tipo=&dias=&clase=&prov=&org=&q= (o #tipo=, #t-…), los valores de siempre.
 (function () {
 var D = document;
+function lis(r) { return (r || D).querySelectorAll("li.em-card, li.em-fila"); }
 var c = D.getElementById("filtro-tipo");
 if (!c) return;
 function $(s) { return c.querySelector(s); }
@@ -54,7 +55,7 @@ if (sel.clase) sel.clase.parentNode.hidden = !(todas || st.tipo === "convocatori
 if (qi.value !== st.q) qi.value = st.q;
 secs.forEach(function (s) {
 var n = 0, nv = 0, vis = todas || s.dataset.tipo === st.tipo, M = +s.dataset[st.dias ? "m30" : "m"];
-s.querySelectorAll("li.em-card").forEach(function (li) {
+lis(s).forEach(function (li) {
 if (!li._t) li._t = nz(li.textContent + " " + (li.querySelector("a").getAttribute("aria-label") || ""));
 var v = vis && Date.parse(li.dataset.fecha) >= corte && (!st.clase || li.classList.contains("em-c-" + st.clase)) &&
 (!st.prov || (" " + li.dataset.p + " ").indexOf(" " + st.prov + " ") >= 0) && (!st.org || li.dataset.o === st.org) &&
@@ -66,12 +67,12 @@ if (Date.parse(li.dataset.fecha) >= corte) nv++;
 cuenta(s.querySelector("h2,h3"), n, f, M);
 if (vis) {
 tm += M;
-// Aviso de recorte (E-2): más disposiciones en el periodo que tarjetas cargadas.
+// Aviso de recorte (E-2): más disposiciones en el periodo que las cargadas en la página.
 if (M > nv) av.push(s.dataset.et + ": se cargan " + nv + " de " + M + ", las publicadas desde el " + s.dataset.desde + ".");
 }
 s.hidden = !vis || (f && !n);
 s.querySelectorAll(".em-bloque").forEach(function (k) {
-var nb = k.querySelectorAll("li.em-card:not([hidden])").length;
+var nb = k.querySelectorAll("li.em-card:not([hidden]), li.em-fila:not([hidden])").length;
 k.hidden = !nb;
 cuenta(k.querySelector(".em-bloque-t"), nb, f);
 if (k._u) k._u(true);
@@ -161,18 +162,18 @@ var m = /^#t-(\w+)$/.exec(location.hash), t = new URLSearchParams(location.hash.
 if (m && ok[m[1]]) t = m[1];
 if (t && ok[t]) { st.tipo = t; pinta(false); }
 });
-// Rejilla por grupo: 24 tarjetas y «Cargar más <grupo>» (sin JS, todas visibles).
+// Rejilla por grupo: 24 filas (o tarjetas, en fichas que aún las tengan) y «Cargar más». Sin JS, todas visibles.
 var LOTE = 24;
 D.querySelectorAll(".em-bloque").forEach(function (k) {
 var p = k.querySelector(".em-rejilla"), lim = LOTE, mas = D.createElement("button");
 mas.type = "button";
 mas.className = "em-fb em-mas";
 k.appendChild(mas);
-function vis() { return [].slice.call(p.querySelectorAll("li.em-card:not([hidden])")); }
+function vis() { return [].slice.call(p.querySelectorAll("li.em-card:not([hidden]), li.em-fila:not([hidden])")); }
 function upd(r) {
 if (r) lim = LOTE;
 var xs = vis(), q = Math.max(0, xs.length - lim);
-p.querySelectorAll("li.em-card").forEach(function (li) { li.classList.toggle("em-oculta", xs.indexOf(li) >= lim); });
+lis(p).forEach(function (li) { li.classList.toggle("em-oculta", xs.indexOf(li) >= lim); });
 mas.hidden = !q;
 mas.textContent = "Cargar más " + k.dataset.n + " (" + Math.min(LOTE, q) + " de " + q + " restantes)";
 }

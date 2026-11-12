@@ -36,8 +36,10 @@ class TestRejilla(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def test_todas_las_tarjetas_en_rejilla(self):
-        self.assertEqual(len(re.findall(r'<li class="em-card[ \"]', self.idx)), 9)
+    def test_todas_las_filas_en_rejilla(self):
+        self.assertEqual(len(re.findall(r'<li class="em-fila[ \"]', self.idx)), 9)
+        self.assertNotIn("em-card", self.idx)
+        self.assertIn('class="tr-ix-em-filas"', self.idx)
         self.assertGreaterEqual(self.idx.count('<ul class="ix-lista em-rejilla">'), 2)
 
     def test_sin_carriles(self):

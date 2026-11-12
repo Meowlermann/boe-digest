@@ -1,5 +1,6 @@
 """Tanda 3-B / 4: TODAS las fichas /empleo/provincia-*.html en filas tipográficas
-(sin tarjetas); /empleo/ y las fichas por organismo siguen con tarjetas.
+(sin tarjetas); /empleo/ también, igual que ellas. Las fichas por organismo
+siguen con tarjetas.
 Lo que no consta no se pinta; nunca plazos ni estados calculados. Sin red."""
 import pathlib
 import re
@@ -14,7 +15,7 @@ import empleo as em  # noqa: E402
 from test_empleo import TestPaginas, h_prueba  # noqa: E402
 from test_empleo_ficha_provincia_clara import campos  # noqa: E402
 
-FILA = r'<li class="em-fila".*?</li>'
+FILA = r'<li class="em-fila[^"]*".*?</li>'
 
 
 class Filas(TestPaginas):
@@ -34,8 +35,12 @@ class Filas(TestPaginas):
                 self.assertIn('class="tr-ix-em-filas"', c["CUERPO"])
                 self.assertNotIn("em-card", c["CUERPO"])
                 self.assertNotIn('class="aside-note">«Turno libre»', c["CUERPO"])
-        # Las tarjetas siguen fuera de las fichas de provincia.
-        self.assertTrue(any("em-card" in c.get("CUERPO", "") for c in otras.values()))
+        # /empleo/ (índice) también en filas; las tarjetas quedan en organismos.
+        self.assertIn('class="tr-ix-em-filas"', otras["index.html"]["CUERPO"])
+        self.assertNotIn("em-card", otras["index.html"]["CUERPO"])
+        self.assertTrue(any(
+            n not in {"index.html", "provincias.html", "organismos.html"} and "em-card" in c.get("CUERPO", "")
+            for n, c in otras.items()))
 
     def test_lo_que_no_consta_no_se_pinta(self):
         prov, _ = self.generar()
@@ -67,7 +72,7 @@ class Filas(TestPaginas):
     def test_turno_y_nota_junto_a_la_primera_fila(self):
         prov, _ = self.generar()
         ids = [m for c in prov.values() for m in re.findall(
-            r'<li class="em-fila"[^>]*>.*?(BOE-A-\d{4}-\d+)', c["CUERPO"], re.S)]
+            r'<li class="em-fila[^"]*"[^>]*>.*?(BOE-A-\d{4}-\d+)', c["CUERPO"], re.S)]
         objetivo = set(ids[:2])
         original = em.empleo_campos.activos
 
@@ -137,7 +142,22 @@ class Filas(TestPaginas):
                 self.assertRegex(li, r'<span class="em-hace">\([^<)]+\)</span>')
         self.assertTrue(n)
 
+    def test_indice_general_en_filas(self):
+        """ /empleo/ reutiliza la lista compacta: sin tarjetas, con plazo literal,
+        diario o aviso, enlace al BOE y los data-* que necesitan los filtros. """
+        _, otras = self.generar()
+        cuerpo = otras["index.html"]["CUERPO"]
+        self.assertNotIn("em-card", cuerpo)
+        self.assertIn('class="tr-ix-em-filas"', cuerpo)
+        filas = re.findall(FILA, cuerpo, re.S)
+        self.assertTrue(filas)
+        self.assertTrue(any("<b>Plazo:</b>" in li or "em-f-sin" in li for li in filas))
+        self.assertTrue(all("Ver en el BOE" in li for li in filas))
+        self.assertTrue(all('data-o="' in li and 'data-p="' in li for li in filas))
+        self.assertTrue(all("em-c-" in li[:120] for li in filas))
+
     def test_noindex_sin_oposiciones(self):
+
         """Las fichas con 0 oposiciones (p. ej. Zamora) siguen en noindex."""
         h, _ = h_prueba(self.carpeta)
         salidas = em.generar_paginas(h, self.estado)
