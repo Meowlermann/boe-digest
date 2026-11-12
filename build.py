@@ -6184,7 +6184,7 @@ def nombre_grupo(largo: str) -> str:
 def buscador_diputados(fichas: list, por_prov: dict) -> str:
     """Tanda 3-A: arriba de /diputados/, antes del hemiciclo. Formularios
     nativos con <label>; assets/dip-busca.js resuelve la navegación (no hay
-    backend). Sin JS queda la lista de enlaces de #circunscripciones."""
+    backend). Sin JS quedan #circunscripciones y el listado completo (#todos)."""
     provs = "".join(f'<option value="provincia-{esc_attr(_slug_txt(p))}.html">{esc_html(p)}</option>'
                     for p in sorted(por_prov))
     nombres = "".join(f'<option value="{esc_attr(f["natural"])}" data-s="{esc_attr(f["slug"])}">'
@@ -6202,8 +6202,32 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
         '<span class="dip-busca-c"><input id="dip-nom" name="n" type="search" list="dip-nombres" autocomplete="off" '
         f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
         '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
-        f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a></p>'
+        f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a>'
+        f' · <a href="#todos">Los {len(fichas)} diputados, uno a uno →</a></p>'
         '<script src="../assets/dip-busca.js" defer></script></section>')
+
+
+
+
+def lista_completa_diputados(fichas: list) -> str:
+    """Todos los diputados, enlazados en el HTML, en orden alfabético.
+    No depende de JavaScript ni de un fetch."""
+    if not fichas:
+        return ""
+    filas = []
+    for f in sorted(fichas, key=lambda x: (_sin_tildes(x["natural"]), x["natural"])):
+        grupo = esc_html(f.get("sigla") or f.get("partido") or "")
+        circ = esc_html(f.get("circunscripcion") or "")
+        meta = " · ".join(x for x in (grupo, circ) if x)
+        filas.append(
+            f'<li><a href="{esc_attr(f["slug"])}.html">{esc_html(f["natural"])}</a>'
+            + (f'<span class="ref">{meta}</span>' if meta else "")
+            + "</li>")
+    n = len(fichas)
+    return (
+        f'<h2 class="rotulo" id="todos">Los {n} diputados</h2>'
+        f'<p class="dip-lista-nota">Uno a uno, en orden alfabético de nombre.</p>'
+        f'<ul class="dip-lista">{"".join(filas)}</ul>')
 
 
 def plantilla_con_aviso(plantilla: str) -> str:
@@ -6549,7 +6573,8 @@ def renderizar_diputados(fichas: list) -> list:
         f'<ul class="provincias">{grupos_lista}</ul>'
         f'<h2 class="rotulo" id="circunscripciones">Por circunscripción</h2>'
         f'<ul class="provincias">{provincias}</ul>'
-        f'<script src="../assets/parlamento.js" defer></script>')
+        + lista_completa_diputados(fichas)
+        + f'<script src="../assets/parlamento.js" defer></script>')
     url = f"{SITE_URL}diputados/"
     # Tanda 3-A v2: SOLO en el índice, el buscador va bajo la entradilla y
     # antes del aviso de legislatura y de la tabla (fichas de provincia y

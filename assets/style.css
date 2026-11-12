@@ -1890,3 +1890,22 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .dip-busca-msg:empty{display:none}
 .dip-busca-sin{margin:2px 0 0;font-size:.9rem}
 /* --- fin /diputados/ buscador */
+/* --- /diputados/ listado completo (enlazado interno). Sin tarjetas ni subrayado. */
+.dip-lista-nota{margin:0 0 8px;font-size:.9rem;line-height:1.45;color:var(--ink-soft)}
+.dip-lista{list-style:none;padding:0;margin:8px 0 26px;border-top:1px solid var(--border)}
+.dip-lista li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  padding:0;margin:0;border-bottom:1px solid var(--border)}
+.dip-lista a{flex:1;min-width:0;padding:8px 4px;color:var(--ink);font-weight:600;font-size:14px;
+  text-decoration:none;overflow-wrap:anywhere}
+.dip-lista a:hover{color:var(--red-ink)}
+.dip-lista a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.dip-lista .ref{font:600 12px/1.4 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-soft);
+  white-space:nowrap;padding:8px 4px 8px 0}
+@media (max-width:759px){
+  .dip-lista li{flex-wrap:wrap;gap:0 12px}
+  .dip-lista a{flex:1 1 100%;padding-bottom:2px}
+  .dip-lista .ref{padding:0 4px 8px;white-space:normal}
+}
+@media (min-width:760px){.dip-lista{column-count:2;column-gap:32px}.dip-lista li{break-inside:avoid}}
+/* --- fin /diputados/ listado completo */
+
