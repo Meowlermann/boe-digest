@@ -153,10 +153,17 @@ jobs:
           retention-days: 30
 
       # render: el mismo criterio que ci.yml (un grave no se despliega).
-      # diario/archivo: la salud informa, no bloquea; la edición sale siempre.
+      # diario y archivo (ediciones, repintar): la salud informa, no bloquea;
+      # la edición sale siempre.
+      # reprocesar y nombramientos no pintan una edición completa, así que
+      # no se verifica ni se abre incidencia (evita falsas alarmas como #100).
       - name: Verificar
         id: salud
-        if: always()
+        if: >-
+          always() && (
+            (inputs.modo || 'render') != 'archivo' ||
+            (inputs.archivo_modo != 'reprocesar' && inputs.archivo_modo != 'nombramientos')
+          )
         continue-on-error: ${{ (inputs.modo || 'render') != 'render' }}
         env:
           GH_TOKEN: ${{ github.token }}
@@ -185,7 +192,12 @@ jobs:
           fi
 
       - name: Incidencia de salud
-        if: always() && env.MODO != 'render' && steps.salud.outputs.graves != ''
+        if: >-
+          always() &&
+          env.MODO != 'render' &&
+          steps.salud.outputs.graves != '' &&
+          (env.MODO != 'archivo' ||
+           (inputs.archivo_modo != 'reprocesar' && inputs.archivo_modo != 'nombramientos'))
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
