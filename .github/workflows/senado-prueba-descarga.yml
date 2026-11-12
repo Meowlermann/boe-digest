@@ -23,7 +23,6 @@ on:
 
 permissions:
   contents: read
-  actions: write   # solo para subir el artefacto de la prueba
 
 concurrency:
   group: senado-prueba-descarga-${{ github.ref }}
