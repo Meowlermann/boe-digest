@@ -40,14 +40,20 @@ class FuenteConFecha(unittest.TestCase):
 class AvisoLegal(unittest.TestCase):
     def test_lema_ia_en_aviso_y_plantillas(self):
         self.assertIn(LEMA, pf.AVISO_LEGAL)
+        # El archivo (/ediciones/ y sus meses) acota el lema a «en cada edición»,
+        # porque la cabecera aclara que los títulos del índice son del resumen
+        # automático, sin IA. En el resto de plantillas el lema no cambia.
+        self.assertIn("En cada edición, " + LEMA[0].lower() + LEMA[1:] + ".",
+                     (ROOT / "template_archivo.html").read_text(encoding="utf-8"))
+        for t in ("template_edicion.html", "template.html", "template_norma.html"):
+            self.assertIn(LEMA, (ROOT / t).read_text(encoding="utf-8"), t)
+            self.assertNotIn("En cada edición,", (ROOT / t).read_text(encoding="utf-8"), t)
         plantillas = (
             "template_edicion.html",
             "template.html",
             "template_archivo.html",
             "template_norma.html",
         )
-        for t in plantillas:
-            self.assertIn(LEMA, (ROOT / t).read_text(encoding="utf-8"), t)
         # La frase antigua, que atribuía una revisión humana, no debe quedar
         # en el aviso ni en los pies visibles del sitio.
         textos = [pf.AVISO_LEGAL] + [(ROOT / t).read_text(encoding="utf-8") for t in plantillas]
