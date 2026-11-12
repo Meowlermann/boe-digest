@@ -5230,12 +5230,23 @@ def nombre_provincia(slug: str, por_defecto: str = "") -> str:
     return _NOMBRES_PROVINCIA.get(slug, por_defecto)
 
 
+def nombre_circunscripcion(circ: str) -> str:
+    """El nombre como se escribe: «Las Palmas», no «Palmas (Las)».
+
+    Sale de curated/provincias.json vía nombre_provincia. No altera slugs ni URLs.
+    """
+    circ = (circ or "").strip()
+    if not circ:
+        return ""
+    return nombre_provincia(_slug_txt(circ), circ)
+
+
 def _tarjeta_diputado(f, prefijo=""):
     sigla = f.get("sigla") or f.get("partido") or ""
     emitidos = f.get("si", 0) + f.get("no", 0) + f.get("abstencion", 0)
     return (f'<li class="dip"><a href="{prefijo}{esc_attr(f["slug"])}.html">'
             f'<span class="dip-nombre">{esc_html(f["natural"])}</span>'
-            f'<span class="dip-meta">{esc_html(sigla)} · {esc_html(f["circunscripcion"])}</span>'
+            f'<span class="dip-meta">{esc_html(sigla)} · {esc_html(nombre_circunscripcion(f.get("circunscripcion") or ""))}</span>'
             f'<span class="dip-cifras">{f["intervenciones"]} intervenciones'
             # «votaciones» es el número de votaciones en las que figura en el
             # listado nominal, que es el mismo para casi toda la cámara: dicho
@@ -6185,10 +6196,11 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
     """Tanda 3-A: arriba de /diputados/, antes del hemiciclo. Formularios
     nativos con <label>; assets/dip-busca.js resuelve la navegación (no hay
     backend). Sin JS quedan #circunscripciones y el listado completo (#todos)."""
-    provs = "".join(f'<option value="provincia-{esc_attr(_slug_txt(p))}.html">{esc_html(p)}</option>'
+    provs = "".join(f'<option value="provincia-{esc_attr(_slug_txt(p))}.html">{esc_html(nombre_circunscripcion(p))}</option>'
                     for p in sorted(por_prov))
-    nombres = "".join(f'<option value="{esc_attr(f["natural"])}" data-s="{esc_attr(f["slug"])}">'
-                      for f in sorted(fichas, key=lambda f: _sin_tildes(f["natural"])))
+    nombres = "".join(
+        f'<option value="{esc_attr(f.get("nombre") or f["natural"])}" data-s="{esc_attr(f["slug"])}">'
+        for f in sorted(fichas, key=lambda f: _sin_tildes(f.get("nombre") or f["natural"])))
     return (
         '<section class="dip-busca" aria-labelledby="dip-busca-t">'
         f'<p class="dip-busca-leg" id="dip-busca-t"><b>Busca a tus diputados</b> · <b>{LEGISLATURA_DISUELTA} (disuelta)</b> · '
@@ -6209,25 +6221,57 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
 
 
 
+def letra_apellido(nombre: str) -> str:
+    """Primera letra del apellido, tildes plegadas. Vacío si no es A–Z ni Ñ."""
+    c = (_sin_tildes(nombre or "")[:1] or "").upper()
+    if c == "Ñ" or ("A" <= c <= "Z"):
+        return c
+    return ""
+
+
 def lista_completa_diputados(fichas: list) -> str:
-    """Todos los diputados, enlazados en el HTML, en orden alfabético.
-    No depende de JavaScript ni de un fetch."""
+    """Todos los diputados, enlazados en el HTML, por apellido.
+    Usa el campo oficial «nombre» («Santana Aguilera, Ada»). Sin JS ni details."""
     if not fichas:
         return ""
-    filas = []
-    for f in sorted(fichas, key=lambda x: (_sin_tildes(x["natural"]), x["natural"])):
+
+    def mostrado(f):
+        return (f.get("nombre") or f.get("natural") or "").strip()
+
+    ordenadas = sorted(fichas, key=lambda f: (_sin_tildes(mostrado(f)), mostrado(f)))
+    grupos: dict[str, list] = {}
+    for f in ordenadas:
+        grupos.setdefault(letra_apellido(mostrado(f)) or "#", []).append(f)
+
+    def fila(f):
         grupo = esc_html(f.get("sigla") or f.get("partido") or "")
-        circ = esc_html(f.get("circunscripcion") or "")
+        circ = esc_html(nombre_circunscripcion(f.get("circunscripcion") or ""))
         meta = " · ".join(x for x in (grupo, circ) if x)
-        filas.append(
-            f'<li><a href="{esc_attr(f["slug"])}.html">{esc_html(f["natural"])}</a>'
+        return (
+            f'<li><a href="{esc_attr(f["slug"])}.html" title="{esc_attr(mostrado(f))}">{esc_html(mostrado(f))}</a>'
             + (f'<span class="ref">{meta}</span>' if meta else "")
             + "</li>")
+
+    abecedario = [L for L in "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ" if L in grupos]
+    if "#" in grupos:
+        abecedario.append("#")
+    az = "".join(
+        f'<a href="#letra-{esc_attr(L.lower())}">{esc_html(L)}</a>' for L in abecedario)
+    bloques = []
+    for L in abecedario:
+        lis = "".join(fila(f) for f in grupos[L])
+        bloques.append(
+            f'<div class="dip-letra" id="letra-{esc_attr(L.lower())}">'
+            f'<h3 class="dip-letra-t">{esc_html(L)}'
+            f'<a class="dip-volver" href="#todos">Volver arriba</a></h3>'
+            f'<ul class="dip-lista">{lis}</ul>'
+            "</div>")
     n = len(fichas)
     return (
         f'<h2 class="rotulo" id="todos">Los {n} diputados</h2>'
-        f'<p class="dip-lista-nota">Uno a uno, en orden alfabético de nombre.</p>'
-        f'<ul class="dip-lista">{"".join(filas)}</ul>')
+        f'<p class="dip-lista-nota">Uno a uno, en orden alfabético de apellido.</p>'
+        f'<nav class="dip-az" aria-label="Índice por letra">{az}</nav>'
+        + "".join(bloques))
 
 
 def plantilla_con_aviso(plantilla: str) -> str:
@@ -6341,7 +6385,7 @@ def renderizar_diputados(fichas: list) -> list:
         ficha = (
             f'<dt>Grupo</dt><dd>{esc_html(nombre_grupo(f["grupo"]) or "—")}</dd>'
             f'<dt>Partido</dt><dd>{esc_html(f["partido"] or "—")}</dd>'
-            f'<dt>Circunscripción</dt><dd>{esc_html(f["circunscripcion"] or "—")}</dd>'
+            f'<dt>Circunscripción</dt><dd>{esc_html(nombre_circunscripcion(f["circunscripcion"]) or "—")}</dd>'
             f'<dt>Escaño desde</dt><dd>{esc_html(f["alta"] or "—")}</dd>'
             f'<dt>Intervenciones</dt><dd>{f["intervenciones"]}</dd>' + organos)
 
@@ -6422,7 +6466,7 @@ def renderizar_diputados(fichas: list) -> list:
         if f["circunscripcion"]:
             ps_dip = _slug_txt(f["circunscripcion"])
             rel.append(f'<a class="srclink" href="provincia-{esc_attr(ps_dip)}.html">'
-                       f'Diputados por {esc_html(f["circunscripcion"])}</a>')
+                       f'Diputados por {esc_html(nombre_circunscripcion(f["circunscripcion"]))}</a>')
             rel.append(f'<a class="srclink" href="../provincias/{esc_attr(ps_dip)}.html">'
                        f'Todo sobre {esc_html(nombre_provincia(ps_dip, f["circunscripcion"]))}</a>')
 
@@ -6542,7 +6586,7 @@ def renderizar_diputados(fichas: list) -> list:
         f'<span>{esc_html(corto)}</span><b>{conteo.get(largo, 0)}</b></a></li>'
         for largo, corto, slug, color in cd.GRUPOS if conteo.get(largo))
     provincias = "".join(
-        f'<li><a href="provincia-{_slug_txt(p)}.html">{esc_html(p)}'
+        f'<li><a href="provincia-{_slug_txt(p)}.html">{esc_html(nombre_circunscripcion(p))}'
         f'<span class="ref">{len(v)}</span></a></li>'
         for p, v in sorted(por_prov.items()))
     activos = sorted(fichas, key=lambda f: -f["intervenciones"])[:15]
