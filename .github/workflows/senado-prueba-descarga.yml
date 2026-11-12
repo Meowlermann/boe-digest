@@ -8,7 +8,7 @@
 # pull_request que toque este propio workflow. workflow_dispatch no está
 # incluido a propósito: solo funciona en la rama por defecto.
 
-name: Senado: prueba de descarga
+name: "Senado: prueba de descarga"
 
 on:
   push:
