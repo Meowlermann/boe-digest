@@ -22,6 +22,9 @@ class TextoYAviso(unittest.TestCase):
         self.assertNotIn("redacción determinista", pf.AVISO_LEGAL)
         self.assertIn("en cada pieza", pf.AVISO_LEGAL)
         self.assertNotIn("al pie de cada edición", pf.AVISO_LEGAL)
+        self.assertNotIn("revisados por la redacción", pf.AVISO_LEGAL)
+        self.assertNotIn("ayuda de IA", pf.AVISO_LEGAL)
+        self.assertIn("Titulares y entradillas redactados con IA a partir del BOE", pf.AVISO_LEGAL)
         self.assertEqual(pf.CONTACTO, "contacto@terceracamara.es")
         self.assertNotIn("@gmail", pf.AVISO_LEGAL)
         self.assertIn("sección Parlamento", pf.AVISO_LEGAL)
@@ -123,8 +126,10 @@ class ListasConMarca(unittest.TestCase):
             html = (ed / "index.html").read_text(encoding="utf-8")
         self.assertIn("TITULAR GEMINI DEL DÍA", html)
         self.assertIn("TITULAR DETERMINISTA", html)
-        # Marca corta solo junto al día con IA
-        self.assertEqual(html.count("Titular con IA"), 1)
+        # La nota de lista mezclada cita la marca; la marca corta solo va junto al día con IA.
+        self.assertIn(build.ARCHIVO_NOTA_TITULARES_MEZCLA, html)
+        self.assertNotIn("sin IA", html)
+        self.assertEqual(html.count("Titular con IA"), 2)
         self.assertNotIn("Texto oficial en el BOE", html)  # corta, sin enlace BOE
         i_ia = html.index("TITULAR GEMINI DEL DÍA")
         i_no = html.index("TITULAR DETERMINISTA")
@@ -145,7 +150,7 @@ class ListasConMarca(unittest.TestCase):
         self.assertIn("txt.php?id=BOE-A-2026-1", html)
         self.assertIn("CON IA", html)
 
-    def test_nota_archivo_solo_si_ninguna_fila_ia(self):
+    def test_nota_archivo_segun_haya_filas_con_ia(self):
         self.assertEqual(
             build.ARCHIVO_NOTA_TITULARES,
             "Títulos del resumen automático, sin IA; "
@@ -157,11 +162,23 @@ class ListasConMarca(unittest.TestCase):
         html = build.nota_archivo_titulares_html(["2026-11-07"], {"2026-11-07": dia_no})
         self.assertIn("archivo-nota-ia", html)
         self.assertIn(build.ARCHIVO_NOTA_TITULARES, html)
+
         dia_ia = {"id": "2026-11-09", "boe": {"stories": [
             {"headline": "TITULAR GEMINI", "size": "lead", "redaccion_ia": True,
              "ref": "BOE-A-2026-1"}]}}
-        self.assertEqual(
-            build.nota_archivo_titulares_html(["2026-11-09"], {"2026-11-09": dia_ia}), "")
+        # Página mezclada: línea cierta, nunca «sin IA».
+        mezcla = build.nota_archivo_titulares_html(
+            ["2026-11-09", "2026-11-07"], {"2026-11-09": dia_ia, "2026-11-07": dia_no})
+        self.assertIn(build.ARCHIVO_NOTA_TITULARES_MEZCLA, mezcla)
+        self.assertIn("«Titular con IA»", mezcla)
+        self.assertNotIn("sin IA", mezcla)
+
+        # Todas las filas con IA: texto equivalente, tampoco «sin IA».
+        todo = build.nota_archivo_titulares_html(["2026-11-09"], {"2026-11-09": dia_ia})
+        self.assertIn(build.ARCHIVO_NOTA_TITULARES_TODO_IA, todo)
+        self.assertNotIn("sin IA", todo)
+        self.assertNotIn(build.ARCHIVO_NOTA_TITULARES, todo)
+        self.assertNotIn(build.ARCHIVO_NOTA_TITULARES, mezcla)
 
     def test_archivo_render_incluye_nota_cuando_sin_ia(self):
         dia_no = {"id": "2026-11-07", "boe": {"stories": [
@@ -180,6 +197,34 @@ class ListasConMarca(unittest.TestCase):
         self.assertIn(build.ARCHIVO_NOTA_TITULARES, html)
         self.assertIn("archivo-nota-ia", html)
         self.assertNotIn(">Titular con IA<", html)
+
+    def test_archivo_render_mezcla_linea_y_marca(self):
+        dia_ia = {"id": "2026-10-15", "boe": {"stories": [
+            {"headline": "TITULAR GEMINI DEL DÍA", "size": "lead", "redaccion_ia": True,
+             "ref": "BOE-A-2026-1", "url": "https://www.boe.es/x", "cat": "otros"}]}}
+        dia_no = {"id": "2026-10-14", "boe": {"stories": [
+            {"headline": "TITULAR DETERMINISTA", "size": "lead",
+             "ref": "BOE-A-2026-2", "url": "https://www.boe.es/y", "cat": "otros"}]}}
+        entradas = [{"id": "2026-10-15", "url": "https://x/ediciones/2026-10-15.html"},
+                    {"id": "2026-10-14", "url": "https://x/ediciones/2026-10-14.html"}]
+        with tempfile.TemporaryDirectory() as tmp:
+            ed = pathlib.Path(tmp) / "ediciones"
+            ed.mkdir()
+            with mock.patch.object(build, "EDICIONES_DIR", ed), \
+                 mock.patch.object(build, "TEMPLATE_ARCHIVO", ROOT / "template_archivo.html"), \
+                 mock.patch.object(build, "escribir_si_cambia",
+                                   lambda path, texto: path.write_text(texto, encoding="utf-8")):
+                build.renderizar_archivo(entradas, [dia_ia, dia_no])
+            indice = (ed / "index.html").read_text(encoding="utf-8")
+            octubre = (ed / "2026-10.html").read_text(encoding="utf-8")
+        for html, nombre in ((indice, "índice"), (octubre, "octubre")):
+            self.assertIn(build.ARCHIVO_NOTA_TITULARES_MEZCLA, html, nombre)
+            self.assertNotIn("sin IA", html, nombre)
+            self.assertEqual(html.count("Titular con IA"), 2, nombre)  # nota + marca de la fila
+            self.assertIn("TITULAR GEMINI DEL DÍA", html)
+            self.assertIn("TITULAR DETERMINISTA", html)
+            # El pie habla de cada edición, no de la lista: no se contradicen.
+            self.assertIn("En cada edición, titulares y entradillas redactados con IA", html)
 
     def test_buscar_marca_completa_con_txt_php(self):
         html = build.marca_ia_html({"redaccion_ia": True, "ref": "BOE-A-2026-23384"})
