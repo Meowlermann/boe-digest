@@ -1,0 +1,69 @@
+# Senado: prueba de descarga
+#
+# Solo lectura: consulta los ficheros abiertos del Senado desde un runner
+# de GitHub Actions, guarda el resultado como artefacto y no publica, no
+# escribe en `datos` y no toca Pages.
+#
+# No hace falta fusionar a main. El disparador es un push a esta rama o un
+# pull_request que toque este propio workflow. workflow_dispatch no está
+# incluido a propósito: solo funciona en la rama por defecto.
+
+name: Senado: prueba de descarga
+
+on:
+  push:
+    branches: [senado/prueba-descarga]
+    paths:
+      - ".github/workflows/senado-prueba-descarga.yml"
+      - "tools/senado-prueba-descarga.sh"
+  pull_request:
+    paths:
+      - ".github/workflows/senado-prueba-descarga.yml"
+      - "tools/senado-prueba-descarga.sh"
+
+permissions:
+  contents: read
+  actions: write   # solo para subir el artefacto de la prueba
+
+concurrency:
+  group: senado-prueba-descarga-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  descargar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Consultar los ficheros abiertos del Senado
+        id: consulta
+        # El script no falla el job si el origen responde 403: ese es
+        # precisamente un resultado de la prueba. Falla solo si curl no
+        # llega a ejecutarse o no se puede escribir la salida.
+        env:
+          SENADO_PRUEBA_DIR: ${{ runner.temp }}/senado-prueba
+        run: bash tools/senado-prueba-descarga.sh
+
+      - name: Publicar el resumen en el job
+        if: always()
+        env:
+          SENADO_PRUEBA_DIR: ${{ runner.temp }}/senado-prueba
+        run: |
+          if [ -f "$SENADO_PRUEBA_DIR/resumen.txt" ]; then
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat "$SENADO_PRUEBA_DIR/resumen.txt" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No se generó el resumen." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Guardar el artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: senado-prueba-descarga
+          path: ${{ runner.temp }}/senado-prueba
+          if-no-files-found: warn
+          retention-days: 14
