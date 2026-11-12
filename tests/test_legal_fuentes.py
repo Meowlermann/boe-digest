@@ -66,6 +66,11 @@ class AvisoLegal(unittest.TestCase):
         self.assertIn("congreso.es/cem/aviso-legal", pf.AVISO_LEGAL)
         self.assertIn("lo patrocina ni lo respalda", pf.AVISO_LEGAL)
 
+    def test_revision_del_aviso(self):
+        self.assertEqual(pf.REVISION_AVISO, "2026-11-12")
+        self.assertEqual(pf.REVISION, "2026-11-02")
+        self.assertEqual(build.fmt_date_es(pf.REVISION_AVISO), "jueves, 12 de noviembre de 2026")
+
     def test_sin_datos_personales(self):
         self.assertNotIn("@gmail", pf.AVISO_LEGAL)
         self.assertEqual(pf.CONTACTO, "contacto@terceracamara.es")

@@ -27,6 +27,8 @@ de 2026 en sus propias webs; solo los que tienen uso gratuito.
 from __future__ import annotations
 
 REVISION = "2026-11-02"
+# El aviso legal cambió su texto sobre la IA el 12-11-2026; las otras dos no.
+REVISION_AVISO = "2026-11-12"
 CONTACTO = "contacto@terceracamara.es"
 
 
@@ -223,17 +225,18 @@ def generar_paginas(h: dict) -> list:
     """/seguir/index.html, /privacidad.html y /aviso-legal.html."""
     esc, attr = h["esc_html"], h["esc_attr"]
     site, raiz, plantilla = h["site_url"], h["raiz"], h["plantilla"]
-    fecha = h["fmt_date_es"](REVISION)
     salidas = []
 
-    def pagina(carpeta, nombre, ruta_url, titulo, desc, kicker, h1, entradilla, cuerpo, tipo):
+    def pagina(carpeta, nombre, ruta_url, titulo, desc, kicker, h1, entradilla, cuerpo, tipo,
+               revision=REVISION):
+        fecha = h["fmt_date_es"](revision)
         url = site + ruta_url
         h["pagina_suelta"](plantilla, carpeta, nombre, {
             "TITLE": esc(f"{titulo} | La Tercera Cámara"),
             "META_DESC": attr(desc),
             "CANONICAL": url,
             "JSONLD": h["jsonld_script"]([{"@type": tipo, "url": url, "name": titulo,
-                                           "inLanguage": "es-ES", "dateModified": REVISION}]),
+                                           "inLanguage": "es-ES", "dateModified": revision}]),
             "EDITION_DATE": esc(f"Revisado el {fecha}"),
             "MIGA": f'<a href="/">Portada</a> › <span aria-current="page">{esc(h1)}</span>',
             "KICKER": esc(kicker),
@@ -244,7 +247,7 @@ def generar_paginas(h: dict) -> list:
             "FUENTE": f'Contacto: <a class="srclink" href="mailto:{CONTACTO}">{CONTACTO}</a>.',
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
-        salidas.append({"url": url, "lastmod": REVISION})
+        salidas.append({"url": url, "lastmod": revision})
 
     pagina(raiz / "seguir", "index.html", "seguir/", "Seguir La Tercera Cámara con RSS",
            "Cómo seguir a cada diputado, provincia, materia, iniciativa o ministerio con RSS, "
@@ -263,5 +266,5 @@ def generar_paginas(h: dict) -> list:
            "reutilización. No es una fuente oficial.",
            "Información legal", "Aviso legal",
            "Quién está detrás, de dónde salen los datos y qué valor tienen.",
-           AVISO_LEGAL, "WebPage")
+           AVISO_LEGAL, "WebPage", revision=REVISION_AVISO)
     return salidas
