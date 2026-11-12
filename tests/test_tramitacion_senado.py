@@ -95,7 +95,7 @@ class NotaCaducadas(unittest.TestCase):
     def test_cifra_dinamica_y_sin_constante_47(self):
         self.assertIn("3 proposiciones caducaron", tr.texto_nota_caducadas_senado(3))
         self.assertIn("6 de octubre de 2026", tr.texto_nota_caducadas_senado(3))
-        self.assertTrue(tr.texto_nota_caducadas_senado(1).startswith("Esta proposición caducó"))
+        self.assertTrue(tr.texto_nota_caducadas_senado(1).startswith("Esta proposición caducó al disolverse"))
         self.assertEqual(tr.texto_nota_caducadas_senado(0), "")
         src = pathlib.Path(tr.__file__).read_text(encoding="utf-8")
         self.assertNotIn("47", src)
@@ -144,8 +144,8 @@ class PaginasEstadoVacias(unittest.TestCase):
         html = (self.carpeta / "autor-senado.html").read_text(encoding="utf-8")
         self.assertIn("Lo que ha presentado el Senado", html)
         self.assertNotIn("Lo que ha presentado Senado y", html)
-        self.assertIn("Estas 2 proposiciones caducaron con la disolución de las Cortes "
-                      "del 6 de octubre de 2026.", html)
+        self.assertIn("Estas 2 proposiciones caducaron al disolverse las Cortes "
+                      "el 6 de octubre de 2026.", html)
         # Title y description no se tocan (siguen el patrón anterior).
         self.assertIn("<title>Iniciativas de Senado: en qué punto están | La Tercera Cámara</title>", html)
         self.assertIn('content="Las 2 iniciativas legislativas presentadas por Senado', html)

@@ -286,14 +286,14 @@ def autor_en_frase(autor: str) -> str:
 
 def texto_nota_caducadas_senado(n: int) -> str:
     """Nota en lenguaje llano sobre las proposiciones del Senado caducadas
-    con la disolución de las Cortes. `n` sale de los datos, no va fijo."""
+    al disolverse las Cortes. `n` sale de los datos, no va fijo."""
     if n <= 0:
         return ""
     if n == 1:
-        return ("Esta proposición caducó con la disolución de las Cortes "
-                "del 6 de octubre de 2026.")
-    return (f"Estas {n} proposiciones caducaron con la disolución de las Cortes "
-            "del 6 de octubre de 2026.")
+        return ("Esta proposición caducó al disolverse las Cortes "
+                "el 6 de octubre de 2026.")
+    return (f"Estas {n} proposiciones caducaron al disolverse las Cortes "
+            "el 6 de octubre de 2026.")
 
 
 def slug_autor(autor: str) -> str:
