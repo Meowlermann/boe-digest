@@ -88,7 +88,9 @@ class ContratoFuente(unittest.TestCase):
         src = pathlib.Path(build.__file__).read_text(encoding="utf-8")
         self.assertIn('salidas.append({"url": url, "lastmod": lastmod_diputado(f, resumen_preguntas)})', src)
         self.assertIn("lastmod=lastmod_listado_diputados(gente, resumen_preguntas)", src)
-        self.assertIn('salidas.append({"url": url, "lastmod": lastmod_listado_diputados(fichas, resumen_preguntas)})', src)
+        self.assertIn("lastmod_lista = lastmod_listado_diputados(fichas, resumen_preguntas)", src)
+        self.assertIn('salidas.append({"url": url, "lastmod": lastmod_lista})', src)
+        self.assertIn('salidas.append({"url": url_todos, "lastmod": lastmod_lista})', src)
         # La línea de barrido sigue en la fuente visible; no se usa como lastmod.
         self.assertIn("Datos del Congreso actualizados el", src)
         self.assertIn("fecha_datos_congreso()", src)

@@ -1071,6 +1071,7 @@ h1.display{
 /* --- Móvil: barra inferior y hojas --------------------------------------- */
 @media (max-width:720px){
   body{ padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
+  html{ scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px)); }
   .nav{ position:static; border:0; margin:0; min-height:0; background:none; }
   .nav-in{ min-height:0; }
   .nav-marca, .pilar-b, .nav-buscar{ display:none; }
@@ -1890,3 +1891,51 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .dip-busca-msg:empty{display:none}
 .dip-busca-sin{margin:2px 0 0;font-size:.9rem}
 /* --- fin /diputados/ buscador */
+/* --- /diputados/ listado completo (enlazado interno). Sin tarjetas, subrayado ni details. */
+.dip-lista-nota{margin:0 0 8px;font-size:.9rem;line-height:1.45;color:var(--ink-soft)}
+.dip-az{display:flex;flex-wrap:wrap;gap:0;margin:0 0 10px;padding:0;border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2;background:var(--surface)}
+/* Anclas: la A–Z es sticky (~90 px en escritorio; 3 filas a 375 px). */
+.dip-letra, #todos{scroll-margin-top:calc(90px + 8px)}
+.dip-az a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;
+  padding:0 6px;font:600 13px/1 'Work Sans',system-ui,sans-serif;color:var(--ink);text-decoration:none}
+.dip-az a:hover{color:var(--red-ink)}
+.dip-az a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.dip-letra{margin:0 0 2px}
+.dip-letra-t{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  margin:10px 0 2px;font:600 13px/1.2 'Work Sans',system-ui,sans-serif;
+  color:var(--ink-soft);letter-spacing:.04em;text-transform:uppercase}
+.dip-volver{font:600 12px/1.2 'Work Sans',system-ui,sans-serif;color:var(--ink-soft);
+  text-decoration:none;letter-spacing:0;text-transform:none}
+.dip-volver:hover{color:var(--red-ink)}
+.dip-volver:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.dip-lista{list-style:none;padding:0;margin:0}
+.dip-lista li{margin:0;padding:0;border-bottom:1px solid var(--border)}
+.dip-lista a{display:block;padding:3px 4px 0;color:var(--ink);font-weight:600;font-size:14px;
+  line-height:1.2;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dip-lista a:hover{color:var(--red-ink)}
+.dip-lista a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.dip-lista .ref{display:block;padding:0 4px 3px;font:500 11px/1.2 "IBM Plex Mono",ui-monospace,monospace;
+  color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:760px){
+  .dip-lista{column-count:2;column-gap:28px}
+  .dip-lista li{break-inside:avoid}
+}
+@media (max-width:720px){
+  /* Barra inferior y A–Z sticky: no deben tapar letras ni anclas. */
+  .dip-az{scroll-margin-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  /* A 375 px el cuerpo deja 343 px; 8×44 no caben y la Z queda bajo la barra.
+     A ancho completo caben 8 letras (3 filas) y P–Z quedan por encima. */
+  .dip-az{margin-left:-16px;margin-right:-16px;width:calc(100% + 32px)}
+  .dip-letra, #todos{
+    scroll-margin-top:calc(3 * 44px + 8px);
+    scroll-margin-bottom:calc(76px + env(safe-area-inset-bottom,0px));
+  }
+  /* En /diputados/todos/: compacta un poco la cabecera para que quepan
+     más filas de la A–Z por encima de la barra inferior, sin quitar texto. */
+  article:has(.dip-az) .entradilla{margin-bottom:8px}
+  article:has(.dip-az) .aviso-leg{margin-bottom:8px;padding:.5rem .8rem;line-height:1.4}
+  article:has(.dip-az) .ficha{margin-bottom:8px;padding:8px 12px;gap:4px 16px}
+}
+/* --- fin /diputados/ listado completo */
+
