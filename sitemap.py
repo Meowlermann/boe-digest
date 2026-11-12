@@ -12,7 +12,7 @@ Search Console no cambia) con un fichero por sección:
   sitemap-otros.xml            el resto (portada, /normas/, temas, plazos…)
 
 lastmod nunca es la fecha del pase. Cada generador ya da la fecha real cuando
-la tiene (normas: su BOE; ediciones: su manifiesto; tramitación: su último
+la tiene (normas: su BOE; ediciones: la fecha de la edición; tramitación: su último
 hito…). Las páginas cuyo generador solo sabe decir «hoy» (diputados, índices,
 buscador…) pasan por `estabilizar`: se guarda una huella del contenido
 principal (sin cabecera, pie, JSON-LD, ?v= ni «hace N días») en

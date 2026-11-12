@@ -1,4 +1,5 @@
 """Sitemap por secciones con fecha real (tanda 8, punto 1)."""
+import pathlib
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -107,6 +108,17 @@ class FechaReal(unittest.TestCase):
         self.assertEqual(e[0]["lastmod"], "2026-10-03")
         self.assertEqual(llamadas, [])
         self.assertEqual(est, {})
+
+    def test_edicion_usa_su_fecha_aunque_el_manifiesto_diga_hoy(self):
+        """Un cambio de plantilla (pie, navegación) no debe fechar la edición como hoy."""
+        entradas = [
+            {"id": "2026-09-27", "url": S + "ediciones/2026-09-27.html", "lastmod": "2026-11-12"},
+            {"id": "2026-10-28", "url": S + "ediciones/2026-10-28.html", "lastmod": "2026-11-12"},
+        ]
+        fechas = [e.get("id") or e["lastmod"] for e in entradas]
+        self.assertEqual(fechas, ["2026-09-27", "2026-10-28"])
+        src = (pathlib.Path(__file__).resolve().parent.parent / "build.py").read_text(encoding="utf-8")
+        self.assertIn('{"url": e["url"], "lastmod": e.get("id") or e["lastmod"]}', src)
 
 
 if __name__ == "__main__":

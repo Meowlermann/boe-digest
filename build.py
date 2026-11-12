@@ -7094,7 +7094,9 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
     normas = [f["lastmod"] for f in fichas if "/normas/" in f["url"]]
     todas = [{"url": SITE_URL, "lastmod": ult_edicion},
              {"url": f"{SITE_URL}ediciones/", "lastmod": ult_edicion}]
-    todas += [{"url": e["url"], "lastmod": e["lastmod"]} for e in entradas]
+    # Fecha de la edición (su id), no la del manifiesto: un cambio de plantilla
+    # común (el pie, la navegación, ?v=) no debe poner «hoy» a ediciones antiguas.
+    todas += [{"url": e["url"], "lastmod": e.get("id") or e["lastmod"]} for e in entradas]
     if fichas:
         todas.append({"url": f"{SITE_URL}normas/", "lastmod": max(normas, default=ult_edicion)})
     todas += [{"url": f["url"], "lastmod": f["lastmod"]} for f in fichas]
@@ -7111,8 +7113,8 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
         except Exception:                                     # noqa: BLE001
             return None
 
-    # Las ediciones ya traen su fecha de cambio real (manifiesto + huellas de
-    # renderizar_ediciones): un «hoy» ahí es un cambio de verdad y no se toca.
+    # Las ediciones no pasan por estabilizar: su lastmod ya es la fecha de la
+    # edición (el id). El manifiesto puede llevar «hoy» si solo cambió el pie.
     reales = {e["url"] for e in entradas}
     propias = [x for x in todas if x["url"] in reales]
     otras, nuevo = sm.estabilizar([x for x in todas if x["url"] not in reales], hoy, leer, estado)
