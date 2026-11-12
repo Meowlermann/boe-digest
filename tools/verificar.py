@@ -1395,8 +1395,8 @@ def comprobar_tamanos(raiz: pathlib.Path, tam_main: int | None = None,
 NS_ATOM = "{http://www.w3.org/2005/Atom}"
 MAX_ENTRADAS_CANAL = 50            # feeds.MAX_ENTRADAS
 RE_RFC3339 = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$")
-# Ficheros XML publicados que no son canales.
-RE_NO_CANAL = re.compile(r"^sitemap(-\d+)?\.xml$")
+# Índice, particiones (sitemap-2.xml) y sitemaps por sección.
+RE_NO_CANAL = re.compile(r"^sitemap(-[a-z0-9-]+)?\.xml$")
 
 
 def ficheros_canal(raiz: pathlib.Path) -> list[pathlib.Path]:

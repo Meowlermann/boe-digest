@@ -153,6 +153,19 @@ class Verificador(unittest.TestCase):
             self.assertEqual([x["fichero"] for x in h], ["diputados/luis.xml"])
             self.assertEqual(h[0]["nivel"], v.GRAVE)
 
+    def test_sitemaps_por_seccion_no_son_feeds(self):
+        with tempfile.TemporaryDirectory() as d:
+            raiz = pathlib.Path(d)
+            for n in ("sitemap.xml", "sitemap-2.xml", "sitemap-normas-2026-10.xml",
+                      "sitemap-otros.xml"):
+                (raiz / n).write_text("<urlset/>")
+            (raiz / "feed.xml").write_text(_canal(), encoding="utf-8")
+            self.assertEqual(v.comprobar_feeds(raiz), [])
+            for n in ("sitemap.xml", "sitemap-2.xml", "sitemap-normas-2026-10.xml",
+                      "sitemap-otros.xml"):
+                self.assertTrue(v.RE_NO_CANAL.match(n), n)
+            self.assertFalse(v.RE_NO_CANAL.match("feed.xml"))
+
     def _pagina(self, cuerpo):
         pagina = ('<!doctype html><html><head><title>t</title><meta name="description" content="d">'
                   '<link rel="canonical" href="https://terceracamara.es/aviso-legal.html"></head>'

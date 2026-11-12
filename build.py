@@ -5247,7 +5247,8 @@ def _tarjeta_diputado(f, prefijo=""):
 
 
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
-                    url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None):
+                    url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None,
+                    lastmod=None):
     filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
@@ -5266,7 +5267,9 @@ def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
         "FUENTE": "Fuente: datos abiertos del Congreso de los Diputados.",
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     })
-    return {"url": url, "lastmod": hoy}
+    # lastmod del sitemap: el máximo de las fichas. Si llega vacío, no
+    # inventamos la fecha del barrido (hoy). El HTML visible no cambia.
+    return {"url": url, "lastmod": lastmod if lastmod is not None else hoy}
 
 
 def _datos_parlamento(orden: list, cd) -> None:
@@ -6230,6 +6233,55 @@ def frase_grupo(largo: str, gente: list, oficial: str = "") -> str:
             f'{LEGISLATURA_DISUELTA}.' + (f' Por circunscripción: {reparto}.' if reparto else "") + '</p>')
 
 
+_RE_FECHA_ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_RE_FECHA_DMY = re.compile(r"^(\d{1,2})/(\d{1,2})/(\d{4})$")
+
+
+def fecha_iso_flex(fecha: str) -> str:
+    """«2026-09-30», «30/9/2026» o «08/08/2023» a ISO. Vacío si no se entiende."""
+    fecha = (fecha or "").strip()
+    if _RE_FECHA_ISO.fullmatch(fecha):
+        return fecha
+    m = _RE_FECHA_DMY.fullmatch(fecha)
+    if not m:
+        return ""
+    d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    try:
+        return dt.date(y, mo, d).isoformat()
+    except ValueError:
+        return ""
+
+
+def lastmod_diputado(ficha: dict, resumen_preguntas: dict | None = None) -> str:
+    """Lastmod del sitemap: última votación, pregunta o intervención.
+
+    Si el diputado no tiene actividad, la fecha de alta en la legislatura.
+    Nunca la del barrido de datos del Congreso.
+    """
+    fechas: list[str] = []
+    for v in ficha.get("ultimos_votos") or []:
+        fechas.append(fecha_iso_flex((v or {}).get("fecha") or ""))
+    for i in ficha.get("ultimas_intervenciones") or []:
+        fechas.append(fecha_iso_flex((i or {}).get("fecha") or ""))
+    resumen = (resumen_preguntas or {}).get(ficha.get("clave") or "") or {}
+    for _exp, dato in resumen.get("ultimas") or []:
+        if not isinstance(dato, dict):
+            continue
+        # La actividad del diputado es presentar la pregunta (p / pr).
+        fechas.append(fecha_iso_flex(dato.get("p") or ""))
+        fechas.append(fecha_iso_flex(dato.get("pr") or ""))
+    activas = [x for x in fechas if x]
+    if activas:
+        return max(activas)
+    return fecha_iso_flex(ficha.get("alta") or "")
+
+
+def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
+    """Para /diputados/ y los índices de grupo (y provincia): el máximo de sus fichas."""
+    fechas = [lastmod_diputado(f, resumen_preguntas) for f in (fichas or [])]
+    return max((x for x in fechas if x), default="")
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -6385,7 +6437,7 @@ def renderizar_diputados(fichas: list) -> list:
             "RELACIONADAS": ("<li>" + " ".join(rel) + "</li>") if rel else "",
             "RELACIONADAS_HIDDEN": "" if rel else "hidden",
         })
-        salidas.append({"url": url, "lastmod": hoy})
+        salidas.append({"url": url, "lastmod": lastmod_diputado(f, resumen_preguntas)})
 
     # --- una página por grupo --------------------------------------------
     por_grupo = {}
@@ -6410,7 +6462,8 @@ def renderizar_diputados(fichas: list) -> list:
             cuerpo_extra=frase_grupo(f"Grupo {corto}", gente, largo),
             # Description byte a byte como en main (prueba de títulos): solo cambia lo visible.
             meta_desc=(f"Ficha de cada uno de los {len(gente)} diputados del {largo}: sus "
-                       f"intervenciones y sus votos en el Pleno.")))
+                       f"intervenciones y sus votos en el Pleno."),
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
 
     # --- una página por provincia ----------------------------------------
     por_prov = {}
@@ -6447,7 +6500,8 @@ def renderizar_diputados(fichas: list) -> list:
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
-                                 f"con su actividad y sus votos.")))
+                                 f"con su actividad y sus votos."),
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
@@ -6527,7 +6581,7 @@ def renderizar_diputados(fichas: list) -> list:
                    "intervenciones cubren toda la legislatura."),
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     })
-    salidas.append({"url": url, "lastmod": hoy})
+    salidas.append({"url": url, "lastmod": lastmod_listado_diputados(fichas, resumen_preguntas)})
     log(f"diputados/: {len(fichas)} fichas, {len(conteo)} grupos, {len(por_prov)} provincias")
     return salidas
 
@@ -7097,64 +7151,69 @@ def renderizar_feeds(fichas_dip: list, todos: list) -> dict:
     return cuenta
 
 
+SITEMAP_ESTADO = ESTADO / "sitemap_lastmod.json"
+
+
+def _fichero_de_url(url: str) -> pathlib.Path | None:
+    if not url.startswith(SITE_URL):
+        return None
+    ruta = url[len(SITE_URL):]
+    return ROOT / (ruta + "index.html" if ruta == "" or ruta.endswith("/") else ruta)
+
+
 def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -> None:
-    """Todas las ediciones, no solo la ventana de render, y con la fecha de
-    modificación real de cada una."""
+    """Índice /sitemap.xml con un sitemap por sección (sitemap.py). lastmod es
+    la fecha real de cada página, nunca la del pase."""
+    import sitemap as sm
     hoy = dt.date.today().isoformat()
-    urls = [f"  <url>\n    <loc>{SITE_URL}</loc>\n    <lastmod>{hoy}</lastmod>\n"
-            "    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>",
-            f"  <url>\n    <loc>{SITE_URL}ediciones/</loc>\n    <lastmod>{hoy}</lastmod>\n"
-            "    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>"]
-    limite = (dt.date.today() - dt.timedelta(days=MAX_DAYS)).isoformat()
-    for e in sorted(entradas, key=lambda x: x["id"], reverse=True):
-        # Dentro de la ventana todavía puede cambiar (curated/);
-        # fuera de ella ya está cerrada, pero nunca "never": se corrigen erratas.
-        freq = "weekly" if e["id"] >= limite else "monthly"
-        urls.append(f"  <url>\n    <loc>{e['url']}</loc>\n    <lastmod>{e['lastmod']}</lastmod>\n"
-                    f"    <changefreq>{freq}</changefreq>\n    <priority>0.7</priority>\n  </url>")
+    fichas = fichas or []
+    # Portada y /ediciones/: la fecha de la edición más reciente (su id), no
+    # la del pase en que se repintó una edición antigua.
+    ult_edicion = max((e.get("id") or e["lastmod"] for e in entradas), default=hoy)
+    normas = [f["lastmod"] for f in fichas if "/normas/" in f["url"]]
+    todas = [{"url": SITE_URL, "lastmod": ult_edicion},
+             {"url": f"{SITE_URL}ediciones/", "lastmod": ult_edicion}]
+    # Fecha de la edición (su id), no la del manifiesto: un cambio de plantilla
+    # común (el pie, la navegación, ?v=) no debe poner «hoy» a ediciones antiguas.
+    todas += [{"url": e["url"], "lastmod": e.get("id") or e["lastmod"]} for e in entradas]
     if fichas:
-        urls.append(f"  <url>\n    <loc>{SITE_URL}normas/</loc>\n    <lastmod>{hoy}</lastmod>\n"
-                    "    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>")
-    for f in sorted(fichas or [], key=lambda x: x["lastmod"], reverse=True):
-        # Una ficha por norma no cambia nunca una vez publicada: el BOE no
-        # reescribe lo publicado, lo corrige con otra disposición.
-        urls.append(f"  <url>\n    <loc>{f['url']}</loc>\n    <lastmod>{f['lastmod']}</lastmod>\n"
-                    f"    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
-    cabecera = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
-    # El protocolo pone el tope en 50.000 URLs o 50 MB por fichero. Con margen:
-    # por encima de 45.000 URLs o 45 MB se parte en sitemap-N.xml y sitemap.xml
-    # pasa a ser un índice de sitemaps (la URL que conocen los buscadores no cambia).
-    MAX_URLS, MAX_BYTES = 45_000, 45 * 1024 * 1024
-    trozos, actual, peso = [], [], len(cabecera) + 20
-    for u in urls:
-        t = len(u.encode("utf-8")) + 1
-        if actual and (len(actual) >= MAX_URLS or peso + t > MAX_BYTES):
-            trozos.append(actual)
-            actual, peso = [], len(cabecera) + 20
-        actual.append(u)
-        peso += t
-    trozos.append(actual)
+        todas.append({"url": f"{SITE_URL}normas/", "lastmod": max(normas, default=ult_edicion)})
+    todas += [{"url": f["url"], "lastmod": f["lastmod"]} for f in fichas]
+
+    try:
+        estado = json.loads(SITEMAP_ESTADO.read_text(encoding="utf-8"))
+    except Exception:                                         # noqa: BLE001
+        estado = {}
+
+    def leer(url):
+        p = _fichero_de_url(url)
+        try:
+            return p.read_text(encoding="utf-8") if p and p.exists() else None
+        except Exception:                                     # noqa: BLE001
+            return None
+
+    # Las ediciones no pasan por estabilizar: su lastmod ya es la fecha de la
+    # edición (el id). El manifiesto puede llevar «hoy» si solo cambió el pie.
+    reales = {e["url"] for e in entradas}
+    propias = [x for x in todas if x["url"] in reales]
+    otras, nuevo = sm.estabilizar([x for x in todas if x["url"] not in reales], hoy, leer, estado)
+    todas = propias + otras
+    # Se conserva lo de URLs que hoy no han pasado por aquí (no se pierde la fecha).
+    estado.update(nuevo)
+    SITEMAP_ESTADO.parent.mkdir(parents=True, exist_ok=True)
+    SITEMAP_ESTADO.write_text(json.dumps(estado, ensure_ascii=False, sort_keys=True, indent=0),
+                              encoding="utf-8")
+
+    ficheros = sm.generar(todas, SITE_URL)
     viejos = {p.name for p in ROOT.glob("sitemap-*.xml")}
-    if len(trozos) == 1:
-        escribir_si_cambia(ROOT / "sitemap.xml", cabecera + "\n".join(urls) + "\n</urlset>\n")
-        nuevos = set()
-    else:
-        nuevos, indice = set(), []
-        for n, trozo in enumerate(trozos, 1):
-            nombre = f"sitemap-{n}.xml"
-            nuevos.add(nombre)
-            escribir_si_cambia(ROOT / nombre, cabecera + "\n".join(trozo) + "\n</urlset>\n")
-            ult = max(re.findall(r"<lastmod>([^<]+)</lastmod>", "".join(trozo)) or [hoy])
-            indice.append(f"  <sitemap>\n    <loc>{SITE_URL}{nombre}</loc>\n"
-                          f"    <lastmod>{ult}</lastmod>\n  </sitemap>")
-        escribir_si_cambia(ROOT / "sitemap.xml",
-            '<?xml version="1.0" encoding="UTF-8"?>\n'
-            '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            + "\n".join(indice) + "\n</sitemapindex>\n")
-    for sobra in viejos - nuevos:
+    for nombre, xml in ficheros.items():
+        escribir_si_cambia(ROOT / nombre, xml)
+    for sobra in viejos - set(ficheros):
         (ROOT / sobra).unlink()
-    log(f"sitemap.xml generado con {len(urls)} URLs en {len(trozos)} fichero(s)")
+    n_urls = sum(x.count("<url>") for x in ficheros.values())
+    con_hoy = sum(1 for x in todas if x["lastmod"] == hoy)
+    log(f"sitemap.xml: índice con {len(ficheros) - 1} sitemaps y {n_urls} URLs "
+        f"({con_hoy} con lastmod de hoy)")
 
 
 def renderizar_feed(dias: list[dict]) -> None:
