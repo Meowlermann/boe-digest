@@ -9,7 +9,7 @@ import build
 import paginas_fijas as pf
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-LEMA = "Titulares generados con IA y revisados por la redacción"
+LEMA = "Titulares y entradillas redactados con IA a partir del BOE; el texto oficial está enlazado"
 
 
 class FuenteConFecha(unittest.TestCase):
@@ -40,8 +40,21 @@ class FuenteConFecha(unittest.TestCase):
 class AvisoLegal(unittest.TestCase):
     def test_lema_ia_en_aviso_y_plantillas(self):
         self.assertIn(LEMA, pf.AVISO_LEGAL)
-        for t in ("template_edicion.html", "template.html", "template_archivo.html", "template_norma.html"):
+        plantillas = (
+            "template_edicion.html",
+            "template.html",
+            "template_archivo.html",
+            "template_norma.html",
+        )
+        for t in plantillas:
             self.assertIn(LEMA, (ROOT / t).read_text(encoding="utf-8"), t)
+        # La frase antigua, que atribuía una revisión humana, no debe quedar
+        # en el aviso ni en los pies visibles del sitio.
+        textos = [pf.AVISO_LEGAL] + [(ROOT / t).read_text(encoding="utf-8") for t in plantillas]
+        for texto in textos:
+            self.assertNotIn("revisados por la redacción", texto)
+            self.assertNotIn("ayuda de IA", texto)
+            self.assertNotIn("Titulares generados con IA", texto)
 
     def test_cloudflare_sin_cookies(self):
         self.assertIn("Cloudflare Web Analytics", pf.AVISO_LEGAL)

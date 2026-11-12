@@ -148,9 +148,8 @@ institución</b>: el BOE en <a href="https://www.boe.es/" rel="noopener" target=
 y el Congreso en <a href="https://www.congreso.es/" rel="noopener" target="_blank">congreso.es</a>.
 Cada pieza enlaza al documento oficial del que sale. Lo que va entre comillas es literal de la
 fuente; el resto son plantillas sobre datos oficiales y, en la edición diaria, titulares y
-entradillas, que van marcados como editoriales. <b>Titulares generados con IA y revisados por la redacción</b>:
-así se indica en cada pieza con titular o entradilla de IA. Las entradillas se redactan con ayuda de IA y se
-verifican de forma automática. Puede haber errores: si encuentras uno, escríbenos. Nada de lo publicado es
+entradillas, que van marcados como editoriales. <b>Titulares y entradillas redactados con IA a partir del BOE; el texto oficial está enlazado.</b>
+Así se indica en cada pieza con titular o entradilla de IA. Puede haber errores: si encuentras uno, escríbenos. Nada de lo publicado es
 asesoramiento jurídico, fiscal ni de ningún otro tipo.</p>
 
 <h2 class="rotulo">Uso de inteligencia artificial</h2>
