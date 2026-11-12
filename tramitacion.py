@@ -255,6 +255,47 @@ def grupo_corto(autor: str) -> str:
     return re.sub(r"^Grupo Parlamentario\s+", "", autor or "").replace(" en el Congreso", "")
 
 
+# Artículo determinado delante de autores institucionales, para frases del
+# tipo «Lo que ha presentado …». Las personas y las listas de firmantes no
+# lo llevan. La regla mira solo el comienzo del nombre oficial.
+_ARTICULO_EL = re.compile(
+    r"^(Senado|Gobierno|Parlamento|Consejo|Grupo Parlamentario)\b")
+_ARTICULO_LA = re.compile(
+    r"^(Comisión|Comunidad|Asamblea|Junta|Mesa)\b")
+_ARTICULO_LAS = re.compile(r"^Cortes\b")
+
+
+def articulo_autor(autor: str) -> str:
+    """«el», «la» o «las» según el tipo de autor; vacío si no lleva artículo."""
+    a = (autor or "").strip()
+    if _ARTICULO_EL.match(a):
+        return "el"
+    if _ARTICULO_LA.match(a):
+        return "la"
+    if _ARTICULO_LAS.match(a):
+        return "las"
+    return ""
+
+
+def autor_en_frase(autor: str) -> str:
+    """El nombre del autor con su artículo, si le corresponde."""
+    a = (autor or "").strip()
+    art = articulo_autor(a)
+    return f"{art} {a}" if art else a
+
+
+def texto_nota_caducadas_senado(n: int) -> str:
+    """Nota en lenguaje llano sobre las proposiciones del Senado caducadas
+    con la disolución de las Cortes. `n` sale de los datos, no va fijo."""
+    if n <= 0:
+        return ""
+    if n == 1:
+        return ("Esta proposición caducó con la disolución de las Cortes "
+                "del 6 de octubre de 2026.")
+    return (f"Estas {n} proposiciones caducaron con la disolución de las Cortes "
+            "del 6 de octubre de 2026.")
+
+
 def slug_autor(autor: str) -> str:
     """Slug de la página de un autor. Las autorías conjuntas largas se cortaban
     a 60 caracteres y dos distintas acababan en la misma URL (sitemap con la
@@ -926,7 +967,7 @@ def generar_paginas(h: dict) -> list:
     """/tramitacion/: una página por iniciativa, índice por estados, una página
     por estado y por autor, las listas de ampliaciones y de antigüedad y la
     metodología. `h` trae las utilidades de build.py."""
-    e = cargar()
+    e = h.get("estado") or cargar()
     ini = e.get("ini") or {}
     if not ini:
         return []
@@ -938,6 +979,7 @@ def generar_paginas(h: dict) -> list:
     normas = h.get("normas_por_ley") or {}          # «Ley 3/2026» -> ruta normas/…
     hoy = dt.date.today().isoformat()
     salidas = []
+    escritos = set()
     fuente = ('Fuente: datos abiertos de iniciativas del Congreso de los Diputados. '
               '<a class="srclink" href="/tramitacion/metodologia.html">Cómo se hace</a>.')
 
@@ -951,6 +993,7 @@ def generar_paginas(h: dict) -> list:
             "STANDFIRST": esc(entradilla), "FICHA": ficha, "CUERPO": cuerpo, "FUENTE": fuente,
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
+        escritos.add(nombre)
         salidas.append({"url": url, "lastmod": lastmod or hoy})
 
     def miga(*partes):
@@ -1090,9 +1133,13 @@ def generar_paginas(h: dict) -> list:
     lm_total = max((ultima_fecha(v) for v in ini.values()), default=hoy) or hoy
     for s, etiqueta, desc in ESTADOS:
         lista = sorted(por_estado.get(s, []), key=lambda x: ultima_fecha(x[1]), reverse=True)
+        # Sin iniciativas no se genera la página: no entra en el sitemap ni
+        # queda un HTML vacío de un render anterior.
+        if not lista:
+            continue
         cuerpo = (f'<p class="rk-nota">{esc(desc)}.</p><ul class="indice">'
                   + "".join(fila(k, v, f' · {esc(fecha(ultima_fecha(v)))}') for k, v in lista)
-                  + '</ul>' if lista else f'<p class="rk-nota">{esc(desc)}.</p><p>Ninguna ahora mismo.</p>')
+                  + "</ul>")
         pagina(f"estado-{s}.html", f"Iniciativas en estado «{etiqueta}» | La Tercera Cámara",
                f"Las {len(lista)} iniciativas legislativas del Congreso en estado «{etiqueta.lower()}».",
                etiqueta, "Tramitación", f"{len(lista)} iniciativas en este estado.",
@@ -1112,10 +1159,17 @@ def generar_paginas(h: dict) -> list:
         for _k, v in lista:
             cuenta[v["est"]] = cuenta.get(v["est"], 0) + 1
         resumen = "".join(f"<dt>{esc(ETIQUETA[s])}</dt><dd>{cuenta[s]}</dd>" for s, _e, _d in ESTADOS if cuenta.get(s))
+        nota_autor = ""
+        if (a or "").strip() == "Senado":
+            n_cad = sum(1 for _k, v in lista if v.get("est") == "caducada")
+            txt_nota = texto_nota_caducadas_senado(n_cad)
+            if txt_nota:
+                nota_autor = f'<p class="rk-nota">{esc(txt_nota)}</p>'
         pagina(f"autor-{slug_autor(a)}.html", f"Iniciativas de {grupo_corto(a)}: en qué punto están | La Tercera Cámara",
                f"Las {len(lista)} iniciativas legislativas presentadas por {a} en la legislatura y su estado.",
-               grupo_corto(a), "Tramitación", f"Lo que ha presentado {a} y en qué punto está cada iniciativa.",
-               resumen, '<ul class="indice">' + "".join(fila(k, v) for k, v in lista) + "</ul>",
+               grupo_corto(a), "Tramitación",
+               f"Lo que ha presentado {autor_en_frase(a)} y en qué punto está cada iniciativa.",
+               resumen, nota_autor + '<ul class="indice">' + "".join(fila(k, v) for k, v in lista) + "</ul>",
                max((ultima_fecha(v) for _k, v in lista), default=lm_total) or lm_total,
                miga(grupo_corto(a)),
                [{"@type": "CollectionPage", "name": f"Iniciativas de {a}",
@@ -1157,11 +1211,18 @@ def generar_paginas(h: dict) -> list:
     congelador_n = sum(1 for v in ini.values() if congelada(v, hoy))
     leyes_n = len(e.get("leyes") or [])
     tope = max((len(por_estado.get(s, [])) for s, _e, _d in ESTADOS), default=0) or 1
-    celdas = "".join(
-        f'<li><a href="estado-{s}.html"><span class="tr-ix-et">{esc(e_)}</span>'
-        f'<span class="tr-ix-n">{len(por_estado.get(s, []))}</span>'
-        f'<span class="tr-ix-barra" aria-hidden="true"><i style="width:{round(100 * len(por_estado.get(s, [])) / tope)}%"></i></span></a></li>'
-        for s, e_, _d in ESTADOS)
+    def celda_estado(s, e_):
+        n = len(por_estado.get(s, []))
+        interior = (f'<span class="tr-ix-et">{esc(e_)}</span>'
+                    f'<span class="tr-ix-n">{n}</span>'
+                    f'<span class="tr-ix-barra" aria-hidden="true">'
+                    f'<i style="width:{round(100 * n / tope)}%"></i></span>')
+        # Cero iniciativas: se muestra la cifra, sin enlace a una página que
+        # ya no se genera.
+        if n:
+            return f'<li><a href="estado-{s}.html">{interior}</a></li>'
+        return f'<li><div class="tr-ix-vacio">{interior}</div></li>'
+    celdas = "".join(celda_estado(s, e_) for s, e_, _d in ESTADOS)
     movs = []
     for exp, v in ini.items():
         if v.get("hitos"):
@@ -1257,6 +1318,12 @@ def generar_paginas(h: dict) -> list:
            e.get("actualizado") or hoy, miga("Metodología"),
            [{"@type": "WebPage", "name": "Seguimiento de la tramitación: metodología",
              "url": f"{site}tramitacion/metodologia.html"}])
+
+    # Las de estado que esta pasada no ha escrito (cero iniciativas) no se
+    # quedan colgando de un render anterior, ni en el disco ni publicadas.
+    for viejo in carpeta.glob("estado-*.html"):
+        if viejo.name not in escritos:
+            viejo.unlink()
 
     h["log"](f"tramitacion/: {len(ini)} fichas, {len(autores)} autores")
     return salidas
