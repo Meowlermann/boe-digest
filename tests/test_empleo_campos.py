@@ -163,12 +163,15 @@ class TestTarjeta(unittest.TestCase):
         h, _ = h_prueba(self.carpeta)
         em.generar_paginas(h, self.estado)
         idx = (self.carpeta / "index.html").read_text(encoding="utf-8")
-        # «Qué es» sin el lugar; el lugar va en «Quién y dónde».
-        self.assertIn('<p class="em-c-tit">2 plazas de Operario/a de brigada municipal de obras</p>', idx)
-        self.assertIn("<p class=\"em-c-org\">Ayuntamiento de Tamarite de Litera", idx)
-        self.assertIn('class="em-chip"', idx)
-        # Los registros sin 'campos' (anteriores al extractor) siguen pintándose
-        self.assertGreater(len(re.findall(r'<li class="em-card[ "][^>]*>', idx)), 1)
+        # «Qué es» sin el lugar; el lugar va en la meta (organismo · localidad).
+        self.assertIn('<span class="em-f-tit">2 plazas de Operario/a de brigada municipal de obras</span>', idx)
+        self.assertIn("Ayuntamiento de Tamarite de Litera", idx)
+        self.assertGreater(len(re.findall(r'<li class="em-fila[ "][^>]*>', idx)), 1)
+        # Los chips de la tarjeta siguen en las fichas por organismo.
+        orgs = [q.read_text(encoding="utf-8") for q in self.carpeta.glob("*.html")
+                if q.name not in {"index.html", "provincias.html", "organismos.html"}
+                and not q.name.startswith("provincia-")]
+        self.assertTrue(any('class="em-chip"' in h and "em-card" in h for h in orgs))
 
     def _fecha(self):
         return max(v["fecha"] for v in self.estado["registros"].values())

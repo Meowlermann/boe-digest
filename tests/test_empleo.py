@@ -157,7 +157,7 @@ class TestPaginas(unittest.TestCase):
         # Lenguaje llano: plazo apagado ⇒ «Consulta…»; nunca la cita literal.
         self.assertIn("No figura en el resumen: consúltalo en el BOE", indice)
         self.assertNotIn("Plazo, según el BOE", indice)
-        self.assertIn('em-etq-oposicion">Oposición<', indice)
+        self.assertIn('<span class="em-f-tipo">Oposición</span>', indice)
         self.assertNotIn("Cierra el", indice)
 
     def test_orden_convocatorias_primero_y_seguimiento(self):

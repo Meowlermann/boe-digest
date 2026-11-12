@@ -21,7 +21,7 @@ class Alcance(unittest.TestCase):
                             (300, 765))
         self.assertIn("las 300 de 765 convocatorias cargadas", h)
         self.assertIn('href="/empleo/provincias.html"', h)
-        self.assertIn("Cifras: tarjetas cargadas en esta página.", h)
+        self.assertIn("Cifras: disposiciones cargadas en esta página.", h)
         self.assertIn("Zaragoza (3)", h)
 
     def test_desplegable_cuenta_lo_pasado(self):

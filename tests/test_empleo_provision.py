@@ -114,11 +114,12 @@ class TestTarjeta(unittest.TestCase):
     tearDown = TestPaginas.tearDown
 
     def _indice(self, campos):
+        # Las tarjetas (puestos, «Ver todos») siguen en la ficha de organismo.
         r = next(iter(self.estado["registros"].values()))
         r.update({"tipo": "provision", "dept": "MINISTERIO DE HACIENDA", "campos": campos})
         h, _ = h_prueba(self.carpeta)
         em.generar_paginas(h, self.estado)
-        return (self.carpeta / "index.html").read_text(encoding="utf-8")
+        return (self.carpeta / "ministerio-de-hacienda.html").read_text(encoding="utf-8")
 
     def test_apagado_igual_que_hoy(self):
         with mock.patch.dict(ec.CAMPOS_ACTIVOS, {"provision": frozenset()}):

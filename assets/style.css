@@ -1606,7 +1606,7 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .em-fb[aria-pressed="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
 .em-fb:focus-visible{ outline:3px solid var(--red); outline-offset:2px; }
 .em-fn:empty{ display:none; }
-.em-sec[hidden], .em-card[hidden]{ display:none; }
+.em-sec[hidden], .em-card[hidden], .em-fila[hidden]{ display:none; }
 /* Barra única de /empleo/ (E-2, 04-11-2026): búsqueda, selects, etiquetas activas. */
 .em-busca{ flex-direction:column; gap:4px; }
 .em-busca label, .em-campo > span{ font:600 14px 'Work Sans',sans-serif; color:var(--ink); }
@@ -1666,6 +1666,9 @@ a.ix-tit::after{ content:""; position:absolute; inset:0; border-radius:12px; }  
 .ix-lista.em-rejilla{ grid-template-columns:1fr; gap:14px; }
 @media (min-width:600px){ .ix-lista.em-rejilla{ grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); } }
 .em-rejilla > li.em-card.em-oculta{ display:none; }
+.tr-ix-em-filas .ix-lista.em-rejilla{grid-template-columns:1fr;gap:0}
+@media (min-width:600px){ .tr-ix-em-filas .ix-lista.em-rejilla{grid-template-columns:1fr} }
+.tr-ix-em-filas .em-rejilla > li.em-fila.em-oculta{display:none}
 .em-mas{ width:100%; text-align:center; justify-content:center; margin-top:10px; font-weight:700; }
 .em-mas[hidden]{ display:none; }
 .tr-ix-em-local{ margin:10px 0 0; }

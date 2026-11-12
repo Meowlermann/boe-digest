@@ -54,13 +54,18 @@ class TestTarjetaGenerada(unittest.TestCase):
     setUp = TestPaginas.setUp
     tearDown = TestPaginas.tearDown
 
-    def _indice(self, hoy="2026-12-31"):
+    def _pagina(self, hoy="2026-12-31", nombre="index.html"):
         h, _ = h_prueba(self.carpeta, hoy=hoy)   # el reloj no cuenta: manda el último BOE
         em.generar_paginas(h, self.estado)
-        return (self.carpeta / "index.html").read_text(encoding="utf-8")
+        return (self.carpeta / nombre).read_text(encoding="utf-8")
 
     def test_tarjetas(self):
-        idx = self._indice("2026-10-27")
+        # Las tarjetas siguen en las fichas por organismo; /empleo/ va en filas.
+        self._pagina("2026-10-27")
+        org = next(p for p in self.carpeta.glob("*.html")
+                   if p.name not in {"index.html", "provincias.html", "organismos.html"}
+                   and not p.name.startswith("provincia-"))
+        idx = org.read_text(encoding="utf-8")
         tarjetas = re.findall(r'<li class="em-card[ "][^>]*>(.*?)</li>', idx)
         self.assertTrue(tarjetas)
         for t in tarjetas:
@@ -75,12 +80,14 @@ class TestTarjetaGenerada(unittest.TestCase):
             self.assertNotIn(">PDF</a>", t)
             self.assertNotIn("Título completo", t)
             self.assertRegex(t, r'aria-label="Ver en el BOE: [^"]+\(BOE-A-\d{4}-\d+\)"')
-        self.assertIn("(en el último BOE)", idx)
-        self.assertIn("(hace 3 días)", idx)        # 24-oct frente al 27-oct
+        # Las fechas «hace N días» / «último BOE» se comprueban en el índice (tiene todos los días).
+        indice = (self.carpeta / "index.html").read_text(encoding="utf-8")
+        self.assertIn("(en el último BOE)", indice)
+        self.assertIn("(hace 3 días)", indice)        # 24-oct frente al 27-oct
 
     def test_determinista_y_sin_fecha_de_cierre(self):
-        a = self._indice("2026-10-27")
-        b = self._indice("2027-01-15")
+        a = self._pagina("2026-10-27")
+        b = self._pagina("2027-01-15")
         cuerpo = lambda x: next(l for l in x.splitlines() if l.startswith("CUERPO="))  # noqa: E731
         self.assertEqual(cuerpo(a), cuerpo(b))
         for prohibido in ("Cierra", "cierra el", "Fecha de cierre", "Fin de plazo", "Termina el"):

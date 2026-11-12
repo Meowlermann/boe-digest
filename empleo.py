@@ -645,7 +645,7 @@ def chips_filtro(filas: list, ref: str, provincias: list | None = None, organism
           f'aria-pressed="false">Solo los últimos {DIAS_FILTRO} días</button>')
     # Barra única (E-2, 04-11-2026) + alcance honesto (E-2b, 05-11-2026):
     # búsqueda, tipo, proceso, provincia, organismo y «30 días». Los números
-    # de los desplegables cuentan solo las tarjetas cargadas (no el total del
+    # de los desplegables cuentan solo las disposiciones cargadas (no el total del
     # periodo). Alcance = (convocatorias cargadas, total en el periodo).
     clases: dict = {}
     for r in filas:
@@ -663,7 +663,7 @@ def chips_filtro(filas: list, ref: str, provincias: list | None = None, organism
              f'<span id="em-q-ayuda" class="ref">Busca en {alcance_txt}; da igual tildes y mayúsculas. '
              f'Si no aparece un ayuntamiento, ábrelo en su '
              f'<a href="{ENLACE_PROVINCIAS}">página de provincia</a>.</span></div>')
-    base_cuenta = "Cifras: tarjetas cargadas en esta página."
+    base_cuenta = "Cifras: disposiciones cargadas en esta página."
     sels = (_select("em-clase", "Proceso", "Todos", proc, base_cuenta)
             + _select("em-prov", "Provincia", "Todas", provincias or [],
                       base_cuenta + " Solo cuenta las que nombran la provincia en el título.")
@@ -1042,7 +1042,11 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                      f'<span class="em-f-plazo em-f-sin">{SIN_PLAZO}</span>')
             plazo += diario_html(r, pl, "span", "em-f-diario")
         aviso = f'<span class="em-f-aviso">{esc(no)}</span>' if no else ""
-        return (f'<li class="em-fila" data-fecha="{attr(r["fecha"])}">'
+        # data-o, data-p y em-c-* permiten los filtros de /empleo/ (el JS
+        # los lee igual que en las tarjetas). En las fichas de provincia no estorban.
+        _et, clase = etiqueta_llana(r)
+        return (f'<li class="em-fila em-c-{attr(clase)}" data-fecha="{attr(r["fecha"])}" '
+                f'data-o="{attr(slug(r["dept"]))}" data-p="{attr(" ".join(r.get("prov") or []))}">'
                 f'<a class="em-f-a" href="{attr(enlace)}" target="_blank" rel="noopener">'
                 f'<span class="em-f-tit">{esc(que)}</span>'
                 f'<span class="em-f-meta">{"".join(meta)}</span>{turno}{plazo}{aviso}'
@@ -1222,9 +1226,20 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
         enlaces_dept.append(f'<li><a href="{attr(s)}.html">{esc(nombre)}</a>'
                             f'<span class="ref">{len(filas)}</span></li>')
         feeds_dept.append(f'<li><a href="{attr(s)}.xml">{esc(nombre)}</a></li>')
+    def cuerpo_indice(filas: list) -> str:
+        # Tanda 8.3: /empleo/ usa la misma lista compacta que las fichas de
+        # provincia. Se mantiene la agrupación por clase y «Cargar más».
+        modo["lista"] = True
+        notas_vistas.clear()
+        try:
+            html = por_tipo(filas, en_rejilla=True)
+        finally:
+            modo["lista"] = False
+        return f'<div class="tr-ix-em-filas">{html}</div>' if html else ""
+
     def cuerpo_provincia(filas: list, p: str, n: str) -> str:
         # Tanda 4: todas las fichas de provincia en filas (sin tarjetas). Las
-        # tarjetas siguen en /empleo/ y en las fichas por organismo.
+        # tarjetas siguen en las fichas por organismo.
         modo["lista"] = True
         notas_vistas.clear()
         try:
@@ -1295,7 +1310,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                  f'<ul class="ix-lista tr-ix-em-lista">{"".join(enlaces_prov)}</ul></section>'
                  if enlaces_prov else "") + '</div>')
     # Qué cuenta cada cifra (E-2 ítem 2): total del periodo, convocatorias y
-    # tarjetas cargadas (tope de MAX_FILAS por tipo), con los números reales.
+    # disposiciones cargadas (tope de MAX_FILAS por tipo), con los números reales.
     pint = {t: min(MAX_FILAS, sum(1 for r in recientes if r["tipo"] == t)) for t in {r["tipo"] for r in recientes}}
     total_pint = sum(pint.values())
     fuera = len(recientes) - total_pint
@@ -1329,7 +1344,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
                              [(p, nombres_prov[p], n) for p, n in sorted(prov_pint.items(), key=lambda x: nombres_prov[x[0]])],
                              [(s, nomb_dept[s], n) for s, n in sorted(org_pint.items(), key=lambda x: nomb_dept[x[0]])],
                              (pint.get("convocatoria", 0), convoc))
-              + (por_tipo(recientes, en_rejilla=True) or
+              + (cuerpo_indice(recientes) or
               '<p>Aún no hay disposiciones recogidas: la sección se llena con cada BOE nuevo.</p>')
               + listas
               + (avisos(feeds_prov, feeds_dept) if regs else "")

@@ -1,4 +1,4 @@
-"""Tarjeta compacta de /empleo/ (E-1, 04-11-2026): tipo, fecha, título llano,
+"""Tarjeta compacta de las fichas por organismo (E-1, 04-11-2026): tipo, fecha, título llano,
 organismo, plazo LITERAL o el texto fijo, BOE-A y «Ver en el BOE». Comprueba
 que lleva los mismos datos que la tarjeta anterior (Qué/Quién/Cuándo), sin
 campos nuevos ni inventados, y objetivos táctiles de 44 px. Sin red."""
@@ -37,7 +37,8 @@ class TarjetaCompacta(unittest.TestCase):
         h, _ = h_prueba(self.carpeta)
         h["hoy"] = "2026-10-28"
         em.generar_paginas(h, {"version": 1, "registros": self.regs, "dias": {}})
-        self.idx = (self.carpeta / "index.html").read_text(encoding="utf-8")
+        # Las tarjetas compactas siguen en la ficha de organismo; /empleo/ va en filas.
+        self.idx = (self.carpeta / "ministerio-x.html").read_text(encoding="utf-8")
         self.cards = dict((m[1], m[0]) for m in re.findall(
             r'(<li class="em-card[^>]*>.*?</li>)', self.idx) and
             [(c, re.search(r"BOE-A-\d{4}-\d+", c).group(0)) for c in
