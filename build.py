@@ -3147,6 +3147,13 @@ ARCHIVO_NOTA_TITULARES = (
     "Títulos del resumen automático, sin IA; "
     "el titular de cada pieza puede variar dentro de la edición"
 )
+ARCHIVO_NOTA_TITULARES_MEZCLA = (
+    "Los títulos del archivo son del resumen automático, "
+    "salvo los que llevan la marca «Titular con IA»."
+)
+ARCHIVO_NOTA_TITULARES_TODO_IA = (
+    "Títulos redactados con IA; cada fila lleva la marca «Titular con IA»."
+)
 
 
 
@@ -3191,16 +3198,34 @@ def marca_ia_corta_html(story: dict | None = None, *, con_ia: bool | None = None
     return f'<span class="ia-pieza">{esc_html(MARCA_IA_CORTA)}</span>'
 
 
-def nota_archivo_titulares_html(ids: list[str], por_dia: dict) -> str:
-    """Cabecera del archivo: solo si NINGUNA fila muestra un titular con redaccion_ia."""
+def _filas_archivo_con_ia(ids: list[str], por_dia: dict) -> tuple[int, int]:
+    """(filas con lead, filas cuyo título mostrado es de IA)."""
+    n = n_ia = 0
     for did in ids:
         d = por_dia.get(did)
         if not d:
             continue
+        n += 1
         lead = lead_story(d)
         if lead and lead.get("redaccion_ia"):
-            return ""  # no afirmaría lo falso; esas filas ya llevan marca
-    return f'<p class="archivo-nota-ia">{esc_html(ARCHIVO_NOTA_TITULARES)}</p>'
+            n_ia += 1
+    return n, n_ia
+
+
+def nota_archivo_titulares_html(ids: list[str], por_dia: dict) -> str:
+    """Cabecera del archivo: un texto cierto según haya filas con IA o no.
+
+    Nunca dice «sin IA» si alguna fila del listado lleva título de IA.
+    La marca corta «Titular con IA» ya va en esas filas.
+    """
+    n, n_ia = _filas_archivo_con_ia(ids, por_dia)
+    if n_ia == 0:
+        texto = ARCHIVO_NOTA_TITULARES
+    elif n_ia == n:
+        texto = ARCHIVO_NOTA_TITULARES_TODO_IA
+    else:
+        texto = ARCHIVO_NOTA_TITULARES_MEZCLA
+    return f'<p class="archivo-nota-ia">{esc_html(texto)}</p>'
 
 
 def etiqueta_ia_html(con_ia: bool) -> str:
