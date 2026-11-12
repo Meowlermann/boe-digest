@@ -5222,7 +5222,8 @@ def _tarjeta_diputado(f, prefijo=""):
 
 
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
-                    url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None):
+                    url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None,
+                    lastmod=None):
     filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
@@ -5241,7 +5242,9 @@ def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
         "FUENTE": "Fuente: datos abiertos del Congreso de los Diputados.",
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     })
-    return {"url": url, "lastmod": hoy}
+    # lastmod del sitemap: el máximo de las fichas. Si llega vacío, no
+    # inventamos la fecha del barrido (hoy). El HTML visible no cambia.
+    return {"url": url, "lastmod": lastmod if lastmod is not None else hoy}
 
 
 def _datos_parlamento(orden: list, cd) -> None:
@@ -6205,6 +6208,55 @@ def frase_grupo(largo: str, gente: list, oficial: str = "") -> str:
             f'{LEGISLATURA_DISUELTA}.' + (f' Por circunscripción: {reparto}.' if reparto else "") + '</p>')
 
 
+_RE_FECHA_ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_RE_FECHA_DMY = re.compile(r"^(\d{1,2})/(\d{1,2})/(\d{4})$")
+
+
+def fecha_iso_flex(fecha: str) -> str:
+    """«2026-09-30», «30/9/2026» o «08/08/2023» a ISO. Vacío si no se entiende."""
+    fecha = (fecha or "").strip()
+    if _RE_FECHA_ISO.fullmatch(fecha):
+        return fecha
+    m = _RE_FECHA_DMY.fullmatch(fecha)
+    if not m:
+        return ""
+    d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    try:
+        return dt.date(y, mo, d).isoformat()
+    except ValueError:
+        return ""
+
+
+def lastmod_diputado(ficha: dict, resumen_preguntas: dict | None = None) -> str:
+    """Lastmod del sitemap: última votación, pregunta o intervención.
+
+    Si el diputado no tiene actividad, la fecha de alta en la legislatura.
+    Nunca la del barrido de datos del Congreso.
+    """
+    fechas: list[str] = []
+    for v in ficha.get("ultimos_votos") or []:
+        fechas.append(fecha_iso_flex((v or {}).get("fecha") or ""))
+    for i in ficha.get("ultimas_intervenciones") or []:
+        fechas.append(fecha_iso_flex((i or {}).get("fecha") or ""))
+    resumen = (resumen_preguntas or {}).get(ficha.get("clave") or "") or {}
+    for _exp, dato in resumen.get("ultimas") or []:
+        if not isinstance(dato, dict):
+            continue
+        # La actividad del diputado es presentar la pregunta (p / pr).
+        fechas.append(fecha_iso_flex(dato.get("p") or ""))
+        fechas.append(fecha_iso_flex(dato.get("pr") or ""))
+    activas = [x for x in fechas if x]
+    if activas:
+        return max(activas)
+    return fecha_iso_flex(ficha.get("alta") or "")
+
+
+def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
+    """Para /diputados/ y los índices de grupo (y provincia): el máximo de sus fichas."""
+    fechas = [lastmod_diputado(f, resumen_preguntas) for f in (fichas or [])]
+    return max((x for x in fechas if x), default="")
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -6360,7 +6412,7 @@ def renderizar_diputados(fichas: list) -> list:
             "RELACIONADAS": ("<li>" + " ".join(rel) + "</li>") if rel else "",
             "RELACIONADAS_HIDDEN": "" if rel else "hidden",
         })
-        salidas.append({"url": url, "lastmod": hoy})
+        salidas.append({"url": url, "lastmod": lastmod_diputado(f, resumen_preguntas)})
 
     # --- una página por grupo --------------------------------------------
     por_grupo = {}
@@ -6385,7 +6437,8 @@ def renderizar_diputados(fichas: list) -> list:
             cuerpo_extra=frase_grupo(f"Grupo {corto}", gente, largo),
             # Description byte a byte como en main (prueba de títulos): solo cambia lo visible.
             meta_desc=(f"Ficha de cada uno de los {len(gente)} diputados del {largo}: sus "
-                       f"intervenciones y sus votos en el Pleno.")))
+                       f"intervenciones y sus votos en el Pleno."),
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
 
     # --- una página por provincia ----------------------------------------
     por_prov = {}
@@ -6422,7 +6475,8 @@ def renderizar_diputados(fichas: list) -> list:
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
-                                 f"con su actividad y sus votos.")))
+                                 f"con su actividad y sus votos."),
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
@@ -6502,7 +6556,7 @@ def renderizar_diputados(fichas: list) -> list:
                    "intervenciones cubren toda la legislatura."),
         "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
     })
-    salidas.append({"url": url, "lastmod": hoy})
+    salidas.append({"url": url, "lastmod": lastmod_listado_diputados(fichas, resumen_preguntas)})
     log(f"diputados/: {len(fichas)} fichas, {len(conteo)} grupos, {len(por_prov)} provincias")
     return salidas
 
