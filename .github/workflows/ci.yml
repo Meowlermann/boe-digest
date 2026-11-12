@@ -72,3 +72,27 @@ jobs:
       # límite de 1 GB de Pages. No sube nada.
       - name: Montar _site (sin publicar)
         run: python tools/montar_sitio.py
+
+      # Aviso, no bloqueo: este repo no tiene carpeta src/; además de
+      # tools/ y .github/ se miran los fuentes de la raíz (*.py, plantillas
+      # y assets/). Sale ::warning si cambian y docs/ no se ha tocado.
+      - name: Aviso de docs de traspaso
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          codigo=0
+          docs=0
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              docs/*|docs) docs=1 ;;
+              src/*|tools/*|.github/*|*.py|template*.html|assets/*|disparador/*)
+                codigo=1 ;;
+            esac
+          done < <(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/${{ github.event.pull_request.number }}/files" --jq '.[].filename')
+          if [ "$codigo" -eq 1 ] && [ "$docs" -eq 0 ]; then
+            echo "::warning::Esta PR toca código, tools/ o .github/ y no actualiza docs/. Si cambia el comportamiento, la operación o una decisión, actualiza docs/DECISIONES.md (y docs/OPERACION.md o docs/HOJA-DE-RUTA.md si les afecta). Si no aplica, márcalo en la casilla de la plantilla de PR."
+          else
+            echo "Docs de traspaso: sin aviso."
+          fi

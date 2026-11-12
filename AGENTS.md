@@ -1,7 +1,11 @@
 # Instrucciones para agentes (IA o personas) que trabajen en este repositorio
 
 Lee primero [ARQUITECTURA.md](ARQUITECTURA.md): el flujo diario, qué hace
-cada módulo, dónde se guarda cada dato y cómo añadir una sección.
+cada módulo, dónde se guarda cada dato y cómo añadir una sección. Los
+documentos de traspaso están en [docs/OPERACION.md](docs/OPERACION.md),
+[docs/DECISIONES.md](docs/DECISIONES.md),
+[docs/REGLAS-EDITORIALES.md](docs/REGLAS-EDITORIALES.md) y
+[docs/HOJA-DE-RUTA.md](docs/HOJA-DE-RUTA.md).
 
 ## Reglas del mantenedor
 
@@ -74,6 +78,13 @@ Son decisiones tomadas y no están abiertas a discusión en cada tarea.
 - Antes de abrir la PR: `python build.py --render --sin-red` y
   `python tools/verificar.py --modo ci` (es lo que hace `ci.yml`).
 - Si cambias la arquitectura, actualiza ARQUITECTURA.md en la misma PR.
+- Toda PR que cambie el comportamiento, la operación o una decisión
+  actualiza [docs/DECISIONES.md](docs/DECISIONES.md) en la misma PR, y
+  también [docs/OPERACION.md](docs/OPERACION.md) o
+  [docs/HOJA-DE-RUTA.md](docs/HOJA-DE-RUTA.md) si les afecta. La
+  plantilla de PR tiene una casilla para confirmarlo (o marcar N/A y por
+  qué). El CI avisa, sin bloquear, cuando una PR toca el código, `tools/`
+  o `.github/` y no toca `docs/`.
 
 ## Idioma
 
