@@ -66,5 +66,32 @@ class Portada(unittest.TestCase):
         self.assertNotIn(" →</a>", el)
 
 
+class FlechasPortada(unittest.TestCase):
+    """Ningún → de la portada va precedido de un espacio normal (espacio duro
+    antes de cada flecha). La portada es una salida (index.html, ignorada en
+    git): se miran sus fuentes y, si está pintada en local, la propia página."""
+    ESPACIO_FLECHA = re.compile(r"[ \t\n](?:→|&rarr;|&#8594;)")
+
+    def test_fuentes_de_la_portada(self):
+        tpl = (RAIZ / "template.html").read_text(encoding="utf-8")
+        self.assertIsNone(self.ESPACIO_FLECHA.search(tpl), "template.html")
+        src = (RAIZ / "build.py").read_text(encoding="utf-8")
+        for frag in ("ARCHIVO&nbsp;→", ">Edición completa&nbsp;→", "del pleno&nbsp;→", "Ver en Empleo&nbsp;→",
+                     "Leer la pieza completa&nbsp;→", ">Leer&nbsp;→"):
+            self.assertIn(frag, src)
+        self.assertTrue(build.MARCA_IA_TEXTO.endswith("\u00a0→"))
+        nb = (RAIZ / "nombramientos.py").read_text(encoding="utf-8")
+        self.assertIn("nombramientos y ceses&nbsp;→", nb)
+
+    def test_portada_pintada(self):
+        portada = RAIZ / "index.html"
+        if not portada.exists():
+            self.skipTest("index.html sin pintar (se genera con build.py --render)")
+        html = portada.read_text(encoding="utf-8")
+        cuerpo = html[html.find("<body"):]
+        malos = [cuerpo[max(0, m.start() - 50):m.end()] for m in self.ESPACIO_FLECHA.finditer(cuerpo)]
+        self.assertEqual(malos, [])
+
+
 if __name__ == "__main__":
     unittest.main()
