@@ -55,7 +55,13 @@ Se actualiza en la misma PR que cambie el estado de un frente.
 - **#111 «Elecciones: fichas de provincia completas»** (tanda E3), sin
   fusionar: reparto de escaños por formación y preguntas frecuentes. La
   comparación por partido con 2019, la asistencia y las rebeldías quedan
-  fuera porque no salen limpias (ver DECISIONES).
+  fuera porque no salen limpias (ver DECISIONES). Retoques del informe 34
+  en la misma PR: en «¿Qué diputados… se presentan de nuevo?» van aparte
+  los que eran diputados por otra provincia (Madrid: 22 de los 37, y 2 de
+  Málaga y Pontevedra; Sevilla: 1 de Córdoba), el Mixto en la pregunta del
+  reparto, preguntas sin versales, pie que dice que se cruzan BOE y
+  Congreso, grupos sin partirse a 375 y enlace al reparto desde cada
+  página `/elecciones/2026/<provincia>.html`.
 - **#109 «Elecciones: bloque 29-N y hub /elecciones/2026/»** (tanda E2),
   fusionada el 13 de noviembre de 2026. Siguientes de la tanda E, en PR aparte: `ItemList` y `Event` (E4), imagen OG y «¿Quién
   votó qué en tu provincia?» (E5), H1 de normas y 404 propia (E6), prueba de

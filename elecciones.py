@@ -614,7 +614,7 @@ def reparto_html(gente: list, nombre: str, nombre_grupo) -> str:
         return ""
     tr = "".join(
         f'<tr><td>{_esc(p)}</td><td class="num">{n}</td><td>'
-        + "; ".join(f"{_esc(g)}{'' if len(gs) == 1 else f': {k}'}" for g, k in gs)
+        + "".join(f'<span class="grp">{_esc(g)}{"" if len(gs) == 1 else f": {k}"}</span>' for g, k in gs)
         + "</td></tr>" for p, n, gs in filas)
     total = sum(n for _p, n, _g in filas)
     return (f'<section class="prov-reparto" aria-labelledby="prov-reparto">'
@@ -633,7 +633,7 @@ def reparto_html(gente: list, nombre: str, nombre_grupo) -> str:
 
 
 def faq_provincia(datos: dict, circ_rd: str, nombre: str, slug: str, gente: list,
-                  salientes: list, nombre_grupo) -> list:
+                  salientes: list, nombre_grupo, nombre_circ=None) -> list:
     """Preguntas frecuentes de la ficha de provincia (tanda E3): cada respuesta
     sale tal cual de los datos (BOE y Congreso), sin redactar ni calcular
     fechas. Devuelve [(pregunta, respuesta en HTML)]."""
@@ -652,13 +652,8 @@ def faq_provincia(datos: dict, circ_rd: str, nombre: str, slug: str, gente: list
         r2 += (f' El BOE recoge además {len(np_)} '
                f'{"candidatura no proclamada" if len(np_) == 1 else "candidaturas no proclamadas"}.')
     filas = reparto_xv(gente, nombre_grupo)
-    r3 = "; ".join(f"{_esc(p)}, {k}" for p, k, _g in filas) + "." if filas else ""
-    if salientes:
-        r4 = (f'{len(salientes)} {"figura" if len(salientes) == 1 else "figuran"} con su nombre completo, letra por letra, en las listas al Congreso '
-              f'por {_esc(nombre)}: ' + ", ".join(_esc(s["ficha"]["natural"]) for s in salientes) + '.')
-    else:
-        r4 = (f'Ninguno figura con su nombre completo, letra por letra, en las listas al Congreso por '
-              f'{_esc(nombre)}.')
+    r3 = "; ".join(f"{_esc(p)}, {k}{_grupos_faq(gs)}" for p, k, gs in filas) + "." if filas else ""
+    r4 = _repiten(salientes, gente, nombre, nombre_circ or (lambda x: x))
     preguntas = [
         (f"¿Cuántos diputados elige {nombre} en las elecciones del {datos['fecha_literal']}?", r1),
         (f"¿Cuántas candidaturas se presentan al Congreso por {nombre}?", r2),
@@ -675,13 +670,62 @@ def faq_provincia(datos: dict, circ_rd: str, nombre: str, slug: str, gente: list
     return preguntas
 
 
+def _grupos_faq(gs: list) -> str:
+    """Q3: el grupo entre paréntesis cuando la formación no está entera en su
+    grupo propio (repartida en varios, o en el Mixto), igual para todas."""
+    if len(gs) > 1:
+        return " (" + _y([f"{k} en el {_esc(g)}" for g, k in gs]) + ")"
+    if gs and "Mixto" in gs[0][0]:
+        return f" (en el {_esc(gs[0][0])})"
+    return ""
+
+
+def _y(xs: list) -> str:
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " y " + xs[-1]
+
+
+def _repiten(salientes: list, gente: list, nombre: str, nombre_circ) -> str:
+    """Q4: separa a los que eran diputados por esta circunscripción de los que
+    lo eran por otra y se presentan aquí (informe 34: Madrid)."""
+    claves = {id(f) for f in gente}
+    circ_aqui = {f.get("circunscripcion") for f in gente}
+    propios = [s for s in salientes if id(s["ficha"]) in claves
+               or (s["ficha"].get("circunscripcion") in circ_aqui and circ_aqui)]
+    otros = [s for s in salientes if s not in propios]
+    total = len(gente)
+    de = (f'del diputado por {_esc(nombre)}' if total == 1 else f'de los {total} diputados por {_esc(nombre)}')
+    lista = (f'en las listas al Congreso por {_esc(nombre)}')
+    if propios:
+        r = (f'{len(propios)} {de} {"figura" if len(propios) == 1 else "figuran"} con su nombre completo, '
+             f'letra por letra, {lista}: ' + ", ".join(_esc(s["ficha"]["natural"]) for s in propios) + '.')
+        if total > 1 and len(propios) == total:
+            r = (f'Los {total} diputados por {_esc(nombre)} figuran con su nombre completo, letra por letra, '
+                 f'{lista}: ' + ", ".join(_esc(s["ficha"]["natural"]) for s in propios) + '.')
+        if total == 1:
+            r = (f'El diputado por {_esc(nombre)} figura con su nombre completo, letra por letra, {lista}: '
+                 + _esc(propios[0]["ficha"]["natural"]) + '.')
+    else:
+        r = (f'{"El diputado" if total == 1 else f"Ninguno de los {total} diputados"} por {_esc(nombre)} '
+             f'{"no figura" if total == 1 else "figura"} con su nombre completo, letra por letra, {lista}.')
+    if otros:
+        def quien(s):
+            o = s["ficha"].get("circunscripcion") or ""
+            return _esc(s["ficha"]["natural"]) + (f" ({_esc(nombre_circ(o))})" if o else "")
+        r += (f' {"Figura" if len(otros) == 1 else "Figuran"} {"también" if propios else "en cambio"} {len(otros)} '
+              f'{"diputado" if len(otros) == 1 else "diputados"} de la legislatura disuelta que '
+              f'{"lo era" if len(otros) == 1 else "lo eran"} por otra provincia: '
+              + _y([quien(s) for s in otros]) + '.')
+    return r
+
+
 def faq_html(preguntas: list) -> str:
     if not preguntas:
         return ""
     return ('<section class="prov-faq" aria-labelledby="prov-faq"><h2 id="prov-faq">Preguntas frecuentes</h2>'
             + "".join(f"<h3>{_esc(q)}</h3><p>{r}</p>" for q, r in preguntas)
-            + '<p class="elec-nota">Respuestas sacadas tal cual del BOE y de los datos abiertos del Congreso, '
-              'sin IA.</p></section>')
+            + '<p class="elec-nota">Respuestas sacadas del BOE y de los datos abiertos del Congreso, sin IA. '
+              'La de quién se presenta de nuevo cruza las listas del BOE con los diputados del Congreso: '
+              'solo cuenta si el nombre completo coincide letra por letra.</p></section>')
 
 
 def migas(site: str, pasos) -> dict:
@@ -732,7 +776,9 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
                   f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
                   + nota_np + bloques
-                  + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html">Los diputados por '
+                  + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html#prov-reparto">Reparto '
+                    f'de escaños de {_esc(nombre)} en la legislatura disuelta&nbsp;→</a> · '
+                    f'<a href="/diputados/provincia-{_esc(slug)}.html">Los diputados por '
                     f'{_esc(nombre)} en la legislatura disuelta →</a> · <a href="./">Las 52 circunscripciones →</a></p>'
                   + f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p>')
         url = f"{site}{HUB}{slug}.html"

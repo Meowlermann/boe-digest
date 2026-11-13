@@ -6394,7 +6394,7 @@ def _bloques_elecciones(fichas: list) -> dict:
             gente = [f for f in fichas if f.get("circunscripcion") == cc]
             FAQ_ELECCIONES[cc] = el.faq_html(el.faq_provincia(
                 datos, c["circunscripcion"], nombre_circunscripcion(cc), _slug_txt(cc), gente,
-                sal.get(c["circunscripcion"], []), nombre_grupo))
+                sal.get(c["circunscripcion"], []), nombre_grupo, nombre_circunscripcion))
         return out
     except Exception as exc:                                  # noqa: BLE001
         log(f"elecciones: bloque 29-N no disponible ({exc})")
