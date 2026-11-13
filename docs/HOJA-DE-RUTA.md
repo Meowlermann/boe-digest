@@ -31,10 +31,10 @@ Se actualiza en la misma PR que cambie el estado de un frente.
 
 ## En curso
 
-- **#108 «Empleo: quitar el noindex de /empleo/»** (tanda E1), sin
-  fusionar. La página general `/empleo/` pasa a `index, follow` y entra en
-  el sitemap; las fichas por organismo siguen en `noindex`. Después de
-  fusionar, pedir la indexación en Search Console.
+- **#108 «Empleo: quitar el noindex de /empleo/»** (tanda E1), fusionada
+  el 13 de noviembre de 2026. La página general `/empleo/` pasa a
+  `index, follow` y entra en el sitemap; las fichas por organismo siguen en
+  `noindex`. Pendiente: pedir la indexación en Search Console.
 - **Enlazado interno, siguientes pasos** (tras #102): ediciones por mes y
   `/normas/` por meses, con menos prioridad que la tanda E. `/personas/`
   de la A a la Z sale de este frente porque choca con la poda prevista.
@@ -52,6 +52,13 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resumen visible de los filtros de empleo.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
+- **#109 «Elecciones: bloque 29-N y hub /elecciones/2026/»** (tanda E2),
+  sin fusionar. Siguientes de la tanda E, en PR aparte: reparto por partido
+  y FAQ en las fichas (E3), `ItemList` y `Event` (E4), imagen OG y «¿Quién
+  votó qué en tu provincia?» (E5), H1 de normas y 404 propia (E6), prueba de
+  descarga de resultados del Ministerio del Interior (E7), sitemaps
+  prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
+  Senado sigue fuera.
 
 ## Aparcado
 

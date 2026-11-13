@@ -36,7 +36,7 @@
   var ruta = location.pathname;
   var seccion =
     /^\/empleo\//.test(ruta) ? "empleo" :
-    /^\/(diputados|rankings|provincias|votaciones|seguimiento|tramitacion|preguntas|sesiones)\//.test(ruta) ? "parlamento" :
+    /^\/(diputados|elecciones|rankings|provincias|votaciones|seguimiento|tramitacion|preguntas|sesiones)\//.test(ruta) ? "parlamento" :
     /^\/buscar\//.test(ruta) ? "buscar" :
     /^\/(normas|temas|plazos|nombramientos|mapa)\//.test(ruta) ? "mas" :
     "hoy";
