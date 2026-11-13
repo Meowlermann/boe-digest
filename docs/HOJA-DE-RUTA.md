@@ -52,7 +52,7 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resumen visible de los filtros de empleo.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
-- **#110 «Elecciones: enlaces al hub»**, sin fusionar:
+- **#110 «Elecciones: enlaces al hub»**, sin fusionar (también corrige el orden de render: votaciones antes que diputados, para que `/diputados/` no incruste el bloque de votaciones de la pasada anterior):
   redirección de `/elecciones/`, enlace en el panel «Parlamento», línea en
   la portada y enlace desde `/diputados/`.
 - **Tras el escrutinio del 29-N:** poner `CAMPANA_29N = False` en `build.py`

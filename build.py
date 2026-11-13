@@ -7576,8 +7576,11 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
     except Exception as exc:                                  # noqa: BLE001
         log(f"canales Atom: no se pudieron generar ({exc})")
     try:
-        extras += renderizar_diputados(fichas_dip)
+        # Votaciones antes que diputados: /diputados/ incrusta el fragmento
+        # datos/ultimas-votaciones.html que escribe renderizar_votaciones; en
+        # el otro orden salía el de la pasada anterior.
         extras += renderizar_votaciones(fichas_dip)
+        extras += renderizar_diputados(fichas_dip)
         # Los rankings son un añadido: si fallan, la edición sale igual.
         try:
             extras += renderizar_rankings(fichas_dip)
