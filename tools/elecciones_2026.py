@@ -6,6 +6,7 @@ el parser determinista de elecciones.py:
   BOE-A-2026-20742  Real Decreto 806/2026 (fecha y escaños por circunscripción)
   BOE-A-2026-23103  candidaturas proclamadas
   BOE-A-2026-23383  corrección de errores de las candidaturas
+  BOE-A-2023-12663  Real Decreto 400/2023 (escaños de 2023, para decir dónde cambian)
 
 Uso:
   python tools/elecciones_2026.py               # descarga del BOE
@@ -44,8 +45,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir", type=pathlib.Path)
     args = ap.parse_args()
-    html = {i: leer(i, args.dir) for i in (el.ID_RD, el.ID_CANDIDATURAS, el.ID_CORRECCION)}
-    datos = el.construir(html[el.ID_RD], html[el.ID_CANDIDATURAS], html[el.ID_CORRECCION])
+    html = {i: leer(i, args.dir) for i in (el.ID_RD, el.ID_CANDIDATURAS, el.ID_CORRECCION, el.ID_RD_ANTERIOR)}
+    datos = el.construir(html[el.ID_RD], html[el.ID_CANDIDATURAS], html[el.ID_CORRECCION],
+                         html[el.ID_RD_ANTERIOR])
     texto = json.dumps(datos, ensure_ascii=False, separators=(",", ":"))
     el.DATOS.write_text(texto + "\n", encoding="utf-8")
     circs = datos["circunscripciones"]
@@ -56,6 +58,9 @@ def main() -> None:
           f"{len(texto) // 1024} KB")
     for c in datos["correcciones_congreso"]:
         print(f"  corrección {c['junta']}: {c['estado']}")
+    for c in circs:
+        if c["escanos_anterior"] != c["escanos"]:
+            print(f"  reparto: {c['circunscripcion']} {c['escanos_anterior']} (2023) → {c['escanos']} (2026)")
     for a in el.anomalias(datos):
         print(f"  AVISO {a}")
 

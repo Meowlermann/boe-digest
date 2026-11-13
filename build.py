@@ -6614,8 +6614,11 @@ def renderizar_diputados(fichas: list) -> list:
             plantilla, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
             h1_p,
-            f"Los {len(gente)} diputados por {prov} en la {LEGISLATURA_DISUELTA}, "
-            f"con su actividad y sus votos.",
+            # Singular con un solo escaño (Ceuta, Melilla): «Los 1 diputados» no.
+            (f"El diputado por {prov} en la {LEGISLATURA_DISUELTA}, con su actividad y sus votos."
+             if len(gente) == 1 else
+             f"Los {len(gente)} diputados por {prov} en la {LEGISLATURA_DISUELTA}, "
+             f"con su actividad y sus votos."),
             gente, url,
             f'<a href="../">Portada</a> › <a href="./">Parlamentarios</a> › '
             f'<span aria-current="page">{esc_html(prov)}</span>',

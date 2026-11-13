@@ -2,6 +2,7 @@
 Congreso (BOE-A-2026-23103) y su corrección (BOE-A-2026-23383); cruce con los
 diputados salientes y páginas /elecciones/2026/. Sin red."""
 import pathlib
+import re
 import sys
 import tempfile
 import unittest
@@ -57,6 +58,13 @@ RD = doc(
     "<tr><td>Ceuta.</td><td>Uno.</td></tr></table>"
     + '<dl><dt>Publicado en:</dt><dd>«BOE» núm. 248, de 6 de octubre de 2026, páginas 1 a 2</dd></dl>')
 
+RD_ANT = doc(
+    p("parrafo", "Se convocan elecciones a ambas Cámaras, que se celebrarán el domingo 23 de julio de 2023.")
+    + "<table><tr><th>Circunscripción</th><th>Diputados</th></tr>"
+    "<tr><td>Huesca</td><td>3</td></tr><tr><td>Palmas (Las)</td><td>2</td></tr>"
+    "<tr><td>Ceuta</td><td>1</td></tr></table>"
+    + '<dl><dt>Publicado en:</dt><dd>«BOE» núm. 128, de 30 de mayo de 2023, páginas 1 a 2</dd></dl>')
+
 CORRECCION = doc(
     p("centro_negrita", "JUNTA ELECTORAL DE HUESCA")
     + p("centro_cursiva", "CONGRESO DE LOS DIPUTADOS")
@@ -81,7 +89,7 @@ CORRECCION = doc(
 class Numeros(unittest.TestCase):
     def test_letra(self):
         for t, n in (("Uno.", 1), ("Dos.", 2), ("Dieciséis.", 16), ("Treinta y dos.", 32),
-                     ("Treinta y ocho.", 38), ("Once", 11)):
+                     ("Treinta y ocho.", 38), ("Once", 11), ("37", 37), ("4", 4)):
             self.assertEqual(el.numero_en_letra(t), n)
         with self.assertRaises(ValueError):
             el.numero_en_letra("Muchos.")
@@ -157,9 +165,10 @@ class Correccion(unittest.TestCase):
             el.aplicar_correccion(self.b, self.c)
 
     def test_construir(self):
-        d = el.construir(RD, CANDIDATURAS, CORRECCION)
+        d = el.construir(RD, CANDIDATURAS, CORRECCION, RD_ANT)
         self.assertEqual([c["circunscripcion"] for c in d["circunscripciones"]], ["Huesca", "Palmas (Las)", "Ceuta"])
         self.assertEqual(d["publicaciones"][el.ID_CORRECCION]["fecha"], "2026-11-07")
+        self.assertEqual([c["escanos_anterior"] for c in d["circunscripciones"]], [3, 2, 1])
         self.assertEqual(el.anomalias(d), [])
 
 
@@ -194,6 +203,13 @@ class DatosFijos(unittest.TestCase):
         self.assertEqual(self.c["Ceuta"]["escanos"], 1)
         self.assertEqual(self.c["Melilla"]["escanos"], 1)
 
+    def test_reparto_anterior(self):
+        cambian = {c["circunscripcion"]: (c["escanos_anterior"], c["escanos"])
+                   for c in self.d["circunscripciones"] if c["escanos_anterior"] != c["escanos"]}
+        self.assertEqual(cambian, {"Madrid": (37, 38), "Cádiz": (9, 8)})
+        self.assertEqual(sum(c["escanos_anterior"] for c in self.d["circunscripciones"]), 350)
+        self.assertEqual(self.d["fuentes"]["rd_anterior"], "BOE-A-2023-12663")
+
     def test_listas_completas(self):
         self.assertEqual(el.anomalias(self.d), [])
         for c in self.d["circunscripciones"]:
@@ -222,7 +238,7 @@ class DatosFijos(unittest.TestCase):
 
 class Cruce(unittest.TestCase):
     def setUp(self):
-        self.d = el.construir(RD, CANDIDATURAS, CORRECCION)
+        self.d = el.construir(RD, CANDIDATURAS, CORRECCION, RD_ANT)
 
     def test_exacto_si_parecido_no(self):
         fichas = [{"natural": "Ana Uno Dos", "circunscripcion": "Huesca", "slug": "ana"},
@@ -241,7 +257,7 @@ class Cruce(unittest.TestCase):
 
 class Render(unittest.TestCase):
     def setUp(self):
-        self.d = el.construir(RD, CANDIDATURAS, CORRECCION)
+        self.d = el.construir(RD, CANDIDATURAS, CORRECCION, RD_ANT)
 
     def test_bloque_ficha(self):
         fichas = [{"natural": "Ana Uno Dos", "circunscripcion": "Huesca", "slug": "ana"}]
@@ -258,11 +274,33 @@ class Render(unittest.TestCase):
         self.assertIn('href="ana.html"', html)
         self.assertIn('/elecciones/2026/huesca.html', html)
         self.assertNotIn("tarjeta", html)
+        self.assertNotIn("BOE BOE-", html)
+        self.assertEqual(re.sub(r"<[^>]+>", "", html).count(el.ID_CANDIDATURAS), 1)   # visible, una vez
+        self.assertNotIn("reparto cambia", html)               # Huesca: 3 y 3
+        self.assertIn("Sin IA", html)
+
+    def test_reparto_que_cambia_con_las_dos_cifras(self):
+        html = el.bloque_ficha(self.d, "Palmas (Las)", [], "Las Palmas", "palmas-las")
+        self.assertIn("elige <b>1</b> diputado (", html)      # singular
+        self.assertIn("el 29-N hay 1 escaño en juego, frente a los 2 de la legislatura que acaba", html)
+        self.assertIn(el.url_boe(el.ID_RD_ANTERIOR), html)
+
+    def test_sigla_aparte_solo_si_aporta(self):
+        k = {"nombre": "PODEMOS", "sigla": "PAZ,CASA Y TRABAJO"}
+        self.assertIn("Sigla en el BOE: PAZ,CASA Y TRABAJO", el._sigla_aparte(k))
+        self.assertEqual(el._sigla_aparte({"nombre": "VOX", "sigla": "VOX"}), "")
+        self.assertEqual(el._sigla_aparte({"nombre": "FRENTE OBRERO", "sigla": ""}), "")
+        self.assertEqual(el._corto({"nombre": "PARTIDO SOCIALISTA OBRERO ESPAÑOL", "sigla": "PSOE"}), "PSOE")
+        self.assertEqual(el._corto(k), "PODEMOS")
 
     def test_paginas(self):
-        escritas = {}
-        h = {"pagina_suelta": lambda pl, carpeta, nombre, frag: escritas.__setitem__(nombre, frag),
-             "plantilla": "", "site_url": "https://terceracamara.es/", "carpeta": pathlib.Path(tempfile.gettempdir()),
+        escritas, plantillas = {}, {}
+
+        def suelta(pl, carpeta, nombre, frag):
+            escritas[nombre] = frag
+            plantillas[nombre] = pl
+        h = {"pagina_suelta": suelta,
+             "plantilla": "<footer><b>" + el.LEMA_IA + "</b></footer>", "site_url": "https://terceracamara.es/", "carpeta": pathlib.Path(tempfile.gettempdir()),
              "jsonld_script": lambda xs: str(xs), "nombre": lambda c: c, "slug": lambda c: c.lower().split()[0]}
         salidas = el.generar_paginas(h, self.d, [])
         self.assertEqual(len(salidas), 4)
@@ -273,6 +311,20 @@ class Render(unittest.TestCase):
         self.assertIn("«No proclamada»", hu)
         self.assertNotIn("<a", escritas["index.html"]["FUENTE"])   # el pie no lleva enlaces subrayados
         self.assertIn("huesca.html", escritas["index.html"]["CUERPO"])
+        for nombre, pl in plantillas.items():                       # sin el lema de IA
+            self.assertNotIn("redactados con IA", pl, nombre)
+            self.assertIn(el.SIN_IA, pl, nombre)
+        hub = escritas["index.html"]["CUERPO"]
+        self.assertIn("Dónde cambia el reparto respecto a 2023", hub)
+        self.assertIn("(en 2023, 2)", hub)
+        self.assertEqual(re.sub(r"<[^>]+>", "", hub).count(el.ID_CANDIDATURAS), 1)
+        self.assertNotIn("Fuente", escritas["index.html"]["FUENTE"])   # la fuente, una sola vez
+
+
+class Singular(unittest.TestCase):
+    def test_entradilla_de_ficha_con_un_diputado(self):
+        src = (RAIZ / "build.py").read_text(encoding="utf-8")
+        self.assertIn('f"El diputado por {prov} en la {LEGISLATURA_DISUELTA}, con su actividad y sus votos."', src)
 
 
 if __name__ == "__main__":

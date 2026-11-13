@@ -124,7 +124,8 @@ versiona en `main` (como `curated/censo_xv.json`). El render no pide nada a la
 red. Si el BOE publica otra corrección de las candidaturas:
 
 1. Añadir su identificador en `elecciones.py` y en `tools/elecciones_2026.py`.
-2. `python tools/elecciones_2026.py` (descarga los documentos por `txt.php`,
+2. `python tools/elecciones_2026.py` (descarga por `txt.php` los cuatro documentos:
+   RD 806/2026, candidaturas, corrección y RD 400/2023 para el reparto de 2023,
    respetando el `robots.txt` del BOE) y revisar lo que imprime: correcciones
    aplicadas y avisos. Si una corrección no encaja exactamente, el script
    para con error y no escribe nada.

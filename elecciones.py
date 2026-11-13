@@ -18,6 +18,10 @@ Fuentes (BOE, comprobadas el 13-11-2026 en txt.php):
   (32 casos entre Congreso y Senado). En Baleares, Las Palmas y
   Santa Cruz de Tenerife hay además rótulos «Circunscripción electoral: X»
   que solo llevan Senado.
+- BOE-A-2023-12663, Real Decreto 400/2023: anexo con los diputados de cada
+  circunscripción en 2023 (en cifra), para decir dónde cambia el reparto.
+  Se comprobó que coincide con el censo de la XV por circunscripción; cambian
+  Madrid (37 → 38) y Cádiz (9 → 8).
 - BOE-A-2026-23383, corrección de errores (BOE núm. 278, de 7-11-2026, mismo
   formato): por Junta y cámara, «En la candidatura:» + candidatura (o sin
   ella, y entonces el «Donde dice» empieza por la propia candidatura),
@@ -52,6 +56,9 @@ DATOS = RAIZ / "curated" / "elecciones_2026.json"
 ID_RD = "BOE-A-2026-20742"
 ID_CANDIDATURAS = "BOE-A-2026-23103"
 ID_CORRECCION = "BOE-A-2026-23383"
+# Reparto de la legislatura que acaba: anexo del Real Decreto 400/2023 (BOE núm.
+# 128, de 30-5-2023), con los diputados por circunscripción en cifra («37»).
+ID_RD_ANTERIOR = "BOE-A-2023-12663"
 
 
 def url_boe(ident: str) -> str:
@@ -84,7 +91,9 @@ _NUMEROS = {
 
 
 def numero_en_letra(t: str) -> int:
-    """«Treinta y dos.» → 32. Solo lo que hace falta (1–49); si no, ValueError."""
+    """«Treinta y dos.» → 32 (RD 806/2026) o «32» (RD 400/2023). Solo 1–49; si no, ValueError."""
+    if re.fullmatch(r"\s*\d{1,2}\.?\s*", t or ""):     # el RD de 2023 los da en cifra
+        return int(t.strip().rstrip("."))
     partes = clave_nombre(t).split(" y ")
     if len(partes) == 1 and partes[0] in _NUMEROS:
         return _NUMEROS[partes[0]]
@@ -357,8 +366,11 @@ def parsear_publicacion(html: str) -> dict:
                         "fecha": f"{m.group(4)}-{_MESES.index(m.group(3)) + 1:02d}-{int(m.group(2)):02d}"}
     raise ValueError("no se encuentra «Publicado en» en el documento del BOE")
 
-def construir(html_rd: str, html_cand: str, html_corr: str) -> dict:
+def construir(html_rd: str, html_cand: str, html_corr: str, html_rd_anterior: str) -> dict:
     rd = parsear_rd(html_rd)
+    anterior = {c: n for c, n, _l in parsear_rd(html_rd_anterior)["escanos"]}
+    if sorted(anterior) != sorted(c for c, _n, _l in rd["escanos"]):
+        raise ValueError("el RD 400/2023 y el RD 806/2026 no traen las mismas circunscripciones")
     circs = [c for c, _n, _l in rd["escanos"]]
     bloques = bloques_congreso(html_cand)
     hechas = aplicar_correccion(bloques, parsear_correccion(html_corr))
@@ -374,12 +386,14 @@ def construir(html_rd: str, html_cand: str, html_corr: str) -> dict:
     circunscripciones = []
     for circ, n, letra in rd["escanos"]:
         circunscripciones.append({"circunscripcion": circ, "escanos": n, "escanos_literal": letra,
-                                  "candidaturas": por_circ[circ]})
+                                  "escanos_anterior": anterior[circ], "candidaturas": por_circ[circ]})
     return {
         "esquema": 1,
-        "fuentes": {"rd": ID_RD, "candidaturas": ID_CANDIDATURAS, "correccion": ID_CORRECCION},
+        "fuentes": {"rd": ID_RD, "candidaturas": ID_CANDIDATURAS, "correccion": ID_CORRECCION,
+                    "rd_anterior": ID_RD_ANTERIOR},
         "publicaciones": {i: parsear_publicacion(x) for i, x in
-                          ((ID_RD, html_rd), (ID_CANDIDATURAS, html_cand), (ID_CORRECCION, html_corr))},
+                          ((ID_RD, html_rd), (ID_CANDIDATURAS, html_cand), (ID_CORRECCION, html_corr),
+                           (ID_RD_ANTERIOR, html_rd_anterior))},
         "fecha_literal": rd["fecha_literal"],
         "correcciones_congreso": [{"junta": h["junta"], "estado": h["estado"]} for h in hechas],
         "circunscripciones": circunscripciones,
@@ -410,6 +424,9 @@ def anomalias(datos: dict) -> list:
 # su nombre y sigla tal como los publica la Junta. Sin tarjetas ni subrayados.
 
 HUB = "elecciones/2026/"
+LEMA_IA = "Titulares y entradillas redactados con IA a partir del BOE; el texto oficial está enlazado."
+SIN_IA = ("Esta sección no usa IA: escaños, candidaturas y nombres salen tal cual del BOE, "
+          "que está enlazado.")
 
 # Circunscripción del RD → la que usan los datos del Congreso (fichas y URL de
 # /diputados/provincia-*.html). Solo cambia Santa Cruz de Tenerife.
@@ -460,7 +477,23 @@ def _esc(t) -> str:
 
 
 def _rotulo(k: dict) -> str:
-    return f"{k['nombre']} ({k['sigla']})" if k["sigla"] else k["nombre"]
+    """El nombre de la candidatura tal como lo publica la Junta."""
+    return k["nombre"]
+
+
+def _sigla_aparte(k: dict) -> str:
+    """El literal del BOE entre paréntesis, en pequeño, solo si añade algo al
+    nombre («PODEMOS (PAZ,CASA Y TRABAJO)» en Ceuta); «VOX (VOX)» no lo repite."""
+    if not k["sigla"] or clave_nombre(k["sigla"]) == clave_nombre(k["nombre"]):
+        return ""
+    return f'<small class="elec-sigla">Sigla en el BOE: {_esc(k["sigla"])}</small>'
+
+
+def _corto(k: dict) -> str:
+    """Para índices y menciones: el nombre si es corto; si no, la sigla."""
+    if len(k["nombre"]) <= 22 or not k["sigla"]:
+        return k["nombre"]
+    return k["sigla"]
 
 
 def _puesto(s: dict) -> str:
@@ -468,12 +501,28 @@ def _puesto(s: dict) -> str:
             else f"suplente n.º {s['puesto']}")
 
 
-def fuentes_html(datos: dict) -> str:
+def fuentes_html(datos: dict, anterior: bool = False) -> str:
+    """Una sola línea de fuente, con cada documento citado una vez."""
     f = datos["fuentes"]
-    return (f'Fuente: <a href="{url_boe(f["candidaturas"])}">candidaturas proclamadas, BOE '
-            f'{_esc(f["candidaturas"])}</a>, con la <a href="{url_boe(f["correccion"])}">corrección de '
-            f'errores, BOE {_esc(f["correccion"])}</a>; escaños y fecha: <a href="{url_boe(f["rd"])}">Real '
-            f'Decreto 806/2026, BOE {_esc(f["rd"])}</a>.')
+    ant = (f'; reparto de 2023: <a href="{url_boe(f["rd_anterior"])}">Real Decreto 400/2023</a> '
+           f'({_esc(f["rd_anterior"])})' if anterior else "")
+    return (f'Fuente: Boletín Oficial del Estado. Candidaturas: <a href="{url_boe(f["candidaturas"])}">'
+            f'{_esc(f["candidaturas"])}</a>, con su <a href="{url_boe(f["correccion"])}">corrección de errores</a> '
+            f'({_esc(f["correccion"])}); escaños y fecha: <a href="{url_boe(f["rd"])}">Real Decreto 806/2026</a> '
+            f'({_esc(f["rd"])}){ant}. Sin IA: datos tal cual del BOE.')
+
+
+def frase_escanos(c: dict, nombre: str, datos: dict) -> str:
+    """«Madrid elige 38 diputados…» y, si cambia, el número de 2023, citado.
+    Se dan las dos cifras oficiales; no se calcula ninguna diferencia."""
+    n, a = c["escanos"], c.get("escanos_anterior")
+    base = (f'{_esc(nombre)} elige <b>{n}</b> {"diputado" if n == 1 else "diputados"} '
+            f'(<a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a>)')
+    if a is None or a == n:
+        return base
+    return (base + f'. <b class="elec-cambio">El reparto cambia:</b> el 29-N hay {n} '
+            f'{"escaño" if n == 1 else "escaños"} en juego, frente a los {a} de la legislatura que acaba '
+            f'(<a href="{url_boe(datos["fuentes"]["rd_anterior"])}">Real Decreto 400/2023</a>)')
 
 
 def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: str,
@@ -482,27 +531,25 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
     c = next(x for x in datos["circunscripciones"] if x["circunscripcion"] == circ_rd)
     prof = [k for k in c["candidaturas"] if k["proclamada"]]
     items = "".join(
-        f'<li value="{k["orden"]}"><b>{_esc(k["sigla"] or k["nombre"])}</b> '
-        f'<span class="elec-nom">{_esc(k["nombre"])}</span>'
+        f'<li value="{k["orden"]}"><b>{_esc(_rotulo(k))}</b>{_sigla_aparte(k)}'
         + (f'<span class="elec-cab">Encabeza: {_esc(k["titulares"][0])}</span>' if k["titulares"] else "")
         + "</li>" for k in prof)
     rep = "".join(
         f'<li><a href="{_esc(s["ficha"]["slug"])}.html">{_esc(s["ficha"]["natural"])}</a> · '
-        f'{_esc(s["candidatura"]["sigla"] or s["candidatura"]["nombre"])}, {_puesto(s)}'
+        f'{_esc(_corto(s["candidatura"]))}, {_puesto(s)}'
         + (f' (en la XV, por {_esc(s["ficha"]["circunscripcion"])})'
            if s["ficha"].get("circunscripcion") != circ_congreso(circ_rd) else "")
         + "</li>" for s in salientes)
     fuera = "".join(
         f'<li><a href="{_esc(s["ficha"]["slug"])}.html">{_esc(s["ficha"]["natural"])}</a> · se presenta '
-        f'por {_esc(s["circ_nombre"])}: {_esc(s["candidatura"]["sigla"] or s["candidatura"]["nombre"])}, '
+        f'por {_esc(s["circ_nombre"])}: {_esc(_corto(s["candidatura"]))}, '
         f'{_puesto(s)}</li>' for s in (salen_fuera or []))
     n = c["escanos"]
     return (
         f'<section class="elec-29n" aria-labelledby="elec-29n">'
         f'<h2 id="elec-29n">Elecciones 29-N</h2>'
         f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
-        f'{_esc(nombre)} elige <b>{n}</b> {"diputado" if n == 1 else "diputados"} '
-        f'(<a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a>) y concurren '
+        f'{frase_escanos(c, nombre, datos)}. Concurren '
         f'<b>{len(prof)}</b> {"candidatura" if len(prof) == 1 else "candidaturas"} al Congreso, '
         f'en el orden del BOE.</p>'
         f'<ol class="elec-lista">{items}</ol>'
@@ -514,7 +561,7 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
           f'de la ficha del diputado; los parecidos no se marcan.</p>'
         f'<p class="elec-mas"><a href="/{HUB}{_esc(slug)}.html">Las listas completas de {_esc(nombre)}, '
         f'con suplentes →</a> · <a href="/{HUB}">Las 52 circunscripciones →</a></p>'
-        f'<p class="elec-fuente">{fuentes_html(datos)}</p></section>')
+        f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
 def migas(site: str, pasos) -> dict:
@@ -528,18 +575,16 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
     pagina_suelta, plantilla, site_url, carpeta, jsonld_script, nombre(circ_congreso),
     slug(circ_congreso). Devuelve [{"url", "lastmod"}]."""
     site, carpeta = h["site_url"], h["carpeta"]
+    # Nada de estas páginas pasa por IA: el lema general del pie se sustituye.
+    h = {**h, "plantilla": h["plantilla"].replace(LEMA_IA, SIN_IA)}
     pub = datos["publicaciones"][ID_CORRECCION]
     lastmod = pub["fecha"]
     edicion = f"Candidaturas del BOE, con la corrección del {pub['literal'].split(', de ', 1)[1]}"
     salientes = cruzar_salientes(datos, fichas)
     filas, salidas = [], []
-    # El pie de la plantilla subraya sus enlaces: va en texto, y los enlaces al
-    # BOE van en el cuerpo (.elec-fuente, sin subrayado).
-    f = datos["fuentes"]
-    pie = (f"Fuente: Boletín Oficial del Estado, {f['candidaturas']} (candidaturas proclamadas), "
-           f"{f['correccion']} (corrección de errores) y {f['rd']} (Real Decreto 806/2026). "
-           "Los nombres son los que publica el BOE.")
-    fuente_cuerpo = f'<p class="elec-fuente">{fuentes_html(datos)}</p>'
+    # La fuente va una sola vez, en el cuerpo y con enlaces (.elec-fuente, sin
+    # subrayado). El pie de la plantilla solo recuerda de dónde salen los nombres.
+    pie = "Los nombres de candidatos y candidaturas son los que publica el BOE."
     for c in datos["circunscripciones"]:
         cc = circ_congreso(c["circunscripcion"])
         nombre, slug = h["nombre"](cc), h["slug"](cc)
@@ -553,27 +598,26 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                      f'saliente →</a>' if s else "")
             return f"<li>{_esc(n)}{extra}</li>"
         bloques = "".join(
-            f'<section class="elec-cand" id="c{k["orden"]}"><h2>{k["orden"]}. {_esc(_rotulo(k))}</h2>'
+            f'<section class="elec-cand" id="c{k["orden"]}"><h2>{k["orden"]}. {_esc(_rotulo(k))}</h2>{_sigla_aparte(k)}'
             f'<ol class="elec-nombres">{"".join(li(k, "titular", i + 1, n) for i, n in enumerate(k["titulares"]))}</ol>'
             + (f'<h3>Suplentes</h3><ol class="elec-nombres">'
                f'{"".join(li(k, "suplente", i + 1, n) for i, n in enumerate(k["suplentes"]))}</ol>'
                if k["suplentes"] else "")
             + "</section>" for k in prof)
-        indice = "".join(f'<li value="{k["orden"]}"><a href="#c{k["orden"]}">{_esc(k["sigla"] or k["nombre"])}</a></li>'
+        indice = "".join(f'<li value="{k["orden"]}"><a href="#c{k["orden"]}">{_esc(_corto(k))}</a></li>'
                          for k in prof)
         nota_np = ("" if not no_prof else
                    '<p class="elec-nota">El BOE recoge además, como «No proclamada»: '
                    + ", ".join(f"{k['orden']}. {_esc(_rotulo(k))}" for k in no_prof) + ".</p>")
         n = c["escanos"]
         cuerpo = (f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
-                  f'{_esc(nombre)} elige <b>{n}</b> {"diputado" if n == 1 else "diputados"} al Congreso '
-                  f'(<a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a>). Estas son las {len(prof)} '
+                  f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
                   f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
                   + bloques + nota_np
                   + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html">Los diputados por '
                     f'{_esc(nombre)} en la legislatura disuelta →</a> · <a href="./">Las 52 circunscripciones →</a></p>'
-                  + fuente_cuerpo)
+                  + f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p>')
         url = f"{site}{HUB}{slug}.html"
         titulo = f"Candidatos al Congreso por {nombre} en las elecciones del 29-N"
         h["pagina_suelta"](h["plantilla"], carpeta, f"{slug}.html", {
@@ -599,9 +643,14 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
             "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
         })
         salidas.append({"url": url, "lastmod": lastmod})
+        a = c.get("escanos_anterior")
+        cambio = f" (en 2023, {a})" if a is not None and a != n else ""
         filas.append(f'<li><a href="{_esc(slug)}.html">{_esc(nombre)}</a>'
-                     f'<span class="ref">{n} {"escaño" if n == 1 else "escaños"} · {len(prof)} candidaturas</span></li>')
+                     f'<span class="ref">{n} {"escaño" if n == 1 else "escaños"}{cambio} · {len(prof)} candidaturas</span></li>')
     total = sum(c["escanos"] for c in datos["circunscripciones"])
+    cambian = [(h["nombre"](circ_congreso(c["circunscripcion"])), c["escanos_anterior"], c["escanos"])
+               for c in datos["circunscripciones"]
+               if c.get("escanos_anterior") is not None and c["escanos_anterior"] != c["escanos"]]
     url = f"{site}{HUB}"
     titulo = "Elecciones generales del 29-N de 2026: candidaturas al Congreso por provincia"
     cuerpo = (f'<p class="elec-intro">El <a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a> convoca '
@@ -609,9 +658,14 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
               f'diputados en {len(datos["circunscripciones"])} circunscripciones. Cada página tiene las '
               f'candidaturas proclamadas al Congreso, en el orden del BOE, y qué diputados de la '
               f'legislatura disuelta repiten.</p>'
-              f'<ul class="ix-lista elec-hub">{"".join(filas)}</ul>'
+              + ('' if not cambian else
+                 '<p class="elec-intro"><b class="elec-cambio">Dónde cambia el reparto respecto a 2023</b> '
+                 f'(<a href="{url_boe(datos["fuentes"]["rd_anterior"])}">Real Decreto 400/2023</a>): '
+                 + "; ".join(f"{_esc(nm)}, {nv} escaños frente a {an}" for nm, an, nv in cambian) + '.</p>')
+              + f'<ul class="ix-lista elec-hub">{"".join(filas)}</ul>'
               '<p class="elec-nota">El Senado no está incluido: sus candidaturas también están en el BOE, '
-              'pero esta sección cubre por ahora solo el Congreso.</p>' + fuente_cuerpo)
+              'pero esta sección cubre por ahora solo el Congreso.</p>'
+              + f'<p class="elec-fuente">{fuentes_html(datos, bool(cambian))}</p>')
     h["pagina_suelta"](h["plantilla"], carpeta, "index.html", {
         "TITLE": _esc(f"{titulo} | La Tercera Cámara"),
         "META_DESC": _esc(f"Escaños y candidaturas al Congreso de las {len(datos['circunscripciones'])} "
