@@ -13,35 +13,31 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   provincias, rankings y resumen semanal.
 - Empleo público a partir de la sección II.B: extractor, fichas de
   provincia, lenguaje llano, plazo literal, cita del diario autonómico
-  cuando consta, y listas sin tarjetas en las fichas de provincia
-  (#38, #65, #67, #92, #93, #94, #96).
+  cuando consta, y listas sin tarjetas en las fichas de provincia y en la
+  página general (#38, #65, #67, #92, #93, #94, #96, #106).
 - SEO de base: canonicales, migas, JSON-LD, alias del feed, sitemap por
   secciones con `lastmod` real (#101), comprobación de huérfanas, prueba
-  de títulos en una muestra (#70, #75).
+  de títulos en una muestra (#70, #75), y enlazado interno con el listado
+  de los 350 diputados en `/diputados/todos/` (#102).
 - Salud de la edición, observabilidad de producción, vigilante de
   despliegues y correcciones públicas (#16, #25, #33, #36, #103).
 - Páginas legales, analítica sin cookies y etiqueta de titulares con IA
   (#23, #68, #97, #99).
 - El Senado, fuera de la automatización, con la nota de cobertura a la
-  vista (#16).
+  vista (#16), y limpieza del residuo: sin páginas de estado vacías y sin
+  mención al Senado en el pie (#104).
+- Documentos de traspaso en `docs/` y la regla de mantenerlos al día en
+  cada PR (#107).
 
 ## En curso
 
-- **#102 «SEO: enlazado interno»**, sin fusionar. El listado de los 350
-  diputados pasa a `/diputados/todos/`; `/diputados/` se queda con un
-  enlace a esa página. En PRs posteriores del mismo frente: ediciones
-  por mes, `/normas/` por meses y `/personas/` de la A a la Z.
-- **#104 «Senado: limpieza del residuo»**, sin fusionar. Ya no se generan
-  páginas de estado con cero iniciativas; nota de caducidad de las
-  proposiciones del Senado al disolverse las Cortes; el pie dice «el BOE
-  y el Congreso bajo control ciudadano», sin mención al Senado.
-- **#106 «Empleo: página general sin tarjetas»**, sin fusionar. La
-  página general `/empleo/` usa las filas compactas de las fichas de
-  provincia, sin tocar el `noindex`, el title, la description ni el
-  canonical. El peso se valida antes de quitar el `noindex`.
-- **#107 «Docs: traspaso»**, sin fusionar (`OPERACION.md`, `DECISIONES.md`,
-  `REGLAS-EDITORIALES.md`, `HOJA-DE-RUTA.md`) y la regla de
-  mantenerlos al día en cada PR.
+- **#108 «Empleo: quitar el noindex de /empleo/»** (tanda E1), fusionada
+  el 13 de noviembre de 2026. La página general `/empleo/` pasa a
+  `index, follow` y entra en el sitemap; las fichas por organismo siguen en
+  `noindex`. Pendiente: pedir la indexación en Search Console.
+- **Enlazado interno, siguientes pasos** (tras #102): ediciones por mes y
+  `/normas/` por meses, con menos prioridad que la tanda E. `/personas/`
+  de la A a la Z sale de este frente porque choca con la poda prevista.
 - **Tanda 9 (Fable):** clasificador de interés público y extractor de
   valor añadido, todavía en la rama `seo/interes-publico-y-valor-anadido`,
   sin conectar a `build.py` y sin tocar robots, sitemap ni metas. Pendiente
@@ -56,10 +52,10 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resumen visible de los filtros de empleo.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
-- **#110 «Elecciones: enlaces al hub»**, apilada sobre #109, sin fusionar:
+- **#110 «Elecciones: enlaces al hub»**, sin fusionar:
   redirección de `/elecciones/`, enlaces desde el menú y `/diputados/`.
 - **#109 «Elecciones: bloque 29-N y hub /elecciones/2026/»** (tanda E2),
-  sin fusionar. Siguientes de la tanda E, en PR aparte: reparto por partido
+  fusionada el 13 de noviembre de 2026. Siguientes de la tanda E, en PR aparte: reparto por partido
   y FAQ en las fichas (E3), `ItemList` y `Event` (E4), imagen OG y «¿Quién
   votó qué en tu provincia?» (E5), H1 de normas y 404 propia (E6), prueba de
   descarga de resultados del Ministerio del Interior (E7), sitemaps
