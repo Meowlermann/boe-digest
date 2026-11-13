@@ -13,7 +13,7 @@ MARCA = build.MARCA_IA_TEXTO
 
 class TextoYAviso(unittest.TestCase):
     def test_texto_marca(self):
-        self.assertEqual(MARCA, "Titular con IA · Texto oficial en el BOE →")
+        self.assertEqual(MARCA, "Titular con IA · Texto oficial en el BOE\u00a0→")  # espacio duro (#113)
         self.assertNotIn("subray", MARCA.lower())
 
     def test_aviso_legal(self):

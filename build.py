@@ -2738,7 +2738,7 @@ def render_daystrip_ssr(dias: list[dict], current_id: str) -> str:
         destino = "./" if actual else f'ediciones/{d["id"]}.html'
         aria = ' aria-current="page"' if actual else ""
         out.append(f'<a class="daypill" href="{destino}"{aria}>{esc_html(d.get("label"))}</a>')
-    out.append('<a class="daypill archivo" href="ediciones/">ARCHIVO →</a>')
+    out.append('<a class="daypill archivo" href="ediciones/">ARCHIVO&nbsp;→</a>')
     return "".join(out)
 
 
@@ -3019,7 +3019,7 @@ def render_dateline_ssr(day: dict, permalink: str) -> str:
     if boe.get("sourceUrl"):
         piezas.append(f'<a href="{esc_attr(boe["sourceUrl"])}" target="_blank" '
                       f'rel="noopener">Sumario oficial ↗</a>')
-    piezas.append(f'<a href="{permalink}">Edición completa →</a>')
+    piezas.append(f'<a href="{permalink}">Edición completa&nbsp;→</a>')
     return " <span class=\"sep\">·</span> ".join(piezas)
 
 
@@ -3039,7 +3039,7 @@ def render_boe_lead_ssr(day: dict, permalink: str) -> str:
         f'{_parrafo("lead-sub", una_linea(s, 190))}'
         f'{("<p class=\"ia-pieza-wrap\">" + marca_ia_html(s) + "</p>") if s.get("redaccion_ia") else ""}'
         f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
-        f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer la pieza completa →</a></div>'
+        f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer la pieza completa&nbsp;→</a></div>'
         f'</article>')
 
 
@@ -3060,7 +3060,7 @@ def render_boe_destacados_ssr(day: dict, permalink: str) -> str:
             f'{_parrafo("linea", una_linea(s, 120))}'
             f'<div class="foot"><span>{esc_html(recortar(s.get("dept",""), 44))}</span>'
             f'{pie_enlaces_boe(s, "normas/")}'
-            f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer →</a></div>'
+            f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer&nbsp;→</a></div>'
             f'</article>')
     return "".join(out)
 
@@ -3142,7 +3142,7 @@ def fecha_boe_iso(day: dict) -> str:
 
 # Marca por pieza (tanda 7b, 09-11-2026). Gemini escribe titular y entradilla;
 # la línea global de página se retiró: la marca va en cada pieza con IA.
-MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE →"
+MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE\u00a0→"  # espacio duro: se escapa, no vale &nbsp;
 MARCA_IA_CORTA = "Titular con IA"  # listas sin enlace BOE propio
 ARCHIVO_NOTA_TITULARES = (
     "Títulos del resumen automático, sin IA; "
@@ -3780,7 +3780,7 @@ def linea_campana_portada() -> str:
     if not CAMPANA_29N:
         return ""
     return ('<p class="campana-29n"><a href="/elecciones/2026/">Elecciones generales del 29-N: '
-            'escaños y candidaturas al Congreso, provincia a provincia →</a></p>')
+            'escaños y candidaturas al Congreso, provincia a provincia&nbsp;→</a></p>')
 
 
 def render_nav() -> str:
@@ -4122,7 +4122,7 @@ def render_empleo_portada_ssr(day0: dict, estado: dict | None = None) -> str:
             f'<h2 id="eh-h" class="eh-t"><b>{cifra}</b> de empleo público en el BOE del '
             f'{esc_html(fmt_date_es(fecha))}</h2>'
             f'<p class="eh-s">Oposiciones y procesos selectivos publicados ese día, por organismo '
-            f'y provincia. <a href="/empleo/">Ver en Empleo →</a></p></section>')
+            f'y provincia. <a href="/empleo/">Ver en Empleo&nbsp;→</a></p></section>')
 
 
 def renderizar_index(dias: list[dict]) -> None:
@@ -5693,8 +5693,8 @@ def renderizar_votaciones(fichas: list) -> list:
                           .replace(f'href="{d["f"]}.html', f'href="/votaciones/{d["f"]}.html')
                           for d in destacadas)
                 + f'</ul><p class="vt-pie"><a class="vt-a" href="/votaciones/{fechas[0]}.html">Ver qué votó '
-                  f'cada diputado →</a> · <a class="vt-a" href="/votaciones/">Todas las '
-                  f'votaciones</a></p>')
+                  f'cada diputado&nbsp;→</a> · <a class="vt-a" href="/votaciones/">Todas las '
+                  f'votaciones&nbsp;→</a></p>')
         DATOS_DIR.mkdir(exist_ok=True)
         escribir_si_cambia(DATOS_DIR / "ultimas-votaciones.html", frag)
 
@@ -5726,7 +5726,7 @@ def renderizar_votaciones(fichas: list) -> list:
             f'<datalist id="vtb-lista">{opciones}</datalist>'
             f'<button type="submit">Ver cómo vota</button></form>'
             f'<p class="vtb-mas"><a href="/votaciones/{fechas[0]}.html">Todas las votaciones '
-            f'del pleno →</a></p></div>'
+            f'del pleno&nbsp;→</a></p></div>'
             f'<a class="vtb-hemi" href="/votaciones/{pagina_votacion(estrella, cd)}" '
             f'aria-label="Ver la votación escaño a escaño">'
             f'<svg viewBox="0 0 720 386" aria-hidden="true">{circ}</svg>'
@@ -6658,7 +6658,7 @@ def renderizar_diputados(fichas: list) -> list:
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
             cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
-                          f'tramita, cómo votan y qué publica el BOE →</a></p>'),
+                          f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
                                  f"con su actividad y sus votos."),

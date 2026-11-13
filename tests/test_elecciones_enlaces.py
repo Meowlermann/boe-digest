@@ -70,7 +70,7 @@ class Votaciones(unittest.TestCase):
 class Fichas(unittest.TestCase):
     def test_texto_del_enlace_al_hub(self):
         src = (RAIZ / "elecciones.py").read_text(encoding="utf-8")
-        self.assertIn("Candidaturas en las 52 circunscripciones →", src)
+        self.assertIn("Candidaturas en las 52 circunscripciones&nbsp;→", src)
 
 
 class Diputados(unittest.TestCase):

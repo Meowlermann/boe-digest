@@ -586,7 +586,7 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         + f'<p class="elec-nota">Se marca solo cuando el nombre completo coincide letra por letra con el '
           f'de la ficha del diputado; los parecidos no se marcan.</p>'
         f'<p class="elec-mas"><a href="/{HUB}{_esc(slug)}.html">Las listas completas de {_esc(nombre)}, '
-        f'con suplentes →</a> · <a href="/{HUB}">Candidaturas en las 52 circunscripciones →</a></p>'
+        f'con suplentes&nbsp;→</a> · <a href="/{HUB}">Candidaturas en las 52 circunscripciones&nbsp;→</a></p>'
         f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
@@ -639,7 +639,7 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
         def li(k, lista, i, n):
             s = marcados.get((id(k), lista, i))
             extra = (f' <a class="elec-sal" href="/diputados/{_esc(s["ficha"]["slug"])}.html">diputado '
-                     f'saliente →</a>' if s else "")
+                     f'saliente&nbsp;→</a>' if s else "")
             return f"<li>{_esc(n)}{extra}</li>"
         bloques = "".join(
             f'<section class="elec-cand" id="c{k["orden"]}"><h2>{k["orden"]}. {_esc(_rotulo(k))}</h2>{_sigla_aparte(k)}'
@@ -658,7 +658,7 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                   f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
                   + nota_np + bloques
                   + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html">Los diputados por '
-                    f'{_esc(nombre)} en la legislatura disuelta →</a> · <a href="./">Las 52 circunscripciones →</a></p>'
+                    f'{_esc(nombre)} en la legislatura disuelta&nbsp;→</a> · <a href="./">Las 52 circunscripciones&nbsp;→</a></p>'
                   + f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p>')
         url = f"{site}{HUB}{slug}.html"
         titulo = f"Candidatos al Congreso por {nombre} en las elecciones del 29-N"

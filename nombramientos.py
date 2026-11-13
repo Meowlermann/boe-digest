@@ -797,4 +797,4 @@ def bloque_edicion(fecha: str, h: dict, prefijo: str = "/") -> str:
             f'<p class="nb-tit">{esc(titular_bloque(regs))}</p>'
             f'<ul class="nb-l">{"".join(lis)}</ul>'
             f'<p class="aside-note"><a class="srclink" href="{prefijo}nombramientos/">Todos los '
-            f'nombramientos y ceses →</a></p></div>')
+            f'nombramientos y ceses&nbsp;→</a></p></div>')

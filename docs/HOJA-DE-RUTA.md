@@ -55,6 +55,11 @@ Se actualiza en la misma PR que cambie el estado de un frente.
 - **#110 «Elecciones: enlaces al hub»**, sin fusionar (también corrige el orden de render: votaciones antes que diputados, para que `/diputados/` no incruste el bloque de votaciones de la pasada anterior):
   redirección de `/elecciones/`, enlace en el panel «Parlamento», línea en
   la portada y enlace desde `/diputados/`.
+- **#113 «Portada: sin subrayados»**, apilada sobre #110, sin fusionar:
+  ningún enlace de la portada subrayado, en ningún estado (pistas por color,
+  peso, fondo tenue con hover y contorno con el teclado),
+  filetes de la línea de elecciones con contraste y flechas que no se quedan
+  solas en una línea.
 - **Tras el escrutinio del 29-N:** poner `CAMPANA_29N = False` en `build.py`
   y regenerar. Así se quitan la línea de la portada y el enlace del panel
   «Parlamento», donde vuelve «Los 350 diputados».
