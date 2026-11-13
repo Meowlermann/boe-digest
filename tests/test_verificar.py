@@ -742,7 +742,7 @@ class TestBoletin(unittest.TestCase):
 
 
 class TestNoindexSitemap(unittest.TestCase):
-    """TC-013: las páginas noindex (/empleo/) quedan fuera del sitemap a
+    """TC-013: las páginas noindex (p. ej. fichas de /empleo/ por organismo) quedan fuera del sitemap a
     propósito; (k) no lo cuenta como «fuera» y sí avisa si se cuelan."""
     CAB = TestCanonicales.CAB
     NOINDEX = '<meta name="robots" content="noindex, follow">'
