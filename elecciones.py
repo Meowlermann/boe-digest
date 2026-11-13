@@ -427,7 +427,7 @@ HUB = "elecciones/2026/"
 LEMA_IA = "Titulares y entradillas redactados con IA a partir del BOE; el texto oficial está enlazado."
 # Pie de las fichas de provincia que llevan el bloque: dice a qué parte afecta la IA.
 LEMA_FICHA = ("El bloque «Elecciones 29-N» reproduce el BOE sin IA; los titulares y entradillas "
-              "del resto de la página, redactados con IA a partir del BOE; el texto oficial está enlazado.")
+              "del resto de la página están redactados con IA a partir del BOE; el texto oficial está enlazado.")
 SIN_IA = ("Esta sección no usa IA: escaños, candidaturas y nombres salen tal cual del BOE, "
           "que está enlazado.")
 

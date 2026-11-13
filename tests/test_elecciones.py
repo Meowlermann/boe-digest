@@ -341,6 +341,7 @@ class PieFicha(unittest.TestCase):
         pl = (RAIZ / "template_norma.html").read_text(encoding="utf-8")
         self.assertIn(el.LEMA_IA, pl)                       # el reemplazo encuentra el lema
         self.assertIn("reproduce el BOE sin IA", el.LEMA_FICHA)
+        self.assertIn("del resto de la página están redactados con IA", el.LEMA_FICHA)
         src = (RAIZ / "build.py").read_text(encoding="utf-8")
         self.assertIn("plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)", src)
 
