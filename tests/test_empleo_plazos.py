@@ -1,5 +1,5 @@
 """TC-013, iteración 1: plazo literal y tipo de proceso de las convocatorias
-de empleo público, noindex de /empleo/ y canal en /seguir/. Las frases son
+de empleo público, noindex de las fichas de /empleo/ por organismo y canal en /seguir/. Las frases son
 copias literales de disposiciones reales del BOE (20 y 27-10-2026)."""
 import pathlib
 import sys

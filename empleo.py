@@ -50,13 +50,15 @@ DIAS_FILTRO = 30                 # chip «Últimos N días» de /empleo/ (UX-3)
 JS_FILTRO = "/assets/empleo.js"  # filtrado en cliente de /empleo/ (UX-3), <3 KB
 MAX_FILAS = 300                  # tope de filas por página
 # Se enseña la cita del plazo solo tras validarla a mano (TC-013, iteración 1).
-# /empleo/ y sus fichas van en noindex (y fuera del sitemap) hasta que haya
-# fichas por convocatoria con valor propio: hoy son listados del sumario.
+# Las fichas por organismo de /empleo/ van en noindex (y fuera del sitemap):
+# son listados del sumario sin valor propio.
 ROBOTS = "noindex, follow"
-# Excepción (tanda 1-A, 06-11-2026): las fichas /empleo/provincia-*.html con al
-# menos una convocatoria de proceso selectivo son indexables y van al sitemap.
-# Las que solo tienen listas, tribunales o resultados siguen en noindex.
+# Indexables (van al sitemap): las fichas /empleo/provincia-*.html con al menos
+# una convocatoria de proceso selectivo (tanda 1-A, 06-11-2026) y, desde la
+# tanda E1 (13-11-2026), la página general /empleo/. Las fichas de provincia
+# que solo tienen listas, tribunales o resultados siguen en noindex.
 ROBOTS_PROVINCIA = "index, follow"
+ROBOTS_INDEXABLE = ROBOTS_PROVINCIA
 
 # Tipo de disposición, en orden de prioridad: la primera que encaja se queda.
 # Se busca en título + epígrafe, sin tildes y en minúscula.
@@ -1191,7 +1193,7 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
             plantilla = plantilla.replace(PIE_GENERAL, PIE_PROVINCIA, 1)
         if indexable:
             plantilla = plantilla.replace(f'<meta name="robots" content="{ROBOTS}">',
-                                          f'<meta name="robots" content="{ROBOTS_PROVINCIA}">', 1)
+                                          f'<meta name="robots" content="{ROBOTS_INDEXABLE}">', 1)
         h["pagina_suelta"](plantilla, carpeta, nombre, {
             "TITLE": esc(f"{titulo} | La Tercera Cámara"),
             "META_DESC": attr(desc),
@@ -1357,7 +1359,8 @@ def generar_paginas(h: dict, estado: dict | None = None) -> list:
            "por organismo y provincia, con enlace a cada disposición y canal RSS.",
            "Empleo público en el BOE",
            "Todas las disposiciones de la sección II.B del BOE, «Oposiciones y concursos»: "
-           "convocatorias, listas, tribunales y resultados.", recientes, cuerpo, "", ficha="")
+           "convocatorias, listas, tribunales y resultados.", recientes, cuerpo, "", ficha="",
+           indexable=True)  # Tanda E1: /empleo/ sin noindex y en el sitemap
     # Índices ligeros (E-2b): el aviso del buscador enlaza aquí, no a un ancla
     # de la misma página (con la búsqueda activa el salto no limpiaba el filtro).
     if enlaces_prov:

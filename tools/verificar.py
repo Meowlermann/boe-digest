@@ -582,7 +582,7 @@ def comprobar_canonicales(raiz: pathlib.Path, paginas: list[pathlib.Path] | None
                    "dos ficheros publican la misma URL: quita uno.")
         vistos[href] = rel
         if RE_NOINDEX.search(cab):
-            # noindex (p. ej. /empleo/, TC-013): fuera del sitemap a propósito.
+            # noindex (p. ej. las fichas de /empleo/ por organismo): fuera del sitemap a propósito.
             if sitemap is not None and href in sitemap:
                 anotar("noindex", f"La página «{href}» lleva noindex pero está en el sitemap.", rel,
                        "quítala de renderizar_sitemap(): el sitemap solo lista URLs indexables.")
