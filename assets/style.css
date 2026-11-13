@@ -1974,7 +1974,11 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-cambio{color:var(--ink)}
 
 /* Campaña del 29-N (CAMPANA_29N): línea discreta en la portada, sin tarjeta ni subrayado */
-.campana-29n{margin:10px 0 14px;padding:6px 0;border-top:1px solid var(--ink-soft);border-bottom:1px solid var(--ink-soft);font-size:14px}
+/* Filetes de la línea 29-N: 3,26:1 sobre --bg en claro y 3,28:1 en oscuro (WCAG 1.4.11, entre 3 y 3,5). */
+:root{--filete-29n:#808584}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--filete-29n:#636771}}
+:root[data-theme="dark"]{--filete-29n:#636771}
+.campana-29n{margin:10px 0 14px;padding:6px 0;border-top:1px solid var(--filete-29n);border-bottom:1px solid var(--filete-29n);font-size:14px}
 .campana-29n a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}
 /* Bloque de últimas votaciones (portada y /diputados/): enlaces sin subrayado */
 .vt-a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}

@@ -48,15 +48,15 @@ class Portada(unittest.TestCase):
         self.assertIn("color:", nb)
         self.assertIn("color:", regla("body.portada .vtb-d a"))
 
-    def test_filetes_de_la_linea_de_elecciones_pasan_de_3_a_1(self):
-        self.assertIn("solid var(--ink-soft)", regla(".campana-29n"))
+    def test_filetes_de_la_linea_de_elecciones_entre_3_y_3_5(self):
+        self.assertIn("solid var(--filete-29n)", regla(".campana-29n"))
         bgs = re.findall(r"--bg:(#[0-9a-fA-F]{6})", CSS)
-        softs = re.findall(r"--ink-soft:(#[0-9a-fA-F]{6})", CSS)
-        claro = {"bg": bgs[0], "ink-soft": softs[0]}           # :root
-        oscuro = {"bg": bgs[1], "ink-soft": softs[1]}          # tema oscuro
-        self.assertNotEqual(claro["bg"], oscuro["bg"])
-        for tema in (claro, oscuro):
-            self.assertGreater(contraste(tema["bg"], tema["ink-soft"]), 3.0, tema)
+        filetes = re.findall(r"--filete-29n:(#[0-9a-fA-F]{6})", CSS)
+        self.assertEqual(len(filetes), 3)                     # claro, oscuro (sistema) y oscuro (data-theme)
+        self.assertEqual(filetes[1], filetes[2])
+        self.assertNotEqual(bgs[0], bgs[1])
+        for bg, f in ((bgs[0], filetes[0]), (bgs[1], filetes[1])):
+            self.assertTrue(3.0 <= contraste(bg, f) <= 3.5, (bg, f, contraste(bg, f)))
 
     def test_flechas_con_espacio_duro(self):
         self.assertIn("&nbsp;→</a>", build.linea_campana_portada())
