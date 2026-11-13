@@ -590,6 +590,20 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
+def redireccion_html(site: str) -> str:
+    """/elecciones/ → /elecciones/2026/. GitHub Pages no hace redirecciones del
+    servidor: meta refresh inmediato, canonical al hub y noindex (fuera del
+    sitemap). Sin <!doctype>: es un documento mínimo de redirección, no una
+    página completa, y verificar.py no le exige menú, migas ni sitemap."""
+    destino = f"{site}{HUB}"
+    return ('<meta charset="utf-8">\n'
+            '<title>Elecciones 2026 | La Tercera Cámara</title>\n'
+            '<meta name="robots" content="noindex, follow">\n'
+            f'<link rel="canonical" href="{destino}">\n'
+            f'<meta http-equiv="refresh" content="0; url=/{HUB}">\n'
+            f'<p>Esta página se ha movido a <a href="/{HUB}">Elecciones generales del 29-N</a>.</p>\n')
+
+
 def migas(site: str, pasos) -> dict:
     return {"@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": n, "item": u}

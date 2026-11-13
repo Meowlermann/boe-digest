@@ -3798,7 +3798,10 @@ def render_nav() -> str:
 
     hoy = [enlace("/", "Edición de hoy", "El BOE y las Cortes del día, explicados"),
            enlace("/#h-boe", "El BOE de hoy", "Lo que se publica y a quién afecta"),
-           enlace("/#h-cortes", "Las Cortes hoy", "Qué registran, preguntan y votan")]
+           enlace("/#h-cortes", "Las Cortes hoy", "Qué registran, preguntan y votan"),
+           # Elecciones del 29-N: en «Hoy» porque el panel de Parlamento ya
+           # tiene MENU_MAX_ENLACES enlaces (UX-4) y no se quita ninguno.
+           enlace("/elecciones/2026/", "Elecciones 29-N", "Escaños y candidaturas al Congreso, provincia a provincia")]
     if semanas_publicadas():
         hoy.append(enlace("/semana/", "La semana", "Cada lunes, la semana anterior en una página"))
     hoy += [enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados"),
@@ -6217,7 +6220,8 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
         f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
         '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
         f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a>'
-        f' · <a href="todos/">Los {len(fichas)} diputados, uno a uno →</a></p>'
+        f' · <a href="todos/">Los {len(fichas)} diputados, uno a uno →</a>'
+        ' · <a href="../elecciones/2026/">Elecciones 29-N: candidaturas por provincia →</a></p>'
         '<script src="../assets/dip-busca.js" defer></script></section>')
 
 
@@ -6403,7 +6407,8 @@ def renderizar_elecciones(fichas: list) -> list:
         "site_url": SITE_URL, "carpeta": ELECCIONES_DIR, "jsonld_script": jsonld_script,
         "nombre": nombre_circunscripcion, "slug": _slug_txt,
     }, datos, fichas)
-    log(f"elecciones/2026/: {len(salidas)} páginas")
+    escribir_si_cambia(ELECCIONES_DIR.parent / "index.html", el.redireccion_html(SITE_URL))
+    log(f"elecciones/2026/: {len(salidas)} páginas (y /elecciones/ redirige al hub)")
     return salidas
 
 
@@ -6630,7 +6635,7 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+            cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).

@@ -56,6 +56,8 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resumen visible de los filtros de empleo.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
+- **#110 «Elecciones: enlaces al hub»**, apilada sobre #109, sin fusionar:
+  redirección de `/elecciones/`, enlaces desde el menú y `/diputados/`.
 - **#109 «Elecciones: bloque 29-N y hub /elecciones/2026/»** (tanda E2),
   sin fusionar. Siguientes de la tanda E, en PR aparte: reparto por partido
   y FAQ en las fichas (E3), `ItemList` y `Event` (E4), imagen OG y «¿Quién

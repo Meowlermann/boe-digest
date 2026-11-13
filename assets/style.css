@@ -1352,6 +1352,8 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .aviso-leg a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .frase-grupo{margin:0 0 1.2rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
+/* «Todo sobre X…» en las fichas de provincia: sin subrayado (antes .srclink). */
+.destacado-a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .tabla-ancha{overflow-x:auto;max-width:100%}
 
 /* ---------- Mapa de provincias (/provincias/) ---------- */
