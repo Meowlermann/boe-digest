@@ -1949,6 +1949,13 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-29n{margin:0 0 1.4rem;padding:0 0 .4rem;border-top:3px solid var(--ink);border-bottom:1px solid var(--border)}
 .elec-29n h2{margin:.7rem 0 .4rem}
 .elec-29n h3{margin:1rem 0 .3rem;font-size:15px}
+/* Tanda E3: reparto por formación y preguntas frecuentes en las fichas de provincia */
+.prov-reparto,.prov-faq{margin:0 0 1.4rem;padding:0 0 .4rem;border-top:3px solid var(--ink)}
+.prov-reparto h2,.prov-faq h2{margin:.7rem 0 .4rem}
+.prov-reparto-t td:last-child{color:var(--ink-soft);font-size:13px}
+.prov-faq h3{margin:1rem 0 .25rem;font-size:15px}
+.prov-faq p{margin:0 0 .4rem}
+.prov-faq a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-intro{margin:0 0 .6rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .elec-29n a,.elec-cand a,.elec-indice a,.elec-mas a,.elec-fuente a,.elec-intro a,.elec-hub a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-lista,.elec-nombres,.elec-rep{margin:0;padding:0 0 0 1.8em;font-size:15px;line-height:1.45}

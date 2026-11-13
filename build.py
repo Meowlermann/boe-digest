@@ -6355,6 +6355,18 @@ def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
     return max((x for x in fechas if x), default="")
 
 
+def _reparto_provincia(gente: list, prov: str) -> str:
+    try:
+        import elecciones as el
+        return el.reparto_html(gente, nombre_circunscripcion(prov), nombre_grupo)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"reparto de {prov}: no disponible ({exc})")
+        return ""
+
+
+FAQ_ELECCIONES: dict = {}   # {circunscripción: HTML de las preguntas frecuentes}, lo llena _bloques_elecciones
+
+
 def _bloques_elecciones(fichas: list) -> dict:
     """Tanda E2: {circunscripción del Congreso: HTML del bloque «Elecciones 29-N»}.
     Lee curated/elecciones_2026.json (copia fija del BOE, sin red). Si falta o
@@ -6378,6 +6390,11 @@ def _bloques_elecciones(fichas: list) -> dict:
             cc = el.circ_congreso(c["circunscripcion"])
             out[cc] = el.bloque_ficha(datos, c["circunscripcion"], sal.get(c["circunscripcion"], []),
                                       nombre_circunscripcion(cc), _slug_txt(cc), fuera.get(cc, []))
+            # Tanda E3: preguntas frecuentes deterministas (BOE y Congreso).
+            gente = [f for f in fichas if f.get("circunscripcion") == cc]
+            FAQ_ELECCIONES[cc] = el.faq_html(el.faq_provincia(
+                datos, c["circunscripcion"], nombre_circunscripcion(cc), _slug_txt(cc), gente,
+                sal.get(c["circunscripcion"], []), nombre_grupo))
         return out
     except Exception as exc:                                  # noqa: BLE001
         log(f"elecciones: bloque 29-N no disponible ({exc})")
@@ -6630,7 +6647,9 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+            # Tanda E3: reparto por formación y preguntas frecuentes, tras el bloque 29-N.
+            cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
+            + FAQ_ELECCIONES.get(prov, "") + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).

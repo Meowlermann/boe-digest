@@ -590,6 +590,100 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
+def reparto_xv(gente: list, nombre_grupo) -> list:
+    """Escaños de una circunscripción en la legislatura disuelta, por formación
+    (el campo «partido» del Congreso: la candidatura por la que salió elegido
+    cada diputado) y, dentro de cada una, por grupo parlamentario actual.
+    Orden: más escaños primero; a igualdad, por nombre de la formación. Solo
+    cuenta: no calcula fechas ni estados."""
+    por: dict = {}
+    for f in gente:
+        partido = f.get("partido") or "Sin formación en el Congreso"
+        g = nombre_grupo(f.get("grupo") or "") or "Sin grupo"
+        d = por.setdefault(partido, {})
+        d[g] = d.get(g, 0) + 1
+    filas = [(p, sum(gs.values()), sorted(gs.items(), key=lambda x: (-x[1], x[0])))
+             for p, gs in por.items()]
+    return sorted(filas, key=lambda x: (-x[1], x[0]))
+
+
+def reparto_html(gente: list, nombre: str, nombre_grupo) -> str:
+    """Tabla «Reparto de escaños en la legislatura disuelta» (tanda E3)."""
+    filas = reparto_xv(gente, nombre_grupo)
+    if not filas:
+        return ""
+    tr = "".join(
+        f'<tr><td>{_esc(p)}</td><td class="num">{n}</td><td>'
+        + "; ".join(f"{_esc(g)}{'' if len(gs) == 1 else f': {k}'}" for g, k in gs)
+        + "</td></tr>" for p, n, gs in filas)
+    total = sum(n for _p, n, _g in filas)
+    return (f'<section class="prov-reparto" aria-labelledby="prov-reparto">'
+            f'<h2 id="prov-reparto">Reparto de escaños en la legislatura disuelta</h2>'
+            + (f'<p class="elec-intro">El escaño de {_esc(nombre)} en la XV Legislatura, por la formación '
+               f'con la que salió elegido su diputado y el grupo en el que estaba al disolverse las Cortes.</p>'
+               if total == 1 else
+               f'<p class="elec-intro">Los {total} escaños de {_esc(nombre)} en la XV Legislatura, por la '
+               f'formación con la que salió elegido cada diputado y por el grupo en el que estaba al '
+               f'disolverse las Cortes. Más escaños primero; a igualdad, por orden alfabético.</p>')
+            + f'<div class="tabla-ancha"><table class="rk prov-reparto-t"><thead><tr><th scope="col">Formación</th>'
+            f'<th scope="col" class="num">Escaños</th><th scope="col">Grupo en el Congreso</th></tr></thead>'
+            f'<tbody>{tr}</tbody></table></div>'
+            f'<p class="elec-nota">Fuente: datos abiertos del Congreso de los Diputados (formación y grupo de '
+            f'cada diputado).</p></section>')
+
+
+def faq_provincia(datos: dict, circ_rd: str, nombre: str, slug: str, gente: list,
+                  salientes: list, nombre_grupo) -> list:
+    """Preguntas frecuentes de la ficha de provincia (tanda E3): cada respuesta
+    sale tal cual de los datos (BOE y Congreso), sin redactar ni calcular
+    fechas. Devuelve [(pregunta, respuesta en HTML)]."""
+    c = next(x for x in datos["circunscripciones"] if x["circunscripcion"] == circ_rd)
+    n, ant = c["escanos"], c.get("escanos_anterior")
+    prof = [k for k in c["candidaturas"] if k["proclamada"]]
+    np_ = [k for k in c["candidaturas"] if not k["proclamada"]]
+    r1 = (f'{n} {"diputado" if n == 1 else "diputados"}, según el '
+          f'<a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a>.')
+    if ant is not None and ant != n:
+        r1 += (f' En las elecciones de 2023 fueron {ant}, según el '
+               f'<a href="{url_boe(datos["fuentes"]["rd_anterior"])}">Real Decreto 400/2023</a>.')
+    r2 = (f'{len(prof)} {"candidatura proclamada" if len(prof) == 1 else "candidaturas proclamadas"}, '
+          f'según el BOE: ' + ", ".join(_esc(_rotulo(k)) for k in prof) + '.')
+    if np_:
+        r2 += (f' El BOE recoge además {len(np_)} '
+               f'{"candidatura no proclamada" if len(np_) == 1 else "candidaturas no proclamadas"}.')
+    filas = reparto_xv(gente, nombre_grupo)
+    r3 = "; ".join(f"{_esc(p)}, {k}" for p, k, _g in filas) + "." if filas else ""
+    if salientes:
+        r4 = (f'{len(salientes)} {"figura" if len(salientes) == 1 else "figuran"} con su nombre completo, letra por letra, en las listas al Congreso '
+              f'por {_esc(nombre)}: ' + ", ".join(_esc(s["ficha"]["natural"]) for s in salientes) + '.')
+    else:
+        r4 = (f'Ninguno figura con su nombre completo, letra por letra, en las listas al Congreso por '
+              f'{_esc(nombre)}.')
+    preguntas = [
+        (f"¿Cuántos diputados elige {nombre} en las elecciones del {datos['fecha_literal']}?", r1),
+        (f"¿Cuántas candidaturas se presentan al Congreso por {nombre}?", r2),
+    ]
+    if r3:
+        preguntas.append((f"¿Cómo se repartían los escaños de {nombre} en la legislatura disuelta?",
+                          f"Por formación: {r3}"))
+    preguntas += [
+        (f"¿Qué diputados de la legislatura disuelta se presentan de nuevo por {nombre}?", r4),
+        (f"¿Dónde se consultan las listas completas de {nombre}, con los suplentes?",
+         f'En <a href="/{HUB}{_esc(slug)}.html">la página de {_esc(nombre)} de las elecciones del 29-N</a>, '
+         f'tal como las publica el BOE.'),
+    ]
+    return preguntas
+
+
+def faq_html(preguntas: list) -> str:
+    if not preguntas:
+        return ""
+    return ('<section class="prov-faq" aria-labelledby="prov-faq"><h2 id="prov-faq">Preguntas frecuentes</h2>'
+            + "".join(f"<h3>{_esc(q)}</h3><p>{r}</p>" for q, r in preguntas)
+            + '<p class="elec-nota">Respuestas sacadas tal cual del BOE y de los datos abiertos del Congreso, '
+              'sin IA.</p></section>')
+
+
 def migas(site: str, pasos) -> dict:
     return {"@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": n, "item": u}
