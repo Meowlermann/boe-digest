@@ -599,6 +599,11 @@ def redireccion_html(site: str) -> str:
     return ('<meta charset="utf-8">\n'
             '<title>Elecciones 2026 | La Tercera Cámara</title>\n'
             '<meta name="robots" content="noindex, follow">\n'
+            '<meta name="color-scheme" content="light dark">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            '<style>body{font:16px/1.5 system-ui,sans-serif;margin:24px}'
+            'a{color:#b3261e;font-weight:600;text-decoration:none}'
+            '@media (prefers-color-scheme:dark){a{color:#ff8a80}}</style>\n'
             f'<link rel="canonical" href="{destino}">\n'
             f'<meta http-equiv="refresh" content="0; url=/{HUB}">\n'
             f'<p>Esta página se ha movido a <a href="/{HUB}">Elecciones generales del 29-N</a>.</p>\n')

@@ -20,6 +20,8 @@ class Redireccion(unittest.TestCase):
         self.assertIn('<link rel="canonical" href="https://terceracamara.es/elecciones/2026/">', h)
         self.assertIn('content="noindex, follow"', h)
         self.assertIn('href="/elecciones/2026/"', h)          # enlace por si no hay refresh
+        self.assertIn("text-decoration:none", h)             # sin subrayado, también aquí
+        self.assertIn('content="light dark"', h)
         self.assertIsNone(v.RE_DOCUMENTO.search(h[:500]))     # no es página completa
         self.assertIn("/elecciones/", v.HUERFANAS_JUSTIFICADAS)   # nadie la enlaza a propósito
 
