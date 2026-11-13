@@ -56,6 +56,13 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resumen visible de los filtros de empleo.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
+- **#109 «Elecciones: bloque 29-N y hub /elecciones/2026/»** (tanda E2),
+  sin fusionar. Siguientes de la tanda E, en PR aparte: reparto por partido
+  y FAQ en las fichas (E3), `ItemList` y `Event` (E4), imagen OG y «¿Quién
+  votó qué en tu provincia?» (E5), H1 de normas y 404 propia (E6), prueba de
+  descarga de resultados del Ministerio del Interior (E7), sitemaps
+  prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
+  Senado sigue fuera.
 
 ## Aparcado
 

@@ -116,6 +116,20 @@ no construyen una edición completa y el chequeo producía graves que no
 correspondían (falsa alarma #100). En diario, render, `ediciones` y
 `repintar` el comportamiento no cambia.
 
+## Elecciones del 29-N: regenerar las candidaturas
+
+`/elecciones/2026/` y el bloque «Elecciones 29-N» de las fichas de provincia
+salen de `curated/elecciones_2026.json`, una copia fija del BOE que se
+versiona en `main` (como `curated/censo_xv.json`). El render no pide nada a la
+red. Si el BOE publica otra corrección de las candidaturas:
+
+1. Añadir su identificador en `elecciones.py` y en `tools/elecciones_2026.py`.
+2. `python tools/elecciones_2026.py` (descarga los documentos por `txt.php`,
+   respetando el `robots.txt` del BOE) y revisar lo que imprime: correcciones
+   aplicadas y avisos. Si una corrección no encaja exactamente, el script
+   para con error y no escribe nada.
+3. Abrir una PR con el JSON regenerado y los tests al día.
+
 ## Timeouts de Pages en el primer despliegue de un SHA
 
 El 10 de noviembre de 2026, varios despliegues fallaron en el paso

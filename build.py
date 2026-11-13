@@ -64,6 +64,7 @@ MAPA_DIR = ROOT / "mapa"
 RANKINGS_DIR = ROOT / "rankings"
 PREGUNTAS_DIR = ROOT / "preguntas"
 EMPLEO_DIR = ROOT / "empleo"
+ELECCIONES_DIR = ROOT / "elecciones" / "2026"   # tanda E2: candidaturas del 29-N
 SESIONES_DIR = ROOT / "sesiones"
 PERSONAS_DIR = ROOT / "personas"
 NOMBRAMIENTOS_DIR = ROOT / "nombramientos"
@@ -6354,6 +6355,58 @@ def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
     return max((x for x in fechas if x), default="")
 
 
+def _bloques_elecciones(fichas: list) -> dict:
+    """Tanda E2: {circunscripción del Congreso: HTML del bloque «Elecciones 29-N»}.
+    Lee curated/elecciones_2026.json (copia fija del BOE, sin red). Si falta o
+    falla, las fichas salen sin bloque y se anota."""
+    try:
+        import elecciones as el
+        datos = el.cargar()
+        if not datos:
+            log("elecciones: no hay curated/elecciones_2026.json; fichas sin bloque 29-N")
+            return {}
+        sal = el.cruzar_salientes(datos, fichas)
+        fuera: dict = {}
+        for circ_rd, xs in sal.items():
+            for x in xs:
+                origen = x["ficha"].get("circunscripcion") or ""
+                if origen and origen != el.circ_congreso(circ_rd):
+                    fuera.setdefault(origen, []).append(
+                        {**x, "circ_nombre": nombre_circunscripcion(el.circ_congreso(circ_rd))})
+        out = {}
+        for c in datos["circunscripciones"]:
+            cc = el.circ_congreso(c["circunscripcion"])
+            out[cc] = el.bloque_ficha(datos, c["circunscripcion"], sal.get(c["circunscripcion"], []),
+                                      nombre_circunscripcion(cc), _slug_txt(cc), fuera.get(cc, []))
+        return out
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"elecciones: bloque 29-N no disponible ({exc})")
+        return {}
+
+
+def renderizar_elecciones(fichas: list) -> list:
+    """/elecciones/2026/: hub y una página por circunscripción con las
+    candidaturas al Congreso del 29-N (tanda E2). Sin red: curated/."""
+    if not TEMPLATE_NORMA.exists():
+        return []
+    import elecciones as el
+    datos = el.cargar()
+    if not datos:
+        log("elecciones/: falta curated/elecciones_2026.json; no se genera")
+        return []
+    ELECCIONES_DIR.mkdir(parents=True, exist_ok=True)
+    salidas = el.generar_paginas({
+        # Dos niveles por debajo de la raíz: los «../» de la plantilla suben uno más.
+        "pagina_suelta": _pagina_suelta,
+        "plantilla": (TEMPLATE_NORMA.read_text(encoding="utf-8")
+                      .replace('href="../', 'href="../../').replace('src="../', 'src="../../')),
+        "site_url": SITE_URL, "carpeta": ELECCIONES_DIR, "jsonld_script": jsonld_script,
+        "nombre": nombre_circunscripcion, "slug": _slug_txt,
+    }, datos, fichas)
+    log(f"elecciones/2026/: {len(salidas)} páginas")
+    return salidas
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -6543,6 +6596,7 @@ def renderizar_diputados(fichas: list) -> list:
     for f in fichas:
         if f["circunscripcion"]:
             por_prov.setdefault(f["circunscripcion"], []).append(f)
+    bloque_elecciones = _bloques_elecciones(fichas)
     for prov, gente in sorted(por_prov.items()):
         ps = _slug_txt(prov)
         url = f"{SITE_URL}diputados/provincia-{ps}.html"
@@ -6568,7 +6622,7 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=(f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+            cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE →</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
@@ -7497,6 +7551,11 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
             log(f"rankings/: no se pudo generar ({exc})")
     except Exception as exc:                                  # noqa: BLE001
         log(f"diputados/: no se pudo generar ({exc})")
+    # Elecciones del 29-N (tanda E2): su propio try.
+    try:
+        extras += renderizar_elecciones(fichas_dip)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"elecciones/: no se pudo generar ({exc})")
     # Preguntas al Gobierno: igual, un fallo aquí no tumba la edición.
     try:
         extras += renderizar_preguntas()

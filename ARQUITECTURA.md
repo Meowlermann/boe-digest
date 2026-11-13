@@ -127,6 +127,7 @@ las mismas piezas y el día siguiente no las repite (`piezas_hoy`,
 | `tramitacion.py` | Seguimiento de proyectos y proposiciones de ley: estados, plazos de enmiendas, ampliaciones, ley resultante. `situacion()` explica en cada ficha dónde está y qué falta para que avance (incluido el «congelador»: plazo de enmiendas ampliado ≥ `CONGELADOR_AMP` veces durante ≥ `CONGELADOR_DIAS` días). `contenido()` saca del primer BOCG la frase de la exposición de motivos que dice qué hace el texto y los títulos de sus artículos. | `state/tramitacion.json` | `/tramitacion/` |
 | `nombramientos.py` | Nombramientos y ceses de la sección II.A del BOE. | `state/nombramientos.json` | `/personas/`, `/nombramientos/` |
 | `provincias.py` | Qué provincias nombra cada disposición (sección I y III) y cada pregunta; páginas por circunscripción. | `state/provincias.json` | `/provincias/` |
+| `elecciones.py` | Elecciones del 29-N (tanda E2): parser determinista de los escaños del RD 806/2026, las candidaturas al Congreso (BOE-A-2026-23103) y su corrección (BOE-A-2026-23383); cruce con los diputados salientes por nombre exacto; bloque «Elecciones 29-N» de `/diputados/provincia-*.html`. `tools/elecciones_2026.py` genera la copia fija. | `curated/elecciones_2026.json` (solo lectura en el render) | `/elecciones/2026/` |
 | `rankings.py` | Clasificaciones de diputados y grupos sobre `state/congreso.json`. | — | `/rankings/` |
 | `nombres.py` | Nombres populares («Verifactu», «ley mordaza») y títulos cortos, desde `curated/nombres_populares.json`. Solo para el buscador y los títulos. | — | — |
 | `observabilidad.py` | Observabilidad (TC-009): comprueba en producción la edición del día y su frescura (`observabilidad.yml`) y cuenta los días sin edición por mes. Solo biblioteca estándar. | — | `/datos/estado-ediciones.json` |
@@ -237,6 +238,11 @@ Una escrita con texto pero sin el formato esperado se guarda con
 edición), `nombres_populares.json`, `provincias.json` (variantes y
 localidades), `cargos_rankings.json` y `censo_xv.json` (censo de diputados de la XV
 Legislatura en su disolución, respaldo de `congreso_datos.elegir_censo`).
+`elecciones_2026.json` no se edita a mano: es la copia fija, generada por
+`tools/elecciones_2026.py`, de los escaños y las candidaturas al Congreso del
+29-N tal como salen del BOE (con su corrección de errores ya aplicada). Las
+candidaturas proclamadas no cambian, así que no hace falta pedirlas en cada
+pase; si el BOE publica otra corrección, se añade y se regenera.
 
 ## 7. Tamaño y alojamiento
 
