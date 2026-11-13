@@ -590,6 +590,52 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
+def fecha_iso_literal(literal: str) -> str:
+    """«domingo 29 de noviembre de 2026» → «2026-11-29». Transcribe la fecha
+    que da el RD, sin calcular nada; si no tiene esa forma, error."""
+    m = re.search(r"\b(\d{1,2}) de ([a-záéíóú]+) de (\d{4})\b", literal or "")
+    if not m or m.group(2) not in _MESES:
+        raise ValueError(f"fecha del RD sin la forma esperada: {literal!r}")
+    return f"{m.group(3)}-{_MESES.index(m.group(2)) + 1:02d}-{int(m.group(1)):02d}"
+
+
+def evento(datos: dict, url: str, nombre: str | None = None) -> dict:
+    """Tanda E4: Event de schema.org para el hub (nombre None: toda España) o
+    para la página de una circunscripción. La fecha sale del RD 806/2026."""
+    lugar = ({"@type": "Place", "name": "España", "address": {"@type": "PostalAddress", "addressCountry": "ES"}}
+             if nombre is None else
+             {"@type": "Place", "name": f"Circunscripción de {nombre}",
+              "address": {"@type": "PostalAddress", "addressRegion": nombre, "addressCountry": "ES"}})
+    return {
+        "@type": "Event",
+        "name": ("Elecciones generales del 29 de noviembre de 2026" if nombre is None else
+                 f"Elecciones generales del 29 de noviembre de 2026 en {nombre}"),
+        "description": ("Elecciones al Congreso de los Diputados y al Senado convocadas por el Real Decreto "
+                        "806/2026." if nombre is None else
+                        f"Candidaturas al Congreso de los Diputados por {nombre}, según el BOE."),
+        "startDate": fecha_iso_literal(datos["fecha_literal"]),
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": lugar,
+        "url": url,
+        "subjectOf": {"@type": "Legislation", "name": "Real Decreto 806/2026", "url": url_boe(ID_RD)},
+    }
+
+
+def lista_diputados(prov: str, gente: list, site: str) -> dict:
+    """Tanda E4: ItemList con los diputados de una ficha de provincia, en el
+    mismo orden en que aparecen en la página."""
+    return {
+        "@type": "ItemList",
+        "name": f"Diputados por {prov} en la XV Legislatura",
+        "numberOfItems": len(gente),
+        "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "name": f["natural"],
+             "url": f"{site}diputados/{f['slug']}.html"}
+            for i, f in enumerate(gente)],
+    }
+
+
 def migas(site: str, pasos) -> dict:
     return {"@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": n, "item": u}
@@ -651,7 +697,8 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
             "CANONICAL": url,
             "JSONLD": h["jsonld_script"]([{"@type": "CollectionPage", "url": url, "name": titulo,
                                            "inLanguage": "es-ES", "dateModified": lastmod},
-                                          migas(site, (("Elecciones 2026", f"{site}{HUB}"), (nombre, url)))]),
+                                          migas(site, (("Elecciones 2026", f"{site}{HUB}"), (nombre, url))),
+                                          evento(datos, url, nombre)]),
             "EDITION_DATE": _esc(edicion),
             "MIGA": (f'<a href="/">Portada</a> › <a href="./">Elecciones 2026</a> › '
                      f'<span aria-current="page">{_esc(nombre)}</span>'),
@@ -697,7 +744,8 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
         "CANONICAL": url,
         "JSONLD": h["jsonld_script"]([{"@type": "CollectionPage", "url": url, "name": titulo,
                                        "inLanguage": "es-ES", "dateModified": lastmod},
-                                      migas(site, (("Elecciones 2026", url),))]),
+                                      migas(site, (("Elecciones 2026", url),)),
+                                      evento(datos, url)]),
         "EDITION_DATE": _esc(edicion),
         "MIGA": '<a href="/">Portada</a> › <span aria-current="page">Elecciones 2026</span>',
         "KICKER": "Elecciones generales 29-N · Congreso",
