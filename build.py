@@ -5259,9 +5259,18 @@ def _tarjeta_diputado(f, prefijo=""):
             + '</span></a></li>')
 
 
+def _lista_diputados_jsonld(prov: str, gente: list) -> list:
+    try:
+        import elecciones as el
+        return [el.lista_diputados(nombre_circunscripcion(prov), gente, SITE_URL)]
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"ItemList de {prov}: no disponible ({exc})")
+        return []
+
+
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
                     url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None,
-                    lastmod=None):
+                    lastmod=None, jsonld_extra=None):
     filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
@@ -5269,7 +5278,7 @@ def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
         "META_DESC": esc_attr((meta_desc or entradilla)[:155]),
         "CANONICAL": url,
         "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": h1, "url": url,
-                                  "inLanguage": "es-ES", "dateModified": hoy}]),
+                                  "inLanguage": "es-ES", "dateModified": hoy}] + list(jsonld_extra or [])),
         "EDITION_DATE": esc_html(fmt_date_es(hoy)),
         "MIGA": miga,
         "KICKER": esc_html(kicker),
@@ -6636,7 +6645,9 @@ def renderizar_diputados(fichas: list) -> list:
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
                                  f"con su actividad y sus votos."),
-            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas),
+            # Tanda E4: ItemList con los diputados de la ficha, en el orden de la página.
+            jsonld_extra=_lista_diputados_jsonld(prov, gente)))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
