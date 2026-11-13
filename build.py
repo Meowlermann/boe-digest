@@ -3780,7 +3780,7 @@ def linea_campana_portada() -> str:
     if not CAMPANA_29N:
         return ""
     return ('<p class="campana-29n"><a href="/elecciones/2026/">Elecciones generales del 29-N: '
-            'escaños y candidaturas al Congreso, provincia a provincia →</a></p>')
+            'escaños y candidaturas al Congreso, provincia a provincia&nbsp;→</a></p>')
 
 
 def render_nav() -> str:
@@ -5693,8 +5693,8 @@ def renderizar_votaciones(fichas: list) -> list:
                           .replace(f'href="{d["f"]}.html', f'href="/votaciones/{d["f"]}.html')
                           for d in destacadas)
                 + f'</ul><p class="vt-pie"><a class="vt-a" href="/votaciones/{fechas[0]}.html">Ver qué votó '
-                  f'cada diputado →</a> · <a class="vt-a" href="/votaciones/">Todas las '
-                  f'votaciones</a></p>')
+                  f'cada diputado&nbsp;→</a> · <a class="vt-a" href="/votaciones/">Todas las '
+                  f'votaciones&nbsp;→</a></p>')
         DATOS_DIR.mkdir(exist_ok=True)
         escribir_si_cambia(DATOS_DIR / "ultimas-votaciones.html", frag)
 
@@ -6658,7 +6658,7 @@ def renderizar_diputados(fichas: list) -> list:
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
             cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
-                          f'tramita, cómo votan y qué publica el BOE →</a></p>'),
+                          f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
                                  f"con su actividad y sus votos."),

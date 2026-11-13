@@ -1974,7 +1974,18 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-cambio{color:var(--ink)}
 
 /* Campaña del 29-N (CAMPANA_29N): línea discreta en la portada, sin tarjeta ni subrayado */
-.campana-29n{margin:10px 0 14px;padding:6px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:14px}
+.campana-29n{margin:10px 0 14px;padding:6px 0;border-top:1px solid var(--ink-soft);border-bottom:1px solid var(--ink-soft);font-size:14px}
 .campana-29n a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}
 /* Bloque de últimas votaciones (portada y /diputados/): enlaces sin subrayado */
 .vt-a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}
+
+/* «Portada: sin subrayados»: en la portada (body.portada) ningún enlace va
+   subrayado, ni en reposo, ni con hover, ni con foco, tampoco en el pie. */
+body.portada a,body.portada a:hover,body.portada a:focus,body.portada a:focus-visible{text-decoration:none}
+/* Las pistas de enlace se mantienen sin subrayado: los nombres de nombramientos
+   y la votación destacada, en color (y negrita); con hover, un fondo tenue;
+   con el teclado, contorno visible. */
+body.portada .nb-l a:not(.srclink){color:var(--red-ink,var(--red));font-weight:600}
+body.portada .vtb-d a{color:var(--red-ink,var(--red))}
+body.portada .wrap :is(p,li,dd,span,h2,h3,div.nb-l,footer) > a:hover{background:color-mix(in srgb,var(--red) 16%,transparent);border-radius:2px}
+body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
