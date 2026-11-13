@@ -32,7 +32,43 @@ class Menu(unittest.TestCase):
             panel = re.search(rf'id="panel-{clave}".*?</ul>', nav, re.S).group(0)
             self.assertLessEqual(panel.count("<li>"), build.MENU_MAX_ENLACES, clave)
         hoy = re.search(r'id="panel-hoy".*?</ul>', nav, re.S).group(0)
-        self.assertIn("/elecciones/2026/", hoy)
+        self.assertNotIn("/elecciones/2026/", hoy)           # informe 32: «Hoy» no es su sitio
+        parl = re.search(r'id="panel-parlamento".*?</ul>', nav, re.S).group(0)
+        self.assertIn("/elecciones/2026/", parl)
+        self.assertNotIn('href="/diputados/todos/"', parl)   # ocupa su sitio durante la campaña
+
+    def test_interruptor_campana(self):
+        self.assertTrue(build.CAMPANA_29N)
+        self.assertIn('href="/elecciones/2026/"', build.linea_campana_portada())
+        guardado, guardado_nav = build.CAMPANA_29N, build._NAV_HTML
+        try:
+            build.CAMPANA_29N, build._NAV_HTML = False, None
+            nav = build.render_nav()
+            self.assertNotIn("/elecciones/2026/", nav)
+            self.assertIn('href="/diputados/todos/"', nav)
+            self.assertEqual(build.linea_campana_portada(), "")
+        finally:
+            build.CAMPANA_29N, build._NAV_HTML = guardado, guardado_nav
+
+    def test_portada_tiene_hueco_para_la_linea(self):
+        self.assertIn("__SSR_CAMPANA__", (RAIZ / "template.html").read_text(encoding="utf-8"))
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        self.assertIn("text-decoration:none", re.search(r"\.campana-29n a\{[^}]*\}", css).group(0))
+
+
+class Votaciones(unittest.TestCase):
+    def test_bloque_de_votaciones_sin_srclink(self):
+        src = (RAIZ / "build.py").read_text(encoding="utf-8")
+        self.assertNotIn('<a class="srclink" href="/votaciones/">Todas las', src)
+        self.assertIn('<a class="vt-a" href="/votaciones/">Todas las', src)
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        self.assertIn("text-decoration:none", re.search(r"\.vt-a\{[^}]*\}", css).group(0))
+
+
+class Fichas(unittest.TestCase):
+    def test_texto_del_enlace_al_hub(self):
+        src = (RAIZ / "elecciones.py").read_text(encoding="utf-8")
+        self.assertIn("Candidaturas en las 52 circunscripciones →", src)
 
 
 class Diputados(unittest.TestCase):

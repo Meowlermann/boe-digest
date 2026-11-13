@@ -586,7 +586,7 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         + f'<p class="elec-nota">Se marca solo cuando el nombre completo coincide letra por letra con el '
           f'de la ficha del diputado; los parecidos no se marcan.</p>'
         f'<p class="elec-mas"><a href="/{HUB}{_esc(slug)}.html">Las listas completas de {_esc(nombre)}, '
-        f'con suplentes →</a> · <a href="/{HUB}">Las 52 circunscripciones →</a></p>'
+        f'con suplentes →</a> · <a href="/{HUB}">Candidaturas en las 52 circunscripciones →</a></p>'
         f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
