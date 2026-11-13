@@ -269,7 +269,7 @@ class Render(unittest.TestCase):
         self.assertIn(el.url_boe(el.ID_CANDIDATURAS), html)
         self.assertIn(el.url_boe(el.ID_CORRECCION), html)
         self.assertIn("elige <b>3</b> diputados", html)
-        self.assertNotIn("FALANGE", html)                      # no proclamada: fuera del bloque
+        self.assertNotIn("<b>FALANGE", html)                   # no proclamada: fuera de la lista, solo en la nota
         self.assertLess(html.index("PSOE"), html.index("SALF"))  # orden del BOE
         self.assertIn('href="ana.html"', html)
         self.assertIn('/elecciones/2026/huesca.html', html)
@@ -284,6 +284,19 @@ class Render(unittest.TestCase):
         self.assertIn("elige <b>1</b> diputado (", html)      # singular
         self.assertIn("el 29-N hay 1 escaño en juego, frente a los 2 de la legislatura que acaba", html)
         self.assertIn(el.url_boe(el.ID_RD_ANTERIOR), html)
+
+    def test_hueco_de_numeracion_explicado_en_la_ficha(self):
+        html = el.bloque_ficha(self.d, "Huesca", [], "Huesca", "huesca")
+        self.assertIn('<li value="3">', html)                  # la numeración del BOE no cambia
+        self.assertNotIn('<li value="2">', html)
+        self.assertIn("La 2.ª candidatura, FALANGE ESPAÑOLA DE LAS J.O.N.S., no fue proclamada.", html)
+        self.assertEqual(el.bloque_ficha(self.d, "Ceuta", [], "Ceuta", "ceuta").count("elec-np"), 0)
+
+    def test_nota_no_proclamadas_en_plural(self):
+        c = {"candidaturas": [{"orden": 2, "nombre": "A", "sigla": "", "proclamada": False},
+                              {"orden": 3, "nombre": "B", "sigla": "", "proclamada": True},
+                              {"orden": 5, "nombre": "C", "sigla": "", "proclamada": False}]}
+        self.assertIn("Las candidaturas 2.ª (A) y 5.ª (C) no fueron proclamadas.", el.nota_no_proclamadas(c))
 
     def test_sigla_aparte_solo_si_aporta(self):
         k = {"nombre": "PODEMOS", "sigla": "PAZ,CASA Y TRABAJO"}
@@ -308,7 +321,9 @@ class Render(unittest.TestCase):
         self.assertTrue(all(s["lastmod"] == "2026-11-07" for s in salidas))
         hu = escritas["huesca.html"]["CUERPO"]
         self.assertIn("Milagros Roca López", hu)
-        self.assertIn("«No proclamada»", hu)
+        self.assertIn("La numeración es la del BOE. La 2.ª candidatura, FALANGE ESPAÑOLA DE LAS J.O.N.S., "
+                      "no fue proclamada.", hu)
+        self.assertLess(hu.index("elec-np"), hu.index('id="c1"'))     # antes de las listas
         self.assertNotIn("<a", escritas["index.html"]["FUENTE"])   # el pie no lleva enlaces subrayados
         self.assertIn("huesca.html", escritas["index.html"]["CUERPO"])
         for nombre, pl in plantillas.items():                       # sin el lema de IA
@@ -319,6 +334,15 @@ class Render(unittest.TestCase):
         self.assertIn("(en 2023, 2)", hub)
         self.assertEqual(re.sub(r"<[^>]+>", "", hub).count(el.ID_CANDIDATURAS), 1)
         self.assertNotIn("Fuente", escritas["index.html"]["FUENTE"])   # la fuente, una sola vez
+
+
+class PieFicha(unittest.TestCase):
+    def test_lema_de_ficha_con_bloque(self):
+        pl = (RAIZ / "template_norma.html").read_text(encoding="utf-8")
+        self.assertIn(el.LEMA_IA, pl)                       # el reemplazo encuentra el lema
+        self.assertIn("reproduce el BOE sin IA", el.LEMA_FICHA)
+        src = (RAIZ / "build.py").read_text(encoding="utf-8")
+        self.assertIn("plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)", src)
 
 
 class Singular(unittest.TestCase):

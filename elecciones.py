@@ -425,6 +425,9 @@ def anomalias(datos: dict) -> list:
 
 HUB = "elecciones/2026/"
 LEMA_IA = "Titulares y entradillas redactados con IA a partir del BOE; el texto oficial está enlazado."
+# Pie de las fichas de provincia que llevan el bloque: dice a qué parte afecta la IA.
+LEMA_FICHA = ("El bloque «Elecciones 29-N» reproduce el BOE sin IA; los titulares y entradillas "
+              "del resto de la página, redactados con IA a partir del BOE; el texto oficial está enlazado.")
 SIN_IA = ("Esta sección no usa IA: escaños, candidaturas y nombres salen tal cual del BOE, "
           "que está enlazado.")
 
@@ -525,6 +528,28 @@ def frase_escanos(c: dict, nombre: str, datos: dict) -> str:
             f'(<a href="{url_boe(datos["fuentes"]["rd_anterior"])}">Real Decreto 400/2023</a>)')
 
 
+def _ordinal(k) -> str:
+    return f"{k['orden']}.ª"
+
+
+def nota_no_proclamadas(c: dict) -> str:
+    """Explica los huecos de la numeración, que es la del BOE y no se cambia:
+    las candidaturas que el BOE recoge como «No proclamada»."""
+    np = [k for k in c["candidaturas"] if not k["proclamada"]]
+    if not np:
+        return ""
+    if len(np) == 1:
+        k = np[0]
+        txt = (f"La numeración es la del BOE. La {_ordinal(k)} candidatura, {_esc(_rotulo(k))}, "
+               f"no fue proclamada.")
+    else:
+        lista = ", ".join(f"{_ordinal(k)} ({_esc(_rotulo(k))})" for k in np[:-1])
+        k = np[-1]
+        txt = (f"La numeración es la del BOE. Las candidaturas {lista} y {_ordinal(k)} "
+               f"({_esc(_rotulo(k))}) no fueron proclamadas.")
+    return f'<p class="elec-nota elec-np">{txt}</p>'
+
+
 def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: str,
                  salen_fuera: list | None = None) -> str:
     """Bloque «Elecciones 29-N» para /diputados/provincia-*.html."""
@@ -553,7 +578,8 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         f'<b>{len(prof)}</b> {"candidatura" if len(prof) == 1 else "candidaturas"} al Congreso, '
         f'en el orden del BOE.</p>'
         f'<ol class="elec-lista">{items}</ol>'
-        f'<h3>Diputados salientes en las listas</h3>'
+        + nota_no_proclamadas(c)
+        + f'<h3>Diputados salientes en las listas</h3>'
         + (f'<ul class="elec-rep">{rep}{fuera}</ul>' if rep or fuera else
            f'<p class="elec-nota">Ningún diputado de la legislatura disuelta figura con el mismo nombre '
            f'en las candidaturas al Congreso por {_esc(nombre)}.</p>')
@@ -589,7 +615,6 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
         cc = circ_congreso(c["circunscripcion"])
         nombre, slug = h["nombre"](cc), h["slug"](cc)
         prof = [k for k in c["candidaturas"] if k["proclamada"]]
-        no_prof = [k for k in c["candidaturas"] if not k["proclamada"]]
         marcados = {(id(s["candidatura"]), s["lista"], s["puesto"]): s for s in salientes.get(c["circunscripcion"], [])}
 
         def li(k, lista, i, n):
@@ -606,15 +631,13 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
             + "</section>" for k in prof)
         indice = "".join(f'<li value="{k["orden"]}"><a href="#c{k["orden"]}">{_esc(_corto(k))}</a></li>'
                          for k in prof)
-        nota_np = ("" if not no_prof else
-                   '<p class="elec-nota">El BOE recoge además, como «No proclamada»: '
-                   + ", ".join(f"{k['orden']}. {_esc(_rotulo(k))}" for k in no_prof) + ".</p>")
+        nota_np = nota_no_proclamadas(c)
         n = c["escanos"]
         cuerpo = (f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
                   f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
                   f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
-                  + bloques + nota_np
+                  + nota_np + bloques
                   + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html">Los diputados por '
                     f'{_esc(nombre)} en la legislatura disuelta →</a> · <a href="./">Las 52 circunscripciones →</a></p>'
                   + f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p>')

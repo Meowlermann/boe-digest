@@ -6610,8 +6610,13 @@ def renderizar_diputados(fichas: list) -> list:
                 cuenta[g] = cuenta.get(g, 0) + 1
             reparto = sorted(((k, g) for g, k in cuenta.items()), key=lambda x: (-x[0], x[1]))
             titulo_p, desc_p, h1_p = textos_prueba_dip(prov, reparto)
+        # Con bloque electoral, el pie precisa que ese bloque no usa IA (informe 30).
+        plantilla_p = plantilla
+        if bloque_elecciones.get(prov):
+            import elecciones as el
+            plantilla_p = plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)
         salidas.append(_pagina_listado(
-            plantilla, DIPUTADOS_DIR, f"provincia-{ps}.html",
+            plantilla_p, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
             h1_p,
             # Singular con un solo escaño (Ceuta, Melilla): «Los 1 diputados» no.
