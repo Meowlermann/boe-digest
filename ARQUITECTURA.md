@@ -831,6 +831,9 @@ con un canal Atom por página. Cada disposición enlaza a su texto en boe.es.
   - `noindex, follow` en todas las páginas de `/empleo/` (`empleo.ROBOTS`) y fuera
     del sitemap; los canales Atom siguen publicados. `verificar.py` (k) no exige
     sitemap a las páginas noindex y da **grave** si una noindex entra en él.
+    Excepciones posteriores (`empleo.ROBOTS_INDEXABLE`, `index, follow`, y al
+    sitemap): las fichas de provincia con convocatorias (tanda 1-A) y la página
+    general `/empleo/` (tanda E1, #108).
   - Plazo de solicitudes **citado literal** del texto (`empleo.plazo_literal`); nunca
     se calcula una fecha de cierre. Si no se reconoce la frase, no se muestra nada.
   - Tipo de proceso (`empleo.proceso`): Oposición, Concurso-oposición, Concurso o
