@@ -1,15 +1,15 @@
 {
   "esquema": 1,
   "modo": "diario",
-  "fecha": "2026-11-13",
+  "fecha": "2026-11-14",
   "graves": 0,
   "avisos": 1,
   "hallazgos": [
     {
       "nivel": "aviso",
-      "comprobacion": "duplicados",
-      "detalle": "[boe] titular repetido del 2026-11-12: «SE PUBLICA EL ACUERDO DE INCOACIÓN DEL PROCEDIMIENTO DE DECLARACIÓN DE LUGAR DE MEMORIA DEMOCRÁTICA».",
-      "fichero": "data/2026-11-13.json"
+      "comprobacion": "titulares",
+      "detalle": "No hay edición del 2026-11-14.",
+      "fichero": "data/2026-11-14.json"
     }
   ]
 }
