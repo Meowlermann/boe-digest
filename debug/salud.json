@@ -3,12 +3,18 @@
   "modo": "diario",
   "fecha": "2026-11-14",
   "graves": 0,
-  "avisos": 1,
+  "avisos": 2,
   "hallazgos": [
     {
       "nivel": "aviso",
-      "comprobacion": "titulares",
-      "detalle": "No hay edición del 2026-11-14.",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-11-07: «CAMBIAN LOS PRECIOS DEL TABACO EN LOS ESTANCOS».",
+      "fichero": "data/2026-11-14.json"
+    },
+    {
+      "nivel": "aviso",
+      "comprobacion": "duplicados",
+      "detalle": "[boe] titular repetido del 2026-11-13: «SE PUBLICA EL ACUERDO DE INCOACIÓN DEL PROCEDIMIENTO DE DECLARACIÓN DE LUGAR DE MEMORIA DEMOCRÁTICA».",
       "fichero": "data/2026-11-14.json"
     }
   ]
