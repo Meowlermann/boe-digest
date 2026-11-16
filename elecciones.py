@@ -586,7 +586,7 @@ def bloque_ficha(datos: dict, circ_rd: str, salientes: list, nombre: str, slug: 
         + f'<p class="elec-nota">Se marca solo cuando el nombre completo coincide letra por letra con el '
           f'de la ficha del diputado; los parecidos no se marcan.</p>'
         f'<p class="elec-mas"><a href="/{HUB}{_esc(slug)}.html">Las listas completas de {_esc(nombre)}, '
-        f'con suplentes →</a> · <a href="/{HUB}">Las 52 circunscripciones →</a></p>'
+        f'con suplentes →</a> · <a href="/{HUB}">Candidaturas en las 52 circunscripciones →</a></p>'
         f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p></section>')
 
 
@@ -726,6 +726,25 @@ def faq_html(preguntas: list) -> str:
             + '<p class="elec-nota">Respuestas sacadas del BOE y de los datos abiertos del Congreso, sin IA. '
               'La de quién se presenta de nuevo cruza las listas del BOE con los diputados del Congreso: '
               'solo cuenta si el nombre completo coincide letra por letra.</p></section>')
+
+
+def redireccion_html(site: str) -> str:
+    """/elecciones/ → /elecciones/2026/. GitHub Pages no hace redirecciones del
+    servidor: meta refresh inmediato, canonical al hub y noindex (fuera del
+    sitemap). Sin <!doctype>: es un documento mínimo de redirección, no una
+    página completa, y verificar.py no le exige menú, migas ni sitemap."""
+    destino = f"{site}{HUB}"
+    return ('<meta charset="utf-8">\n'
+            '<title>Elecciones 2026 | La Tercera Cámara</title>\n'
+            '<meta name="robots" content="noindex, follow">\n'
+            '<meta name="color-scheme" content="light dark">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            '<style>body{font:16px/1.5 system-ui,sans-serif;margin:24px}'
+            'a{color:#b3261e;font-weight:600;text-decoration:none}'
+            '@media (prefers-color-scheme:dark){a{color:#ff8a80}}</style>\n'
+            f'<link rel="canonical" href="{destino}">\n'
+            f'<meta http-equiv="refresh" content="0; url=/{HUB}">\n'
+            f'<p>Esta página se ha movido a <a href="/{HUB}">Elecciones generales del 29-N</a>.</p>\n')
 
 
 def migas(site: str, pasos) -> dict:
