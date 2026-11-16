@@ -2738,7 +2738,7 @@ def render_daystrip_ssr(dias: list[dict], current_id: str) -> str:
         destino = "./" if actual else f'ediciones/{d["id"]}.html'
         aria = ' aria-current="page"' if actual else ""
         out.append(f'<a class="daypill" href="{destino}"{aria}>{esc_html(d.get("label"))}</a>')
-    out.append('<a class="daypill archivo" href="ediciones/">ARCHIVO →</a>')
+    out.append('<a class="daypill archivo" href="ediciones/">ARCHIVO&nbsp;→</a>')
     return "".join(out)
 
 
@@ -3019,7 +3019,7 @@ def render_dateline_ssr(day: dict, permalink: str) -> str:
     if boe.get("sourceUrl"):
         piezas.append(f'<a href="{esc_attr(boe["sourceUrl"])}" target="_blank" '
                       f'rel="noopener">Sumario oficial ↗</a>')
-    piezas.append(f'<a href="{permalink}">Edición completa →</a>')
+    piezas.append(f'<a href="{permalink}">Edición completa&nbsp;→</a>')
     return " <span class=\"sep\">·</span> ".join(piezas)
 
 
@@ -3039,7 +3039,7 @@ def render_boe_lead_ssr(day: dict, permalink: str) -> str:
         f'{_parrafo("lead-sub", una_linea(s, 190))}'
         f'{("<p class=\"ia-pieza-wrap\">" + marca_ia_html(s) + "</p>") if s.get("redaccion_ia") else ""}'
         f'<div class="foot"><span>{esc_html(s.get("dept"))}</span>'
-        f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer la pieza completa →</a></div>'
+        f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer la pieza completa&nbsp;→</a></div>'
         f'</article>')
 
 
@@ -3060,7 +3060,7 @@ def render_boe_destacados_ssr(day: dict, permalink: str) -> str:
             f'{_parrafo("linea", una_linea(s, 120))}'
             f'<div class="foot"><span>{esc_html(recortar(s.get("dept",""), 44))}</span>'
             f'{pie_enlaces_boe(s, "normas/")}'
-            f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer →</a></div>'
+            f'<a class="srclink" href="{permalink}#{esc_attr(ancla_de(s,i))}">Leer&nbsp;→</a></div>'
             f'</article>')
     return "".join(out)
 
@@ -3142,7 +3142,7 @@ def fecha_boe_iso(day: dict) -> str:
 
 # Marca por pieza (tanda 7b, 09-11-2026). Gemini escribe titular y entradilla;
 # la línea global de página se retiró: la marca va en cada pieza con IA.
-MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE →"
+MARCA_IA_TEXTO = "Titular con IA · Texto oficial en el BOE\u00a0→"  # espacio duro: se escapa, no vale &nbsp;
 MARCA_IA_CORTA = "Titular con IA"  # listas sin enlace BOE propio
 ARCHIVO_NOTA_TITULARES = (
     "Títulos del resumen automático, sin IA; "
@@ -3768,6 +3768,21 @@ def semanas_publicadas() -> bool:
 MENU_MAX_ENLACES = 9          # UX-4: ningún nivel del menú con más enlaces
 
 
+# Campaña de las elecciones generales del 29-N. Un solo interruptor: con True,
+# el panel «Parlamento» enlaza al hub /elecciones/2026/ (en lugar de «Los 350
+# diputados») y la portada lleva una línea discreta hacia él. Tras el
+# escrutinio, ponerlo a False y volver a generar: todo vuelve a como estaba.
+CAMPANA_29N = True
+
+
+def linea_campana_portada() -> str:
+    """Línea discreta en la portada hacia el hub (sin tarjeta ni subrayado)."""
+    if not CAMPANA_29N:
+        return ""
+    return ('<p class="campana-29n"><a href="/elecciones/2026/">Elecciones generales del 29-N: '
+            'escaños y candidaturas al Congreso, provincia a provincia&nbsp;→</a></p>')
+
+
 def render_nav() -> str:
     global _NAV_HTML
     if _NAV_HTML:
@@ -3803,8 +3818,14 @@ def render_nav() -> str:
         hoy.append(enlace("/semana/", "La semana", "Cada lunes, la semana anterior en una página"))
     hoy += [enlace("/ediciones/", "Archivo de ediciones", "Todos los días publicados"),
             enlace("/seguir/", "Seguir con RSS", "Cada diputado, provincia, materia o ley, en tu lector")]
+    # Campaña del 29-N (CAMPANA_29N): «Elecciones 29-N» ocupa el sitio de «Los
+    # 350 diputados», que ya se enlaza desde /diputados/. El panel sigue con
+    # MENU_MAX_ENLACES enlaces como máximo (UX-4). En primer nivel no cabe: a
+    # 375 px la barra inferior y a 768 px la caja de búsqueda se rompen.
     parlamento = [enlace("/diputados/", "El hemiciclo", "Los 350 escaños, uno a uno, y cada grupo"),
-                  enlace("/diputados/todos/", "Los 350 diputados", "Uno a uno, en orden alfabético de apellido"),
+                  (enlace("/elecciones/2026/", "Elecciones 29-N",
+                          "Escaños y candidaturas al Congreso, provincia a provincia") if CAMPANA_29N else
+                   enlace("/diputados/todos/", "Los 350 diputados", "Uno a uno, en orden alfabético de apellido")),
                   enlace("/seguimiento/", "Seguimiento", "Qué se tramita, cómo se vota y qué se pregunta"),
                   enlace("/votaciones/", "Votaciones", "Qué se votó y qué votó cada diputado"),
                   enlace("/tramitacion/", "Leyes en tramitación", "Qué se tramita, en qué fase y con qué plazos")]
@@ -4101,7 +4122,7 @@ def render_empleo_portada_ssr(day0: dict, estado: dict | None = None) -> str:
             f'<h2 id="eh-h" class="eh-t"><b>{cifra}</b> de empleo público en el BOE del '
             f'{esc_html(fmt_date_es(fecha))}</h2>'
             f'<p class="eh-s">Oposiciones y procesos selectivos publicados ese día, por organismo '
-            f'y provincia. <a href="/empleo/">Ver en Empleo →</a></p></section>')
+            f'y provincia. <a href="/empleo/">Ver en Empleo&nbsp;→</a></p></section>')
 
 
 def renderizar_index(dias: list[dict]) -> None:
@@ -4146,6 +4167,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "PARLAMENTO": parl_html,
         "VOTACIONES_BANNER": _leer_fragmento("votaciones-banner.html"),
         "EMPLEO_HOY": render_empleo_portada_ssr(day0),
+        "CAMPANA": linea_campana_portada(),
         "PIE_MATERIAS": pie_materias(),
         "IA_ETIQUETA": "",
     }
@@ -5259,9 +5281,18 @@ def _tarjeta_diputado(f, prefijo=""):
             + '</span></a></li>')
 
 
+def _lista_diputados_jsonld(prov: str, gente: list) -> list:
+    try:
+        import elecciones as el
+        return [el.lista_diputados(nombre_circunscripcion(prov), gente, SITE_URL)]
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"ItemList de {prov}: no disponible ({exc})")
+        return []
+
+
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
                     url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None,
-                    lastmod=None):
+                    lastmod=None, jsonld_extra=None):
     filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
@@ -5269,7 +5300,7 @@ def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
         "META_DESC": esc_attr((meta_desc or entradilla)[:155]),
         "CANONICAL": url,
         "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": h1, "url": url,
-                                  "inLanguage": "es-ES", "dateModified": hoy}]),
+                                  "inLanguage": "es-ES", "dateModified": hoy}] + list(jsonld_extra or [])),
         "EDITION_DATE": esc_html(fmt_date_es(hoy)),
         "MIGA": miga,
         "KICKER": esc_html(kicker),
@@ -5661,16 +5692,18 @@ def renderizar_votaciones(fichas: list) -> list:
         lista = sorted(dias[fechas[0]], key=lambda d: (d.get("s") or 0, d.get("n") or 0))
         # Primero las más reñidas: son las que cuentan algo.
         destacadas = sorted(lista, key=lambda d: abs((d["tot"][0] or 0) - (d["tot"][1] or 0)))[:5]
+        # Sin subrayados (regla de diseño): los enlaces del bloque van en
+        # negrita y color, sin .srclink (informe 32).
         frag = (f'<p class="vt-ultimo">Último pleno con votaciones: '
-                f'<a href="/votaciones/{fechas[0]}.html">{esc_html(fmt_date_es(fechas[0]))}</a> · '
+                f'<a class="vt-a" href="/votaciones/{fechas[0]}.html">{esc_html(fmt_date_es(fechas[0]))}</a> · '
                 f'{len(lista)} votaciones. Las más ajustadas:</p>'
                 f'<ul class="vt-filas">'
                 + "".join(_tarjeta_votacion(d, cd, por_clave, nombres, compacta=True)
                           .replace(f'href="{d["f"]}.html', f'href="/votaciones/{d["f"]}.html')
                           for d in destacadas)
-                + f'</ul><p><a class="srclink" href="/votaciones/{fechas[0]}.html">Ver qué votó '
-                  f'cada diputado →</a> · <a class="srclink" href="/votaciones/">Todas las '
-                  f'votaciones</a></p>')
+                + f'</ul><p class="vt-pie"><a class="vt-a" href="/votaciones/{fechas[0]}.html">Ver qué votó '
+                  f'cada diputado&nbsp;→</a> · <a class="vt-a" href="/votaciones/">Todas las '
+                  f'votaciones&nbsp;→</a></p>')
         DATOS_DIR.mkdir(exist_ok=True)
         escribir_si_cambia(DATOS_DIR / "ultimas-votaciones.html", frag)
 
@@ -5702,7 +5735,7 @@ def renderizar_votaciones(fichas: list) -> list:
             f'<datalist id="vtb-lista">{opciones}</datalist>'
             f'<button type="submit">Ver cómo vota</button></form>'
             f'<p class="vtb-mas"><a href="/votaciones/{fechas[0]}.html">Todas las votaciones '
-            f'del pleno →</a></p></div>'
+            f'del pleno&nbsp;→</a></p></div>'
             f'<a class="vtb-hemi" href="/votaciones/{pagina_votacion(estrella, cd)}" '
             f'aria-label="Ver la votación escaño a escaño">'
             f'<svg viewBox="0 0 720 386" aria-hidden="true">{circ}</svg>'
@@ -6217,7 +6250,8 @@ def buscador_diputados(fichas: list, por_prov: dict) -> str:
         f'spellcheck="false"><button type="submit">Ir</button></span><datalist id="dip-nombres">{nombres}</datalist></form>'
         '<p id="dip-busca-msg" class="dip-busca-msg" role="status" aria-live="polite"></p>'
         f'<p class="dip-busca-sin"><a href="#circunscripciones">Las {len(por_prov)} circunscripciones, en lista →</a>'
-        f' · <a href="todos/">Los {len(fichas)} diputados, uno a uno →</a></p>'
+        f' · <a href="todos/">Los {len(fichas)} diputados, uno a uno →</a>'
+        ' · <a href="../elecciones/2026/">Elecciones 29-N: candidaturas por provincia →</a></p>'
         '<script src="../assets/dip-busca.js" defer></script></section>')
 
 
@@ -6355,6 +6389,18 @@ def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
     return max((x for x in fechas if x), default="")
 
 
+def _reparto_provincia(gente: list, prov: str) -> str:
+    try:
+        import elecciones as el
+        return el.reparto_html(gente, nombre_circunscripcion(prov), nombre_grupo)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"reparto de {prov}: no disponible ({exc})")
+        return ""
+
+
+FAQ_ELECCIONES: dict = {}   # {circunscripción: HTML de las preguntas frecuentes}, lo llena _bloques_elecciones
+
+
 def _bloques_elecciones(fichas: list) -> dict:
     """Tanda E2: {circunscripción del Congreso: HTML del bloque «Elecciones 29-N»}.
     Lee curated/elecciones_2026.json (copia fija del BOE, sin red). Si falta o
@@ -6378,6 +6424,11 @@ def _bloques_elecciones(fichas: list) -> dict:
             cc = el.circ_congreso(c["circunscripcion"])
             out[cc] = el.bloque_ficha(datos, c["circunscripcion"], sal.get(c["circunscripcion"], []),
                                       nombre_circunscripcion(cc), _slug_txt(cc), fuera.get(cc, []))
+            # Tanda E3: preguntas frecuentes deterministas (BOE y Congreso).
+            gente = [f for f in fichas if f.get("circunscripcion") == cc]
+            FAQ_ELECCIONES[cc] = el.faq_html(el.faq_provincia(
+                datos, c["circunscripcion"], nombre_circunscripcion(cc), _slug_txt(cc), gente,
+                sal.get(c["circunscripcion"], []), nombre_grupo, nombre_circunscripcion))
         return out
     except Exception as exc:                                  # noqa: BLE001
         log(f"elecciones: bloque 29-N no disponible ({exc})")
@@ -6403,7 +6454,8 @@ def renderizar_elecciones(fichas: list) -> list:
         "site_url": SITE_URL, "carpeta": ELECCIONES_DIR, "jsonld_script": jsonld_script,
         "nombre": nombre_circunscripcion, "slug": _slug_txt,
     }, datos, fichas)
-    log(f"elecciones/2026/: {len(salidas)} páginas")
+    escribir_si_cambia(ELECCIONES_DIR.parent / "index.html", el.redireccion_html(SITE_URL))
+    log(f"elecciones/2026/: {len(salidas)} páginas (y /elecciones/ redirige al hub)")
     return salidas
 
 
@@ -6630,13 +6682,17 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="srclink" href="../provincias/{esc_attr(ps)}.html">'
+            # Tanda E3: reparto por formación y preguntas frecuentes, tras el bloque 29-N.
+            cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
+            + FAQ_ELECCIONES.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
-                          f'tramita, cómo votan y qué publica el BOE →</a></p>'),
+                          f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
                                  f"con su actividad y sus votos."),
-            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas),
+            # Tanda E4: ItemList con los diputados de la ficha, en el orden de la página.
+            jsonld_extra=_lista_diputados_jsonld(prov, gente)))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
@@ -7550,8 +7606,11 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
     except Exception as exc:                                  # noqa: BLE001
         log(f"canales Atom: no se pudieron generar ({exc})")
     try:
-        extras += renderizar_diputados(fichas_dip)
+        # Votaciones antes que diputados: /diputados/ incrusta el fragmento
+        # datos/ultimas-votaciones.html que escribe renderizar_votaciones; en
+        # el otro orden salía el de la pasada anterior.
         extras += renderizar_votaciones(fichas_dip)
+        extras += renderizar_diputados(fichas_dip)
         # Los rankings son un añadido: si fallan, la edición sale igual.
         try:
             extras += renderizar_rankings(fichas_dip)
