@@ -1352,6 +1352,8 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .aviso-leg a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .frase-grupo{margin:0 0 1.2rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
+/* «Todo sobre X…» en las fichas de provincia: sin subrayado (antes .srclink). */
+.destacado-a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .tabla-ancha{overflow-x:auto;max-width:100%}
 
 /* ---------- Mapa de provincias (/provincias/) ---------- */
@@ -1970,3 +1972,9 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-sigla{display:block;font-size:12.5px;font-weight:400;color:var(--ink-soft)}
 .elec-cand .elec-sigla{margin:-.2rem 0 .3rem}
 .elec-cambio{color:var(--ink)}
+
+/* Campaña del 29-N (CAMPANA_29N): línea discreta en la portada, sin tarjeta ni subrayado */
+.campana-29n{margin:10px 0 14px;padding:6px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:14px}
+.campana-29n a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}
+/* Bloque de últimas votaciones (portada y /diputados/): enlaces sin subrayado */
+.vt-a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}
