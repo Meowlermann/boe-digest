@@ -52,6 +52,9 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resumen visible de los filtros de empleo.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
+- **#112 «SEO: datos estructurados de provincias y elecciones»** (tanda
+  E4), fusionada el 16 de noviembre de 2026: `ItemList` en las fichas de provincia y `Event` en el
+  hub y en las páginas por circunscripción.
 - **#111 «Elecciones: fichas de provincia completas»** (tanda E3),
   fusionada el 16 de noviembre de 2026: reparto de escaños por formación y preguntas frecuentes. La
   comparación por partido con 2019, la asistencia y las rebeldías quedan
