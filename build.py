@@ -5281,9 +5281,18 @@ def _tarjeta_diputado(f, prefijo=""):
             + '</span></a></li>')
 
 
+def _lista_diputados_jsonld(prov: str, gente: list) -> list:
+    try:
+        import elecciones as el
+        return [el.lista_diputados(nombre_circunscripcion(prov), gente, SITE_URL)]
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"ItemList de {prov}: no disponible ({exc})")
+        return []
+
+
 def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
                     url, miga, kicker, ficha_extra="", cuerpo_extra="", meta_desc=None,
-                    lastmod=None):
+                    lastmod=None, jsonld_extra=None):
     filas = "".join(_tarjeta_diputado(f, "") for f in fichas)   # misma carpeta: grupo-*.html y provincia-*.html viven en diputados/
     hoy = dt.date.today().isoformat()
     _pagina_suelta(plantilla, carpeta, nombre, {
@@ -5291,7 +5300,7 @@ def _pagina_listado(plantilla, carpeta, nombre, titulo, h1, entradilla, fichas,
         "META_DESC": esc_attr((meta_desc or entradilla)[:155]),
         "CANONICAL": url,
         "JSONLD": jsonld_script([{"@type": "CollectionPage", "name": h1, "url": url,
-                                  "inLanguage": "es-ES", "dateModified": hoy}]),
+                                  "inLanguage": "es-ES", "dateModified": hoy}] + list(jsonld_extra or [])),
         "EDITION_DATE": esc_html(fmt_date_es(hoy)),
         "MIGA": miga,
         "KICKER": esc_html(kicker),
@@ -6380,6 +6389,18 @@ def lastmod_listado_diputados(fichas, resumen_preguntas=None) -> str:
     return max((x for x in fechas if x), default="")
 
 
+def _reparto_provincia(gente: list, prov: str) -> str:
+    try:
+        import elecciones as el
+        return el.reparto_html(gente, nombre_circunscripcion(prov), nombre_grupo)
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"reparto de {prov}: no disponible ({exc})")
+        return ""
+
+
+FAQ_ELECCIONES: dict = {}   # {circunscripción: HTML de las preguntas frecuentes}, lo llena _bloques_elecciones
+
+
 def _bloques_elecciones(fichas: list) -> dict:
     """Tanda E2: {circunscripción del Congreso: HTML del bloque «Elecciones 29-N»}.
     Lee curated/elecciones_2026.json (copia fija del BOE, sin red). Si falta o
@@ -6403,6 +6424,11 @@ def _bloques_elecciones(fichas: list) -> dict:
             cc = el.circ_congreso(c["circunscripcion"])
             out[cc] = el.bloque_ficha(datos, c["circunscripcion"], sal.get(c["circunscripcion"], []),
                                       nombre_circunscripcion(cc), _slug_txt(cc), fuera.get(cc, []))
+            # Tanda E3: preguntas frecuentes deterministas (BOE y Congreso).
+            gente = [f for f in fichas if f.get("circunscripcion") == cc]
+            FAQ_ELECCIONES[cc] = el.faq_html(el.faq_provincia(
+                datos, c["circunscripcion"], nombre_circunscripcion(cc), _slug_txt(cc), gente,
+                sal.get(c["circunscripcion"], []), nombre_grupo, nombre_circunscripcion))
         return out
     except Exception as exc:                                  # noqa: BLE001
         log(f"elecciones: bloque 29-N no disponible ({exc})")
@@ -6656,13 +6682,17 @@ def renderizar_diputados(fichas: list) -> list:
             "Circunscripción",
             f"<dt>Diputados</dt><dd>{len(gente)}</dd>"
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
-            cuerpo_extra=bloque_elecciones.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
+            # Tanda E3: reparto por formación y preguntas frecuentes, tras el bloque 29-N.
+            cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
+            + FAQ_ELECCIONES.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
             meta_desc=desc_p or (f"Los {len(gente)} diputados que representan a {prov} en el Congreso, "
                                  f"con su actividad y sus votos."),
-            lastmod=lastmod_listado_diputados(gente, resumen_preguntas)))
+            lastmod=lastmod_listado_diputados(gente, resumen_preguntas),
+            # Tanda E4: ItemList con los diputados de la ficha, en el orden de la página.
+            jsonld_extra=_lista_diputados_jsonld(prov, gente)))
 
     # --- índice con hemiciclo --------------------------------------------
     conteo = {g: len(v) for g, v in por_grupo.items()}
