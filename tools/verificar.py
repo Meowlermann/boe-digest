@@ -1022,6 +1022,7 @@ HUERFANAS_JUSTIFICADAS = {
     "/datos/ultimas-votaciones.html": "fragmento que la portada incrusta por JavaScript; no es una página",
     "/datos/votaciones-banner.html": "fragmento que la portada incrusta por JavaScript; no es una página",
     "/googlec4619d97b763e0b5.html": "fichero de verificación de Search Console",
+    "/elecciones/": "redirección a /elecciones/2026/ (meta refresh, noindex) para quien escribe la URL a mano",
 }
 MAX_HALLAZGOS_ENLAZADO = 20
 

@@ -1352,6 +1352,8 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 .aviso-leg a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .frase-grupo{margin:0 0 1.2rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
+/* «Todo sobre X…» en las fichas de provincia: sin subrayado (antes .srclink). */
+.destacado-a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .tabla-ancha{overflow-x:auto;max-width:100%}
 
 /* ---------- Mapa de provincias (/provincias/) ---------- */
@@ -1949,6 +1951,16 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-29n{margin:0 0 1.4rem;padding:0 0 .4rem;border-top:3px solid var(--ink);border-bottom:1px solid var(--border)}
 .elec-29n h2{margin:.7rem 0 .4rem}
 .elec-29n h3{margin:1rem 0 .3rem;font-size:15px}
+/* Tanda E3: reparto por formación y preguntas frecuentes en las fichas de provincia */
+.prov-reparto,.prov-faq{margin:0 0 1.4rem;padding:0 0 .4rem;border-top:3px solid var(--ink)}
+.prov-reparto h2,.prov-faq h2{margin:.7rem 0 .4rem;scroll-margin-top:calc(90px + 8px)}
+@media (max-width:720px){.prov-reparto h2,.prov-faq h2{scroll-margin-top:16px}}
+.prov-reparto-t td:last-child{color:var(--ink-soft);font-size:13px}
+.prov-faq h3{margin:1rem 0 .25rem;font:700 16px/1.3 'Work Sans','Segoe UI',Arial,sans-serif;text-transform:none}
+/* Cada grupo en su línea y sin partirse a 375 (informe 34). */
+.prov-reparto-t .grp{display:block;white-space:nowrap}
+.prov-faq p{margin:0 0 .4rem}
+.prov-faq a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-intro{margin:0 0 .6rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .elec-29n a,.elec-cand a,.elec-indice a,.elec-mas a,.elec-fuente a,.elec-intro a,.elec-hub a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-lista,.elec-nombres,.elec-rep{margin:0;padding:0 0 0 1.8em;font-size:15px;line-height:1.45}
@@ -1970,3 +1982,9 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-sigla{display:block;font-size:12.5px;font-weight:400;color:var(--ink-soft)}
 .elec-cand .elec-sigla{margin:-.2rem 0 .3rem}
 .elec-cambio{color:var(--ink)}
+
+/* Campaña del 29-N (CAMPANA_29N): línea discreta en la portada, sin tarjeta ni subrayado */
+.campana-29n{margin:10px 0 14px;padding:6px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:14px}
+.campana-29n a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}
+/* Bloque de últimas votaciones (portada y /diputados/): enlaces sin subrayado */
+.vt-a{color:var(--red-ink,var(--red));font-weight:600;text-decoration:none}

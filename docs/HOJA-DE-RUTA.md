@@ -53,10 +53,27 @@ Se actualiza en la misma PR que cambie el estado de un frente.
 - La prueba de títulos, description y canonical de #75 sigue en marcha
   hasta mediados de diciembre: esas etiquetas no se tocan.
 - **#112 «SEO: datos estructurados de provincias y elecciones»** (tanda
-  E4), sin fusionar: `ItemList` en las fichas de provincia y `Event` en el
+  E4), fusionada el 16 de noviembre de 2026: `ItemList` en las fichas de provincia y `Event` en el
   hub y en las páginas por circunscripción.
+- **#111 «Elecciones: fichas de provincia completas»** (tanda E3),
+  fusionada el 16 de noviembre de 2026: reparto de escaños por formación y preguntas frecuentes. La
+  comparación por partido con 2019, la asistencia y las rebeldías quedan
+  fuera porque no salen limpias (ver DECISIONES). Retoques del informe 34
+  en la misma PR: en «¿Qué diputados… se presentan de nuevo?» van aparte
+  los que eran diputados por otra provincia (Madrid: 22 de los 37, y 2 de
+  Málaga y Pontevedra; Sevilla: 1 de Córdoba), el Mixto en la pregunta del
+  reparto, preguntas sin versales, pie que dice que se cruzan BOE y
+  Congreso, grupos sin partirse a 375 y enlace al reparto desde cada
+  página `/elecciones/2026/<provincia>.html`.
+- **#110 «Elecciones: enlaces al hub»**, fusionada el 16 de noviembre de 2026 (también corrige el orden de render: votaciones antes que diputados, para que `/diputados/` no incruste el bloque de votaciones de la pasada anterior):
+  redirección de `/elecciones/`, enlace en el panel «Parlamento», línea en
+  la portada y enlace desde `/diputados/`.
+- **Tras el escrutinio del 29-N:** poner `CAMPANA_29N = False` en `build.py`
+  y regenerar. Así se quitan la línea de la portada y el enlace del panel
+  «Parlamento», donde vuelve «Los 350 diputados».
 - **#109 «Elecciones: bloque 29-N y hub /elecciones/2026/»** (tanda E2),
-  fusionada el 13 de noviembre de 2026. Siguientes de la tanda E, en PR aparte: imagen OG y «¿Quién
+  fusionada el 13 de noviembre de 2026. Siguientes de la tanda E, en PR aparte: reparto por partido
+  y FAQ en las fichas (E3), `ItemList` y `Event` (E4), imagen OG y «¿Quién
   votó qué en tu provincia?» (E5), H1 de normas y 404 propia (E6), prueba de
   descarga de resultados del Ministerio del Interior (E7), sitemaps
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
