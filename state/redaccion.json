@@ -12967,13 +12967,21 @@
   },
   "BOE-A-2026-24003": {
    "huella": "644091f580b5fd26",
-   "descartado": "cifra «200» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "69fcc4eac6a4aea0",
+   "titular": "La plantilla del Ministerio Fiscal suma doscientas plazas de segunda categoría",
+   "entradilla": "El Ministerio de la Presidencia, Justicia y Relaciones con las Cortes amplía la plantilla orgánica del Ministerio Fiscal para responder a las necesidades del servicio.",
+   "claves": [
+    "Las doscientas nuevas plazas son todas de segunda categoría y se crean para reforzar la estructura del Ministerio Fiscal.",
+    "Las plazas se distribuyen entre la Fiscalía General del Estado, la Audiencia Nacional, las fiscalías especiales y las fiscalías territoriales.",
+    "Esta ampliación complementa la realizada por el Real Decreto 422/2025, que creó cuarenta y dos plazas vinculadas a las Secciones de Violencia sobre la Mujer."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-17"
   },
   "BOE-A-2026-24004": {
    "huella": "ae61bcfaf1e1e538",
-   "descartado": "cifra «351» que no está en el texto oficial",
-   "intentos": 1
+   "descartado": "acaba en el número «2027» sin decir de qué",
+   "intentos": 3
   },
   "BOE-A-2026-24005": {
    "huella": "7f542bb3c0f5c6e9",
@@ -12990,8 +12998,8 @@
   },
   "BOE-A-2026-24006": {
    "huella": "ea3f3463c5333ce8",
-   "descartado": "nombre «Parlamento» que no está en el texto oficial",
-   "intentos": 1
+   "descartado": "acaba en el número «2026» sin decir de qué",
+   "intentos": 3
   },
   "BOE-A-2026-24007": {
    "huella": "af8679a1f84eadd4",
@@ -13089,8 +13097,16 @@
   },
   "BOE-A-2026-24101": {
    "huella": "922b5e4d7a3a70c2",
-   "descartado": "cifra «122» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "9e3191190d75a403",
+   "titular": "El Ministerio de Cultura e ICEX aportarán 1.228.000 euros para ferias de música",
+   "entradilla": "Un convenio entre el Ministerio de Cultura e ICEX organizará la participación de empresas y bandas españolas en siete ferias internacionales entre 2027 y 2030.",
+   "claves": [
+    "El presupuesto total fijado es de 1.228.000 euros entre 2027 y 2030, aportando ICEX hasta 694.000 euros y la DGAEM hasta 534.000 euros.",
+    "Las actuaciones abordan la presencia en ferias como Folk Alliance International, Classical Next, Jazzahead, BIME Bogotá, LAMC, WOMEX y Mundial Montreal.",
+    "ICEX contratará el espacio y promocionará a las empresas participantes, mientras que la DGAEM gestionará la invitación y contacto con las bandas de música."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-17"
   },
   "BOE-A-2026-24102": {
    "huella": "bb778b0623cad4c8",
@@ -13118,11 +13134,18 @@
   },
   "BOE-A-2026-24107": {
    "huella": "3e32850fffce8564",
-   "descartado": "nombre «Injuve» que no está en el texto oficial",
-   "intentos": 1
+   "fuente": "457ed02416e7d01a",
+   "titular": "El Gobierno reordena los encuentros juveniles sobre memoria democrática y feminismo",
+   "entradilla": "Una adenda al convenio entre Memoria Democrática y el Instituto de la Juventud modifica y prorroga las actividades con jóvenes sobre el feminismo y las democracias iberoamericanas.",
+   "claves": [
+    "La actividad sobre feminismo incluirá tres encuentros preparatorios en 2025 y una cita nacional en Madrid durante el primer trimestre de 2026.",
+    "El encuentro sobre memoria y democracias iberoamericanas se celebrará del 15 al 20 de noviembre de 2026 con sedes en Mollina (Málaga) y Madrid."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-17"
   }
  },
  "uso": {
-  "2026-11-17": 2
+  "2026-11-17": 4
  }
 }
