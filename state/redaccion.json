@@ -13402,9 +13402,83 @@
    ],
    "modelo": "gemini-3.5-flash",
    "fecha": "2026-11-19"
+  },
+  "BOE-A-2026-24250": {
+   "huella": "778208a76257e641",
+   "fuente": "88cf5b6e025f2725",
+   "titular": "La DGSJFP rechaza un pacto sucesorio catalán de ciudadanos suecos residentes en Sabadell",
+   "entradilla": "La Dirección General de Seguridad Jurídica y Fe Pública confirma la negativa a inscribir un heredamiento universal por carecer los otorgantes de vecindad civil española.",
+   "claves": [
+    "La escritura de heredamiento universal cumulativo fue autorizada el 30 de julio de 2025 por un notario de Sabadell entre dos cónyuges de nacionalidad sueca.",
+    "La registradora de la propiedad de Martorell número 1 suspendió la inscripción al señalar que la vecindad civil es una cualidad reservada a personas con nacionalidad española."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-19"
+  },
+  "BOE-A-2026-24251": {
+   "huella": "501390c6857322c1",
+   "fuente": "9d575254f956fc57",
+   "titular": "El registrador de la propiedad de Ferrol deniega una nota marginal estatutaria",
+   "entradilla": "El registrador denegó constatar la imposibilidad jurídica de ejecutar una regla de división interna en el semisótano de un inmueble por falta de documentación judicial o administrativa previa.",
+   "claves": [
+    "La solicitante pidió una anotación marginal relativa a la ejecución en 1999 de la norma estatutaria en la planta semisótano.",
+    "El registrador denegó el asiento al no aportarse documentación expedida por autoridad competente conforme a la Ley Hipotecaria.",
+    "La decisión recuerda que la normativa registral no prevé practicar dicho asiento por la sola solicitud del titular de la finca."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-19"
+  },
+  "BOE-A-2026-24252": {
+   "huella": "a95317175ccef300",
+   "fuente": "b546b4f30853424a",
+   "titular": "La registradora de Madrid n.º 8 deniega rectificar la prórroga de una anotación",
+   "entradilla": "La representación de una afectada solicitó modificar el asiento de prórroga de la prohibición de disponer sobre la finca 52.004 de la sección 2.ª de Madrid, alegando indefensión y error.",
+   "claves": [
+    "La medida preventiva sobre la finca 52.004 fue acordada en 2017 por el Juzgado de Instrucción n.º 39 de Madrid en una causa por alzamiento de bienes.",
+    "El Juzgado de lo Penal n.º 4 de Madrid ordenó en febrero de 2025 una nueva prórroga de la prohibición de disponer en la causa por insolvencia punible.",
+    "La solicitante pidió rectificar el asiento alegando la infracción del principio de tracto sucesivo y la nulidad de la donación del título adquisitivo."
+   ],
+   "modelo": "gemini-3.5-flash",
+   "fecha": "2026-11-19"
+  },
+  "BOE-A-2026-24253": {
+   "huella": "53f44385a1d0c668",
+   "fuente": "d0e1be7eafd29b18",
+   "titular": "Suspenden la inscripción de la constitución de la sociedad Inmobiliaria Cuello Ramón",
+   "entradilla": "El Registro de la Propiedad número 2 de Zaragoza frena la inscripción de una escritura de 2000 junto con su rectificación y los cambios en las fincas aportadas.",
+   "claves": [
+    "La escritura inicial de constitución de la sociedad mercantil de responsabilidad limitada se otorgó el 1 de diciembre de 2000 ante un notario de Zaragoza.",
+    "Se presentó una escritura complementaria el 23 de febrero de 2026, seguida de una instancia privada de una de las otorgantes alegando vicios del consentimiento."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-19"
+  },
+  "BOE-A-2026-24255": {
+   "huella": "a09fba067c952703",
+   "fuente": "d3b17ea5f757ca79",
+   "titular": "Suspenden la inscripción del aparcamiento subterráneo de Ortiz Construcciones en Madrid",
+   "entradilla": "El Registro de la Propiedad número 2 de Madrid frena la protocolización unilateral del contrato al faltar la intervención del Ayuntamiento de Madrid.",
+   "claves": [
+    "La mercantil Ortiz Construcciones y Proyectos protocolizó el 9 de octubre de 2025 un contrato administrativo de concesión de servicios firmado con el Ayuntamiento de Madrid.",
+    "La registradora suspende la inscripción porque la protocolización se realizó de forma unilateral por el concesionario sin la participación del consistorio madrileño."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-19"
+  },
+  "BOE-A-2026-24257": {
+   "huella": "0a77fa74f7bcd863",
+   "fuente": "a7b4142903bbdcf3",
+   "titular": "Se publica la extinción del convenio de gestión catastral con el Ayuntamiento de Guadassuar",
+   "entradilla": "El Ministerio de Hacienda oficializa la finalización del acuerdo de colaboración en materia catastral tras su denuncia por parte del consistorio valenciano.",
+   "claves": [
+    "El convenio original se había suscrito el 18 de octubre de 2013 entre la Dirección General del Catastro y el Ayuntamiento de Guadassuar.",
+    "La extinción se formalizó tras ser denunciada el pasado 7 de noviembre de 2026, procediendo a su publicación en el Boletín Oficial del Estado."
+   ],
+   "modelo": "gemini-3.5-flash-lite",
+   "fecha": "2026-11-19"
   }
  },
  "uso": {
-  "2026-11-19": 2
+  "2026-11-19": 4
  }
 }
