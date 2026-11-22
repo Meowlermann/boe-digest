@@ -84,6 +84,11 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
   Senado sigue fuera.
 
+- **PR «SEO: sitemap prioritario y de noticias»** (tanda E8), abierta y
+  sin fusionar: `sitemap-prioritario.xml` y `sitemap-noticias.xml` (Google
+  News, 48 horas) en el índice `/sitemap.xml`. Tras fusionar: enviar de nuevo
+  el índice en Search Console y mirar que lea los dos ficheros nuevos.
+
 ## Aparcado
 
 - **Senado en automático.** El WAF de Akamai devuelve 403 desde la box
