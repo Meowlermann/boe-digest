@@ -1962,7 +1962,7 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .prov-faq p{margin:0 0 .4rem}
 .prov-faq a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-intro{margin:0 0 .6rem;font-size:16px;line-height:1.55;color:var(--ink)}
-.elec-29n a,.elec-cand a,.elec-indice a,.elec-mas a,.elec-fuente a,.elec-intro a,.elec-hub a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
+.elec-29n a,.elec-cand a,.elec-indice a,.elec-mas a,.elec-fuente a,.elec-intro a,.elec-hub a,.elec-aviso a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-lista,.elec-nombres,.elec-rep{margin:0;padding:0 0 0 1.8em;font-size:15px;line-height:1.45}
 .elec-lista li{padding:.35rem 0;border-bottom:1px solid var(--border)}
 .elec-lista li:last-child{border-bottom:0}
@@ -1972,6 +1972,8 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .elec-rep li{padding:.15rem 0}
 .elec-nota,.elec-fuente{margin:.5rem 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .elec-mas{margin:.7rem 0;font-size:15px}
+/* Aviso fijo de la noche del 29-N: un párrafo, sin caja ni subrayado. */
+.elec-aviso{margin:.4rem 0 1rem;font-size:15px;line-height:1.5;color:var(--ink)}
 .elec-indice{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 1rem;padding:0;list-style:none;font-size:14px}
 .elec-indice a{display:inline-block;min-height:32px;line-height:32px}
 .elec-cand{padding:.4rem 0 .6rem;border-top:1px solid var(--border)}
