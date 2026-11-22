@@ -632,7 +632,7 @@ Todas las plantillas (`template*.html`) declaran `og:image`, `twitter:image` y
 `twitter:card=summary_large_image` con `assets/og-default.png` (1200×630,
 `build.OG_IMAGE`). El PNG se generó una vez con `tools/generar_og.py` (Pillow,
 en local) y se commitea: el build no lo regenera, así que no es dependencia.
-No hay imagen por edición. El JSON-LD de la edición incluye un `NewsArticle`
+No hay imagen por edición. Excepción (tanda E5): las páginas por circunscripción de `/elecciones/2026/` y las fichas `/diputados/provincia-*.html` usan `assets/og/elecciones-2026/<slug>.png`, generadas igual con `tools/generar_og.py --elecciones` y commiteadas; `elecciones.og_plantilla` solo cambia `og:image`, `twitter:image` y `og:image:alt`, y si falta el PNG deja la genérica. El JSON-LD de la edición incluye un `NewsArticle`
 de la propia página (titular = su `<title>`), además de las normas
 (`Legislation`) y las piezas de Cortes. La comprobación (j) de
 `verificar.py` exige todo esto.

@@ -459,6 +459,52 @@ AVISO_29N = (
     'Los resultados oficiales los publica la Junta Electoral Central en el BOE.</p>')
 
 
+# --- imagen para redes por provincia (tanda E5) --------------------------------
+# Un PNG de 1200x630 por circunscripción en assets/og/elecciones-2026/<slug>.png,
+# con el mismo mecanismo que assets/og-default.png: lo pinta tools/generar_og.py
+# (Pillow, en local) y se commitea, así que Pillow no es dependencia del sitio.
+# El texto sale tal cual de curated/elecciones_2026.json (nombre, escaños y
+# candidaturas proclamadas, las mismas cifras de la entradilla de la página).
+# indice.json guarda el texto de cada imagen: el test lo compara con los datos
+# y falla si una imagen se queda atrás. Si falta un PNG, la página conserva la
+# imagen genérica; nunca se enlaza un fichero que no existe.
+OG_CARPETA = "assets/og/elecciones-2026"
+OG_DEFECTO = "https://terceracamara.es/assets/og-default.png"
+OG_ALT_DEFECTO = ("La Tercera Cámara: lo que publica el BOE y lo que hacen tus representantes, "
+                  "cada día.")
+
+
+def textos_og(datos: dict, nombre, slug) -> dict:
+    """{slug: textos de la imagen} para las 52 circunscripciones. nombre y slug
+    son build.nombre_circunscripcion y build._slug_txt (sobre la circunscripción
+    del Congreso, como las URL de las páginas)."""
+    out = {}
+    for c in datos["circunscripciones"]:
+        cc = circ_congreso(c["circunscripcion"])
+        n, k = c["escanos"], sum(1 for x in c["candidaturas"] if x["proclamada"])
+        nm = nombre(cc)
+        cifras = f"{n} {'escaño' if n == 1 else 'escaños'} · {k} candidaturas al Congreso"
+        out[slug(cc)] = {
+            "antetitulo": "Elecciones generales 29-N",
+            "nombre": nm,
+            "cifras": cifras,
+            "fecha": datos["fecha_literal"],
+            "alt": f"Elecciones generales 29-N en {nm}: {cifras}.",
+        }
+    return out
+
+
+def og_plantilla(plantilla: str, site: str, slug: str, alt: str, raiz: pathlib.Path = RAIZ) -> str:
+    """La plantilla con og:image, twitter:image y og:image:alt de la provincia.
+    No toca title, description, canonical, robots ni H1. Sin PNG, sin cambios."""
+    if not (raiz / OG_CARPETA / f"{slug}.png").is_file():
+        return plantilla
+    url = f"{site}{OG_CARPETA}/{slug}.png"
+    alt = alt.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
+    return (plantilla.replace(f'content="{OG_DEFECTO}"', f'content="{url}"')
+            .replace(f'content="{OG_ALT_DEFECTO}"', f'content="{alt}"'))
+
+
 def clave_cruce(nombre: str) -> str:
     """Para cruzar con los diputados: sin paréntesis («(Independiente)»,
     apodos), sin comillas ni tildes."""
@@ -869,7 +915,8 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                   + f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p>')
         url = f"{site}{HUB}{slug}.html"
         titulo = f"Candidatos al Congreso por {nombre} en las elecciones del 29-N"
-        h["pagina_suelta"](h["plantilla"], carpeta, f"{slug}.html", {
+        og = textos_og({**datos, "circunscripciones": [c]}, h["nombre"], h["slug"])[slug]
+        h["pagina_suelta"](og_plantilla(h["plantilla"], site, slug, og["alt"]), carpeta, f"{slug}.html", {
             "TITLE": _esc(f"{titulo} | La Tercera Cámara"),
             "META_DESC": _esc(f"Las {len(prof)} candidaturas al Congreso por {nombre} para las elecciones "
                               f"generales del 29 de noviembre de 2026, con titulares y suplentes, según el BOE. "
