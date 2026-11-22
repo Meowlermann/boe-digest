@@ -440,6 +440,71 @@ def circ_congreso(circ_rd: str) -> str:
     return ALIAS_CONGRESO.get(circ_rd, circ_rd)
 
 
+# --- aviso para la noche del 29-N ---------------------------------------------
+# Esta sección no publica resultados: Interior solo da el escrutinio provisional
+# en tiempo real a medios acreditados (informe E7), así que la noche electoral se
+# remite a sus canales públicos. Texto fijo, sin cifras propias, sin fechas
+# calculadas y sin subrayados ni tarjetas. La aplicación no se nombra ni se
+# enlaza (informe 41): en las tiendas hay apps no oficiales con nombres
+# parecidos, y el 22-11-2026 ni interior.gob.es ni Infoelectoral ofrecían una
+# página de descarga (solo la política de privacidad del 18-11-2026,
+# https://www.interior.gob.es/opencms/es/politica-de-privacidad/). En el hub va
+# lo primero; en las páginas de provincia, tras el índice de candidaturas, para
+# que las candidaturas sigan en la primera pantalla a 375×812.
+INFOELECTORAL_URL = "https://infoelectoral.interior.gob.es/"
+AVISO_29N = (
+    '<p class="elec-aviso"><b>La noche del 29-N</b>, aquí no se publica el recuento. '
+    f'El escrutinio provisional lo difunde el Ministerio del Interior en <a href="{INFOELECTORAL_URL}">'
+    'Infoelectoral</a> y en su aplicación oficial (desconfía de apps con nombres parecidos). '
+    'Los resultados oficiales los publica la Junta Electoral Central en el BOE.</p>')
+
+
+# --- imagen para redes por provincia (tanda E5) --------------------------------
+# Un PNG de 1200x630 por circunscripción en assets/og/elecciones-2026/<slug>.png,
+# con el mismo mecanismo que assets/og-default.png: lo pinta tools/generar_og.py
+# (Pillow, en local) y se commitea, así que Pillow no es dependencia del sitio.
+# El texto sale tal cual de curated/elecciones_2026.json (nombre, escaños y
+# candidaturas proclamadas, las mismas cifras de la entradilla de la página).
+# indice.json guarda el texto de cada imagen: el test lo compara con los datos
+# y falla si una imagen se queda atrás. Si falta un PNG, la página conserva la
+# imagen genérica; nunca se enlaza un fichero que no existe.
+OG_CARPETA = "assets/og/elecciones-2026"
+OG_DEFECTO = "https://terceracamara.es/assets/og-default.png"
+OG_ALT_DEFECTO = ("La Tercera Cámara: lo que publica el BOE y lo que hacen tus representantes, "
+                  "cada día.")
+
+
+def textos_og(datos: dict, nombre, slug) -> dict:
+    """{slug: textos de la imagen} para las 52 circunscripciones. nombre y slug
+    son build.nombre_circunscripcion y build._slug_txt (sobre la circunscripción
+    del Congreso, como las URL de las páginas)."""
+    out = {}
+    for c in datos["circunscripciones"]:
+        cc = circ_congreso(c["circunscripcion"])
+        n, k = c["escanos"], sum(1 for x in c["candidaturas"] if x["proclamada"])
+        nm = nombre(cc)
+        cifras = f"{n} {'escaño' if n == 1 else 'escaños'} · {k} candidaturas al Congreso"
+        out[slug(cc)] = {
+            "antetitulo": "Elecciones generales 29-N",
+            "nombre": nm,
+            "cifras": cifras,
+            "fecha": datos["fecha_literal"],
+            "alt": f"Elecciones generales 29-N en {nm}: {cifras}.",
+        }
+    return out
+
+
+def og_plantilla(plantilla: str, site: str, slug: str, alt: str, raiz: pathlib.Path = RAIZ) -> str:
+    """La plantilla con og:image, twitter:image y og:image:alt de la provincia.
+    No toca title, description, canonical, robots ni H1. Sin PNG, sin cambios."""
+    if not (raiz / OG_CARPETA / f"{slug}.png").is_file():
+        return plantilla
+    url = f"{site}{OG_CARPETA}/{slug}.png"
+    alt = alt.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
+    return (plantilla.replace(f'content="{OG_DEFECTO}"', f'content="{url}"')
+            .replace(f'content="{OG_ALT_DEFECTO}"', f'content="{alt}"'))
+
+
 def clave_cruce(nombre: str) -> str:
     """Para cruzar con los diputados: sin paréntesis («(Independiente)»,
     apodos), sin comillas ni tildes."""
@@ -839,7 +904,9 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
         cuerpo = (f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
                   f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
-                  f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
+                  + f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
+                  # Tras el índice: las candidaturas, en la primera pantalla (informe 41).
+                  + AVISO_29N
                   + nota_np + bloques
                   + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html#prov-reparto">Reparto '
                     f'de escaños de {_esc(nombre)} en la legislatura disuelta&nbsp;→</a> · '
@@ -848,7 +915,8 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                   + f'<p class="elec-fuente">{fuentes_html(datos, c.get("escanos_anterior") not in (None, n))}</p>')
         url = f"{site}{HUB}{slug}.html"
         titulo = f"Candidatos al Congreso por {nombre} en las elecciones del 29-N"
-        h["pagina_suelta"](h["plantilla"], carpeta, f"{slug}.html", {
+        og = textos_og({**datos, "circunscripciones": [c]}, h["nombre"], h["slug"])[slug]
+        h["pagina_suelta"](og_plantilla(h["plantilla"], site, slug, og["alt"]), carpeta, f"{slug}.html", {
             "TITLE": _esc(f"{titulo} | La Tercera Cámara"),
             "META_DESC": _esc(f"Las {len(prof)} candidaturas al Congreso por {nombre} para las elecciones "
                               f"generales del 29 de noviembre de 2026, con titulares y suplentes, según el BOE. "
@@ -882,7 +950,7 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                if c.get("escanos_anterior") is not None and c["escanos_anterior"] != c["escanos"]]
     url = f"{site}{HUB}"
     titulo = "Elecciones generales del 29-N de 2026: candidaturas al Congreso por provincia"
-    cuerpo = (f'<p class="elec-intro">El <a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a> convoca '
+    cuerpo = (AVISO_29N + f'<p class="elec-intro">El <a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a> convoca '
               f'elecciones generales para el {_esc(datos["fecha_literal"])}. Se eligen <b>{total}</b> '
               f'diputados en {len(datos["circunscripciones"])} circunscripciones. Cada página tiene las '
               f'candidaturas proclamadas al Congreso, en el orden del BOE, y qué diputados de la '
