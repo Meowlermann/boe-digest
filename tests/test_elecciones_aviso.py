@@ -30,6 +30,8 @@ class Aviso(unittest.TestCase):
         self.assertEqual(len(self.escritas), 53)
         for nombre, frag in self.escritas.items():
             self.assertEqual(frag["CUERPO"].count(el.AVISO_29N), 1, nombre)
+            # Primero del cuerpo: a 375×812 cabe entero en la primera pantalla.
+            self.assertTrue(frag["CUERPO"].startswith(el.AVISO_29N), nombre)
 
     def test_solo_en_el_cuerpo(self):
         for nombre, frag in self.escritas.items():
@@ -39,13 +41,14 @@ class Aviso(unittest.TestCase):
 
     def test_enlace_oficial_y_app(self):
         self.assertIn('<a href="https://infoelectoral.interior.gob.es/">Infoelectoral</a>', el.AVISO_29N)
-        self.assertIn("«29N Elecciones Generales 2026»", el.AVISO_29N)
+        self.assertIn("la aplicación oficial del Ministerio del Interior “29N Elecciones Generales 2026”", el.AVISO_29N)
+        self.assertIn("Aquí no se publica el recuento de la noche.", el.AVISO_29N)
         self.assertIn("Junta Electoral Central en el BOE", el.AVISO_29N)
         self.assertEqual(re.findall(r'href="([^"]+)"', el.AVISO_29N), [el.INFOELECTORAL_URL])
 
     def test_sin_cifras_propias(self):
         texto = re.sub(r"<[^>]+>", "", el.AVISO_29N)
-        texto = texto.replace("29-N", "").replace("«29N Elecciones Generales 2026»", "")
+        texto = texto.replace("29-N", "").replace("“29N Elecciones Generales 2026”", "")
         self.assertIsNone(re.search(r"\d", texto), texto)
 
     def test_sin_tarjeta_ni_subrayado(self):
