@@ -14,8 +14,10 @@ el bloque solo se actualiza cuando se vuelve a generar la copia y se commitea.
 
 No se calcula nada: ni porcentajes ni el resultado. Si el RDL quedó convalidado
 o derogado se pone solo cuando la ficha oficial del expediente lo trae (campo
-«Resultado tramitación», copiado tal cual en la copia fija); si no, no se pone. Si un diputado no aparece en el
-listado oficial de una votación, se dice «sin dato».
+«Resultado tramitación», copiado tal cual en la copia fija); si no, no se pone.
+Si un diputado no aparece en el listado oficial de una votación y la votación es anterior a su alta, «Aún no
+era diputada/diputado»; si no hay explicación en el dato, «Sin dato». Las bajas
+salen en la circunscripción por la que votaron, con su fecha de baja oficial.
 """
 from __future__ import annotations
 
@@ -37,6 +39,9 @@ CRITERIO = ("Las 10 votaciones más recientes del Pleno de la XV Legislatura con
             "tramitación como proyecto de ley.")
 NOTA = ("Las 10 últimas votaciones del Pleno sobre la convalidación o derogación de un real "
         "decreto-ley (XV Legislatura), con el voto de cada diputado tal como lo publica el Congreso.")
+POR_QUE = ("Se eligen los decretos-leyes porque en esas votaciones el Pleno decide directamente "
+           "si una norma aprobada por el Gobierno sigue en vigor.")
+NEUTRO_AUN_NO = "Aún no había tomado posesión"
 SIN_DATO = "Sin dato"
 SIN_DATO_EXPLICA = "no aparece en el listado oficial de esta votación"
 
@@ -97,24 +102,80 @@ def rdl_html(texto: str) -> str:
     return f"<b>{_esc(m.group(1))}</b>{_esc(texto[m.end():])}"
 
 
-def bloque_html(datos: dict | None, gente: list, nombre: str) -> str:
-    """La sección de la ficha /diputados/provincia-*.html. Vacía si no hay copia."""
+def _fecha_ddmmaaaa(f: str) -> str:
+    """«02/09/2026» -> «2026-09-02»; vacío si no encaja."""
+    m = re.match(r"\s*(\d{1,2})/(\d{1,2})/(\d{4})\s*$", f or "")
+    return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}" if m else ""
+
+
+def antes_del_alta(fecha_iso: str, alta: str) -> bool:
+    """¿La votación es anterior a la fecha de alta que publica el Congreso?
+    Solo si la fecha de alta se entiende; si no, False (y queda «Sin dato»)."""
+    a = _fecha_ddmmaaaa(alta)
+    return bool(a) and fecha_iso < a
+
+
+def texto_aun_no(genero: str) -> str:
+    return {"f": "Aún no era diputada", "m": "Aún no era diputado"}.get(genero, NEUTRO_AUN_NO)
+
+
+def texto_baja(genero: str, fecha: str) -> str:
+    base = {"f": "ya no es diputada desde el", "m": "ya no es diputado desde el"}.get(
+        genero, "causó baja en el Congreso el")
+    return f"{base} {fecha}"
+
+
+def _resumen(vot: dict) -> str:
+    m = RE_RDL.match(vot.get("texto") or "")
+    partes = [f'<b>{_esc(m.group(1) if m else vot.get("titulo") or "Votación")}</b>',
+              _esc(vot["fecha"])]
+    if vot.get("resultado"):
+        partes.append(_esc(vot["resultado"]))
+    return " · ".join(partes)
+
+
+def bloque_html(datos: dict | None, gente: list, nombre: str, circ: str | None = None) -> str:
+    """La sección de la ficha /diputados/provincia-*.html. Vacía si no hay copia.
+
+    `circ` es la circunscripción tal como la escribe el Congreso («Coruña (A)»):
+    con ella entran también los votos de quien votó por esa circunscripción y
+    ya no es diputado (datos["bajas"], con su fuente oficial)."""
     if not datos or not datos.get("votaciones") or not gente:
         return ""
+    circ = circ if circ is not None else (gente[0].get("circunscripcion") or "")
+    generos = datos.get("generos") or {}
+    bajas = {k: b for k, b in (datos.get("bajas") or {}).items()
+             if circ and b.get("circunscripcion") == circ}
     orden = sorted(gente, key=lambda f: _clave_orden(f.get("nombre") or f.get("natural") or ""))
     partes = []
-    for vot in datos["votaciones"]:
+    for n, vot in enumerate(datos["votaciones"]):
         votos = vot.get("votos") or {}
+        antes = set(vot.get("antes_alta") or [])
         grupos = {k: [] for k in ORDEN}
+        aun_no: dict = {}
         sin = []
         for f in orden:
             c = votos.get(f.get("clave"))
-            (grupos[c] if c in grupos else sin).append(f)
+            if c in grupos:
+                grupos[c].append((f.get("nombre") or "", _enlace(f)))
+            elif f.get("clave") in antes:
+                aun_no.setdefault(texto_aun_no(generos.get(f.get("clave"), "")), []).append(f)
+            else:
+                sin.append(f)
+        for k, b in bajas.items():
+            c = votos.get(k)
+            if c in grupos:
+                grupos[c].append((b.get("nombre") or "", f'{_esc(b["natural"])} '
+                                  f'<span class="pv-baja">({_esc(texto_baja(generos.get(k, ""), b["baja"]))})</span>'))
         lis = []
         for k in ORDEN:
             if grupos[k]:
-                lis.append(f'<li><span class="pv-v">{VOTO_TXT[k]}:</span> '
-                           + ", ".join(_enlace(f) for f in grupos[k]) + "</li>")
+                gente_k = [h for _n, h in sorted(grupos[k], key=lambda x: _clave_orden(x[0]))]
+                lis.append(f'<li><span class="pv-v">{VOTO_TXT[k]}:</span> ' + ", ".join(gente_k) + "</li>")
+        for rotulo, fs in aun_no.items():
+            lis.append(f'<li class="pv-sin"><span class="pv-v">{_esc(rotulo)}:</span> '
+                       + ", ".join(_enlace(f) + (f' (alta en el Congreso: {_esc(f["alta"])})'
+                                                 if f.get("alta") else "") for f in fs) + "</li>")
         if sin:
             lis.append(f'<li class="pv-sin"><span class="pv-v">{SIN_DATO}</span> ({SIN_DATO_EXPLICA}): '
                        + ", ".join(_enlace(f) + (f' (alta en el Congreso: {_esc(f["alta"])})'
@@ -128,16 +189,21 @@ def bloque_html(datos: dict | None, gente: list, nombre: str) -> str:
             fuentes.append(f'<a href="{_esc(EXPTE_URL.format(expte=vot["expediente"]))}">'
                            f'expediente {_esc(vot["expediente"])}</a>')
         partes.append(
-            '<div class="pv-vot">'
-            f'<h3 class="pv-tit"><span class="pv-fecha">{_esc(vot["fecha"])}</span> '
-            f'{rdl_html(vot["texto"])}</h3>'
+            f'<details class="pv-vot"{" open" if n == 0 else ""}>'
+            f'<summary class="pv-sum">{_resumen(vot)}</summary>'
+            f'<p class="pv-tit">{rdl_html(vot["texto"])}</p>'
             + (f'<p class="pv-res">Resultado, según el expediente del Congreso: '
                f'{_esc(vot["resultado"])}.</p>' if vot.get("resultado") else "")
             + f'<ul class="pv-votos">{"".join(lis)}</ul>'
-            f'<p class="pv-fuente">Fuente: {" · ".join(fuentes)}</p></div>')
+            f'<p class="pv-fuente">Fuente: {" · ".join(fuentes)}</p></details>')
+    fuente_bajas = ""
+    if bajas:
+        url = (datos.get("fuentes_diputados") or {}).get("pagina") or ""
+        fuente_bajas = (f' Las fechas de alta y de baja son las que publica el Congreso en sus '
+                        f'<a href="{_esc(url)}">datos abiertos de diputados</a>.' if url else "")
     return ('<section class="prov-votos" aria-labelledby="prov-votos">'
             f'<h2 id="prov-votos">¿Quién votó qué en {_esc(nombre)}?</h2>'
-            f'<p class="elec-nota">{_esc(NOTA)}</p>'
+            f'<p class="elec-nota">{_esc(NOTA)} {_esc(POR_QUE)}{fuente_bajas}</p>'
             + "".join(partes) + "</section>")
 
 

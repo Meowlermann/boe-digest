@@ -142,8 +142,11 @@ la toca: las votaciones nuevas solo aparecen cuando se regenera.
    de `votos_rdl.py`, comprueba la fecha y el texto contra el JSON oficial de cada
    una (si no coinciden, para sin escribir), y toma del listado oficial del día
    el PDF y el expediente, y de la ficha del expediente el «Resultado
-   tramitación». Imprime los cruces dudosos: votos de quien ya no está en el
-   censo (no se atribuyen) y diputados sin dato en alguna votación.
+   tramitación». Del portal de datos abiertos de diputados lee el fichero de
+   diputados de baja (circunscripción y fechas, para atribuir los votos de las
+   bajas) y el de diputadas (género de sustitutos y bajas). Imprime las bajas
+   atribuidas, las no atribuidas con su motivo, quién aún no era diputado en
+   cada votación y lo que queda sin dato.
 3. Abrir una PR con el JSON regenerado; los tests comprueban el criterio y que
    la copia casa con el estado.
 

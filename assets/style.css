@@ -1965,10 +1965,15 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .prov-votos{margin:0 0 1.4rem;padding:0 0 .4rem;border-top:3px solid var(--ink)}
 .prov-votos h2{margin:.7rem 0 .4rem;scroll-margin-top:calc(90px + 8px)}
 @media (max-width:720px){.prov-votos h2{scroll-margin-top:16px}}
-.pv-vot{padding:.5rem 0 .4rem;border-top:1px solid var(--border)}
-.pv-tit{margin:.3rem 0 .3rem;font:400 15px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;text-transform:none;overflow-wrap:anywhere}
+.pv-vot{padding:.2rem 0;border-top:1px solid var(--border)}
+.pv-vot>*:last-child{margin-bottom:.5rem}
+/* Desplegable sin JS: el marcador nativo indica que se abre; foco siempre visible. */
+.pv-sum{cursor:pointer;padding:.45rem 0;min-height:32px;font:400 15px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+.pv-sum b{font-weight:700}
+.pv-sum:focus-visible{outline:2px solid var(--red-ink,var(--red));outline-offset:2px}
+.pv-tit{margin:.1rem 0 .3rem;font:400 15px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;text-transform:none;overflow-wrap:anywhere}
 .pv-tit b{font-weight:700}
-.pv-fecha{display:block;font-size:13.5px;color:var(--ink-soft)}
+.pv-baja{color:var(--ink-soft);font-weight:400}
 .pv-res{margin:0 0 .3rem;font:400 14px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
 .pv-votos{margin:0;padding:0;list-style:none;font-size:15px;line-height:1.5}
 .pv-votos li{padding:.15rem 0}

@@ -1,8 +1,39 @@
 {
+ "bajas": {
+  "navarro lopez pedro": {
+   "alta": "10/08/2023",
+   "baja": "01/09/2026",
+   "circunscripcion": "Zaragoza",
+   "fuente": "https://www.congreso.es/webpublica/opendata/diputados/DiputadosDeBaja__20261122050008.json",
+   "natural": "Pedro Navarro López",
+   "nombre": "Navarro López, Pedro"
+  },
+  "taboadela alvarez obdulia": {
+   "alta": "11/08/2023",
+   "baja": "11/09/2026",
+   "circunscripcion": "Coruña (A)",
+   "fuente": "https://www.congreso.es/webpublica/opendata/diputados/DiputadosDeBaja__20261122050008.json",
+   "natural": "Obdulia Taboadela Álvarez",
+   "nombre": "Taboadela Álvarez, Obdulia"
+  }
+ },
  "criterio": "Las 10 votaciones más recientes del Pleno de la XV Legislatura con el título oficial «Convalidación o derogación de Reales Decretos-leyes», sin las de tramitación como proyecto de ley.",
  "fuente": "Datos abiertos del Congreso de los Diputados (detalle nominal de cada votación).",
+ "fuentes_diputados": {
+  "bajas": "https://www.congreso.es/webpublica/opendata/diputados/DiputadosDeBaja__20261122050008.json",
+  "diputadas": "https://www.congreso.es/webpublica/opendata/diputados/Diputadas__20261122050010.json",
+  "pagina": "https://www.congreso.es/es/opendata/diputados"
+ },
+ "generos": {
+  "bondia pinos maria elena": "f",
+  "navarro lopez pedro": "m",
+  "taboadela alvarez obdulia": "f",
+  "taibo monelos diego": "m"
+ },
+ "no_atribuidos": [],
  "votaciones": [
   {
+   "antes_alta": [],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=23/09/2026",
    "expediente": "130/000054",
    "fecha": "23/9/2026",
@@ -368,6 +399,7 @@
    }
   },
   {
+   "antes_alta": [],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=16/09/2026",
    "expediente": "130/000053",
    "fecha": "16/9/2026",
@@ -733,6 +765,7 @@
    }
   },
   {
+   "antes_alta": [],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=16/09/2026",
    "expediente": "130/000052",
    "fecha": "16/9/2026",
@@ -1098,6 +1131,9 @@
    }
   },
   {
+   "antes_alta": [
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=09/09/2026",
    "expediente": "130/000051",
    "fecha": "9/9/2026",
@@ -1463,6 +1499,10 @@
    }
   },
   {
+   "antes_alta": [
+    "bondia pinos maria elena",
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=23/07/2026",
    "expediente": "130/000050",
    "fecha": "23/7/2026",
@@ -1828,6 +1868,10 @@
    }
   },
   {
+   "antes_alta": [
+    "bondia pinos maria elena",
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=23/07/2026",
    "expediente": "130/000049",
    "fecha": "23/7/2026",
@@ -2193,6 +2237,10 @@
    }
   },
   {
+   "antes_alta": [
+    "bondia pinos maria elena",
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=14/07/2026",
    "expediente": "130/000048",
    "fecha": "14/7/2026",
@@ -2558,6 +2606,10 @@
    }
   },
   {
+   "antes_alta": [
+    "bondia pinos maria elena",
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=14/07/2026",
    "expediente": "130/000047",
    "fecha": "14/7/2026",
@@ -2923,6 +2975,10 @@
    }
   },
   {
+   "antes_alta": [
+    "bondia pinos maria elena",
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=25/06/2026",
    "expediente": "130/000046",
    "fecha": "25/6/2026",
@@ -3288,6 +3344,10 @@
    }
   },
   {
+   "antes_alta": [
+    "bondia pinos maria elena",
+    "taibo monelos diego"
+   ],
    "dia": "https://www.congreso.es/es/opendata/votaciones?p_p_id=votaciones&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&targetLegislatura=XV&targetDate=25/06/2026",
    "expediente": "130/000045",
    "fecha": "25/6/2026",

@@ -6690,7 +6690,7 @@ def renderizar_diputados(fichas: list) -> list:
             # Tanda E3: reparto por formación y preguntas frecuentes, tras el bloque 29-N.
             cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
             + FAQ_ELECCIONES.get(prov, "")
-            + vr.bloque_html(datos_rdl, gente, nombre_circunscripcion(prov))
+            + vr.bloque_html(datos_rdl, gente, nombre_circunscripcion(prov), prov)
             + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
