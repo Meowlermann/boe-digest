@@ -97,14 +97,46 @@ class Paginas(unittest.TestCase):
     def test_sin_png_no_cambia(self):
         self.assertEqual(el.og_plantilla(self.pl, SITE, "no-existe", "x"), self.pl)
 
-    def test_fichas_de_diputados(self):
-        src = (RAIZ / "build.py").read_text(encoding="utf-8")
-        self.assertIn("el.og_plantilla(plantilla_p, SITE_URL, ps, og[\"alt\"])", src)
+    def test_las_52_fichas_de_diputados(self):
+        # Mismo camino que build.renderizar_diputados: plantilla_ficha_provincia.
+        pl = (RAIZ / "template_norma.html").read_text(encoding="utf-8")
         og = build._og_elecciones()
         self.assertEqual(len(og), 52)
-        # Las URL de las fichas usan el mismo slug que los PNG.
         for slug in og:
+            p = build.plantilla_ficha_provincia(pl, slug, True, og)
+            url = f"{SITE}{el.OG_CARPETA}/{slug}.png"
+            self.assertIn(f'<meta property="og:image" content="{url}">', p, slug)
+            self.assertIn(f'<meta name="twitter:image" content="{url}">', p, slug)
+            self.assertNotIn("og-default.png", p, slug)
+            self.assertIn(el.LEMA_FICHA, p, slug)
             self.assertTrue((CARPETA / f"{slug}.png").is_file(), slug)
+        # Sin bloque 29-N, la ficha no cambia.
+        self.assertEqual(build.plantilla_ficha_provincia(pl, "soria", False, og), pl)
+
+    def test_cadiz(self):
+        t = el.textos_og(el.cargar(), build.nombre_circunscripcion, build._slug_txt)["cadiz"]
+        self.assertEqual((t["nombre"], t["cifras"]), ("Cádiz", "8 escaños · 11 candidaturas al Congreso"))
+
+
+class Pintadas(unittest.TestCase):
+    """Las 104 páginas ya pintadas (build.py --render): 52 electorales y 52 fichas."""
+
+    def test_104_paginas(self):
+        rutas = sorted((RAIZ / "elecciones" / "2026").glob("*.html"))
+        rutas = [r for r in rutas if r.name != "index.html"]
+        fichas = sorted((RAIZ / "diputados").glob("provincia-*.html"))
+        if len(rutas) != 52 or len(fichas) != 52:
+            self.skipTest("páginas sin pintar (build.py --render)")
+        import re
+        for r in rutas + fichas:
+            html = r.read_text(encoding="utf-8")
+            slug = r.stem.removeprefix("provincia-")
+            m = re.search(r'<meta property="og:image" content="([^"]+)">', html)
+            t = re.search(r'<meta name="twitter:image" content="([^"]+)">', html)
+            url = f"{SITE}{el.OG_CARPETA}/{slug}.png"
+            self.assertEqual(m and m.group(1), url, r.name)
+            self.assertEqual(t and t.group(1), url, r.name)
+            self.assertTrue((RAIZ / m.group(1)[len(SITE):]).is_file(), r.name)
 
 
 if __name__ == "__main__":

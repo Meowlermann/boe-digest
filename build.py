@@ -6401,6 +6401,20 @@ def _reparto_provincia(gente: list, prov: str) -> str:
 FAQ_ELECCIONES: dict = {}   # {circunscripción: HTML de las preguntas frecuentes}, lo llena _bloques_elecciones
 
 
+def plantilla_ficha_provincia(plantilla: str, ps: str, con_bloque: bool, og_elecciones: dict) -> str:
+    """Plantilla de /diputados/provincia-<ps>.html. Con bloque 29-N, el pie
+    precisa que ese bloque no usa IA (informe 30) y, tanda E5, og:image,
+    twitter:image y og:image:alt pasan a la imagen de la provincia."""
+    if not con_bloque:
+        return plantilla
+    import elecciones as el
+    plantilla_p = plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)
+    og = og_elecciones.get(ps)
+    if og:
+        plantilla_p = el.og_plantilla(plantilla_p, SITE_URL, ps, og["alt"])
+    return plantilla_p
+
+
 def _og_elecciones() -> dict:
     """Tanda E5: {slug: textos de la imagen para redes} de cada circunscripción."""
     try:
@@ -6675,14 +6689,8 @@ def renderizar_diputados(fichas: list) -> list:
             reparto = sorted(((k, g) for g, k in cuenta.items()), key=lambda x: (-x[0], x[1]))
             titulo_p, desc_p, h1_p = textos_prueba_dip(prov, reparto)
         # Con bloque electoral, el pie precisa que ese bloque no usa IA (informe 30).
-        plantilla_p = plantilla
-        if bloque_elecciones.get(prov):
-            import elecciones as el
-            plantilla_p = plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)
-            # Tanda E5: la imagen para redes de la provincia (la del 29-N).
-            og = og_elecciones.get(ps)
-            if og:
-                plantilla_p = el.og_plantilla(plantilla_p, SITE_URL, ps, og["alt"])
+        plantilla_p = plantilla_ficha_provincia(plantilla, ps, bool(bloque_elecciones.get(prov)),
+                                                og_elecciones)
         salidas.append(_pagina_listado(
             plantilla_p, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
