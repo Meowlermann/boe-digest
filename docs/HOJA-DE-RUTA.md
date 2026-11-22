@@ -113,6 +113,12 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   sin fusionar: `sitemap-prioritario.xml` y `sitemap-noticias.xml` (Google
   News, 48 horas) en el índice `/sitemap.xml`. Tras fusionar: enviar de nuevo
   el índice en Search Console y mirar que lea los dos ficheros nuevos.
+- **PR «Diputados: ¿quién votó qué en tu provincia?»** (E5), abierta y sin
+  fusionar. En las 52 fichas `/diputados/provincia-*`, el voto de cada
+  diputado en las 10 últimas convalidaciones o derogaciones de reales
+  decretos-leyes, con enlace al JSON oficial, al PDF y al expediente. La copia
+  fija `curated/votos_rdl.json` solo cambia al regenerarla con
+  `tools/generar_votos_rdl.py` (ver OPERACION).
 
 ## Tanda F (empleo)
 

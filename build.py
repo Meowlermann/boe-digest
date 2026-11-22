@@ -6675,6 +6675,11 @@ def renderizar_diputados(fichas: list) -> list:
             por_prov.setdefault(f["circunscripcion"], []).append(f)
     bloque_elecciones = _bloques_elecciones(fichas)
     og_elecciones = _og_elecciones()
+    # «¿Quién votó qué en tu provincia?»: copia fija curated/votos_rdl.json.
+    import votos_rdl as vr
+    datos_rdl = vr.cargar()
+    if not datos_rdl:
+        log("votos_rdl: no hay curated/votos_rdl.json; fichas de provincia sin «¿Quién votó qué?»")
     for prov, gente in sorted(por_prov.items()):
         ps = _slug_txt(prov)
         url = f"{SITE_URL}diputados/provincia-{ps}.html"
@@ -6708,7 +6713,9 @@ def renderizar_diputados(fichas: list) -> list:
             f"<dt>Circunscripción</dt><dd>{esc_html(prov)}</dd>",
             # Tanda E3: reparto por formación y preguntas frecuentes, tras el bloque 29-N.
             cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
-            + FAQ_ELECCIONES.get(prov, "") + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
+            + FAQ_ELECCIONES.get(prov, "")
+            + vr.bloque_html(datos_rdl, gente, nombre_circunscripcion(prov), prov)
+            + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
             # Description desacoplada de la entradilla: el texto de main (prueba de #75).
