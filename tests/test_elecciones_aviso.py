@@ -48,7 +48,7 @@ class Aviso(unittest.TestCase):
 
     def test_enlace_oficial_y_app(self):
         self.assertIn('<a href="https://infoelectoral.interior.gob.es/">Infoelectoral</a>', el.AVISO_29N)
-        self.assertIn("aquí no se publica el recuento.", el.AVISO_29N)
+        self.assertIn("<b>La noche del 29-N</b>, aquí no se publica el recuento.", el.AVISO_29N)
         self.assertIn("su aplicación oficial (desconfía de apps con nombres parecidos)", el.AVISO_29N)
         self.assertNotIn("Elecciones Generales 2026", el.AVISO_29N)   # sin el nombre exacto de la app
         self.assertIn("Junta Electoral Central en el BOE", el.AVISO_29N)

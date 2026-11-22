@@ -453,7 +453,7 @@ def circ_congreso(circ_rd: str) -> str:
 # que las candidaturas sigan en la primera pantalla a 375×812.
 INFOELECTORAL_URL = "https://infoelectoral.interior.gob.es/"
 AVISO_29N = (
-    '<p class="elec-aviso"><b>La noche del 29-N</b> aquí no se publica el recuento. '
+    '<p class="elec-aviso"><b>La noche del 29-N</b>, aquí no se publica el recuento. '
     f'El escrutinio provisional lo difunde el Ministerio del Interior en <a href="{INFOELECTORAL_URL}">'
     'Infoelectoral</a> y en su aplicación oficial (desconfía de apps con nombres parecidos). '
     'Los resultados oficiales los publica la Junta Electoral Central en el BOE.</p>')
