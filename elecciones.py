@@ -440,6 +440,25 @@ def circ_congreso(circ_rd: str) -> str:
     return ALIAS_CONGRESO.get(circ_rd, circ_rd)
 
 
+# --- aviso para la noche del 29-N ---------------------------------------------
+# Esta sección no publica resultados: Interior solo da el escrutinio provisional
+# en tiempo real a medios acreditados (informe E7), así que la noche electoral se
+# remite a sus canales públicos. Texto fijo, sin cifras propias, sin fechas
+# calculadas y sin subrayados ni tarjetas. La aplicación no se nombra ni se
+# enlaza (informe 41): en las tiendas hay apps no oficiales con nombres
+# parecidos, y el 22-11-2026 ni interior.gob.es ni Infoelectoral ofrecían una
+# página de descarga (solo la política de privacidad del 18-11-2026,
+# https://www.interior.gob.es/opencms/es/politica-de-privacidad/). En el hub va
+# lo primero; en las páginas de provincia, tras el índice de candidaturas, para
+# que las candidaturas sigan en la primera pantalla a 375×812.
+INFOELECTORAL_URL = "https://infoelectoral.interior.gob.es/"
+AVISO_29N = (
+    '<p class="elec-aviso"><b>La noche del 29-N</b>, aquí no se publica el recuento. '
+    f'El escrutinio provisional lo difunde el Ministerio del Interior en <a href="{INFOELECTORAL_URL}">'
+    'Infoelectoral</a> y en su aplicación oficial (desconfía de apps con nombres parecidos). '
+    'Los resultados oficiales los publica la Junta Electoral Central en el BOE.</p>')
+
+
 def clave_cruce(nombre: str) -> str:
     """Para cruzar con los diputados: sin paréntesis («(Independiente)»,
     apodos), sin comillas ni tildes."""
@@ -839,7 +858,9 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
         cuerpo = (f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
                   f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
-                  f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
+                  + f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
+                  # Tras el índice: las candidaturas, en la primera pantalla (informe 41).
+                  + AVISO_29N
                   + nota_np + bloques
                   + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html#prov-reparto">Reparto '
                     f'de escaños de {_esc(nombre)} en la legislatura disuelta&nbsp;→</a> · '
@@ -882,7 +903,7 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                if c.get("escanos_anterior") is not None and c["escanos_anterior"] != c["escanos"]]
     url = f"{site}{HUB}"
     titulo = "Elecciones generales del 29-N de 2026: candidaturas al Congreso por provincia"
-    cuerpo = (f'<p class="elec-intro">El <a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a> convoca '
+    cuerpo = (AVISO_29N + f'<p class="elec-intro">El <a href="{url_boe(ID_RD)}">Real Decreto 806/2026</a> convoca '
               f'elecciones generales para el {_esc(datos["fecha_literal"])}. Se eligen <b>{total}</b> '
               f'diputados en {len(datos["circunscripciones"])} circunscripciones. Cada página tiene las '
               f'candidaturas proclamadas al Congreso, en el orden del BOE, y qué diputados de la '

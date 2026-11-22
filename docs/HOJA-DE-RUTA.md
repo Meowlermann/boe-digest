@@ -84,6 +84,25 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
   Senado sigue fuera.
 
+- **E7, descarga de resultados de Interior: no hay feed público.** El
+  repositorio de la noche electoral es solo para medios acreditados (plazo
+  cerrado) y Infoelectoral responde con un desafío de Cloudflare a la box y
+  a los runners (run 45029633641). Los xlsx de resultados definitivos de
+  `descargas.interior.gob.es` sí se descargan (llegan hasta 2023).
+- **PR «Elecciones: aviso para la noche del 29-N»**, abierta y sin
+  fusionar; tiene que estar fusionada antes del sábado 28. Aviso fijo en el
+  hub y en las 52 páginas por circunscripción, con Infoelectoral y la
+  aplicación oficial de Interior, sin nombrarla (hay apps no oficiales con
+  nombres parecidos). Si Interior publica una página de descarga, se puede
+  enlazar. Tras el escrutinio hay que quitarlo (`elecciones.AVISO_29N`),
+  a la vez que se pone `CAMPANA_29N = False`.
+- **Siguiente, aprobado: bloque «Resultados oficiales» por provincia.**
+  Copiado tal cual de la proclamación de la Junta Electoral Central en el
+  BOE (o del xlsx de Interior cuando incluya 2026), sin porcentajes ni
+  proyecciones, en los pases diarios que ya existen. Si la descarga falla,
+  el bloque no se muestra y se mantiene la última versión buena. Tiene que
+  estar listo antes de que se publique la proclamación.
+
 ## Aparcado
 
 - **Senado en automático.** El WAF de Akamai devuelve 403 desde la box
