@@ -109,6 +109,10 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   hay que volver a ejecutar `python tools/generar_og.py --elecciones` y
   commitear los PNG; el test avisa. «¿Quién votó qué en tu provincia?»
   (el resto de E5) queda para después de E8, si da tiempo.
+- **PR «SEO: sitemap prioritario y de noticias»** (tanda E8), abierta y
+  sin fusionar: `sitemap-prioritario.xml` y `sitemap-noticias.xml` (Google
+  News, 48 horas) en el índice `/sitemap.xml`. Tras fusionar: enviar de nuevo
+  el índice en Search Console y mirar que lea los dos ficheros nuevos.
 
 ## Tanda F (empleo)
 

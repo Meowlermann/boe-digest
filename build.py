@@ -7461,7 +7461,17 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
     SITEMAP_ESTADO.write_text(json.dumps(estado, ensure_ascii=False, sort_keys=True, indent=0),
                               encoding="utf-8")
 
-    ficheros = sm.generar(todas, SITE_URL)
+    # Tanda E8: noticias de las últimas 48 horas (formato Google News). Solo se
+    # leen las ediciones y normas con lastmod de los tres últimos días; la fecha
+    # que cuenta es el datePublished de su propio NewsArticle, no la del pase.
+    ahora = dt.datetime.now(ZONA_ES)
+    corte = (ahora.date() - dt.timedelta(days=3)).isoformat()
+    candidatas = [x["url"] for x in todas
+                  if x["lastmod"] >= corte and (x["url"].startswith(f"{SITE_URL}ediciones/20")
+                                                or x["url"].startswith(f"{SITE_URL}normas/BOE-"))]
+    noticias = sm.noticias(candidatas, ahora, leer)
+
+    ficheros = sm.generar(todas, SITE_URL, noticias)
     viejos = {p.name for p in ROOT.glob("sitemap-*.xml")}
     for nombre, xml in ficheros.items():
         escribir_si_cambia(ROOT / nombre, xml)
@@ -7470,7 +7480,8 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
     n_urls = sum(x.count("<url>") for x in ficheros.values())
     con_hoy = sum(1 for x in todas if x["lastmod"] == hoy)
     log(f"sitemap.xml: índice con {len(ficheros) - 1} sitemaps y {n_urls} URLs "
-        f"({con_hoy} con lastmod de hoy)")
+        f"({con_hoy} con lastmod de hoy; {len(noticias)} noticias de las últimas "
+        f"{sm.NOTICIAS_HORAS} horas)")
 
 
 def renderizar_feed(dias: list[dict]) -> None:
