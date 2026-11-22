@@ -2845,17 +2845,71 @@ def render_nombramientos_ssr(day: dict) -> str:
         return ""
 
 
+# Disolución de las Cortes: Real Decreto 806/2026, de 5 de octubre. Las
+# ediciones con fecha igual o posterior a la de su BOE (la que figura en
+# curated/elecciones_2026.json) ya no muestran la ficha de la XV Legislatura,
+# sino este texto con la referencia oficial. No se calcula ninguna fecha.
+CONSTITUCION_ART78 = "https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229#a78"
+# Título oficial, tal cual en el BOE (BOE-A-2026-20742).
+TITULO_RD_DISOLUCION = ("Real Decreto 806/2026, de 5 de octubre, de disolución del Congreso de los "
+                        "Diputados y del Senado y de convocatoria de elecciones")
+
+
+def _disolucion() -> dict:
+    """Referencia oficial del real decreto de disolución, de la copia fija de
+    elecciones. Vacío si no está (y entonces se pinta la ficha de siempre)."""
+    try:
+        import elecciones as el
+        datos = json.loads(el.DATOS.read_text(encoding="utf-8"))
+        pub = (datos.get("publicaciones") or {}).get(el.ID_RD) or {}
+        if pub.get("fecha") and pub.get("literal"):
+            return {"fecha": pub["fecha"], "literal": pub["literal"], "url": el.url_boe(el.ID_RD)}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"disolución: sin referencia ({exc})")
+    return {}
+
+
 def render_chamber_cards_ssr(day: dict) -> str:
+    """Ficha del Congreso de la edición. El Senado no se muestra: está fuera de
+    la automatización (SENADO_ACTIVO). Desde la disolución, en vez de ficha,
+    un texto con la referencia del BOE y la Diputación Permanente."""
+    dis = _disolucion()
+    if dis and str(day.get("id") or "") >= dis["fecha"]:
+        return (
+            '<p class="cortes-disueltas"><b>Cortes disueltas.</b> '
+            f'<a href="{esc_attr(dis["url"])}">{esc_html(TITULO_RD_DISOLUCION)}</a> '
+            f'({esc_html(dis["literal"])}). '
+            'Hasta que se constituyan las nuevas Cortes Generales, la Diputación Permanente '
+            'del Congreso sigue ejerciendo sus funciones; entre ellas, convalidar o derogar '
+            f'los decretos-leyes (<a href="{CONSTITUCION_ART78}">artículo 78 de la Constitución</a>). '
+            '<a href="/elecciones/2026/">Las elecciones del 29-N, por provincia&nbsp;→</a></p>')
     c = day.get("cortes", {}) or {}
     cong = c.get("congreso") or {}
-    sen = c.get("senado") or {}
     return (
         '<div class="chamber-card" style="--cc:var(--congreso)"><div class="h">CONGRESO DE LOS DIPUTADOS</div>'
         f'<div class="who">{esc_html(cong.get("presidenta","—"))}</div>'
-        f'<div class="meta">Presidenta · {esc_html(cong.get("legislatura",""))}<br>{esc_html(cong.get("sede",""))}</div></div>'
-        '<div class="chamber-card" style="--cc:var(--senado)"><div class="h">SENADO</div>'
-        f'<div class="who">{esc_html(sen.get("presidente","—"))}</div>'
-        f'<div class="meta">Presidente · {esc_html(sen.get("legislatura",""))}<br>{esc_html(sen.get("sede",""))}</div></div>')
+        f'<div class="meta">Presidenta · {esc_html(cong.get("legislatura",""))}<br>{esc_html(cong.get("sede",""))}</div></div>')
+
+
+def render_decretos_ley_ssr() -> str:
+    """Panel «Decretos-ley» de la portada (decretos_ley.py): número, BOE y
+    estado en el Congreso copiado de la ficha oficial, con enlaces."""
+    try:
+        import decretos_ley as dl
+        import votos_rdl as vr
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"decretos-ley: panel no generado ({exc})")
+        return ""
+    det = CONGRESO_ESTADO.get("detalle") or {}
+
+    def votacion(url_json: str) -> str:
+        d = det.get(url_json)
+        return ("/votaciones/" + pagina_votacion(d)) if d else url_json
+
+    def norma(ident: str) -> str:
+        return f"/normas/{ident}.html" if RE_REF_BOE.fullmatch(ident or "") else ""
+
+    return dl.panel_html(dl.cargar(), vr.cargar(), votacion, norma)
 
 
 def render_scoreboard_ssr(day: dict) -> tuple[bool, str]:
@@ -2880,7 +2934,13 @@ def render_coverage_note_ssr(day: dict) -> tuple[bool, str]:
     cov = (day.get("cortes", {}) or {}).get("coverage")
     if not cov or not cov.get("nota"):
         return True, ""
-    return False, f'<b>Cobertura de hoy:</b> {esc_html(cov["nota"])}'
+    # La nota fija del Senado sigue en el JSON del día (la escribe la
+    # extracción, que no se toca), pero ya no se pinta: si no queda nada
+    # más, no hay nota.
+    nota = cov["nota"].replace(NOTA_SENADO_INACTIVO, "").strip()
+    if not nota:
+        return True, ""
+    return False, f'<b>Cobertura de hoy:</b> {esc_html(nota)}'
 
 
 def render_cortes_feed_ssr(day: dict) -> str:
@@ -4157,6 +4217,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
         "COVERAGE_NOTE": cov_html,
         "CHAMBER_CARDS": render_chamber_cards_ssr(day0),
+        "DECRETOS_LEY": render_decretos_ley_ssr(),
         "SCOREBOARD_HIDDEN": "hidden" if sb_hidden else "",
         "SCOREBOARD": sb_html,
         "CORTES_LEAD": render_cortes_lead_ssr(day0, permalink),

@@ -150,6 +150,22 @@ la toca: las votaciones nuevas solo aparecen cuando se regenera.
 3. Abrir una PR con el JSON regenerado; los tests comprueban el criterio y que
    la copia casa con el estado.
 
+## Panel «Decretos-ley» de la portada: regenerar la copia
+
+El panel sale de `curated/decretos_ley.json`, una copia fija que se versiona en
+`main`. El render no pide nada a la red: los estados nuevos (una convalidación,
+un decreto-ley nuevo) solo aparecen cuando se regenera.
+
+1. Tener `data/` al día (rama `datos`) y `curated/votos_rdl.json`.
+2. `python tools/generar_decretos_ley.py`: lee los decretos-leyes de 2026 de las
+   ediciones del BOE del sitio y las fichas de expediente del Congreso (serie
+   130) desde la del primer RDL de `votos_rdl` hasta 8 números seguidos sin
+   ficha. Del expediente copia tal cual el «Resultado tramitación» (o la
+   «Situación actual»), el órgano y el BOE. Imprime la lista: revisar que los
+   que no tienen ficha salen «sin estado».
+3. Abrir una PR con el JSON regenerado; los tests comprueban que casa con
+   `votos_rdl`.
+
 ## Timeouts de Pages en el primer despliegue de un SHA
 
 El 10 de noviembre de 2026, varios despliegues fallaron en el paso
