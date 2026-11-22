@@ -89,8 +89,8 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   cerrado) y Infoelectoral responde con un desafío de Cloudflare a la box y
   a los runners (run 45029633641). Los xlsx de resultados definitivos de
   `descargas.interior.gob.es` sí se descargan (llegan hasta 2023).
-- **PR «Elecciones: aviso para la noche del 29-N»**, abierta y sin
-  fusionar; tiene que estar fusionada antes del sábado 28. Aviso fijo en el
+- **#116 «Elecciones: aviso para la noche del 29-N»**, fusionada y
+  publicada el 22 de noviembre de 2026 (`54d5dad9`). Aviso fijo en el
   hub y en las 52 páginas por circunscripción, con Infoelectoral y la
   aplicación oficial de Interior, sin nombrarla (hay apps no oficiales con
   nombres parecidos). Si Interior publica una página de descarga, se puede
@@ -102,19 +102,19 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   proyecciones, en los pases diarios que ya existen. Si la descarga falla,
   el bloque no se muestra y se mantiene la última versión buena. Tiene que
   estar listo antes de que se publique la proclamación.
-- **PR «Elecciones: imagen para redes por provincia»** (tanda E5, parte OG),
-  abierta y sin fusionar: un PNG por circunscripción en `og:image` y
+- **#115 «Elecciones: imagen para redes por provincia»** (tanda E5, parte
+  OG), fusionada y publicada el 22 de noviembre de 2026 (`4eb4d5d6`): un PNG por circunscripción en `og:image` y
   `twitter:image` de `/elecciones/2026/<slug>.html` y de
   `/diputados/provincia-*.html`. Si cambia `curated/elecciones_2026.json`,
   hay que volver a ejecutar `python tools/generar_og.py --elecciones` y
   commitear los PNG; el test avisa. «¿Quién votó qué en tu provincia?»
   (el resto de E5) queda para después de E8, si da tiempo.
-- **PR «SEO: sitemap prioritario y de noticias»** (tanda E8), abierta y
-  sin fusionar: `sitemap-prioritario.xml` y `sitemap-noticias.xml` (Google
+- **#117 «SEO: sitemap prioritario y de noticias»** (tanda E8), fusionada
+  y publicada el 22 de noviembre de 2026 (`618bee6e`): `sitemap-prioritario.xml` y `sitemap-noticias.xml` (Google
   News, 48 horas) en el índice `/sitemap.xml`. Tras fusionar: enviar de nuevo
   el índice en Search Console y mirar que lea los dos ficheros nuevos.
-- **PR «Diputados: ¿quién votó qué en tu provincia?»** (E5), abierta y sin
-  fusionar. En las 52 fichas `/diputados/provincia-*`, el voto de cada
+- **#118 «Diputados: ¿quién votó qué en tu provincia?»** (E5), fusionada
+  y publicada el 22 de noviembre de 2026 (`5c499acb`). En las 52 fichas `/diputados/provincia-*`, el voto de cada
   diputado en las 10 últimas convalidaciones o derogaciones de reales
   decretos-leyes, con enlace al JSON oficial, al PDF y al expediente. La copia
   fija `curated/votos_rdl.json` solo cambia al regenerarla con
