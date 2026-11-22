@@ -19,10 +19,11 @@ MADRID = ZoneInfo("Europe/Madrid")
 AHORA = dt.datetime(2026, 11, 22, 15, 30, tzinfo=MADRID)
 
 
-def pagina(url, titular, publicada, extra=()):
+def pagina(url, titular, publicada, extra=(), og=None):
     graf = [{"@type": "NewsArticle", "url": url, "headline": titular, "datePublished": publicada}]
     graf += list(extra)
-    return f'<html><head><script type="application/ld+json">{json.dumps(graf)}</script></head></html>'
+    meta = f'<meta property="og:title" content="{og}">' if og else ""
+    return f'<html><head>{meta}<script type="application/ld+json">{json.dumps(graf)}</script></head></html>'
 
 
 class Prioritario(unittest.TestCase):
@@ -131,6 +132,27 @@ class Noticias(unittest.TestCase):
 
     def test_sin_parametro_no_hay_sitemap_de_noticias(self):
         self.assertNotIn("sitemap-noticias.xml", sm.generar([{"url": S, "lastmod": "2026-11-21"}], S))
+
+
+class TituloNoticia(unittest.TestCase):
+    def test_og_title_sin_sufijo_y_sin_convertir_mayusculas(self):
+        url = S + "normas/BOE-A-2026-7.html"
+        html = pagina(url, "AGRICULTURA FLEXIBILIZA LA CESIÓN DE CUOTAS", "2026-11-21T07:40:00+01:00",
+                      og="Orden APA/1257/2026, de 17 de noviembre, por la que se modifica la Orden APA/372/2020"
+                         " &amp; otra | La Tercera Cámara")
+        n = sm.noticias([url], AHORA, {url: html}.get)
+        self.assertEqual(n[0]["titulo"], "Orden APA/1257/2026, de 17 de noviembre, por la que se modifica "
+                                         "la Orden APA/372/2020 & otra")
+        ed = S + "ediciones/2026-11-21.html"
+        html = pagina(ed, "Edición del sábado — La Tercera Cámara", "2026-11-21T07:40:00+01:00",
+                      og="Edición del sábado, 21 de noviembre de 2026 — La Tercera Cámara")
+        self.assertEqual(sm.noticias([ed], AHORA, {ed: html}.get)[0]["titulo"],
+                         "Edición del sábado, 21 de noviembre de 2026")
+
+    def test_sin_og_title_va_el_headline_tal_cual(self):
+        url = S + "normas/BOE-A-2026-8.html"
+        html = pagina(url, "TITULAR EN MAYÚSCULAS", "2026-11-21T07:40:00+01:00")
+        self.assertEqual(sm.noticias([url], AHORA, {url: html}.get)[0]["titulo"], "TITULAR EN MAYÚSCULAS")
 
 
 class Robots(unittest.TestCase):

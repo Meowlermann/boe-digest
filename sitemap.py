@@ -15,7 +15,8 @@ Search Console no cambia) con un fichero por sección:
                                páginas, y las 52 fichas /diputados/provincia-*
   sitemap-noticias.xml         formato Google News (news:news): ediciones y
                                normas publicadas en las últimas 48 horas, según
-                               el datePublished de su propio NewsArticle
+                               el datePublished de su propio NewsArticle; el
+                               título es su og:title sin el nombre del sitio
 
 Cada URL va en un solo sitemap (verificar.py lo exige). Si es noticia, va en el
 de noticias; si no, si es clave, en el prioritario; si no, en el de su sección.
@@ -59,6 +60,12 @@ MAX_NOTICIAS = 1000
 NOTICIAS_NOMBRE = "La Tercera Cámara"
 NOTICIAS_IDIOMA = "es"
 NS_NEWS = "http://www.google.com/schemas/sitemap-news/0.9"
+# news:title: el og:title de la página (su <title>), sin el nombre del sitio.
+# Los titulares editoriales (headline del JSON-LD y H1) van en mayúsculas en
+# el propio dato; el og:title es el título oficial del BOE en caja normal. No
+# se convierte nada de mayúsculas a minúsculas: si no hay og:title, va el headline.
+_RE_OG_TITLE = re.compile(r'<meta\s+property="og:title"\s+content="([^"]*)"', re.I)
+_RE_SUFIJO = re.compile(r"\s+[|—–]\s+La Tercera Cámara\s*$")
 _RE_JSONLD = re.compile(r"<script\b[^>]*application/ld\+json[^>]*>(.*?)</script>", re.S | re.I)
 
 _RE_FUERA = [
@@ -176,6 +183,14 @@ def articulo_propio(html: str, url: str) -> dict | None:
     return None
 
 
+def titulo_noticia(html: str, headline: str) -> str:
+    """og:title sin « | La Tercera Cámara»; si no hay, el headline tal cual."""
+    import html as h
+    m = _RE_OG_TITLE.search(html or "")
+    t = _RE_SUFIJO.sub("", h.unescape(m.group(1))).strip() if m else ""
+    return t or headline
+
+
 def noticias(candidatas: list[str], ahora: dt.datetime, leer) -> list[dict]:
     """Las URL publicadas en las últimas NOTICIAS_HORAS respecto a `ahora`
     (aware), según el datePublished de su NewsArticle. Nada futuro ni sin
@@ -184,9 +199,11 @@ def noticias(candidatas: list[str], ahora: dt.datetime, leer) -> list[dict]:
     desde = ahora - dt.timedelta(hours=NOTICIAS_HORAS)
     out = []
     for url in dict.fromkeys(candidatas):
-        a = articulo_propio(leer(url), url)
+        html = leer(url)
+        a = articulo_propio(html, url)
         if not a:
             continue
+        a = {**a, "titulo": titulo_noticia(html, a["titulo"])}
         try:
             f = dt.datetime.fromisoformat(a["fecha"])
         except ValueError:
