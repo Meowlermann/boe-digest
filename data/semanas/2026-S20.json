@@ -1,0 +1,597 @@
+{
+ "desde": "2026-05-11",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-05-17",
+ "secciones": {
+  "cifra": {
+   "asunto": "",
+   "fuente": "",
+   "regla": 3,
+   "texto": "leyes y reales decretos publicados en el BOE",
+   "url": "",
+   "valor": 4
+  },
+  "nombramientos": {
+   "ceses": 0,
+   "lista": [
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidente de la Sala de lo Social del Tribunal Superior de Justicia de Castilla y León, sede en Burgos",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-05-11",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10122",
+     "persona": "Jesús Carlos Galán Parada",
+     "rango": "Real Decreto",
+     "url": "/personas/jesus-carlos-galan-parada.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrado de la Audiencia Provincial de Pontevedra, correspondiente al orden civil",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-05-11",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10123",
+     "persona": "Francisco Javier Menéndez Estébanez",
+     "rango": "Real Decreto",
+     "url": "/personas/francisco-javier-menendez-estebanez.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza de Magistrado de la Audiencia Provincial de Málaga, correspondiente al orden penal y con competencia en materia de violencia sobre la mujer",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-05-12",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10237",
+     "persona": "José María Páez Martínez-Virel",
+     "rango": "Real Decreto",
+     "url": "/personas/jose-maria-paez-martinez-virel.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrada",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-05-14",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10432",
+     "persona": "Elena Raquel González Bayón",
+     "rango": "Acuerdo",
+     "url": "/personas/elena-raquel-gonzalez-bayon.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Fiscal adscrita al Fiscal de Sala de la Fiscalía de Sala Coordinador de Delitos contra la Administración Pública",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-05-15",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-10513",
+     "persona": "Belén Martínez González",
+     "rango": "Real Decreto",
+     "url": "/personas/belen-martinez-gonzalez.html"
+    }
+   ],
+   "nombramientos": 16,
+   "resto": 15,
+   "total": 20
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-05-13",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/13/pdfs/BOE-A-2026-10324.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-10324",
+    "titular": "CAMBIA LA APORTACIÓN DE LOS USUARIOS Y SUS BENEFICIARIOS EN LA PRESTACIÓN FARMACÉUTICA AMBULATORIA",
+    "titulo": "Real Decreto-ley 11/2026, de 12 de mayo, por el que se modifica la aportación de los usuarios y sus beneficiarios en la prestación farmacéutica ambulatoria.",
+    "url": "/normas/BOE-A-2026-10324.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-11",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/11/pdfs/BOE-A-2026-10117.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-10117",
+    "titular": "SIMPLIFICACIÓN ADMINISTRATIVA, MERCADO ABIERTO Y CALIDAD NORMATIVA: 900.000 EUROS",
+    "titulo": "Ley 2/2026, de 28 de abril, de simplificación administrativa, mercado abierto y calidad normativa.",
+    "url": "/normas/BOE-A-2026-10117.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-11",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/11/pdfs/BOE-A-2026-10120.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-10120",
+    "titular": "HABILITA A LA COMUNIDAD DE MADRID PARA EL EJERCICIO DE LA ACCIÓN POPULAR EN DETERMINADOS ÁMBITOS",
+    "titulo": "Ley 1/2026, de 15 de abril, por la que se habilita a la Comunidad de Madrid para el ejercicio de la acción popular en determinados ámbitos.",
+    "url": "/normas/BOE-A-2026-10120.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-05-15",
+    "fuente": "https://www.boe.es/boe/dias/2026/05/15/pdfs/BOE-A-2026-10512.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-10512",
+    "titular": "CAMBIA EL REGLAMENTO DE ORDENACIÓN DE LA ENSEÑANZA EN LA GUARDIA CIVIL",
+    "titulo": "Real Decreto 392/2026, de 13 de mayo, por el que se modifica el Reglamento de ordenación de la enseñanza en la Guardia Civil, aprobado por el Real Decreto 131/2018, de 16 de marzo.",
+    "url": "/normas/BOE-A-2026-10512.html"
+   }
+  ],
+  "preguntas": {
+   "contestadas": [
+    {
+     "autores": [
+      "Quintana Carballo, Rosa",
+      "Molina León, Ainhoa"
+     ],
+     "cita": "",
+     "contestada": "2026-05-12",
+     "dias": 26,
+     "exp": "184/034962",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-04-16",
+     "titulo": "Nueva consulta pública previa para modificar el Real Decreto 876/2014, por el que se aprueba el Reglamento General de Costas, alegando la necesidad de atender el procedimiento de infracción iniciado por la Comisión Europ",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F034962"
+    },
+    {
+     "autores": [
+      "Legarda Uriarte, Mikel"
+     ],
+     "cita": "",
+     "contestada": "2026-05-12",
+     "dias": 26,
+     "exp": "184/035692",
+     "grupo": "GV (EAJ-PNV",
+     "pdf": "",
+     "publicada": "2026-04-16",
+     "titulo": "Previsiones del Gobierno acerca de seguir sin hacer pública toda la información que obra en su poder y sin desclasificar toda la documentación declarada secreta sobre los hechos del día 03/03/1976 en Vitoria-Gasteiz, así",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F035692"
+    },
+    {
+     "autores": [
+      "Valero Morales, Juan Antonio"
+     ],
+     "cita": "",
+     "contestada": "2026-05-12",
+     "dias": 26,
+     "exp": "184/036676",
+     "grupo": "Sumar",
+     "pdf": "",
+     "publicada": "2026-04-16",
+     "titulo": "Intervención de la Alta Inspección Educativa ante la situación de saturación del IES Las Viñas en Manilva (Málaga).",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F036676"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037148",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Previsiones de modernización del parque móvil ferroviario para cubrir la línea del Tren Celta, una vez acabadas las obras.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037148"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037150",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Proyecto de construcción de glorietas y tratamiento de márgenes de la N-120 entre los puntos kilométricos 644,900 y 649,950 en el municipio de Ponteareas.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037150"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037151",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Proyecto para la construcción de un nuevo puente sobre el río Cabe en Monforte.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037151"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037152",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Proyecto de humanización anunciado por el Gobierno en la N-550 a su paso por Padrón.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037152"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037153",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Dotación actual de personal en la oficina de Correos de A Pontenova, número de plazas existentes que están cubiertas y previsiones de ampliar el horario de atención al público e incrementar el personal.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037153"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037154",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Dotación actual de personal en la oficina de Correos de A Pastoriza, número de plazas existentes que están cubiertas y previsiones de ampliar el horario de atención al público e incrementar el personal.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037154"
+    },
+    {
+     "autores": [
+      "Rego Candamil, Néstor"
+     ],
+     "cita": "",
+     "contestada": "2026-05-14",
+     "dias": 24,
+     "exp": "184/037155",
+     "grupo": "Mixto",
+     "pdf": "",
+     "publicada": "2026-04-20",
+     "titulo": "Dotación actual de personal en la oficina de Correos de As Nogais, número de plazas existentes que están cubiertas y previsiones de ampliar el horario de atención al público e incrementar el personal.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F037155"
+    }
+   ],
+   "n_contestadas": 193
+  },
+  "tramitacion": [
+   {
+    "clase": "paso",
+    "exp": "122/000280",
+    "f": "2026-05-11",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000280",
+    "hasta": "2026-05-12",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de modificación de la Ley Orgánica 5/1985, de 19 de junio, del Régimen Electoral General, para adaptarla a la reforma del apartado 3 del artículo 69 de la Constitución",
+    "url": "/tramitacion/122-000280.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000280",
+    "f": "2026-05-11",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000280",
+    "hasta": "2026-05-11",
+    "hito": "Mesa del Congreso · Calificación por Mesa sin reunión",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de modificación de la Ley Orgánica 5/1985, de 19 de junio, del Régimen Electoral General, para adaptarla a la reforma del apartado 3 del artículo 69 de la Constitución",
+    "url": "/tramitacion/122-000280.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000280",
+    "f": "2026-05-12",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000280",
+    "hasta": "2026-05-12",
+    "hito": "Gobierno · Contestación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de modificación de la Ley Orgánica 5/1985, de 19 de junio, del Régimen Electoral General, para adaptarla a la reforma del apartado 3 del artículo 69 de la Constitución",
+    "url": "/tramitacion/122-000280.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000280",
+    "f": "2026-05-12",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000280",
+    "hasta": "2026-05-19",
+    "hito": "Pleno · Toma en consideración",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de modificación de la Ley Orgánica 5/1985, de 19 de junio, del Régimen Electoral General, para adaptarla a la reforma del apartado 3 del artículo 69 de la Constitución",
+    "url": "/tramitacion/122-000280.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000011",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000011",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Familias",
+    "url": "/tramitacion/121-000011.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000021",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000021",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de universalidad del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000021.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000024",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000024",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan las medidas de suspensión de lanzamientos sobre la vivienda habitual para la protección de los colectivos vulnerables (procedente del Real Decreto-ley 1/2024, de 14 de mayo)",
+    "url": "/tramitacion/121-000024.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000026",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000026",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley del Cine y de la Cultura Audiovisual",
+    "url": "/tramitacion/121-000026.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000027",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000027",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para la simplificación y mejora del nivel asistencial de la protección por desempleo, y para completar la transposición de la Directiva (UE) 2019/1158 del Parlamento Europeo y del Consejo, de 20 de junio de 2019, relativa a la conciliación de la vida familiar y la vida profesional de los progenitores y los cuidadores, y por la que se deroga la Directiva 2010/18/UE del Consejo (procedente del Real Decreto-ley 2/2024, de 21 de mayo)",
+    "url": "/tramitacion/121-000027.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000028",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000028",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas de promoción del uso del transporte público colectivo terrestre por parte de los jóvenes para los viajes realizados en el periodo estival de 2024 (procedente del Real Decreto-ley 3/2024, de 4 de junio)",
+    "url": "/tramitacion/121-000028.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000029",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000029",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifican diversas normas para consolidar la equidad y cohesión del Sistema Nacional de Salud",
+    "url": "/tramitacion/121-000029.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000032",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000032",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se prorrogan determinadas medidas para afrontar las consecuencias económicas y sociales derivadas de los conflictos en Ucrania y Oriente Próximo y se adoptan medidas urgentes en materia fiscal, energética y social (procedente del Real Decreto-ley 4/2024, de 26 de junio)",
+    "url": "/tramitacion/121-000032.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000035",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000035",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de restablecimiento de la Comisión Nacional de la Energía, A.A.I",
+    "url": "/tramitacion/121-000035.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000037",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000037",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 17/2006, de 5 de junio, de la radio y la televisión de titularidad estatal, para adoptar medidas urgentes relativas al régimen jurídico aplicable a la Corporación RTVE (procedente del Real Decreto-ley 5/2024, de 22 de octubre)",
+    "url": "/tramitacion/121-000037.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000038",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000038",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de información empresarial sobre sostenibilidad, mediante la que se modifican el Código de Comercio, la Ley de Sociedades de Capital y la Ley de Auditoría de Cuentas",
+    "url": "/tramitacion/121-000038.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000039",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000039",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes de respuesta ante los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 6/2024, de 5 de noviembre)",
+    "url": "/tramitacion/121-000039.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000040",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000040",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000040.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000041",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000041",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley Orgánica por la que se modifica la Ley Orgánica 5/2000, de 12 de enero, reguladora de la responsabilidad penal de los menores, complementaria de la Ley por la que se modifica la Ley 1/2000, de 7 de enero, de Enjuiciamiento Civil, para regular el procedimiento de determinación de la edad",
+    "url": "/tramitacion/121-000041.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000042",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000042",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes para el impulso del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 7/2024, de 11 de noviembre)",
+    "url": "/tramitacion/121-000042.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000043",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000043",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de Industria y Autonomía Estratégica",
+    "url": "/tramitacion/121-000043.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000044",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000044",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se adoptan medidas urgentes complementarias en el marco del Plan de respuesta inmediata, reconstrucción y relanzamiento frente a los daños causados por la Depresión Aislada en Niveles Altos (DANA) en diferentes municipios entre el 28 de octubre y el 4 de noviembre de 2024 (procedente del Real Decreto-ley 8/2024, de 28 de noviembre)",
+    "url": "/tramitacion/121-000044.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000045",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000045",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley para la mejora de la compatibilidad de la pensión de jubilación con el trabajo (procedente del Real Decreto-ley 11/2024, de 23 de diciembre)",
+    "url": "/tramitacion/121-000045.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000047",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000047",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes en materia económica, de transporte, de Seguridad Social, y para hacer frente a situaciones de vulnerabilidad (procedente del Real Decreto-ley 1/2025, de 28 de enero)",
+    "url": "/tramitacion/121-000047.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000048",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000048",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de acciones colectivas para la protección y defensa de los derechos e intereses de los consumidores y usuarios",
+    "url": "/tramitacion/121-000048.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000049",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000049",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de administradores y compradores de créditos y por la que se modifican la Ley de Medidas de Reforma del Sistema Financiero, la Ley de contratos de crédito al consumo, la Ley de ordenación, supervisión y solvencia de entidades de crédito, la Ley reguladora de los contratos de crédito inmobiliario, y el texto refundido de la Ley Concursal",
+    "url": "/tramitacion/121-000049.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000050",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000050",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de prevención del consumo de bebidas alcohólicas y de sus efectos en las personas menores de edad",
+    "url": "/tramitacion/121-000050.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000055",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000055",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se aprueban medidas urgentes para la garantía del interés superior de la infancia y adolescencia ante situaciones de contingencias migratorias extraordinarias (procedente del Real Decreto-ley 2/2025, de 18 de marzo)",
+    "url": "/tramitacion/121-000055.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000056",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000056",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley por la que se establece el programa de incentivos ligados a la movilidad eléctrica (MOVES III) para el año 2025 (procedente del Real Decreto-ley 3/2025, de 1 de abril)",
+    "url": "/tramitacion/121-000056.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000057",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000057",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas urgentes de respuesta a la amenaza arancelaria y de relanzamiento comercial (procedente del Real Decreto-ley 4/2025, de 8 de abril)",
+    "url": "/tramitacion/121-000057.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "121/000062",
+    "f": "2026-05-13",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000062",
+    "hasta": "2026-05-20",
+    "hito": "Ampliación de enmiendas al articulado: el plazo que vencía el 2026-05-13 se amplía hasta el 2026-05-20",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley de medidas de promoción del uso del transporte público colectivo por parte de la juventud para los viajes realizados en el periodo estival de 2025 (procedente del Real Decreto-ley 5/2025, de 10 de junio)",
+    "url": "/tramitacion/121-000062.html"
+   }
+  ]
+ },
+ "semana": "2026-S20",
+ "version": 1
+}

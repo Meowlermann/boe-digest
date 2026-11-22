@@ -1,0 +1,637 @@
+{
+ "desde": "2026-03-30",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-10-08",
+ "hasta": "2026-04-05",
+ "secciones": {
+  "cifra": {
+   "asunto": "",
+   "fuente": "",
+   "regla": 3,
+   "texto": "leyes y reales decretos publicados en el BOE",
+   "url": "",
+   "valor": 25
+  },
+  "nombramientos": {
+   "ceses": 5,
+   "lista": [
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7345",
+     "persona": "Manuel Chacón Alonso",
+     "rango": "Acuerdo",
+     "url": "/personas/manuel-chacon-alonso.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Teniente Fiscal de la Secretaría Técnica de la Fiscalía General del Estado",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7349",
+     "persona": "Víctor Pillado Quintas",
+     "rango": "Real Decreto",
+     "url": "/personas/victor-pillado-quintas.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Fiscal de la Secretaría Técnica de la Fiscalía General del Estado",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7350",
+     "persona": "Verónica Haya Lasa",
+     "rango": "Real Decreto",
+     "url": "/personas/veronica-haya-lasa.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Fiscal de la Secretaría Técnica de la Fiscalía General del Estado",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7351",
+     "persona": "Patricia Vilela Fraile",
+     "rango": "Real Decreto",
+     "url": "/personas/patricia-vilela-fraile.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Fiscal de la Secretaría Técnica de la Fiscalía General del Estado",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7352",
+     "persona": "Alexandre Casadevall Portas",
+     "rango": "Real Decreto",
+     "url": "/personas/alexandre-casadevall-portas.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Secretaria General de Financiación Autonómica y Local",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7356",
+     "persona": "Inés Olóndriz de Moragas",
+     "rango": "Real Decreto",
+     "url": "/personas/ines-olondriz-de-moragas.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Directora General de Estabilidad Presupuestaria y Gestión Financiera Territorial",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7357",
+     "persona": "Mónica García Sáenz",
+     "rango": "Real Decreto",
+     "url": "/personas/monica-garcia-saenz.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidenta de la Autoridad Independiente de Responsabilidad Fiscal",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7358",
+     "persona": "Inés Olóndriz de Moragas",
+     "rango": "Real Decreto",
+     "url": "/personas/ines-olondriz-de-moragas.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Secretaria General de Financiación Autonómica y Local",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7359",
+     "persona": "Mónica García Sáenz",
+     "rango": "Real Decreto",
+     "url": "/personas/monica-garcia-saenz.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Director General de Estabilidad Presupuestaria y Gestión Financiera Territorial",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7360",
+     "persona": "Luis María Temes Castrillón",
+     "rango": "Real Decreto",
+     "url": "/personas/luis-maria-temes-castrillon.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Directora del Gabinete del Ministro de Hacienda",
+     "emisor": "MINISTERIO DE HACIENDA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7361",
+     "persona": "Sonia Rodrigo Ibáñez",
+     "rango": "Real Decreto",
+     "url": "/personas/sonia-rodrigo-ibanez.html"
+    },
+    {
+     "acto": "cese",
+     "cargo": "Director del Gabinete del Ministro de Economía, Comercio y Empresa",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7365",
+     "persona": "Julio Manuel Poyo-Guerrero Rodríguez",
+     "rango": "Real Decreto",
+     "url": "/personas/julio-manuel-poyo-guerrero-rodriguez.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Director del Gabinete del Vicepresidente Primero del Gobierno",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7366",
+     "persona": "Julio Manuel Poyo-Guerrero Rodríguez",
+     "rango": "Real Decreto",
+     "url": "/personas/julio-manuel-poyo-guerrero-rodriguez.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Directora del Gabinete Adjunta del Vicepresidente Primero del Gobierno",
+     "emisor": "MINISTERIO DE ECONOMÍA, COMERCIO Y EMPRESA",
+     "fecha": "2026-04-01",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7367",
+     "persona": "María Mateo Feito",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-mateo-feito.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidenta del Tribunal de Instancia de Badajoz",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-04-02",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7450",
+     "persona": "Beatriz Biedma Rojano",
+     "rango": "Real Decreto",
+     "url": "/personas/beatriz-biedma-rojano.html"
+    },
+    {
+     "acto": "destino",
+     "cargo": "Plaza número 13 de la Sección de lo Social del Tribunal de Instancia de Málaga",
+     "emisor": "CONSEJO GENERAL DEL PODER JUDICIAL",
+     "fecha": "2026-04-02",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7451",
+     "persona": "María Teresa Vidaurreta Porrero",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-teresa-vidaurreta-porrero.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-04-02",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7452",
+     "persona": "Javier Ramón Díez Moro",
+     "rango": "Acuerdo",
+     "url": "/personas/javier-ramon-diez-moro.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Presidenta del Consejo de Transparencia y Buen Gobierno",
+     "emisor": "MINISTERIO PARA LA TRANSFORMACIÓN DIGITAL Y DE LA FUNCIÓN PÚBLICA",
+     "fecha": "2026-04-02",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7455",
+     "persona": "María de la Concepción Campos Acuña",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-de-la-concepcion-campos-acuna.html"
+    },
+    {
+     "acto": "jubilación",
+     "cargo": "Magistrado",
+     "emisor": "Comisión Permanente del Consejo General del Poder Judicial",
+     "fecha": "2026-04-04",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-7639",
+     "persona": "Antonio Serrano-Arnal Domper",
+     "rango": "Acuerdo",
+     "url": "/personas/antonio-serrano-arnal-domper.html"
+    }
+   ],
+   "nombramientos": 36,
+   "resto": 31,
+   "total": 50
+  },
+  "normas": [
+   {
+    "editorial": "",
+    "fecha": "2026-03-31",
+    "fuente": "https://www.boe.es/boe/dias/2026/03/31/pdfs/BOE-A-2026-7298.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7298",
+    "titular": "DISOLUCIÓN DE LA ENTIDAD LOCAL MENOR DE SANTA LUCÍA, EN EL MUNICIPIO DE OCÓN",
+    "titulo": "Ley 1/2026, de 18 de marzo, de disolución de la entidad local menor de Santa Lucía, en el municipio de Ocón.",
+    "url": "/normas/BOE-A-2026-7298.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-03",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/03/pdfs/BOE-A-2026-7558.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7558",
+    "titular": "PARA LA GESTIÓN AMBIENTAL DE ANDALUCÍA",
+    "titulo": "Ley 2/2026, de 12 de marzo, para la Gestión Ambiental de Andalucía.",
+    "url": "/normas/BOE-A-2026-7558.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-03",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/03/pdfs/BOE-A-2026-7559.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7559",
+    "titular": "MONTES DE ANDALUCÍA: 1.000.000 EUROS",
+    "titulo": "Ley 3/2026, de 13 de marzo, de Montes de Andalucía.",
+    "url": "/normas/BOE-A-2026-7559.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-03",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/03/pdfs/BOE-A-2026-7560.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7560",
+    "titular": "PRESUPUESTOS GENERALES DE LA COMUNIDAD AUTÓNOMA DE CANARIAS PARA 2026: 18.163.903.172 EUROS",
+    "titulo": "Ley 9/2025, de 23 de diciembre, de Presupuestos Generales de la Comunidad Autónoma de Canarias para 2026.",
+    "url": "/normas/BOE-A-2026-7560.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-04",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/04/pdfs/BOE-A-2026-7636.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7636",
+    "titular": "MODIFICACIÓN DEL TEXTO REFUNDIDO DE LA LEY MUNICIPAL Y DE RÉGIMEN LOCAL DE CATALUÑA",
+    "titulo": "Ley 3/2026, de 12 de marzo, de modificación del texto refundido de la Ley municipal y de régimen local de Cataluña, en relación con el régimen jurídico aplicable a Arán.",
+    "url": "/normas/BOE-A-2026-7636.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-04",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/04/pdfs/BOE-A-2026-7637.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7637",
+    "titular": "MODIFICACIÓN DE DE MODIFICACIÓN DE LOS LÍMITES DEL PARQUE REGIONAL DE SIERRA ESPUÑA",
+    "titulo": "Ley 1/2026, de 2 de marzo, de modificación de la Ley 6/1995, de 21 de abril, de modificación de los límites del Parque Regional de Sierra Espuña.",
+    "url": "/normas/BOE-A-2026-7637.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-04",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/04/pdfs/BOE-A-2026-7638.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-7638",
+    "titular": "LA GENERALITAT, DE CREACIÓN DEL ILUSTRE COLEGIO DE ECONOMISTAS DE VALÈNCIA",
+    "titulo": "Ley 1/2026, de 25 de febrero, de la Generalitat, de creación del Ilustre Colegio de Economistas de València.",
+    "url": "/normas/BOE-A-2026-7638.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-03-31",
+    "fuente": "https://www.boe.es/boe/dias/2026/03/31/pdfs/BOE-A-2026-7295.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7295",
+    "titular": "LETRA PEQUEÑA NUEVA: EL SISTEMA DE FACTURACIÓN ELECTRÓNICA OBLIGATORIA ENTRE EMPRESARIOS",
+    "titulo": "Real Decreto 238/2026, de 25 de marzo, por el que se desarrolla el sistema de facturación electrónica obligatoria entre empresarios y profesionales y por el que se modifica el Reglamento por el que se regulan las obligaciones de facturación, aprobado por el Real Decreto 1619/2012, de 30 de noviembre.",
+    "url": "/normas/BOE-A-2026-7295.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7343.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7343",
+    "titular": "CAMBIAN LAS REGLAS: LAS COMISIONES DELEGADAS DEL GOBIERNO",
+    "titulo": "Real Decreto 260/2026, de 31 de marzo, por el que se modifica el Real Decreto 1/2024, de 9 de enero, por el que se establecen las Comisiones Delegadas del Gobierno.",
+    "url": "/normas/BOE-A-2026-7343.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7410.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7410",
+    "titular": "INDULTA A DOÑA ROSA BLANCA CARRIO CHAO",
+    "titulo": "Real Decreto 290/2026, de 31 de marzo, por el que se indulta a doña Rosa Blanca Carrio Chao.",
+    "url": "/normas/BOE-A-2026-7410.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7411.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7411",
+    "titular": "INDULTA A DOÑA BEATRIZ GARCÍA PÉREZ",
+    "titulo": "Real Decreto 291/2026, de 31 de marzo, por el que se indulta a doña Beatriz García Pérez.",
+    "url": "/normas/BOE-A-2026-7411.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7412.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7412",
+    "titular": "INDULTA A DOÑA OLGA PÉREZ RUIZ",
+    "titulo": "Real Decreto 292/2026, de 31 de marzo, por el que se indulta a doña Olga Pérez Ruiz.",
+    "url": "/normas/BOE-A-2026-7412.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7413.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7413",
+    "titular": "INDULTA A DOÑA JARA CASANOVA CASTRO",
+    "titulo": "Real Decreto 293/2026, de 31 de marzo, por el que se indulta a doña Jara Casanova Castro.",
+    "url": "/normas/BOE-A-2026-7413.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7414.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7414",
+    "titular": "INDULTA A DOÑA MARÍA CRISTINA BERMEJO TIERNO",
+    "titulo": "Real Decreto 294/2026, de 31 de marzo, por el que se indulta a doña María Cristina Bermejo Tierno.",
+    "url": "/normas/BOE-A-2026-7414.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7415.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7415",
+    "titular": "INDULTA A DON HÉCTOR AUGUSTO GONZÁLEZ PÉREZ",
+    "titulo": "Real Decreto 295/2026, de 31 de marzo, por el que se indulta a don Héctor Augusto González Pérez.",
+    "url": "/normas/BOE-A-2026-7415.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7416.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7416",
+    "titular": "INDULTA A DOÑA MARÍA VICTORIA RIVERO CORTÉS",
+    "titulo": "Real Decreto 296/2026, de 31 de marzo, por el que se indulta a doña María Victoria Rivero Cortés.",
+    "url": "/normas/BOE-A-2026-7416.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7417.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7417",
+    "titular": "INDULTA A DON MANUEL OLMO CALLEJAS",
+    "titulo": "Real Decreto 297/2026, de 31 de marzo, por el que se indulta a don Manuel Olmo Callejas.",
+    "url": "/normas/BOE-A-2026-7417.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-01",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/01/pdfs/BOE-A-2026-7418.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7418",
+    "titular": "SE CONCEDE LA NACIONALIDAD ESPAÑOLA POR CARTA DE NATURALEZA A DON LEOPOLDO EDUARDO LÓPEZ MENDOZA",
+    "titulo": "Real Decreto 289/2026, de 31 de marzo, por el que se concede la nacionalidad española por carta de naturaleza a don Leopoldo Eduardo López Mendoza.",
+    "url": "/normas/BOE-A-2026-7418.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7442.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7442",
+    "titular": "APROBADO: LOS ESTATUTOS DE LA REAL ACADEMIA NACIONAL DE MEDICINA DE ESPAÑA",
+    "titulo": "Real Decreto 264/2026, de 1 de abril, por el que se aprueban los Estatutos de la Real Academia Nacional de Medicina de España.",
+    "url": "/normas/BOE-A-2026-7442.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7443.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7443",
+    "titular": "CAMBIAN LAS REGLAS: LA ESTRUCTURA ORGÁNICA BÁSICA DEL MINISTERIO",
+    "titulo": "Real Decreto 265/2026, de 1 de abril, por el que se modifica el Real Decreto 472/2024, de 7 de mayo, por el que se desarrolla la estructura orgánica básica del Ministerio de Ciencia, Innovación y Universidades.",
+    "url": "/normas/BOE-A-2026-7443.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7444.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7444",
+    "titular": "EXTREMADURA RECIBE DINERO PÚBLICO PARA DESARROLLAR, IMPLEMENTAR Y VALIDAR SERVICIOS HASTA EL 30 DE JUNIO",
+    "titulo": "Real Decreto 266/2026, de 1 de abril, por el que se modifica el Real Decreto 960/2022, de 15 de noviembre, por el que se regula la concesión directa de una subvención a organismos públicos de gestión de protección civil y emergencias de la Comunidad Autónoma de Extremadura, la Comunitat Valenciana y el Ayuntamiento de Madrid para desarrollar, implementar y validar servicios y comunicaciones 5G para emergencias, en el marco del Plan de Recuperación, Transformación y Resiliencia -Financiado por la Unión Europea- Next Generation EU.",
+    "url": "/normas/BOE-A-2026-7444.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7445.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7445",
+    "titular": "CAMBIAN LAS REGLAS: LA CONCESIÓN DIRECTA A LAS COMUNIDADES AUTÓNOMAS HASTA EL 31 DE DICIEMBRE DE 2025",
+    "titulo": "Real Decreto 267/2026, de 1 de abril, por el que se modifica el Real Decreto 987/2021, de 16 de noviembre, por el que se aprueba la concesión directa a las comunidades autónomas y a las ciudades de Ceuta y Melilla de ayudas para la ejecución de diversas acciones de refuerzo de conectividad en centros públicos de referencia, en el marco del Plan de Recuperación, Transformación y Resiliencia.",
+    "url": "/normas/BOE-A-2026-7445.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7446.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7446",
+    "titular": "DINERO PÚBLICO PARA POR EL QUE SE REGULA LA CONCESIÓN DIRECTA: DIEZ DÍAS PARA PRESENTARSE",
+    "titulo": "Real Decreto 268/2026, de 1 de abril, por el que se modifica el Real Decreto 1124/2024, de 5 de noviembre, por el que se regula la concesión directa de una subvención a Telefónica de España para el proyecto de despliegue de un cable submarino entre la Península y la isla de Gran Canaria, del Mecanismo Conectar Europa-Digital, destinado a reforzar las interconexiones en el territorio del Estado, en el marco del Plan de Recuperación, Transformación y Resiliencia -Financiado por la Unión Europea- Next Generation EU.",
+    "url": "/normas/BOE-A-2026-7446.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7447.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7447",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE AYUDAS A PROYECTOS: 12.352.969,15 EUROS",
+    "titulo": "Real Decreto 269/2026, de 1 de abril, por el que se regula la concesión directa de ayudas a proyectos de investigación seleccionados en las convocatorias competitivas internacionales de la Empresa Común de Chips de la Unión Europea (Chips JU), programa «UNICO Chips JU -I+D», en el marco del Plan de Recuperación, Transformación y Resiliencia -Financiado por la Unión Europea- Next Generation EU.",
+    "url": "/normas/BOE-A-2026-7447.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-04-02",
+    "fuente": "https://www.boe.es/boe/dias/2026/04/02/pdfs/BOE-A-2026-7448.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-7448",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE AYUDAS A PROYECTOS: 6.512.942,26 EUROS",
+    "titulo": "Real Decreto 270/2026, de 1 de abril, por el que se regula la concesión directa de ayudas a proyectos de investigación seleccionados en las convocatorias competitivas internacionales de la Empresa Común de Chips de la Unión Europea (Chips JU), programa «UNICO Chips JU-Líneas Piloto Cuánticas», en el marco del Plan de Recuperación, Transformación y Resiliencia -Financiado por la Unión Europea- Next Generation EU.",
+    "url": "/normas/BOE-A-2026-7448.html"
+   }
+  ],
+  "preguntas": {
+   "contestadas": [
+    {
+     "autores": [
+      "Garrido Valenzuela, Irene",
+      "Olano Vela, Jaime Eduardo de",
+      "Pérez Recuerda, Isabel Gema",
+      "Acedo Reyes, Sofía",
+      "Prieto Serrano, María Isabel",
+      "Lorente Anaya, Macarena",
+      "Belmonte Gómez, Rafael Benigno",
+      "Bayón Rolo, Juan Andrés",
+      "Ibáñez Hernando, Ángel",
+      "Vázquez Blanco, Ana Belén",
+      "Alfonso Silvestre, Alma",
+      "Hoyo Juliá, Belén",
+      "Sánchez Torregrosa, Maribel",
+      "Teniente Sánchez, Cristina",
+      "Torres Tejada, María",
+      "Garre Murcia, Cristóbal"
+     ],
+     "cita": "",
+     "contestada": "2026-03-31",
+     "dias": 70,
+     "exp": "184/032350",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-01-20",
+     "titulo": "Criterio administrativo o disposición normativa que modifica lo dispuesto en el apartado segundo de la disposición transitoria 34º de la LGSS, que afecta a jubilaciones anticipadas cuya pensión inicial supera la máxima.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F032350"
+    },
+    {
+     "autores": [
+      "Delgado-Taramona Hernández, Jimena",
+      "Mariscal Anaya, Guillermo",
+      "Sánchez Ojeda, Carlos Alberto",
+      "Rojas Manrique, Juan Antonio",
+      "Lima García, Laura María",
+      "Molina León, Ainhoa"
+     ],
+     "cita": "",
+     "contestada": "2026-03-31",
+     "dias": 29,
+     "exp": "184/034692",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-03-02",
+     "titulo": "Desistimiento de Endesa en los nuevos grupos asignados en La Palma y Lanzarote y elevado número de proyectos decaídos en el concurso de concurrencia competitiva convocado en el mes de julio de 2024 para incorporar 1.000 ",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F034692"
+    },
+    {
+     "autores": [
+      "Sagastizabal Unzetabarrenetxea, Idoia"
+     ],
+     "cita": "",
+     "contestada": "2026-03-31",
+     "dias": 29,
+     "exp": "184/034776",
+     "grupo": "GV (EAJ-PNV",
+     "pdf": "",
+     "publicada": "2026-03-02",
+     "titulo": "Situación de tramitación en que se encuentra el proyecto de Real Decreto del Ministerio para la Transición Ecológica y el Reto Demográfico que, por un lado, permite aumentar hasta un 60% los límites actuales de inversión",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F034776"
+    },
+    {
+     "autores": [
+      "Conde López, Francisco José",
+      "Mariscal Anaya, Guillermo"
+     ],
+     "cita": "",
+     "contestada": "2026-03-31",
+     "dias": 29,
+     "exp": "184/034911",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-03-02",
+     "titulo": "Previsiones acerca de activar la ventanilla única para que los promotores de proyectos prioritarios identificados por la Comisión Europea en el ámbito de las materias primas dispongan de un interlocutor único a nivel nac",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F034911"
+    },
+    {
+     "autores": [
+      "Conde López, Francisco José",
+      "Mariscal Anaya, Guillermo"
+     ],
+     "cita": "",
+     "contestada": "2026-03-31",
+     "dias": 29,
+     "exp": "184/034913",
+     "grupo": "PP",
+     "pdf": "",
+     "publicada": "2026-03-02",
+     "titulo": "Previsiones acerca de establecer mecanismos de financiación similares a los implementados por otros Estados miembros para proyectos estratégicos de materias primas críticas en España.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F034913"
+    },
+    {
+     "autores": [
+      "López Cano, Ignacio"
+     ],
+     "cita": "",
+     "contestada": "2026-03-31",
+     "dias": 29,
+     "exp": "184/035043",
+     "grupo": "PSOE",
+     "pdf": "",
+     "publicada": "2026-03-02",
+     "titulo": "Impacto estimado en reducción de emisiones de CO2 que han tenido los proyectos financiados en la provincia de Málaga con cargo al PRTR.",
+     "url": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=184%2F035043"
+    }
+   ],
+   "n_contestadas": 6
+  },
+  "tramitacion": [
+   {
+    "clase": "ampliacion",
+    "exp": "121/000087",
+    "f": "2026-03-31",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=121%2F000087",
+    "hasta": "2026-04-08",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-03-31 se amplía hasta el 2026-04-08",
+    "tipo": "Proyecto de ley",
+    "titulo": "Proyecto de Ley del Estatuto de las personas en formación práctica no laboral",
+    "url": "/tramitacion/121-000087.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "122/000004",
+    "f": "2026-03-31",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000004",
+    "hasta": "2026-04-08",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-03-31 se amplía hasta el 2026-04-08",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley Orgánica de reforma de la Ley Orgánica 2/1979, de 3 de octubre, del Tribunal Constitucional",
+    "url": "/tramitacion/122-000004.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000272",
+    "f": "2026-03-31",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000272",
+    "hasta": "2026-04-07",
+    "hito": "Boletín Oficial de las Cortes Generales · Publicación",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley sobre la habilitación legal de la Comisión Nacional de los Mercados y la Competencia como coordinador de servicios digitales en España",
+    "url": "/tramitacion/122-000272.html"
+   },
+   {
+    "clase": "paso",
+    "exp": "122/000272",
+    "f": "2026-03-31",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=122%2F000272",
+    "hasta": "2026-03-31",
+    "hito": "Mesa del Congreso · Calificación por Mesa sin reunión",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley sobre la habilitación legal de la Comisión Nacional de los Mercados y la Competencia como coordinador de servicios digitales en España",
+    "url": "/tramitacion/122-000272.html"
+   },
+   {
+    "clase": "ampliacion",
+    "exp": "124/000042",
+    "f": "2026-03-31",
+    "fuente": "https://www.congreso.es/es/busqueda-de-iniciativas?p_p_id=iniciativas&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_iniciativas_mode=mostrarDetalle&_iniciativas_legislatura=XV&_iniciativas_id=124%2F000042",
+    "hasta": "2026-04-08",
+    "hito": "Ampliación de enmiendas: el plazo que vencía el 2026-03-31 se amplía hasta el 2026-04-08",
+    "tipo": "Proposición de ley",
+    "titulo": "Proposición de Ley de modificación de la Ley 50/1981, de 30 de diciembre, por la que se regula el Estatuto Orgánico del Ministerio Fiscal, para garantizar la actuación de oficio frente a los actos de enaltecimiento del terrorismo, los homenajes a terroristas condenados y las conductas de violencia callejera con finalidad terrorista",
+    "url": "/tramitacion/124-000042.html"
+   }
+  ]
+ },
+ "semana": "2026-S14",
+ "version": 1
+}
