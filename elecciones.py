@@ -444,18 +444,19 @@ def circ_congreso(circ_rd: str) -> str:
 # Esta sección no publica resultados: Interior solo da el escrutinio provisional
 # en tiempo real a medios acreditados (informe E7), así que la noche electoral se
 # remite a sus canales públicos. Texto fijo, sin cifras propias, sin fechas
-# calculadas y sin subrayados ni tarjetas. La aplicación se nombra sin enlace:
-# Interior la describe en su política de privacidad (18-11-2026,
-# https://www.interior.gob.es/opencms/es/politica-de-privacidad/), pero el
-# 22-11-2026 no había ficha en Google Play ni en el App Store a nombre del
-# Ministerio (sí las de 2023 y 2024), y no se enlaza nada sin comprobar.
+# calculadas y sin subrayados ni tarjetas. La aplicación no se nombra ni se
+# enlaza (informe 41): en las tiendas hay apps no oficiales con nombres
+# parecidos, y el 22-11-2026 ni interior.gob.es ni Infoelectoral ofrecían una
+# página de descarga (solo la política de privacidad del 18-11-2026,
+# https://www.interior.gob.es/opencms/es/politica-de-privacidad/). En el hub va
+# lo primero; en las páginas de provincia, tras el índice de candidaturas, para
+# que las candidaturas sigan en la primera pantalla a 375×812.
 INFOELECTORAL_URL = "https://infoelectoral.interior.gob.es/"
 AVISO_29N = (
-    '<p class="elec-aviso"><b>La noche del 29-N.</b> Aquí no se publica el recuento de la noche. '
-    f'El escrutinio provisional se difunde en <a href="{INFOELECTORAL_URL}">Infoelectoral</a> y en '
-    'la aplicación oficial del Ministerio del Interior “29N Elecciones Generales 2026”, para '
-    'Android y iPhone. Los resultados oficiales son los que publica la Junta Electoral Central '
-    'en el BOE.</p>')
+    '<p class="elec-aviso"><b>La noche del 29-N</b> aquí no se publica el recuento. '
+    f'El escrutinio provisional lo difunde el Ministerio del Interior en <a href="{INFOELECTORAL_URL}">'
+    'Infoelectoral</a> y en su aplicación oficial (desconfía de apps con nombres parecidos). '
+    'Los resultados oficiales los publica la Junta Electoral Central en el BOE.</p>')
 
 
 def clave_cruce(nombre: str) -> str:
@@ -854,11 +855,12 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                          for k in prof)
         nota_np = nota_no_proclamadas(c)
         n = c["escanos"]
-        # El aviso va primero: a 375×812 cabe entero en la primera pantalla (informe 39).
-        cuerpo = (AVISO_29N + f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
+        cuerpo = (f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
                   f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
                   + f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
+                  # Tras el índice: las candidaturas, en la primera pantalla (informe 41).
+                  + AVISO_29N
                   + nota_np + bloques
                   + f'<p class="elec-mas"><a href="/diputados/provincia-{_esc(slug)}.html#prov-reparto">Reparto '
                     f'de escaños de {_esc(nombre)} en la legislatura disuelta&nbsp;→</a> · '

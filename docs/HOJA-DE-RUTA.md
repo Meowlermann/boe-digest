@@ -92,9 +92,9 @@ Se actualiza en la misma PR que cambie el estado de un frente.
 - **PR «Elecciones: aviso para la noche del 29-N»**, abierta y sin
   fusionar; tiene que estar fusionada antes del sábado 28. Aviso fijo en el
   hub y en las 52 páginas por circunscripción, con Infoelectoral y la
-  aplicación oficial de Interior. Cuando la aplicación aparezca en las
-  tiendas a nombre del Ministerio, se puede enlazar (hoy se nombra sin
-  enlace). Tras el escrutinio hay que quitarlo (`elecciones.AVISO_29N`),
+  aplicación oficial de Interior, sin nombrarla (hay apps no oficiales con
+  nombres parecidos). Si Interior publica una página de descarga, se puede
+  enlazar. Tras el escrutinio hay que quitarlo (`elecciones.AVISO_29N`),
   a la vez que se pone `CAMPANA_29N = False`.
 - **Siguiente, aprobado: bloque «Resultados oficiales» por provincia.**
   Copiado tal cual de la proclamación de la Junta Electoral Central en el
