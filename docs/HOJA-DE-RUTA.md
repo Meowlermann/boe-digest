@@ -84,6 +84,26 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
   Senado sigue fuera.
 
+- **PR «Elecciones: imagen para redes por provincia»** (tanda E5, parte OG),
+  abierta y sin fusionar: un PNG por circunscripción en `og:image` y
+  `twitter:image` de `/elecciones/2026/<slug>.html` y de
+  `/diputados/provincia-*.html`. Si cambia `curated/elecciones_2026.json`,
+  hay que volver a ejecutar `python tools/generar_og.py --elecciones` y
+  commitear los PNG; el test avisa. «¿Quién votó qué en tu provincia?»
+  (el resto de E5) queda para después de E8, si da tiempo.
+
+## Tanda F (empleo)
+
+Aprobada por Dirección el 22 de noviembre de 2026.
+
+- **Empleo por organismo:** pasar las 48 fichas a `index, follow` y
+  añadirlas al sitemap, empezando por las de ministerios y comunidades.
+  Motivo: hoy hay 96 convocatorias de 90 días que solo aparecen en esas
+  fichas, por el tope de 300 del listado general.
+- **Convocatorias de la comunidad en las fichas de provincia:** cada ficha
+  de provincia muestra también las convocatorias de su comunidad
+  autónoma, con la etiqueta «de tu comunidad» y sin cálculos.
+
 ## Aparcado
 
 - **Senado en automático.** El WAF de Akamai devuelve 403 desde la box

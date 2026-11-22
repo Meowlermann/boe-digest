@@ -6401,6 +6401,17 @@ def _reparto_provincia(gente: list, prov: str) -> str:
 FAQ_ELECCIONES: dict = {}   # {circunscripción: HTML de las preguntas frecuentes}, lo llena _bloques_elecciones
 
 
+def _og_elecciones() -> dict:
+    """Tanda E5: {slug: textos de la imagen para redes} de cada circunscripción."""
+    try:
+        import elecciones as el
+        datos = el.cargar()
+        return el.textos_og(datos, nombre_circunscripcion, _slug_txt) if datos else {}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"elecciones: imágenes para redes no disponibles ({exc})")
+        return {}
+
+
 def _bloques_elecciones(fichas: list) -> dict:
     """Tanda E2: {circunscripción del Congreso: HTML del bloque «Elecciones 29-N»}.
     Lee curated/elecciones_2026.json (copia fija del BOE, sin red). Si falta o
@@ -6649,6 +6660,7 @@ def renderizar_diputados(fichas: list) -> list:
         if f["circunscripcion"]:
             por_prov.setdefault(f["circunscripcion"], []).append(f)
     bloque_elecciones = _bloques_elecciones(fichas)
+    og_elecciones = _og_elecciones()
     for prov, gente in sorted(por_prov.items()):
         ps = _slug_txt(prov)
         url = f"{SITE_URL}diputados/provincia-{ps}.html"
@@ -6667,6 +6679,10 @@ def renderizar_diputados(fichas: list) -> list:
         if bloque_elecciones.get(prov):
             import elecciones as el
             plantilla_p = plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)
+            # Tanda E5: la imagen para redes de la provincia (la del 29-N).
+            og = og_elecciones.get(ps)
+            if og:
+                plantilla_p = el.og_plantilla(plantilla_p, SITE_URL, ps, og["alt"])
         salidas.append(_pagina_listado(
             plantilla_p, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
