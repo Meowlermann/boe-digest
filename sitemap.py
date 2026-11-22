@@ -159,9 +159,11 @@ def _urlset(filas: list[dict]) -> str:
 
 
 def articulo_propio(html: str, url: str) -> dict | None:
-    """{"titulo", "fecha"} del NewsArticle cuya url es la de la propia página
-    (una edición también lleva los de sus normas), o None. La fecha es su
-    datePublished tal cual (ISO 8601 con zona), sin recalcular nada."""
+    """{"titulo", "fecha", "oficial"} del NewsArticle cuya url es la de la
+    propia página (una edición también lleva los de sus normas), o None. La
+    fecha es su datePublished tal cual (ISO 8601 con zona), sin recalcular
+    nada. «oficial» es el título oficial completo de la norma (about.name del
+    Legislation, tal cual viene del BOE) o vacío si la página no es una norma."""
     import json
     for bloque in _RE_JSONLD.findall(html or ""):
         try:
@@ -179,13 +181,23 @@ def articulo_propio(html: str, url: str) -> dict | None:
             pila.extend(x.get("@graph", []) if isinstance(x.get("@graph"), list) else [])
             if x.get("@type") == "NewsArticle" and x.get("url") == url \
                     and x.get("headline") and x.get("datePublished"):
-                return {"titulo": str(x["headline"]), "fecha": str(x["datePublished"])}
+                ab = x.get("about") if isinstance(x.get("about"), dict) else {}
+                oficial = (str(ab.get("name") or "").strip()
+                           if ab.get("@type") == "Legislation" else "")
+                return {"titulo": str(x["headline"]), "fecha": str(x["datePublished"]),
+                        "oficial": oficial}
     return None
 
 
-def titulo_noticia(html: str, headline: str) -> str:
-    """og:title sin « | La Tercera Cámara»; si no hay, el headline tal cual."""
+def titulo_noticia(html: str, headline: str, oficial: str = "") -> str:
+    """news:title: el título oficial completo de la norma, tal cual y sin
+    recortar (el og:title de las normas va recortado para el <title>, que no se
+    toca por la prueba de #75, y a veces queda a media frase). Si la página no
+    trae título oficial (ediciones), el og:title sin « | La Tercera Cámara»; y
+    si tampoco, el headline tal cual. No se convierte ninguna mayúscula."""
     import html as h
+    if oficial:
+        return " ".join(oficial.split())
     m = _RE_OG_TITLE.search(html or "")
     t = _RE_SUFIJO.sub("", h.unescape(m.group(1))).strip() if m else ""
     return t or headline
@@ -203,7 +215,7 @@ def noticias(candidatas: list[str], ahora: dt.datetime, leer) -> list[dict]:
         a = articulo_propio(html, url)
         if not a:
             continue
-        a = {**a, "titulo": titulo_noticia(html, a["titulo"])}
+        a = {"titulo": titulo_noticia(html, a["titulo"], a.get("oficial", "")), "fecha": a["fecha"]}
         try:
             f = dt.datetime.fromisoformat(a["fecha"])
         except ValueError:

@@ -2,6 +2,7 @@
 Sin red: las páginas son HTML de prueba con su JSON-LD."""
 import datetime as dt
 import json
+import re
 import pathlib
 import sys
 import unittest
@@ -19,8 +20,11 @@ MADRID = ZoneInfo("Europe/Madrid")
 AHORA = dt.datetime(2026, 11, 22, 15, 30, tzinfo=MADRID)
 
 
-def pagina(url, titular, publicada, extra=(), og=None):
-    graf = [{"@type": "NewsArticle", "url": url, "headline": titular, "datePublished": publicada}]
+def pagina(url, titular, publicada, extra=(), og=None, oficial=None):
+    art = {"@type": "NewsArticle", "url": url, "headline": titular, "datePublished": publicada}
+    if oficial:
+        art["about"] = {"@type": "Legislation", "name": oficial}
+    graf = [art]
     graf += list(extra)
     meta = f'<meta property="og:title" content="{og}">' if og else ""
     return f'<html><head>{meta}<script type="application/ld+json">{json.dumps(graf)}</script></head></html>'
@@ -153,6 +157,53 @@ class TituloNoticia(unittest.TestCase):
         url = S + "normas/BOE-A-2026-8.html"
         html = pagina(url, "TITULAR EN MAYÚSCULAS", "2026-11-21T07:40:00+01:00")
         self.assertEqual(sm.noticias([url], AHORA, {url: html}.get)[0]["titulo"], "TITULAR EN MAYÚSCULAS")
+
+
+class TituloOficialCompleto(unittest.TestCase):
+    """Informe 42: news:title es el título oficial completo de la norma, sin
+    recortar; nunca acaba a media frase y no se repite entre URL distintas salvo
+    que el título oficial sea idéntico."""
+    RECORTE = re.compile(r"(?:\b(?:de|del|la|las|el|los|por|para|que|y|e|o|u|a|al|en|con|sobre|se|su|sus)"
+                         r"|[,;:(\-–—]|…|\.\.\.)\s*$", re.I)
+
+    def test_usa_el_titulo_oficial_completo(self):
+        url = S + "normas/BOE-A-2026-9.html"
+        oficial = ("Resolución de 11 de noviembre de 2026, de la Dirección General de Trabajo, por la que "
+                   "se registra y publica el Convenio colectivo de Cardtronics Spain, SLU.")
+        html = pagina(url, "TRABAJO INSCRIBE Y PUBLICA EL CONVENIO", "2026-11-21T07:40:00+01:00",
+                      og="Resolución de 11 de noviembre de 2026, de la Dirección General de Trabajo"
+                         " | La Tercera Cámara", oficial=oficial)
+        self.assertEqual(sm.noticias([url], AHORA, {url: html}.get)[0]["titulo"], oficial)
+
+    def test_el_detector_de_recortes(self):
+        for t in ("Resolución de 13 de noviembre de 2026, de la Subsecretaría, por la",
+                  "Real Decreto-ley 41/2026, de 20 de noviembre, por el que se modifica la Ley 1/2005, de",
+                  "Orden X,", "Algo…"):
+            self.assertRegex(t, self.RECORTE)
+        self.assertNotRegex("Real Decreto 1/2026, por el que se aprueba el Reglamento.", self.RECORTE)
+
+    def test_sitemap_pintado(self):
+        ruta = RAIZ / "sitemap-noticias.xml"
+        if not ruta.exists():
+            self.skipTest("sitemap de noticias sin pintar (build.py --render)")
+        x = ET.fromstring(ruta.read_text(encoding="utf-8"))
+        vistos = {}
+        for u in x.iter(NS + "url"):
+            loc = u.find(NS + "loc").text
+            titulo = u.find(NN + "news").find(NN + "title").text
+            self.assertNotRegex(titulo, self.RECORTE, loc)
+            vistos.setdefault(titulo, []).append(loc)
+        for titulo, locs in vistos.items():
+            if len(locs) < 2:
+                continue
+            # Solo se admite un título repetido si el título oficial de cada una es idéntico.
+            oficiales = set()
+            for loc in locs:
+                f = RAIZ / loc.replace(S, "")
+                a = sm.articulo_propio(f.read_text(encoding="utf-8"), loc) if f.exists() else None
+                oficiales.add((a or {}).get("oficial") or None)
+            self.assertEqual(len(oficiales), 1, f"{titulo}: {locs}")
+            self.assertNotIn(None, oficiales, f"{titulo}: {locs}")
 
 
 class Robots(unittest.TestCase):
