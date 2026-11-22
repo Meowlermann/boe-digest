@@ -84,6 +84,13 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
   Senado sigue fuera.
 
+- **PR «Diputados: ¿quién votó qué en tu provincia?»** (E5), abierta y sin
+  fusionar. En las 52 fichas `/diputados/provincia-*`, el voto de cada
+  diputado en las 10 últimas convalidaciones o derogaciones de reales
+  decretos-leyes, con enlace al JSON oficial, al PDF y al expediente. La copia
+  fija `curated/votos_rdl.json` solo cambia al regenerarla con
+  `tools/generar_votos_rdl.py` (ver OPERACION).
+
 ## Aparcado
 
 - **Senado en automático.** El WAF de Akamai devuelve 403 desde la box

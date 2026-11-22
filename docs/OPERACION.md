@@ -131,6 +131,22 @@ red. Si el BOE publica otra corrección de las candidaturas:
    para con error y no escribe nada.
 3. Abrir una PR con el JSON regenerado y los tests al día.
 
+## «¿Quién votó qué en tu provincia?»: regenerar la copia
+
+El bloque de las fichas `/diputados/provincia-*` sale de `curated/votos_rdl.json`,
+una copia fija que se versiona en `main`. El render no pide nada a la red y no
+la toca: las votaciones nuevas solo aparecen cuando se regenera.
+
+1. Tener `state/congreso.json` al día (rama `datos`).
+2. `python tools/generar_votos_rdl.py`: elige las 10 votaciones con el criterio
+   de `votos_rdl.py`, comprueba la fecha y el texto contra el JSON oficial de cada
+   una (si no coinciden, para sin escribir), y toma del listado oficial del día
+   el PDF y el expediente, y de la ficha del expediente el «Resultado
+   tramitación». Imprime los cruces dudosos: votos de quien ya no está en el
+   censo (no se atribuyen) y diputados sin dato en alguna votación.
+3. Abrir una PR con el JSON regenerado; los tests comprueban el criterio y que
+   la copia casa con el estado.
+
 ## Timeouts de Pages en el primer despliegue de un SHA
 
 El 10 de noviembre de 2026, varios despliegues fallaron en el paso

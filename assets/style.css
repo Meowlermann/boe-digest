@@ -1961,6 +1961,21 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
 .prov-reparto-t .grp{display:block;white-space:nowrap}
 .prov-faq p{margin:0 0 .4rem}
 .prov-faq a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
+/* «¿Quién votó qué en tu provincia?»: listas planas, sin tarjetas ni subrayados. */
+.prov-votos{margin:0 0 1.4rem;padding:0 0 .4rem;border-top:3px solid var(--ink)}
+.prov-votos h2{margin:.7rem 0 .4rem;scroll-margin-top:calc(90px + 8px)}
+@media (max-width:720px){.prov-votos h2{scroll-margin-top:16px}}
+.pv-vot{padding:.5rem 0 .4rem;border-top:1px solid var(--border)}
+.pv-tit{margin:.3rem 0 .3rem;font:400 15px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;text-transform:none;overflow-wrap:anywhere}
+.pv-tit b{font-weight:700}
+.pv-fecha{display:block;font-size:13.5px;color:var(--ink-soft)}
+.pv-res{margin:0 0 .3rem;font:400 14px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
+.pv-votos{margin:0;padding:0;list-style:none;font-size:15px;line-height:1.5}
+.pv-votos li{padding:.15rem 0}
+.pv-v{font-weight:700}
+.pv-sin{color:var(--ink-soft)}
+.pv-fuente{margin:.3rem 0 0;font:400 13.5px/1.5 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink-soft);overflow-wrap:anywhere}
+.prov-votos a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-intro{margin:0 0 .6rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .elec-29n a,.elec-cand a,.elec-indice a,.elec-mas a,.elec-fuente a,.elec-intro a,.elec-hub a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .elec-lista,.elec-nombres,.elec-rep{margin:0;padding:0 0 0 1.8em;font-size:15px;line-height:1.45}
