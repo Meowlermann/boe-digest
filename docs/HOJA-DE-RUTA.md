@@ -84,12 +84,53 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
   Senado sigue fuera.
 
+- **E7, descarga de resultados de Interior: no hay feed público.** El
+  repositorio de la noche electoral es solo para medios acreditados (plazo
+  cerrado) y Infoelectoral responde con un desafío de Cloudflare a la box y
+  a los runners (run 45029633641). Los xlsx de resultados definitivos de
+  `descargas.interior.gob.es` sí se descargan (llegan hasta 2023).
+- **PR «Elecciones: aviso para la noche del 29-N»**, abierta y sin
+  fusionar; tiene que estar fusionada antes del sábado 28. Aviso fijo en el
+  hub y en las 52 páginas por circunscripción, con Infoelectoral y la
+  aplicación oficial de Interior, sin nombrarla (hay apps no oficiales con
+  nombres parecidos). Si Interior publica una página de descarga, se puede
+  enlazar. Tras el escrutinio hay que quitarlo (`elecciones.AVISO_29N`),
+  a la vez que se pone `CAMPANA_29N = False`.
+- **Siguiente, aprobado: bloque «Resultados oficiales» por provincia.**
+  Copiado tal cual de la proclamación de la Junta Electoral Central en el
+  BOE (o del xlsx de Interior cuando incluya 2026), sin porcentajes ni
+  proyecciones, en los pases diarios que ya existen. Si la descarga falla,
+  el bloque no se muestra y se mantiene la última versión buena. Tiene que
+  estar listo antes de que se publique la proclamación.
+- **PR «Elecciones: imagen para redes por provincia»** (tanda E5, parte OG),
+  abierta y sin fusionar: un PNG por circunscripción en `og:image` y
+  `twitter:image` de `/elecciones/2026/<slug>.html` y de
+  `/diputados/provincia-*.html`. Si cambia `curated/elecciones_2026.json`,
+  hay que volver a ejecutar `python tools/generar_og.py --elecciones` y
+  commitear los PNG; el test avisa. «¿Quién votó qué en tu provincia?»
+  (el resto de E5) queda para después de E8, si da tiempo.
+- **PR «SEO: sitemap prioritario y de noticias»** (tanda E8), abierta y
+  sin fusionar: `sitemap-prioritario.xml` y `sitemap-noticias.xml` (Google
+  News, 48 horas) en el índice `/sitemap.xml`. Tras fusionar: enviar de nuevo
+  el índice en Search Console y mirar que lea los dos ficheros nuevos.
 - **PR «Diputados: ¿quién votó qué en tu provincia?»** (E5), abierta y sin
   fusionar. En las 52 fichas `/diputados/provincia-*`, el voto de cada
   diputado en las 10 últimas convalidaciones o derogaciones de reales
   decretos-leyes, con enlace al JSON oficial, al PDF y al expediente. La copia
   fija `curated/votos_rdl.json` solo cambia al regenerarla con
   `tools/generar_votos_rdl.py` (ver OPERACION).
+
+## Tanda F (empleo)
+
+Aprobada por Dirección el 22 de noviembre de 2026.
+
+- **Empleo por organismo:** pasar las 48 fichas a `index, follow` y
+  añadirlas al sitemap, empezando por las de ministerios y comunidades.
+  Motivo: hoy hay 96 convocatorias de 90 días que solo aparecen en esas
+  fichas, por el tope de 300 del listado general.
+- **Convocatorias de la comunidad en las fichas de provincia:** cada ficha
+  de provincia muestra también las convocatorias de su comunidad
+  autónoma, con la etiqueta «de tu comunidad» y sin cálculos.
 
 ## Aparcado
 

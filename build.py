@@ -6401,6 +6401,31 @@ def _reparto_provincia(gente: list, prov: str) -> str:
 FAQ_ELECCIONES: dict = {}   # {circunscripción: HTML de las preguntas frecuentes}, lo llena _bloques_elecciones
 
 
+def plantilla_ficha_provincia(plantilla: str, ps: str, con_bloque: bool, og_elecciones: dict) -> str:
+    """Plantilla de /diputados/provincia-<ps>.html. Con bloque 29-N, el pie
+    precisa que ese bloque no usa IA (informe 30) y, tanda E5, og:image,
+    twitter:image y og:image:alt pasan a la imagen de la provincia."""
+    if not con_bloque:
+        return plantilla
+    import elecciones as el
+    plantilla_p = plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)
+    og = og_elecciones.get(ps)
+    if og:
+        plantilla_p = el.og_plantilla(plantilla_p, SITE_URL, ps, og["alt"])
+    return plantilla_p
+
+
+def _og_elecciones() -> dict:
+    """Tanda E5: {slug: textos de la imagen para redes} de cada circunscripción."""
+    try:
+        import elecciones as el
+        datos = el.cargar()
+        return el.textos_og(datos, nombre_circunscripcion, _slug_txt) if datos else {}
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"elecciones: imágenes para redes no disponibles ({exc})")
+        return {}
+
+
 def _bloques_elecciones(fichas: list) -> dict:
     """Tanda E2: {circunscripción del Congreso: HTML del bloque «Elecciones 29-N»}.
     Lee curated/elecciones_2026.json (copia fija del BOE, sin red). Si falta o
@@ -6649,6 +6674,7 @@ def renderizar_diputados(fichas: list) -> list:
         if f["circunscripcion"]:
             por_prov.setdefault(f["circunscripcion"], []).append(f)
     bloque_elecciones = _bloques_elecciones(fichas)
+    og_elecciones = _og_elecciones()
     # «¿Quién votó qué en tu provincia?»: copia fija curated/votos_rdl.json.
     import votos_rdl as vr
     datos_rdl = vr.cargar()
@@ -6668,10 +6694,8 @@ def renderizar_diputados(fichas: list) -> list:
             reparto = sorted(((k, g) for g, k in cuenta.items()), key=lambda x: (-x[0], x[1]))
             titulo_p, desc_p, h1_p = textos_prueba_dip(prov, reparto)
         # Con bloque electoral, el pie precisa que ese bloque no usa IA (informe 30).
-        plantilla_p = plantilla
-        if bloque_elecciones.get(prov):
-            import elecciones as el
-            plantilla_p = plantilla.replace(el.LEMA_IA, el.LEMA_FICHA)
+        plantilla_p = plantilla_ficha_provincia(plantilla, ps, bool(bloque_elecciones.get(prov)),
+                                                og_elecciones)
         salidas.append(_pagina_listado(
             plantilla_p, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
@@ -7444,7 +7468,17 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
     SITEMAP_ESTADO.write_text(json.dumps(estado, ensure_ascii=False, sort_keys=True, indent=0),
                               encoding="utf-8")
 
-    ficheros = sm.generar(todas, SITE_URL)
+    # Tanda E8: noticias de las últimas 48 horas (formato Google News). Solo se
+    # leen las ediciones y normas con lastmod de los tres últimos días; la fecha
+    # que cuenta es el datePublished de su propio NewsArticle, no la del pase.
+    ahora = dt.datetime.now(ZONA_ES)
+    corte = (ahora.date() - dt.timedelta(days=3)).isoformat()
+    candidatas = [x["url"] for x in todas
+                  if x["lastmod"] >= corte and (x["url"].startswith(f"{SITE_URL}ediciones/20")
+                                                or x["url"].startswith(f"{SITE_URL}normas/BOE-"))]
+    noticias = sm.noticias(candidatas, ahora, leer)
+
+    ficheros = sm.generar(todas, SITE_URL, noticias)
     viejos = {p.name for p in ROOT.glob("sitemap-*.xml")}
     for nombre, xml in ficheros.items():
         escribir_si_cambia(ROOT / nombre, xml)
@@ -7453,7 +7487,8 @@ def renderizar_sitemap(entradas: list[dict], fichas: list[dict] | None = None) -
     n_urls = sum(x.count("<url>") for x in ficheros.values())
     con_hoy = sum(1 for x in todas if x["lastmod"] == hoy)
     log(f"sitemap.xml: índice con {len(ficheros) - 1} sitemaps y {n_urls} URLs "
-        f"({con_hoy} con lastmod de hoy)")
+        f"({con_hoy} con lastmod de hoy; {len(noticias)} noticias de las últimas "
+        f"{sm.NOTICIAS_HORAS} horas)")
 
 
 def renderizar_feed(dias: list[dict]) -> None:

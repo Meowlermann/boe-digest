@@ -26,7 +26,7 @@ class Secciones(unittest.TestCase):
         self.assertEqual(sm.seccion(S + "personas/x.html", HOY, S), "personas")
         self.assertEqual(sm.seccion(S + "votaciones/x.html", HOY, S), "votaciones")
         self.assertEqual(sm.seccion(S + "tramitacion/x.html", HOY, S), "tramitacion")
-        self.assertEqual(sm.seccion(S, HOY, S), "otros")
+        self.assertEqual(sm.seccion(S, HOY, S), "prioritario")          # tanda E8
         self.assertEqual(sm.seccion(S + "aviso-legal.html", HOY, S), "otros")
 
     def test_indice_y_ficheros(self):
@@ -37,7 +37,8 @@ class Secciones(unittest.TestCase):
                     {"url": S + "diputados/x.html", "lastmod": "2026-09-30"}]
         f = sm.generar(entradas, S)
         self.assertEqual(sorted(f), ["sitemap-diputados.xml", "sitemap-normas-2026-10.xml",
-                                     "sitemap-normas-2026-11.xml", "sitemap-otros.xml", "sitemap.xml"])
+                                     "sitemap-normas-2026-11.xml", "sitemap-prioritario.xml",   # portada (E8)
+                                     "sitemap.xml"])
         idx = ET.fromstring(f["sitemap.xml"])
         self.assertEqual(idx.tag, NS + "sitemapindex")
         locs = {s.find(NS + "loc").text: s.find(NS + "lastmod").text for s in idx}

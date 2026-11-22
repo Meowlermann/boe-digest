@@ -244,6 +244,16 @@ Contiene:
 fecha clara, para el sitemap por secciones. Un render no escribe en
 `datos`; esa huella se actualiza en una pasada diaria.
 
+Desde la tanda E8, el índice `/sitemap.xml` (el único que declara
+`robots.txt`) enlaza también `sitemap-prioritario.xml` (portada, `/empleo/`,
+`/diputados/`, el hub `/elecciones/2026/` con sus 52 páginas y las 52 fichas
+`/diputados/provincia-*`) y `sitemap-noticias.xml` (formato Google News:
+ediciones y normas cuyo `datePublished` cae en las 48 horas anteriores al
+pase). La ventana se calcula en cada pase, así que entre dos pases una
+noticia puede seguir listada unas horas más allá de las 48. Sin noticias, el
+fichero sale vacío y sin `lastmod` en el índice. Cada URL va en un solo
+sitemap: las noticias y las páginas clave salen del de su sección.
+
 Los domingos, si la historia de `datos` pasa de 300 commits o de 150 MB,
 `compactar-datos.yml` la reescribe como un único commit con el mismo árbol
 y hace `push --force-with-lease` **solo a esa rama**. Es la única excepción
