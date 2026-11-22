@@ -119,14 +119,16 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   decretos-leyes, con enlace al JSON oficial, al PDF y al expediente. La copia
   fija `curated/votos_rdl.json` solo cambia al regenerarla con
   `tools/generar_votos_rdl.py` (ver OPERACION).
-- **PR «Parlamento: fuera el Senado, panel de decretos-ley»**, abierta y
-  sin fusionar. Sin Senado en el lema, la ficha de cámara y la nota de
+- **#119 «Parlamento: fuera el Senado, panel de decretos-ley»**, abierta
+  y sin fusionar. Sin Senado en el lema, la ficha de cámara y la nota de
   cobertura; desde el BOE del RD 806/2026, un párrafo sobre la disolución
   y la Diputación Permanente en vez de la ficha de la XV Legislatura; y en
   la portada, la lista de decretos-leyes de 2026 desde el 14/2026 con su
-  estado copiado de la ficha del Congreso. La copia fija
+  estado en llano (de la ficha del Congreso o, si aún no la hay, de la
+  resolución del BOE) y el texto oficial debajo. La copia fija
   `curated/decretos_ley.json` solo cambia al regenerarla con
-  `tools/generar_decretos_ley.py` (ver OPERACION).
+  `tools/generar_decretos_ley.py` (ver OPERACION). Pendiente de decidir:
+  si se regenera sola, lo que exigiría tocar los crons o la extracción.
 
 ## Tanda F (empleo)
 

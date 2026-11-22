@@ -2891,9 +2891,11 @@ def render_chamber_cards_ssr(day: dict) -> str:
         f'<div class="meta">Presidenta · {esc_html(cong.get("legislatura",""))}<br>{esc_html(cong.get("sede",""))}</div></div>')
 
 
-def render_decretos_ley_ssr() -> str:
+def render_decretos_ley_ssr(dias: list | None = None) -> str:
     """Panel «Decretos-ley» de la portada (decretos_ley.py): número, BOE y
-    estado en el Congreso copiado de la ficha oficial, con enlaces."""
+    estado en llano desde el texto oficial (ficha del expediente o resolución
+    del BOE), con el literal debajo. Sin red: la copia fija se completa con las
+    resoluciones que traigan las ediciones del sitio (`dias`)."""
     try:
         import decretos_ley as dl
         import votos_rdl as vr
@@ -2906,10 +2908,16 @@ def render_decretos_ley_ssr() -> str:
         d = det.get(url_json)
         return ("/votaciones/" + pagina_votacion(d)) if d else url_json
 
-    def norma(ident: str) -> str:
-        return f"/normas/{ident}.html" if RE_REF_BOE.fullmatch(ident or "") else ""
+    # Ficha propia solo si la norma está en alguna edición del sitio (si no, no
+    # hay página /normas/); si no, el texto en el BOE.
+    en_sitio = {ref_norma(s) for d in (dias or []) for s in ((d.get("boe") or {}).get("stories") or [])}
 
-    return dl.panel_html(dl.cargar(), vr.cargar(), votacion, norma)
+    def norma(ident: str) -> str:
+        if not RE_REF_BOE.fullmatch(ident or ""):
+            return ""
+        return f"/normas/{ident}.html" if ident in en_sitio else f"https://www.boe.es/diario_boe/txt.php?id={ident}"
+
+    return dl.panel_html(dl.completar_con_ediciones(dl.cargar(), dias or []), vr.cargar(), votacion, norma)
 
 
 def render_scoreboard_ssr(day: dict) -> tuple[bool, str]:
@@ -4217,7 +4225,7 @@ def renderizar_index(dias: list[dict]) -> None:
         "COVERAGE_HIDDEN": "hidden" if cov_hidden else "",
         "COVERAGE_NOTE": cov_html,
         "CHAMBER_CARDS": render_chamber_cards_ssr(day0),
-        "DECRETOS_LEY": render_decretos_ley_ssr(),
+        "DECRETOS_LEY": render_decretos_ley_ssr(dias),
         "SCOREBOARD_HIDDEN": "hidden" if sb_hidden else "",
         "SCOREBOARD": sb_html,
         "CORTES_LEAD": render_cortes_lead_ssr(day0, permalink),

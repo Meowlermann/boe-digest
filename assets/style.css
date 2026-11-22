@@ -2032,18 +2032,19 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .cortes-disueltas a:hover,.dl-panel a:hover,.cortes-disueltas a:focus-visible,.dl-panel a:focus-visible{outline:2px solid var(--red-ink,var(--red));outline-offset:2px;border-radius:2px}
 .dl-panel{margin:0 0 18px;padding:0;border-top:3px solid var(--ink)}
 .dl-panel h3{margin:.7rem 0 .3rem;font-size:16px}
-.dl-nota{margin:0 0 .5rem;max-width:70ch;font:400 13.5px/1.5 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink-soft);overflow-wrap:anywhere}
+.dl-nota{margin:0 0 .5rem;max-width:70ch;font:400 14px/1.5 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink);overflow-wrap:anywhere}
 .dl-lista{margin:0;padding:0;list-style:none}
-.dl-fila{padding:.45rem 0;border-top:1px solid var(--border)}
-.dl-fila p{margin:0 0 .15rem;overflow-wrap:anywhere}
+.dl-fila{padding:.5rem 0;border-top:1px solid var(--border)}
+.dl-fila p{margin:0 0 .2rem;overflow-wrap:anywhere}
 .dl-meta{font:400 14.5px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
 .dl-num{font-weight:700}
-.dl-boe,.dl-org{color:var(--ink-soft)}
-.dl-tit{font:400 13.5px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink-soft)}
-.dl-est{font:400 14px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
-.dl-estado{font-weight:600}
-.dl-enl{font:400 14px/1.6 'Work Sans','Segoe UI',Arial,sans-serif}
+.dl-boe{color:var(--ink-soft)}
+.dl-est{font:400 15px/1.45 'Work Sans','Segoe UI',Arial,sans-serif}
+.dl-panel a.dl-estado{font-weight:700}
+.dl-sin{color:var(--ink-soft);font-weight:600}
+.dl-tit{font:400 14px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
+.dl-panel .dl-tit a{font-weight:400}
+.dl-lit{font:400 12.5px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink-soft)}
 .dl-mas{border-top:1px solid var(--border)}
 .dl-mas>summary{cursor:pointer;padding:.5rem 0;min-height:32px;font:600 14.5px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
 .dl-mas>summary:focus-visible{outline:2px solid var(--red-ink,var(--red));outline-offset:2px}
-.dl-sin{color:var(--ink-soft)}
