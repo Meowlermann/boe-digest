@@ -1,0 +1,339 @@
+{
+ "desde": "2026-11-16",
+ "errores": [],
+ "esquema": 1,
+ "generada": "2026-11-23",
+ "hasta": "2026-11-22",
+ "secciones": {
+  "cifra": {
+   "asunto": "",
+   "fuente": "",
+   "regla": 3,
+   "texto": "leyes y reales decretos publicados en el BOE",
+   "url": "",
+   "valor": 29
+  },
+  "nombramientos": {
+   "ceses": 2,
+   "lista": [
+    {
+     "acto": "cese",
+     "cargo": "Directora del Departamento de Seguridad de la Presidencia del Gobierno",
+     "emisor": "PRESIDENCIA DEL GOBIERNO",
+     "fecha": "2026-11-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24123",
+     "persona": "María Marcos Salvador",
+     "rango": "Real Decreto",
+     "url": "/personas/maria-marcos-salvador.html"
+    },
+    {
+     "acto": "nombramiento",
+     "cargo": "Gobernadora Alterna por España en el Banco Africano de Desarrollo, el Fondo Africano de Desarrollo, el Banco Asiático de Desarrollo, el Fondo Asiático de Desarrollo, la Corporación Interamericana de Inversiones y el Banco Interamericano de Desarrollo",
+     "emisor": "MINISTERIO DE LA PRESIDENCIA, JUSTICIA Y RELACIONES CON LAS CORTES",
+     "fecha": "2026-11-18",
+     "fuente": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24125",
+     "persona": "Paula Conthe Calvo",
+     "rango": "Real Decreto",
+     "url": "/personas/paula-conthe-calvo.html"
+    }
+   ],
+   "nombramientos": 22,
+   "resto": 23,
+   "total": 25
+  },
+  "normas": [
+   {
+    "editorial": "El sueldo del personal del sector público podrá subir hasta un 4,5% en 2027",
+    "fecha": "2026-11-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/18/pdfs/BOE-A-2026-24119.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-24119",
+    "titular": "MEDIDAS URGENTES: RETRIBUCIONES DEL PERSONAL AL SERVICIO DEL SECTOR PÚBLICO",
+    "titulo": "Real Decreto-ley 37/2026, de 17 de noviembre, por el que se aprueban medidas urgentes en materia de retribuciones del personal al servicio del sector público.",
+    "url": "/normas/BOE-A-2026-24119.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-11-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/18/pdfs/BOE-A-2026-24120.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-24120",
+    "titular": "ADOPTAN MEDIDAS RELATIVAS A LOS RECURSOS DE LOS SISTEMAS DE FINANCIACIÓN TERRITORIAL: 23.171,89 EUROS",
+    "titulo": "Real Decreto-ley 38/2026, de 17 de noviembre, por el que se adoptan medidas relativas a los recursos de los sistemas de financiación territorial y medidas fiscales urgentes para evitar la tributación del salario mínimo interprofesional de 2027 en el Impuesto sobre la Renta de las Personas Físicas.",
+    "url": "/normas/BOE-A-2026-24120.html"
+   },
+   {
+    "editorial": "Rechazar el cambio entre jornada completa y parcial no podrá ser motivo de despido",
+    "fecha": "2026-11-18",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/18/pdfs/BOE-A-2026-24121.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-24121",
+    "titular": "CAMBIAN LAS REGLAS: LA DIRECTIVA (UE) 2019/1152 DEL PARLAMENTO EUROPEO",
+    "titulo": "Real Decreto-ley 39/2026, de 17 de noviembre, por el que se modifican el texto refundido de la Ley del Estatuto de los Trabajadores, aprobado por el Real Decreto Legislativo 2/2015, de 23 de octubre; el Real Decreto 902/2020, de 13 de octubre, de igualdad retributiva entre mujeres y hombres; la Ley 3/2023, de 28 de febrero, de Empleo; y el Real Decreto 723/2026, de 9 de septiembre, por el que se transpone la Directiva (UE) 2019/1152 del Parlamento Europeo y del Consejo, de 20 de junio de 2019, relativa a unas condiciones laborales transparentes y previsibles en la Unión Europea.",
+    "url": "/normas/BOE-A-2026-24121.html"
+   },
+   {
+    "editorial": "Los centros de excelencia científica podrán ser declarados de interés nacional",
+    "fecha": "2026-11-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/21/pdfs/BOE-A-2026-24437.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-24437",
+    "titular": "MEDIDAS URGENTES: EL IMPULSO DE LA COMPETITIVIDAD Y LA SOBERANÍA TECNOLÓGICA: 20.000.000 EUROS",
+    "titulo": "Real Decreto-ley 40/2026, de 20 de noviembre, de medidas urgentes para el impulso de la competitividad y la soberanía tecnológica en el ámbito científico e investigador.",
+    "url": "/normas/BOE-A-2026-24437.html"
+   },
+   {
+    "editorial": "Las instalaciones que reduzcan emisiones podrán seguir en el comercio de derechos",
+    "fecha": "2026-11-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/21/pdfs/BOE-A-2026-24438.pdf",
+    "rango": "Real Decreto-ley",
+    "ref": "BOE-A-2026-24438",
+    "titular": "CAMBIAN LAS REGLAS: EL RÉGIMEN DEL COMERCIO DE DERECHOS DE EMISIÓN: 6.000.001 EUROS",
+    "titulo": "Real Decreto-ley 41/2026, de 20 de noviembre, por el que se modifica la Ley 1/2005, de 9 de marzo, por la que se regula el régimen del comercio de derechos de emisión de gases de efecto invernadero.",
+    "url": "/normas/BOE-A-2026-24438.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-11-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/17/pdfs/BOE-A-2026-24006.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-24006",
+    "titular": "PRESUPUESTOS DE LA GENERALITAT DE CATALUNYA PARA 2026: 56.937.011.408,90 EUROS",
+    "titulo": "Ley 10/2026, de 9 de julio, de presupuestos de la Generalitat de Catalunya para 2026.",
+    "url": "/normas/BOE-A-2026-24006.html"
+   },
+   {
+    "editorial": "Cataluña modifica diversas tasas tributarias y administrativas en su ley de medidas",
+    "fecha": "2026-11-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/17/pdfs/BOE-A-2026-24007.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-24007",
+    "titular": "MEDIDAS FISCALES, FINANCIERAS, ADMINISTRATIVAS Y DEL SECTOR PÚBLICO: 300.000 EUROS",
+    "titulo": "Ley 11/2026, de 9 de julio, de medidas fiscales, financieras, administrativas y del sector público.",
+    "url": "/normas/BOE-A-2026-24007.html"
+   },
+   {
+    "editorial": "Cataluña crea el Centro Catalán de Empresa y Derechos Humanos como ente autónomo",
+    "fecha": "2026-11-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/17/pdfs/BOE-A-2026-24008.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-24008",
+    "titular": "CENTRO CATALÁN DE EMPRESA Y DERECHOS HUMANOS",
+    "titulo": "Ley 12/2026, de 20 de julio, del Centro Catalán de Empresa y Derechos Humanos.",
+    "url": "/normas/BOE-A-2026-24008.html"
+   },
+   {
+    "editorial": "Cataluña reforma el Código Civil para regular los apoyos a la capacidad jurídica",
+    "fecha": "2026-11-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/17/pdfs/BOE-A-2026-24009.pdf",
+    "rango": "Ley",
+    "ref": "BOE-A-2026-24009",
+    "titular": "MODIFICACIÓN DEL CÓDIGO CIVIL DE CATALUÑA EN MATERIA DE APOYOS AL EJERCICIO: 100.000 EUROS",
+    "titulo": "Ley 13/2026, de 3 de agosto, de modificación del Código civil de Cataluña en materia de apoyos al ejercicio de la capacidad jurídica de las personas.",
+    "url": "/normas/BOE-A-2026-24009.html"
+   },
+   {
+    "editorial": "La plantilla del Ministerio Fiscal suma doscientas plazas de segunda categoría",
+    "fecha": "2026-11-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/17/pdfs/BOE-A-2026-24003.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24003",
+    "titular": "AMPLÍA Y MODIFICA LA PLANTILLA ORGÁNICA DEL MINISTERIO FISCAL",
+    "titulo": "Real Decreto 995/2026, de 16 de noviembre, por el que se amplía y modifica la plantilla orgánica del Ministerio Fiscal para adecuarla a las necesidades existentes.",
+    "url": "/normas/BOE-A-2026-24003.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-11-17",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/17/pdfs/BOE-A-2026-24004.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24004",
+    "titular": "CREACIÓN DE QUINIENTAS UNIDADES JUDICIALES CORRESPONDIENTES A LA PROGRAMACIÓN DE 2027",
+    "titulo": "Real Decreto 996/2026, de 16 de noviembre, de creación de quinientas unidades judiciales correspondientes a la programación de 2027 y de adecuación de la planta judicial.",
+    "url": "/normas/BOE-A-2026-24004.html"
+   },
+   {
+    "editorial": "El Ministerio de Asuntos Exteriores concede una subvención directa al CEI en 2026",
+    "fecha": "2026-11-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/19/pdfs/BOE-A-2026-24187.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24187",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN: 59.310,00 EUROS",
+    "titulo": "Real Decreto 1001/2026, de 18 de noviembre, por el que se regula la concesión directa de una subvención al CEI-Fundación Privada Centro de Estudios Internacionales durante el ejercicio presupuestario 2026.",
+    "url": "/normas/BOE-A-2026-24187.html"
+   },
+   {
+    "editorial": "La AECID concede seis subvenciones directas para cooperación al desarrollo",
+    "fecha": "2026-11-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/19/pdfs/BOE-A-2026-24188.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24188",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES EN MATERIA: 60.000 EUROS",
+    "titulo": "Real Decreto 1002/2026, de 18 de noviembre, por el que se regula la concesión directa de subvenciones en materia de cooperación para el desarrollo sostenible por la Agencia Española de Cooperación Internacional para el Desarrollo.",
+    "url": "/normas/BOE-A-2026-24188.html"
+   },
+   {
+    "editorial": "",
+    "fecha": "2026-11-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/19/pdfs/BOE-A-2026-24189.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24189",
+    "titular": "POR EL QUE SE FIJA EL SALARIO MÍNIMO INTERPROFESIONAL PARA 2027, EN VIGOR EL 1 DE ENERO",
+    "titulo": "Real Decreto 1013/2026, de 18 de noviembre, por el que se fija el salario mínimo interprofesional para 2027.",
+    "url": "/normas/BOE-A-2026-24189.html"
+   },
+   {
+    "editorial": "El Gobierno aprueba el nuevo reglamento del servicio universal de telecomunicaciones",
+    "fecha": "2026-11-19",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/19/pdfs/BOE-A-2026-24190.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24190",
+    "titular": "APROBADO: EL REGLAMENTO RELATIVO AL SERVICIO UNIVERSAL DE TELECOMUNICACIONES Y OTRAS OBLIGACIONES",
+    "titulo": "Real Decreto 1026/2026, de 18 de noviembre, por el que se aprueba el Reglamento relativo al servicio universal de telecomunicaciones y otras obligaciones de servicio público en el suministro de redes y en la prestación de servicios de comunicaciones electrónicas.",
+    "url": "/normas/BOE-A-2026-24190.html"
+   },
+   {
+    "editorial": "El Gobierno aprueba el Estatuto de la nueva Agencia Estatal de Salud Pública",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24299.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24299",
+    "titular": "APROBADO: EL ESTATUTO DE LA AGENCIA ESTATAL DE SALUD PÚBLICA",
+    "titulo": "Real Decreto 1003/2026, de 18 de noviembre, por el que se aprueba el Estatuto de la Agencia Estatal de Salud Pública.",
+    "url": "/normas/BOE-A-2026-24299.html"
+   },
+   {
+    "editorial": "Los ganaderos comunicarán sus datos al registro de emisiones antes del 1 de marzo",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24300.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24300",
+    "titular": "CAMBIAN LAS REGLAS: EL REGISTRO GENERAL DE LAS MEJORES TÉCNICAS DISPONIBLES, EN VIGOR EL 2 DE ENERO",
+    "titulo": "Real Decreto 1004/2026, de 18 de noviembre, por el que se modifica el Real Decreto 988/2022, de 29 de noviembre, por el que se regula el Registro General de las Mejores Técnicas Disponibles en Explotaciones y el soporte para el cálculo, seguimiento y notificación de las emisiones en ganadería, y se modifican diversas normas en materia agraria.",
+    "url": "/normas/BOE-A-2026-24300.html"
+   },
+   {
+    "editorial": "Los ministros de culto de la Iglesia Ortodoxa Rumana cotizarán a la Seguridad Social",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24301.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24301",
+    "titular": "NUEVAS REGLAS PARA LOS TÉRMINOS",
+    "titulo": "Real Decreto 1005/2026, de 18 de noviembre, por el que se regulan los términos y las condiciones de inclusión en el Régimen General de la Seguridad Social de los ministros de culto de la Iglesia Ortodoxa Rumana en España.",
+    "url": "/normas/BOE-A-2026-24301.html"
+   },
+   {
+    "editorial": "España prohíbe descargar aguas de depuración de gases de buques en sus puertos",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24302.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24302",
+    "titular": "EL USO DE LOS SISTEMAS DE LIMPIEZA DE GASES DE ESCAPE DE BUQUES HASTA EL 1 DE JULIO DE 2029",
+    "titulo": "Real Decreto 1006/2026, de 18 de noviembre, sobre el uso de los sistemas de limpieza de gases de escape de buques.",
+    "url": "/normas/BOE-A-2026-24302.html"
+   },
+   {
+    "editorial": "La Politécnica de Madrid recibe una ayuda para el Observatorio de Movilidad",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24303.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24303",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN: 120.000 EUROS",
+    "titulo": "Real Decreto 1007/2026, de 18 de noviembre, por el que se regula la concesión directa de una subvención a la Universidad Politécnica de Madrid para el Observatorio de la Movilidad Metropolitana.",
+    "url": "/normas/BOE-A-2026-24303.html"
+   },
+   {
+    "editorial": "Industria concederá préstamos a empresas para programas de las Fuerzas Armadas",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24304.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24304",
+    "titular": "QUEDA FIJADO: LAS NORMAS REGULADORAS DE LA CONCESIÓN DIRECTA: 4.080.000.000 EUROS",
+    "titulo": "Real Decreto 1014/2026, de 18 de noviembre, por el que se establecen las normas reguladoras de la concesión directa de anticipos reembolsables en la forma de préstamos a varias empresas para el desarrollo tecnológico e industrial de varios programas especiales de modernización de múltiples capacidades para las Fuerzas Armadas.",
+    "url": "/normas/BOE-A-2026-24304.html"
+   },
+   {
+    "editorial": "El Ministerio de Industria otorga un préstamo a Airbus para el programa Euromale",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24305.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24305",
+    "titular": "CAMBIAN LAS REGLAS: LAS NORMAS REGULADORAS DE LA CONCESIÓN DIRECTA: 1.429.477.284 EUROS",
+    "titulo": "Real Decreto 1015/2026, de 18 de noviembre, por el que se modifica el Real Decreto 1008/2022, de 5 de diciembre, por el que se establecen las normas reguladoras de la concesión directa de un préstamo a la empresa Airbus Defence and Space, S.A.U., para el programa Euromale RPAS.",
+    "url": "/normas/BOE-A-2026-24305.html"
+   },
+   {
+    "editorial": "El Ministerio de Industria concede subvenciones directas a entidades turísticas",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24306.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24306",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE SUBVENCIONES EN MATERIA: 450.000,00 EUROS",
+    "titulo": "Real Decreto 1016/2026, de 18 de noviembre, por el que se regula la concesión directa de subvenciones en materia de turismo por el Ministerio de Industria y Turismo, durante el ejercicio presupuestario 2026.",
+    "url": "/normas/BOE-A-2026-24306.html"
+   },
+   {
+    "editorial": "El Gobierno regula el acceso y la gestión de los recursos pesqueros en España",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24307.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24307",
+    "titular": "NUEVAS REGLAS PARA EL ACCESO",
+    "titulo": "Real Decreto 1017/2026, de 18 de noviembre, por el que se regula el acceso y la gestión de los recursos pesqueros.",
+    "url": "/normas/BOE-A-2026-24307.html"
+   },
+   {
+    "editorial": "El plan contra la polilla de la patata estará vigente hasta su erradicación total",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24308.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24308",
+    "titular": "CAMBIAN LAS REGLAS: EL PROGRAMA NACIONAL DE CONTROL Y ERRADICACIÓN",
+    "titulo": "Real Decreto 1018/2026, de 18 de noviembre, por el que se modifica el Real Decreto 197/2017, de 3 de marzo, por el que se establece el Programa nacional de control y erradicación de Tecia (Scrobipalpopsis) solanivora (Povolny).",
+    "url": "/normas/BOE-A-2026-24308.html"
+   },
+   {
+    "editorial": "Agricultura adapta el reconocimiento de los productores de Denominaciones de Origen",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24309.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24309",
+    "titular": "CAMBIAN LAS REGLAS: DE DENOMINACIONES DE ORIGEN E INDICACIONES GEOGRÁFICAS PROTEGIDAS: 150.000 EUROS",
+    "titulo": "Real Decreto 1019/2026, de 18 de noviembre, por el que se modifica el Real Decreto 267/2017, de 17 de marzo, por el que se desarrolla la Ley 6/2015, de 12 de mayo, de Denominaciones de Origen e Indicaciones Geográficas Protegidas de ámbito territorial supraautonómico, en relación con el reconocimiento de las agrupaciones de productores.",
+    "url": "/normas/BOE-A-2026-24309.html"
+   },
+   {
+    "editorial": "Ciencia financia el programa de innovación agraria Sandbox AgriFoodTech del CNTA",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24311.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24311",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN AL CENTRO NACIONAL: 3.000.000,00 EUROS",
+    "titulo": "Real Decreto 1020/2026, de 18 de noviembre, por el que se regula la concesión directa de una subvención al Centro Nacional de Tecnología y Seguridad Alimentaria para el programa «Sandbox AgriFoodTech», con cargo al ejercicio 2026.",
+    "url": "/normas/BOE-A-2026-24311.html"
+   },
+   {
+    "editorial": "Ciencia concede una subvención directa a Fedit para fomentar la innovación",
+    "fecha": "2026-11-20",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/20/pdfs/BOE-A-2026-24312.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24312",
+    "titular": "DINERO PÚBLICO PARA LA CONCESIÓN DIRECTA DE UNA SUBVENCIÓN: 100.000 EUROS",
+    "titulo": "Real Decreto 1021/2026, de 18 de noviembre, por el que se regula la concesión directa de una subvención a la Federación Española de Centros Tecnológicos para fomentar la contribución de los centros tecnológicos en la transferencia del conocimiento y la innovación.",
+    "url": "/normas/BOE-A-2026-24312.html"
+   },
+   {
+    "editorial": "El Gobierno exige requisitos de sostenibilidad a los centros de datos de 10 MW",
+    "fecha": "2026-11-21",
+    "fuente": "https://www.boe.es/boe/dias/2026/11/21/pdfs/BOE-A-2026-24439.pdf",
+    "rango": "Real Decreto",
+    "ref": "BOE-A-2026-24439",
+    "titular": "NUEVAS REGLAS PARA LOS REQUISITOS DE SOSTENIBILIDAD ENERGÉTICA HASTA EL 31 DE DICIEMBRE DE 2031",
+    "titulo": "Real Decreto 1032/2026, de 20 de noviembre, por el que se regulan los requisitos de sostenibilidad energética, medioambiental y de resiliencia y soberanía digital aplicables a los centros de datos.",
+    "url": "/normas/BOE-A-2026-24439.html"
+   }
+  ]
+ },
+ "semana": "2026-S47",
+ "version": 1
+}
