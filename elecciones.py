@@ -864,6 +864,15 @@ def migas(site: str, pasos) -> dict:
         for i, (n, u) in enumerate((("Portada", site),) + tuple(pasos))]}
 
 
+def _resultados(h: dict, circ_rd: str, nombre: str) -> str:
+    """Bloque «Resultados oficiales» si build.py pasa la copia fija en
+    h["resultados"]; si no hay copia, cadena vacía y la página no cambia."""
+    if not h.get("resultados"):
+        return ""
+    import resultados_29n as rs
+    return rs.bloque_html(h["resultados"], circ_rd, nombre)
+
+
 def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
     """/elecciones/2026/ y una página por circunscripción. h: esc_html,
     pagina_suelta, plantilla, site_url, carpeta, jsonld_script, nombre(circ_congreso),
@@ -904,6 +913,9 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
         cuerpo = (f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
                   f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'
+                  # Resultados oficiales de la JEC (resultados_29n.py): vacío
+                  # mientras no exista curated/resultados_29n.json.
+                  + _resultados(h, c["circunscripcion"], nombre)
                   + f'<nav aria-label="Candidaturas"><ol class="elec-indice">{indice}</ol></nav>'
                   # Tras el índice: las candidaturas, en la primera pantalla (informe 41).
                   + AVISO_29N

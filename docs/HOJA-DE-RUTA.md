@@ -102,6 +102,12 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   proyecciones, en los pases diarios que ya existen. Si la descarga falla,
   el bloque no se muestra y se mantiene la última versión buena. Tiene que
   estar listo antes de que se publique la proclamación.
+  Código preparado en la rama `elecciones/resultados-oficiales` (sin datos):
+  `resultados_29n.py` pinta el bloque en `/elecciones/2026/<slug>.html` solo
+  si existe `curated/resultados_29n.json`, que genera a mano
+  `tools/generar_resultados_29n.py --id BOE-A-…` cuando el BOE publique la
+  resolución de la JEC. La copia fija es la «última versión buena»: si una
+  regeneración falla, no se escribe. Falta la proclamación real.
 - **#115 «Elecciones: imagen para redes por provincia»** (tanda E5, parte
   OG), fusionada y publicada el 22 de noviembre de 2026 (`4eb4d5d6`): un PNG por circunscripción en `og:image` y
   `twitter:image` de `/elecciones/2026/<slug>.html` y de

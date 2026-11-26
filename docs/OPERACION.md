@@ -181,6 +181,31 @@ Permanente con decretos-leyes y cuando el BOE publique uno nuevo.
 4. Abrir una PR con el JSON regenerado; los tests comprueban que casa con
    `votos_rdl` y que la ficha y la resolución dicen lo mismo.
 
+## «Resultados oficiales» del 29-N: crear la copia
+
+El bloque de `/elecciones/2026/<slug>.html` sale de
+`curated/resultados_29n.json`. Mientras no exista, no se pinta nada. Solo se
+crea con la resolución de la Presidencia de la Junta Electoral Central «por la
+que se publica el resumen de los resultados de las elecciones al Congreso de
+los Diputados y al Senado convocadas por Real Decreto 806/2026», en el BOE. No
+se usa el escrutinio provisional, Infoelectoral ni ninguna otra web.
+
+1. Buscar en el BOE el identificador de esa resolución (sección III).
+2. `python tools/generar_resultados_29n.py --id BOE-A-…` (sin `--escribir`).
+   Comprueba el título; lee los cuadros de votos y escaños (tablas del XML) y la
+   relación de diputados electos (en el XML es una imagen; se lee del PDF con
+   `pdftotext -layout`, de poppler, solo en local). Imprime las
+   circunscripciones que quedan fuera y por qué: nombre que no casa con el real
+   decreto, escaños que no suman, una línea de la relación que no se entiende
+   (por ejemplo, una nota de renuncia). Con la resolución de 2023
+   (BOE-A-2023-18907) como prueba salieron 51 de 52: Madrid quedó fuera por la
+   nota de una renuncia.
+3. Si todo es correcto, repetir con `--escribir`. Las circunscripciones fuera no
+   se completan a mano.
+4. Si el BOE publica una corrección de errores de la resolución, la herramienta
+   no la aplica: parar y avisar a Dirección.
+5. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
+
 ## Timeouts de Pages en el primer despliegue de un SHA
 
 El 10 de noviembre de 2026, varios despliegues fallaron en el paso
