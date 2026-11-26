@@ -150,6 +150,37 @@ la toca: las votaciones nuevas solo aparecen cuando se regenera.
 3. Abrir una PR con el JSON regenerado; los tests comprueban el criterio y que
    la copia casa con el estado.
 
+## Panel «Decretos-ley» de la portada: regenerar la copia
+
+El panel sale de `curated/decretos_ley.json`, una copia fija que se versiona en
+`main`. El render no pide nada a la red: las convalidaciones y los decretos-leyes
+nuevos solo aparecen cuando se regenera. La única excepción es que, al pintar, un
+RDL sin estado lo toma de la resolución del BOE si alguna edición del sitio la
+trae entre sus piezas (no siempre: cada edición guarda una selección).
+
+Conviene regenerarla después de cada sesión del Pleno o de la Diputación
+Permanente con decretos-leyes y cuando el BOE publique uno nuevo.
+
+1. Tener `data/` al día (rama `datos`) y `curated/votos_rdl.json`.
+2. `python tools/generar_decretos_ley.py`. Por cada RDL de 2026 desde el 14/2026:
+   - la ficha de expediente del Congreso (serie 130, desde la del primer RDL de
+     `votos_rdl` hasta 8 números seguidos sin ficha): «Resultado tramitación»
+     o «Situación actual», el órgano y el BOE;
+   - el BOE: el identificador del RDL (de las ediciones del sitio o del sumario
+     oficial del día) y la resolución del Congreso que publica el acuerdo de
+     convalidación o derogación (en las «referencias posteriores» del RDL o, si
+     no, en los sumarios desde su BOE, como mucho 60 días).
+   El buscador del Congreso puede tardar en mostrar fichas que ya están en el
+   acta (pasó el 22-11-2026 con 130/000064 a 067): por eso la resolución del
+   BOE es la segunda fuente. Revisar lo que imprime: la etiqueta y la fuente
+   de cada RDL y los avisos de textos sin correspondencia.
+3. Si aparece un texto oficial que no está en `ETIQUETAS_EXPEDIENTE` o
+   `ETIQUETAS_RESOLUCION` (`decretos_ley.py`), se muestra literal y falla
+   `test_toda_la_copia_tiene_correspondencia`: añadirlo solo si su sentido es
+   inequívoco.
+4. Abrir una PR con el JSON regenerado; los tests comprueban que casa con
+   `votos_rdl` y que la ficha y la resolución dicen lo mismo.
+
 ## Timeouts de Pages en el primer despliegue de un SHA
 
 El 10 de noviembre de 2026, varios despliegues fallaron en el paso
