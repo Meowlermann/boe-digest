@@ -2060,3 +2060,4 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sen-fuente{margin:.5rem 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .sen-fuente a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .sen-fuente a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.sen-nota{display:block;font-size:13px;color:var(--ink-soft);font-style:italic}

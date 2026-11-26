@@ -57,6 +57,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--id", required=True, help="identificador BOE-A-… de la resolución de la JEC")
     ap.add_argument("--escribir", action="store_true")
+    ap.add_argument("--borrador", type=pathlib.Path,
+                    help="escribe aquí (fuera de curated/) el punto de partida para curar a mano las dudosas")
     a = ap.parse_args()
     if not re.fullmatch(r"BOE-A-\d{4}-\d+", a.id):
         print("identificador no válido", file=sys.stderr)
@@ -80,6 +82,14 @@ def main() -> int:
     print(f"{len(claras)} provincias claras; {len(dudosas)} fuera")
     for p, motivo in dudosas.items():
         print(f"  fuera: {p}: {motivo}")
+    if a.borrador and dudosas:
+        pags = sn.paginas_por_provincia(txt, provs)
+        borr = {p: {"fuente": {"id": a.id, "pagina": " y ".join(pags.get(p) or [])}, "grupos": []}
+                for p in dudosas if p in provs}
+        a.borrador.write_text(json.dumps({"provincias": borr}, ensure_ascii=False, indent=1) + "\n",
+                              encoding="utf-8")
+        print(f"borrador de {len(borr)} provincias en {a.borrador}: copiar los senadores literal del PDF "
+              "antes de pasarlo a curated/senadores_29n_manual.json")
     err = sn.validar(datos)
     if err:
         print("no válido:", *err, sep="\n  ", file=sys.stderr)

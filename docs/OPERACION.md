@@ -200,11 +200,23 @@ elecciones convocadas por el Real Decreto 806/2026. Nunca desde senado.es.
    uno en cada otra isla; dos en Ceuta y en Melilla). Con la resolución de
    2023 (BOE-A-2023-18907) como prueba salieron 48 de 52: Barcelona, Lleida y
    Tarragona por formaciones en dos renglones y Teruel por una nota de renuncia.
-3. Si todo es correcto, repetir con `--escribir`. Las provincias fuera no se
-   completan a mano sin decisión de Dirección.
-4. Si el BOE publica una corrección de errores, la herramienta no la aplica:
+3. Si todo es correcto, repetir con `--escribir`.
+4. Las provincias dudosas se pueden curar a mano en
+   `curated/senadores_29n_manual.json` (decisión de Dirección, 26-11-2026):
+   - `--borrador /tmp/borrador.json` escribe, fuera de `curated/`, una
+     entrada por provincia dudosa con el identificador BOE y las páginas de la
+     relación, y `grupos` vacío.
+   - Los senadores se copian literalmente del PDF del BOE: nombre, formación
+     completa, votos y, si la hay, la nota tal cual (`"nota"`). En las
+     provincias insulares, un grupo por isla con el nombre del encabezado.
+   - Cada provincia lleva `"fuente": {"id": "<el mismo BOE-A-…>", "pagina": "N"}`.
+   - Al pintar se descarta, con su motivo, la que no tenga los senadores del
+     artículo 165 de la LOREG, no tenga página, cite otra resolución o ya esté
+     en la copia automática. Si una provincia sigue sin estar clara, no se
+     publica. Sin la copia automática, la manual no se usa.
+5. Si el BOE publica una corrección de errores, la herramienta no la aplica:
    parar y avisar a Dirección.
-5. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
+6. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
 
 ## Timeouts de Pages en el primer despliegue de un SHA
 
