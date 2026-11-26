@@ -178,7 +178,8 @@ class PanelDecretos(unittest.TestCase):
         # Informe 45: RDL 33 a 36, convalidados por la Diputación Permanente (BOE núm. 289).
         for n, ident in zip(range(33, 37), range(24294, 24298)):
             r = next(x for x in d["decretos"] if x["numero"] == f"Real Decreto-ley {n}/2026")
-            self.assertEqual(dl.etiqueta(r), ("Convalidado por la Diputación Permanente", "resolucion"))
+            # Primero sale de la resolución; cuando el Congreso publica la ficha, de la ficha.
+            self.assertEqual(dl.etiqueta(r)[0], "Convalidado por la Diputación Permanente")
             self.assertEqual(r["resolucion"]["id"], f"BOE-A-2026-{ident}")
 
     def test_toda_la_copia_tiene_correspondencia(self):
