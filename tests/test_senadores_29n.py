@@ -260,6 +260,89 @@ def _resultados_ficticios():
     return m._ficticio()
 
 
+class IslasDesdeLosDatos(unittest.TestCase):
+    """Informe 52: la frase de islas sale de los encabezados y del número de
+    senadores de la proclamación cargada; en el código no hay nombres de islas
+    para escribirla."""
+
+    def test_nombre_de_isla_del_encabezado(self):
+        self.assertEqual(sn.nombre_isla("EIVISSA-FORMENTERA"), "Eivissa-Formentera")
+        self.assertEqual(sn.nombre_isla("LA GOMERA"), "La Gomera")
+        self.assertEqual(sn.nombre_isla("ISLA DE PRUEBA"), "Isla de Prueba")
+
+    def test_otros_datos_otra_frase(self):
+        g = [_g("MALLORCA", 3), _g("ISLA FICTICIA NORTE", 1), _g("ISLA FICTICIA SUR", 1)]
+        self.assertEqual(sn.islas_texto(g),
+                         "Aquí se vota por islas: 3 senadores en Mallorca y 1 en Isla Ficticia Norte y Isla "
+                         "Ficticia Sur.")
+        g = [_g("MALLORCA", 3), _g("MENORCA", 1), _g("EIVISSA-FORMENTERA", 1)]   # como en 2023
+        self.assertIn("1 en Menorca y Eivissa-Formentera", sn.islas_texto(g))
+
+    def test_sin_nombres_de_islas_en_el_codigo(self):
+        import ast
+        arbol = ast.parse((RAIZ / "senadores.py").read_text(encoding="utf-8"))
+        docs = {id(n.body[0].value) for n in ast.walk(arbol)
+                if isinstance(n, (ast.Module, ast.FunctionDef)) and n.body
+                and isinstance(n.body[0], ast.Expr) and isinstance(n.body[0].value, ast.Constant)}
+        cadenas = [n.value for n in ast.walk(arbol)
+                   if isinstance(n, ast.Constant) and isinstance(n.value, str) and id(n) not in docs
+                   and n.value not in sn.ISLAS]          # claves de provincia del real decreto («Santa Cruz de Tenerife»)
+        for isla in ("Mallorca", "Menorca", "Eivissa", "Ibiza", "Formentera", "Tenerife", "Gomera",
+                     "Hierro", "Palma", "Canaria", "Lanzarote", "Fuerteventura"):
+            self.assertFalse([c for c in cadenas if isla in c], isla)
+
+
+class SaltoFicha(unittest.TestCase):
+    """Informe 52: «Tus senadores ↓» arriba de /diputados/provincia-*.html, tras
+    la entradilla y antes del aviso de legislatura disuelta, solo con datos."""
+
+    def _plantilla(self):
+        return build.plantilla_con_aviso((RAIZ / "templates" / "norma.html").read_text(encoding="utf-8")
+                                         if (RAIZ / "templates" / "norma.html").exists()
+                                         else build.TEMPLATE_NORMA.read_text(encoding="utf-8"))
+
+    def test_sale_con_datos(self):
+        salto = build._salto_senadores(_ficticio(), "Soria")
+        self.assertEqual(salto, '<p class="rof-salto"><a href="#tus-senadores">Tus senadores&nbsp;↓</a></p>')
+        self.assertEqual(build._salto_senadores(_ficticio(), "S/C Tenerife"), salto)
+        pl = build.plantilla_con_salto_senadores(self._plantilla(), salto)
+        self.assertEqual(pl.count(salto), 1)
+        self.assertLess(pl.index("{{STANDFIRST}}") if "{{STANDFIRST}}" in pl else 0, pl.index(salto))
+        self.assertEqual(pl.index(salto) + len(salto), pl.index(build.AVISO_LEGISLATURA))
+
+    def test_no_sale_sin_datos(self):
+        self.assertEqual(build._salto_senadores(None, "Soria"), "")
+        self.assertEqual(build._salto_senadores(_ficticio(), "Albacete"), "")   # provincia sin bloque
+        self.assertEqual(build._salto_senadores(_ficticio(), "Teruel"), "")     # no clara: ni bloque ni salto
+        pl = self._plantilla()
+        self.assertEqual(build.plantilla_con_salto_senadores(pl, ""), pl)
+
+    def test_el_ancla_existe(self):
+        for prov in ("Soria", "Ceuta", "S/C Tenerife", "Balears (Illes)"):
+            if build._salto_senadores(_ficticio(), prov):
+                self.assertIn('id="tus-senadores"', build._bloque_senadores(_ficticio(), prov), prov)
+
+    def test_no_toca_title_ni_h1(self):
+        pl = self._plantilla()
+        con = build.plantilla_con_salto_senadores(pl, build._salto_senadores(_ficticio(), "Soria"))
+        for patron in (r"<title>.*?</title>", r"<h1[^>]*>.*?</h1>"):
+            self.assertEqual(re.findall(patron, con, re.S), re.findall(patron, pl, re.S))
+
+    def test_sin_subrayado_y_24px(self):
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        reglas = dict((sel.strip(), cuerpo.replace(" ", "")) for sel, cuerpo in re.findall(r"([^{}]+)\{([^}]*)\}", css))
+        sin = [c for sel, c in reglas.items() if ".rof-salto a:hover" in sel]
+        self.assertTrue(sin and "text-decoration:none" in sin[0])
+        alto = reglas[".rof-salto a"]
+        self.assertIn("display:inline-block", alto)
+        self.assertGreaterEqual(int(re.search(r"min-height:(\d+)px", alto).group(1)), 24)
+        for sel, c in reglas.items():
+            if ".rof-salto" in sel:
+                self.assertNotIn("underline", c)
+                self.assertNotIn("border", c)
+                self.assertNotIn("background", c)
+
+
 class Salto(unittest.TestCase):
     """«Tus senadores ↓» junto a «Resultados oficiales ↓», en las páginas de
     /elecciones/2026/. El bloque está en la ficha de provincia de /diputados/,

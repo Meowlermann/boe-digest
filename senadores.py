@@ -325,12 +325,22 @@ VOTOS_MAXIMOS_PROVINCIA = 3
 VOTOS_MAXIMOS_CIUDAD = {"Ceuta": 2, "Melilla": 2}
 VOTOS_MAXIMOS_ISLA = {"GRAN CANARIA": 2, "MALLORCA": 2, "TENERIFE": 2}
 VOTOS_MAXIMOS_OTRA_ISLA = 1
-# Cómo se escribe cada isla en una frase (el encabezado del BOE va en mayúsculas).
-# «EIVISSA-FORMENTERA» solo para leer proclamaciones anteriores a la LO 2/2026.
-NOMBRE_ISLA = {"MALLORCA": "Mallorca", "MENORCA": "Menorca", "IBIZA": "Ibiza", "EIVISSA": "Eivissa",
-               "FORMENTERA": "Formentera", "EIVISSA-FORMENTERA": "Eivissa-Formentera",
-               "GRAN CANARIA": "Gran Canaria", "FUERTEVENTURA": "Fuerteventura", "LANZAROTE": "Lanzarote",
-               "TENERIFE": "Tenerife", "LA PALMA": "La Palma", "LA GOMERA": "La Gomera", "EL HIERRO": "El Hierro"}
+_MENORES = {"de", "del", "y", "i"}
+
+
+def nombre_isla(isla: str) -> str:
+    """El encabezado de isla del BOE («EIVISSA-FORMENTERA», «LA GOMERA») en
+    minúsculas con mayúscula inicial («Eivissa-Formentera», «La Gomera»). Sale
+    del encabezado de la proclamación cargada: no hay nombres de islas aquí."""
+    n = [0]
+
+    def pal(m):
+        w = m.group(0).lower()
+        n[0] += 1
+        return w if n[0] > 1 and w in _MENORES else w[:1].upper() + w[1:]
+    return re.sub(r"[^\W\d_]+", pal, str(isla or ""))
+
+
 _NUM = {1: "uno", 2: "dos", 3: "tres", 4: "cuatro"}
 
 
@@ -358,7 +368,7 @@ def _por_islas(grupos: list) -> list:
     juntas: dict = {}
     for g in grupos:
         k = len(g["senadores"])
-        juntas.setdefault((k, votos_maximos("", g["isla"])), []).append(NOMBRE_ISLA.get(g["isla"], g["isla"]))
+        juntas.setdefault((k, votos_maximos("", g["isla"])), []).append(nombre_isla(g["isla"]))
     return sorted(((k, m, islas) for (k, m), islas in juntas.items()), key=lambda x: -x[0])
 
 
@@ -396,6 +406,14 @@ def eleccion_texto(fuente: dict) -> str:
 
 def hay_bloque(datos: dict | None, prov_rd: str) -> bool:
     return bool(datos and (datos.get("provincias") or {}).get(prov_rd))
+
+
+def salto_html(datos: dict | None, prov_rd: str, href: str = f"#{ANCLA}") -> str:
+    """«Tus senadores ↓» arriba de la ficha de provincia, con el mismo estilo que
+    «Resultados oficiales ↓» (.rof-salto). Solo si esa provincia tiene bloque."""
+    if not prov_rd or not hay_bloque(datos, prov_rd):
+        return ""
+    return f'<p class="rof-salto"><a href="{_esc(href)}">Tus senadores&nbsp;↓</a></p>'
 
 
 def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
