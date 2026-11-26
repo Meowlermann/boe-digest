@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DATOS FICTICIOS PARA TESTS: no es un documento del BOE. -->
+<documento>
+<metadatos>
+<titulo>FICTICIO. Resolución de prueba, de la Presidencia de la Junta Electoral Central, por la que se publica el resumen de los resultados de las elecciones al Congreso de los Diputados y al Senado convocadas por Real Decreto 806/2026 (texto inventado para tests).</titulo>
+<diario_numero>999</diario_numero>
+<fecha_publicacion>20991231</fecha_publicacion>
+<url_pdf>/ficticio.pdf</url_pdf>
+</metadatos>
+<texto>
+<table class="tabla">
+<tr><th class="cabeza_tabla"></th><th class="cabeza_tabla">Total escaños</th><th colspan="2" class="cabeza_tabla">Candidatura Ficticia A (FICT-A)</th><th colspan="2" class="cabeza_tabla">Candidatura Ficticia B (FICT-B)</th></tr>
+<tr><th class="cabeza_tabla">Votos</th><th class="cabeza_tabla">Escaños</th><th class="cabeza_tabla">Votos</th><th class="cabeza_tabla">Escaños</th></tr>
+<tr><td class="cuerpo_tabla_izq">Albacete.</td><td class="cuerpo_tabla_der">3</td><td class="cuerpo_tabla_der">11.111</td><td class="cuerpo_tabla_der">2</td><td class="cuerpo_tabla_der">2.222</td><td class="cuerpo_tabla_der">1</td></tr>
+<tr><td class="cuerpo_tabla_izq">Soria.</td><td class="cuerpo_tabla_der">2</td><td class="cuerpo_tabla_der">333</td><td class="cuerpo_tabla_der">1</td><td class="cuerpo_tabla_der">444</td><td class="cuerpo_tabla_der">1</td></tr>
+<tr><td class="cuerpo_tabla_izq">Teruel.</td><td class="cuerpo_tabla_der">2</td><td class="cuerpo_tabla_der">555</td><td class="cuerpo_tabla_der">1</td><td class="cuerpo_tabla_der">666</td><td class="cuerpo_tabla_der">1</td></tr>
+<tr><td class="cuerpo_tabla_izq">Cuenca.</td><td class="cuerpo_tabla_der">3</td><td class="cuerpo_tabla_der">777</td><td class="cuerpo_tabla_der">1</td><td class="cuerpo_tabla_der">888</td><td class="cuerpo_tabla_der">1</td></tr>
+<tr><td class="cuerpo_tabla_izq">Provincia Inventada.</td><td class="cuerpo_tabla_der">1</td><td class="cuerpo_tabla_der">1</td><td class="cuerpo_tabla_der">1</td><td class="cuerpo_tabla_der"></td><td class="cuerpo_tabla_der"></td></tr>
+<tr><td class="cuerpo_tabla_izq">Total estatal.</td><td class="cuerpo_tabla_der">11</td><td class="cuerpo_tabla_der">12.777</td><td class="cuerpo_tabla_der">6</td><td class="cuerpo_tabla_der">4.220</td><td class="cuerpo_tabla_der">4</td></tr>
+</table>
+<table class="tabla">
+<tr><th class="cabeza_tabla"></th><th class="cabeza_tabla">Candidatura Ficticia C sin escaño (FICT-C)</th></tr>
+<tr><th class="cabeza_tabla">Votos</th></tr>
+<tr><td class="cuerpo_tabla_izq">Albacete.</td><td class="cuerpo_tabla_der">99</td></tr>
+<tr><td class="cuerpo_tabla_izq">Soria.</td><td class="cuerpo_tabla_der"></td></tr>
+<tr><td class="cuerpo_tabla_izq">Teruel.</td><td class="cuerpo_tabla_der">7</td></tr>
+<tr><td class="cuerpo_tabla_izq">Cuenca.</td><td class="cuerpo_tabla_der">8</td></tr>
+<tr><td class="cuerpo_tabla_izq">Total estatal.</td><td class="cuerpo_tabla_der">114</td></tr>
+</table>
+</texto>
+</documento>

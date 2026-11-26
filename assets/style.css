@@ -2048,3 +2048,28 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .dl-mas{border-top:1px solid var(--border)}
 .dl-mas>summary{cursor:pointer;padding:.5rem 0;min-height:32px;font:600 14.5px/1.45 'Work Sans','Segoe UI',Arial,sans-serif;color:var(--ink)}
 .dl-mas>summary:focus-visible{outline:2px solid var(--red-ink,var(--red));outline-offset:2px}
+/* Resultados oficiales del 29-N (resultados_29n.py): tabla y lista, sin tarjetas ni subrayados. */
+.rof{margin:0 0 1.2rem;padding:.2rem 0 .4rem;border-top:3px solid var(--ink);border-bottom:1px solid var(--border)}
+.rof h2{margin:.7rem 0 .4rem}
+.rof h3{margin:.9rem 0 .3rem;font-size:15px}
+.rof-intro{margin:0 0 .6rem;font-size:15px;line-height:1.5;color:var(--ink)}
+.rof-tabla{overflow-x:auto}
+.rof-tabla table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.35}
+.rof-tabla caption{text-align:left;font-size:13.5px;color:var(--ink-soft);padding:0 0 .3rem}
+.rof-tabla th,.rof-tabla td{padding:.35rem .4rem;border-bottom:1px solid var(--border);vertical-align:top}
+.rof-tabla thead th{font-size:13px;color:var(--ink-soft);font-weight:600;text-align:left}
+.rof-tabla tbody th{font-weight:400;text-align:left}
+.rof-tabla td{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rof-electos{margin:0;padding:0 0 0 1.8em;font-size:15px;line-height:1.45}
+.rof-electos li{padding:.15rem 0}
+.rof-form{display:block;font-size:13px;color:var(--ink-soft)}
+.rof-fuente{margin:.5rem 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.rof-fuente a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
+.rof-fuente a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.rof-salto{margin:0 0 .5rem;font-size:15px}
+.rof-salto a,.rof-salto a:hover,.rof-salto a:focus,.rof-salto a:focus-visible,.rof-salto a:active{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
+.rof-salto a{display:inline-block;min-height:32px;line-height:32px}
+.rof-salto a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.rof-nota{display:block;font-size:13px;color:var(--ink-soft);font-style:italic}
+.rof-reparto{display:block;font-size:15px;line-height:1.45;color:var(--ink);font-weight:600}
+.rof-resumen{margin:0 0 .6rem}

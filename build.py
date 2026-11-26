@@ -6529,6 +6529,20 @@ def _bloques_elecciones(fichas: list) -> dict:
         return {}
 
 
+def _resultados_29n() -> dict | None:
+    """Copia fija de la proclamación de la JEC (resultados_29n.py), o None si no
+    existe: entonces no se pinta el bloque «Resultados oficiales»."""
+    try:
+        import resultados_29n as rs
+        datos = rs.cargar()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"resultados 29-N: no disponibles ({exc})")
+        return None
+    if datos:
+        log(f"resultados 29-N: {len(datos['circunscripciones'])} circunscripciones ({datos['fuente']['id']})")
+    return datos
+
+
 def renderizar_elecciones(fichas: list) -> list:
     """/elecciones/2026/: hub y una página por circunscripción con las
     candidaturas al Congreso del 29-N (tanda E2). Sin red: curated/."""
@@ -6547,6 +6561,7 @@ def renderizar_elecciones(fichas: list) -> list:
                       .replace('href="../', 'href="../../').replace('src="../', 'src="../../')),
         "site_url": SITE_URL, "carpeta": ELECCIONES_DIR, "jsonld_script": jsonld_script,
         "nombre": nombre_circunscripcion, "slug": _slug_txt,
+        "resultados": _resultados_29n(),
     }, datos, fichas)
     escribir_si_cambia(ELECCIONES_DIR.parent / "index.html", el.redireccion_html(SITE_URL))
     log(f"elecciones/2026/: {len(salidas)} páginas (y /elecciones/ redirige al hub)")
