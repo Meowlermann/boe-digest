@@ -275,6 +275,20 @@ def cargar(ruta: pathlib.Path = DATOS, ruta_manual: pathlib.Path = DATOS_MANUAL)
     return combinar(datos, manual, _provincias_rd())
 
 
+def _entero(t) -> int:
+    """«27.056» → 27056. Solo para ordenar; lo que se pinta es el literal."""
+    try:
+        return int(str(t or "0").replace(".", ""))
+    except ValueError:
+        return 0
+
+
+def ordenados(senadores: list) -> list:
+    """Por votos, de más a menos (el Senado es mayoritario: todos los de la
+    lista son electos). A igualdad de votos, el orden del BOE (informe 48)."""
+    return sorted(senadores or [], key=lambda s: -_entero(s.get("votos")))
+
+
 def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
     """«Tus senadores» de una provincia. Vacío si no hay copia fija o la
     provincia no está en ella. Lista simple, sin tarjetas ni subrayados."""
@@ -290,7 +304,7 @@ def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
             f'<li>{_esc(s["nombre"])}'
             + (f'<span class="sen-nota">{_esc(s["nota"])}</span>' if s.get("nota") else "")
             + f'<span class="sen-det">{_esc(s["formacion"])} · {_esc(s["votos"])} votos</span></li>'
-            for s in ss) + "</ul>")
+            for s in ordenados(ss)) + "</ul>")
     cuerpo = "".join(
         (f'<h3>{_esc(g["isla"])}</h3>' if g.get("isla") else "") + lista(g["senadores"]) for g in grupos)
     pg = str((datos.get("manual") or {}).get(prov_rd) or "")

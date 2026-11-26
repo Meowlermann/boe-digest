@@ -128,6 +128,30 @@ class Articulo165(unittest.TestCase):
         self.assertIn("esperados 4", d["manual_descartadas"]["Cuenca"])
 
 
+class Orden(unittest.TestCase):
+    """Informe 48: por votos, de más a menos; a igualdad, el orden del BOE. Un
+    solo signo: siempre los votos del BOE, nunca una raya."""
+
+    def _datos(self, senadores):
+        return {"fuente": FUENTE, "provincias": {"Soria": [{"isla": None, "senadores": senadores}]}}
+
+    def test_por_votos_y_desempate_estable(self):
+        ss = [{"nombre": "Don Ficticio C", "formacion": "F", "votos": "998"},
+              {"nombre": "Doña Ficticia A", "formacion": "F", "votos": "1.111"},
+              {"nombre": "Don Ficticio D", "formacion": "F", "votos": "998"},
+              {"nombre": "Doña Ficticia B", "formacion": "F", "votos": "1.100"}]
+        h = build._bloque_senadores(self._datos(ss), "Soria")
+        orden = re.findall(r"<li>(D[^<]*)<", h)
+        self.assertEqual(orden, ["Doña Ficticia A", "Doña Ficticia B", "Don Ficticio C", "Don Ficticio D"])
+
+    def test_sin_rayas(self):
+        h = build._bloque_senadores(_ficticio(), el.circ_congreso("Santa Cruz de Tenerife"))
+        lista = re.sub(r'<p class="sen-fuente">.*?</p>', "", h, flags=re.S)
+        self.assertNotIn("—", lista)
+        self.assertNotIn("–", lista)
+        self.assertEqual(len(re.findall(r"· [\d.]+ votos</span>", h)), 6)   # 3 + 1 + 1 + 1 (art. 165)
+
+
 class Manual(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
