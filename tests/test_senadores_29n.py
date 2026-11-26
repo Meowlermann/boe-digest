@@ -152,6 +152,109 @@ class Orden(unittest.TestCase):
         self.assertEqual(len(re.findall(r"· [\d.]+ votos</span>", h)), 6)   # 3 + 1 + 1 + 1 (art. 165)
 
 
+def _g(isla, n):
+    return {"isla": isla, "senadores": [{"nombre": f"Don Ficticio {i}", "formacion": "F", "votos": str(10 - i)}
+                                        for i in range(n)]}
+
+
+class ComoSeVota(unittest.TestCase):
+    """Informe 50 y art. 166.1.a LOREG: «Los electores pueden dar su voto a un
+    máximo de tres candidatos en las circunscripciones provinciales, dos en Gran
+    Canaria, Mallorca, Tenerife, Ceuta y Melilla, y uno en las restantes
+    circunscripciones insulares.» Los senadores que salen, de los datos."""
+
+    def test_provincial(self):
+        self.assertEqual(sn.como_se_vota("Albacete", [_g(None, 4)]),
+                         "Cada votante marca hasta tres nombres; salen los cuatro más votados.")
+
+    def test_ceuta_y_melilla_dos(self):
+        for c in ("Ceuta", "Melilla"):
+            self.assertEqual(sn.como_se_vota(c, [_g(None, 2)]),
+                             "Cada votante marca hasta dos nombres; salen los dos más votados.")
+
+    def test_islas_mayores_dos_y_menores_uno(self):
+        for isla in ("GRAN CANARIA", "MALLORCA", "TENERIFE"):
+            self.assertEqual(sn.votos_maximos("x", isla), 2)
+        for isla in ("MENORCA", "EIVISSA-FORMENTERA", "FUERTEVENTURA", "LANZAROTE", "LA PALMA", "LA GOMERA",
+                     "EL HIERRO"):
+            self.assertEqual(sn.votos_maximos("x", isla), 1)
+
+    def test_tenerife(self):
+        g = [_g("TENERIFE", 3), _g("LA PALMA", 1), _g("LA GOMERA", 1), _g("EL HIERRO", 1)]
+        self.assertEqual(sn.islas_texto(g),
+                         "Aquí se vota por islas: 3 senadores en Tenerife y 1 en La Palma, La Gomera y El Hierro.")
+        self.assertEqual(sn.como_se_vota("Santa Cruz de Tenerife", g),
+                         "Aquí se vota por islas: 3 senadores en Tenerife y 1 en La Palma, La Gomera y El Hierro. "
+                         "En Tenerife cada votante marca hasta dos nombres y salen los tres más votados; "
+                         "en La Palma, La Gomera y El Hierro marca un nombre y sale el más votado.")
+
+    def test_las_palmas(self):
+        g = [_g("GRAN CANARIA", 3), _g("LANZAROTE", 1), _g("FUERTEVENTURA", 1)]
+        self.assertEqual(sn.islas_texto(g),
+                         "Aquí se vota por islas: 3 senadores en Gran Canaria y 1 en Lanzarote y Fuerteventura.")
+
+    def test_baleares_desde_los_datos(self):
+        # Del fichero ficticio leído como una proclamación: islas y senadores.
+        g = _ficticio()["provincias"]["Balears (Illes)"]
+        self.assertEqual(sn.islas_texto(g),
+                         "Aquí se vota por islas: 3 senadores en Mallorca y 1 en Menorca y Eivissa-Formentera.")
+
+    def test_sale_de_los_datos_no_fijo(self):
+        # Si la proclamación trae otro número de senadores, la frase cambia.
+        self.assertIn("salen los dos más votados", sn.como_se_vota("Soria", [_g(None, 2)]))
+        self.assertIn("2 senadores en Tenerife", sn.islas_texto([_g("TENERIFE", 2), _g("EL HIERRO", 1)]))
+        self.assertEqual(sn.islas_texto([_g(None, 4)]), "")
+
+    def test_en_el_bloque(self):
+        h = build._bloque_senadores(_ficticio(), el.circ_congreso("Santa Cruz de Tenerife"))
+        self.assertIn('<p class="sen-como">Aquí se vota por islas: 3 senadores en Tenerife y 1 en La Palma, '
+                      'La Gomera y El Hierro.', h)
+        self.assertLess(h.index("sen-como"), h.index("<h3>TENERIFE</h3>"))
+        h = build._bloque_senadores(_ficticio(), "Soria")
+        self.assertIn('<p class="sen-como">Cada votante marca hasta tres nombres; salen los cuatro más votados.</p>', h)
+
+    def test_css(self):
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        for sel, cuerpo in re.findall(r"([^{}]+)\{([^}]*)\}", css):
+            if "sen-como" in sel:
+                self.assertNotIn("underline", cuerpo)
+                self.assertNotIn("border", cuerpo)
+                self.assertNotIn("background", cuerpo)
+
+
+class Eleccion(unittest.TestCase):
+    """La elección que se cita sale del título de la proclamación cargada; nada
+    de «29-N» fijo."""
+
+    def _bloque(self, titulo):
+        d = _ficticio()
+        d["fuente"] = {**d["fuente"], "titulo": titulo}
+        return build._bloque_senadores(d, "Soria")
+
+    def test_otra_eleccion_sin_29n(self):
+        h = self._bloque("Resolución de 30 de agosto de 2023, de la Presidencia de la Junta Electoral Central, por "
+                         "la que se publica el resumen de los resultados de las elecciones al Congreso de los "
+                         "Diputados y al Senado convocadas por Real Decreto 400/2023, de 29 de mayo, y celebradas "
+                         "el 23 de julio de 2023, conforme a las actas")
+        self.assertNotIn("29-N", h)
+        self.assertNotIn("29 de noviembre", h)
+        self.assertIn("por Soria en las elecciones generales del 23 de julio de 2023, tal como", h)
+
+    def test_la_del_29n_si_la_cita(self):
+        h = self._bloque("Resolución FICTICIA … convocadas por Real Decreto 806/2026, de 5 de octubre, y celebradas "
+                         "el 29 de noviembre de 2026, conforme a las actas")
+        self.assertIn("en las elecciones generales del 29 de noviembre de 2026, tal como", h)
+
+    def test_sin_fecha_no_se_supone(self):
+        h = self._bloque("Resolución FICTICIA sin fecha de elección (Real Decreto 806/2026)")
+        self.assertIn("Senadores proclamados electos por Soria, tal como", h)
+        self.assertNotIn("29-N", h)
+
+    def test_ningun_29n_fijo_en_el_modulo(self):
+        src = (RAIZ / "senadores.py").read_text(encoding="utf-8")
+        self.assertNotIn("del 29-N", src)
+
+
 class Manual(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

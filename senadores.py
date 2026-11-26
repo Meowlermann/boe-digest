@@ -289,6 +289,88 @@ def ordenados(senadores: list) -> list:
     return sorted(senadores or [], key=lambda s: -_entero(s.get("votos")))
 
 
+# --- cómo se vota (informe 50) --------------------------------------------------
+# Artículo 166.1.a) de la LOREG (Ley Orgánica 5/1985, BOE-A-1985-11672, texto
+# consolidado, consultado el 26-11-2026 en
+# https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientosesentayseis):
+# «Los electores pueden dar su voto a un máximo de tres candidatos en las
+# circunscripciones provinciales, dos en Gran Canaria, Mallorca, Tenerife, Ceuta
+# y Melilla, y uno en las restantes circunscripciones insulares.»
+# El informe 50 hablaba de «hasta tres nombres» en general, sin Ceuta ni
+# Melilla; manda la ley: tres en las provinciales, dos en Ceuta y Melilla.
+# Lo que sale de los datos: la circunscripción, sus islas y cuántos senadores
+# elige cada una (los de la proclamación). Lo único fijo es este máximo.
+VOTOS_MAXIMOS_PROVINCIA = 3
+VOTOS_MAXIMOS_CIUDAD = {"Ceuta": 2, "Melilla": 2}
+VOTOS_MAXIMOS_ISLA = {"GRAN CANARIA": 2, "MALLORCA": 2, "TENERIFE": 2}
+VOTOS_MAXIMOS_OTRA_ISLA = 1
+# Cómo se escribe cada isla en una frase (el encabezado del BOE va en mayúsculas).
+NOMBRE_ISLA = {"MALLORCA": "Mallorca", "MENORCA": "Menorca", "EIVISSA-FORMENTERA": "Eivissa-Formentera",
+               "GRAN CANARIA": "Gran Canaria", "FUERTEVENTURA": "Fuerteventura", "LANZAROTE": "Lanzarote",
+               "TENERIFE": "Tenerife", "LA PALMA": "La Palma", "LA GOMERA": "La Gomera", "EL HIERRO": "El Hierro"}
+_NUM = {1: "uno", 2: "dos", 3: "tres", 4: "cuatro"}
+
+
+def votos_maximos(prov: str, isla: str | None) -> int:
+    if isla:
+        return VOTOS_MAXIMOS_ISLA.get(isla, VOTOS_MAXIMOS_OTRA_ISLA)
+    return VOTOS_MAXIMOS_CIUDAD.get(prov, VOTOS_MAXIMOS_PROVINCIA)
+
+
+def _y(xs: list) -> str:
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " y " + xs[-1]
+
+
+def _marca(n: int) -> str:
+    return "un nombre" if n == 1 else f"hasta {_NUM[n]} nombres"
+
+
+def _salen(n: int) -> str:
+    return "sale el más votado" if n == 1 else f"salen los {_NUM[n]} más votados"
+
+
+def _por_islas(grupos: list) -> list:
+    """[(senadores, máximo, [islas])] en el orden del BOE, juntando las islas
+    que eligen lo mismo; primero las que eligen más."""
+    juntas: dict = {}
+    for g in grupos:
+        k = len(g["senadores"])
+        juntas.setdefault((k, votos_maximos("", g["isla"])), []).append(NOMBRE_ISLA.get(g["isla"], g["isla"]))
+    return sorted(((k, m, islas) for (k, m), islas in juntas.items()), key=lambda x: -x[0])
+
+
+def islas_texto(grupos: list) -> str:
+    """«Aquí se vota por islas: 3 senadores en Tenerife y 1 en La Palma, La
+    Gomera y El Hierro.» Vacío si la circunscripción no va por islas."""
+    if not any(g.get("isla") for g in grupos):
+        return ""
+    partes = [f"{k} {'senador' if k == 1 else 'senadores'} en {_y(islas)}" if i == 0 else f"{k} en {_y(islas)}"
+              for i, (k, _m, islas) in enumerate(_por_islas(grupos))]
+    return f"Aquí se vota por islas: {_y(partes)}."
+
+
+def como_se_vota(prov: str, grupos: list) -> str:
+    """Cómo se vota en esta circunscripción, según su tipo (art. 166.1.a LOREG)
+    y los senadores que elige según la proclamación."""
+    if any(g.get("isla") for g in grupos):
+        trozos = []
+        for i, (k, m, islas) in enumerate(_por_islas(grupos)):
+            trozos.append(f"en {_y(islas)} cada votante marca {_marca(m)} y {_salen(k)}" if i == 0 else
+                          f"en {_y(islas)} marca {_marca(m)} y {_salen(k)}")
+        frase = "; ".join(trozos)
+        return f"{islas_texto(grupos)} {frase[0].upper()}{frase[1:]}."
+    k = sum(len(g["senadores"]) for g in grupos)
+    return f"Cada votante marca {_marca(votos_maximos(prov, None))}; {_salen(k)}."
+
+
+def eleccion_texto(fuente: dict) -> str:
+    """« en las elecciones generales del 23 de julio de 2023»: la fecha tal
+    como la cita el título de la proclamación cargada («… y celebradas el …»).
+    Si el título no la trae, nada: no se supone ninguna elección."""
+    m = re.search(r"celebradas el (\d{1,2} de [a-záéíóú]+ de \d{4})", str(fuente.get("titulo") or ""))
+    return f" en las elecciones generales del {m.group(1)}" if m else ""
+
+
 def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
     """«Tus senadores» de una provincia. Vacío si no hay copia fija o la
     provincia no está en ella. Lista simple, sin tarjetas ni subrayados."""
@@ -312,9 +394,10 @@ def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
     return (
         f'<section class="sen-29n" id="tus-senadores" aria-labelledby="sen-tit">'
         f'<h2 id="sen-tit">Tus senadores</h2>'
-        f'<p class="sen-intro">Senadores proclamados electos por {_esc(nombre)} en las elecciones '
-        f'generales del 29-N, tal como los publica la Junta Electoral Central en el BOE. No incluye '
+        f'<p class="sen-intro">Senadores proclamados electos por {_esc(nombre)}{_esc(eleccion_texto(f))}, '
+        f'tal como los publica la Junta Electoral Central en el BOE. No incluye '
         f'a los senadores que designan los parlamentos autonómicos.</p>'
+        + f'<p class="sen-como">{_esc(como_se_vota(prov_rd, grupos))}</p>'
         + cuerpo
         + f'<p class="sen-fuente">Fuente: <a href="{_esc(url_boe(f["id"]))}">{_esc(f.get("titulo") or f["id"])}</a> '
           f'({_esc(f["literal"])}{pagina}).</p></section>')
