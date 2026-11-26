@@ -102,6 +102,13 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   proyecciones, en los pases diarios que ya existen. Si la descarga falla,
   el bloque no se muestra y se mantiene la última versión buena. Tiene que
   estar listo antes de que se publique la proclamación.
+- **«Tus senadores» en cada ficha de provincia.** Código preparado en la rama
+  `provincias/tus-senadores` (sin datos): `senadores.py` pinta el bloque en
+  `/diputados/provincia-*.html` solo si existe `curated/senadores_29n.json`,
+  que genera a mano `tools/generar_senadores.py --id BOE-A-…` con la
+  relación de senadores electos de la misma resolución de la JEC. Nunca desde
+  senado.es. La provincia que no esté clara no se publica. Falta la
+  proclamación real.
 - **#115 «Elecciones: imagen para redes por provincia»** (tanda E5, parte
   OG), fusionada y publicada el 22 de noviembre de 2026 (`4eb4d5d6`): un PNG por circunscripción en `og:image` y
   `twitter:image` de `/elecciones/2026/<slug>.html` y de

@@ -6553,6 +6553,31 @@ def renderizar_elecciones(fichas: list) -> list:
     return salidas
 
 
+def _senadores_29n() -> dict | None:
+    """Copia fija de los senadores electos (senadores.py), o None si no existe:
+    entonces ninguna ficha de provincia lleva «Tus senadores»."""
+    try:
+        import senadores as sn
+        datos = sn.cargar()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"senadores 29-N: no disponibles ({exc})")
+        return None
+    if datos:
+        log(f"senadores 29-N: {len(datos['provincias'])} provincias ({datos['fuente']['id']})")
+    return datos
+
+
+def _bloque_senadores(datos: dict | None, prov: str) -> str:
+    """«Tus senadores» de la ficha de provincia. `prov` es el nombre del
+    Congreso; la copia usa el del real decreto de convocatoria."""
+    if not datos:
+        return ""
+    import elecciones as el
+    import senadores as sn
+    rd = [c for c in datos.get("provincias") or {} if el.circ_congreso(c) == prov]
+    return sn.bloque_html(datos, rd[0], nombre_circunscripcion(prov)) if len(rd) == 1 else ""
+
+
 def renderizar_diputados(fichas: list) -> list:
     """La sección de parlamentarios: hemiciclo, filtros y una ficha por persona.
 
@@ -6749,6 +6774,8 @@ def renderizar_diputados(fichas: list) -> list:
     datos_rdl = vr.cargar()
     if not datos_rdl:
         log("votos_rdl: no hay curated/votos_rdl.json; fichas de provincia sin «¿Quién votó qué?»")
+    # «Tus senadores»: copia fija curated/senadores_29n.json (proclamación de la JEC).
+    datos_sen = _senadores_29n()
     for prov, gente in sorted(por_prov.items()):
         ps = _slug_txt(prov)
         url = f"{SITE_URL}diputados/provincia-{ps}.html"
@@ -6784,6 +6811,7 @@ def renderizar_diputados(fichas: list) -> list:
             cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
             + FAQ_ELECCIONES.get(prov, "")
             + vr.bloque_html(datos_rdl, gente, nombre_circunscripcion(prov), prov)
+            + _bloque_senadores(datos_sen, prov)
             + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),
