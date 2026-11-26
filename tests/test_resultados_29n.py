@@ -20,7 +20,8 @@ import elecciones as el  # noqa: E402
 import resultados_29n as rs  # noqa: E402
 
 FICT = RAIZ / "tests" / "ficticios_resultados"
-FUENTE = {"id": "BOE-A-2099-00000", "titulo": "Resolución FICTICIA de prueba",
+FUENTE = {"id": "BOE-A-2099-00000",
+          "titulo": "Resolución FICTICIA de prueba (resultados de las elecciones convocadas por Real Decreto 806/2026)",
           "literal": "BOE núm. 999, de 31/12/2099"}
 
 
@@ -32,6 +33,10 @@ def _ficticio():
     xml = (FICT / "jec_ficticia.xml").read_text(encoding="utf-8")
     txt = (FICT / "jec_ficticia.txt").read_text(encoding="utf-8")
     return rs.construir(xml, txt, FUENTE, _circs())
+
+
+def _manual():
+    return json.loads((FICT / "manual_ficticio.json").read_text(encoding="utf-8"))
 
 
 def _paginas(resultados):
@@ -125,6 +130,38 @@ class Render(unittest.TestCase):
         con = [n for n, f in self.con.items() if 'class="rof"' in f["CUERPO"]]
         self.assertEqual(sorted(con), ["albacete.html", "soria.html"])
 
+    def test_salto_arriba_solo_con_datos(self):
+        salto = '<p class="rof-salto"><a href="#resultados">Resultados oficiales&nbsp;↓</a></p>'
+        for n, f in self.con.items():
+            c = f["CUERPO"]
+            if n in ("albacete.html", "soria.html"):
+                self.assertTrue(c.startswith(salto), n)            # arriba del todo
+                self.assertEqual(c.count(salto), 1, n)
+                self.assertEqual(c.count('id="resultados"'), 1, n)  # el ancla existe, una vez
+            else:
+                self.assertNotIn("rof-salto", c, n)
+        for n, f in self.sin.items():
+            self.assertNotIn("rof-salto", f["CUERPO"], n)
+
+    def test_tras_el_indice(self):
+        c = self.con["albacete.html"]["CUERPO"]
+        self.assertLess(c.index('class="elec-indice"'), c.index('class="rof"'))
+        self.assertLess(c.index('class="rof"'), c.index('class="elec-cand"'))
+        self.assertLess(c.index('class="elec-intro"'), c.index('class="elec-indice"'))
+
+    def test_css_salto_sin_subrayado(self):
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        reglas = {s.strip(): c for s, c in re.findall(r"([^{}]+)\{([^}]*)\}", css)}
+        clave = [s for s in reglas if ".rof-salto a:hover" in s]
+        self.assertEqual(len(clave), 1)
+        selectores = [x.strip() for x in clave[0].split(",")]
+        for estado in ("a", "a:hover", "a:focus", "a:focus-visible"):
+            self.assertIn(f".rof-salto {estado}", selectores)
+        for sel, cuerpo in reglas.items():
+            if ".rof-salto" in sel:
+                self.assertNotIn("underline", cuerpo, sel)
+        self.assertIn("text-decoration:none", reglas[clave[0]])
+
     def test_bloque(self):
         c = self.con["albacete.html"]["CUERPO"]
         self.assertEqual(c.count('<h2 id="rof-tit">Resultados oficiales</h2>'), 1)
@@ -133,7 +170,6 @@ class Render(unittest.TestCase):
         self.assertIn("https://www.boe.es/diario_boe/txt.php?id=BOE-A-2099-00000", c)
         self.assertIn("BOE núm. 999, de 31/12/2099", c)
         self.assertNotIn("%", c[c.index('class="rof"'):c.index("</section>")])   # sin porcentajes
-        self.assertLess(c.index('class="rof"'), c.index('class="elec-cand"'))
 
     def test_75_intacto(self):
         for n in self.sin:
@@ -144,7 +180,8 @@ class Render(unittest.TestCase):
     def test_resto_igual(self):
         # Fuera del bloque, la página es la misma.
         for n in ("albacete.html", "teruel.html", "index.html"):
-            c = re.sub(r'<section class="rof".*?</section>', "", self.con[n]["CUERPO"], flags=re.S)
+            c = re.sub(r'<section class="rof".*?</section>|<p class="rof-salto">.*?</p>', "",
+                       self.con[n]["CUERPO"], flags=re.S)
             self.assertEqual(c, self.sin[n]["CUERPO"], n)
 
     def test_css_sin_subrayado_ni_tarjeta(self):
@@ -158,6 +195,92 @@ class Render(unittest.TestCase):
         self.assertIn("text-decoration:none", dict((s.strip(), c) for s, c in reglas)[".rof-fuente a"])
 
 
+class Manual(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.d = rs.combinar(_ficticio(), _manual(), set(_circs()))
+
+    def test_entra_la_curada(self):
+        self.assertEqual(sorted(self.d["circunscripciones"]), ["Albacete", "Soria", "Teruel"])
+        self.assertTrue(self.d["circunscripciones"]["Teruel"]["manual"])
+
+    def test_descartadas(self):
+        m = self.d["manual_descartadas"]
+        self.assertIn("página", m["Cuenca"])
+        self.assertIn("automática", m["Albacete"])                 # manda la automática
+        self.assertIn("misma proclamación", m["Huesca"])
+        self.assertNotIn("Duplicado", json.dumps(self.d["circunscripciones"], ensure_ascii=False))
+
+    def test_no_cuadra_no_se_publica(self):
+        m = _manual()
+        m["circunscripciones"]["Teruel"]["electos"].pop()
+        d = rs.combinar(_ficticio(), m, set(_circs()))
+        self.assertNotIn("Teruel", d["circunscripciones"])
+        self.assertIn("electos 1", d["manual_descartadas"]["Teruel"])
+
+    def test_render_con_pagina_y_nota(self):
+        h = rs.bloque_html(self.d, "Teruel", "Teruel")
+        self.assertIn("(BOE núm. 999, de 31/12/2099, página 1).", h)
+        self.assertIn('<span class="rof-nota">(proclamado electo tras una renuncia ficticia)</span>', h)
+        self.assertNotIn("página", rs.bloque_html(self.d, "Albacete", "Albacete"))
+
+    def test_borrador_para_curar(self):
+        b = _ficticio()["borradores"]
+        self.assertEqual(b["Teruel"]["fuente"], {"id": "BOE-A-2099-00000", "pagina": "1"})
+        self.assertEqual(b["Teruel"]["electos"], [])                # se copian a mano del PDF
+        self.assertEqual(b["Cuenca"]["fuente"]["pagina"], "2")
+
+
+class NuncaEnProduccion(unittest.TestCase):
+    """Los datos de 2023 (capturas de prueba) y la marca «DATOS DE PRUEBA 2023»
+    no pueden llegar a un render: cargar() solo acepta la proclamación de las
+    elecciones del Real Decreto 806/2026 y rechaza la marca."""
+
+    def _escribe(self, datos, manual=None):
+        tmp = pathlib.Path(tempfile.mkdtemp())
+        (tmp / "r.json").write_text(json.dumps(datos, ensure_ascii=False), encoding="utf-8")
+        if manual is not None:
+            (tmp / "m.json").write_text(json.dumps(manual, ensure_ascii=False), encoding="utf-8")
+        return tmp / "r.json", tmp / "m.json"
+
+    def test_otra_convocatoria_no_carga(self):
+        d = _ficticio()
+        d["fuente"] = {**d["fuente"], "titulo": "Resolución (elecciones convocadas por Real Decreto 400/2023)"}
+        self.assertIsNone(rs.cargar(*self._escribe(d)))
+
+    def test_marca_de_prueba_no_carga(self):
+        d = _ficticio()
+        d["fuente"] = {**d["fuente"], "literal": "DATOS DE PRUEBA 2023 · " + d["fuente"]["literal"]}
+        self.assertIsNone(rs.cargar(*self._escribe(d)))
+        m = _manual()
+        m["circunscripciones"]["Teruel"]["electos"][1]["nombre"] += " DATOS DE PRUEBA 2023"
+        ok = rs.cargar(*self._escribe(_ficticio(), m))
+        self.assertNotIn("Teruel", ok["circunscripciones"])
+
+    def test_manual_sola_no_pinta(self):
+        r, m = self._escribe(_ficticio(), _manual())
+        r.unlink()
+        self.assertIsNone(rs.cargar(r, m))
+
+    def test_build_usa_cargar(self):
+        # build no tiene otra vía: si cargar() da None, el bloque no existe.
+        orig = rs.cargar
+        try:
+            rs.cargar = lambda *a, **k: None
+            self.assertIsNone(build._resultados_29n())
+        finally:
+            rs.cargar = orig
+
+    def test_repo_sin_datos_2023_ni_marca(self):
+        for p in list((RAIZ / "curated").rglob("*")) + [RAIZ / "resultados_29n.py", RAIZ / "elecciones.py",
+                                                       RAIZ / "build.py"]:
+            if p.is_file() and p.suffix in (".json", ".py", ".md", ".txt"):
+                t = p.read_text(encoding="utf-8", errors="ignore")
+                self.assertNotIn("DATOS DE PRUEBA 2023", t, p)
+                self.assertNotIn("BOE-A-2023-18907", t if p.parent.name == "curated" else "", p)
+        self.assertFalse(rs.DATOS.exists() and "BOE-A-2023-18907" in rs.DATOS.read_text(encoding="utf-8"))
+
+
 class FicticiosSoloEnTests(unittest.TestCase):
     def test_curated_limpio(self):
         for p in (RAIZ / "curated").rglob("*"):
@@ -165,6 +288,7 @@ class FicticiosSoloEnTests(unittest.TestCase):
                 t = p.read_text(encoding="utf-8", errors="ignore")
                 self.assertNotIn("FICT-A", t, p)
                 self.assertNotIn("BOE-A-2099-", t, p)
+                self.assertNotIn("ictici", t, p)
 
 
 if __name__ == "__main__":

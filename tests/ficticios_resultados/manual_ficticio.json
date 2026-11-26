@@ -1,0 +1,42 @@
+{
+ "_aviso": "FICTICIO: datos inventados para tests. No es el BOE. No copiar a curated/.",
+ "circunscripciones": {
+  "Teruel": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": "1"},
+   "escanos": "2",
+   "candidaturas": [
+    {"nombre": "Candidatura Ficticia A (FICT-A)", "votos": "555", "escanos": "1"},
+    {"nombre": "Candidatura Ficticia B (FICT-B)", "votos": "666", "escanos": "1"},
+    {"nombre": "Candidatura Ficticia C sin escaño (FICT-C)", "votos": "7", "escanos": null}
+   ],
+   "electos": [
+    {"nombre": "Don Ficticio Seis Ejemplo", "formacion": "CANDIDATURA FICTICIA A", "nota": "(proclamado electo tras una renuncia ficticia)"},
+    {"nombre": "Doña Ficticia Siete Ejemplo", "formacion": "CANDIDATURA FICTICIA B"}
+   ]
+  },
+  "Cuenca": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": ""},
+   "escanos": "2",
+   "candidaturas": [
+    {"nombre": "Candidatura Ficticia A (FICT-A)", "votos": "777", "escanos": "1"},
+    {"nombre": "Candidatura Ficticia B (FICT-B)", "votos": "888", "escanos": "1"}
+   ],
+   "electos": [
+    {"nombre": "Don Ficticio Ocho Ejemplo", "formacion": "CANDIDATURA FICTICIA A"},
+    {"nombre": "Doña Ficticia Nueve Ejemplo", "formacion": "CANDIDATURA FICTICIA B"}
+   ]
+  },
+  "Albacete": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": "1"},
+   "escanos": "1",
+   "candidaturas": [{"nombre": "Candidatura Ficticia A (FICT-A)", "votos": "1", "escanos": "1"}],
+   "electos": [{"nombre": "Don Ficticio Duplicado Ejemplo", "formacion": "CANDIDATURA FICTICIA A"}]
+  },
+  "Huesca": {
+   "fuente": {"id": "BOE-A-2099-11111", "pagina": "1"},
+   "escanos": "1",
+   "candidaturas": [{"nombre": "Candidatura Ficticia A (FICT-A)", "votos": "1", "escanos": "1"}],
+   "electos": [{"nombre": "Don Ficticio Otra Fuente Ejemplo", "formacion": "CANDIDATURA FICTICIA A"}]
+  }
+ }
+}

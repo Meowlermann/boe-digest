@@ -2066,3 +2066,8 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rof-fuente{margin:.5rem 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .rof-fuente a{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
 .rof-fuente a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.rof-salto{margin:0 0 .5rem;font-size:15px}
+.rof-salto a,.rof-salto a:hover,.rof-salto a:focus,.rof-salto a:focus-visible,.rof-salto a:active{color:var(--red-ink,var(--red));text-decoration:none;font-weight:600}
+.rof-salto a{display:inline-block;min-height:32px;line-height:32px}
+.rof-salto a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.rof-nota{display:block;font-size:13px;color:var(--ink-soft);font-style:italic}

@@ -200,11 +200,24 @@ se usa el escrutinio provisional, Infoelectoral ni ninguna otra web.
    (por ejemplo, una nota de renuncia). Con la resolución de 2023
    (BOE-A-2023-18907) como prueba salieron 51 de 52: Madrid quedó fuera por la
    nota de una renuncia.
-3. Si todo es correcto, repetir con `--escribir`. Las circunscripciones fuera no
-   se completan a mano.
-4. Si el BOE publica una corrección de errores de la resolución, la herramienta
+3. Si todo es correcto, repetir con `--escribir`.
+4. Las circunscripciones que quedan fuera se pueden curar a mano en
+   `curated/resultados_29n_manual.json`:
+   - `--borrador /tmp/borrador.json` escribe, fuera de `curated/`, un punto de
+     partida por cada excluida: el identificador BOE y las páginas de su
+     relación de electos, los escaños y las candidaturas leídas de los cuadros,
+     y `electos` vacío.
+   - Los electos se copian literalmente del PDF del BOE: nombre, formación y,
+     si la hay, la nota tal cual (`"nota": "(proclamada electa tras …)"`).
+     Cada cifra del borrador se revisa contra el PDF.
+   - Cada circunscripción lleva `"fuente": {"id": "<el mismo BOE-A-…>",
+     "pagina": "N"}` (o «N y M»). En la página se cita la página del BOE.
+   - Al pintar se descarta, con su motivo, la que no cuadre (escaños, suma y
+     electos), no tenga página, cite otra resolución o ya esté en la copia
+     automática. Sin la copia automática, la manual no se usa.
+5. Si el BOE publica una corrección de errores de la resolución, la herramienta
    no la aplica: parar y avisar a Dirección.
-5. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
+6. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
 
 ## Timeouts de Pages en el primer despliegue de un SHA
 

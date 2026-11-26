@@ -57,6 +57,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--id", required=True, help="identificador BOE-A-… de la resolución de la JEC")
     ap.add_argument("--escribir", action="store_true")
+    ap.add_argument("--borrador", type=pathlib.Path,
+                    help="escribe aquí (fuera de curated/) el punto de partida para curar a mano las excluidas")
     a = ap.parse_args()
     if not re.fullmatch(r"BOE-A-\d{4}-\d+", a.id):
         print("identificador no válido", file=sys.stderr)
@@ -80,12 +82,19 @@ def main() -> int:
         print(f"  fuera: {c}: {motivo}")
     for av in datos["avisos"]:
         print(f"  aviso: {av}")
+    if a.borrador and datos["borradores"]:
+        a.borrador.write_text(json.dumps({"circunscripciones": datos["borradores"]}, ensure_ascii=False,
+                                         indent=1) + "\n", encoding="utf-8")
+        print(f"borrador de {len(datos['borradores'])} circunscripciones en {a.borrador}: completar «electos» "
+              "copiando literal del PDF y revisar cada cifra con el PDF antes de pasarlo a "
+              "curated/resultados_29n_manual.json")
     err = rs.validar(datos)
     if err:
         print("no válido:", *err, sep="\n  ", file=sys.stderr)
         return 1
     if a.escribir:
         datos.pop("avisos", None)
+        datos.pop("borradores", None)
         rs.DATOS.write_text(json.dumps(datos, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         print(f"escrito {rs.DATOS.relative_to(RAIZ)}")
     return 0

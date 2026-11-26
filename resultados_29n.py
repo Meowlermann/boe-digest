@@ -157,26 +157,49 @@ def _bloque(texto: str, titulo: str, fin: tuple) -> list:
     return out
 
 
+def _pagina_inicial(texto: str, titulo: str) -> str | None:
+    """Página del BOE en la que empieza la sección: la última cabecera
+    «… Pág. N» antes de su título."""
+    pag = ultima = None
+    for l in texto.splitlines():
+        s = l.strip()
+        mp = re.search(r"Pág\. (\d+)\s*$", s)
+        if mp:
+            pag = mp.group(1)
+        if s == titulo:
+            ultima = pag
+    return ultima
+
+
 def parsear_electos(texto_pdf: str, circs_validas: set, titulo: str = TITULO_SECCION_ELECTOS,
-                    fin: tuple = FIN_ELECTOS) -> tuple[dict, dict]:
+                    fin: tuple = FIN_ELECTOS) -> tuple[dict, dict, dict]:
     """Relación de electos del PDF (pdftotext -layout).
 
     Una línea es encabezado de circunscripción si su texto es exactamente uno de
     `circs_validas`; es persona si empieza por «Don/Doña» y tiene el nombre y la
     formación separados por dos o más espacios. Cualquier otra línea dentro de
     una circunscripción (nombre partido en dos renglones, una nota) la deja
-    fuera. Devuelve ({circ: [{"nombre", "formacion"}]}, {circ: motivo}).
+    fuera. Devuelve ({circ: [{"nombre", "formacion"}]}, {circ: motivo},
+    {circ: [páginas del BOE donde está]}); las páginas sirven para curar a mano.
     """
     electos: dict = {}
     dudosas: dict = {}
+    paginas: dict = {}
     actual = None
+    pag = _pagina_inicial(texto_pdf, titulo)
     for l in _bloque(texto_pdf, titulo, fin):
         s = l.strip()
+        mp = re.search(r"Pág\. (\d+)\s*$", s)
+        if mp:
+            pag = mp.group(1)
         if not s or _PIE.match(s) or s.startswith("Elecciones Generales de"):
             continue
         if s in circs_validas:
             actual = s
             electos.setdefault(actual, [])
+        if actual and pag and pag not in paginas.setdefault(actual, []):
+            paginas[actual].append(pag)
+        if s == actual:
             continue
         m = _PERSONA.match(s)
         if actual and m:
@@ -186,17 +209,33 @@ def parsear_electos(texto_pdf: str, circs_validas: set, titulo: str = TITULO_SEC
             dudosas.setdefault(actual, f"línea no reconocida: «{s}»")
         else:
             dudosas.setdefault("(antes de la primera circunscripción)", f"línea no reconocida: «{s}»")
-    return electos, dudosas
+    return electos, dudosas, paginas
+
+
+def _cuadra(d: dict) -> str:
+    """Vacío si escaños totales = suma de escaños de las candidaturas = electos."""
+    try:
+        total = int(str(d.get("escanos") or "").replace(".", ""))
+        suma = sum(int(str(k.get("escanos") or "0").replace(".", "")) for k in d.get("candidaturas") or [])
+    except ValueError:
+        return "escaños no numéricos"
+    n = len(d.get("electos") or [])
+    if not (total and total == suma == n):
+        return f"escaños {d.get('escanos')}, suma de candidaturas {suma}, electos {n}"
+    return ""
 
 
 # ---------------------------------------------------------------- construcción
 def construir(xml: str, texto_pdf: str, fuente: dict, circs_rd: list) -> dict:
     """Junta cuadros y electos. Solo entra la circunscripción que casa exacta con
     el real decreto de convocatoria y cuyos números cuadran entre sí:
-    electos = escaños totales = suma de escaños de las candidaturas."""
+    electos = escaños totales = suma de escaños de las candidaturas.
+    «borradores» trae, para cada excluida, lo leído de los cuadros y las
+    páginas del BOE de su relación de electos: el punto de partida para curarla
+    a mano (curated/resultados_29n_manual.json)."""
     validas = set(circs_rd)
     cuadros, avisos = parsear_cuadros(xml)
-    electos, dudosas = parsear_electos(texto_pdf, validas)
+    electos, dudosas, paginas = parsear_electos(texto_pdf, validas)
     circs, excluidas = {}, {}
     for c in circs_rd:
         d = cuadros.get(c)
@@ -209,21 +248,32 @@ def construir(xml: str, texto_pdf: str, fuente: dict, circs_rd: list) -> dict:
         if c in dudosas:
             excluidas[c] = dudosas[c]
             continue
-        e = electos.get(c) or []
-        try:
-            total = int((d["escanos"] or "").replace(".", ""))
-            suma = sum(int((k["escanos"] or "0").replace(".", "")) for k in d["candidaturas"])
-        except ValueError:
-            excluidas[c] = "escaños no numéricos"
+        cand = {"escanos": d["escanos"], "candidaturas": d["candidaturas"], "electos": electos.get(c) or []}
+        motivo = _cuadra(cand)
+        if motivo:
+            excluidas[c] = motivo
             continue
-        if not (total and total == suma == len(e)):
-            excluidas[c] = f"escaños {d['escanos']}, suma de candidaturas {suma}, electos {len(e)}"
-            continue
-        circs[c] = {"escanos": d["escanos"], "candidaturas": d["candidaturas"], "electos": e}
+        circs[c] = cand
     for c in cuadros:
         if c not in validas:
             excluidas.setdefault(c, "nombre que no casa con el real decreto de convocatoria")
-    return {"fuente": fuente, "circunscripciones": circs, "excluidas": excluidas, "avisos": avisos}
+    borradores = {
+        c: {"fuente": {"id": fuente.get("id"), "pagina": " y ".join(paginas.get(c) or [])},
+            "escanos": (cuadros.get(c) or {}).get("escanos"),
+            "candidaturas": (cuadros.get(c) or {}).get("candidaturas") or [],
+            "electos": []}
+        for c in excluidas if c in validas}
+    return {"fuente": fuente, "circunscripciones": circs, "excluidas": excluidas, "avisos": avisos,
+            "borradores": borradores}
+
+
+# ------------------------------------------------------------------- copia fija
+# Solo la proclamación de estas elecciones: una copia de otras (por ejemplo, la
+# de 2023 que se usa para las capturas de prueba) no pasa la validación y no se
+# pinta nunca.
+CONVOCATORIA = "Real Decreto 806/2026"
+MARCA_PRUEBA = "DATOS DE PRUEBA"
+DATOS_MANUAL = RAIZ / "curated" / "resultados_29n_manual.json"
 
 
 def validar(datos) -> list:
@@ -236,6 +286,10 @@ def validar(datos) -> list:
         err.append("fuente.id no es un identificador del BOE")
     if not f.get("literal"):
         err.append("falta fuente.literal")
+    if CONVOCATORIA not in str(f.get("titulo") or ""):
+        err.append(f"fuente.titulo no es la proclamación de las elecciones del {CONVOCATORIA}")
+    if MARCA_PRUEBA in json.dumps(datos, ensure_ascii=False):
+        err.append("lleva la marca de datos de prueba")
     for c, d in (datos.get("circunscripciones") or {}).items():
         for k in d.get("candidaturas") or []:
             if not (k.get("nombre") and k.get("votos")):
@@ -243,37 +297,121 @@ def validar(datos) -> list:
         for e in d.get("electos") or []:
             if not (e.get("nombre") and e.get("formacion")):
                 err.append(f"{c}: electo sin nombre o sin formación")
+        if _cuadra(d):
+            err.append(f"{c}: {_cuadra(d)}")
     return err
 
 
-def cargar(ruta: pathlib.Path = DATOS) -> dict | None:
-    """La copia fija, o None si no existe o no es válida (y no se pinta nada)."""
+def validar_manual(circ: str, d, fuente: dict, circs_rd) -> str:
+    """Motivo por el que una circunscripción curada a mano no se publica, o vacío.
+
+    Se copia literal del PDF del BOE y lleva como fuente el mismo identificador
+    de la proclamación y la página. Tiene que cuadrar igual que la automática."""
+    if circs_rd is not None and circ not in circs_rd:
+        return "nombre que no casa con el real decreto de convocatoria"
+    if not isinstance(d, dict):
+        return "no es un objeto"
+    fm = d.get("fuente") or {}
+    if fm.get("id") != fuente.get("id"):
+        return "la fuente no es la misma proclamación"
+    if not re.fullmatch(r"\d+(?:(?:, | y |-)\d+)*", str(fm.get("pagina") or "")):
+        return "falta la página del BOE"
+    for k in d.get("candidaturas") or []:
+        if not (k.get("nombre") and k.get("votos")):
+            return "candidatura sin nombre o sin votos"
+    if not d.get("candidaturas"):
+        return "sin candidaturas"
+    for e in d.get("electos") or []:
+        if not (e.get("nombre") and e.get("formacion")):
+            return "electo sin nombre o sin formación"
+    if MARCA_PRUEBA in json.dumps(d, ensure_ascii=False):
+        return "lleva la marca de datos de prueba"
+    return _cuadra(d)
+
+
+def combinar(datos: dict, manual: dict | None, circs_rd=None) -> dict:
+    """Añade las circunscripciones curadas a mano que la automática dejó fuera.
+    Si la automática ya la tiene, manda la automática. Si la manual no cuadra,
+    no se publica (y se apunta por qué en «manual_descartadas»)."""
+    if not manual:
+        return datos
+    out = {**datos, "circunscripciones": dict(datos.get("circunscripciones") or {}),
+           "manual_descartadas": {}}
+    for c, d in (manual.get("circunscripciones") or {}).items():
+        if c in out["circunscripciones"]:
+            out["manual_descartadas"][c] = "ya está en la copia automática"
+            continue
+        motivo = validar_manual(c, d, datos.get("fuente") or {}, circs_rd)
+        if motivo:
+            out["manual_descartadas"][c] = motivo
+            continue
+        out["circunscripciones"][c] = {**d, "manual": True}
+    return out
+
+
+def _circs_rd():
+    try:
+        import elecciones as el
+        return {c["circunscripcion"] for c in el.cargar()["circunscripciones"]}
+    except Exception:                                         # noqa: BLE001
+        return None
+
+
+def cargar(ruta: pathlib.Path = DATOS, ruta_manual: pathlib.Path = DATOS_MANUAL) -> dict | None:
+    """La copia fija (más las curadas a mano), o None si no existe o no es
+    válida: entonces no se pinta nada. Sin copia automática, la manual sola no
+    se usa."""
     try:
         datos = json.loads(ruta.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
-    return datos if not validar(datos) else None
+    if validar(datos):
+        return None
+    try:
+        manual = json.loads(ruta_manual.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        manual = None
+    return combinar(datos, manual, _circs_rd())
 
 
 # ------------------------------------------------------------------- render
+ANCLA = "resultados"
+
+
+def hay_bloque(datos: dict | None, circ_rd: str) -> bool:
+    return bool(datos and (datos.get("circunscripciones") or {}).get(circ_rd))
+
+
+def salto_html(datos: dict | None, circ_rd: str) -> str:
+    """Una línea arriba del todo que lleva al bloque, solo si hay bloque."""
+    if not hay_bloque(datos, circ_rd):
+        return ""
+    return f'<p class="rof-salto"><a href="#{ANCLA}">Resultados oficiales&nbsp;↓</a></p>'
+
+
 def bloque_html(datos: dict | None, circ_rd: str, nombre: str) -> str:
     """«Resultados oficiales» de una circunscripción. Vacío si no hay copia fija
     o la circunscripción no está en ella. Sin tarjetas ni subrayados: una tabla
     y una lista, con la fuente al pie."""
-    if not datos:
+    if not hay_bloque(datos, circ_rd):
         return ""
-    d = (datos.get("circunscripciones") or {}).get(circ_rd)
-    if not d:
-        return ""
+    d = datos["circunscripciones"][circ_rd]
     f = datos["fuente"]
     filas = "".join(
         f'<tr><th scope="row">{_esc(k["nombre"])}</th><td>{_esc(k["votos"])}</td>'
         f'<td>{_esc(k["escanos"] if k.get("escanos") is not None else "—")}</td></tr>'
         for k in d["candidaturas"])
-    electos = "".join(f'<li>{_esc(e["nombre"])} <span class="rof-form">{_esc(e["formacion"])}</span></li>'
-                      for e in d.get("electos") or [])
+    electos = "".join(
+        f'<li>{_esc(e["nombre"])}'
+        + (f' <span class="rof-nota">{_esc(e["nota"])}</span>' if e.get("nota") else "")
+        + f' <span class="rof-form">{_esc(e["formacion"])}</span></li>'
+        for e in d.get("electos") or [])
+    pagina = ""
+    if d.get("manual"):
+        pg = str((d.get("fuente") or {}).get("pagina") or "")
+        pagina = f", {'páginas' if re.search(r'[ ,-]', pg) else 'página'} {_esc(pg)}"
     return (
-        f'<section class="rof" id="resultados" aria-labelledby="rof-tit">'
+        f'<section class="rof" id="{ANCLA}" aria-labelledby="rof-tit">'
         f'<h2 id="rof-tit">Resultados oficiales</h2>'
         f'<p class="rof-intro">Proclamados por la Junta Electoral Central para {_esc(nombre)}: '
         f'{_esc(d["escanos"])} {"escaño" if str(d["escanos"]) == "1" else "escaños"}. '
@@ -283,4 +421,4 @@ def bloque_html(datos: dict | None, circ_rd: str, nombre: str) -> str:
         f'<th scope="col">Escaños</th></tr></thead><tbody>{filas}</tbody></table></div>'
         + (f'<h3>Diputados proclamados electos</h3><ol class="rof-electos">{electos}</ol>' if electos else "")
         + f'<p class="rof-fuente">Fuente: <a href="{_esc(url_boe(f["id"]))}">{_esc(f.get("titulo") or f["id"])}</a> '
-          f'({_esc(f["literal"])}).</p></section>')
+          f'({_esc(f["literal"])}{pagina}).</p></section>')
