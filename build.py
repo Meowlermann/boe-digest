@@ -6562,6 +6562,8 @@ def renderizar_elecciones(fichas: list) -> list:
         "site_url": SITE_URL, "carpeta": ELECCIONES_DIR, "jsonld_script": jsonld_script,
         "nombre": nombre_circunscripcion, "slug": _slug_txt,
         "resultados": _resultados_29n(),
+        # «Tus senadores ↓» junto a «Resultados oficiales ↓»: lleva a la ficha de provincia.
+        "senadores": _senadores_29n(),
     }, datos, fichas)
     escribir_si_cambia(ELECCIONES_DIR.parent / "index.html", el.redireccion_html(SITE_URL))
     log(f"elecciones/2026/: {len(salidas)} páginas (y /elecciones/ redirige al hub)")

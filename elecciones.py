@@ -873,12 +873,24 @@ def _resultados(h: dict, circ_rd: str, nombre: str) -> str:
     return rs.bloque_html(h["resultados"], circ_rd, nombre)
 
 
-def _salto_resultados(h: dict, circ_rd: str) -> str:
-    """«Resultados oficiales ↓», arriba del todo, solo si hay bloque."""
-    if not h.get("resultados"):
+def _salto_senadores(h: dict, circ_rd: str, slug: str) -> str:
+    """«Tus senadores ↓»: solo si la copia de senadores (h["senadores"]) trae
+    esta provincia. El bloque está en otra página, la ficha de provincia de
+    /diputados/, así que el enlace lleva a esa ficha y a su ancla."""
+    import senadores as sn
+    if not sn.hay_bloque(h.get("senadores"), circ_rd):
+        return ""
+    return f'<a href="/diputados/provincia-{_esc(slug)}.html#{sn.ANCLA}">Tus senadores&nbsp;↓</a>'
+
+
+def _salto_resultados(h: dict, circ_rd: str, slug: str = "") -> str:
+    """«Resultados oficiales ↓» (y «Tus senadores ↓» al lado), arriba del todo,
+    solo si hay datos."""
+    junto = _salto_senadores(h, circ_rd, slug) if slug else ""
+    if not h.get("resultados") and not junto:
         return ""
     import resultados_29n as rs
-    return rs.salto_html(h["resultados"], circ_rd)
+    return rs.salto_html(h.get("resultados"), circ_rd, junto)
 
 
 def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
@@ -918,7 +930,7 @@ def generar_paginas(h: dict, datos: dict, fichas: list) -> list:
                          for k in prof)
         nota_np = nota_no_proclamadas(c)
         n = c["escanos"]
-        cuerpo = (_salto_resultados(h, c["circunscripcion"])
+        cuerpo = (_salto_resultados(h, c["circunscripcion"], slug)
                   + f'<p class="elec-intro">Elecciones generales del {_esc(datos["fecha_literal"])}. '
                   f'{frase_escanos(c, nombre, datos)}. Estas son las {len(prof)} '
                   f'candidaturas proclamadas, en el orden del BOE, con sus titulares y suplentes.</p>'

@@ -59,7 +59,7 @@ class Lectura(unittest.TestCase):
             {"nombre": "Doña Ficticia Tres Ejemplo", "formacion": "CANDIDATURA FICTICIA B", "votos": "999"},
             {"nombre": "Don Ficticio Cuatro Ejemplo", "formacion": "CANDIDATURA FICTICIA B", "votos": "998"}]}])
         islas = [g["isla"] for g in self.d["provincias"]["Balears (Illes)"]]
-        self.assertEqual(islas, ["MALLORCA", "MENORCA", "EIVISSA-FORMENTERA"])
+        self.assertEqual(islas, ["MALLORCA", "MENORCA", "EIVISSA", "FORMENTERA"])  # literal del encabezado
 
     def test_ni_diputados_ni_candidatos_sin_escano(self):
         todos = json.dumps(self.d["provincias"], ensure_ascii=False)
@@ -88,10 +88,13 @@ def _manual():
 
 
 class Articulo165(unittest.TestCase):
-    """Número de senadores por provincia del artículo 165 de la LOREG: cuatro
-    por provincia; tres en Gran Canaria, Mallorca y Tenerife; uno en Ibiza-
+    """Número de senadores por provincia del artículo 165 de la LOREG vigente
+    (https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientosesentaycinco),
+    con el apartado 2 que redacta la LO 2/2026 (BOE-A-2026-14329, en vigor desde
+    el 3-7-2026): «tres en Gran Canaria, Mallorca y Tenerife; uno en Ibiza,
     Formentera, Menorca, Fuerteventura, La Gomera, El Hierro, Lanzarote y La
-    Palma; dos en Ceuta y dos en Melilla. 208 en total."""
+    Palma»; cuatro por provincia; dos en Ceuta y dos en Melilla. 209 en total
+    (208 hasta la LO 2/2026, cuando Ibiza y Formentera eran una sola)."""
 
     def _esperado(self, prov):
         if prov in sn.ISLAS:
@@ -101,8 +104,9 @@ class Articulo165(unittest.TestCase):
     def test_tabla(self):
         provs = _provs()
         self.assertEqual(len(provs), 52)
-        self.assertEqual(sum(self._esperado(p) for p in provs), 208)
-        self.assertEqual(sn.ISLAS["Balears (Illes)"], {"MALLORCA": 3, "MENORCA": 1, "EIVISSA-FORMENTERA": 1})
+        self.assertEqual(sum(self._esperado(p) for p in provs), 209)
+        self.assertEqual(sn.ISLAS["Balears (Illes)"], {"MALLORCA": 3, "MENORCA": 1, "IBIZA": 1, "FORMENTERA": 1})
+        self.assertEqual(sum(len(v) for v in sn.ISLAS.values()), 11)   # art. 161.2: once islas
         self.assertEqual(sn.ISLAS["Palmas (Las)"], {"GRAN CANARIA": 3, "FUERTEVENTURA": 1, "LANZAROTE": 1})
         self.assertEqual(sn.ISLAS["Santa Cruz de Tenerife"],
                          {"TENERIFE": 3, "LA PALMA": 1, "LA GOMERA": 1, "EL HIERRO": 1})
@@ -175,7 +179,7 @@ class ComoSeVota(unittest.TestCase):
     def test_islas_mayores_dos_y_menores_uno(self):
         for isla in ("GRAN CANARIA", "MALLORCA", "TENERIFE"):
             self.assertEqual(sn.votos_maximos("x", isla), 2)
-        for isla in ("MENORCA", "EIVISSA-FORMENTERA", "FUERTEVENTURA", "LANZAROTE", "LA PALMA", "LA GOMERA",
+        for isla in ("MENORCA", "IBIZA", "EIVISSA", "FORMENTERA", "FUERTEVENTURA", "LANZAROTE", "LA PALMA", "LA GOMERA",
                      "EL HIERRO"):
             self.assertEqual(sn.votos_maximos("x", isla), 1)
 
@@ -197,7 +201,20 @@ class ComoSeVota(unittest.TestCase):
         # Del fichero ficticio leído como una proclamación: islas y senadores.
         g = _ficticio()["provincias"]["Balears (Illes)"]
         self.assertEqual(sn.islas_texto(g),
-                         "Aquí se vota por islas: 3 senadores en Mallorca y 1 en Menorca y Eivissa-Formentera.")
+                         "Aquí se vota por islas: 3 senadores en Mallorca y 1 en Menorca, Eivissa y Formentera.")
+        self.assertEqual(sn.como_se_vota("Balears (Illes)", g),
+                         "Aquí se vota por islas: 3 senadores en Mallorca y 1 en Menorca, Eivissa y Formentera. "
+                         "En Mallorca cada votante marca hasta dos nombres y salen los tres más votados; "
+                         "en Menorca, Eivissa y Formentera marca un nombre y sale el más votado.")
+
+    def test_ibiza_y_formentera_juntas_ya_no(self):
+        # LO 2/2026: una proclamación con «EIVISSA-FORMENTERA» (la de 2023) ya
+        # no casa con la ley vigente y Baleares no se publica.
+        g = [_g("MALLORCA", 3), _g("MENORCA", 1), _g("EIVISSA-FORMENTERA", 1)]
+        self.assertIn("islas leídas", sn._comprobar("Balears (Illes)", g))
+        g = [_g("MALLORCA", 3), _g("MENORCA", 1), _g("IBIZA", 1), _g("FORMENTERA", 1)]
+        self.assertEqual(sn._comprobar("Balears (Illes)", g), "")
+        self.assertIn("2 senadores", sn._comprobar("Balears (Illes)", g[:3] + [_g("FORMENTERA", 2)]))
 
     def test_sale_de_los_datos_no_fijo(self):
         # Si la proclamación trae otro número de senadores, la frase cambia.
@@ -220,6 +237,82 @@ class ComoSeVota(unittest.TestCase):
                 self.assertNotIn("underline", cuerpo)
                 self.assertNotIn("border", cuerpo)
                 self.assertNotIn("background", cuerpo)
+
+
+def _paginas_elecciones(senadores, resultados):
+    escritas = {}
+
+    def suelta(pl, carpeta, nombre, frag):
+        escritas[nombre] = frag["CUERPO"]
+    h = {"pagina_suelta": suelta, "plantilla": "<footer>" + el.LEMA_IA + "</footer>",
+         "site_url": "https://terceracamara.es/", "carpeta": pathlib.Path(tempfile.gettempdir()),
+         "jsonld_script": lambda xs: "", "nombre": build.nombre_circunscripcion, "slug": build._slug_txt,
+         "resultados": resultados, "senadores": senadores}
+    el.generar_paginas(h, el.cargar(), [])
+    return escritas
+
+
+def _resultados_ficticios():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("trf", RAIZ / "tests" / "test_resultados_29n.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m._ficticio()
+
+
+class Salto(unittest.TestCase):
+    """«Tus senadores ↓» junto a «Resultados oficiales ↓», en las páginas de
+    /elecciones/2026/. El bloque está en la ficha de provincia de /diputados/,
+    así que el enlace lleva a esa ficha y a su ancla. Solo con datos."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.rof = _resultados_ficticios()          # Albacete y Soria
+        cls.ambos = _paginas_elecciones(_ficticio(), cls.rof)
+        cls.solo_sen = _paginas_elecciones(_ficticio(), None)
+        cls.nada = _paginas_elecciones(None, None)
+
+    def _salto(self, slug):
+        return f'<a href="/diputados/provincia-{slug}.html#tus-senadores">Tus senadores&nbsp;↓</a>'
+
+    def test_junto_a_resultados(self):
+        c = self.ambos["soria.html"]
+        self.assertTrue(c.startswith('<p class="rof-salto"><a href="#resultados">Resultados oficiales&nbsp;↓</a> '
+                                     '<span class="rof-sep" aria-hidden="true">·</span> ' + self._salto("soria")))
+        self.assertEqual(c.count("Tus senadores&nbsp;↓"), 1)
+        self.assertLess(c.index("Tus senadores"), c.index('class="rof-reparto"'))
+
+    def test_solo_senadores_sin_resultados(self):
+        c = self.ambos["ceuta.html"]
+        self.assertTrue(c.startswith('<p class="rof-salto">' + self._salto("ceuta") + "</p>"))
+        self.assertNotIn("Resultados oficiales&nbsp;↓", c)
+        self.assertTrue(self.solo_sen["s-c-tenerife.html"].startswith(
+            '<p class="rof-salto">' + self._salto("s-c-tenerife") + "</p>"))
+
+    def test_solo_con_datos(self):
+        c = self.ambos["albacete.html"]                      # resultados sí, senadores no
+        self.assertIn("Resultados oficiales&nbsp;↓", c)
+        self.assertNotIn("Tus senadores", c)
+        con = sorted(n for n, c in self.solo_sen.items() if "Tus senadores&nbsp;↓" in c)
+        self.assertEqual(con, ["balears-illes.html", "ceuta.html", "s-c-tenerife.html", "soria.html"])
+        for n, c in self.nada.items():
+            self.assertNotIn("Tus senadores", c, n)
+            self.assertNotIn("rof-salto", c, n)
+
+    def test_el_ancla_existe_en_la_ficha(self):
+        # La ficha de provincia a la que apunta lleva el bloque con ese id.
+        for prov_cong, slug in (("Soria", "soria"), ("Ceuta", "ceuta"), ("S/C Tenerife", "s-c-tenerife")):
+            self.assertEqual(build._slug_txt(prov_cong), slug)
+            self.assertIn('id="tus-senadores"', build._bloque_senadores(_ficticio(), prov_cong))
+        self.assertEqual(sn.ANCLA, "tus-senadores")
+
+    def test_mismo_estilo_sin_subrayado(self):
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        reglas = [sel for sel, cuerpo in re.findall(r"([^{}]+)\{([^}]*)\}", css)
+                  if ".rof-salto a" in sel and "text-decoration:none" in cuerpo.replace(" ", "")]
+        self.assertTrue(reglas)
+        for estado in (":hover", ":focus", ":focus-visible", ":active"):
+            self.assertIn(f".rof-salto a{estado}", reglas[0])
 
 
 class Eleccion(unittest.TestCase):

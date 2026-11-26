@@ -32,19 +32,38 @@ import re
 RAIZ = pathlib.Path(__file__).resolve().parent
 DATOS = RAIZ / "curated" / "senadores_29n.json"
 
+ANCLA = "tus-senadores"
 TITULO_SECCION = "Relación de Senadores proclamados electos"
 FIN = ("SENADO", "Relación de candidatos que no han obtenido escaño")
 
-# Artículo 165 de la LOREG: cuatro por provincia; tres en Gran Canaria, Mallorca
-# y Tenerife; uno en cada una de las demás islas o agrupaciones; dos en Ceuta y
-# dos en Melilla. Solo sirve para comprobar la lectura, no se publica.
+# Artículo 165 de la LOREG, texto consolidado vigente (BOE-A-1985-11672,
+# https://www.boe.es/buscar/act.php?id=BOE-A-1985-11672#acientosesentaycinco):
+# «1. En cada circunscripción provincial se eligen cuatro Senadores.
+#  2. En cada circunscripción insular se elige el siguiente número de Senadores:
+#  tres en Gran Canaria, Mallorca y Tenerife; uno en Ibiza, Formentera, Menorca,
+#  Fuerteventura, La Gomera, El Hierro, Lanzarote y La Palma.
+#  3. Las poblaciones de Ceuta y Melilla eligen cada una de ellas dos Senadores.»
+# El apartado 2 lo redacta así la Ley Orgánica 2/2026, de 30 de junio
+# (BOE-A-2026-14329, en vigor desde el 3-7-2026,
+# https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-14329), que separa Ibiza y
+# Formentera: hasta entonces eran una sola circunscripción («EIVISSA-FORMENTERA»
+# en la proclamación de 2023). Total: 47 × 4 + 17 insulares + 2 × 2 = 209.
+# Solo sirve para comprobar la lectura, no se publica.
 SENADORES_PROVINCIA = 4
 SENADORES_CIUDAD = {"Ceuta": 2, "Melilla": 2}
 ISLAS = {
-    "Balears (Illes)": {"MALLORCA": 3, "MENORCA": 1, "EIVISSA-FORMENTERA": 1},
+    "Balears (Illes)": {"MALLORCA": 3, "MENORCA": 1, "IBIZA": 1, "FORMENTERA": 1},
     "Palmas (Las)": {"GRAN CANARIA": 3, "FUERTEVENTURA": 1, "LANZAROTE": 1},
     "Santa Cruz de Tenerife": {"TENERIFE": 3, "LA PALMA": 1, "LA GOMERA": 1, "EL HIERRO": 1},
 }
+# El encabezado de isla del BOE puede ir en catalán: en 2023 escribió «EIVISSA».
+ALIAS_ISLA = {"EIVISSA": "IBIZA"}
+
+
+def isla_ley(isla):
+    """El nombre de la isla en la tabla de la ley (art. 165.2)."""
+    return ALIAS_ISLA.get(isla, isla)
+
 
 _PIE = re.compile(r"^(BOLETÍN OFICIAL DEL ESTADO|Núm\. \d+\b.*Pág\.|cve: BOE-|Verificable en|D\. L\.|ISSN)")
 _PERSONA = re.compile(r"^(Don|Doña) (\S.*?\S)\s{2,}(\S.*?\S)\s{2,}(\d{1,3}(?:\.\d{3})*)$")
@@ -130,12 +149,12 @@ def parsear(texto_pdf: str, provincias_rd: list) -> tuple[dict, dict]:
 def _comprobar(prov: str, grupos: list) -> str:
     if prov in ISLAS:
         esperado = ISLAS[prov]
-        vistas = [g["isla"] for g in grupos]
+        vistas = [isla_ley(g["isla"]) for g in grupos]
         if sorted(vistas) != sorted(esperado) or len(set(vistas)) != len(vistas):
-            return f"islas leídas {vistas}, esperadas {sorted(esperado)}"
+            return f"islas leídas {[g['isla'] for g in grupos]}, esperadas {sorted(esperado)}"
         for g in grupos:
-            if len(g["senadores"]) != esperado[g["isla"]]:
-                return f"{g['isla']}: {len(g['senadores'])} senadores, esperados {esperado[g['isla']]}"
+            if len(g["senadores"]) != esperado[isla_ley(g["isla"])]:
+                return f"{g['isla']}: {len(g['senadores'])} senadores, esperados {esperado[isla_ley(g['isla'])]}"
         return ""
     if len(grupos) != 1 or grupos[0]["isla"] is not None:
         return "encabezados repetidos o con isla"
@@ -296,6 +315,8 @@ def ordenados(senadores: list) -> list:
 # «Los electores pueden dar su voto a un máximo de tres candidatos en las
 # circunscripciones provinciales, dos en Gran Canaria, Mallorca, Tenerife, Ceuta
 # y Melilla, y uno en las restantes circunscripciones insulares.»
+# La LO 2/2026 no lo cambió (solo los arts. 161.2 y 165.2): Ibiza y Formentera
+# caen en «las restantes circunscripciones insulares», uno cada una.
 # El informe 50 hablaba de «hasta tres nombres» en general, sin Ceuta ni
 # Melilla; manda la ley: tres en las provinciales, dos en Ceuta y Melilla.
 # Lo que sale de los datos: la circunscripción, sus islas y cuántos senadores
@@ -305,7 +326,9 @@ VOTOS_MAXIMOS_CIUDAD = {"Ceuta": 2, "Melilla": 2}
 VOTOS_MAXIMOS_ISLA = {"GRAN CANARIA": 2, "MALLORCA": 2, "TENERIFE": 2}
 VOTOS_MAXIMOS_OTRA_ISLA = 1
 # Cómo se escribe cada isla en una frase (el encabezado del BOE va en mayúsculas).
-NOMBRE_ISLA = {"MALLORCA": "Mallorca", "MENORCA": "Menorca", "EIVISSA-FORMENTERA": "Eivissa-Formentera",
+# «EIVISSA-FORMENTERA» solo para leer proclamaciones anteriores a la LO 2/2026.
+NOMBRE_ISLA = {"MALLORCA": "Mallorca", "MENORCA": "Menorca", "IBIZA": "Ibiza", "EIVISSA": "Eivissa",
+               "FORMENTERA": "Formentera", "EIVISSA-FORMENTERA": "Eivissa-Formentera",
                "GRAN CANARIA": "Gran Canaria", "FUERTEVENTURA": "Fuerteventura", "LANZAROTE": "Lanzarote",
                "TENERIFE": "Tenerife", "LA PALMA": "La Palma", "LA GOMERA": "La Gomera", "EL HIERRO": "El Hierro"}
 _NUM = {1: "uno", 2: "dos", 3: "tres", 4: "cuatro"}
@@ -313,7 +336,7 @@ _NUM = {1: "uno", 2: "dos", 3: "tres", 4: "cuatro"}
 
 def votos_maximos(prov: str, isla: str | None) -> int:
     if isla:
-        return VOTOS_MAXIMOS_ISLA.get(isla, VOTOS_MAXIMOS_OTRA_ISLA)
+        return VOTOS_MAXIMOS_ISLA.get(isla_ley(isla), VOTOS_MAXIMOS_OTRA_ISLA)
     return VOTOS_MAXIMOS_CIUDAD.get(prov, VOTOS_MAXIMOS_PROVINCIA)
 
 
@@ -371,6 +394,10 @@ def eleccion_texto(fuente: dict) -> str:
     return f" en las elecciones generales del {m.group(1)}" if m else ""
 
 
+def hay_bloque(datos: dict | None, prov_rd: str) -> bool:
+    return bool(datos and (datos.get("provincias") or {}).get(prov_rd))
+
+
 def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
     """«Tus senadores» de una provincia. Vacío si no hay copia fija o la
     provincia no está en ella. Lista simple, sin tarjetas ni subrayados."""
@@ -392,7 +419,7 @@ def bloque_html(datos: dict | None, prov_rd: str, nombre: str) -> str:
     pg = str((datos.get("manual") or {}).get(prov_rd) or "")
     pagina = f", {'páginas' if re.search(r'[ ,-]', pg) else 'página'} {_esc(pg)}" if pg else ""
     return (
-        f'<section class="sen-29n" id="tus-senadores" aria-labelledby="sen-tit">'
+        f'<section class="sen-29n" id="{ANCLA}" aria-labelledby="sen-tit">'
         f'<h2 id="sen-tit">Tus senadores</h2>'
         f'<p class="sen-intro">Senadores proclamados electos por {_esc(nombre)}{_esc(eleccion_texto(f))}, '
         f'tal como los publica la Junta Electoral Central en el BOE. No incluye '
