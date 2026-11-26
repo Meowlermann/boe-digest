@@ -2071,3 +2071,5 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rof-salto a{display:inline-block;min-height:32px;line-height:32px}
 .rof-salto a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .rof-nota{display:block;font-size:13px;color:var(--ink-soft);font-style:italic}
+.rof-reparto{display:block;font-size:15px;line-height:1.45;color:var(--ink);font-weight:600}
+.rof-resumen{margin:0 0 .6rem}

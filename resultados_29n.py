@@ -382,11 +382,56 @@ def hay_bloque(datos: dict | None, circ_rd: str) -> bool:
     return bool(datos and (datos.get("circunscripciones") or {}).get(circ_rd))
 
 
+def _entero(t) -> int:
+    """«1.463.183» → 1463183. Solo para ordenar; lo que se pinta es el literal."""
+    try:
+        return int(str(t or "0").replace(".", ""))
+    except ValueError:
+        return 0
+
+
+def escanos(k: dict) -> str:
+    """Escaños tal como los da el BOE. Las candidaturas del cuadro de «sin
+    escaño» no traen columna de escaños: son 0, el mismo signo que en el
+    cuadro de las que tienen escaño en otras circunscripciones (informe 48)."""
+    e = k.get("escanos")
+    return "0" if e in (None, "") else str(e)
+
+
+def ordenadas(d: dict) -> list:
+    """Candidaturas por escaños (de más a menos) y, a igualdad, por votos (de
+    más a menos). A igualdad de las dos cosas, el orden del BOE (orden estable).
+    No el orden de columnas de los cuadros (informe 48)."""
+    return sorted(d.get("candidaturas") or [],
+                  key=lambda k: (-_entero(escanos(k)), -_entero(k.get("votos"))))
+
+
+def sigla(nombre: str) -> str:
+    """La sigla que el BOE pone entre paréntesis al final del nombre
+    («Partido Popular (PP)» → «PP»); si no hay, el nombre entero."""
+    m = re.search(r"\(([^()]+)\)\s*$", nombre or "")
+    return m.group(1).strip() if m else (nombre or "").strip()
+
+
+def reparto_texto(d: dict) -> str:
+    """«PP 16, PSOE 10, SUMAR 6, VOX 5»: solo las candidaturas con escaño, en el
+    orden de la tabla, con la sigla y los escaños tal cual del BOE. Las que no
+    tienen escaño no salen: el resumen dice quién entra (están en la tabla)."""
+    return ", ".join(f"{sigla(k['nombre'])} {escanos(k)}" for k in ordenadas(d) if _entero(escanos(k)) > 0)
+
+
+def _reparto_html(d: dict) -> str:
+    r = reparto_texto(d)
+    return f'<span class="rof-reparto">Escaños: {_esc(r)}</span>' if r else ""
+
+
 def salto_html(datos: dict | None, circ_rd: str) -> str:
-    """Una línea arriba del todo que lleva al bloque, solo si hay bloque."""
+    """Arriba del todo, solo si hay bloque: el enlace al bloque y, debajo, el
+    reparto de escaños, para que a 375 px se vea en el primer pantallazo."""
     if not hay_bloque(datos, circ_rd):
         return ""
-    return f'<p class="rof-salto"><a href="#{ANCLA}">Resultados oficiales&nbsp;↓</a></p>'
+    return (f'<p class="rof-salto"><a href="#{ANCLA}">Resultados oficiales&nbsp;↓</a>'
+            f'{_reparto_html(datos["circunscripciones"][circ_rd])}</p>')
 
 
 def bloque_html(datos: dict | None, circ_rd: str, nombre: str) -> str:
@@ -399,8 +444,8 @@ def bloque_html(datos: dict | None, circ_rd: str, nombre: str) -> str:
     f = datos["fuente"]
     filas = "".join(
         f'<tr><th scope="row">{_esc(k["nombre"])}</th><td>{_esc(k["votos"])}</td>'
-        f'<td>{_esc(k["escanos"] if k.get("escanos") is not None else "—")}</td></tr>'
-        for k in d["candidaturas"])
+        f'<td>{_esc(escanos(k))}</td></tr>'
+        for k in ordenadas(d))
     electos = "".join(
         f'<li>{_esc(e["nombre"])}'
         + (f' <span class="rof-nota">{_esc(e["nota"])}</span>' if e.get("nota") else "")
@@ -416,7 +461,8 @@ def bloque_html(datos: dict | None, circ_rd: str, nombre: str) -> str:
         f'<p class="rof-intro">Proclamados por la Junta Electoral Central para {_esc(nombre)}: '
         f'{_esc(d["escanos"])} {"escaño" if str(d["escanos"]) == "1" else "escaños"}. '
         f'Cifras y nombres tal como los publica el BOE.</p>'
-        f'<div class="rof-tabla"><table><caption>Votos y escaños por candidatura</caption>'
+        + (f'<p class="rof-resumen">{_reparto_html(d)}</p>' if reparto_texto(d) else "")
+        + f'<div class="rof-tabla"><table><caption>Votos y escaños por candidatura</caption>'
         f'<thead><tr><th scope="col">Candidatura</th><th scope="col">Votos</th>'
         f'<th scope="col">Escaños</th></tr></thead><tbody>{filas}</tbody></table></div>'
         + (f'<h3>Diputados proclamados electos</h3><ol class="rof-electos">{electos}</ol>' if electos else "")

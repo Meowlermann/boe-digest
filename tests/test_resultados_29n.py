@@ -131,12 +131,15 @@ class Render(unittest.TestCase):
         self.assertEqual(sorted(con), ["albacete.html", "soria.html"])
 
     def test_salto_arriba_solo_con_datos(self):
-        salto = '<p class="rof-salto"><a href="#resultados">Resultados oficiales&nbsp;↓</a></p>'
+        salto = '<p class="rof-salto"><a href="#resultados">Resultados oficiales&nbsp;↓</a>'
         for n, f in self.con.items():
             c = f["CUERPO"]
             if n in ("albacete.html", "soria.html"):
                 self.assertTrue(c.startswith(salto), n)            # arriba del todo
                 self.assertEqual(c.count(salto), 1, n)
+                # El reparto va justo debajo del enlace, en el mismo párrafo.
+                fin = c.index("</p>")
+                self.assertIn('<span class="rof-reparto">Escaños: ', c[:fin], n)
                 self.assertEqual(c.count('id="resultados"'), 1, n)  # el ancla existe, una vez
             else:
                 self.assertNotIn("rof-salto", c, n)
@@ -166,7 +169,7 @@ class Render(unittest.TestCase):
         c = self.con["albacete.html"]["CUERPO"]
         self.assertEqual(c.count('<h2 id="rof-tit">Resultados oficiales</h2>'), 1)
         self.assertIn("<td>11.111</td><td>2</td>", c)
-        self.assertIn("<td>99</td><td>—</td>", c)
+        self.assertIn("<td>99</td><td>0</td>", c)
         self.assertIn("https://www.boe.es/diario_boe/txt.php?id=BOE-A-2099-00000", c)
         self.assertIn("BOE núm. 999, de 31/12/2099", c)
         self.assertNotIn("%", c[c.index('class="rof"'):c.index("</section>")])   # sin porcentajes
@@ -193,6 +196,74 @@ class Render(unittest.TestCase):
             self.assertNotIn("box-shadow", cuerpo, sel)
             self.assertNotIn("border-radius", cuerpo, sel)
         self.assertIn("text-decoration:none", dict((s.strip(), c) for s, c in reglas)[".rof-fuente a"])
+
+
+class OrdenYReparto(unittest.TestCase):
+    """Informe 48: la tabla va por escaños y, a igualdad, por votos; un único
+    signo («0») para quien no tiene escaño; resumen del reparto encima."""
+
+    D = {"escanos": "7", "candidaturas": [
+        {"nombre": "Candidatura Ficticia Columna Uno (FC1)", "votos": "53.632", "escanos": "0"},
+        {"nombre": "Candidatura Ficticia Columna Dos (FC2)", "votos": "174.770", "escanos": "3"},
+        {"nombre": "Candidatura Ficticia Columna Tres (FC3)", "votos": "165.590", "escanos": "3"},
+        {"nombre": "Candidatura Ficticia Sin Columna", "votos": "82.805", "escanos": "1"},
+        {"nombre": "Candidatura Ficticia Cuadro III (FC5)", "votos": "60.000", "escanos": None},
+        {"nombre": "Candidatura Ficticia Empate A (FEA)", "votos": "100", "escanos": None},
+        {"nombre": "Candidatura Ficticia Empate B (FEB)", "votos": "100", "escanos": None}],
+        "electos": [{"nombre": f"Don Ficticio {i}", "formacion": "X"} for i in range(7)]}
+
+    def test_orden_escanos_y_desempate_por_votos(self):
+        self.assertEqual([rs.sigla(k["nombre"]) for k in rs.ordenadas(self.D)],
+                         ["FC2", "FC3", "Candidatura Ficticia Sin Columna", "FC5", "FC1", "FEA", "FEB"])
+        # FC2 y FC3 empatan a 3 escaños: primero la de más votos. FC5 (sin
+        # columna de escaños) y FC1 («0») empatan a 0: primero la de más votos.
+        # FEA y FEB empatan en todo: se respeta el orden del BOE.
+
+    def test_tabla_ordenada_en_el_html(self):
+        h = rs.bloque_html({"fuente": FUENTE, "circunscripciones": {"Albacete": self.D}}, "Albacete", "Albacete")
+        filas = re.findall(r'<tr><th scope="row">(.*?)</th><td>(.*?)</td><td>(.*?)</td></tr>', h)
+        self.assertEqual([(rs.sigla(n), e) for n, _, e in filas],
+                         [("FC2", "3"), ("FC3", "3"), ("Candidatura Ficticia Sin Columna", "1"),
+                          ("FC5", "0"), ("FC1", "0"), ("FEA", "0"), ("FEB", "0")])
+
+    def test_un_solo_signo_sin_escano(self):
+        h = rs.bloque_html({"fuente": FUENTE, "circunscripciones": {"Albacete": self.D}}, "Albacete", "Albacete")
+        tabla = h[h.index("<table"):h.index("</table>")]
+        self.assertNotIn("—", tabla)
+        self.assertNotIn("–", tabla)
+        self.assertNotIn("<td></td>", tabla)
+        self.assertEqual(rs.escanos({"escanos": None}), "0")
+        self.assertEqual(rs.escanos({"escanos": ""}), "0")
+        self.assertEqual(rs.escanos({"escanos": "16"}), "16")
+
+    def test_reparto(self):
+        # Solo las que tienen escaño, en el orden de la tabla, con la sigla y
+        # los escaños tal cual; sin porcentajes ni totales calculados.
+        self.assertEqual(rs.reparto_texto(self.D), "FC2 3, FC3 3, Candidatura Ficticia Sin Columna 1")
+        h = rs.bloque_html({"fuente": FUENTE, "circunscripciones": {"Albacete": self.D}}, "Albacete", "Albacete")
+        resumen = '<p class="rof-resumen"><span class="rof-reparto">Escaños: FC2 3, FC3 3, Candidatura Ficticia Sin Columna 1</span></p>'
+        self.assertEqual(h.count(resumen), 1)
+        self.assertLess(h.index(resumen), h.index("<table"))
+        salto = rs.salto_html({"fuente": FUENTE, "circunscripciones": {"Albacete": self.D}}, "Albacete")
+        self.assertIn('Resultados oficiales&nbsp;↓</a><span class="rof-reparto">Escaños: FC2 3, FC3 3,', salto)
+        self.assertNotIn("%", salto + resumen)
+
+    def test_sigla(self):
+        self.assertEqual(rs.sigla("Partido Popular (PP)"), "PP")
+        self.assertEqual(rs.sigla("Partit dels Socialistes de Catalunya (PSC-PSOE) (PSC)"), "PSC")
+        self.assertEqual(rs.sigla("Sin sigla"), "Sin sigla")
+
+    def test_ficticio_reparto(self):
+        d = _ficticio()["circunscripciones"]["Albacete"]
+        self.assertEqual(rs.reparto_texto(d), "FICT-A 2, FICT-B 1")
+
+    def test_reparto_sin_subrayado(self):
+        css = (RAIZ / "assets" / "style.css").read_text(encoding="utf-8")
+        for sel, cuerpo in re.findall(r"([^{}]+)\{([^}]*)\}", css):
+            if "rof-reparto" in sel or "rof-resumen" in sel:
+                self.assertNotIn("underline", cuerpo, sel)
+                self.assertNotIn("border", cuerpo, sel)
+                self.assertNotIn("background", cuerpo, sel)
 
 
 class Manual(unittest.TestCase):

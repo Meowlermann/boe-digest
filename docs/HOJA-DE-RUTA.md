@@ -109,6 +109,8 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   resolución de la JEC. La copia fija es la «última versión buena»: si una
   regeneración falla, no se escribe. Las circunscripciones que el generador
   deje fuera se curan a mano en `curated/resultados_29n_manual.json`.
+  Tabla ordenada por escaños y votos, con el reparto encima y bajo el
+  enlace de arriba (informe 48).
   Falta la proclamación real.
 - **#115 «Elecciones: imagen para redes por provincia»** (tanda E5, parte
   OG), fusionada y publicada el 22 de noviembre de 2026 (`4eb4d5d6`): un PNG por circunscripción en `og:image` y
