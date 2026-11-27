@@ -42,6 +42,16 @@ conocer la jerga del BOE ni de las Cortes. Si hace falta un término
 técnico, se explica junto al dato. Se evitan las siglas opacas y los
 rótulos que solo entiende quien ya trabaja con el boletín.
 
+## Siglas y nombres de candidaturas, tal como los escribe el BOE
+
+Las siglas y los nombres de partidos, federaciones, coaliciones y
+agrupaciones se escriben literalmente como en el BOE (SUMAR, VOX, PP,
+PSOE…), con sus mayúsculas, guiones y paréntesis. No hay tabla de nombres
+cortos ni de equivalencias: la sigla es la que el BOE pone entre paréntesis
+tras el nombre y, si no la pone, se usa el nombre entero. La regla de
+evitar siglas opacas vale para la jerga del boletín, no para el nombre
+oficial de una candidatura.
+
 ## Publicar solo lo claro
 
 Si una extracción, una clasificación o una frase no está clara, no se

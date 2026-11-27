@@ -421,8 +421,12 @@ def reparto_texto(d: dict) -> str:
 
 
 def _reparto_html(d: dict) -> str:
-    r = reparto_texto(d)
-    return f'<span class="rof-reparto">Escaños: {_esc(r)}</span>' if r else ""
+    """El reparto, con cada sigla pegada a sus escaños (espacio duro): a 360 px
+    la línea parte entre candidaturas, nunca entre «PP» y «16». El texto es el
+    mismo que reparto_texto()."""
+    trozos = [f"{_esc(sigla(k['nombre']))}&nbsp;{_esc(escanos(k))}"
+              for k in ordenadas(d) if _entero(escanos(k)) > 0]
+    return f'<span class="rof-reparto">Escaños: {", ".join(trozos)}</span>' if trozos else ""
 
 
 def salto_html(datos: dict | None, circ_rd: str, junto: str = "") -> str:
