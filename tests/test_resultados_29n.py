@@ -241,11 +241,12 @@ class OrdenYReparto(unittest.TestCase):
         # los escaños tal cual; sin porcentajes ni totales calculados.
         self.assertEqual(rs.reparto_texto(self.D), "FC2 3, FC3 3, Candidatura Ficticia Sin Columna 1")
         h = rs.bloque_html({"fuente": FUENTE, "circunscripciones": {"Albacete": self.D}}, "Albacete", "Albacete")
-        resumen = '<p class="rof-resumen"><span class="rof-reparto">Escaños: FC2 3, FC3 3, Candidatura Ficticia Sin Columna 1</span></p>'
+        resumen = ('<p class="rof-resumen"><span class="rof-reparto">Escaños: FC2&nbsp;3, FC3&nbsp;3, '
+                   'Candidatura Ficticia Sin Columna&nbsp;1</span></p>')
         self.assertEqual(h.count(resumen), 1)
         self.assertLess(h.index(resumen), h.index("<table"))
         salto = rs.salto_html({"fuente": FUENTE, "circunscripciones": {"Albacete": self.D}}, "Albacete")
-        self.assertIn('Resultados oficiales&nbsp;↓</a><span class="rof-reparto">Escaños: FC2 3, FC3 3,', salto)
+        self.assertIn('Resultados oficiales&nbsp;↓</a><span class="rof-reparto">Escaños: FC2&nbsp;3, FC3&nbsp;3,', salto)
         self.assertNotIn("%", salto + resumen)
 
     def test_sigla(self):

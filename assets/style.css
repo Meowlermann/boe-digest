@@ -410,7 +410,12 @@ blockquote.pull p{ font-family:'Lora',Georgia,serif; }
 /* --- Página por norma -------------------------------------------------- */
 .miga{font:500 11px/1.4 "Work Sans",system-ui,sans-serif;letter-spacing:.04em;
   text-transform:uppercase;opacity:.72;margin:14px 0 6px}
-.miga a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}
+/* Ruta sin subrayado en ningún estado: se distingue por peso y color (PR de
+   fichas, 27-11-2026). El foco se ve con outline, nunca con text-decoration. */
+.miga a,.miga a:link,.miga a:visited,.miga a:hover,.miga a:focus,.miga a:focus-visible,.miga a:active{
+  color:var(--ink);font-weight:700;text-decoration:none;border-bottom:0}
+.miga a:hover{color:var(--red-ink,var(--red))}
+.miga a:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:2px}
 .miga span[aria-current]{opacity:.6}
 .norma{max-width:44rem;margin:0 auto 28px}
 .norma h1.display{font-size:clamp(26px,5.4vw,46px);line-height:1.02;margin:4px 0 12px}
@@ -1348,7 +1353,10 @@ table.rk td.rk-nom{ box-shadow:inset 4px 0 0 var(--g); padding-left:14px; }
 /* ------------------------------------------------------------- Tu provincia */
 .indice li.propia{border-left:3px solid var(--congreso);padding-left:.6rem}
 /* Aviso de legislatura disuelta y frase de grupo en /diputados/ (tanda 1-B). */
-.aviso-leg{margin:0 0 1rem;padding:.7rem .9rem;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--ink);font-size:15px;line-height:1.5}
+/* Aviso de legislatura disuelta: una línea de texto destacada, sin recuadro
+   (sin borde, fondo ni relleno de tarjeta). */
+.aviso-leg{margin:0 0 1rem;padding:0;border:0;border-radius:0;background:none;color:var(--ink);font-size:15px;line-height:1.5}
+.aviso-leg b{font-weight:700}
 .aviso-leg a{font-weight:600;color:var(--red-ink,var(--red));text-decoration:none}
 .frase-grupo{margin:0 0 1.2rem;font-size:16px;line-height:1.55;color:var(--ink)}
 .destacado{margin:0 0 1.2rem;padding:.7rem .9rem;background:var(--congreso-soft);border-left:3px solid var(--congreso)}
@@ -1941,7 +1949,7 @@ body:has(.tr-ix-em-prov) .ficha dd a:focus-visible, .tr-ix-em-prov a:focus-visib
   /* En /diputados/todos/: compacta un poco la cabecera para que quepan
      más filas de la A–Z por encima de la barra inferior, sin quitar texto. */
   article:has(.dip-az) .entradilla{margin-bottom:8px}
-  article:has(.dip-az) .aviso-leg{margin-bottom:8px;padding:.5rem .8rem;line-height:1.4}
+  article:has(.dip-az) .aviso-leg{margin-bottom:8px;line-height:1.4}
   article:has(.dip-az) .ficha{margin-bottom:8px;padding:8px 12px;gap:4px 16px}
 }
 /* --- fin /diputados/ listado completo */
@@ -2071,7 +2079,9 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .rof-salto a{display:inline-block;min-height:32px;line-height:32px}
 .rof-salto a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .rof-nota{display:block;font-size:13px;color:var(--ink-soft);font-style:italic}
-.rof-reparto{display:block;font-size:15px;line-height:1.45;color:var(--ink);font-weight:600}
+.rof-reparto{display:block;font-size:15px;line-height:1.45;color:var(--ink);font-weight:600;
+  max-width:100%;overflow-wrap:anywhere}
+.rof-salto{max-width:100%;overflow-wrap:anywhere}
 .rof-resumen{margin:0 0 .6rem}
 /* «Tus senadores» en las fichas de provincia (senadores.py): lista, sin tarjetas ni subrayados. */
 .sen-29n{margin:1.2rem 0;padding:.2rem 0 .4rem;border-top:3px solid var(--ink);border-bottom:1px solid var(--border)}

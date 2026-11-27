@@ -119,6 +119,12 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   relación de senadores electos de la misma resolución de la JEC. Nunca desde
   senado.es. Las dudosas se curan a mano en `curated/senadores_29n_manual.json`;
   la que siga sin estar clara no se publica. Falta la proclamación real.
+- **«Fichas: ruta sin subrayar y resúmenes a 360 px»** (PR abierta el 27 de noviembre de 2026, sin fusionar): la ruta de
+  navegación («Portada › Parlamentarios › …») sin subrayado en ningún estado,
+  con peso y color; el aviso «Legislatura disuelta» de las fichas de
+  `/diputados/`, sin recuadro; el resumen «Escaños: …» de «Resultados
+  oficiales» legible a 360 px; y la regla de siglas literales del BOE en
+  `REGLAS-EDITORIALES.md`.
 - **#115 «Elecciones: imagen para redes por provincia»** (tanda E5, parte
   OG), fusionada y publicada el 22 de noviembre de 2026 (`4eb4d5d6`): un PNG por circunscripción en `og:image` y
   `twitter:image` de `/elecciones/2026/<slug>.html` y de
