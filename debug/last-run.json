@@ -1,59 +1,266 @@
 {
-  "inicio": "2026-11-27T05:40:29.624018+00:00",
+  "inicio": "2026-11-27T06:40:32.221039+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261127",
-      "status": 404
+      "status": 200,
+      "bytes": 334469
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261126",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261127",
       "status": 200,
-      "bytes": 412225
+      "bytes": 334469
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261126",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24951",
       "status": 200,
-      "bytes": 412225
+      "bytes": 14644
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24952",
+      "status": 200,
+      "bytes": 15216
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24953",
+      "status": 200,
+      "bytes": 14579
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24954",
+      "status": 200,
+      "bytes": 14829
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24955",
+      "status": 200,
+      "bytes": 14729
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24956",
+      "status": 200,
+      "bytes": 14692
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24957",
+      "status": 200,
+      "bytes": 14604
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24958",
+      "status": 200,
+      "bytes": 15021
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24959",
+      "status": 200,
+      "bytes": 14582
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24960",
+      "status": 200,
+      "bytes": 14813
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24961",
+      "status": 200,
+      "bytes": 14829
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24962",
+      "status": 200,
+      "bytes": 14827
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24963",
+      "status": 200,
+      "bytes": 14653
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24964",
+      "status": 200,
+      "bytes": 14655
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24965",
+      "status": 200,
+      "bytes": 14607
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24966",
+      "status": 200,
+      "bytes": 14591
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24967",
+      "status": 200,
+      "bytes": 14614
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24968",
+      "status": 200,
+      "bytes": 14674
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24969",
+      "status": 200,
+      "bytes": 14792
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24970",
+      "status": 200,
+      "bytes": 14876
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24971",
+      "status": 200,
+      "bytes": 14846
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24972",
+      "status": 200,
+      "bytes": 14739
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24973",
+      "status": 200,
+      "bytes": 14677
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24974",
+      "status": 200,
+      "bytes": 104508
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24975",
+      "status": 200,
+      "bytes": 82561
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24976",
+      "status": 200,
+      "bytes": 14706
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24977",
+      "status": 200,
+      "bytes": 96945
     },
     {
       "url": "https://www.congreso.es/es/opendata/intervenciones",
       "status": 403
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24906",
+      "status": 200,
+      "bytes": 53277
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24907",
+      "status": 200,
+      "bytes": 38684
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24908",
+      "status": 200,
+      "bytes": 209346
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24909",
+      "status": 200,
+      "bytes": 53709
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24910",
+      "status": 200,
+      "bytes": 72266
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24911",
+      "status": 200,
+      "bytes": 58646
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24912",
+      "status": 200,
+      "bytes": 113343
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24913",
+      "status": 200,
+      "bytes": 35632
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24914",
+      "status": 200,
+      "bytes": 90037
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24915",
+      "status": 200,
+      "bytes": 24414
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24916",
+      "status": 200,
+      "bytes": 285947
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24917",
+      "status": 200,
+      "bytes": 71913
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24918",
+      "status": 200,
+      "bytes": 69587
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24919",
+      "status": 200,
+      "bytes": 270036
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24920",
+      "status": 200,
+      "bytes": 27032
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24921",
+      "status": 200,
+      "bytes": 45904
     }
   ],
   "nombramientos": {
-    "fecha": "2026-11-26",
+    "fecha": "2026-11-27",
     "fuente": "api",
-    "incluidos": 13,
+    "incluidos": 5,
     "descartes": {
-      "ingreso como funcionario de carrera": 1,
-      "sin nombre propio": 12,
-      "II.B: sin nombre propio": 48
+      "sin nombre propio": 6,
+      "II.B: sin nombre propio": 31
     }
   },
   "provincias": {
-    "fecha": "2026-11-26",
-    "incluidos": 12,
-    "descartes": {
-      "ambiguo sin contexto: Cuenca": 1,
-      "ambiguo sin contexto: Santander": 1
-    }
+    "fecha": "2026-11-27",
+    "incluidos": 17,
+    "descartes": {}
   },
   "empleo": {
-    "fecha": "2026-11-26",
-    "incluidos": 48
+    "fecha": "2026-11-27",
+    "incluidos": 31
   },
   "403": {
     "url": "https://www.congreso.es/es/opendata/intervenciones",
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;d55ec817&#46;1795758033&#46;4e315d11 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;d55ec817&#46;1795758033&#46;4e315d11</P> </BODY> </HTM"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;b137cb17&#46;1795761662&#46;ff8da771 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;b137cb17&#46;1795761662&#46;ff8da771</P> </BODY> </HTM"
   },
   "resumen": {
-    "boe_entradas": 107,
+    "boe_entradas": 111,
     "congreso_piezas": 0,
     "senado_docs": 0
   },
   "semanas": [],
-  "fin": "2026-11-27T05:40:36.846149+00:00"
+  "fin": "2026-11-27T06:41:21.201621+00:00"
 }
