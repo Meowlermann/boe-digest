@@ -1,6 +1,10 @@
 {
-  "inicio": "2026-11-26T22:14:38.144210+00:00",
+  "inicio": "2026-11-27T05:40:29.624018+00:00",
   "peticiones": [
+    {
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261127",
+      "status": 404
+    },
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261126",
       "status": 200,
@@ -14,86 +18,6 @@
     {
       "url": "https://www.congreso.es/es/opendata/intervenciones",
       "status": 403
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24798",
-      "status": 200,
-      "bytes": 76410
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24799",
-      "status": 200,
-      "bytes": 72722
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24800",
-      "status": 200,
-      "bytes": 55916
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24801",
-      "status": 200,
-      "bytes": 43538
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24802",
-      "status": 200,
-      "bytes": 81220
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24803",
-      "status": 200,
-      "bytes": 61412
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24804",
-      "status": 200,
-      "bytes": 60945
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24805",
-      "status": 200,
-      "bytes": 42022
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24806",
-      "status": 200,
-      "bytes": 53780
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24807",
-      "status": 200,
-      "bytes": 64064
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24808",
-      "status": 200,
-      "bytes": 64702
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24809",
-      "status": 200,
-      "bytes": 117998
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24884",
-      "status": 200,
-      "bytes": 15925
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24885",
-      "status": 200,
-      "bytes": 128339
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24886",
-      "status": 200,
-      "bytes": 15839
-    },
-    {
-      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24887",
-      "status": 200,
-      "bytes": 81071
     }
   ],
   "nombramientos": {
@@ -123,7 +47,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;b6c83017&#46;1795731281&#46;38f0132d <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;b6c83017&#46;1795731281&#46;38f0132d</P> </BODY> </HTM"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;d55ec817&#46;1795758033&#46;4e315d11 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;d55ec817&#46;1795758033&#46;4e315d11</P> </BODY> </HTM"
   },
   "resumen": {
     "boe_entradas": 107,
@@ -131,5 +55,5 @@
     "senado_docs": 0
   },
   "semanas": [],
-  "fin": "2026-11-26T22:15:00.191056+00:00"
+  "fin": "2026-11-27T05:40:36.846149+00:00"
 }
