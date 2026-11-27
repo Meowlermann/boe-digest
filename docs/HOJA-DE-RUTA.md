@@ -84,6 +84,16 @@ Se actualiza en la misma PR que cambie el estado de un frente.
   prioritario y de noticias (E8) y revisión de 4xx y canonicales (E9). El
   Senado sigue fuera.
 
+- **«Sitio: página 404 propia»** (E6, PR abierta el 27 de noviembre de 2026, sin fusionar):
+  `/404.html` generada por `paginas_fijas.generar_404`, con la cabecera, el
+  pie y el estilo de la web, el buscador de `/buscar/` y enlaces a las
+  secciones principales; `noindex`, fuera de los sitemaps y con rutas
+  absolutas. GitHub Pages la sirve sola, con código 404. Tras fusionar,
+  comprobar con `curl -I https://terceracamara.es/no-existe/` que da 404 y
+  la página propia (la caché de Cloudflare guarda la 404 actual hasta 10
+  minutos). El H1 de normas (la otra mitad de E6) sigue congelado por la
+  prueba de #75.
+
 - **E7, descarga de resultados de Interior: no hay feed público.** El
   repositorio de la noche electoral es solo para medios acreditados (plazo
   cerrado) y Infoelectoral responde con un desafío de Cloudflare a la box y

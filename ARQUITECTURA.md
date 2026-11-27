@@ -81,7 +81,7 @@ Cloudflare Worker (disparador/)  ──workflow_dispatch──►  .github/workf
    ├─ renderizar_seguimiento / provincias
    ├─ renderizar_index / ediciones / normas / temas / plazos
    ├─ renderizar_buscador / mapa
-   ├─ paginas_fijas              /seguir/, /privacidad.html, /aviso-legal.html
+   ├─ paginas_fijas              /seguir/, /privacidad.html, /aviso-legal.html, /404.html
    ├─ renderizar_semana()        /semana/ desde data/semanas/ (congeladas por semana.asegurar)
    └─ sitemap.xml, feed.xml (+ alias rss.xml e index.xml), indexnow.json
             │

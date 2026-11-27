@@ -305,6 +305,11 @@ muestra de fichas, `/empleo/`, `/ediciones/`, 404 y barra final. Hay que
 replicar el 301 de `www` al apex (ruta y consulta) antes o en el mismo
 momento, porque hoy lo emite GitHub Pages. La vuelta atrás es restaurar los
 registros que apuntan a GitHub Pages.
+La página `/404.html` (E6) la sirve GitHub Pages sola para cualquier ruta que
+no exista. Cloudflare Pages también la usa sin configurar nada; con Workers
+Static Assets hay que declararla (`not_found_handling = "404-page"`). En la
+previsualización hay que comprobar que una ruta inexistente devuelve código
+404 con esa página.
 
 Este plan no se activa solo. No se tocan nameservers, correo ni el Worker
 de disparador.

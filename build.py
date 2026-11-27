@@ -7845,6 +7845,12 @@ def renderizar(archivo_ids: list[str] | None = None) -> None:
             "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"),
             "site_url": SITE_URL, "raiz": ROOT,
         })
+        # /404.html (E6): fuera del sitemap, por eso no suma a extras.
+        paginas_fijas.generar_404({
+            "esc_html": esc_html, "esc_attr": esc_attr, "pagina_suelta": _pagina_suelta,
+            "plantilla": TEMPLATE_NORMA.read_text(encoding="utf-8"), "raiz": ROOT,
+            "site_url": SITE_URL,
+        })
     except Exception as exc:                                  # noqa: BLE001
         log(f"páginas fijas: no se pudieron generar ({exc})")
     # /correcciones/ (TC-017): registro en editorial/correcciones.json.

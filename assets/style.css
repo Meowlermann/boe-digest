@@ -2087,3 +2087,25 @@ body.portada a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 .sen-fuente a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .sen-nota{display:block;font-size:13px;color:var(--ink-soft);font-style:italic}
 .sen-como{margin:0 0 .6rem;font-size:15px;line-height:1.5;color:var(--ink)}
+
+/* --- /404.html (E6): sin tarjetas ni subrayados -------------------------- */
+.e404-buscar{margin:0 0 1.4rem}
+.e404-buscar label{display:block;font:600 14px/1.4 "Work Sans",system-ui,sans-serif;margin:0 0 .35rem}
+.e404-campo{display:flex;gap:8px;max-width:32rem}
+.e404-campo input{flex:1;min-width:0;min-height:44px;padding:0 .7rem;font:16px/1.2 "Work Sans",system-ui,sans-serif;
+  color:var(--ink);background:transparent;border:1px solid var(--border);border-radius:6px}
+.e404-campo button{min-height:44px;padding:0 1rem;font:600 15px/1 "Work Sans",system-ui,sans-serif;
+  color:var(--bg);background:var(--ink);border:0;border-radius:6px;cursor:pointer}
+.e404-campo input:focus-visible,.e404-campo button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.e404-secciones{list-style:none;padding:0;margin:.4rem 0 0}
+.e404-secciones li{padding:.45rem 0;line-height:1.45}
+.e404-secciones a,.e404-secciones a:link,.e404-secciones a:visited,.e404-secciones a:hover,
+.e404-secciones a:focus,.e404-secciones a:focus-visible,.e404-secciones a:active{
+  color:var(--red-ink,var(--red));font-weight:700;text-decoration:none;border:0}
+.e404-secciones a{display:inline-block;min-height:24px}
+.e404-secciones a:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:2px}
+.e404-secciones .ref{color:var(--ink-soft);font-size:14px}
+/* La ruta de la 404 tampoco se subraya (hoy .miga a lleva border-bottom). */
+body:has(.e404-buscar) .miga a,body:has(.e404-buscar) .miga a:hover,body:has(.e404-buscar) .miga a:focus,
+body:has(.e404-buscar) .miga a:focus-visible,body:has(.e404-buscar) .miga a:active{border-bottom:0;text-decoration:none}
+body:has(.e404-buscar) .miga a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
