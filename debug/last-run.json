@@ -1,5 +1,5 @@
 {
-  "inicio": "2026-11-27T19:40:25.571635+00:00",
+  "inicio": "2026-11-27T21:54:35.622453+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261127",
@@ -119,7 +119,7 @@
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;2af8cd17&#46;1795808429&#46;7cfaf8f <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;2af8cd17&#46;1795808429&#46;7cfaf8f</P> </BODY> </HTML>"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;8807d417&#46;1795816479&#46;c82c25de <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;8807d417&#46;1795816479&#46;c82c25de</P> </BODY> </HTM"
   },
   "resumen": {
     "boe_entradas": 111,
@@ -127,5 +127,5 @@
     "senado_docs": 0
   },
   "semanas": [],
-  "fin": "2026-11-27T19:40:48.715761+00:00"
+  "fin": "2026-11-27T21:54:58.024330+00:00"
 }
