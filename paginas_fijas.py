@@ -1,5 +1,5 @@
-"""Páginas de texto fijo: /seguir/ (canales RSS), /privacidad.html y
-/aviso-legal.html.
+"""Páginas de texto fijo: /seguir/ (canales RSS), /privacidad.html,
+/aviso-legal.html y /404.html (la página de «no existe», E6).
 
 Son texto redactado a mano, sin datos que cambien. Siguen el contrato de los
 módulos de páginas (ARQUITECTURA.md §4): reciben `h` y devuelven las URL para
@@ -25,6 +25,8 @@ de 2026 en sus propias webs; solo los que tienen uso gratuito.
 """
 
 from __future__ import annotations
+
+import re
 
 REVISION = "2026-11-02"
 # El aviso legal cambió su texto sobre la IA el 12-11-2026; las otras dos no.
@@ -268,3 +270,65 @@ def generar_paginas(h: dict) -> list:
            "Quién está detrás, de dónde salen los datos y qué valor tienen.",
            AVISO_LEGAL, "WebPage", revision=REVISION_AVISO)
     return salidas
+
+
+# --- /404.html (E6) -----------------------------------------------------------
+# GitHub Pages sirve /404.html, con código 404, para cualquier ruta que no
+# exista. Puede pedirse desde /a/b/c/, así que todo va con rutas absolutas
+# («/assets/…», «/normas/»). Lleva noindex y no entra en ningún sitemap
+# (generar_404 no devuelve URL). El canonical apunta a sí misma
+# (https://terceracamara.es/404.html), como en el resto de páginas completas:
+# tools/verificar.py lo exige y, con noindex, la deja fuera del sitemap.
+TITULO_404 = "Página no encontrada"
+# Secciones principales; todas están en tools/publicables.txt (lo comprueba un test).
+SECCIONES_404 = (
+    ("/", "Portada", "la edición de hoy"),
+    ("/ediciones/", "Ediciones", "el archivo de ediciones diarias"),
+    ("/normas/", "Normas", "las disposiciones del BOE, una a una"),
+    ("/diputados/", "Diputados", "los 350, con su actividad y sus votos"),
+    ("/elecciones/2026/", "Elecciones 2026", "candidaturas y resultados por circunscripción"),
+    ("/empleo/", "Empleo público", "oposiciones y concursos de la sección II.B del BOE"),
+    ("/tramitacion/", "Tramitación", "las iniciativas en el Congreso y su estado"),
+    ("/seguimiento/", "Seguimiento", "qué ha pasado con lo que se anunció"),
+    ("/temas/", "Temas", "lo que publica el BOE por materia"),
+    ("/mapa/", "Mapa de la web", "todas las secciones"),
+)
+
+CUERPO_404 = (
+    '<form class="e404-buscar" action="/buscar/" method="get" role="search">'
+    '<label for="e404-q">Buscar en la web</label>'
+    '<span class="e404-campo"><input id="e404-q" type="search" name="q" autocomplete="off" '
+    'placeholder="Normas, diputados, materias…">'
+    '<button type="submit">Buscar</button></span></form>'
+    '<h2 class="rotulo">O empieza por una sección</h2>'
+    '<ul class="e404-secciones">'
+    + "".join(f'<li><a href="{u}">{n}</a> <span class="ref">{d}</span></li>' for u, n, d in SECCIONES_404)
+    + "</ul>"
+)
+
+
+def plantilla_404(plantilla: str) -> str:
+    """La plantilla de ficha con rutas absolutas y noindex."""
+    p = plantilla.replace('href="../', 'href="/').replace('src="../', 'src="/')
+    return re.sub(r'<meta name="robots" content="[^"]*">', '<meta name="robots" content="noindex">', p, count=1)
+
+
+def generar_404(h: dict) -> None:
+    """/404.html. No devuelve URL: no va a ningún sitemap."""
+    esc = h["esc_html"]
+    h["pagina_suelta"](plantilla_404(h["plantilla"]), h["raiz"], "404.html", {
+        "TITLE": esc(f"{TITULO_404} | La Tercera Cámara"),
+        "META_DESC": h["esc_attr"]("La dirección que has abierto no existe en La Tercera Cámara."),
+        "CANONICAL": h["site_url"] + "404.html",
+        "JSONLD": "",
+        "EDITION_DATE": "",
+        "MIGA": f'<a href="/">Portada</a> › <span aria-current="page">{esc(TITULO_404)}</span>',
+        "KICKER": "Error 404",
+        "HEADLINE": esc(TITULO_404),
+        "STANDFIRST": "Esta dirección no existe en La Tercera Cámara. Puede que se haya escrito mal "
+                      "o que la página haya cambiado de sitio.",
+        "FICHA": "",
+        "CUERPO": CUERPO_404,
+        "FUENTE": "",
+        "RELACIONADAS": "", "RELACIONADAS_HIDDEN": "hidden",
+    })

@@ -1023,6 +1023,7 @@ HUERFANAS_JUSTIFICADAS = {
     "/datos/votaciones-banner.html": "fragmento que la portada incrusta por JavaScript; no es una página",
     "/googlec4619d97b763e0b5.html": "fichero de verificación de Search Console",
     "/elecciones/": "redirección a /elecciones/2026/ (meta refresh, noindex) para quien escribe la URL a mano",
+    "/404.html": "página de «no existe» que GitHub Pages sirve sola (E6); noindex, fuera del sitemap",
 }
 MAX_HALLAZGOS_ENLAZADO = 20
 
