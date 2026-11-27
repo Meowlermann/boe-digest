@@ -1,0 +1,40 @@
+{
+ "_aviso": "FICTICIO: datos inventados para tests. No es el BOE. No copiar a curated/.",
+ "provincias": {
+  "Teruel": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": "2"},
+   "grupos": [{"isla": null, "senadores": [
+    {"nombre": "Don Ficticio Dieciséis Ejemplo", "formacion": "CANDIDATURA FICTICIA CON NOMBRE PARTIDO EN DOS RENGLONES", "votos": "2.000"},
+    {"nombre": "Doña Ficticia Diecisiete Ejemplo", "formacion": "CANDIDATURA FICTICIA A", "votos": "1.900", "nota": "(proclamada electa tras una renuncia ficticia)"},
+    {"nombre": "Don Ficticio Dieciocho Ejemplo", "formacion": "CANDIDATURA FICTICIA A", "votos": "1.800"},
+    {"nombre": "Doña Ficticia Diecinueve Ejemplo", "formacion": "CANDIDATURA FICTICIA B", "votos": "1.700"}
+   ]}]
+  },
+  "Cuenca": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": "2"},
+   "grupos": [{"isla": null, "senadores": [
+    {"nombre": "Don Ficticio Veinte Ejemplo", "formacion": "CANDIDATURA FICTICIA A", "votos": "5.000"},
+    {"nombre": "Doña Ficticia Veintiuno Ejemplo", "formacion": "CANDIDATURA FICTICIA B", "votos": "4.000"},
+    {"nombre": "Don Ficticio Veintidós Ejemplo", "formacion": "CANDIDATURA FICTICIA B", "votos": "3.000"}
+   ]}]
+  },
+  "Madrid": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": ""},
+   "grupos": [{"isla": null, "senadores": [
+    {"nombre": "Don Ficticio Sin Página Uno", "formacion": "CANDIDATURA FICTICIA A", "votos": "4"},
+    {"nombre": "Don Ficticio Sin Página Dos", "formacion": "CANDIDATURA FICTICIA A", "votos": "3"},
+    {"nombre": "Don Ficticio Sin Página Tres", "formacion": "CANDIDATURA FICTICIA A", "votos": "2"},
+    {"nombre": "Don Ficticio Sin Página Cuatro", "formacion": "CANDIDATURA FICTICIA A", "votos": "1"}
+   ]}]
+  },
+  "Soria": {
+   "fuente": {"id": "BOE-A-2099-00000", "pagina": "1"},
+   "grupos": [{"isla": null, "senadores": [
+    {"nombre": "Don Ficticio Duplicado Uno", "formacion": "CANDIDATURA FICTICIA A", "votos": "4"},
+    {"nombre": "Don Ficticio Duplicado Dos", "formacion": "CANDIDATURA FICTICIA A", "votos": "3"},
+    {"nombre": "Don Ficticio Duplicado Tres", "formacion": "CANDIDATURA FICTICIA A", "votos": "2"},
+    {"nombre": "Don Ficticio Duplicado Cuatro", "formacion": "CANDIDATURA FICTICIA A", "votos": "1"}
+   ]}]
+  }
+ }
+}

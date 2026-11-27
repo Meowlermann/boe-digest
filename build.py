@@ -6562,10 +6562,58 @@ def renderizar_elecciones(fichas: list) -> list:
         "site_url": SITE_URL, "carpeta": ELECCIONES_DIR, "jsonld_script": jsonld_script,
         "nombre": nombre_circunscripcion, "slug": _slug_txt,
         "resultados": _resultados_29n(),
+        # «Tus senadores ↓» junto a «Resultados oficiales ↓»: lleva a la ficha de provincia.
+        "senadores": _senadores_29n(),
     }, datos, fichas)
     escribir_si_cambia(ELECCIONES_DIR.parent / "index.html", el.redireccion_html(SITE_URL))
     log(f"elecciones/2026/: {len(salidas)} páginas (y /elecciones/ redirige al hub)")
     return salidas
+
+
+def _senadores_29n() -> dict | None:
+    """Copia fija de los senadores electos (senadores.py), o None si no existe:
+    entonces ninguna ficha de provincia lleva «Tus senadores»."""
+    try:
+        import senadores as sn
+        datos = sn.cargar()
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"senadores 29-N: no disponibles ({exc})")
+        return None
+    if datos:
+        log(f"senadores 29-N: {len(datos['provincias'])} provincias ({datos['fuente']['id']})")
+    return datos
+
+
+def _prov_rd_senadores(datos: dict | None, prov: str) -> str:
+    """Nombre del real decreto de convocatoria que corresponde a `prov`
+    (nombre del Congreso) en la copia de senadores, o vacío."""
+    if not datos:
+        return ""
+    import elecciones as el
+    rd = [c for c in datos.get("provincias") or {} if el.circ_congreso(c) == prov]
+    return rd[0] if len(rd) == 1 else ""
+
+
+def _bloque_senadores(datos: dict | None, prov: str) -> str:
+    """«Tus senadores» de la ficha de provincia. `prov` es el nombre del
+    Congreso; la copia usa el del real decreto de convocatoria."""
+    import senadores as sn
+    rd = _prov_rd_senadores(datos, prov)
+    return sn.bloque_html(datos, rd, nombre_circunscripcion(prov)) if rd else ""
+
+
+def _salto_senadores(datos: dict | None, prov: str) -> str:
+    """«Tus senadores ↓» arriba de la ficha (informe 52), solo si hay bloque."""
+    import senadores as sn
+    return sn.salto_html(datos, _prov_rd_senadores(datos, prov))
+
+
+def plantilla_con_salto_senadores(plantilla: str, salto: str) -> str:
+    """El salto va tras la entradilla, antes del aviso de legislatura disuelta,
+    para que a 375×812 se vea en el primer pantallazo. Ni title ni H1 cambian."""
+    if not salto:
+        return plantilla
+    return plantilla.replace(AVISO_LEGISLATURA, salto + AVISO_LEGISLATURA, 1)
 
 
 def renderizar_diputados(fichas: list) -> list:
@@ -6764,6 +6812,8 @@ def renderizar_diputados(fichas: list) -> list:
     datos_rdl = vr.cargar()
     if not datos_rdl:
         log("votos_rdl: no hay curated/votos_rdl.json; fichas de provincia sin «¿Quién votó qué?»")
+    # «Tus senadores»: copia fija curated/senadores_29n.json (proclamación de la JEC).
+    datos_sen = _senadores_29n()
     for prov, gente in sorted(por_prov.items()):
         ps = _slug_txt(prov)
         url = f"{SITE_URL}diputados/provincia-{ps}.html"
@@ -6780,6 +6830,7 @@ def renderizar_diputados(fichas: list) -> list:
         # Con bloque electoral, el pie precisa que ese bloque no usa IA (informe 30).
         plantilla_p = plantilla_ficha_provincia(plantilla, ps, bool(bloque_elecciones.get(prov)),
                                                 og_elecciones)
+        plantilla_p = plantilla_con_salto_senadores(plantilla_p, _salto_senadores(datos_sen, prov))
         salidas.append(_pagina_listado(
             plantilla_p, DIPUTADOS_DIR, f"provincia-{ps}.html",
             titulo_p,
@@ -6799,6 +6850,7 @@ def renderizar_diputados(fichas: list) -> list:
             cuerpo_extra=bloque_elecciones.get(prov, "") + _reparto_provincia(gente, prov)
             + FAQ_ELECCIONES.get(prov, "")
             + vr.bloque_html(datos_rdl, gente, nombre_circunscripcion(prov), prov)
+            + _bloque_senadores(datos_sen, prov)
             + (f'<p class="destacado"><a class="destacado-a" href="../provincias/{esc_attr(ps)}.html">'
                           f'Todo sobre {esc_html(nombre_provincia(ps, prov))}: qué se pregunta, qué se '
                           f'tramita, cómo votan y qué publica el BOE&nbsp;→</a></p>'),

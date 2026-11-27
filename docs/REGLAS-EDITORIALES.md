@@ -21,6 +21,12 @@ Si un dato no se puede obtener, se dice. No se rellena ni se estima sin
 avisar. Cada pieza enlaza al documento concreto del que sale, no a una
 portada.
 
+Cuando una página explica una regla (cómo se vota, cuántos se eligen), la
+regla sale del texto consolidado de la ley en el BOE, citado con su URL en
+el código y en [DECISIONES.md](DECISIONES.md), no de un informe ni de
+memoria. A qué elección se refiere un dato (su fecha) sale de la fuente
+cargada, nunca de un texto fijo: si la fuente no la cita, no se pone.
+
 La sátira, si la hay, va en el titular y en el ángulo, nunca en los hechos.
 
 ## La misma mordacidad para todo el arco político

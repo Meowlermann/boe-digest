@@ -425,13 +425,16 @@ def _reparto_html(d: dict) -> str:
     return f'<span class="rof-reparto">Escaños: {_esc(r)}</span>' if r else ""
 
 
-def salto_html(datos: dict | None, circ_rd: str) -> str:
+def salto_html(datos: dict | None, circ_rd: str, junto: str = "") -> str:
     """Arriba del todo, solo si hay bloque: el enlace al bloque y, debajo, el
-    reparto de escaños, para que a 375 px se vea en el primer pantallazo."""
+    reparto de escaños, para que a 375 px se vea en el primer pantallazo.
+    `junto`: otro enlace de salto en la misma línea («Tus senadores ↓»), que
+    sale solo aunque no haya resultados."""
     if not hay_bloque(datos, circ_rd):
-        return ""
+        return f'<p class="rof-salto">{junto}</p>' if junto else ""
     return (f'<p class="rof-salto"><a href="#{ANCLA}">Resultados oficiales&nbsp;↓</a>'
-            f'{_reparto_html(datos["circunscripciones"][circ_rd])}</p>')
+            + (f' <span class="rof-sep" aria-hidden="true">·</span> {junto}' if junto else "")
+            + f'{_reparto_html(datos["circunscripciones"][circ_rd])}</p>')
 
 
 def bloque_html(datos: dict | None, circ_rd: str, nombre: str) -> str:

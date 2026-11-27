@@ -219,6 +219,43 @@ se usa el escrutinio provisional, Infoelectoral ni ninguna otra web.
    no la aplica: parar y avisar a Dirección.
 6. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
 
+## «Tus senadores»: crear la copia
+
+El bloque de `/diputados/provincia-*.html` sale de `curated/senadores_29n.json`.
+Mientras no exista, no se pinta nada. Solo se crea con la relación de
+«Senadores proclamados electos» de la resolución de la Presidencia de la Junta
+Electoral Central que publica en el BOE el resumen de los resultados de las
+elecciones convocadas por el Real Decreto 806/2026. Nunca desde senado.es.
+
+1. Buscar en el BOE el identificador de esa resolución (sección III).
+2. `python tools/generar_senadores.py --id BOE-A-…` (sin `--escribir`).
+   Comprueba el título y lee la relación del PDF con `pdftotext -layout`
+   (poppler, solo en local; en el XML es una imagen). Una provincia queda fuera
+   si no está clara: encabezado que no casa con el real decreto, una línea que
+   no se entiende (formación partida en dos renglones, nota de renuncia), una
+   isla desconocida o un número de senadores distinto del del artículo 165 de
+   la LOREG (cuatro por provincia; tres en Gran Canaria, Mallorca y Tenerife;
+   uno en cada otra isla; dos en Ceuta y en Melilla). Con la resolución de
+   2023 (BOE-A-2023-18907) como prueba salieron 48 de 52: Barcelona, Lleida y
+   Tarragona por formaciones en dos renglones y Teruel por una nota de renuncia.
+3. Si todo es correcto, repetir con `--escribir`.
+4. Las provincias dudosas se pueden curar a mano en
+   `curated/senadores_29n_manual.json` (decisión de Dirección, 26-11-2026):
+   - `--borrador /tmp/borrador.json` escribe, fuera de `curated/`, una
+     entrada por provincia dudosa con el identificador BOE y las páginas de la
+     relación, y `grupos` vacío.
+   - Los senadores se copian literalmente del PDF del BOE: nombre, formación
+     completa, votos y, si la hay, la nota tal cual (`"nota"`). En las
+     provincias insulares, un grupo por isla con el nombre del encabezado.
+   - Cada provincia lleva `"fuente": {"id": "<el mismo BOE-A-…>", "pagina": "N"}`.
+   - Al pintar se descarta, con su motivo, la que no tenga los senadores del
+     artículo 165 de la LOREG, no tenga página, cite otra resolución o ya esté
+     en la copia automática. Si una provincia sigue sin estar clara, no se
+     publica. Sin la copia automática, la manual no se usa.
+5. Si el BOE publica una corrección de errores, la herramienta no la aplica:
+   parar y avisar a Dirección.
+6. Abrir una PR con el JSON. Dirección quiere que se le avise antes.
+
 ## Timeouts de Pages en el primer despliegue de un SHA
 
 El 10 de noviembre de 2026, varios despliegues fallaron en el paso
