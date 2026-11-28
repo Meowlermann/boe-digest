@@ -1,55 +1,248 @@
 {
-  "inicio": "2026-11-28T05:40:25.582353+00:00",
+  "inicio": "2026-11-28T06:40:26.406434+00:00",
   "peticiones": [
     {
       "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261128",
-      "status": 404
+      "status": 200,
+      "bytes": 377160
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261127",
+      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261128",
       "status": 200,
-      "bytes": 334469
+      "bytes": 377160
     },
     {
-      "url": "https://www.boe.es/datosabiertos/api/boe/sumario/20261127",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25038",
       "status": 200,
-      "bytes": 334469
+      "bytes": 15829
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25039",
+      "status": 200,
+      "bytes": 128438
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25043",
+      "status": 200,
+      "bytes": 14526
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25044",
+      "status": 200,
+      "bytes": 14627
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25045",
+      "status": 200,
+      "bytes": 14824
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25046",
+      "status": 200,
+      "bytes": 14918
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25047",
+      "status": 200,
+      "bytes": 14643
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25048",
+      "status": 200,
+      "bytes": 14602
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25049",
+      "status": 200,
+      "bytes": 14614
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25050",
+      "status": 200,
+      "bytes": 14628
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25051",
+      "status": 200,
+      "bytes": 14855
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25052",
+      "status": 200,
+      "bytes": 14505
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25053",
+      "status": 200,
+      "bytes": 14589
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25054",
+      "status": 200,
+      "bytes": 14597
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25055",
+      "status": 200,
+      "bytes": 14579
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25056",
+      "status": 200,
+      "bytes": 14625
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25057",
+      "status": 200,
+      "bytes": 14660
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25059",
+      "status": 200,
+      "bytes": 75280
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25061",
+      "status": 200,
+      "bytes": 74143
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25062",
+      "status": 200,
+      "bytes": 26355
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25063",
+      "status": 200,
+      "bytes": 24706
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25064",
+      "status": 200,
+      "bytes": 26116
     },
     {
       "url": "https://www.congreso.es/es/opendata/intervenciones",
       "status": 403
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25020",
+      "status": 200,
+      "bytes": 14706
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25021",
+      "status": 200,
+      "bytes": 15324
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25025",
+      "status": 200,
+      "bytes": 23773
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25026",
+      "status": 200,
+      "bytes": 40488
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25027",
+      "status": 200,
+      "bytes": 78739
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25028",
+      "status": 200,
+      "bytes": 90313
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25029",
+      "status": 200,
+      "bytes": 190874
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25030",
+      "status": 200,
+      "bytes": 213287
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25031",
+      "status": 200,
+      "bytes": 170774
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25065",
+      "status": 200,
+      "bytes": 43123
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25066",
+      "status": 200,
+      "bytes": 15647
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25067",
+      "status": 200,
+      "bytes": 57623
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25068",
+      "status": 200,
+      "bytes": 36130
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25070",
+      "status": 200,
+      "bytes": 49533
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25071",
+      "status": 200,
+      "bytes": 46974
+    },
+    {
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25072",
+      "status": 200,
+      "bytes": 15443
     }
   ],
   "nombramientos": {
-    "fecha": "2026-11-27",
+    "fecha": "2026-11-28",
     "fuente": "api",
-    "incluidos": 5,
+    "incluidos": 0,
     "descartes": {
-      "sin nombre propio": 6,
-      "II.B: sin nombre propio": 31
+      "sin nombre propio": 5,
+      "II.B: sin nombre propio": 28
     }
   },
   "provincias": {
-    "fecha": "2026-11-27",
-    "incluidos": 17,
-    "descartes": {}
+    "fecha": "2026-11-28",
+    "incluidos": 13,
+    "descartes": {
+      "ambiguo sin contexto: Salamanca": 3
+    }
   },
   "empleo": {
-    "fecha": "2026-11-27",
-    "incluidos": 31
+    "fecha": "2026-11-28",
+    "incluidos": 28
   },
   "403": {
     "url": "https://www.congreso.es/es/opendata/intervenciones",
     "server": "",
     "via": "",
     "set_cookie": "",
-    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;8baa3717&#46;1795844430&#46;2379d9c2 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;8baa3717&#46;1795844430&#46;2379d9c2</P> </BODY> </HTM"
+    "cuerpo": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;congreso&#46;es&#47;es&#47;opendata&#47;intervenciones\" on this server.<P> Reference&#32;&#35;18&#46;b137cb17&#46;1795848051&#46;f273828 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;b137cb17&#46;1795848051&#46;f273828</P> </BODY> </HTML>"
   },
   "resumen": {
-    "boe_entradas": 111,
+    "boe_entradas": 56,
     "congreso_piezas": 0,
     "senado_docs": 0
   },
+  "titulares_descartados": [
+    "DINERO PÚBLICO PARA ARAGÓN — menos de cinco palabras",
+    "JUVENTUD Y JUSTICIA INTERGENERACIONAL — menos de cinco palabras",
+    "JUVENTUD Y JUSTICIA INTERGENERACIONAL — menos de cinco palabras"
+  ],
   "semanas": [],
-  "fin": "2026-11-28T05:40:33.136904+00:00"
+  "fin": "2026-11-28T06:41:10.499664+00:00"
 }
